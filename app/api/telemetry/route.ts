@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
       findingIds: (event.findingIds ?? []).map(String),
       recoIds: (event.recoIds ?? []).map(String),
       outputFormat: (event as any).outputFormat ?? null,
+      purpose: String((event as any).purpose ?? "").trim() || null,
     });
 
     return NextResponse.json({ ok: true }, { status: 200 });
