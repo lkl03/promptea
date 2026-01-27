@@ -1,0 +1,19 @@
+{
+  "app": {
+    "title": "Promptea",
+    "subtitle": "Analizá tu prompt, detectá problemas y mejoralo para cada IA.",
+    "placeholder": "Pega tu prompt aquí (pulsa Enter para analizar, Shift+Enter para nueva línea)",
+    "analyze": "Analizar",
+    "targetModel": "IA objetivo",
+    "quality": "Calidad",
+    "optimized": "Prompt optimizado",
+    "recommendations": "Recomendaciones",
+    "risks": "Riesgos detectados",
+    "ad": "Espacio publicitario",
+    "reset": "Resetear",
+    "writingFor": "Estoy escribiendo para…",
+    "newPrompt": "Escribir un nuevo prompt",
+    "analyzing": "Analizando…",
+    "lockedNotice": "Los campos están bloqueados hasta que escribas un nuevo prompt."
+  }
+}

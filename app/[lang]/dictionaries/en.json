@@ -1,0 +1,19 @@
+{
+  "app": {
+    "title": "Promptea",
+    "subtitle": "Analyze your prompt, detect issues, and optimize it for each AI.",
+    "placeholder": "Paste your prompt here (press Enter to analyze, Shift+Enter for newline)",
+    "analyze": "Analyze",
+    "targetModel": "Target AI",
+    "quality": "Quality",
+    "optimized": "Optimized prompt",
+    "recommendations": "Recommendations",
+    "risks": "Detected risks",
+    "ad": "Ad space",
+    "reset": "Reset",
+    "writingFor": "I'm writing for…",
+    "newPrompt": "Write a new prompt",
+    "analyzing": "Analyzing…",
+    "lockedNotice": "Inputs locked until you write a new prompt."  
+  }
+}
