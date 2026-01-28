@@ -4,6 +4,7 @@ import { getDictionary, hasLocale } from "./dictionaries";
 import { notFound } from "next/navigation";
 import { Montserrat, Quicksand } from "next/font/google";
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 
 import Providers from "@/components/Providers";
 import TopBar from "@/components/TopBar";
@@ -191,6 +192,7 @@ export default async function RootLayout({
             <Footer lang={lang} />
           </ToastProvider>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
