@@ -3,11 +3,58 @@ import { notFound } from "next/navigation";
 import PromptBox from "@/components/PromptBox";
 import AdSlot from "@/components/AdSlot";
 
-export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+type TargetValue = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek";
+type PromptPurpose = "text" | "study" | "code" | "data_json" | "image" | "marketing";
+
+function pickFirst(v: string | string[] | undefined): string | null {
+  if (!v) return null;
+  return Array.isArray(v) ? (v[0] ?? null) : v;
+}
+
+function safeDecode(v: string) {
+  try {
+    return decodeURIComponent(v);
+  } catch {
+    return v;
+  }
+}
+
+function normalizeTarget(v: string | null): TargetValue | undefined {
+  const x = (v ?? "").toLowerCase().trim();
+  const allowed: TargetValue[] = ["gpt", "gemini", "grok", "claude", "kimi", "deepseek"];
+  return (allowed.includes(x as any) ? (x as TargetValue) : undefined);
+}
+
+function normalizePurpose(v: string | null): PromptPurpose | undefined {
+  const x = (v ?? "").toLowerCase().trim();
+
+  // compat aliases por si linkeás "data" o "json"
+  if (x === "data" || x === "json" || x === "data/json") return "data_json";
+
+  const allowed: PromptPurpose[] = ["text", "study", "code", "data_json", "image", "marketing"];
+  return (allowed.includes(x as any) ? (x as PromptPurpose) : undefined);
+}
+
+export default async function Page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ lang: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
 
   const dict = await getDictionary(lang as "es" | "en");
+
+  const sp = (await searchParams) ?? {};
+  const rawPrompt = pickFirst(sp.prompt);
+  const rawPurpose = pickFirst(sp.purpose);
+  const rawTarget = pickFirst(sp.target);
+
+  const initialPrompt = rawPrompt ? safeDecode(rawPrompt).slice(0, 6000) : "";
+  const initialPurpose = normalizePurpose(rawPurpose);
+  const initialTarget = normalizeTarget(rawTarget);
 
   const showAds = process.env.NEXT_PUBLIC_ENABLE_ADS === "true";
 
@@ -33,7 +80,10 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           </header>
 
           <div className="mt-8">
-            <PromptBox dict={dict} lang={lang as "es" | "en"} />
+            <PromptBox dict={dict} lang={lang as "es" | "en"}  
+              initialPrompt={initialPrompt}
+              initialPurpose={initialPurpose}
+              initialTarget={initialTarget} />
           </div>
         </section>
 

@@ -39,7 +39,19 @@ function pillClass(active: boolean) {
   return [base, lightMode, darkMode].join(" ");
 }
 
-export default function PromptBox({ dict, lang }: { dict: Dict; lang: "es" | "en" }) {
+export default function PromptBox({
+  dict,
+  lang,
+  initialPrompt,
+  initialPurpose,
+  initialTarget,
+}: {
+  dict: Dict;
+  lang: "es" | "en";
+  initialPrompt?: string;
+  initialPurpose?: PromptPurpose;
+  initialTarget?: TargetValue;
+}) {
   const [prompt, setPrompt] = useState("");
   const [target, setTarget] = useState<TargetValue>("gpt");
   const [purpose, setPurpose] = useState<PromptPurpose | null>(null);
@@ -53,15 +65,27 @@ export default function PromptBox({ dict, lang }: { dict: Dict; lang: "es" | "en
   const locked = !!result || isPending;
   const canAnalyze = useMemo(() => prompt.trim().length > 0 && !!purpose, [prompt, purpose]);
 
+  // ✅ init from query params (solo 1 vez)
+  const didInitRef = useRef(false);
+  useEffect(() => {
+    if (didInitRef.current) return;
+    didInitRef.current = true;
+
+    if (typeof initialTarget === "string") setTarget(initialTarget);
+    if (typeof initialPurpose === "string") setPurpose(initialPurpose);
+
+    if (typeof initialPrompt === "string" && initialPrompt.trim().length > 0) {
+      setPrompt(initialPrompt);
+      requestAnimationFrame(() => textareaRef.current?.focus());
+    }
+  }, [initialPrompt, initialPurpose, initialTarget]);
+
   // ✅ session ping (DAU)
   useEffect(() => {
     const sessionId = getSessionId();
     fetch("/api/telemetry/session", {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-ui-lang": lang,
-      },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({
         sessionId,
         lang,
@@ -87,16 +111,10 @@ export default function PromptBox({ dict, lang }: { dict: Dict; lang: "es" | "en
       try {
         const sessionId = getSessionId();
 
-        // ✅ normalizamos purpose sin cambiar UI
-        const purposeForApi = purpose === "data_json" ? "data" : purpose;
-
         const res = await fetch("/api/analyze", {
           method: "POST",
-          headers: {
-            "content-type": "application/json",
-            "x-ui-lang": lang,
-          },
-          body: JSON.stringify({ prompt, target, lang, purpose: purposeForApi, sessionId }),
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ prompt, target, lang, purpose, sessionId }),
         });
 
         const data = await res.json();
@@ -154,6 +172,7 @@ export default function PromptBox({ dict, lang }: { dict: Dict; lang: "es" | "en
         }}
       />
 
+      {/* ✅ purpose pills */}
       <div className="flex flex-col items-center gap-2">
         <div className="text-xs sm:text-sm opacity-80 text-center">{purposeLabel}</div>
         <div className="flex flex-wrap items-center justify-center gap-2">
@@ -184,6 +203,7 @@ export default function PromptBox({ dict, lang }: { dict: Dict; lang: "es" | "en
     </div>
   );
 }
+
 
 
 
