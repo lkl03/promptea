@@ -4,7 +4,9 @@ import PromptBox from "@/components/PromptBox";
 import AdSlot from "@/components/AdSlot";
 
 type TargetValue = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek";
-type PromptPurpose = "text" | "study" | "code" | "data_json" | "image" | "marketing";
+
+// ✅ IMPORTANT: este type tiene que matchear el que usa PromptBox (usa "data", no "data_json")
+type PromptPurpose = "text" | "study" | "code" | "data" | "image" | "marketing";
 
 function pickFirst(v: string | string[] | undefined): string | null {
   if (!v) return null;
@@ -22,17 +24,17 @@ function safeDecode(v: string) {
 function normalizeTarget(v: string | null): TargetValue | undefined {
   const x = (v ?? "").toLowerCase().trim();
   const allowed: TargetValue[] = ["gpt", "gemini", "grok", "claude", "kimi", "deepseek"];
-  return (allowed.includes(x as any) ? (x as TargetValue) : undefined);
+  return allowed.includes(x as any) ? (x as TargetValue) : undefined;
 }
 
 function normalizePurpose(v: string | null): PromptPurpose | undefined {
   const x = (v ?? "").toLowerCase().trim();
 
-  // compat aliases por si linkeás "data" o "json"
-  if (x === "data" || x === "json" || x === "data/json") return "data_json";
+  // ✅ compat aliases (links viejos o externos)
+  if (x === "data_json" || x === "data" || x === "json" || x === "data/json") return "data";
 
-  const allowed: PromptPurpose[] = ["text", "study", "code", "data_json", "image", "marketing"];
-  return (allowed.includes(x as any) ? (x as PromptPurpose) : undefined);
+  const allowed: PromptPurpose[] = ["text", "study", "code", "data", "image", "marketing"];
+  return allowed.includes(x as any) ? (x as PromptPurpose) : undefined;
 }
 
 export default async function Page({
@@ -71,19 +73,18 @@ export default async function Page({
         {/* Center */}
         <section className={showAds ? "xl:col-start-2" : ""}>
           <header className="text-center">
-            <h1 className="font-title text-4xl font-semibold tracking-tight sm:text-5xl">
-              {dict.app.title}
-            </h1>
-            <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">
-              {dict.app.subtitle}
-            </p>
+            <h1 className="font-title text-4xl font-semibold tracking-tight sm:text-5xl">{dict.app.title}</h1>
+            <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">{dict.app.subtitle}</p>
           </header>
 
           <div className="mt-8">
-            <PromptBox dict={dict} lang={lang as "es" | "en"}  
+            <PromptBox
+              dict={dict}
+              lang={lang as "es" | "en"}
               initialPrompt={initialPrompt}
               initialPurpose={initialPurpose}
-              initialTarget={initialTarget} />
+              initialTarget={initialTarget}
+            />
           </div>
         </section>
 
@@ -99,6 +100,7 @@ export default async function Page({
     </main>
   );
 }
+
 
 
 
