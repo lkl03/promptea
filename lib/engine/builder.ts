@@ -145,7 +145,7 @@ export function buildOptimizedPrompt(
   // ✅ Idempotencia: si ya es prompt de Promptea, no lo “envolvemos” de nuevo
   if (isPrompteaOptimized(trimmed)) return trimmed;
 
-  const title = "PROMPTEA: v1.0";
+  const title = "PROMPTEA: v1.0.2";
   const modelLine = `MODEL: ${String(target).toUpperCase()}`;
 
   const instrHeader = t(lang, "INSTRUCCIONES:", "INSTRUCTIONS:");

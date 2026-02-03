@@ -16,8 +16,8 @@ export async function generateMetadata({
     title: l === "es" ? "Packs de prompts (plantillas)" : "Prompt packs (templates)",
     description:
       l === "es"
-        ? "Packs de prompts listos para copiar: Study, Code, Marketing e Image. Abrilos en Promptea y optimizalos por IA."
-        : "Copy-ready prompt packs: Study, Code, Marketing and Image. Open in Promptea and optimize per AI.",
+        ? "Packs de prompts listos para copiar: Study, Code, Marketing, Image, Text y Data. Abrilos en Promptea y optimizalos por IA."
+        : "Copy-ready prompt packs: Study, Code, Marketing, Image, Text and Data. Open in Promptea and optimize per AI.",
     alternates: {
       canonical: `/${l}/prompts`,
       languages: {
@@ -76,6 +76,23 @@ export default async function PromptsIndexPage({
           ? "Prompts para generar imágenes: estilo, composición y variantes."
           : "Image generation prompts: style, composition and variations.",
     },
+    // ✅ nuevos
+    {
+      href: `/${l}/prompts/text`,
+      name: l === "es" ? "Text (escritura)" : "Text",
+      desc:
+        l === "es"
+          ? "Reescritura, tono, resúmenes, emails y guiones."
+          : "Rewriting, tone, summaries, emails and scripts.",
+    },
+    {
+      href: `/${l}/prompts/data`,
+      name: "Data",
+      desc:
+        l === "es"
+          ? "JSON estricto, extracción, limpieza y transformaciones."
+          : "Strict JSON, extraction, cleaning and transformations.",
+    },
   ];
 
   return (
@@ -90,9 +107,7 @@ export default async function PromptsIndexPage({
           <Link key={p.href} href={p.href} className="surface p-5 block hover:opacity-95 transition">
             <div className="text-sm font-medium">{p.name}</div>
             <div className="mt-1 text-sm opacity-80">{p.desc}</div>
-            <div className="mt-4 text-xs opacity-70">
-              {l === "es" ? "Ver prompts →" : "View prompts →"}
-            </div>
+            <div className="mt-4 text-xs opacity-70">{l === "es" ? "Ver prompts →" : "View prompts →"}</div>
           </Link>
         ))}
       </div>
@@ -105,3 +120,4 @@ export default async function PromptsIndexPage({
     </main>
   );
 }
+

@@ -38,12 +38,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const parsed = AnalyzeSchema.safeParse(body);
+  // ✅ FIX DEFINITIVO:
+  // normalizamos ANTES de validar, porque Zod valida primero.
+  let normalizedBody: any = body;
+  if (normalizedBody && typeof normalizedBody === "object") {
+    if ((normalizedBody as any).purpose === "data_json") {
+      (normalizedBody as any).purpose = "data";
+    }
+  }
+
+  const parsed = AnalyzeSchema.safeParse(normalizedBody);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Validation error", details: parsed.error.flatten() },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Validation error", details: parsed.error.flatten() }, { status: 400 });
   }
 
   const { prompt, target, lang: bodyLang, sessionId, purpose: rawPurpose } = parsed.data as any;
@@ -53,14 +59,10 @@ export async function POST(req: NextRequest) {
 
   const result = analyzePrompt(prompt, target, lang, purpose);
 
-  // ✅ 1 doc por análisis
   const analysisId = randomUUID();
 
   // ✅ Debug backend (NO loguea prompt raw)
-  // Activación: por default en dev, o forzalo con DEBUG_ANALYZE=1
-  const shouldDebug =
-    process.env.DEBUG_ANALYZE === "1" || process.env.NODE_ENV !== "production";
-
+  const shouldDebug = process.env.DEBUG_ANALYZE === "1" || process.env.NODE_ENV !== "production";
   if (shouldDebug) {
     console.log("[analyze] request", {
       analysisId,
@@ -77,7 +79,6 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // Telemetry (no bloquea UX)
   upsertAnalysisEvent({
     analysisId,
     sessionId: String(sessionId ?? "anon"),
@@ -98,13 +99,12 @@ export async function POST(req: NextRequest) {
 
     outputFormat: result.meta?.outputFormat ?? null,
 
-    // ✅ FIX: ahora es requerido por el tipo
+    // requerido por el tipo
     purpose: result.meta?.purpose ?? purpose ?? null,
   }).catch((e) => {
     if (shouldDebug) console.log("[analyze] telemetry failed", { analysisId, err: e?.message ?? String(e) });
   });
 
-  // devolvemos analysisId para feedback
   const payload = {
     ...result,
     meta: {
@@ -117,6 +117,7 @@ export async function POST(req: NextRequest) {
   res.headers.set("x-engine-version", result.meta?.engineVersion ?? "unknown");
   return res;
 }
+
 
 
 

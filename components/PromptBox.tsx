@@ -16,28 +16,34 @@ const TARGETS = [
 ] as const;
 
 type TargetValue = (typeof TARGETS)[number]["value"];
-type PromptPurpose = "text" | "study" | "code" | "data_json" | "image" | "marketing";
+type PromptPurpose = "text" | "study" | "code" | "data" | "image" | "marketing";
 
 const PURPOSES: Array<{ value: PromptPurpose; label: { es: string; en: string } }> = [
   { value: "text", label: { es: "Texto", en: "Text" } },
   { value: "study", label: { es: "Estudio", en: "Study" } },
   { value: "code", label: { es: "Código", en: "Code" } },
-  { value: "data_json", label: { es: "Data/JSON", en: "Data/JSON" } },
+  { value: "data", label: { es: "Data/JSON", en: "Data/JSON" } },
   { value: "image", label: { es: "Imagen", en: "Image" } },
   { value: "marketing", label: { es: "Marketing", en: "Marketing" } },
 ];
 
 function pillClass(active: boolean) {
   const base =
-    "h-8 rounded-full border px-3 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-zinc-400/30 dark:focus:ring-zinc-500/30";
-  const lightMode = active
-    ? "bg-zinc-950 text-white border-zinc-900/20"
-    : "bg-zinc-950/80 text-white border-zinc-900/15 hover:bg-zinc-950";
-  const darkMode = active
-    ? "dark:bg-white dark:text-zinc-900 dark:border-white/20"
-    : "dark:bg-white/85 dark:text-zinc-900 dark:border-white/15 dark:hover:bg-white";
-  return [base, lightMode, darkMode].join(" ");
+    "h-8 rounded-full border px-3 text-xs font-medium transition " +
+    "focus:outline-none focus:ring-2 focus:ring-zinc-400/30 dark:focus:ring-zinc-500/30";
+
+  const idle =
+    "bg-zinc-950/80 text-white border-zinc-900/15 dark:bg-white/85 dark:text-zinc-900 dark:border-white/15";
+
+  const hoverActive =
+    "bg-transparent text-white border-white " +
+    "hover:bg-transparent hover:text-white hover:border-white " +
+    "dark:bg-transparent dark:text-white dark:border-white " +
+    "dark:hover:bg-transparent dark:hover:text-white dark:hover:border-white";
+
+  return [base, active ? hoverActive : `${idle} ${hoverActive}`].join(" ");
 }
+
 
 export default function PromptBox({
   dict,

@@ -18,6 +18,10 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
   const privacyLabel = lang === "es" ? "Privacidad" : "Privacy";
   const homeInicio = lang === "es" ? "Inicio" : "Home";
   const promptsLabel = lang === "es" ? "Prompts" : "Prompts";
+  const guidesLabel = lang === "es" ? "Guías" : "Guides";
+  const modelsLabel = lang === "es" ? "Modelos" : "Models";
+  const glossaryLabel = lang === "es" ? "Glosario" : "Glossary";
+  const resourcesLabel = lang === "es" ? "Recursos útiles" : "Useful resources";
   const eterlabMessage = lang === "es" ? "diseñado y desarrollado por" : "designed and developed by";
 
   const followLabel = lang === "es" ? "Seguinos en X" : "Follow us on X";
@@ -27,17 +31,12 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
     <footer className="mx-auto w-full max-w-6xl px-4 pb-8 pt-10 3xl:max-w-7xl">
       <div className="h-px w-full bg-zinc-200/70 dark:bg-zinc-800/60" />
 
+      {/* Links principales */}
       <div className="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs opacity-80">
-        <span>V1.0.1</span>
+        <span>V1.0.2</span>
 
         <Link href={`/${lang}/`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {homeInicio}
-        </Link>
-
-        <span className="opacity-50">|</span>
-
-        <Link href={`/${lang}/prompts`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          {promptsLabel}
         </Link>
 
         <span className="opacity-50">|</span>
@@ -82,6 +81,33 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
         </a>
       </div>
 
+      {/* Useful resources (segunda línea) */}
+      <div className="mt-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs opacity-80">
+        <span className="opacity-70">{resourcesLabel}:</span>
+
+        <Link href={`/${lang}/prompts`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {promptsLabel}
+        </Link>
+
+        <span className="opacity-50">|</span>
+
+        <Link href={`/${lang}/guides`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {guidesLabel}
+        </Link>
+
+        <span className="opacity-50">|</span>
+
+        <Link href={`/${lang}/models`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {modelsLabel}
+        </Link>
+
+        <span className="opacity-50">|</span>
+
+        <Link href={`/${lang}/glossary`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {glossaryLabel}
+        </Link>
+      </div>
+
       <div className="mt-4 flex flex-wrap items-center justify-center text-xs text-gray-400">
         <span>
           © {year} | {eterlabMessage}{" "}
@@ -94,6 +120,7 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
     </footer>
   );
 }
+
 
 
 

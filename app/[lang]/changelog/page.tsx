@@ -12,6 +12,52 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.0.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.0.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 03-02-2026" : "Released: 2026-02-03"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nuevos packs SEO: Text y Data/JSON (plantillas copy-paste + deep links que precargan Promptea)."
+              : "New SEO packs: Text and Data/JSON (copy-paste templates + deep links that prefill Promptea)."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevas secciones indexables: Guides, Models y Glossary (con páginas por slug y FAQ JSON-LD)."
+              : "New indexable sections: Guides, Models and Glossary (with per-slug pages and FAQ JSON-LD)."}
+          </li>
+          <li>
+            {isEs
+              ? "Sitemap actualizado para incluir /prompts (incl. text/data), /guides, /models y /glossary + slugs."
+              : "Sitemap updated to include /prompts (incl. text/data), /guides, /models and /glossary + slugs."}
+          </li>
+          <li>
+            {isEs
+              ? "Prompts index actualizado para incluir los nuevos packs (Text y Data)."
+              : "Prompts index updated to include the new packs (Text and Data)."}
+          </li>
+          <li>
+            {isEs
+              ? "Footer reorganizado: links principales arriba y “Recursos útiles” en una línea separada (Prompts/Guides/Models/Glossary)."
+              : "Footer reorganized: primary links on top and “Useful resources” on a separate line (Prompts/Guides/Models/Glossary)."}
+          </li>
+          <li>
+            {isEs
+              ? "UI: estilo de pills ajustado (hover y seleccionada) a fondo transparente + borde/texto blanco."
+              : "UI: pill styling updated (hover + selected) to transparent background + white border/text."}
+          </li>
+          <li>
+            {isEs
+              ? "Fix: análisis de prompts Data/JSON que devolvían error."
+              : "Fix: analyzing Data/JSON prompts that were returning an error."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.0.1 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
@@ -35,11 +81,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
               ? "Mejoras de UX para navegación e iteración (acceso rápido a plantillas)."
               : "UX improvements for navigation and faster iteration (quick access to templates)."}
           </li>
-          <li>
-            {isEs
-              ? "Footer actualizado con acceso a X + tooltip."
-              : "Footer updated with X link + tooltip."}
-          </li>
+          <li>{isEs ? "Footer actualizado con acceso a X + tooltip." : "Footer updated with X link + tooltip."}</li>
         </ul>
       </div>
 
