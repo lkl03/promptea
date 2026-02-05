@@ -5,12 +5,15 @@ import { notFound } from "next/navigation";
 import { Montserrat, Quicksand } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 
 import Providers from "@/components/Providers";
 import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import ToastProvider from "@/components/ToastProvider";
+
+const X_PIXEL_ID = process.env.NEXT_PUBLIC_X_PIXEL_ID;
 
 const titleFont = Montserrat({
   subsets: ["latin"],
@@ -174,6 +177,27 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
+
+             {/* ✅ X Pixel (Universal Website Tag) */}
+        {X_PIXEL_ID && (
+          <Script
+            id="x-pixel"
+            strategy="afterInteractive"
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: `
+                !(function(e,t,n,s,u,a){
+                  e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);},
+                  s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,
+                  u.src='https://static.ads-twitter.com/uwt.js',
+                  a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))
+                }(window,document,'script'));
+                twq('init','${X_PIXEL_ID}');
+                twq('track','PageView');
+              `,
+            }}
+          />
+        )}
 
       <body
         className={[
