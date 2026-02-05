@@ -127,6 +127,15 @@ export default function PromptBox({
         if (!res.ok) throw new Error(data?.error ?? "Error");
 
         setResult(data);
+        // ✅ X conversion: analyze_success (1 vez por sesión)
+        try {
+          const key = "promptea_x_analyze_success_fired";
+          if (!sessionStorage.getItem(key)) {
+            // @ts-ignore
+            window.twq?.("event", "tw-r3py8-r3vec", {});
+            sessionStorage.setItem(key, "1");
+          }
+        } catch { }
       } catch (e: any) {
         setError(e?.message ?? "Error");
       }
