@@ -44,6 +44,44 @@ function pillClass(active: boolean) {
   return [base, active ? hoverActive : `${idle} ${hoverActive}`].join(" ");
 }
 
+const GOOGLE_SEND_TO = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO;
+const GOOGLE_VALUE = Number(process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_VALUE ?? "1.0");
+const GOOGLE_CURRENCY = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_CURRENCY ?? "ARS";
+
+function trackGoogleAnalyzeSuccessOncePerSession() {
+  if (!GOOGLE_SEND_TO) return;
+
+  try {
+    const key = "promptea_google_analyze_success_fired";
+    if (sessionStorage.getItem(key)) return;
+
+    const gtag = (window as any).gtag as undefined | ((...args: any[]) => void);
+    if (!gtag) return;
+
+    gtag("event", "conversion", {
+      send_to: GOOGLE_SEND_TO,
+      value: GOOGLE_VALUE,
+      currency: GOOGLE_CURRENCY,
+    });
+
+    sessionStorage.setItem(key, "1");
+  } catch {
+    // ignore
+  }
+}
+
+function trackXAnalyzeSuccessOncePerSession() {
+  try {
+    const key = "promptea_x_analyze_success_fired";
+    if (sessionStorage.getItem(key)) return;
+
+    // @ts-ignore
+    window.twq?.("event", "tw-r3py8-r3vec", {});
+    sessionStorage.setItem(key, "1");
+  } catch {
+    // ignore
+  }
+}
 
 export default function PromptBox({
   dict,
@@ -127,15 +165,10 @@ export default function PromptBox({
         if (!res.ok) throw new Error(data?.error ?? "Error");
 
         setResult(data);
-        // ✅ X conversion: analyze_success (1 vez por sesión)
-        try {
-          const key = "promptea_x_analyze_success_fired";
-          if (!sessionStorage.getItem(key)) {
-            // @ts-ignore
-            window.twq?.("event", "tw-r3py8-r3vec", {});
-            sessionStorage.setItem(key, "1");
-          }
-        } catch { }
+
+        // ✅ conversions (solo 1 vez por sesión)
+        trackGoogleAnalyzeSuccessOncePerSession();
+        trackXAnalyzeSuccessOncePerSession();
       } catch (e: any) {
         setError(e?.message ?? "Error");
       }
@@ -218,6 +251,7 @@ export default function PromptBox({
     </div>
   );
 }
+
 
 
 
