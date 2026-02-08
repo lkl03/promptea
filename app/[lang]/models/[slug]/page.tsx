@@ -83,6 +83,30 @@ export default async function ModelPage({
         </div>
       </div>
 
+      {/* ✅ SEO editorial block */}
+      <section className="mt-8 surface p-5">
+        <h2 className="text-sm font-medium">{l === "es" ? "Qué cambia en este modelo" : "What changes with this model"}</h2>
+        <div className="mt-2 space-y-2 text-sm opacity-85">
+          <p>
+            {l === "es"
+              ? "Aunque la estructura del prompt sea similar, cada modelo tiene sesgos: algunos siguen mejor instrucciones estrictas, otros son más creativos, otros necesitan ejemplos. Estos templates están pensados para reducir ambigüedad y mejorar consistencia."
+              : "Even if prompt structure is similar, each model has biases: some follow strict instructions better, some are more creative, and some need examples. These templates are designed to reduce ambiguity and improve consistency."}
+          </p>
+          <p>
+            {l === "es"
+              ? "Recomendación: definí formato de salida (idealmente con checklist), agregá restricciones y, si necesitás precisión, usá few-shot o pedí JSON estricto."
+              : "Recommendation: define output format (ideally with a checklist), add constraints, and if you need precision, use few-shot or require strict JSON."}
+          </p>
+
+          <div className="flex flex-wrap gap-2 pt-2">
+            <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>{l === "es" ? "JSON estricto" : "Strict JSON"}</Link>
+            <Link className="btn h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
+            <Link className="btn h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>
+          </div>
+        </div>
+      </section>
+
+
       {/* Tips */}
       <section className="mt-8 surface p-5">
         <div className="text-sm font-medium">{l === "es" ? "Tips rápidos" : "Quick tips"}</div>

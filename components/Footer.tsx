@@ -33,7 +33,7 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
 
       {/* Links principales */}
       <div className="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs opacity-80">
-        <span>V1.0.2</span>
+        <span>V1.0.3</span>
 
         <Link href={`/${lang}/`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {homeInicio}

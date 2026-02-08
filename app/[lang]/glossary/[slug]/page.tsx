@@ -59,20 +59,36 @@ export default async function GlossaryTermPage({
 
   const faq = term.faq.map((x) => ({ q: x.q[l], a: x.a[l] }));
 
-  const faqJsonLd = {
+  const faqJsonLd =
+    faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((x) => ({
+            "@type": "Question",
+            name: x.q,
+            acceptedAnswer: { "@type": "Answer", text: x.a },
+          })),
+        }
+      : null;
+
+  const definedTermJsonLd = {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map((x) => ({
-      "@type": "Question",
-      name: x.q,
-      acceptedAnswer: { "@type": "Answer", text: x.a },
-    })),
+    "@type": "DefinedTerm",
+    name: term.title[l],
+    description: term.description[l],
+    inDefinedTermSet: {
+      "@type": "DefinedTermSet",
+      name: l === "es" ? "Glosario de prompt engineering" : "Prompt engineering glossary",
+      url: `/${l}/glossary`,
+    },
   };
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
-      {/* JSON-LD FAQ */}
-      {faq.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
+      {/* JSON-LD */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermJsonLd) }} />
+      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
 
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{term.title[l]}</h1>
@@ -85,8 +101,31 @@ export default async function GlossaryTermPage({
         </div>
       </div>
 
-      {/* Qué significa */}
+      {/* ✅ SEO editorial block */}
       <section className="mt-8 surface p-5">
+        <h2 className="text-sm font-medium">{l === "es" ? "Cómo aplicarlo en prompts" : "How to apply it in prompts"}</h2>
+        <div className="mt-2 space-y-2 text-sm opacity-85">
+          <p>
+            {l === "es"
+              ? "Usá este concepto para reducir ambigüedad y mejorar consistencia. Si tu output necesita formato estricto, combiná esto con una guía de JSON y un template por modelo."
+              : "Use this concept to reduce ambiguity and improve consistency. If you need strict formatting, combine it with a JSON guide and a per-model template."}
+          </p>
+          <div className="flex flex-wrap gap-2 pt-2">
+            <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>
+              {l === "es" ? "JSON estricto" : "Strict JSON"}
+            </Link>
+            <Link className="btn h-9 px-4" href={`/${l}/models`}>
+              {l === "es" ? "Modelos" : "Models"}
+            </Link>
+            <Link className="btn h-9 px-4" href={`/${l}/prompts`}>
+              {l === "es" ? "Packs" : "Packs"}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Qué significa */}
+      <section className="mt-10 surface p-5">
         <div className="text-sm font-medium">{l === "es" ? "Qué significa" : "What it means"}</div>
         <ul className="mt-3 list-disc pl-5 text-sm opacity-90 space-y-1">
           {term.body[l].map((b, i) => (
@@ -130,4 +169,5 @@ export default async function GlossaryTermPage({
     </main>
   );
 }
+
 

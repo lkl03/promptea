@@ -23,27 +23,21 @@ function joinUrl(siteUrl: string, path: string) {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = getSiteUrl();
+  const siteUrl = getSiteUrl().replace(/\/+$/, "");
   const now = new Date();
 
   const LOCALES = ["es", "en"] as const;
-
   const urls: MetadataRoute.Sitemap = [];
 
   for (const lang of LOCALES) {
-    // Core
     const corePaths = [
       `/${lang}`,
       `/${lang}/changelog`,
       `/${lang}/privacy`,
-
-      // Prompts hub + packs
       `/${lang}/prompts`,
       `/${lang}/prompts/study`,
       `/${lang}/prompts/text`,
       `/${lang}/prompts/data`,
-
-      // New SEO hubs
       `/${lang}/guides`,
       `/${lang}/models`,
       `/${lang}/glossary`,
@@ -58,11 +52,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: joinUrl(siteUrl, p),
         lastModified: now,
         changeFrequency: isHome ? "daily" : isChangelog ? "weekly" : isPrivacy ? "yearly" : "weekly",
-        priority: isHome ? 1 : isPrivacy ? 0.3 : isChangelog ? 0.6 : p.includes("/prompts") ? 0.8 : 0.7,
+        priority: isHome ? 1 : isPrivacy ? 0.2 : isChangelog ? 0.6 : p.includes("/prompts") ? 0.8 : 0.7,
       });
     }
 
-    // Guides slugs
     for (const g of guides) {
       urls.push({
         url: joinUrl(siteUrl, `/${lang}/guides/${g.slug}`),
@@ -72,7 +65,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
-    // Models slugs
     for (const m of modelPages) {
       urls.push({
         url: joinUrl(siteUrl, `/${lang}/models/${m.slug}`),
@@ -82,7 +74,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
     }
 
-    // Glossary slugs
     for (const t of glossary) {
       urls.push({
         url: joinUrl(siteUrl, `/${lang}/glossary/${t.slug}`),
@@ -95,4 +86,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return urls;
 }
+
 

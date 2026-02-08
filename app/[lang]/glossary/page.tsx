@@ -30,11 +30,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function GlossaryIndexPage({
-  params,
-}: {
-  params: Promise<{ lang: string }>;
-}) {
+export default async function GlossaryIndexPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const l = (lang === "en" ? "en" : "es") as "es" | "en";
@@ -58,6 +54,35 @@ export default async function GlossaryIndexPage({
         </div>
       </div>
 
+      {/* ✅ SEO editorial block */}
+      <section className="mt-10 surface p-5">
+        <h2 className="text-sm font-medium">{l === "es" ? "Start here" : "Start here"}</h2>
+        <div className="mt-2 space-y-2 text-sm opacity-85">
+          <p>
+            {l === "es"
+              ? "Este glosario explica conceptos que suelen romper prompts: ambigüedad, falta de delimitación, outputs inconsistentes o inventados. Cada término incluye definición corta y un ejemplo listo para copiar."
+              : "This glossary covers concepts that commonly break prompts: ambiguity, missing delimiters, inconsistent output, or hallucinations. Each term includes a short definition and a copy-ready example."}
+          </p>
+          <p>
+            {l === "es"
+              ? "Si necesitás outputs estrictos, empezá por JSON estricto. Si querés adaptar prompts a cada IA, mirá prompts por modelo."
+              : "If you need strict outputs, start with strict JSON. If you want to tailor prompts to each AI, check prompts by model."}
+          </p>
+
+          <div className="flex flex-wrap gap-2 pt-2">
+            <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>
+              {l === "es" ? "Guía: JSON estricto" : "Guide: Strict JSON"}
+            </Link>
+            <Link className="btn h-9 px-4" href={`/${l}/models`}>
+              {l === "es" ? "Prompts por modelo" : "Prompts by model"}
+            </Link>
+            <Link className="btn h-9 px-4" href={`/${l}/prompts`}>
+              {l === "es" ? "Packs de prompts" : "Prompt packs"}
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {glossary.map((t) => (
           <Link key={t.slug} href={`/${l}/glossary/${t.slug}`} className="surface p-4 space-y-2">
@@ -70,4 +95,5 @@ export default async function GlossaryIndexPage({
     </main>
   );
 }
+
 
