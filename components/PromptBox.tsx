@@ -70,6 +70,24 @@ function trackGoogleAnalyzeSuccessOncePerSession() {
   }
 }
 
+function trackGoogleAnalyzeSuccess() {
+  if (!GOOGLE_SEND_TO) return;
+
+  try {
+    const gtag = (window as any).gtag as undefined | ((...args: any[]) => void);
+    if (!gtag) return;
+
+    gtag("event", "conversion", {
+      send_to: GOOGLE_SEND_TO,
+      value: GOOGLE_VALUE,
+      currency: GOOGLE_CURRENCY,
+    });
+  } catch {
+    // ignore
+  }
+}
+
+
 function trackXAnalyzeSuccessOncePerSession() {
   try {
     const key = "promptea_x_analyze_success_fired";
@@ -166,9 +184,7 @@ export default function PromptBox({
 
         setResult(data);
 
-        // ✅ conversions (solo 1 vez por sesión)
-        trackGoogleAnalyzeSuccessOncePerSession();
-        trackXAnalyzeSuccessOncePerSession();
+        trackGoogleAnalyzeSuccess
       } catch (e: any) {
         setError(e?.message ?? "Error");
       }
