@@ -184,7 +184,7 @@ export default function PromptBox({
 
         setResult(data);
 
-        trackGoogleAnalyzeSuccess
+        trackGoogleAnalyzeSuccess();
       } catch (e: any) {
         setError(e?.message ?? "Error");
       }
