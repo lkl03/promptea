@@ -1,6 +1,9 @@
 // lib/engine/builder.ts
 import type { Lang, TargetAI } from "../promptTemplates";
 import type { TaskType, PromptPurpose } from "./types";
+import type { OutputFormat } from "./lint/types";
+
+export const PROMPTEA_TEMPLATE_VERSION = "1.1.0";
 
 function t(lang: Lang, es: string, en: string) {
   return lang === "es" ? es : en;
@@ -138,14 +141,15 @@ export function buildOptimizedPrompt(
   taskType: TaskType | string,
   target: TargetAI,
   lang: Lang,
-  purpose: PromptPurpose = "text"
+  purpose: PromptPurpose = "text",
+  outputFormatHint?: OutputFormat | null
 ) {
   const trimmed = String(core ?? "").trim();
 
   // ✅ Idempotencia: si ya es prompt de Promptea, no lo “envolvemos” de nuevo
   if (isPrompteaOptimized(trimmed)) return trimmed;
 
-  const title = "PROMPTEA: v1.0.2";
+  const title = `PROMPTEA: v${PROMPTEA_TEMPLATE_VERSION}`;
   const modelLine = `MODEL: ${String(target).toUpperCase()}`;
 
   const instrHeader = t(lang, "INSTRUCCIONES:", "INSTRUCTIONS:");
@@ -153,24 +157,64 @@ export function buildOptimizedPrompt(
   const outputHeader = t(lang, "OUTPUT FORMAT:", "OUTPUT FORMAT:");
   const constraintsHeader = t(lang, "RESTRICCIONES:", "CONSTRAINTS:");
 
-  const outputDefaults =
-    purpose === "data"
-      ? t(
-          lang,
-          ["- Devolvé SOLO JSON válido.", "- Sin texto extra.", "- Respetá el schema/campos del usuario."].join("\n"),
-          ["- Return ONLY valid JSON.", "- No extra text.", "- Follow the user's schema/fields."].join("\n")
-        )
-      : purpose === "image"
-      ? t(
-          lang,
-          ["- Describí en 6–10 bullets (sujeto/estilo/composición).", "- Incluí relación de aspecto."].join("\n"),
-          ["- Describe in 6–10 bullets (subject/style/composition).", "- Include aspect ratio."].join("\n")
-        )
-      : t(
-          lang,
-          ["- Respuesta en secciones.", "- Si falta info: 1–3 preguntas primero."].join("\n"),
-          ["- Sectioned answer.", "- If info is missing: ask 1–3 questions first."].join("\n")
-        );
+  const hinted = outputFormatHint?.kind ?? null;
+  const strict = Boolean(outputFormatHint?.strict);
+
+  const outputDefaults = (() => {
+    // 1) Si el usuario ya pidió un formato específico, lo respetamos.
+    if (hinted === "json") {
+      return strict || purpose === "data"
+        ? t(
+            lang,
+            ["- Devolvé SOLO JSON válido.", "- Sin texto extra.", "- Respetá el schema/campos del usuario."].join("\n"),
+            ["- Return ONLY valid JSON.", "- No extra text.", "- Follow the user's schema/fields."].join("\n")
+          )
+        : t(
+            lang,
+            ["- JSON válido.", "- Sin texto extra.", "- Si faltan campos, usá null."].join("\n"),
+            ["- Valid JSON.", "- No extra text.", "- If fields are missing, use null."].join("\n")
+          );
+    }
+
+    if (hinted === "table") {
+      return t(
+        lang,
+        ["- Tabla clara (columnas + filas).", "- Si falta un dato: dejalo vacío o como null.", "- Sin texto extra fuera de la tabla."].join("\n"),
+        ["- A clear table (columns + rows).", "- If a value is missing: leave empty or null.", "- No extra text outside the table."].join("\n")
+      );
+    }
+
+    if (hinted === "steps") {
+      return t(
+        lang,
+        ["- Pasos numerados.", "- Checklist final.", "- Si falta info: 1–3 preguntas primero."].join("\n"),
+        ["- Numbered steps.", "- Final checklist.", "- If info is missing: ask 1–3 questions first."].join("\n")
+      );
+    }
+
+    // 2) Defaults por purpose.
+    if (purpose === "data") {
+      return t(
+        lang,
+        ["- Devolvé SOLO JSON válido.", "- Sin texto extra.", "- Respetá el schema/campos del usuario."].join("\n"),
+        ["- Return ONLY valid JSON.", "- No extra text.", "- Follow the user's schema/fields."].join("\n")
+      );
+    }
+
+    if (purpose === "image") {
+      return t(
+        lang,
+        ["- Describí en 6–10 bullets (sujeto/estilo/composición).", "- Incluí relación de aspecto."].join("\n"),
+        ["- Describe in 6–10 bullets (subject/style/composition).", "- Include aspect ratio."].join("\n")
+      );
+    }
+
+    return t(
+      lang,
+      ["- Respuesta en secciones.", "- Si falta info: 1–3 preguntas primero."].join("\n"),
+      ["- Sectioned answer.", "- If info is missing: ask 1–3 questions first."].join("\n")
+    );
+  })();
 
   const constraintsDefaults = t(
     lang,

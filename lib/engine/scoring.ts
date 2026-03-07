@@ -30,7 +30,10 @@ function pctFromFlags(hits: number, total: number) {
   return clamp((hits / total) * 100);
 }
 
-export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, lang: Lang): Scored {
+export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, lang: Lang, intent?: any): Scored {
+  // (target reservado para ajustes futuros; hoy no cambia el score)
+  const intentStr = String(intent ?? "").toLowerCase();
+
   // --- component scoring ---
   const clarity = (() => {
     // base por longitud mínima
@@ -49,7 +52,12 @@ export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, l
     // en "study" y "code" el contexto pesa más
     const base = pctFromFlags(hits, 3);
     const boost = (taskType === "study" || taskType === "coding") && f.hasExamples ? 8 : 0;
-    return clamp(base + boost);
+
+    // Debugging / data_extraction: si no hay material de trabajo (inputs), cap de contexto.
+    const needsInputs = intentStr === "debugging" || intentStr === "data_extraction";
+    const cap = needsInputs && !f.hasInputs ? 45 : 100;
+
+    return clamp(Math.min(base + boost, cap));
   })();
 
   const constraints = (() => {
@@ -68,6 +76,17 @@ export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, l
   })();
 
   const verifiability = (() => {
+    // Más "personalizado" según tipo de tarea detectada.
+    if (intentStr === "debugging") {
+      const hits = (f.hasErrorDetails ? 1 : 0) + (f.hasReproSteps ? 1 : 0) + (f.hasSuccessCriteria ? 1 : 0);
+      return pctFromFlags(hits, 3);
+    }
+
+    if (intentStr === "data_extraction") {
+      const hits = (f.hasInputs ? 1 : 0) + (f.hasOutputFormat ? 1 : 0) + (f.hasSuccessCriteria ? 1 : 0);
+      return pctFromFlags(hits, 3);
+    }
+
     const hits = (f.hasSuccessCriteria ? 1 : 0) + (f.hasErrorDetails ? 1 : 0) + (f.hasReproSteps ? 1 : 0);
     return pctFromFlags(hits, 3);
   })();
@@ -80,14 +99,32 @@ export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, l
     return clamp(s);
   })();
 
-  // weights (más o menos estables)
+  // weights (ajustados por taskType)
+  const weights = (() => {
+    // base: suman 1
+    switch (taskType) {
+      case "study":
+        return { clarity: 0.20, context: 0.28, constraints: 0.16, output: 0.16, verifiability: 0.12, safety: 0.08 };
+      case "coding":
+        return { clarity: 0.18, context: 0.22, constraints: 0.18, output: 0.18, verifiability: 0.16, safety: 0.08 };
+      case "data":
+        return { clarity: 0.16, context: 0.20, constraints: 0.16, output: 0.28, verifiability: 0.12, safety: 0.08 };
+      case "image":
+        return { clarity: 0.18, context: 0.24, constraints: 0.18, output: 0.22, verifiability: 0.10, safety: 0.08 };
+      case "marketing":
+        return { clarity: 0.20, context: 0.22, constraints: 0.22, output: 0.24, verifiability: 0.04, safety: 0.08 };
+      default:
+        return { clarity: 0.22, context: 0.22, constraints: 0.20, output: 0.20, verifiability: 0.08, safety: 0.08 };
+    }
+  })();
+
   const score =
-    0.22 * clarity +
-    0.22 * context +
-    0.20 * constraints +
-    0.20 * output +
-    0.08 * verifiability +
-    0.08 * safety;
+    weights.clarity * clarity +
+    weights.context * context +
+    weights.constraints * constraints +
+    weights.output * output +
+    weights.verifiability * verifiability +
+    weights.safety * safety;
 
   // confidence: heurística simple
   const confidence = (() => {
@@ -129,6 +166,14 @@ export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, l
   }
   if (!f.hasInputs && (taskType === "data" || taskType === "coding")) {
     bullets.push(t(lang, "Faltan inputs/datos: para esto necesitás indicar formato, ejemplos o datos de entrada.", "Missing inputs/data: for this, you should specify format, examples, or input data."));
+  }
+
+  if (intentStr === "debugging" && !f.hasErrorDetails) {
+    bullets.push(t(lang, "Para debugging falta el error/logs: sin eso la solución es adivinanza.", "For debugging, the error/logs are missing: without them, the fix is guesswork."));
+  }
+
+  if (intentStr === "data_extraction" && !f.hasOutputFormat) {
+    bullets.push(t(lang, "Para extracción falta el formato final (JSON/tabla): si no, la salida varía.", "For extraction, the final format (JSON/table) is missing, so outputs vary."));
   }
   if (f.injectionLike) {
     bullets.push(t(lang, "Riesgo de prompt injection: limpiá instrucciones contradictorias o externas.", "Prompt-injection risk: remove contradictory/external instructions."));
