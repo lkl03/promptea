@@ -2,15 +2,16 @@ export type TelemetryEventName = "analyze" | "copy" | "feedback";
 
 export type TelemetryEvent = {
   name: TelemetryEventName;
-  ts: string; // ISO
-  sessionId: string; // anónimo
-  analysisId?: string; // optional: ID of the analysis result
-  projectId?: string | null; // optional: Firebase project ID
+  ts: string;
+  sessionId: string;
+  analysisId?: string;
+  projectId?: string | null;
   engineVersion: string;
 
   lang?: "es" | "en";
   target?: string;
   taskType?: string;
+  purpose?: string | null;
 
   score?: number;
   confidence?: number;
@@ -23,10 +24,15 @@ export type TelemetryEvent = {
   findingIds?: string[];
   recoIds?: string[];
 
+  // nuevo: metadata de adjuntos
+  attachmentsCount?: number;
+  attachmentKinds?: string[];
+  attachmentExts?: string[];
+  attachmentMimes?: string[];
+
   optimizedCopied?: boolean;
 
   helpful?: "yes" | "no";
-  // categorías sin texto libre
   reason?:
     | "too_generic"
     | "wrong_format"

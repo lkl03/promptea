@@ -1,5 +1,6 @@
 import type { Lang, TargetAI } from "../promptTemplates";
 import type { OutputFormat } from "./lint/types";
+import type { AttachmentContext } from "@/lib/attachments";
 
 export type PromptPurpose =
   | "text"
@@ -10,11 +11,18 @@ export type PromptPurpose =
   | "marketing"
   | "translation"
   | "summarization";
+
 export type TaskType =
   | "text"
   | "study"
   | "coding"
-  | "data"
+  | "debugging"
+  | "refactor"
+  | "research"
+  | "planning"
+  | "customer_support"
+  | "writing"
+  | "data_extraction"
   | "image"
   | "marketing"
   | "translation"
@@ -83,5 +91,7 @@ export type AnalyzeResult = {
       safety: number;
     };
     outputFormat?: OutputFormat | null;
+    attachmentsCount?: number;
+    attachmentsUsed?: Array<Pick<AttachmentContext, "name" | "kind" | "truncated">>;
   };
 };

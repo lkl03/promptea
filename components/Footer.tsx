@@ -2,6 +2,25 @@
 import Link from "next/link";
 import AppFeedbackButton from "@/components/AppFeedbackButton";
 
+const DEFAULT_PROMPTEA_PROMPT_VERSION = "1.1";
+
+function normalizePromptVersion(raw: unknown) {
+  const cleaned = String(raw ?? "")
+    .trim()
+    .replace(/^v/i, "")
+    .replace(/[^0-9.]/g, "")
+    .replace(/\.{2,}/g, ".")
+    .replace(/^\./, "")
+    .replace(/\.$/, "");
+
+  return /^\d+(?:\.\d+)*$/.test(cleaned) ? cleaned : DEFAULT_PROMPTEA_PROMPT_VERSION;
+}
+
+function getPrompteaPromptVersion() {
+  const env = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env;
+  return normalizePromptVersion(env?.PROMPTEA_PROMPT_VERSION ?? env?.NEXT_PUBLIC_PROMPTEA_PROMPT_VERSION);
+}
+
 function XIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
@@ -33,7 +52,7 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
 
       {/* Links principales */}
       <div className="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs opacity-80">
-        <span>V1.0.3</span>
+        <span>V{getPrompteaPromptVersion()}</span>
 
         <Link href={`/${lang}/`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {homeInicio}

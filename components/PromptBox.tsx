@@ -3,6 +3,15 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import ResultsPanel from "./ResultsPanel";
 import { getSessionId } from "@/lib/telemetry/session";
+import {
+  ATTACHMENT_ACCEPT,
+  fileToAttachmentInput,
+  isPurposeAttachmentEnabled,
+  MAX_ATTACHMENTS,
+  MAX_ATTACHMENT_SIZE_BYTES,
+  MAX_TOTAL_ATTACHMENT_SIZE_BYTES,
+  type AttachmentInput,
+} from "@/lib/attachments";
 
 type Dict = any;
 
@@ -54,31 +63,21 @@ function pillClass(active: boolean) {
   return [base, active ? hoverActive : `${idle} ${hoverActive}`].join(" ");
 }
 
+function paperclipLabel(lang: "es" | "en") {
+  return lang === "es" ? "Adjuntar archivos" : "Upload files";
+}
+
+function formatBytes(bytes: number, lang: "es" | "en") {
+  if (bytes < 1024) return `${bytes} B`;
+  const kb = bytes / 1024;
+  if (kb < 1024) return `${kb.toFixed(kb >= 100 ? 0 : 1)} KB`;
+  const mb = kb / 1024;
+  return `${mb.toFixed(1)} ${lang === "es" ? "MB" : "MB"}`;
+}
+
 const GOOGLE_SEND_TO = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_SEND_TO;
 const GOOGLE_VALUE = Number(process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_VALUE ?? "1.0");
 const GOOGLE_CURRENCY = process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_CURRENCY ?? "ARS";
-
-function trackGoogleAnalyzeSuccessOncePerSession() {
-  if (!GOOGLE_SEND_TO) return;
-
-  try {
-    const key = "promptea_google_analyze_success_fired";
-    if (sessionStorage.getItem(key)) return;
-
-    const gtag = (window as any).gtag as undefined | ((...args: any[]) => void);
-    if (!gtag) return;
-
-    gtag("event", "conversion", {
-      send_to: GOOGLE_SEND_TO,
-      value: GOOGLE_VALUE,
-      currency: GOOGLE_CURRENCY,
-    });
-
-    sessionStorage.setItem(key, "1");
-  } catch {
-    // ignore
-  }
-}
 
 function trackGoogleAnalyzeSuccess() {
   if (!GOOGLE_SEND_TO) return;
@@ -97,18 +96,15 @@ function trackGoogleAnalyzeSuccess() {
   }
 }
 
-
-function trackXAnalyzeSuccessOncePerSession() {
-  try {
-    const key = "promptea_x_analyze_success_fired";
-    if (sessionStorage.getItem(key)) return;
-
-    // @ts-ignore
-    window.twq?.("event", "tw-r3py8-r3vec", {});
-    sessionStorage.setItem(key, "1");
-  } catch {
-    // ignore
-  }
+function UploadIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M7 7a5 5 0 0 1 10 0v7.5a3.5 3.5 0 1 1-7 0V8.75a2.25 2.25 0 1 1 4.5 0V14a1 1 0 1 1-2 0V9a1 1 0 1 0-2 0v5a3 3 0 0 0 6 0V8.5a1 1 0 1 1 2 0V14a5 5 0 1 1-10 0V7Z"
+      />
+    </svg>
+  );
 }
 
 export default function PromptBox({
@@ -127,17 +123,21 @@ export default function PromptBox({
   const [prompt, setPrompt] = useState("");
   const [target, setTarget] = useState<TargetValue>("gpt");
   const [purpose, setPurpose] = useState<PromptPurpose | null>(null);
+  const [attachments, setAttachments] = useState<AttachmentInput[]>([]);
 
   const [result, setResult] = useState<any>(null);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  const [isReadingFiles, setIsReadingFiles] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const locked = !!result || isPending;
+  const locked = !!result || isPending || isReadingFiles;
   const canAnalyze = useMemo(() => prompt.trim().length > 0 && !!purpose, [prompt, purpose]);
+  const attachmentsEnabled = isPurposeAttachmentEnabled(purpose);
+  const totalAttachmentBytes = attachments.reduce((acc, file) => acc + file.size, 0);
 
-  // ✅ init from query params (solo 1 vez)
   const didInitRef = useRef(false);
   useEffect(() => {
     if (didInitRef.current) return;
@@ -152,7 +152,6 @@ export default function PromptBox({
     }
   }, [initialPrompt, initialPurpose, initialTarget]);
 
-  // ✅ session ping (DAU)
   useEffect(() => {
     const sessionId = getSessionId();
     fetch("/api/telemetry/session", {
@@ -167,12 +166,75 @@ export default function PromptBox({
     }).catch(() => {});
   }, [lang]);
 
+  useEffect(() => {
+    if (purpose && !isPurposeAttachmentEnabled(purpose) && attachments.length > 0) {
+      setAttachments([]);
+    }
+  }, [purpose, attachments.length]);
+
   function resetAll() {
     setPrompt("");
     setPurpose(null);
+    setAttachments([]);
     setResult(null);
     setError(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
     requestAnimationFrame(() => textareaRef.current?.focus());
+  }
+
+  function removeAttachment(name: string) {
+    setAttachments((prev) => prev.filter((item) => item.name !== name));
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function handleFileSelection(files: FileList | null) {
+    if (!files?.length) return;
+    if (!attachmentsEnabled) return;
+
+    setError(null);
+    setIsReadingFiles(true);
+
+    try {
+      const incoming = Array.from(files);
+      const currentCount = attachments.length;
+      if (currentCount + incoming.length > MAX_ATTACHMENTS) {
+        throw new Error(
+          lang === "es"
+            ? `Podés adjuntar hasta ${MAX_ATTACHMENTS} archivos.`
+            : `You can attach up to ${MAX_ATTACHMENTS} files.`
+        );
+      }
+
+      const tooLarge = incoming.find((file) => file.size > MAX_ATTACHMENT_SIZE_BYTES);
+      if (tooLarge) {
+        throw new Error(
+          lang === "es"
+            ? `${tooLarge.name} supera el límite de ${formatBytes(MAX_ATTACHMENT_SIZE_BYTES, lang)}.`
+            : `${tooLarge.name} exceeds the ${formatBytes(MAX_ATTACHMENT_SIZE_BYTES, lang)} limit.`
+        );
+      }
+
+      const nextTotalBytes = totalAttachmentBytes + incoming.reduce((acc, file) => acc + file.size, 0);
+      if (nextTotalBytes > MAX_TOTAL_ATTACHMENT_SIZE_BYTES) {
+        throw new Error(
+          lang === "es"
+            ? `El total de adjuntos supera ${formatBytes(MAX_TOTAL_ATTACHMENT_SIZE_BYTES, lang)}.`
+            : `Total attachments exceed ${formatBytes(MAX_TOTAL_ATTACHMENT_SIZE_BYTES, lang)}.`
+        );
+      }
+
+      const next = await Promise.all(incoming.map((file) => fileToAttachmentInput(file)));
+      setAttachments((prev) => {
+        const existing = new Map(prev.map((item) => [item.name, item]));
+        for (const item of next) existing.set(item.name, item);
+        return Array.from(existing.values()).slice(0, MAX_ATTACHMENTS);
+      });
+    } catch (e: any) {
+      setError(e?.message ?? (lang === "es" ? "No se pudieron leer los archivos." : "Could not read the selected files."));
+    } finally {
+      setIsReadingFiles(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   }
 
   function analyze() {
@@ -185,15 +247,14 @@ export default function PromptBox({
 
         const res = await fetch("/api/analyze", {
           method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ prompt, target, lang, purpose, sessionId }),
+          headers: { "content-type": "application/json", "x-ui-lang": lang },
+          body: JSON.stringify({ prompt, target, lang, purpose, sessionId, attachments }),
         });
 
         const data = await res.json();
         if (!res.ok) throw new Error(data?.error ?? "Error");
 
         setResult(data);
-
         trackGoogleAnalyzeSuccess();
       } catch (e: any) {
         setError(e?.message ?? "Error");
@@ -202,6 +263,17 @@ export default function PromptBox({
   }
 
   const purposeLabel = lang === "es" ? "¿Para qué es tu prompt?" : "What is your prompt for?";
+  const uploadHint = !purpose
+    ? lang === "es"
+      ? "Elegí un tipo de prompt para habilitar adjuntos."
+      : "Choose a prompt type to enable attachments."
+    : purpose === "image"
+    ? lang === "es"
+      ? "Por ahora los adjuntos solo están disponibles para prompts textuales, datos, código, traducción o resumen."
+      : "For now attachments are available only for text, data, code, translation, or summarization prompts."
+    : lang === "es"
+    ? "v1.1 acepta archivos textuales: JSON, CSV, logs, Markdown y archivos de código."
+    : "v1.1 accepts text-based files: JSON, CSV, logs, Markdown, and code files.";
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-4 2xl:max-w-6xl">
@@ -246,7 +318,64 @@ export default function PromptBox({
         }}
       />
 
-      {/* ✅ purpose pills */}
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-xs opacity-75">{uploadHint}</div>
+
+        <div className="flex items-center gap-2 sm:justify-end">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={ATTACHMENT_ACCEPT}
+            multiple
+            className="hidden"
+            onChange={(e) => void handleFileSelection(e.target.files)}
+            disabled={!attachmentsEnabled || locked}
+          />
+
+          <button
+            type="button"
+            className="btn btn-ghost h-9 px-3 disabled:opacity-45 disabled:cursor-not-allowed"
+            disabled={!attachmentsEnabled || locked}
+            onClick={() => fileInputRef.current?.click()}
+            aria-disabled={!attachmentsEnabled || locked}
+            title={uploadHint}
+          >
+            <UploadIcon className="h-4 w-4" />
+            <span>{paperclipLabel(lang)}</span>
+          </button>
+        </div>
+      </div>
+
+      {attachments.length > 0 && (
+        <div className="surface-soft p-3 space-y-2">
+          <div className="flex flex-wrap items-center gap-2 text-xs opacity-75">
+            <span>
+              {lang === "es"
+                ? `${attachments.length}/${MAX_ATTACHMENTS} adjuntos · ${formatBytes(totalAttachmentBytes, lang)}`
+                : `${attachments.length}/${MAX_ATTACHMENTS} attachments · ${formatBytes(totalAttachmentBytes, lang)}`}
+            </span>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {attachments.map((file) => (
+              <div key={file.name} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs">
+                <span className="truncate max-w-[220px]">{file.name}</span>
+                <span className="opacity-60">{formatBytes(file.size, lang)}</span>
+                <button
+                  type="button"
+                  onClick={() => removeAttachment(file.name)}
+                  className="opacity-75 hover:opacity-100"
+                  aria-label={lang === "es" ? `Quitar ${file.name}` : `Remove ${file.name}`}
+                  disabled={locked}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col items-center gap-2">
         <div className="text-xs sm:text-sm opacity-80 text-center">{purposeLabel}</div>
         <div className="flex flex-wrap items-center justify-center gap-2">
@@ -267,20 +396,17 @@ export default function PromptBox({
 
       <div className="flex justify-center">
         <button onClick={analyze} disabled={!canAnalyze || locked} className="btn btn-primary h-10 w-full sm:w-55">
-          {isPending ? dict.app.analyzing : dict.app.analyze}
+          {isPending || isReadingFiles ? dict.app.analyzing : dict.app.analyze}
         </button>
       </div>
 
-      {error && (
-        <p className="text-center text-sm text-red-500 dark:text-red-400" role="alert">
-          {error}
-        </p>
-      )}
+      {error && <div className="surface-soft p-3 text-sm">{error}</div>}
 
       <ResultsPanel dict={dict} lang={lang} result={result} isLoading={isPending} onReset={resetAll} />
     </div>
   );
 }
+
 
 
 

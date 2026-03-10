@@ -452,6 +452,7 @@ export default function ResultsPanel({
   const headline = explainLines[0] ?? headlineHuman(data, lang);
   const headlineColor = ringColor(data.score ?? 0);
   const explainBullets = explainLines.slice(1, 3);
+  const attachmentsCount = Number(data?.meta?.attachmentsCount ?? 0);
 
   const lockedNotice =
     lang === "es"
@@ -556,6 +557,14 @@ export default function ResultsPanel({
                     {confidenceBadge(conf, lang).label}
                   </span>
                 )}
+
+                {attachmentsCount > 0 && (
+                  <span className={[badgeBaseClass(), "border-sky-500/25 bg-sky-500/10 text-sky-200"].join(" ")}>
+                    {lang === "es"
+                      ? `${attachmentsCount} archivo${attachmentsCount === 1 ? "" : "s"} usado${attachmentsCount === 1 ? "" : "s"}`
+                      : `${attachmentsCount} file${attachmentsCount === 1 ? "" : "s"} used`}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -628,3 +637,4 @@ export default function ResultsPanel({
     </div>
   );
 }
+

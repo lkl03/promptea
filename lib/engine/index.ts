@@ -1,5 +1,6 @@
 import type { Lang, TargetAI } from "../promptTemplates";
 import type { AnalyzeResult, PromptPurpose, TaskType, Features } from "./types";
+import type { AttachmentContext, AttachmentKind } from "@/lib/attachments";
 
 import { lintPrompt } from "./lint";
 import { extractFeatures } from "./features";
@@ -9,12 +10,14 @@ import { buildOptimizedPrompt } from "./builder";
 import { normalizeText, wordCount, approxTokensFromWords } from "./normalize";
 import { detectStructured, extractCorePrompt } from "./extractor";
 import { ENGINE_VERSION } from "./contract";
+import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
+import { classifyTask } from "./classifier";
 
 const TASK_FROM_PURPOSE: Record<PromptPurpose, TaskType> = {
   text: "text",
   study: "study",
   code: "coding",
-  data: "data",
+  data: "data_extraction",
   image: "image",
   marketing: "marketing",
   translation: "translation",
@@ -38,21 +41,52 @@ function parsePromptea(raw: string): PrompteaParsed | null {
   if (!sig) return null;
 
   const version = sig[1] ?? "1.0";
-
   const model = raw.match(/^MODEL:\s*(.+)\s*$/im)?.[1]?.trim()?.toLowerCase() ?? null;
   const purpose = raw.match(/^PURPOSE:\s*(.+)\s*$/im)?.[1]?.trim()?.toLowerCase() ?? null;
   const taskType = raw.match(/^TASK_TYPE:\s*(.+)\s*$/im)?.[1]?.trim()?.toLowerCase() ?? null;
 
-  const coreMatch = raw.match(/\nTASK:\s*\n([\s\S]*?)(?:\n\n(?:OUTPUT FORMAT:|CONSTRAINTS:)\s*\n|$)/i);
+  const coreMatch = raw.match(
+    /\nTASK:\s*\n([\s\S]*?)(?:\n\n(?:ATTACHED CONTEXT:|CONTEXTO ADJUNTO:|OUTPUT FORMAT:|CONSTRAINTS:|RESTRICCIONES:)\s*\n|$)/i
+  );
   const core = coreMatch?.[1] ? coreMatch[1].trim() : null;
 
   return { version, model, purpose, taskType, core };
 }
 
+function parseEmbeddedAttachments(raw: string): AttachmentContext[] {
+  const matches = Array.from(raw.matchAll(/<file\s+([^>]+)>([\s\S]*?)<\/file>/gi));
+  if (!matches.length) return [];
+
+  return matches
+    .map((match) => {
+      const attrs = match[1] ?? "";
+      const text = canonicalize(match[2] ?? "").trim();
+
+      const name = attrs.match(/name="([^"]+)"/i)?.[1]?.trim() ?? "attachment.txt";
+      const explicitKind = attrs.match(/kind="([^"]+)"/i)?.[1]?.trim() ?? "";
+      const truncated = /truncated="true"/i.test(attrs);
+
+      const kind = (explicitKind || inferAttachmentKind(name, "text/plain")) as AttachmentKind;
+
+      return {
+        name,
+        mime: "text/plain",
+        ext: getExtension(name),
+        kind,
+        text,
+        size: text.length,
+        truncated,
+        removedLines: 0,
+      } satisfies AttachmentContext;
+    })
+    .filter((item) => item.text.length > 0);
+}
+
 function normalizePurpose(p: any): PromptPurpose {
   if (p === "data_json") return "data";
-  if (p === "summary" || p === "summarize") return "summarization";
   if (p === "translate") return "translation";
+  if (p === "summary" || p === "summarize") return "summarization";
+
   if (
     p === "text" ||
     p === "study" ||
@@ -65,69 +99,196 @@ function normalizePurpose(p: any): PromptPurpose {
   ) {
     return p;
   }
+
   return "text";
 }
 
-export function analyzePrompt(prompt: string, target: TargetAI, lang: Lang, purposeInput: any): AnalyzeResult {
+function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
+  const fallback = TASK_FROM_PURPOSE[purpose] ?? "text";
+  const classified = classifyTask(raw);
+
+  switch (purpose) {
+    case "code":
+      if (classified === "debugging" || classified === "refactor" || classified === "coding") return classified;
+      return "coding";
+    case "data":
+      return "data_extraction";
+    case "text":
+      if (
+        classified === "research" ||
+        classified === "planning" ||
+        classified === "customer_support" ||
+        classified === "writing"
+      ) {
+        return classified;
+      }
+      return "text";
+    case "marketing":
+      return "marketing";
+    case "study":
+      return "study";
+    case "translation":
+      return "translation";
+    case "summarization":
+      return "summarization";
+    case "image":
+      return "image";
+    default:
+      return fallback;
+  }
+}
+
+function attachmentBlob(attachments: AttachmentContext[]) {
+  return attachments.map((file) => file.text.slice(0, 2400)).join("\n\n");
+}
+
+function enhanceFeaturesWithAttachments(
+  features: Features,
+  attachments: AttachmentContext[],
+  taskType: TaskType
+): Features {
+  if (!attachments.length) return features;
+
+  const summary = summarizeAttachments(attachments);
+  const blob = attachmentBlob(attachments);
+
+  const attachmentHasErrors = /(error|exception|traceback|stack\s*trace|stacktrace|fails?|falla|crash)/i.test(blob);
+  const attachmentHasSteps = /\bsteps?\b/i.test(blob) || /^\s*\d+\s*[\).\:-]\s+/m.test(blob);
+
+  return {
+    ...features,
+    hasInputs: true,
+    hasExamples: features.hasExamples || summary.hasCode || summary.hasStructuredData,
+    hasErrorDetails:
+      features.hasErrorDetails ||
+      ((taskType === "coding" || taskType === "debugging") && (summary.hasLogs || attachmentHasErrors)),
+    hasReproSteps:
+      features.hasReproSteps ||
+      (taskType === "debugging" && attachmentHasSteps),
+  };
+}
+
+function softenLintWithAttachments(
+  lint: ReturnType<typeof lintPrompt>,
+  attachments: AttachmentContext[],
+  taskType: TaskType
+) {
+  if (!attachments.length) return lint;
+
+  const summary = summarizeAttachments(attachments);
+  const blob = attachmentBlob(attachments);
+
+  const hasDebugEvidence = summary.hasLogs || /(error|exception|traceback|stack\s*trace|stacktrace|fails?|falla|crash)/i.test(blob);
+  const hasReproEvidence = /\bsteps?\b/i.test(blob) || /^\s*\d+\s*[\).\:-]\s+/m.test(blob);
+
+  const findingIdsToDrop = new Set<string>(["missing_context"]);
+  const recoIdsToDrop = new Set<string>(["add_context"]);
+
+  if (
+    taskType === "coding" ||
+    taskType === "debugging" ||
+    taskType === "refactor" ||
+    taskType === "data_extraction" ||
+    taskType === "translation" ||
+    taskType === "summarization"
+  ) {
+    findingIdsToDrop.add("missing_input_data");
+    recoIdsToDrop.add("add_input_data");
+  }
+
+  if (taskType === "debugging" && hasDebugEvidence) {
+    findingIdsToDrop.add("missing_error_message");
+    recoIdsToDrop.add("add_error_message");
+  }
+
+  if (taskType === "debugging" && hasReproEvidence) {
+    findingIdsToDrop.add("missing_repro_steps");
+    recoIdsToDrop.add("add_repro_steps");
+  }
+
+  return {
+    ...lint,
+    findings: lint.findings.filter((item) => !findingIdsToDrop.has(String(item.id))),
+    recommendations: lint.recommendations.filter((item) => !recoIdsToDrop.has(String(item.id))),
+  };
+}
+
+export function analyzePrompt(
+  prompt: string,
+  target: TargetAI,
+  lang: Lang,
+  purposeInput: any = "text",
+  attachments: AttachmentContext[] = []
+): AnalyzeResult {
   const raw = canonicalize(normalizeText(prompt));
   const purpose: PromptPurpose = normalizePurpose(purposeInput);
-  const taskType: TaskType = TASK_FROM_PURPOSE[purpose] ?? "text";
+  const taskType: TaskType = resolveTaskType(raw, purpose);
 
-  const scoreText = raw;
+  const promptea = parsePromptea(raw);
+  const embeddedAttachments = attachments.length === 0 ? parseEmbeddedAttachments(raw) : [];
+  const effectiveAttachments = attachments.length > 0 ? attachments : embeddedAttachments;
 
-  const lint = lintPrompt(scoreText, lang, taskType);
-  const findings = lint.findings;
-  const recommendations = lint.recommendations;
+  let analysisInput = raw;
+  let coreExtracted = false;
 
-  let features: Features = extractFeatures(scoreText, taskType as any, lang);
+  if (promptea?.core) {
+    analysisInput = promptea.core;
+    coreExtracted = true;
+  } else if (detectStructured(raw)) {
+    const extracted = extractCorePrompt(raw);
+    analysisInput = extracted.core;
+    coreExtracted = extracted.extracted;
+  }
 
-  const promptea = parsePromptea(scoreText);
+  const cleanAnalysisInput = canonicalize(normalizeText(analysisInput));
+
+  const lint = softenLintWithAttachments(
+    lintPrompt(cleanAnalysisInput, lang, taskType, {
+      attachmentsPresent: effectiveAttachments.length > 0,
+    }),
+    effectiveAttachments,
+    taskType
+  );
+
+  let features: Features = enhanceFeaturesWithAttachments(
+    extractFeatures(cleanAnalysisInput, taskType, lang),
+    effectiveAttachments,
+    taskType
+  );
+
   if (promptea) {
     features = {
       ...features,
       hasOutputFormat: true,
       hasConstraints: true,
-      hasGoal: true,
+      hasGoal: features.hasGoal || true,
     };
   }
 
-  const scored = scorePrompt(taskType, target, features, lang);
-  const score = scored.score;
-  const breakdown = scored.breakdown;
-
-  let coreForBuild = scoreText;
-  let coreExtracted = false;
-
-  if (promptea?.core) {
-    coreForBuild = promptea.core;
-    coreExtracted = true;
-  } else if (detectStructured(scoreText)) {
-    const extracted = extractCorePrompt(scoreText);
-    coreForBuild = extracted.core;
-    coreExtracted = extracted.extracted;
-  }
-
-  const coreClean = canonicalize(normalizeText(coreForBuild));
+  const scored = scorePrompt(taskType, target, features, lang, {
+    attachmentsCount: effectiveAttachments.length,
+  });
 
   const targetLower = String(target).toLowerCase();
   const sameModel = (promptea?.model ?? null) === targetLower;
   const samePurpose = (promptea?.purpose ?? null) === String(purpose);
 
   let optimizedPrompt: string;
-
-  if (promptea && sameModel && samePurpose) {
-    optimizedPrompt = canonicalize(scoreText);
+  if (promptea && sameModel && samePurpose && attachments.length === 0) {
+    optimizedPrompt = canonicalize(raw);
   } else {
-    optimizedPrompt = canonicalize(buildOptimizedPrompt(coreClean, taskType as any, target, lang, purpose));
+    optimizedPrompt = canonicalize(
+      buildOptimizedPrompt(cleanAnalysisInput, taskType as any, target, lang, purpose, effectiveAttachments)
+    );
   }
 
-  const words = wordCount(scoreText);
+  const words = wordCount(raw);
   const approxTokens = approxTokensFromWords(words);
 
   return {
-    score,
-    findings,
-    recommendations,
+    score: scored.score,
+    findings: lint.findings,
+    recommendations: lint.recommendations,
     optimizedPrompt,
     stats: { words, approxTokens },
     meta: {
@@ -136,12 +297,18 @@ export function analyzePrompt(prompt: string, target: TargetAI, lang: Lang, purp
       target,
       purpose,
       taskType,
-      alreadyStructured: detectStructured(scoreText),
+      alreadyStructured: detectStructured(raw),
       coreExtracted,
       confidence: scored.confidence,
       scoreExplain: scored.explain,
-      scoreBreakdown: breakdown,
+      scoreBreakdown: scored.breakdown,
       outputFormat: lint.outputFormat ?? null,
+      attachmentsCount: effectiveAttachments.length,
+      attachmentsUsed: effectiveAttachments.map((file) => ({
+        name: file.name,
+        kind: file.kind,
+        truncated: file.truncated,
+      })),
     },
   };
 }

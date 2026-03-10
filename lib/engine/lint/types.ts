@@ -15,7 +15,14 @@ export type FindingId =
   | "missing_repro_steps"
   | "missing_error_message"
   | "missing_environment"
-  | "missing_schema";
+  | "missing_schema"
+  | "missing_summary_scope"
+  | "missing_summary_length"
+  | "missing_translation_target"
+  | "missing_translation_register"
+  | "missing_study_level"
+  | "missing_marketing_audience"
+  | "missing_marketing_cta";
 
 export type RecommendationId =
   | "add_goal"
@@ -28,13 +35,20 @@ export type RecommendationId =
   | "add_schema"
   | "add_repro_steps"
   | "add_error_message"
-  | "add_environment";
+  | "add_environment"
+  | "define_summary_scope"
+  | "define_summary_length"
+  | "define_translation_target"
+  | "define_translation_register"
+  | "define_study_level"
+  | "define_marketing_audience"
+  | "define_marketing_cta";
 
 export type OutputFormatKind = "json" | "table" | "steps" | "bullets";
 
 export type OutputFormat = {
   kind: OutputFormatKind;
-  strict: boolean; // p.ej “SOLO JSON válido”
+  strict: boolean;
 };
 
 export type LintFinding = {

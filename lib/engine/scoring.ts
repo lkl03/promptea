@@ -17,6 +17,8 @@ type Scored = {
   explain: string[];
 };
 
+type Weights = Breakdown;
+
 function clamp(n: number) {
   return Math.max(0, Math.min(100, Math.round(n)));
 }
@@ -25,100 +27,144 @@ function t(lang: Lang, es: string, en: string) {
   return lang === "es" ? es : en;
 }
 
-function pctFromFlags(hits: number, total: number) {
-  if (total <= 0) return 0;
-  return clamp((hits / total) * 100);
+function getWeights(taskType: TaskType): Weights {
+  switch (taskType) {
+    case "debugging":
+      return { clarity: 0.18, context: 0.24, constraints: 0.12, output: 0.12, verifiability: 0.24, safety: 0.10 };
+    case "coding":
+    case "refactor":
+      return { clarity: 0.20, context: 0.22, constraints: 0.16, output: 0.16, verifiability: 0.16, safety: 0.10 };
+    case "data_extraction":
+      return { clarity: 0.16, context: 0.24, constraints: 0.16, output: 0.20, verifiability: 0.14, safety: 0.10 };
+    case "translation":
+    case "summarization":
+      return { clarity: 0.26, context: 0.22, constraints: 0.16, output: 0.16, verifiability: 0.10, safety: 0.10 };
+    case "marketing":
+      return { clarity: 0.24, context: 0.18, constraints: 0.22, output: 0.16, verifiability: 0.10, safety: 0.10 };
+    case "study":
+    case "research":
+    case "planning":
+    case "customer_support":
+      return { clarity: 0.24, context: 0.20, constraints: 0.18, output: 0.16, verifiability: 0.12, safety: 0.10 };
+    default:
+      return { clarity: 0.24, context: 0.20, constraints: 0.18, output: 0.16, verifiability: 0.12, safety: 0.10 };
+  }
 }
 
-export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, lang: Lang, intent?: any): Scored {
-  // (target reservado para ajustes futuros; hoy no cambia el score)
-  const intentStr = String(intent ?? "").toLowerCase();
-
-  // --- component scoring ---
-  const clarity = (() => {
-    // base por longitud mínima
-    const lenScore =
-      f.words >= 40 ? 100 :
-      f.words >= 25 ? 85 :
-      f.words >= 15 ? 65 :
-      f.words >= 8 ? 45 : 20;
-
-    const add = (f.hasGoal ? 10 : 0) + (f.hasTone ? 5 : 0);
-    return clamp(lenScore + add);
-  })();
-
-  const context = (() => {
-    const hits = (f.hasInputs ? 1 : 0) + (f.hasAudience ? 1 : 0) + (f.hasExamples ? 1 : 0);
-    // en "study" y "code" el contexto pesa más
-    const base = pctFromFlags(hits, 3);
-    const boost = (taskType === "study" || taskType === "coding") && f.hasExamples ? 8 : 0;
-
-    // Debugging / data_extraction: si no hay material de trabajo (inputs), cap de contexto.
-    const needsInputs = intentStr === "debugging" || intentStr === "data_extraction";
-    const cap = needsInputs && !f.hasInputs ? 45 : 100;
-
-    return clamp(Math.min(base + boost, cap));
-  })();
-
-  const constraints = (() => {
-    const hits =
-      (f.hasConstraints ? 1 : 0) +
-      (f.hasTone ? 1 : 0) +
-      (f.hasLengthHint ? 1 : 0) +
-      (f.hasTimeframe ? 1 : 0) +
-      (f.hasRegion ? 1 : 0);
-    return pctFromFlags(hits, 5);
-  })();
-
-  const output = (() => {
-    const hits = (f.hasOutputFormat ? 1 : 0) + (f.hasSuccessCriteria ? 1 : 0);
-    return pctFromFlags(hits, 2);
-  })();
-
-  const verifiability = (() => {
-    // Más "personalizado" según tipo de tarea detectada.
-    if (intentStr === "debugging") {
-      const hits = (f.hasErrorDetails ? 1 : 0) + (f.hasReproSteps ? 1 : 0) + (f.hasSuccessCriteria ? 1 : 0);
-      return pctFromFlags(hits, 3);
+function getCriticalCap(taskType: TaskType, f: Features) {
+  switch (taskType) {
+    case "debugging": {
+      const missing = [!f.hasInputs, !f.hasErrorDetails, !f.hasReproSteps].filter(Boolean).length;
+      if (missing >= 2) return 70;
+      if (missing === 1) return 84;
+      return 100;
     }
+    case "data_extraction":
+      if (!f.hasInputs) return 72;
+      if (!f.hasOutputFormat) return 82;
+      return 100;
+    case "translation":
+      if (!f.hasInputs) return 78;
+      return 100;
+    case "summarization":
+      if (!f.hasInputs) return 80;
+      return 100;
+    default:
+      return 100;
+  }
+}
 
-    if (intentStr === "data_extraction") {
-      const hits = (f.hasInputs ? 1 : 0) + (f.hasOutputFormat ? 1 : 0) + (f.hasSuccessCriteria ? 1 : 0);
-      return pctFromFlags(hits, 3);
-    }
+function clarityScore(taskType: TaskType, f: Features) {
+  if ((taskType === "summarization" || taskType === "translation") && f.hasGoal) {
+    if (f.words >= 10) return 90;
+    if (f.words >= 5) return 78;
+    return 65;
+  }
 
-    const hits = (f.hasSuccessCriteria ? 1 : 0) + (f.hasErrorDetails ? 1 : 0) + (f.hasReproSteps ? 1 : 0);
-    return pctFromFlags(hits, 3);
-  })();
+  if (taskType === "debugging") {
+    const base = f.words >= 35 ? 95 : f.words >= 20 ? 78 : f.words >= 10 ? 58 : 30;
+    return clamp(base + (f.hasGoal ? 8 : 0));
+  }
 
-  const safety = (() => {
-    let s = 100;
-    if (f.injectionLike) s -= 40;
-    if (f.contradictions) s -= 25;
-    if (f.languageMismatch) s -= 15;
-    return clamp(s);
-  })();
+  const base = f.words >= 40 ? 100 : f.words >= 25 ? 85 : f.words >= 15 ? 68 : f.words >= 8 ? 48 : 24;
+  return clamp(base + (f.hasGoal ? 10 : 0) + (f.hasTone ? 4 : 0));
+}
 
-  // weights (ajustados por taskType)
-  const weights = (() => {
-    // base: suman 1
-    switch (taskType) {
-      case "study":
-        return { clarity: 0.20, context: 0.28, constraints: 0.16, output: 0.16, verifiability: 0.12, safety: 0.08 };
-      case "coding":
-        return { clarity: 0.18, context: 0.22, constraints: 0.18, output: 0.18, verifiability: 0.16, safety: 0.08 };
-      case "data":
-        return { clarity: 0.16, context: 0.20, constraints: 0.16, output: 0.28, verifiability: 0.12, safety: 0.08 };
-      case "image":
-        return { clarity: 0.18, context: 0.24, constraints: 0.18, output: 0.22, verifiability: 0.10, safety: 0.08 };
-      case "marketing":
-        return { clarity: 0.20, context: 0.22, constraints: 0.22, output: 0.24, verifiability: 0.04, safety: 0.08 };
-      default:
-        return { clarity: 0.22, context: 0.22, constraints: 0.20, output: 0.20, verifiability: 0.08, safety: 0.08 };
-    }
-  })();
+function contextScore(taskType: TaskType, f: Features) {
+  const hits = (f.hasInputs ? 1 : 0) + (f.hasAudience ? 1 : 0) + (f.hasExamples ? 1 : 0);
+  let score = hits * 22;
 
-  const score =
+  if (f.hasInputs) {
+    if (taskType === "summarization" || taskType === "translation") score = Math.max(score, 72);
+    if (taskType === "data_extraction") score = Math.max(score, 78);
+    if (taskType === "coding" || taskType === "debugging") score = Math.max(score, 68);
+  }
+
+  if (taskType === "study" && f.hasAudience) score += 10;
+  return clamp(score);
+}
+
+function constraintsScore(taskType: TaskType, f: Features) {
+  let hits = 0;
+  if (f.hasConstraints) hits += 1;
+  if (f.hasTone) hits += 1;
+  if (f.hasLengthHint) hits += 1;
+  if (f.hasTimeframe) hits += 1;
+  if (f.hasRegion) hits += 1;
+
+  let score = hits * 18;
+
+  if ((taskType === "summarization" || taskType === "translation") && (f.hasLengthHint || f.hasTone || f.hasConstraints)) {
+    score = Math.max(score, 55);
+  }
+
+  return clamp(score);
+}
+
+function outputScore(taskType: TaskType, f: Features) {
+  if (f.hasOutputFormat && f.hasSuccessCriteria) return 95;
+  if (f.hasOutputFormat) {
+    if (taskType === "data_extraction") return 92;
+    if (taskType === "summarization" || taskType === "translation") return 84;
+    return 78;
+  }
+  return taskType === "summarization" || taskType === "translation" ? 24 : 12;
+}
+
+function verifiabilityScore(taskType: TaskType, f: Features) {
+  let score = 0;
+  if (f.hasSuccessCriteria) score += 40;
+  if (f.hasErrorDetails) score += 30;
+  if (f.hasReproSteps) score += 30;
+
+  if (taskType === "debugging" && f.hasErrorDetails && f.hasReproSteps) score += 10;
+  return clamp(score);
+}
+
+function safetyScore(f: Features) {
+  let s = 100;
+  if (f.injectionLike) s -= 45;
+  if (f.contradictions) s -= 22;
+  if (f.languageMismatch) s -= 12;
+  return clamp(s);
+}
+
+export function scorePrompt(
+  taskType: TaskType,
+  _target: TargetAI,
+  f: Features,
+  lang: Lang,
+  opts?: { attachmentsCount?: number }
+): Scored {
+  const clarity = clarityScore(taskType, f);
+  const context = contextScore(taskType, f);
+  const constraints = constraintsScore(taskType, f);
+  const output = outputScore(taskType, f);
+  const verifiability = verifiabilityScore(taskType, f);
+  const safety = safetyScore(f);
+
+  const weights = getWeights(taskType);
+  const rawScore =
     weights.clarity * clarity +
     weights.context * context +
     weights.constraints * constraints +
@@ -126,63 +172,94 @@ export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, l
     weights.verifiability * verifiability +
     weights.safety * safety;
 
-  // confidence: heurística simple
-  const confidence = (() => {
-    let c = 55;
-    if (f.words >= 30) c += 15;
-    if (f.hasGoal) c += 10;
-    if (f.hasOutputFormat) c += 8;
-    if (f.hasConstraints) c += 8;
-    if (f.injectionLike) c -= 20;
-    if (f.contradictions) c -= 15;
-    return clamp(c);
-  })();
+  const cap = getCriticalCap(taskType, f);
+  const score = Math.min(clamp(rawScore), cap);
 
-  // --- explain lines localized ---
+  let confidence = 52;
+  if (f.words >= 20) confidence += 12;
+  if (f.hasGoal) confidence += 10;
+  if (f.hasInputs) confidence += 12;
+  if (f.hasOutputFormat) confidence += 8;
+  if (f.hasConstraints) confidence += 8;
+  if (f.hasErrorDetails) confidence += 6;
+  if (f.injectionLike) confidence -= 18;
+  if (f.contradictions) confidence -= 12;
+  confidence = clamp(confidence);
+
   const explain: string[] = [];
 
-  // Headline
-  if (clamp(score) >= 85) {
-    explain.push(t(lang, "¡Muy bien! Está claro y debería responder de forma consistente.", "Nice! It’s clear and should respond consistently."));
-  } else if (clamp(score) >= 70) {
-    explain.push(t(lang, "Buen punto de partida: con pequeños ajustes puede mejorar mucho.", "Good starting point: small tweaks can make it much better."));
-  } else if (clamp(score) >= 50) {
-    explain.push(t(lang, "Buen comienzo, pero falta estructura para que responda con precisión.", "Good start, but it needs structure to be precise."));
+  if (score >= 85) {
+    explain.push(t(lang, "Muy buen prompt: está claro y bien guiado.", "Very good prompt: it is clear and well guided."));
+  } else if (score >= 70) {
+    explain.push(
+      t(
+        lang,
+        "Buen punto de partida: con pequeños ajustes puede mejorar mucho.",
+        "Good starting point: small refinements can improve it a lot."
+      )
+    );
+  } else if (score >= 50) {
+    explain.push(
+      t(
+        lang,
+        "El pedido es entendible, pero todavía le falta precisión para responder mejor.",
+        "The request is understandable, but it still lacks precision for better answers."
+      )
+    );
   } else {
-    explain.push(t(lang, "Prompt débil: el motor limita el score porque falta información clave.", "Weak prompt: the engine caps the score because key info is missing."));
+    explain.push(
+      t(
+        lang,
+        "Prompt flojo: faltan piezas importantes para obtener una respuesta consistente.",
+        "Weak prompt: important pieces are still missing for a consistent answer."
+      )
+    );
   }
 
-  // Missing pieces (máximo 3 bullets)
-  const bullets: string[] = [];
-
-  if (!f.hasGoal) {
-    bullets.push(t(lang, "Falta objetivo: sin “qué querés lograr”, no se puede ser preciso.", "Missing goal: without “what you want to achieve”, it can’t be precise."));
-  }
-  if (!f.hasOutputFormat) {
-    bullets.push(t(lang, "Falta formato de salida: la respuesta puede salir desordenada o inútil.", "Missing output format: the answer may be messy or unusable."));
-  }
-  if (!f.hasConstraints) {
-    bullets.push(t(lang, "Faltan restricciones: sin límites (tono, largo, qué evitar) la respuesta varía mucho.", "Missing constraints: without limits (tone, length, what to avoid) the answer varies a lot."));
-  }
-  if (!f.hasInputs && (taskType === "data" || taskType === "coding")) {
-    bullets.push(t(lang, "Faltan inputs/datos: para esto necesitás indicar formato, ejemplos o datos de entrada.", "Missing inputs/data: for this, you should specify format, examples, or input data."));
+  if (taskType === "summarization") {
+    if (!f.hasLengthHint) {
+      explain.push(t(lang, "Definí cuánto resumir: bullets, párrafo o resumen corto.", "Define summary length: bullets, paragraph, or short summary."));
+    }
+    if (!f.hasOutputFormat) {
+      explain.push(t(lang, "Pedí un formato final concreto para el resumen.", "Ask for a concrete final format for the summary."));
+    }
   }
 
-  if (intentStr === "debugging" && !f.hasErrorDetails) {
-    bullets.push(t(lang, "Para debugging falta el error/logs: sin eso la solución es adivinanza.", "For debugging, the error/logs are missing: without them, the fix is guesswork."));
+  if (taskType === "translation") {
+    if (!f.hasInputs) {
+      explain.push(t(lang, "Falta el texto fuente para traducir.", "The source text is missing."));
+    }
+    if (!f.hasConstraints) {
+      explain.push(t(lang, "Aclará idioma destino y registro de traducción.", "Clarify target language and translation register."));
+    }
   }
 
-  if (intentStr === "data_extraction" && !f.hasOutputFormat) {
-    bullets.push(t(lang, "Para extracción falta el formato final (JSON/tabla): si no, la salida varía.", "For extraction, the final format (JSON/table) is missing, so outputs vary."));
-  }
-  if (f.injectionLike) {
-    bullets.push(t(lang, "Riesgo de prompt injection: limpiá instrucciones contradictorias o externas.", "Prompt-injection risk: remove contradictory/external instructions."));
+  if ((taskType === "coding" || taskType === "debugging") && !f.hasInputs) {
+    explain.push(t(lang, "Falta contexto técnico concreto: código, logs o error.", "Concrete technical context is missing: code, logs, or error."));
   }
 
-  explain.push(...bullets.slice(0, 3));
+  if ((opts?.attachmentsCount ?? 0) > 0 && !f.hasGoal) {
+    explain.push(
+      t(
+        lang,
+        "Los adjuntos ayudan con contexto, pero no reemplazan un pedido claro.",
+        "Attachments help with context, but they do not replace a clear request."
+      )
+    );
+  }
+
+  if (cap < clamp(rawScore)) {
+    explain.push(
+      t(
+        lang,
+        "El score quedó capado porque todavía faltan insumos críticos para esta tarea.",
+        "The score was capped because critical inputs are still missing for this task."
+      )
+    );
+  }
 
   return {
-    score: clamp(score),
+    score,
     breakdown: {
       clarity: clamp(clarity),
       context: clamp(context),
@@ -195,4 +272,3 @@ export function scorePrompt(taskType: TaskType, target: TargetAI, f: Features, l
     explain,
   };
 }
-

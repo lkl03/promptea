@@ -12,7 +12,6 @@ function ttlDays() {
 
 type OutputFormat = { kind: "json" | "table" | "steps" | "bullets"; strict: boolean } | null;
 
-// ✅ Mantener compat: purpose opcional (legacy /api/telemetry no lo manda)
 type UpsertAnalysisEventInput = {
   analysisId: string;
   sessionId: string;
@@ -31,12 +30,13 @@ type UpsertAnalysisEventInput = {
   recoIds: string[];
 
   outputFormat: OutputFormat;
-
-  // ✅ NUEVO: opcional para no romper compat
   purpose?: string | null;
 
-  // ⚠️ NO guardamos prompt raw por defecto (privacy)
-  // promptRaw?: string;
+  // nuevo: metadata de adjuntos
+  attachmentsCount?: number;
+  attachmentKinds?: string[];
+  attachmentExts?: string[];
+  attachmentMimes?: string[];
 };
 
 type SetFeedbackInput = {
@@ -54,36 +54,34 @@ export async function upsertAnalysisEvent(input: UpsertAnalysisEventInput) {
   const docRef = db.collection(COLLECTION).doc(input.analysisId);
 
   const payload = {
-    // identidad
     name: "analyze",
     analysisId: input.analysisId,
     sessionId: input.sessionId,
     projectId: input.projectId,
 
-    // dimensiones
     lang: input.lang,
     target: input.target,
     taskType: input.taskType,
     engineVersion: input.engineVersion,
-
-    // ✅ nuevo (nullable para queries)
     purpose: input.purpose ?? null,
 
-    // métricas
     score: input.score,
     confidence: input.confidence,
     words: input.words,
     approxTokens: input.approxTokens,
 
-    // ids
     findingIds: input.findingIds,
     recoIds: input.recoIds,
 
-    // output format (aplanado para queries simples)
     outputFormatKind: input.outputFormat?.kind ?? null,
     outputFormatStrict: input.outputFormat?.strict ?? null,
 
-    // timestamps (ttl + query-friendly)
+    // nuevo: info de formato de adjuntos
+    attachmentsCount: input.attachmentsCount ?? 0,
+    attachmentKinds: input.attachmentKinds ?? [],
+    attachmentExts: input.attachmentExts ?? [],
+    attachmentMimes: input.attachmentMimes ?? [],
+
     ts: Timestamp.fromDate(now),
     createdAt: FieldValue.serverTimestamp(),
     expiresAt: Timestamp.fromDate(expires),
@@ -107,5 +105,3 @@ export async function setFeedback(input: SetFeedbackInput) {
   await docRef.set(payload, { merge: true });
   return { ok: true };
 }
-
-
