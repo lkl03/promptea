@@ -6,7 +6,9 @@ export const PurposeSchema = z.enum([
   "code",     // programar
   "data",     // extracción/JSON/tablas
   "image",    // generación de imagen
-  "marketing" // copy/ventas
+  "marketing", // copy/ventas
+  "translation", // traducción
+  "summarization", // resumen
 ]);
 
 export type PromptPurpose = z.infer<typeof PurposeSchema>;

@@ -20,6 +20,25 @@ describe("engine/analyzePrompt", () => {
     expect(r.optimizedPrompt).toContain("TASK_TYPE: study");
   });
 
+  test("purpose=translation must set translation-specific purpose and task type", () => {
+    const r = analyzePrompt("Translate this to English: 'Buen día, ¿cómo estás?'", "gpt", "en", "translation");
+    expect(r.optimizedPrompt).toContain("PURPOSE: translation");
+    expect(r.optimizedPrompt).toContain("TASK_TYPE: translation");
+    expect(r.optimizedPrompt.toLowerCase()).toContain("final translation");
+  });
+
+  test("purpose=summarization must set summarization-specific purpose and task type", () => {
+    const r = analyzePrompt(
+      `Summarize this article in 5 bullets:\n\nText: The launch improved retention by 12%.`,
+      "gpt",
+      "en",
+      "summarization"
+    );
+    expect(r.optimizedPrompt).toContain("PURPOSE: summarization");
+    expect(r.optimizedPrompt).toContain("TASK_TYPE: summarization");
+    expect(r.optimizedPrompt.toLowerCase()).toContain("key ideas");
+  });
+
   test("idempotent optimized prompt but higher score when analyzing optimized", () => {
     const r1 = analyzePrompt(
       "Write a short email to my boss asking for Friday off. Keep it polite.",
@@ -34,10 +53,8 @@ describe("engine/analyzePrompt", () => {
 
     const r2 = analyzePrompt(optimized, "gpt", "en", "text");
 
-    // ✅ idempotencia del prompt optimizado (no se “re-escribe”)
     expect(r2.optimizedPrompt).toBe(optimized);
-
-    // ✅ pero el score del optimizado tiene que subir vs el original
     expect(Number(r2.score)).toBeGreaterThan(Number(r1.score));
   });
 });
+

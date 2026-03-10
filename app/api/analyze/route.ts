@@ -20,8 +20,9 @@ function inferLang(req: NextRequest, bodyLang: any): "es" | "en" {
 }
 
 function normalizePurpose(p: any) {
-  // compat UI: a veces llega data_json
   if (p === "data_json") return "data";
+  if (p === "summary" || p === "summarize") return "summarization";
+  if (p === "translate") return "translation";
   return p;
 }
 
@@ -42,9 +43,8 @@ export async function POST(req: NextRequest) {
   // normalizamos ANTES de validar, porque Zod valida primero.
   let normalizedBody: any = body;
   if (normalizedBody && typeof normalizedBody === "object") {
-    if ((normalizedBody as any).purpose === "data_json") {
-      (normalizedBody as any).purpose = "data";
-    }
+    const rawPurpose = (normalizedBody as any).purpose;
+    (normalizedBody as any).purpose = normalizePurpose(rawPurpose);
   }
 
   const parsed = AnalyzeSchema.safeParse(normalizedBody);

@@ -1,6 +1,14 @@
 import type { Locale } from "./site";
 
-export type Purpose = "text" | "study" | "code" | "data" | "image" | "marketing";
+export type Purpose =
+  | "text"
+  | "study"
+  | "code"
+  | "data"
+  | "image"
+  | "marketing"
+  | "translation"
+  | "summarization";
 export type TargetModel = "gpt" | "gemini" | "claude" | "grok" | "kimi" | "deepseek";
 
 export function buildPrefillHref(opts: {

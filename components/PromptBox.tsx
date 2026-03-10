@@ -16,7 +16,15 @@ const TARGETS = [
 ] as const;
 
 type TargetValue = (typeof TARGETS)[number]["value"];
-type PromptPurpose = "text" | "study" | "code" | "data" | "image" | "marketing";
+type PromptPurpose =
+  | "text"
+  | "study"
+  | "code"
+  | "data"
+  | "image"
+  | "marketing"
+  | "translation"
+  | "summarization";
 
 const PURPOSES: Array<{ value: PromptPurpose; label: { es: string; en: string } }> = [
   { value: "text", label: { es: "Texto", en: "Text" } },
@@ -25,6 +33,8 @@ const PURPOSES: Array<{ value: PromptPurpose; label: { es: string; en: string } 
   { value: "data", label: { es: "Data/JSON", en: "Data/JSON" } },
   { value: "image", label: { es: "Imagen", en: "Image" } },
   { value: "marketing", label: { es: "Marketing", en: "Marketing" } },
+  { value: "translation", label: { es: "Traducción", en: "Translation" } },
+  { value: "summarization", label: { es: "Resumen", en: "Summary" } },
 ];
 
 function pillClass(active: boolean) {
@@ -261,12 +271,17 @@ export default function PromptBox({
         </button>
       </div>
 
-      {error && <div className="surface-soft p-3 text-sm">{error}</div>}
+      {error && (
+        <p className="text-center text-sm text-red-500 dark:text-red-400" role="alert">
+          {error}
+        </p>
+      )}
 
       <ResultsPanel dict={dict} lang={lang} result={result} isLoading={isPending} onReset={resetAll} />
     </div>
   );
 }
+
 
 
 

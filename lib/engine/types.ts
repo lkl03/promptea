@@ -1,8 +1,24 @@
 import type { Lang, TargetAI } from "../promptTemplates";
 import type { OutputFormat } from "./lint/types";
 
-export type PromptPurpose = "text" | "study" | "code" | "data" | "image" | "marketing";
-export type TaskType = "text" | "study" | "coding" | "data" | "image" | "marketing";
+export type PromptPurpose =
+  | "text"
+  | "study"
+  | "code"
+  | "data"
+  | "image"
+  | "marketing"
+  | "translation"
+  | "summarization";
+export type TaskType =
+  | "text"
+  | "study"
+  | "coding"
+  | "data"
+  | "image"
+  | "marketing"
+  | "translation"
+  | "summarization";
 
 export type Severity = "low" | "medium" | "high";
 export type Impact = "low" | "medium" | "high";
@@ -20,39 +36,6 @@ export type Recommendation = {
   title: string;
   detail: string;
   impact: Impact;
-};
-
-export type AnalyzeResult = {
-  score: number;
-  findings: Finding[];
-  recommendations: Recommendation[];
-  optimizedPrompt: string;
-  stats: { words: number; approxTokens: number };
-  meta: {
-    engineVersion: string;
-
-    // ✅ para debug y consistencia
-    lang: Lang;
-    target: TargetAI;
-    purpose: PromptPurpose;
-    taskType: TaskType;
-
-    alreadyStructured: boolean;
-    coreExtracted: boolean;
-
-    confidence: number;
-    scoreExplain: string[];
-    scoreBreakdown: {
-      clarity: number;
-      context: number;
-      constraints: number;
-      output: number;
-      verifiability: number;
-      safety: number;
-    };
-
-    outputFormat?: OutputFormat | null;
-  };
 };
 
 export type Features = {
@@ -75,4 +58,30 @@ export type Features = {
   languageMismatch: boolean;
 };
 
-
+export type AnalyzeResult = {
+  score: number;
+  findings: Finding[];
+  recommendations: Recommendation[];
+  optimizedPrompt: string;
+  stats: { words: number; approxTokens: number };
+  meta: {
+    engineVersion: string;
+    lang: Lang;
+    target: TargetAI;
+    purpose: PromptPurpose;
+    taskType: TaskType;
+    alreadyStructured: boolean;
+    coreExtracted: boolean;
+    confidence: number;
+    scoreExplain: string[];
+    scoreBreakdown: {
+      clarity: number;
+      context: number;
+      constraints: number;
+      output: number;
+      verifiability: number;
+      safety: number;
+    };
+    outputFormat?: OutputFormat | null;
+  };
+};
