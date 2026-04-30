@@ -11,6 +11,82 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.1.1 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.1.1</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 30-04-2026" : "Released: 2026-04-30"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Análisis de prompts más adaptable: el output ahora cambia según el modelo (GPT, Claude, Gemini, Grok, DeepSeek, Kimi) y muestra notas específicas para el modelo elegido."
+              : "More adaptive prompt analysis: output now changes depending on the selected model (GPT, Claude, Gemini, Grok, DeepSeek, Kimi) and shows model-specific notes."}
+          </li>
+          <li>
+            {isEs
+              ? "Registro centralizado de modelos con submodelos (GPT-4.1 / GPT-4o / GPT-4o mini / o3, Sonnet / Opus / Haiku, Gemini Pro / Flash, Grok, DeepSeek, Kimi y Llama 3) y selector de submodelo cuando el target lo soporta."
+              : "Centralized model registry with submodels (GPT-4.1 / GPT-4o / GPT-4o mini / o3, Sonnet / Opus / Haiku, Gemini Pro / Flash, Grok, DeepSeek, Kimi and Llama 3) and a submodel selector when the target supports it."}
+          </li>
+          <li>
+            {isEs
+              ? "Scoring más personalizado por caso de uso: criterios visibles para coding, debugging, refactor, data, marketing, estudio, imagen, research y texto."
+              : "More personalized scoring per use case: visible criteria for coding, debugging, refactor, data, marketing, study, image, research, and text."}
+          </li>
+          <li>
+            {isEs
+              ? "Feedback más concreto: nuevos bloques “lo que ya está bien”, “quick wins”, “preguntas que ayudarían” y “notas para este modelo” en el panel de resultados."
+              : "More actionable feedback: new “what works already”, “quick wins”, “helpful follow-up questions”, and “notes for this model” blocks in the results panel."}
+          </li>
+          <li>
+            {isEs
+              ? "Selector de formato del prompt optimizado: Checklist (legible) o JSON puro (estricto y parseable) con tooltip explicativo."
+              : "Optimized prompt format toggle: Checklist (human-readable) or pure JSON (strict and parseable) with an explanatory tooltip."}
+          </li>
+          <li>
+            {isEs
+              ? "Mejor UX de adjuntos: copy más claro sobre formatos soportados, límites por archivo y total visibles."
+              : "Improved attachment UX: clearer copy about supported formats, per-file size limits, and total caps."}
+          </li>
+          <li>
+            {isEs
+              ? "Integración opcional con Groq para hints adicionales — desactivada por defecto. Configurá GROQ_API_KEY en Vercel para habilitarla; si no está, la app sigue usando el motor local sin cambios."
+              : "Optional Groq integration for extra hints — disabled by default. Set GROQ_API_KEY in Vercel to enable it; without the key, the app keeps using the local engine unchanged."}
+          </li>
+          <li>
+            {isEs
+              ? "Toggle de tema claro/oscuro reactivado con respeto por la preferencia del sistema."
+              : "Light/dark theme toggle re-enabled with system preference respected."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevo “Prompt del día” con rotación determinista por fecha: ficha lateral pegajosa en desktop y plegable en mobile."
+              : "New “Prompt of the Day” with deterministic per-date rotation: sticky aside on desktop, collapsible on mobile."}
+          </li>
+          <li>
+            {isEs
+              ? "Modal “¿Cómo funciona?” con accesibilidad (ESC, focus inicial, aria) explicando el flujo paso a paso."
+              : "Accessible “How this works” modal (ESC to close, initial focus, ARIA) explaining the flow step by step."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevas landings SEO: /landing/prompt-analyzer, /ai-prompt-optimizer, /prompt-scoring, /json-prompt-generator, /coding-prompt-generator y /prompt-generator-for-{claude,chatgpt,gemini}."
+              : "New SEO landings: /landing/prompt-analyzer, /ai-prompt-optimizer, /prompt-scoring, /json-prompt-generator, /coding-prompt-generator, and /prompt-generator-for-{claude,chatgpt,gemini}."}
+          </li>
+          <li>
+            {isEs
+              ? "Sitemap, keywords y metadata refinados; canonical y alternates por idioma actualizados."
+              : "Refined sitemap, keywords, and metadata; canonical and per-language alternates updated."}
+          </li>
+          <li>
+            {isEs
+              ? "Tests adicionales: registro de modelos, salida JSON parseable, rotación del prompt diario y wiring de la opción format en el motor."
+              : "Additional tests: model registry, parseable JSON output, daily prompt rotation, and engine wiring of the format option."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.1.0 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

@@ -39,17 +39,38 @@ function getSiteUrl(): string {
 function seoForLang(lang: "es" | "en") {
   if (lang === "en") {
     return {
-      title: "Promptea — Prompt analyzer & optimizer for GPT, Gemini, Claude, Grok",
+      title: "Promptea — Prompt analyzer & optimizer for GPT, Claude, Gemini, Grok",
       description:
-        "Analyze your prompt, detect issues, and generate an optimized version tailored to each AI and your goal (text, study, code, data/JSON, image, marketing).",
+        "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek and Kimi. Score, fix and rewrite prompts for code, data/JSON, marketing, study, image and more.",
       locale: "en_US",
+      keywords: [
+        "prompt analyzer",
+        "prompt optimizer",
+        "prompt engineering",
+        "ChatGPT prompts",
+        "Claude prompts",
+        "Gemini prompts",
+        "JSON prompts",
+        "coding prompts",
+        "AI prompt scoring",
+      ],
     };
   }
   return {
-    title: "Promptea — Analizá y optimizá prompts para GPT, Gemini, Claude, Grok",
+    title: "Promptea — Analizá y optimizá prompts para GPT, Claude, Gemini, Grok",
     description:
-      "Analizá tu prompt, detectá problemas y generá una versión optimizada según la IA y tu objetivo (texto, estudio, código, data/JSON, imagen, marketing).",
+      "Analizador y optimizador de prompts gratis para ChatGPT, Claude, Gemini, Grok, DeepSeek y Kimi. Puntúa, mejora y reescribe prompts para código, data/JSON, marketing, estudio, imagen y más.",
     locale: "es_AR",
+    keywords: [
+      "analizador de prompts",
+      "optimizador de prompts",
+      "prompts para ChatGPT",
+      "prompts para Claude",
+      "prompts para Gemini",
+      "prompts JSON",
+      "prompts de código",
+      "prompt engineering",
+    ],
   };
 }
 
@@ -72,6 +93,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     metadataBase: new URL(siteUrl),
     title: { default: seo.title, template: `%s · Promptea` },
     description: seo.description,
+    keywords: seo.keywords,
     alternates: {
       canonical,
       languages: { es: `${siteUrl}/es`, en: `${siteUrl}/en` },

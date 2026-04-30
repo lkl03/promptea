@@ -125,6 +125,12 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
         <Link href={`/${lang}/glossary`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {glossaryLabel}
         </Link>
+
+        <span className="opacity-50">|</span>
+
+        <Link href={`/${lang}/landing/prompt-analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {lang === "es" ? "Analizador" : "Analyzer"}
+        </Link>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center justify-center text-xs text-gray-400">

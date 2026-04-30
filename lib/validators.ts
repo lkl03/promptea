@@ -28,4 +28,6 @@ export const AnalyzeSchema = z.object({
   sessionId: z.string().min(10),
   purpose: PurposeSchema,
   attachments: z.array(AttachmentInputSchema).max(MAX_ATTACHMENTS).optional(),
+  format: z.enum(["checklist", "json"]).optional(),
+  modelId: z.string().min(1).max(80).optional().nullable(),
 });

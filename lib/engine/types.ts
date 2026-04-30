@@ -93,5 +93,14 @@ export type AnalyzeResult = {
     outputFormat?: OutputFormat | null;
     attachmentsCount?: number;
     attachmentsUsed?: Array<Pick<AttachmentContext, "name" | "kind" | "truncated">>;
+    formatChoice?: "checklist" | "json";
+    modelId?: string | null;
+    scoreCriteria?: Array<{ key: string; label: { es: string; en: string } }>;
+    strengths?: string[];
+    criticalIssues?: string[];
+    quickWins?: string[];
+    missingInformation?: string[];
+    followUpQuestions?: string[];
+    modelNotes?: string;
   };
 };

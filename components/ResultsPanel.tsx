@@ -388,6 +388,28 @@ export default function ResultsPanel({
     return Number.isFinite(n) ? Math.max(0, Math.min(100, n)) : null;
   }, [data]);
 
+  const followUps = useMemo<string[]>(() => {
+    const v = data?.meta?.followUpQuestions;
+    return Array.isArray(v) ? v.filter((x: any) => typeof x === "string" && x.trim().length > 0).slice(0, 5) : [];
+  }, [data]);
+
+  const quickWins = useMemo<string[]>(() => {
+    const v = data?.meta?.quickWins;
+    return Array.isArray(v) ? v.filter((x: any) => typeof x === "string" && x.trim().length > 0).slice(0, 4) : [];
+  }, [data]);
+
+  const strengths = useMemo<string[]>(() => {
+    const v = data?.meta?.strengths;
+    return Array.isArray(v) ? v.filter((x: any) => typeof x === "string" && x.trim().length > 0).slice(0, 3) : [];
+  }, [data]);
+
+  const modelNotes = useMemo<string>(() => {
+    const v = data?.meta?.modelNotes;
+    return typeof v === "string" ? v : "";
+  }, [data]);
+
+  const formatChoice = (data?.meta?.formatChoice ?? "checklist") as "checklist" | "json";
+
   async function handleCopy() {
     if (!data?.optimizedPrompt) return;
     await navigator.clipboard.writeText(data.optimizedPrompt);
@@ -610,12 +632,89 @@ export default function ResultsPanel({
               </div>
             </div>
           )}
+
+          {(strengths.length > 0 || quickWins.length > 0) && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {strengths.length > 0 && (
+                <div className="surface-soft p-3 space-y-2">
+                  <div className="text-sm font-medium">
+                    {lang === "es" ? "Lo que ya está bien" : "What works already"}
+                  </div>
+                  <ul className="space-y-1 text-sm opacity-85">
+                    {strengths.map((s) => (
+                      <li key={s} className="flex items-start gap-2">
+                        <span aria-hidden className="mt-1 text-emerald-500">✓</span>
+                        <span>{s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {quickWins.length > 0 && (
+                <div className="surface-soft p-3 space-y-2">
+                  <div className="text-sm font-medium">{lang === "es" ? "Quick wins" : "Quick wins"}</div>
+                  <ul className="space-y-1 text-sm opacity-85">
+                    {quickWins.map((q) => (
+                      <li key={q} className="flex items-start gap-2">
+                        <span aria-hidden className="mt-1 text-amber-500">→</span>
+                        <span>{q}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
+          {(followUps.length > 0 || modelNotes) && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {followUps.length > 0 && (
+                <div className="surface-soft p-3 space-y-2">
+                  <div className="text-sm font-medium">
+                    {lang === "es" ? "Preguntas que ayudarían" : "Helpful follow-up questions"}
+                  </div>
+                  <ul className="space-y-1 text-sm opacity-85 list-disc pl-5">
+                    {followUps.map((q) => (
+                      <li key={q}>{q}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {modelNotes && (
+                <div className="surface-soft p-3 space-y-1">
+                  <div className="text-sm font-medium">
+                    {lang === "es" ? "Notas para este modelo" : "Notes for this model"}
+                  </div>
+                  <div className="text-sm opacity-85 leading-relaxed">{modelNotes}</div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* RIGHT */}
         <div className="surface-soft p-4 space-y-2">
-          <div className="text-sm font-medium text-center sm:text-start">{dict.app.optimized}</div>
-          <div className="relative surface-soft p-4 text-sm whitespace-pre-wrap overflow-auto max-h-105 min-[1920px]:max-h-140">
+          <div className="flex items-center justify-between gap-3">
+            <div className="text-sm font-medium text-center sm:text-start">{dict.app.optimized}</div>
+            <span
+              className={[
+                badgeBaseClass(),
+                formatChoice === "json"
+                  ? "border-sky-500/30 bg-sky-500/10 text-sky-300"
+                  : "border-zinc-400/30 bg-zinc-400/10 text-zinc-200",
+              ].join(" ")}
+              aria-label={formatChoice === "json" ? "JSON" : "Checklist"}
+            >
+              {formatChoice === "json" ? "JSON" : lang === "es" ? "Checklist" : "Checklist"}
+            </span>
+          </div>
+          <div
+            className={[
+              "relative surface-soft p-4 text-sm whitespace-pre-wrap overflow-auto max-h-105 min-[1920px]:max-h-140",
+              formatChoice === "json" ? "font-mono text-[12px] leading-relaxed" : "",
+            ].join(" ")}
+          >
             {data.optimizedPrompt}
             <button
               type="button"

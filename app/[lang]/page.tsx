@@ -2,6 +2,7 @@ import { getDictionary, hasLocale } from "./dictionaries";
 import { notFound } from "next/navigation";
 import PromptBox from "@/components/PromptBox";
 import AdSlot from "@/components/AdSlot";
+import PromptOfTheDay from "@/components/PromptOfTheDay";
 
 type TargetValue = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek";
 
@@ -67,7 +68,7 @@ export default async function Page({
           "mx-auto grid w-full gap-8 xl:gap-10",
           showAds
             ? "grid-cols-1 xl:grid-cols-[320px_minmax(0,1180px)_320px] 2xl:grid-cols-[320px_minmax(0,1320px)_320px] 3xl:grid-cols-[320px_minmax(0,1480px)_320px]"
-            : "grid-cols-1 max-w-5xl 2xl:max-w-6xl",
+            : "grid-cols-1 xl:grid-cols-[minmax(0,1fr)_300px] xl:max-w-6xl 2xl:max-w-7xl",
         ].join(" ")}
       >
         {/* Center */}
@@ -76,6 +77,11 @@ export default async function Page({
             <h1 className="font-title text-4xl font-semibold tracking-tight sm:text-5xl">{dict.app.title}</h1>
             <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">{dict.app.subtitle}</p>
           </header>
+
+          {/* Mobile: Prompt of the Day above the analyzer */}
+          <div className="mt-6 xl:hidden">
+            <PromptOfTheDay lang={lang as "es" | "en"} />
+          </div>
 
           <div className="mt-8">
             <PromptBox
@@ -93,6 +99,15 @@ export default async function Page({
           <aside className="xl:col-start-1 xl:row-start-1 xl:justify-self-end xl:sticky xl:top-24">
             <div className="mx-auto w-full max-w-[320px] xl:mx-0">
               <AdSlot label={dict.app.ad} />
+            </div>
+          </aside>
+        )}
+
+        {/* Sticky Prompt of the Day (desktop only when ads disabled) */}
+        {!showAds && (
+          <aside className="hidden xl:block xl:row-start-1 xl:col-start-2">
+            <div className="xl:sticky xl:top-24">
+              <PromptOfTheDay lang={lang as "es" | "en"} />
             </div>
           </aside>
         )}

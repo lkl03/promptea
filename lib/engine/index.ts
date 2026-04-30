@@ -6,12 +6,22 @@ import { lintPrompt } from "./lint";
 import { extractFeatures } from "./features";
 import { scorePrompt } from "./scoring";
 import { buildOptimizedPrompt } from "./builder";
+import { buildJsonOptimizedPrompt } from "./jsonOutput";
+import { buildFeedbackBlock } from "./feedback";
 
 import { normalizeText, wordCount, approxTokensFromWords } from "./normalize";
 import { detectStructured, extractCorePrompt } from "./extractor";
 import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
 import { classifyTask } from "./classifier";
+
+export type OutputFormatChoice = "checklist" | "json";
+
+export type AnalyzeOptions = {
+  attachments?: AttachmentContext[];
+  format?: OutputFormatChoice;
+  modelId?: string | null;
+};
 
 const TASK_FROM_PURPOSE: Record<PromptPurpose, TaskType> = {
   text: "text",
@@ -218,8 +228,16 @@ export function analyzePrompt(
   target: TargetAI,
   lang: Lang,
   purposeInput: any = "text",
-  attachments: AttachmentContext[] = []
+  attachmentsOrOptions: AttachmentContext[] | AnalyzeOptions = []
 ): AnalyzeResult {
+  const opts: AnalyzeOptions = Array.isArray(attachmentsOrOptions)
+    ? { attachments: attachmentsOrOptions }
+    : (attachmentsOrOptions ?? {});
+
+  const attachments: AttachmentContext[] = Array.isArray(opts.attachments) ? opts.attachments : [];
+  const formatChoice: OutputFormatChoice = opts.format === "json" ? "json" : "checklist";
+  const modelId = opts.modelId ?? null;
+
   const raw = canonicalize(normalizeText(prompt));
   const purpose: PromptPurpose = normalizePurpose(purposeInput);
   const taskType: TaskType = resolveTaskType(raw, purpose);
@@ -274,7 +292,16 @@ export function analyzePrompt(
   const samePurpose = (promptea?.purpose ?? null) === String(purpose);
 
   let optimizedPrompt: string;
-  if (promptea && sameModel && samePurpose && attachments.length === 0) {
+  if (formatChoice === "json") {
+    optimizedPrompt = buildJsonOptimizedPrompt({
+      core: cleanAnalysisInput,
+      taskType,
+      target,
+      lang,
+      purpose,
+      attachments: effectiveAttachments,
+    });
+  } else if (promptea && sameModel && samePurpose && attachments.length === 0) {
     optimizedPrompt = canonicalize(raw);
   } else {
     optimizedPrompt = canonicalize(
@@ -284,6 +311,17 @@ export function analyzePrompt(
 
   const words = wordCount(raw);
   const approxTokens = approxTokensFromWords(words);
+
+  const feedback = buildFeedbackBlock({
+    taskType,
+    purpose,
+    target,
+    features,
+    findings: lint.findings,
+    recommendations: lint.recommendations,
+    lang,
+    modelId,
+  });
 
   return {
     score: scored.score,
@@ -309,6 +347,15 @@ export function analyzePrompt(
         kind: file.kind,
         truncated: file.truncated,
       })),
+      formatChoice,
+      modelId,
+      scoreCriteria: feedback.scoreCriteria,
+      strengths: feedback.strengths,
+      criticalIssues: feedback.criticalIssues,
+      quickWins: feedback.quickWins,
+      missingInformation: feedback.missingInformation,
+      followUpQuestions: feedback.followUpQuestions,
+      modelNotes: feedback.modelNotes,
     },
   };
 }
