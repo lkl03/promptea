@@ -54,10 +54,14 @@ export async function POST(req: NextRequest) {
     sessionId,
     purpose: rawPurpose,
     attachments: rawAttachments,
+    format: rawFormat,
+    modelId: rawModelId,
   } = parsed.data as any;
 
   const lang = inferLang(req, bodyLang);
   const purpose = normalizePurpose(rawPurpose);
+  const format = rawFormat === "json" ? "json" : "checklist";
+  const modelId = typeof rawModelId === "string" && rawModelId.trim().length > 0 ? rawModelId.trim() : null;
 
   let attachments = [];
   try {
@@ -69,7 +73,11 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const result = analyzePrompt(prompt, target, lang, purpose, attachments);
+  const result = analyzePrompt(prompt, target, lang, purpose, {
+    attachments,
+    format,
+    modelId,
+  });
   const analysisId = randomUUID();
 
   const attachmentKinds = [...new Set(attachments.map((file: any) => String(file.kind)).filter(Boolean))];

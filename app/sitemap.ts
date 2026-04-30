@@ -4,6 +4,7 @@ import type { MetadataRoute } from "next";
 import { guides } from "@/lib/seo/content/guides";
 import { modelPages } from "@/lib/seo/content/models";
 import { glossary } from "@/lib/seo/content/glossary";
+import { landings } from "@/lib/seo/content/landings";
 
 function getSiteUrl(): string {
   const env = process.env.NEXT_PUBLIC_SITE_URL;
@@ -80,6 +81,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: now,
         changeFrequency: "monthly",
         priority: 0.6,
+      });
+    }
+
+    for (const page of landings) {
+      urls.push({
+        url: joinUrl(siteUrl, `/${lang}/landing/${page.slug}`),
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.7,
       });
     }
   }
