@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import PromptBox from "@/components/PromptBox";
 import AdSlot from "@/components/AdSlot";
 import PromptOfTheDay from "@/components/PromptOfTheDay";
+import HowItWorks from "@/components/HowItWorks";
 
 type TargetValue = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek";
 
@@ -76,6 +77,9 @@ export default async function Page({
           <header className="text-center">
             <h1 className="font-title text-4xl font-semibold tracking-tight sm:text-5xl">{dict.app.title}</h1>
             <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">{dict.app.subtitle}</p>
+            <div className="mt-3 flex justify-center">
+              <HowItWorks lang={lang as "es" | "en"} />
+            </div>
           </header>
 
           {/* Mobile: Prompt of the Day above the analyzer */}

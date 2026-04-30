@@ -8,138 +8,120 @@ import type { Locale } from "@/lib/seo/site";
 import type { Purpose, TargetModel } from "@/lib/seo/prefill";
 
 export type DailyPrompt = {
-  category: "coding" | "marketing" | "study" | "analysis" | "data" | "image" | "business" | "writing";
+  category: "coding" | "marketing" | "study" | "analysis" | "data" | "image" | "business" | "writing" | "creativity";
   purpose: Purpose;
   target: TargetModel;
   title: { es: string; en: string };
   prompt: { es: string; en: string };
 };
 
+// Curated to be specific, fun, and actionable. Each prompt should make
+// the user curious enough to click "Try this prompt".
 export const DAILY_PROMPTS: DailyPrompt[] = [
+  {
+    category: "business",
+    purpose: "text",
+    target: "claude",
+    title: {
+      es: "Asesor de producto sin filtros",
+      en: "Brutally honest product advisor",
+    },
+    prompt: {
+      es: `Actuá como un asesor de producto brutalmente honesto.
+Revisá esta idea de landing page y decime sin vueltas por qué los usuarios la van a ignorar.
+Lista 5 razones específicas, ordenadas por impacto, y una recomendación accionable para cada una.
+
+Idea de landing:
+"""[pegá la idea aquí]"""`,
+      en: `Act as a brutally honest product advisor.
+Review this landing page idea and tell me why users would ignore it — no sugarcoating.
+List 5 specific reasons, ordered by impact, and one actionable fix per reason.
+
+Landing idea:
+"""[paste your idea here]"""`,
+    },
+  },
   {
     category: "coding",
     purpose: "code",
     target: "claude",
     title: {
-      es: "Refactor con criterios de aceptación",
-      en: "Refactor with acceptance criteria",
+      es: "Idea suelta → issue de GitHub listo para devs",
+      en: "Messy idea → developer-ready GitHub issue",
     },
     prompt: {
-      es: `Objetivo: refactorizar la función [nombre] para que sea más legible y testeable, sin cambiar comportamiento.
-Contexto: [pegá el código]
-Restricciones: TypeScript estricto, sin nuevas dependencias.
-Criterios de aceptación:
-- mantiene la API pública
-- agrega tests unitarios
-- pasa lint y tests existentes
-Salida: diff con explicación breve.`,
-      en: `Goal: refactor the [name] function so it is more readable and testable, without changing behavior.
-Context: [paste the code]
-Constraints: strict TypeScript, no new dependencies.
-Acceptance criteria:
-- public API unchanged
-- adds unit tests
-- passes lint and existing tests
-Output: diff with a short explanation.`,
-    },
-  },
-  {
-    category: "marketing",
-    purpose: "marketing",
-    target: "gpt",
-    title: {
-      es: "Email de lanzamiento con CTA",
-      en: "Product launch email with CTA",
-    },
-    prompt: {
-      es: `Objetivo: escribir un email de lanzamiento para [producto] dirigido a [audiencia].
-Tono: claro y directo, sin clichés.
-Estructura: asunto + apertura + 3 beneficios + CTA + posdata.
-Largo: máximo 180 palabras.
-CTA: [acción esperada].`,
-      en: `Goal: write a launch email for [product] aimed at [audience].
-Tone: clear and direct, no clichés.
-Structure: subject + opening + 3 benefits + CTA + PS.
-Length: up to 180 words.
-CTA: [intended action].`,
+      es: `Convertí esta idea de feature en un issue de GitHub listo para que un dev lo tome.
+Incluí:
+- Resumen en 1-2 líneas.
+- Criterios de aceptación claros (Given/When/Then).
+- Casos borde y cómo manejarlos.
+- Tests sugeridos (unitarios + un end-to-end).
+- Riesgos y dependencias.
+
+Idea bruta:
+"""[pegá la idea aquí]"""`,
+      en: `Turn this messy feature idea into a developer-ready GitHub issue.
+Include:
+- 1-2 line summary.
+- Clear acceptance criteria (Given/When/Then).
+- Edge cases and how to handle them.
+- Suggested tests (unit + one end-to-end).
+- Risks and dependencies.
+
+Raw idea:
+"""[paste the idea here]"""`,
     },
   },
   {
     category: "study",
     purpose: "study",
-    target: "claude",
+    target: "gpt",
     title: {
-      es: "Plan de estudio en 7 días",
-      en: "7-day study plan",
+      es: "Explicame esto al 80/20",
+      en: "Explain this to me 80/20 style",
     },
     prompt: {
-      es: `Objetivo: armar un plan de 7 días para aprender [tema] desde nivel principiante.
-Incluí: objetivos diarios, recursos, ejercicios y un check de comprensión al final del día.
-Formato: tabla con columnas Día | Objetivo | Práctica | Check.`,
-      en: `Goal: build a 7-day plan to learn [topic] from a beginner level.
-Include: daily objectives, resources, exercises, and an end-of-day comprehension check.
-Format: table with columns Day | Objective | Practice | Check.`,
+      es: `Explicame [tema] como si fuera inteligente pero impaciente.
+Quiero:
+- El 80/20 (lo único que importa de verdad).
+- Un solo ejemplo concreto que lo deje clarísimo.
+- Una sola trampa común que evitar.
+- Una pregunta que debería poder contestar después de leerte.`,
+      en: `Explain [topic] like I'm smart but impatient.
+I want:
+- The 80/20 — only what really matters.
+- One concrete example that makes it click.
+- One common trap to avoid.
+- One question I should be able to answer after reading you.`,
     },
   },
   {
-    category: "analysis",
+    category: "creativity",
     purpose: "text",
     target: "claude",
     title: {
-      es: "Análisis ejecutivo de un documento",
-      en: "Executive analysis of a document",
+      es: "Anti-vaguedad para prompts",
+      en: "Anti-vagueness prompt rewrite",
     },
     prompt: {
-      es: `Objetivo: análisis ejecutivo del documento adjunto.
-Devolvé: resumen (4 líneas), 5 hallazgos clave, 3 riesgos, 3 acciones recomendadas.
-Si falta evidencia, marcá supuestos en una sección aparte.`,
-      en: `Goal: executive analysis of the attached document.
-Return: 4-line summary, 5 key findings, 3 risks, 3 recommended actions.
-If evidence is missing, list assumptions in a separate section.`,
-    },
-  },
-  {
-    category: "data",
-    purpose: "data",
-    target: "gemini",
-    title: {
-      es: "Extracción JSON estricta",
-      en: "Strict JSON extraction",
-    },
-    prompt: {
-      es: `Devolvé SOLO JSON válido con la forma:
-{"items":[{"name":"string","price":"number|null","currency":"string|null"}]}
-Texto fuente: """[pegá]"""
-Si un valor falta, devolvelo como null. No agregues explicación.`,
-      en: `Return ONLY valid JSON with the shape:
-{"items":[{"name":"string","price":"number|null","currency":"string|null"}]}
-Source text: """[paste]"""
-If a value is missing, return null. Do not add explanation.`,
-    },
-  },
-  {
-    category: "image",
-    purpose: "image",
-    target: "gemini",
-    title: {
-      es: "Prompt de imagen controlado",
-      en: "Controlled image prompt",
-    },
-    prompt: {
-      es: `Sujeto: [describí el sujeto].
-Estilo: [estilo visual].
-Composición: [encuadre y disposición].
-Iluminación: [hora del día y dirección de luz].
-Cámara: [lente y profundidad de campo].
-Aspect ratio: [16:9 / 1:1 / 4:5].
-Negativos: [qué evitar].`,
-      en: `Subject: [describe the subject].
-Style: [visual style].
-Composition: [framing and layout].
-Lighting: [time of day and light direction].
-Camera: [lens and depth of field].
-Aspect ratio: [16:9 / 1:1 / 4:5].
-Negatives: [what to avoid].`,
+      es: `Reescribí mi prompt para que una IA no pueda contestar de forma vaga ni inventar.
+Forzala a hacer preguntas si falta contexto.
+Devolvé:
+- El prompt reescrito.
+- 3 preguntas que la IA debería hacer si el contexto es insuficiente.
+- 1 ejemplo de respuesta aceptable y 1 de respuesta inaceptable.
+
+Mi prompt actual:
+"""[pegá tu prompt acá]"""`,
+      en: `Rewrite my prompt so an AI can't answer vaguely or hallucinate.
+Force it to ask questions when context is missing.
+Return:
+- The rewritten prompt.
+- 3 questions the AI should ask if context is insufficient.
+- 1 acceptable answer example and 1 unacceptable example.
+
+My current prompt:
+"""[paste your prompt here]"""`,
     },
   },
   {
@@ -147,16 +129,146 @@ Negatives: [what to avoid].`,
     purpose: "text",
     target: "gpt",
     title: {
-      es: "Memo de decisión",
-      en: "Decision memo",
+      es: "Idea de negocio → plan de validación de 1 página",
+      en: "Business idea → one-page validation plan",
     },
     prompt: {
-      es: `Escribí un memo de decisión para [problema].
-Incluí: contexto, opciones consideradas, pros/cons, recomendación, riesgos y próximos pasos.
-Tono: ejecutivo, máximo 1 página.`,
-      en: `Write a decision memo for [problem].
-Include: context, options considered, pros/cons, recommendation, risks, and next steps.
-Tone: executive, at most 1 page.`,
+      es: `Convertí esta idea de negocio en un plan de validación de 1 página.
+Estructura:
+- Hipótesis principal y supuestos riesgosos.
+- Audiencia inicial y dónde encontrarla.
+- 3 experimentos baratos para validar (cada uno con costo, duración y métrica de éxito).
+- Riesgos top 3.
+- Decisión clara: seguir / pivotar / matar.
+
+Idea:
+"""[pegá la idea acá]"""`,
+      en: `Turn this business idea into a one-page validation plan.
+Structure:
+- Core hypothesis and risky assumptions.
+- Initial audience and where to find them.
+- 3 cheap experiments to validate (each with cost, duration, success metric).
+- Top 3 risks.
+- Clear decision: keep / pivot / kill.
+
+Idea:
+"""[paste the idea here]"""`,
+    },
+  },
+  {
+    category: "data",
+    purpose: "data",
+    target: "gemini",
+    title: {
+      es: "Schema JSON con ejemplos buenos y malos",
+      en: "JSON schema with good and bad examples",
+    },
+    prompt: {
+      es: `Generá un JSON Schema (draft 2020-12) para este workflow:
+"""[describí el workflow]"""
+
+Devolvé:
+- El schema completo y válido.
+- 3 ejemplos válidos diversos.
+- 1 ejemplo inválido con la razón exacta del fallo.
+
+Salida en bloques separados, sin texto fuera de cada bloque.`,
+      en: `Generate a JSON Schema (draft 2020-12) for this workflow:
+"""[describe the workflow]"""
+
+Return:
+- The complete, valid schema.
+- 3 diverse valid examples.
+- 1 invalid example with the exact reason it fails.
+
+Output in separate blocks, no extra text outside each block.`,
+    },
+  },
+  {
+    category: "image",
+    purpose: "image",
+    target: "gemini",
+    title: {
+      es: "Prompt de imagen cinematográfico",
+      en: "Cinematic image prompt",
+    },
+    prompt: {
+      es: `Creá un prompt cinematográfico para este concepto:
+"""[describí el concepto]"""
+
+Incluí:
+- Sujeto principal y acción.
+- Estilo (lente, película, referencia visual).
+- Composición y encuadre.
+- Iluminación (hora, dirección, intensidad).
+- Mood / paleta.
+- Aspect ratio sugerido.
+- Negativos (qué no debe aparecer).
+
+Devolvé el prompt listo para copiar y pegar en una IA generativa.`,
+      en: `Create a cinematic image prompt for this concept:
+"""[describe the concept]"""
+
+Include:
+- Main subject and action.
+- Style (lens, film stock, visual reference).
+- Composition and framing.
+- Lighting (time, direction, intensity).
+- Mood / palette.
+- Suggested aspect ratio.
+- Negatives (what should NOT appear).
+
+Return the prompt ready to copy-paste into a generative AI.`,
+    },
+  },
+  {
+    category: "marketing",
+    purpose: "marketing",
+    target: "gpt",
+    title: {
+      es: "Hook que detiene el scroll",
+      en: "Scroll-stopping hook",
+    },
+    prompt: {
+      es: `Generá 5 hooks que detengan el scroll para [producto/servicio] dirigido a [audiencia].
+Reglas:
+- Sin clichés ("transformá tu vida", "el #1", etc.).
+- Cada hook tiene que apuntar a un dolor específico, no genérico.
+- Indicar qué emoción dispara cada uno.
+- Ranking final del más fuerte al más débil con justificación de 1 línea.`,
+      en: `Generate 5 scroll-stopping hooks for [product/service] aimed at [audience].
+Rules:
+- No clichés ("transform your life", "the #1", etc.).
+- Each hook must hit a specific pain point, not a generic one.
+- State which emotion each one triggers.
+- Final ranking from strongest to weakest with a 1-line justification.`,
+    },
+  },
+  {
+    category: "analysis",
+    purpose: "text",
+    target: "claude",
+    title: {
+      es: "Pre-mortem en 10 minutos",
+      en: "10-minute pre-mortem",
+    },
+    prompt: {
+      es: `Hacé un pre-mortem para este proyecto:
+"""[describí el proyecto y la fecha de entrega]"""
+
+Imaginá que ya falló y reconstruí por qué.
+Devolvé:
+- 5 razones plausibles del fracaso, ordenadas por probabilidad.
+- Para cada una: señal temprana detectable y acción preventiva concreta.
+- 1 supuesto del proyecto que probablemente esté roto y nadie cuestiona.`,
+      en: `Run a pre-mortem on this project:
+"""[describe the project and the deadline]"""
+
+Imagine it already failed and reconstruct why.
+Return:
+- 5 plausible failure modes, ordered by likelihood.
+- For each: an early signal we could detect, and a concrete preventive action.
+- 1 project assumption that's probably broken but no one questions.`,
     },
   },
   {
@@ -164,20 +276,82 @@ Tone: executive, at most 1 page.`,
     purpose: "text",
     target: "claude",
     title: {
-      es: "Reescritura con tono y largo definidos",
-      en: "Rewrite with defined tone and length",
+      es: "Reescritura con menos palabras y más impacto",
+      en: "Rewrite with fewer words and more impact",
     },
     prompt: {
-      es: `Reescribí el siguiente texto manteniendo el sentido.
-Tono: claro y profesional, sin jerga.
-Largo: máximo 120 palabras.
-Texto: """[pegá el texto]"""
-Cerrá con 3 sugerencias de mejora.`,
-      en: `Rewrite the following text preserving meaning.
-Tone: clear and professional, no jargon.
-Length: up to 120 words.
-Text: """[paste the text]"""
-End with 3 improvement suggestions.`,
+      es: `Reescribí este texto con la mitad de palabras sin perder claridad.
+Reglas:
+- Mantené el sentido y los hechos.
+- Eliminá relleno, adverbios débiles y voz pasiva innecesaria.
+- Devolvé 2 versiones: una más profesional, otra más natural.
+- Cerrá con 3 cosas concretas que se pueden mejorar todavía más.
+
+Texto:
+"""[pegá el texto acá]"""`,
+      en: `Rewrite this text using half the words without losing clarity.
+Rules:
+- Keep meaning and facts intact.
+- Cut filler, weak adverbs, and unnecessary passive voice.
+- Return 2 versions: one more professional, one more natural.
+- End with 3 concrete things that can still be improved.
+
+Text:
+"""[paste the text here]"""`,
+    },
+  },
+  {
+    category: "coding",
+    purpose: "code",
+    target: "deepseek",
+    title: {
+      es: "Bug-hunt con tests primero",
+      en: "Tests-first bug hunt",
+    },
+    prompt: {
+      es: `Tengo un bug que no logro reproducir consistentemente:
+"""[descripción del bug + entorno]"""
+
+Antes de proponer un fix:
+1. Listá 5 hipótesis de causa raíz, ordenadas por probabilidad.
+2. Para cada una, escribí un test (con código) que la confirme o descarte.
+3. Recién después, proponé el fix mínimo asumiendo la hipótesis más probable.
+4. Cerrá con cómo prevenir un bug así en el futuro.`,
+      en: `I have a bug I can't reproduce consistently:
+"""[bug description + environment]"""
+
+Before proposing a fix:
+1. List 5 root-cause hypotheses, ordered by likelihood.
+2. For each one, write a test (with code) that confirms or rules it out.
+3. Only then, propose the minimal fix assuming the most likely hypothesis.
+4. End with how to prevent a bug like this in the future.`,
+    },
+  },
+  {
+    category: "creativity",
+    purpose: "text",
+    target: "grok",
+    title: {
+      es: "5 explicaciones para el mismo concepto",
+      en: "5 explanations for the same concept",
+    },
+    prompt: {
+      es: `Explicame [tema] de 5 formas distintas:
+1. Para un nene de 10 años.
+2. Como una analogía con un deporte.
+3. Como un meme.
+4. Como un párrafo técnico para un experto.
+5. Como una historia corta de 3 frases.
+
+Cerrá diciendo cuál de las cinco entiende mejor el concepto y por qué.`,
+      en: `Explain [topic] in 5 different ways:
+1. To a 10-year-old.
+2. As a sports analogy.
+3. As a meme.
+4. As a technical paragraph for an expert.
+5. As a 3-sentence short story.
+
+End by saying which of the five captures the concept best, and why.`,
     },
   },
 ];
@@ -207,6 +381,7 @@ export function categoryLabel(category: DailyPrompt["category"], lang: Locale): 
     image: { es: "Imagen", en: "Image" },
     business: { es: "Negocio", en: "Business" },
     writing: { es: "Escritura", en: "Writing" },
+    creativity: { es: "Creatividad", en: "Creativity" },
   };
   return map[category][lang];
 }

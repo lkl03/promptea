@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import ResultsPanel from "./ResultsPanel";
-import HowItWorks from "./HowItWorks";
+import FormatExplainModal from "./FormatExplainModal";
+import { useToast } from "./ToastProvider";
 import { getSessionId } from "@/lib/telemetry/session";
 import {
   ATTACHMENT_ACCEPT,
@@ -125,11 +126,13 @@ export default function PromptBox({
   initialTarget?: TargetValue;
 }) {
   const [prompt, setPrompt] = useState("");
-  const [target, setTarget] = useState<TargetValue>("gpt");
-  const [modelId, setModelId] = useState<string>(defaultModelIdForTarget("gpt"));
+  const [target, setTarget] = useState<TargetValue | null>(null);
+  const [modelId, setModelId] = useState<string>("");
   const [purpose, setPurpose] = useState<PromptPurpose | null>(null);
   const [attachments, setAttachments] = useState<AttachmentInput[]>([]);
   const [format, setFormat] = useState<FormatChoice>("checklist");
+
+  const toast = useToast();
 
   const [result, setResult] = useState<any>(null);
   const [isPending, startTransition] = useTransition();
@@ -140,7 +143,10 @@ export default function PromptBox({
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const locked = !!result || isPending || isReadingFiles;
-  const canAnalyze = useMemo(() => prompt.trim().length > 0 && !!purpose, [prompt, purpose]);
+  const canAnalyze = useMemo(
+    () => prompt.trim().length > 0 && !!purpose && !!target,
+    [prompt, purpose, target]
+  );
   const attachmentsEnabled = isPurposeAttachmentEnabled(purpose);
   const totalAttachmentBytes = attachments.reduce((acc, file) => acc + file.size, 0);
 
@@ -161,12 +167,54 @@ export default function PromptBox({
     }
   }, [initialPrompt, initialPurpose, initialTarget]);
 
-  const submodels = useMemo(() => getModelsForTarget(target), [target]);
+  const submodels = useMemo(
+    () => (target ? getModelsForTarget(target) : []),
+    [target]
+  );
   useEffect(() => {
+    if (!target) {
+      if (modelId !== "") setModelId("");
+      return;
+    }
     if (!submodels.some((m) => m.id === modelId)) {
       setModelId(defaultModelIdForTarget(target));
     }
   }, [target, modelId, submodels]);
+
+  // Listen for external "load this prompt" requests (e.g. Prompt of the Day).
+  // Populates the analyzer input directly without navigation.
+  useEffect(() => {
+    type Detail = { prompt?: string; target?: TargetValue; purpose?: PromptPurpose };
+    function handler(event: Event) {
+      const detail = (event as CustomEvent<Detail>).detail ?? {};
+      // Reset locked state so user can immediately edit/analyze.
+      setResult(null);
+      setError(null);
+      setIsReadingFiles(false);
+
+      if (typeof detail.prompt === "string") setPrompt(detail.prompt);
+      if (detail.target) {
+        setTarget(detail.target);
+        setModelId(defaultModelIdForTarget(detail.target));
+      }
+      if (detail.purpose) setPurpose(detail.purpose);
+
+      requestAnimationFrame(() => {
+        textareaRef.current?.focus();
+        textareaRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+
+      const msg = lang === "es" ? "Prompt cargado" : "Prompt loaded";
+      try {
+        toast.show(msg, "success");
+      } catch {
+        // ignore — toast may not be ready yet
+      }
+    }
+
+    window.addEventListener("promptea:set-prompt", handler);
+    return () => window.removeEventListener("promptea:set-prompt", handler);
+  }, [lang, toast]);
 
   useEffect(() => {
     const sessionId = getSessionId();
@@ -191,6 +239,8 @@ export default function PromptBox({
   function resetAll() {
     setPrompt("");
     setPurpose(null);
+    setTarget(null);
+    setModelId("");
     setAttachments([]);
     setResult(null);
     setError(null);
@@ -255,7 +305,7 @@ export default function PromptBox({
   }
 
   function analyze() {
-    if (!canAnalyze || locked) return;
+    if (!canAnalyze || locked || !target) return;
     setError(null);
 
     startTransition(async () => {
@@ -273,7 +323,7 @@ export default function PromptBox({
             sessionId,
             attachments,
             format,
-            modelId,
+            modelId: modelId || undefined,
           }),
         });
 
@@ -301,36 +351,46 @@ export default function PromptBox({
     ? `Aceptamos archivos textuales (JSON, CSV, logs, Markdown, código). Hasta ${MAX_ATTACHMENTS} archivos · ${formatBytes(MAX_ATTACHMENT_SIZE_BYTES, lang)} c/u.`
     : `Text-based files supported (JSON, CSV, logs, Markdown, code). Up to ${MAX_ATTACHMENTS} files · ${formatBytes(MAX_ATTACHMENT_SIZE_BYTES, lang)} each.`;
 
-  const formatTooltip =
-    lang === "es"
-      ? "Checklist: legible, ideal para pegarlo en una IA y editarlo. JSON: estructura estricta, ideal para automatizaciones, APIs y workflows."
-      : "Checklist: human-readable, great to paste into a chat AI and tweak. JSON: strict structure, great for automations, APIs, and workflows.";
-
   const formatLabel = lang === "es" ? "Formato del prompt optimizado" : "Optimized prompt format";
   const checklistLabel = lang === "es" ? "Checklist" : "Checklist";
   const jsonLabel = "JSON";
-  const submodelLabel = lang === "es" ? "Submodelo" : "Submodel";
+  const submodelLabel = lang === "es" ? "Modelo" : "Model";
+
+  const providerPlaceholder = lang === "es" ? "Elegí una IA" : "Choose an AI";
+  const modelHelperText = lang === "es" ? "con este modelo…" : "with this model…";
+  const modelDisabledPlaceholder = lang === "es" ? "Primero elegí una IA" : "First choose an AI";
+  const modelEnabledPlaceholder = lang === "es" ? "Elegí un modelo" : "Choose a model";
 
   return (
     <div className="mx-auto w-full max-w-5xl space-y-4 2xl:max-w-6xl">
-      <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 sm:gap-x-3">
         <span className="w-full text-center text-sm opacity-80 sm:w-auto">{dict.app.writingFor}</span>
 
         <select
           aria-label={dict.app.targetModel}
           className="h-10 w-44 sm:w-52 rounded-xl border px-3 text-sm
                      bg-white/30 dark:bg-zinc-950/25 backdrop-blur-xl
-                     border-white/20 dark:border-white/10
+                     border-zinc-300/60 dark:border-white/10
+                     text-zinc-900 dark:text-zinc-100
                      focus:outline-none focus:ring-2 focus:ring-zinc-400/30 dark:focus:ring-zinc-500/30
                      disabled:opacity-50 disabled:cursor-not-allowed"
-          value={target}
+          value={target ?? ""}
           onChange={(e) => {
-            const next = e.target.value as TargetValue;
+            const v = e.target.value;
+            if (!v) {
+              setTarget(null);
+              setModelId("");
+              return;
+            }
+            const next = v as TargetValue;
             setTarget(next);
             setModelId(defaultModelIdForTarget(next));
           }}
           disabled={locked}
         >
+          <option value="" disabled>
+            {providerPlaceholder}
+          </option>
           {TARGETS.map((t) => (
             <option key={t.value} value={t.value}>
               {t.label}
@@ -338,27 +398,31 @@ export default function PromptBox({
           ))}
         </select>
 
-        {submodels.length > 1 && (
-          <select
-            aria-label={submodelLabel}
-            className="h-10 w-44 sm:w-52 rounded-xl border px-3 text-sm
-                       bg-white/30 dark:bg-zinc-950/25 backdrop-blur-xl
-                       border-white/20 dark:border-white/10
-                       focus:outline-none focus:ring-2 focus:ring-zinc-400/30 dark:focus:ring-zinc-500/30
-                       disabled:opacity-50 disabled:cursor-not-allowed"
-            value={modelId}
-            onChange={(e) => setModelId(e.target.value)}
-            disabled={locked}
-          >
-            {submodels.map((m) => (
-              <option key={m.id} value={m.id}>
-                {m.label}
-              </option>
-            ))}
-          </select>
-        )}
+        <span className="text-sm opacity-70" aria-hidden>
+          {modelHelperText}
+        </span>
 
-        <HowItWorks lang={lang} />
+        <select
+          aria-label={submodelLabel}
+          className="h-10 w-44 sm:w-52 rounded-xl border px-3 text-sm
+                     bg-white/30 dark:bg-zinc-950/25 backdrop-blur-xl
+                     border-zinc-300/60 dark:border-white/10
+                     text-zinc-900 dark:text-zinc-100
+                     focus:outline-none focus:ring-2 focus:ring-zinc-400/30 dark:focus:ring-zinc-500/30
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+          value={modelId}
+          onChange={(e) => setModelId(e.target.value)}
+          disabled={locked || !target}
+        >
+          <option value="" disabled>
+            {target ? modelEnabledPlaceholder : modelDisabledPlaceholder}
+          </option>
+          {submodels.map((m) => (
+            <option key={m.id} value={m.id}>
+              {m.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       <textarea
@@ -459,13 +523,7 @@ export default function PromptBox({
       <div className="flex flex-col items-center gap-2">
         <div className="flex items-center gap-2 text-xs sm:text-sm opacity-80">
           <span>{formatLabel}</span>
-          <span
-            className="cursor-help underline decoration-dotted underline-offset-2 opacity-70"
-            title={formatTooltip}
-            aria-label={formatTooltip}
-          >
-            ?
-          </span>
+          <FormatExplainModal lang={lang} />
         </div>
         <div
           role="radiogroup"

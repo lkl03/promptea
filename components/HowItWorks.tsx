@@ -111,9 +111,13 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="btn btn-secondary h-10 px-3 text-xs sm:text-sm"
         aria-haspopup="dialog"
         aria-expanded={open}
+        className="inline-flex items-center gap-1 text-sm
+                   text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white
+                   underline decoration-dotted underline-offset-4
+                   focus:outline-none focus:ring-2 focus:ring-zinc-400/40 dark:focus:ring-zinc-500/40
+                   rounded-sm transition-colors"
       >
         <span aria-hidden>ⓘ</span>
         <span>{copy.button}</span>

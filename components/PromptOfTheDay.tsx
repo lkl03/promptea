@@ -1,27 +1,47 @@
 // components/PromptOfTheDay.tsx
-import Link from "next/link";
-import { categoryLabel, getDailyPrompt } from "@/lib/prompts/daily";
-import { buildPrefillHref } from "@/lib/seo/prefill";
+"use client";
 
-export default function PromptOfTheDay({ lang }: { lang: "es" | "en" }) {
-  const today = new Date();
-  const daily = getDailyPrompt(today);
+import { useEffect, useMemo, useState } from "react";
+import { categoryLabel, getDailyPrompt, type DailyPrompt } from "@/lib/prompts/daily";
 
-  const heading = lang === "es" ? "Prompt del día" : "Prompt of the day";
-  const tryLabel = lang === "es" ? "Probar este prompt" : "Try this prompt";
-  const dateLabel = today.toLocaleDateString(lang === "es" ? "es-AR" : "en-US", {
+type Props = {
+  lang: "es" | "en";
+  // Optional, mostly for tests; defaults to "now".
+  initialDate?: Date;
+};
+
+function formatDate(date: Date, lang: "es" | "en") {
+  return date.toLocaleDateString(lang === "es" ? "es-AR" : "en-US", {
     month: "short",
     day: "numeric",
   });
+}
 
-  const promptText = daily.prompt[lang];
-  const titleText = daily.title[lang];
-  const tryHref = buildPrefillHref({
-    lang,
-    prompt: promptText,
-    purpose: daily.purpose,
-    target: daily.target,
-  });
+export default function PromptOfTheDay({ lang, initialDate }: Props) {
+  // Avoid hydration mismatch: render the date label only after mount.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const today = useMemo(() => initialDate ?? new Date(), [initialDate]);
+  const daily: DailyPrompt = useMemo(() => getDailyPrompt(today), [today]);
+
+  const heading = lang === "es" ? "Prompt del día" : "Prompt of the day";
+  const tryLabel = lang === "es" ? "Probar este prompt" : "Try this prompt";
+  const dateLabel = mounted ? formatDate(today, lang) : "";
+
+  function handleTry() {
+    if (typeof window === "undefined") return;
+    const event = new CustomEvent("promptea:set-prompt", {
+      detail: {
+        prompt: daily.prompt[lang],
+        target: daily.target,
+        purpose: daily.purpose,
+      },
+    });
+    window.dispatchEvent(event);
+  }
 
   return (
     <details
@@ -45,10 +65,12 @@ export default function PromptOfTheDay({ lang }: { lang: "es" | "en" }) {
             <span aria-hidden>📌</span>
             <span>{heading}</span>
           </div>
-          <span className="text-[11px] opacity-70">{dateLabel}</span>
+          <span className="text-[11px] opacity-70" suppressHydrationWarning>
+            {dateLabel}
+          </span>
         </div>
 
-        <div className="mt-2 text-sm font-medium">{titleText}</div>
+        <div className="mt-2 text-sm font-medium">{daily.title[lang]}</div>
         <div className="mt-1 text-[11px] opacity-70">{categoryLabel(daily.category, lang)}</div>
       </summary>
 
@@ -60,18 +82,18 @@ export default function PromptOfTheDay({ lang }: { lang: "es" | "en" }) {
         ].join(" ")}
       >
         <pre className="whitespace-pre-wrap text-xs leading-relaxed font-body opacity-90 max-h-72 overflow-auto">
-{promptText}
+{daily.prompt[lang]}
         </pre>
 
         <div className="mt-3 flex items-center justify-end">
-          <Link
-            href={tryHref}
-            prefetch={false}
+          <button
+            type="button"
+            onClick={handleTry}
             className="btn btn-primary h-9 text-xs"
             aria-label={tryLabel}
           >
             {tryLabel}
-          </Link>
+          </button>
         </div>
       </div>
     </details>
