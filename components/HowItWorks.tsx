@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 
 const COPY: Record<
   "es" | "en",
@@ -13,20 +14,20 @@ const COPY: Record<
   }
 > = {
   es: {
-    button: "¿Cómo funciona?",
+    button: "¿Nuevo? Mirá cómo funciona →",
     title: "Cómo funciona Promptea",
     intro:
       "Tres pasos rápidos para pasar de un prompt vago a una versión optimizada para la IA que estés usando.",
     steps: [
       {
-        title: "1. Pegá o subí tu prompt",
-        body:
-          "Pegá el texto del prompt y, si tenés contexto extra (logs, código, datos, notas), adjuntá hasta 3 archivos.",
-      },
-      {
-        title: "2. Elegí modelo y caso de uso",
+        title: "1. Elegí modelo y tipo de prompt",
         body:
           "Seleccioná la familia de IA (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) y para qué es el prompt: texto, código, datos, marketing, estudio, imagen, traducción o resumen.",
+      },
+      {
+        title: "2. Pegá o escribí tu prompt",
+        body:
+          "Pegá el texto del prompt y, si tenés contexto extra (logs, código, datos, notas), adjuntá hasta 3 archivos.",
       },
       {
         title: "3. Revisá el análisis",
@@ -47,18 +48,18 @@ const COPY: Record<
     close: "Cerrar",
   },
   en: {
-    button: "How this works",
+    button: "New? See how it works →",
     title: "How Promptea works",
     intro: "Three quick steps to turn a vague prompt into an optimized version for the AI you use.",
     steps: [
       {
-        title: "1. Paste or upload your prompt",
-        body: "Paste the prompt and, if you have extra context (logs, code, data, notes), attach up to 3 files.",
-      },
-      {
-        title: "2. Pick model and use case",
+        title: "1. Pick model and prompt type",
         body:
           "Select the AI family (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) and what the prompt is for: text, code, data, marketing, study, image, translation, or summarization.",
+      },
+      {
+        title: "2. Paste or write your prompt",
+        body: "Paste the prompt and, if you have extra context (logs, code, data, notes), attach up to 3 files.",
       },
       {
         title: "3. Review the analysis",
@@ -84,8 +85,12 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
   const titleId = useId();
   const descId = useId();
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const copy = COPY[lang];
+
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (!open) return;
@@ -106,18 +111,28 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
     };
   }, [open]);
 
+  function handleClose() {
+    setOpen(false);
+    // Focus returns to trigger via useFocusTrap cleanup; explicit fallback:
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }
+
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="inline-flex items-center gap-1 text-sm
+        className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300/60 dark:border-zinc-700/60
+                   bg-white/60 dark:bg-zinc-900/60 px-3 py-1.5
+                   text-xs font-medium
                    text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white
-                   underline decoration-dotted underline-offset-4
+                   hover:bg-white/80 dark:hover:bg-zinc-900/80
+                   shadow-sm
                    focus:outline-none focus:ring-2 focus:ring-zinc-400/40 dark:focus:ring-zinc-500/40
-                   rounded-sm transition-colors"
+                   transition-all"
       >
         <span aria-hidden>ⓘ</span>
         <span>{copy.button}</span>
@@ -125,6 +140,7 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
 
       {open && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
@@ -133,7 +149,7 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
         >
           <div
             className="absolute inset-0 bg-black/55 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
+            onClick={handleClose}
             aria-hidden
           />
           <div
@@ -155,9 +171,9 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
               <button
                 ref={closeRef}
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 aria-label={copy.close}
-                className="btn-icon h-9 w-9"
+                className="btn-icon h-9 w-9 shrink-0"
               >
                 ×
               </button>
@@ -176,7 +192,7 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
               <button
                 type="button"
                 className="btn btn-primary h-10 px-5"
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
                 {copy.close}
               </button>

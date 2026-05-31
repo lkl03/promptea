@@ -51,6 +51,7 @@ export default async function PromptsIndexPage({
         l === "es"
           ? "Explicaciones, resúmenes, ejercicios y planes de estudio."
           : "Explanations, summaries, exercises and study plans.",
+      count: 6,
     },
     {
       href: `/${l}/prompts/code`,
@@ -59,6 +60,7 @@ export default async function PromptsIndexPage({
         l === "es"
           ? "Debugging, code review, refactors y tests."
           : "Debugging, code reviews, refactors and tests.",
+      count: 6,
     },
     {
       href: `/${l}/prompts/marketing`,
@@ -67,6 +69,7 @@ export default async function PromptsIndexPage({
         l === "es"
           ? "Ads, landings, emails y contenido para redes."
           : "Ads, landing pages, emails and social content.",
+      count: 6,
     },
     {
       href: `/${l}/prompts/image`,
@@ -75,8 +78,8 @@ export default async function PromptsIndexPage({
         l === "es"
           ? "Prompts para generar imágenes: estilo, composición y variantes."
           : "Image generation prompts: style, composition and variations.",
+      count: 6,
     },
-    // ✅ nuevos
     {
       href: `/${l}/prompts/text`,
       name: l === "es" ? "Text (escritura)" : "Text",
@@ -84,6 +87,7 @@ export default async function PromptsIndexPage({
         l === "es"
           ? "Reescritura, tono, resúmenes, emails y guiones."
           : "Rewriting, tone, summaries, emails and scripts.",
+      count: 6,
     },
     {
       href: `/${l}/prompts/data`,
@@ -92,6 +96,7 @@ export default async function PromptsIndexPage({
         l === "es"
           ? "JSON estricto, extracción, limpieza y transformaciones."
           : "Strict JSON, extraction, cleaning and transformations.",
+      count: 6,
     },
   ];
 
@@ -105,7 +110,12 @@ export default async function PromptsIndexPage({
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {packs.map((p) => (
           <Link key={p.href} href={p.href} className="surface p-5 block hover:opacity-95 transition">
-            <div className="text-sm font-medium">{p.name}</div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-sm font-medium">{p.name}</div>
+              <span className="inline-flex items-center rounded-full border border-zinc-300/60 dark:border-zinc-700/50 bg-zinc-100/60 dark:bg-zinc-800/50 px-2 py-0.5 text-[11px] opacity-80 shrink-0">
+                {p.count} {l === "es" ? "prompts" : "prompts"}
+              </span>
+            </div>
             <div className="mt-1 text-sm opacity-80">{p.desc}</div>
             <div className="mt-4 text-xs opacity-70">{l === "es" ? "Ver prompts →" : "View prompts →"}</div>
           </Link>
