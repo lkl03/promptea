@@ -90,14 +90,10 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
         ))}
       </div>
 
-      <section className="mt-10 surface p-5">
-        <h2 className="text-sm font-medium">{l === "es" ? "Para acelerar indexación" : "To speed up indexing"}</h2>
-        <p className="mt-2 text-sm opacity-85">
-          {l === "es"
-            ? "Linkeá estas guías desde Home + Footer, y también desde páginas de modelos y packs relevantes. Más enlaces internos = menos “Descubierta: sin indexar”."
-            : "Link these guides from Home + Footer, and also from model pages and relevant packs. More internal links = fewer “Discovered: not indexed” URLs."}
-        </p>
-      </section>
+      {/* Internal note (not rendered):
+          Link guides from Home + Footer and from model/pack pages.
+          More internal links = fewer “Discovered: not indexed” URLs.
+      */}
     </main>
   );
 }

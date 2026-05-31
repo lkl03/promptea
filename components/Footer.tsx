@@ -17,14 +17,13 @@ function XIcon({ className }: { className?: string }) {
 export default function Footer({ lang }: { lang: "es" | "en" }) {
   const year = new Date().getFullYear();
   const privacyLabel = lang === "es" ? "Privacidad" : "Privacy";
-  const homeInicio = lang === "es" ? "Inicio" : "Home";
+  const homeLabel = lang === "es" ? "Inicio" : "Home";
   const promptsLabel = lang === "es" ? "Prompts" : "Prompts";
   const guidesLabel = lang === "es" ? "Guías" : "Guides";
   const modelsLabel = lang === "es" ? "Modelos" : "Models";
   const glossaryLabel = lang === "es" ? "Glosario" : "Glossary";
   const resourcesLabel = lang === "es" ? "Recursos útiles" : "Useful resources";
   const eterlabMessage = lang === "es" ? "diseñado y desarrollado por" : "designed and developed by";
-
   const followLabel = lang === "es" ? "Seguinos en X" : "Follow us on X";
   const xUrl = (process.env.NEXT_PUBLIC_X_URL || "https://x.com") as string;
 
@@ -32,31 +31,26 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
     <footer className="mx-auto w-full max-w-6xl px-4 pb-8 pt-10 3xl:max-w-7xl">
       <div className="h-px w-full bg-zinc-200/70 dark:bg-zinc-800/60" />
 
-      {/* Links principales */}
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs opacity-80">
+      {/* Primary navigation */}
+      <nav
+        aria-label={lang === "es" ? "Pie de página" : "Footer navigation"}
+        className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs opacity-80"
+      >
         <span>V{APP_VERSION}</span>
 
         <Link href={`/${lang}/`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          {homeInicio}
+          {homeLabel}
         </Link>
-
-        <span className="opacity-50">|</span>
 
         <Link href={`/${lang}/changelog`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           Changelog
         </Link>
 
-        <span className="opacity-50">|</span>
-
         <Link href={`/${lang}/privacy`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {privacyLabel}
         </Link>
 
-        <span className="opacity-50">|</span>
-
         <AppFeedbackButton lang={lang} />
-
-        <span className="opacity-50">|</span>
 
         <a
           href={xUrl}
@@ -80,44 +74,37 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
             {followLabel}
           </span>
         </a>
-      </div>
+      </nav>
 
-      {/* Useful resources (segunda línea) */}
-      <div className="mt-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs opacity-80">
+      {/* Useful resources */}
+      <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs opacity-80">
         <span className="opacity-70">{resourcesLabel}:</span>
 
         <Link href={`/${lang}/prompts`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {promptsLabel}
         </Link>
 
-        <span className="opacity-50">|</span>
-
         <Link href={`/${lang}/guides`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {guidesLabel}
         </Link>
-
-        <span className="opacity-50">|</span>
 
         <Link href={`/${lang}/models`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {modelsLabel}
         </Link>
 
-        <span className="opacity-50">|</span>
-
         <Link href={`/${lang}/glossary`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {glossaryLabel}
         </Link>
-
-        <span className="opacity-50">|</span>
 
         <Link href={`/${lang}/landing/prompt-analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {lang === "es" ? "Analizador" : "Analyzer"}
         </Link>
       </div>
 
+      {/* Copyright */}
       <div className="mt-4 flex flex-wrap items-center justify-center text-xs text-gray-400">
         <span>
-          © {year} | {eterlabMessage}{" "}
+          © {year} · {eterlabMessage}{" "}
           <Link href="https://eterlab.co" className="hover:text-white! transition-all ease-in-out">
             eterlab
           </Link>
@@ -127,9 +114,3 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
     </footer>
   );
 }
-
-
-
-
-
-

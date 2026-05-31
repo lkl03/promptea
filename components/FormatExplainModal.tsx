@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { useFocusTrap } from "@/lib/useFocusTrap";
 
 type Props = {
   lang: "es" | "en";
@@ -74,8 +75,12 @@ export default function FormatExplainModal({ lang }: Props) {
   const titleId = useId();
   const descId = useId();
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const copy = COPY[lang];
+
+  useFocusTrap(dialogRef, open);
 
   useEffect(() => {
     if (!open) return;
@@ -84,7 +89,7 @@ export default function FormatExplainModal({ lang }: Props) {
     document.body.style.overflow = "hidden";
 
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") handleClose();
     };
     window.addEventListener("keydown", onKey);
 
@@ -96,9 +101,15 @@ export default function FormatExplainModal({ lang }: Props) {
     };
   }, [open]);
 
+  function handleClose() {
+    setOpen(false);
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }
+
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
@@ -112,6 +123,7 @@ export default function FormatExplainModal({ lang }: Props) {
 
       {open && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
@@ -120,7 +132,7 @@ export default function FormatExplainModal({ lang }: Props) {
         >
           <div
             className="absolute inset-0 bg-black/55 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
+            onClick={handleClose}
             aria-hidden
           />
           <div
@@ -142,9 +154,9 @@ export default function FormatExplainModal({ lang }: Props) {
               <button
                 ref={closeRef}
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
                 aria-label={copy.close}
-                className="btn-icon h-9 w-9"
+                className="btn-icon h-9 w-9 shrink-0"
               >
                 ×
               </button>
@@ -183,7 +195,7 @@ export default function FormatExplainModal({ lang }: Props) {
               <button
                 type="button"
                 className="btn btn-primary h-10 px-5"
-                onClick={() => setOpen(false)}
+                onClick={handleClose}
               >
                 {copy.close}
               </button>

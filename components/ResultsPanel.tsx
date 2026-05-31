@@ -15,10 +15,25 @@ function CopyIcon({ className }: { className?: string }) {
   );
 }
 
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path fill="currentColor" d="M20.7 5.3a1 1 0 0 1 0 1.4l-11 11a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L9 15.59l10.3-10.3a1 1 0 0 1 1.4 0Z" />
+    </svg>
+  );
+}
+
 function ringColor(score: number) {
   if (score < 50) return "text-red-500";
   if (score < 75) return "text-amber-500";
   return "text-emerald-500";
+}
+
+function qualitativeLabel(score: number, lang: "es" | "en"): string {
+  if (score <= 30) return lang === "es" ? "Débil" : "Weak";
+  if (score <= 60) return lang === "es" ? "Regular" : "Fair";
+  if (score <= 85) return lang === "es" ? "Bueno" : "Good";
+  return lang === "es" ? "Excelente" : "Excellent";
 }
 
 function badgeBaseClass() {
@@ -103,33 +118,33 @@ function headlineHuman(result: any, lang: "es" | "en") {
   if (score >= 85) {
     return lang === "es"
       ? "¡Muy bien! Está claro y debería responder de forma consistente."
-      : "Nice! It’s clear and should respond consistently.";
+      : "Nice! It's clear and should respond consistently.";
   }
 
   if (score >= 70) {
     if (isMissingOutput) {
       return lang === "es"
         ? "Vas por buen camino. Si definís el formato de respuesta (lista, pasos, tabla o JSON), va a ser más preciso."
-        : "You’re close. Defining the output format (bullets, steps, table or JSON) will improve accuracy.";
+        : "You're close. Defining the output format (bullets, steps, table or JSON) will improve accuracy.";
     }
     if (isMissingContext) {
       return lang === "es"
         ? "Vas por buen camino. Si aclarás el contexto (qué querés y con qué información contás), va a responder mejor."
-        : "You’re close. Adding context (goal + available info) will improve the answer.";
+        : "You're close. Adding context (goal + available info) will improve the answer.";
     }
     if (isMissingConstraints) {
       return lang === "es"
         ? "Vas por buen camino. Si marcás límites (tono, largo, qué evitar), vas a lograr respuestas más consistentes."
-        : "You’re close. Adding constraints (tone, length, what to avoid) will make answers more consistent.";
+        : "You're close. Adding constraints (tone, length, what to avoid) will make answers more consistent.";
     }
     if (isTooShort) {
       return lang === "es"
         ? "Vas por buen camino, pero está muy corto. Sumá objetivo + un poco de contexto para que no adivine."
-        : "You’re close, but it’s too short. Add a goal + a bit of context so it doesn’t guess.";
+        : "You're close, but it's too short. Add a goal + a bit of context so it doesn't guess.";
     }
     return lang === "es"
       ? "Vas por buen camino. Con un pequeño ajuste vas a conseguir respuestas más claras."
-      : "You’re close. One small tweak will make the answer clearer.";
+      : "You're close. One small tweak will make the answer clearer.";
   }
 
   if (score >= 50) {
@@ -151,7 +166,7 @@ function headlineHuman(result: any, lang: "es" | "en") {
     if (isTooShort) {
       return lang === "es"
         ? "Buen comienzo, pero está muy corto. Agregá objetivo + contexto para que la IA no complete con suposiciones."
-        : "Good start, but it’s too short. Add a goal + context to reduce assumptions.";
+        : "Good start, but it's too short. Add a goal + context to reduce assumptions.";
     }
     return lang === "es"
       ? "Buen comienzo. Falta una aclaración clave para que la respuesta sea más precisa."
@@ -176,7 +191,7 @@ function headlineHuman(result: any, lang: "es" | "en") {
   if (isTooShort) {
     return lang === "es"
       ? "Está muy corto. Sumá objetivo + contexto para que no tenga que adivinar."
-      : "It’s too short. Add a goal + context so it doesn’t guess.";
+      : "It's too short. Add a goal + context so it doesn't guess.";
   }
 
   return lang === "es"
@@ -184,7 +199,7 @@ function headlineHuman(result: any, lang: "es" | "en") {
     : "It needs more information. Add goal, context, and an output format.";
 }
 
-function QualityRing({ score, label }: { score: number; label: string }) {
+function QualityRing({ score, label, qualLabel }: { score: number; label: string; qualLabel: string }) {
   const size = 132;
   const stroke = 10;
   const radius = (size - stroke) / 2;
@@ -256,6 +271,7 @@ function QualityRing({ score, label }: { score: number; label: string }) {
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <div className="font-title text-3xl font-semibold leading-none">{display}%</div>
         <div className="mt-1 text-xs opacity-70">{label}</div>
+        <div className={["mt-0.5 text-[11px] font-medium", ringColor(clamped)].join(" ")}>{qualLabel}</div>
       </div>
     </div>
   );
@@ -325,17 +341,19 @@ export default function ResultsPanel({
   const closeTokenRef = useRef(0);
   const closeTimerRef = useRef<number | null>(null);
 
-  // ✅ Feedback state
   const [feedbackValue, setFeedbackValue] = useState<"yes" | "no" | null>(null);
   const [feedbackReason, setFeedbackReason] = useState("");
   const [sendingFeedback, setSendingFeedback] = useState(false);
+
+  // Copy button "Copied!" state
+  const [copied, setCopied] = useState(false);
+  const copyTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (result) {
       setVisibleResult(result);
       setIsClosing(false);
 
-      // reset close timer
       if (closeTimerRef.current) {
         window.clearTimeout(closeTimerRef.current);
         closeTimerRef.current = null;
@@ -343,27 +361,27 @@ export default function ResultsPanel({
     }
   }, [result]);
 
-  // ✅ FIX: si cambia el idioma (ej /es -> /en), limpiamos resultado “cacheado”
-  // para evitar mostrar un análisis viejo en el idioma incorrecto.
   useEffect(() => {
     setVisibleResult(null);
     setIsClosing(false);
     setFeedbackValue(null);
     setFeedbackReason("");
     setSendingFeedback(false);
+    setCopied(false);
   }, [lang]);
 
-  // ✅ reset feedback when new analysis arrives (new analysisId)
   const currentAnalysisId = String((visibleResult ?? result)?.meta?.analysisId ?? "");
   useEffect(() => {
     setFeedbackValue(null);
     setFeedbackReason("");
     setSendingFeedback(false);
+    setCopied(false);
   }, [currentAnalysisId]);
 
   useEffect(() => {
     return () => {
       if (closeTimerRef.current) window.clearTimeout(closeTimerRef.current);
+      if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
     };
   }, []);
 
@@ -413,7 +431,12 @@ export default function ResultsPanel({
   async function handleCopy() {
     if (!data?.optimizedPrompt) return;
     await navigator.clipboard.writeText(data.optimizedPrompt);
-    toast.show(lang === "es" ? "Copiado" : "Copied", "success");
+
+    setCopied(true);
+    if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = window.setTimeout(() => setCopied(false), 2200);
+
+    toast.show(lang === "es" ? "¡Copiado!" : "Copied!", "success");
   }
 
   function handleResetClick() {
@@ -483,6 +506,16 @@ export default function ResultsPanel({
 
   const canShowFeedback = String(data?.meta?.analysisId ?? "").trim().length >= 10;
 
+  const qualLabel = qualitativeLabel(data.score ?? 0, lang);
+
+  const optimizedPromptNote =
+    lang === "es"
+      ? "Las líneas del encabezado dan contexto a la IA. Podés conservarlas o copiar solo la tarea si preferís."
+      : "The header lines give context to the AI. You can keep them, or copy only the task if you prefer.";
+
+  const copyLabel = lang === "es" ? "Copiar prompt optimizado" : "Copy optimized prompt";
+  const copiedLabel = lang === "es" ? "¡Copiado!" : "Copied!";
+
   return (
     <div
       className={[
@@ -497,65 +530,11 @@ export default function ResultsPanel({
         </button>
       </div>
 
-      {/* ✅ Feedback (sí/no) */}
-      {canShowFeedback && (
-        <div className="surface-soft p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="text-sm opacity-85">
-            {lang === "es" ? "¿Te sirvió este análisis?" : "Was this analysis helpful?"}
-          </div>
-
-          <div className="flex items-center gap-2 justify-end">
-            <button
-              type="button"
-              className="btn btn-ghost h-9 px-4"
-              disabled={sendingFeedback || feedbackValue !== null}
-              onClick={() => sendFeedback("yes")}
-            >
-              {lang === "es" ? "Sí" : "Yes"}
-            </button>
-
-            <button
-              type="button"
-              className="btn btn-ghost h-9 px-4"
-              disabled={sendingFeedback || feedbackValue !== null}
-              onClick={() => sendFeedback("no")}
-            >
-              {lang === "es" ? "No" : "No"}
-            </button>
-          </div>
-
-          {/* opcional: razón (solo antes de enviar "no") */}
-          {feedbackValue === null && (
-            <div className="w-full sm:max-w-md">
-              <input
-                className="surface-soft w-full px-3 py-2 text-sm rounded-xl border border-white/10 bg-white/5"
-                placeholder={lang === "es" ? "Opcional: ¿qué faltó?" : "Optional: what was missing?"}
-                value={feedbackReason}
-                onChange={(e) => setFeedbackReason(e.target.value)}
-                disabled={sendingFeedback}
-              />
-            </div>
-          )}
-
-          {feedbackValue !== null && (
-            <div className="text-xs opacity-70">
-              {feedbackValue === "yes"
-                ? lang === "es"
-                  ? "Feedback enviado: útil"
-                  : "Feedback sent: helpful"
-                : lang === "es"
-                ? "Feedback enviado: no útil"
-                : "Feedback sent: not helpful"}
-            </div>
-          )}
-        </div>
-      )}
-
       <div className="flex flex-col gap-4 min-[1920px]:grid min-[1920px]:grid-cols-2 min-[1920px]:items-start">
-        {/* LEFT */}
+        {/* LEFT — score + issues + recommendations + strengths + follow-ups */}
         <div className="surface-soft p-4 space-y-5">
           <div className="flex flex-col gap-3 sm:flex-row items-center sm:gap-4">
-            <QualityRing score={data.score ?? 0} label={dict.app.quality} />
+            <QualityRing score={data.score ?? 0} label={dict.app.quality} qualLabel={qualLabel} />
 
             <div className="space-y-2 text-center sm:text-start w-full">
               <div className={["text-sm font-medium", headlineColor].join(" ")}>{headline}</div>
@@ -693,7 +672,7 @@ export default function ResultsPanel({
           )}
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT — optimized prompt */}
         <div className="surface-soft p-4 space-y-2">
           <div className="flex items-center justify-between gap-3">
             <div className="text-sm font-medium text-center sm:text-start">{dict.app.optimized}</div>
@@ -709,24 +688,86 @@ export default function ResultsPanel({
               {formatChoice === "json" ? "JSON" : lang === "es" ? "Checklist" : "Checklist"}
             </span>
           </div>
+
+          {/* Explanatory note */}
+          <p className="text-xs opacity-60 leading-relaxed">{optimizedPromptNote}</p>
+
           <div
             className={[
-              "relative surface-soft p-4 text-sm whitespace-pre-wrap overflow-auto max-h-105 min-[1920px]:max-h-140",
+              "relative surface-soft p-4 text-sm whitespace-pre-wrap overflow-auto max-h-120 min-[1920px]:max-h-160",
               formatChoice === "json" ? "font-mono text-[12px] leading-relaxed" : "",
             ].join(" ")}
           >
             {data.optimizedPrompt}
             <button
               type="button"
-              className="btn-icon absolute bottom-3 right-3 h-9 w-9"
-              aria-label="Copy optimized prompt"
+              className="btn-icon absolute bottom-3 right-3 h-9 w-9 transition-all"
+              aria-label={copied ? copiedLabel : copyLabel}
+              title={copied ? copiedLabel : copyLabel}
               onClick={handleCopy}
             >
-              <CopyIcon className="h-4 w-4" />
+              {copied ? (
+                <CheckIcon className="h-4 w-4 text-emerald-400" />
+              ) : (
+                <CopyIcon className="h-4 w-4" />
+              )}
             </button>
           </div>
         </div>
       </div>
+
+      {/* Feedback — placed after user has seen results */}
+      {canShowFeedback && (
+        <div className="surface-soft p-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="text-sm opacity-85">
+            {lang === "es" ? "¿Te sirvió este análisis?" : "Was this analysis helpful?"}
+          </div>
+
+          {feedbackValue === null ? (
+            <>
+              <div className="flex items-center gap-2 justify-end">
+                <button
+                  type="button"
+                  className="btn btn-ghost h-9 px-4"
+                  disabled={sendingFeedback}
+                  onClick={() => sendFeedback("yes")}
+                >
+                  {lang === "es" ? "Sí" : "Yes"}
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-ghost h-9 px-4"
+                  disabled={sendingFeedback}
+                  onClick={() => sendFeedback("no")}
+                >
+                  {lang === "es" ? "No" : "No"}
+                </button>
+              </div>
+
+              <div className="w-full sm:max-w-md">
+                <input
+                  className="surface-soft w-full px-3 py-2 text-sm rounded-xl border border-white/10 bg-white/5"
+                  placeholder={lang === "es" ? "Opcional: ¿qué faltó?" : "Optional: what was missing?"}
+                  value={feedbackReason}
+                  onChange={(e) => setFeedbackReason(e.target.value)}
+                  disabled={sendingFeedback}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="text-xs opacity-70">
+              {feedbackValue === "yes"
+                ? lang === "es"
+                  ? "Feedback enviado: útil"
+                  : "Feedback sent: helpful"
+                : lang === "es"
+                ? "Feedback enviado: no útil"
+                : "Feedback sent: not helpful"}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="flex justify-center sm:hidden">
         <button type="button" className="btn btn-primary h-10 w-full" onClick={handleResetClick}>
@@ -736,4 +777,3 @@ export default function ResultsPanel({
     </div>
   );
 }
-

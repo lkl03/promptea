@@ -306,9 +306,12 @@ Return CSV with headers.`,
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{title}</h1>
         <p className="opacity-80 text-sm sm:text-base">{subtitle}</p>
 
-        <div className="pt-2 text-xs opacity-70">
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
             {l === "es" ? "← Ver todos los packs" : "← View all packs"}
+          </Link>
+          <Link href={`/${l}`} className="btn btn-primary h-8 px-3 text-xs">
+            {l === "es" ? "Abrir analizador →" : "Open Analyzer →"}
           </Link>
         </div>
       </div>
