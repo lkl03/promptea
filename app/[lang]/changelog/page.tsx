@@ -61,28 +61,28 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
           </li>
           <li>
             {isEs
-              ? "Prompt optimizado mejorado: nota explicativa sobre las líneas de encabezado, mayor altura máxima y confirmación visual al copiar ("¡Copiado!")."
-              : "Improved optimized prompt: explanatory note about header lines, increased max height, and visual "Copied!" confirmation on copy."}
+              ? "Prompt optimizado mejorado: nota explicativa sobre las líneas de encabezado, mayor altura máxima y confirmación visual ¡Copiado! al copiar."
+              : "Improved optimized prompt: explanatory note about header lines, increased max height, and Copied! visual confirmation on copy."}
           </li>
           <li>
             {isEs
-              ? "Badges de cantidad en los packs de prompts (ej: "6 prompts") y CTA "Abrir analizador" en páginas de cada pack."
-              : "Count badges on prompt packs (e.g. "6 prompts") and "Open Analyzer" CTA on each pack subpage."}
+              ? "Badges de cantidad en los packs de prompts (ej: 6 prompts) y CTA Abrir analizador en páginas de cada pack."
+              : "Count badges on prompt packs (e.g. 6 prompts) and Open Analyzer CTA on each pack subpage."}
           </li>
           <li>
             {isEs
-              ? "Trigger "¿Cómo funciona?" rediseñado como badge/pill más visible para usuarios nuevos."
-              : "\"How this works\" trigger redesigned as a more visible badge/pill for new users."}
+              ? "Trigger ¿Cómo funciona? rediseñado como badge/pill más visible para usuarios nuevos."
+              : "How this works trigger redesigned as a more visible badge/pill for new users."}
           </li>
           <li>
             {isEs
-              ? "Footer: separadores | reemplazados por espaciado CSS, landmark <nav>, copyright con formato natural."
-              : "Footer: | separators replaced with CSS gap, <nav> landmark, naturally formatted copyright text."}
+              ? "Footer: separadores | reemplazados por espaciado CSS, landmark nav, copyright con formato natural."
+              : "Footer: | separators replaced with CSS gap, nav landmark, naturally formatted copyright text."}
           </li>
           <li>
             {isEs
-              ? "Nota interna de SEO ("Para acelerar indexación") eliminada de la página pública de Guías."
-              : "Internal SEO note ("To speed up indexing") removed from the public Guides page."}
+              ? "Nota interna de SEO sobre indexación eliminada de la página pública de Guías."
+              : "Internal SEO indexing note removed from the public Guides page."}
           </li>
         </ul>
       </div>
