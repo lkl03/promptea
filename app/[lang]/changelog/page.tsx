@@ -11,6 +11,82 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.1.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.1.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 31-05-2026" : "Released: 2026-05-31"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Navegación persistente: wordmark de Promptea + links a Analizador, Prompts, Guías, Modelos y Glosario en todas las páginas públicas."
+              : "Persistent navigation: Promptea wordmark + links to Analyzer, Prompts, Guides, Models, and Glossary across all public pages."}
+          </li>
+          <li>
+            {isEs
+              ? "Flujo del analizador reordenado: elegís el tipo de prompt antes de escribir, lo que deja claro cuándo los adjuntos están disponibles."
+              : "Reordered analyzer flow: prompt type is selected before writing, making attachment availability clear upfront."}
+          </li>
+          <li>
+            {isEs
+              ? "Contador en vivo de palabras y tokens aproximados mientras escribís el prompt."
+              : "Live word and approximate token counter while writing the prompt."}
+          </li>
+          <li>
+            {isEs
+              ? "Helper de ejemplo: botón para precargar un prompt de muestra con tipo y modelo compatible."
+              : "Example helper: button to prefill a sample prompt with a compatible type and model."}
+          </li>
+          <li>
+            {isEs
+              ? "El estado del formulario (prompt, tipo, modelo, formato) se persiste en sessionStorage y se restaura al cambiar de idioma."
+              : "Form state (prompt, type, model, format) is persisted in sessionStorage and restored on language switch."}
+          </li>
+          <li>
+            {isEs
+              ? "Focus trap en modales: Tab/Shift+Tab quedan dentro del diálogo y el foco vuelve al trigger al cerrar."
+              : "Focus trap in modals: Tab/Shift+Tab stay inside the dialog and focus returns to the trigger on close."}
+          </li>
+          <li>
+            {isEs
+              ? "El feedback de utilidad (Sí/No) se muestra después del contenido completo del análisis, no antes."
+              : "Helpfulness feedback (Yes/No) now appears after the full analysis content, not before."}
+          </li>
+          <li>
+            {isEs
+              ? "Etiqueta cualitativa de calidad en el ring: Débil (0–30), Regular (31–60), Bueno (61–85), Excelente (86–100)."
+              : "Qualitative score label inside the quality ring: Weak (0–30), Fair (31–60), Good (61–85), Excellent (86–100)."}
+          </li>
+          <li>
+            {isEs
+              ? "Prompt optimizado mejorado: nota explicativa sobre las líneas de encabezado, mayor altura máxima y confirmación visual al copiar ("¡Copiado!")."
+              : "Improved optimized prompt: explanatory note about header lines, increased max height, and visual "Copied!" confirmation on copy."}
+          </li>
+          <li>
+            {isEs
+              ? "Badges de cantidad en los packs de prompts (ej: "6 prompts") y CTA "Abrir analizador" en páginas de cada pack."
+              : "Count badges on prompt packs (e.g. "6 prompts") and "Open Analyzer" CTA on each pack subpage."}
+          </li>
+          <li>
+            {isEs
+              ? "Trigger "¿Cómo funciona?" rediseñado como badge/pill más visible para usuarios nuevos."
+              : "\"How this works\" trigger redesigned as a more visible badge/pill for new users."}
+          </li>
+          <li>
+            {isEs
+              ? "Footer: separadores | reemplazados por espaciado CSS, landmark <nav>, copyright con formato natural."
+              : "Footer: | separators replaced with CSS gap, <nav> landmark, naturally formatted copyright text."}
+          </li>
+          <li>
+            {isEs
+              ? "Nota interna de SEO ("Para acelerar indexación") eliminada de la página pública de Guías."
+              : "Internal SEO note ("To speed up indexing") removed from the public Guides page."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.1.1 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
