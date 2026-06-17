@@ -5,7 +5,7 @@ import AdSlot from "@/components/AdSlot";
 import PromptOfTheDay from "@/components/PromptOfTheDay";
 import HowItWorks from "@/components/HowItWorks";
 
-type TargetValue = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek";
+type TargetValue = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek" | "perplexity";
 
 // ✅ IMPORTANT: este type tiene que matchear el que usa PromptBox (usa "data", no "data_json")
 type PromptPurpose = "text" | "study" | "code" | "data" | "image" | "marketing";
@@ -25,7 +25,7 @@ function safeDecode(v: string) {
 
 function normalizeTarget(v: string | null): TargetValue | undefined {
   const x = (v ?? "").toLowerCase().trim();
-  const allowed: TargetValue[] = ["gpt", "gemini", "grok", "claude", "kimi", "deepseek"];
+  const allowed: TargetValue[] = ["gpt", "gemini", "grok", "claude", "kimi", "deepseek", "perplexity"];
   return allowed.includes(x as any) ? (x as TargetValue) : undefined;
 }
 
