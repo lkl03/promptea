@@ -31,8 +31,8 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
           </li>
           <li>
             {isEs
-              ? "Capa adaptativa Groq (opcional): si configurás GROQ_API_KEY en el servidor, el analizador refina el prompt optimizado con LLM. Si Groq no está disponible o falla, la app usa el motor determinístico sin cambios visibles."
-              : "Optional Groq adaptive layer: when GROQ_API_KEY is set server-side, the analyzer refines the optimized prompt with LLM. If Groq is unavailable or fails, the app silently falls back to the deterministic engine."}
+              ? "Capa adaptativa: el analizador refina el prompt optimizado con LLM."
+              : "Adaptive layer: the analyzer refines the optimized prompt with LLM."}
           </li>
           <li>
             {isEs
