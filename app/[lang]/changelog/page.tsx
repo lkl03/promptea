@@ -11,6 +11,42 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.1.3 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.1.3</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 17-06-2026" : "Released: 2026-06-17"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Registro de modelos actualizado con los últimos modelos de OpenRouter: GPT-5.5 y GPT-5.5 Pro, Claude Fable 5 y Opus 4.8, Gemini 3.5 Flash, Grok 4.3 y Grok Build 0.1, DeepSeek V4 Pro y Flash."
+              : "Model registry updated with the latest OpenRouter models: GPT-5.5 and GPT-5.5 Pro, Claude Fable 5 and Opus 4.8, Gemini 3.5 Flash, Grok 4.3 and Grok Build 0.1, DeepSeek V4 Pro and Flash."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevo proveedor Perplexity (Sonar Pro y Sonar Reasoning Pro): soporte completo como target con hints de motor, agrupación en UI y optimización de prompts orientada a búsqueda web en tiempo real."
+              : "New Perplexity provider (Sonar Pro and Sonar Reasoning Pro): full target support with engine hints, UI grouping, and prompt optimization tailored for real-time web search."}
+          </li>
+          <li>
+            {isEs
+              ? "Capa adaptativa Groq (opcional): si configurás GROQ_API_KEY en el servidor, el analizador refina el prompt optimizado con LLM. Si Groq no está disponible o falla, la app usa el motor determinístico sin cambios visibles."
+              : "Optional Groq adaptive layer: when GROQ_API_KEY is set server-side, the analyzer refines the optimized prompt with LLM. If Groq is unavailable or fails, the app silently falls back to the deterministic engine."}
+          </li>
+          <li>
+            {isEs
+              ? "Fix: el botón 'Probar este prompt' / 'Try this prompt' ya no puede resetear el estado del analizador cuando hay un resultado visible, un análisis en curso o archivos cargándose."
+              : "Fix: the 'Probar este prompt' / 'Try this prompt' button can no longer reset analyzer state while a result is visible, an analysis is pending, or files are loading."}
+          </li>
+          <li>
+            {isEs
+              ? "El encabezado del prompt optimizado ahora indica v1.1.3 (PROMPTEA: v1.1.3)."
+              : "The optimized prompt header now shows v1.1.3 (PROMPTEA: v1.1.3)."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.1.2 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

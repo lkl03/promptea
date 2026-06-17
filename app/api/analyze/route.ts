@@ -4,6 +4,7 @@ import { AnalyzeSchema } from "@/lib/validators";
 import { analyzePrompt } from "@/lib/analyzePrompt";
 import { upsertAnalysisEvent } from "@/lib/telemetry/server";
 import { normalizeAnalyzeAttachments } from "@/lib/attachments";
+import { adaptPromptWithGroq, isGroqEnabled } from "@/lib/llm/groq";
 
 export const runtime = "nodejs";
 
@@ -80,6 +81,21 @@ export async function POST(req: NextRequest) {
   });
   const analysisId = randomUUID();
 
+  // Optional adaptive layer: refine the deterministic optimized prompt via Groq.
+  // Falls back to the deterministic prompt on any error, timeout, or missing key.
+  let adaptiveResult: Awaited<ReturnType<typeof adaptPromptWithGroq>> | null = null;
+  if (isGroqEnabled() && result.optimizedPrompt) {
+    adaptiveResult = await adaptPromptWithGroq({
+      originalPrompt: prompt,
+      optimizedPrompt: result.optimizedPrompt,
+      model: target,
+      purpose: result.meta?.purpose ?? purpose,
+      taskType: result.meta?.taskType ?? "text",
+      language: lang,
+      modelId,
+    }).catch(() => null);
+  }
+
   const attachmentKinds = [...new Set(attachments.map((file: any) => String(file.kind)).filter(Boolean))];
   const attachmentExts = [...new Set(attachments.map((file: any) => String(file.ext)).filter(Boolean))];
   const attachmentMimes = [...new Set(attachments.map((file: any) => String(file.mime)).filter(Boolean))];
@@ -135,8 +151,13 @@ export async function POST(req: NextRequest) {
     }
   });
 
+  const finalOptimizedPrompt = adaptiveResult?.adaptiveFallback === false
+    ? adaptiveResult.optimizedPrompt
+    : result.optimizedPrompt;
+
   const payload = {
     ...result,
+    optimizedPrompt: finalOptimizedPrompt,
     meta: {
       ...(result.meta ?? {}),
       analysisId,
@@ -145,6 +166,9 @@ export async function POST(req: NextRequest) {
         ext: file.ext ?? null,
         mime: file.mime ?? null,
       })),
+      adaptiveEngine: adaptiveResult?.adaptiveEngine ?? null,
+      adaptiveFallback: adaptiveResult?.adaptiveFallback ?? true,
+      adaptiveReason: adaptiveResult?.adaptiveReason ?? (isGroqEnabled() ? undefined : "groq_disabled"),
     },
   };
 

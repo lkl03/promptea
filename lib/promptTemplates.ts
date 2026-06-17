@@ -1,6 +1,6 @@
 // lib/promptTemplates.ts
 export type Lang = "es" | "en";
-export type TargetAI = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek";
+export type TargetAI = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek" | "perplexity";
 
 export type TaskType =
   | "coding"
@@ -35,6 +35,8 @@ export function modelLabel(target: TargetAI) {
       return "Kimi";
     case "deepseek":
       return "Deepseek";
+    case "perplexity":
+      return "Perplexity";
   }
 }
 
@@ -158,6 +160,10 @@ export function targetTip(target: TargetAI, lang: Lang) {
       return es
         ? "Grok funciona mejor si definís el tono y cuán directo querés que sea."
         : "Grok works best if you define tone and how direct you want it.";
+    case "perplexity":
+      return es
+        ? "Perplexity tiene acceso web en tiempo real. Pedí fuentes o aclará si necesitás info reciente."
+        : "Perplexity has real-time web access. Ask for sources or specify recency if freshness matters.";
     default:
       return es
         ? "GPT mejora si separás objetivo, contexto y formato en secciones cortas."

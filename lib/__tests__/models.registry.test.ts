@@ -10,7 +10,7 @@ import {
 
 describe("models registry", () => {
   test("includes all current target groups", () => {
-    const targets = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek"] as const;
+    const targets = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek", "perplexity"] as const;
     for (const t of targets) {
       const group = TARGET_GROUPS.find((g) => g.target === t);
       expect(group).toBeDefined();
@@ -18,7 +18,7 @@ describe("models registry", () => {
   });
 
   test("every target has at least one model in the registry", () => {
-    const targets = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek"] as const;
+    const targets = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek", "perplexity"] as const;
     for (const t of targets) {
       const models = getModelsForTarget(t);
       expect(models.length).toBeGreaterThan(0);

@@ -24,6 +24,18 @@ export default function PromptOfTheDay({ lang, initialDate }: Props) {
     setMounted(true);
   }, []);
 
+  // Track analyzer locked state broadcast by PromptBox so the CTA is
+  // hidden while a result is shown, analysis is pending, or files are loading.
+  const [analyzerLocked, setAnalyzerLocked] = useState(false);
+  useEffect(() => {
+    function handleLockChange(e: Event) {
+      const detail = (e as CustomEvent<{ locked: boolean }>).detail;
+      if (typeof detail?.locked === "boolean") setAnalyzerLocked(detail.locked);
+    }
+    window.addEventListener("promptea:locked-change", handleLockChange);
+    return () => window.removeEventListener("promptea:locked-change", handleLockChange);
+  }, []);
+
   const today = useMemo(() => initialDate ?? new Date(), [initialDate]);
   const daily: DailyPrompt = useMemo(() => getDailyPrompt(today), [today]);
 
@@ -33,6 +45,9 @@ export default function PromptOfTheDay({ lang, initialDate }: Props) {
 
   function handleTry() {
     if (typeof window === "undefined") return;
+    // Extra guard: the PromptBox handler also ignores this when locked,
+    // but we also hide the button so the UX is clear.
+    if (analyzerLocked) return;
     const event = new CustomEvent("promptea:set-prompt", {
       detail: {
         prompt: daily.prompt[lang],
@@ -85,16 +100,18 @@ export default function PromptOfTheDay({ lang, initialDate }: Props) {
 {daily.prompt[lang]}
         </pre>
 
-        <div className="mt-3 flex items-center justify-end">
-          <button
-            type="button"
-            onClick={handleTry}
-            className="btn btn-primary h-9 text-xs"
-            aria-label={tryLabel}
-          >
-            {tryLabel}
-          </button>
-        </div>
+        {!analyzerLocked && (
+          <div className="mt-3 flex items-center justify-end">
+            <button
+              type="button"
+              onClick={handleTry}
+              className="btn btn-primary h-9 text-xs"
+              aria-label={tryLabel}
+            >
+              {tryLabel}
+            </button>
+          </div>
+        )}
       </div>
     </details>
   );

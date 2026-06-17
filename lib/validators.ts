@@ -23,7 +23,7 @@ export const AttachmentInputSchema = z.object({
 
 export const AnalyzeSchema = z.object({
   prompt: z.string().min(1).max(20000),
-  target: z.enum(["gpt", "gemini", "grok", "claude", "kimi", "deepseek"]),
+  target: z.enum(["gpt", "gemini", "grok", "claude", "kimi", "deepseek", "perplexity"]),
   lang: z.enum(["es", "en"]),
   sessionId: z.string().min(10),
   purpose: PurposeSchema,

@@ -2,7 +2,7 @@ import type { Lang, TargetAI } from "../promptTemplates";
 import type { TaskType, PromptPurpose } from "./types";
 import type { AttachmentContext } from "@/lib/attachments";
 
-const DEFAULT_PROMPTEA_PROMPT_VERSION = "1.1";
+const DEFAULT_PROMPTEA_PROMPT_VERSION = "1.1.3";
 
 type BuilderPurpose = PromptPurpose | "translation" | "summarization";
 
@@ -355,6 +355,20 @@ function targetHints(target: TargetAI, lang: Lang) {
           "Ask for a hierarchical synthesis when the material is long.",
         ])
       );
+    case "perplexity":
+      return t(
+        lang,
+        bullet([
+          "Perplexity tiene acceso web en tiempo real: pedí fuentes explícitas cuando la actualidad importe.",
+          "Indicá el año o periodo si querés resultados recientes (ej: 'desde 2024').",
+          "Para research, pedí diferenciación entre hechos verificados e inferencias.",
+        ]),
+        bullet([
+          "Perplexity has real-time web access: ask for explicit sources when recency matters.",
+          "Specify a year or date range if you need recent results (e.g., 'since 2024').",
+          "For research, ask it to distinguish verified facts from inferences.",
+        ])
+      );
     default:
       return t(
         lang,
@@ -692,6 +706,32 @@ function targetSpecificOutput(target: TargetAI, purpose: BuilderPurpose, task: C
         [
           "Split long context into blocks and mark what is most important.",
           "Ask it to prioritize primary source material over secondary context.",
+        ]
+      );
+
+    case "perplexity":
+      if (task === "research") {
+        return t(
+          lang,
+          [
+            "Pedí que cite fuentes con URL cuando pueda.",
+            "Especificá el año o período para focalizar la búsqueda en resultados recientes.",
+          ],
+          [
+            "Ask it to cite sources with URLs when available.",
+            "Specify a year or date range to focus the search on recent results.",
+          ]
+        );
+      }
+      return t(
+        lang,
+        [
+          "Pedí fuentes explícitas si la veracidad o actualidad es crítica.",
+          "Especificá si querés resumen ejecutivo, técnico o con comparaciones.",
+        ],
+        [
+          "Ask for explicit sources if accuracy or recency is critical.",
+          "Specify whether you want an executive summary, technical breakdown, or comparison.",
         ]
       );
 

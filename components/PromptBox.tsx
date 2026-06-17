@@ -24,7 +24,7 @@ import {
 type Dict = any;
 
 const TARGETS = TARGET_GROUPS.map((g) => ({ value: g.target, label: g.label })) as ReadonlyArray<{
-  value: "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek";
+  value: "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek" | "perplexity";
   label: string;
 }>;
 
@@ -221,8 +221,21 @@ export default function PromptBox({
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const lockedRef = useRef(false);
 
   const locked = !!result || isPending || isReadingFiles;
+
+  // Keep lockedRef in sync so event handlers created in effects see the latest value.
+  useEffect(() => {
+    lockedRef.current = locked;
+  }, [locked]);
+
+  // Broadcast locked-state changes so sibling components (e.g. PromptOfTheDay)
+  // can disable their CTA buttons without prop-drilling.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.dispatchEvent(new CustomEvent("promptea:locked-change", { detail: { locked } }));
+  }, [locked]);
   const canAnalyze = useMemo(
     () => prompt.trim().length > 0 && !!purpose && !!target,
     [prompt, purpose, target]
@@ -293,9 +306,14 @@ export default function PromptBox({
   }, [target, modelId, submodels]);
 
   // Listen for external "load this prompt" requests (e.g. Prompt of the Day).
+  // Guard: silently ignore the event while the UI is locked (result exists,
+  // analysis is pending, or files are being read) to prevent stale state resets.
   useEffect(() => {
     type Detail = { prompt?: string; target?: TargetValue; purpose?: PromptPurpose };
     function handler(event: Event) {
+      // Use lockedRef so this closure always sees the current locked state.
+      if (lockedRef.current) return;
+
       const detail = (event as CustomEvent<Detail>).detail ?? {};
       setResult(null);
       setError(null);

@@ -4,6 +4,36 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.1.3 — 2026-06-17
+
+### Added
+- Updated model registry with the latest frontier models from OpenRouter:
+  - **OpenAI**: GPT-5.5, GPT-5.5 Pro (added alongside existing GPT-4.1, GPT-4o, o3)
+  - **Anthropic**: Claude Fable 5, Claude Opus 4.8 (added alongside existing Sonnet, Opus, Haiku)
+  - **Google**: Gemini 3.5 Flash (added alongside existing Gemini Pro, Flash)
+  - **xAI**: Grok 4.3, Grok Build 0.1 (added alongside existing Grok)
+  - **DeepSeek**: DeepSeek V4 Pro, DeepSeek V4 Flash (added alongside existing DeepSeek Chat)
+  - **Perplexity** *(new provider)*: Sonar Pro, Sonar Reasoning Pro — with full target support, engine hints, and UI grouping
+- Added `openRouterId` field to `ModelEntry` for new models to make OpenRouter IDs explicit
+- Added `"search"` strength tag for search-augmented models (Perplexity Sonar)
+- Groq adaptive prompt layer: when `GROQ_API_KEY` is set server-side, the `/api/analyze` endpoint refines the deterministic optimized prompt using Groq LLM. The Promptea header (`PROMPTEA: v1.1.3 / MODEL / PURPOSE / TASK_TYPE`) is always preserved and repaired if Groq removes it. Falls back transparently to the deterministic prompt on any error, timeout, invalid JSON, or missing key — no user-facing crash.
+- Optimized prompt header now uses `v1.1.3` (`PROMPTEA: v1.1.3`)
+- New env variables: `GROQ_API_KEY` (server-only, enables adaptive layer) and optional `GROQ_MODEL` (override inference model, defaults to `llama-3.3-70b-versatile`)
+
+### Fixed
+- **"Probar este prompt" / "Try this prompt" locked-state bug**: the `promptea:set-prompt` event handler in `PromptBox` now uses a `lockedRef` to guard against stale closures. The handler silently ignores the event while a result is shown, analysis is pending, or files are being read — preventing `setResult(null)` from resetting state unexpectedly. `PromptOfTheDay` now also hides its CTA button while the analyzer is locked, via a new `promptea:locked-change` broadcast event from `PromptBox`.
+
+### Improved
+- Engine version bumped to reflect new prompt scaffold version (`PROMPTEA: v1.1.3`)
+- Adaptive prompt metadata (`adaptiveEngine`, `adaptiveFallback`, `adaptiveReason`) included in analyze response for observability
+
+### Validated
+- `npm run lint` — passes
+- `npm run build` — passes
+- `npm test` — all existing tests pass; new tests added for model registry, header invariant, and Groq fallback behavior
+
+---
+
 ## v1.1.2 — 2026-05-31
 
 ### Fixed
