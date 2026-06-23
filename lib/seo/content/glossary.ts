@@ -338,6 +338,84 @@ Devolvé:
     },
     faq: [],
   },
+  {
+    slug: "zero-shot",
+    title: { en: "Zero-shot prompting", es: "Zero-shot prompting" },
+    description: { en: "Getting a result without providing any examples.", es: "Obtener un resultado sin dar ningún ejemplo." },
+    body: {
+      en: [
+        "Zero-shot means you rely entirely on the model's pretrained knowledge and your instruction—no examples included.",
+        "It works well for simple, well-defined tasks. For precise formatting or edge-case behavior, move to few-shot (1–5 examples).",
+      ],
+      es: [
+        "Zero-shot significa que dependés completamente del conocimiento preentrenado del modelo y tu instrucción, sin ejemplos.",
+        "Funciona bien en tareas simples y bien definidas. Para formato preciso o casos límite, pasá a few-shot (1–5 ejemplos).",
+      ],
+    },
+    example: {
+      purpose: "text",
+      target: "gpt",
+      prompt: {
+        en: `Classify the sentiment of this review as Positive, Negative, or Neutral. Reply with one word only.
+
+Review: """[paste]"""`,
+        es: `Clasificá el sentimiento de esta reseña como Positivo, Negativo o Neutral. Respondé con una sola palabra.
+
+Reseña: """[pegá]"""`,
+      },
+    },
+    faq: [
+      {
+        q: { en: "When should I move from zero-shot to few-shot?", es: "¿Cuándo paso de zero-shot a few-shot?" },
+        a: {
+          en: "When outputs are inconsistent in format or miss edge cases. Start with 1–2 examples and add more only if the problem persists.",
+          es: "Cuando los outputs son inconsistentes en formato o fallan en casos límite. Arrancá con 1–2 ejemplos y sumá más solo si el problema persiste.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "context-window",
+    title: { en: "Context window", es: "Ventana de contexto" },
+    description: { en: "The maximum amount of text a model can process in a single call.", es: "La cantidad máxima de texto que un modelo puede procesar en una sola llamada." },
+    body: {
+      en: [
+        "Context window is measured in tokens (roughly ¾ of a word each). Once the limit is reached, older content is silently dropped or the call fails.",
+        "Practical rule: paste only the relevant excerpt, not the entire file. Summarizing earlier conversation also saves tokens.",
+      ],
+      es: [
+        "La ventana de contexto se mide en tokens (aprox. ¾ de una palabra cada uno). Al alcanzar el límite, el contenido más viejo se descarta silenciosamente o la llamada falla.",
+        "Regla práctica: pegá solo el extracto relevante, no el archivo completo. Resumir la conversación anterior también ahorra tokens.",
+      ],
+    },
+    example: {
+      purpose: "summarization",
+      target: "claude",
+      prompt: {
+        en: `I have a long document. Here is only the most relevant section for this task.
+
+Section:
+"""[paste the excerpt, not the full document]"""
+
+Task: [what to do with this section]`,
+        es: `Tengo un documento largo. Acá está solo la sección más relevante para esta tarea.
+
+Sección:
+"""[pegá el extracto, no el documento completo]"""
+
+Tarea: [qué hacer con esta sección]`,
+      },
+    },
+    faq: [
+      {
+        q: { en: "What happens when I hit the context limit?", es: "¿Qué pasa cuando llego al límite de contexto?" },
+        a: {
+          en: "The model either truncates earlier content silently or returns an error. Stay well under the limit by being selective about what you include.",
+          es: "El modelo trunca contenido anterior silenciosamente o devuelve un error. Quedate bien por debajo del límite siendo selectivo con lo que incluís.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
