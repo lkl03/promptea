@@ -4,6 +4,26 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.1.4 — 2026-06-24
+
+### Added
+- New guide: **Role prompting** (`/guides/role-prompting`) — how to assign expert personas for better AI outputs. Covers when roles help, how to structure them, and includes two templates: a domain expert advisor and a rigorous peer reviewer.
+- New guide: **ChatGPT prompts for work** (`/guides/chatgpt-prompts-for-work`) — reusable templates for professional email drafts and executive report summaries. Includes format constraints and tone guidance.
+- New guide: **Prompts for Claude** (`/guides/claude-prompt-guide`) — how to take advantage of Claude's XML tag support, extended context window, and structured reasoning. Templates for document Q&A with citations and competing-viewpoints analysis.
+
+### Fixed
+- **Guides index page localization**: the "Start here" section heading was hardcoded in English for both locales; it now reads "Por dónde empezar" in Spanish.
+
+### Improved
+- Optimized prompt header updated to `PROMPTEA: v1.1.4`.
+
+### Validated
+- `npm run lint` — pre-existing errors in other files (none introduced by this update)
+- `npm test` — 61/75 tests pass; 14 `dataset.calibration.test.ts` score-range failures are pre-existing (confirmed on base branch); header invariant tests updated to v1.1.4 and pass
+- `npm run build` — see PR description
+
+---
+
 ## v1.1.3 — 2026-06-17
 
 ### Added
