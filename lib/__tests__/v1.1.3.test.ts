@@ -82,23 +82,23 @@ describe("models registry — v1.1.3", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Prompt header invariant — must start with PROMPTEA: v1.1.3
+// Prompt header invariant — must start with PROMPTEA: v1.1.4
 // ---------------------------------------------------------------------------
 
-describe("optimized prompt header — v1.1.3 invariant", () => {
+describe("optimized prompt header — v1.1.4 invariant", () => {
   const targets = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek", "perplexity"] as const;
 
   for (const target of targets) {
-    test(`${target}: optimized prompt starts with PROMPTEA: v1.1.3`, () => {
+    test(`${target}: optimized prompt starts with PROMPTEA: v1.1.4`, () => {
       const r = analyzePrompt("Write a summary of this document for my team.", target, "en", "text");
-      expect(r.optimizedPrompt).toMatch(/^PROMPTEA:\s*v1\.1\.3/i);
+      expect(r.optimizedPrompt).toMatch(/^PROMPTEA:\s*v1\.1\.4/i);
     });
   }
 
   test("optimized prompt always has MODEL, PURPOSE, TASK_TYPE lines after PROMPTEA", () => {
     const r = analyzePrompt("Corregí este bug en mi app de React.", "gpt", "es", "code");
     const lines = r.optimizedPrompt.split("\n");
-    expect(lines[0]).toMatch(/^PROMPTEA:\s*v1\.1\.3/i);
+    expect(lines[0]).toMatch(/^PROMPTEA:\s*v1\.1\.4/i);
     expect(lines[1]).toMatch(/^MODEL:/i);
     expect(lines[2]).toMatch(/^PURPOSE:/i);
     expect(lines[3]).toMatch(/^TASK_TYPE:/i);
@@ -106,7 +106,7 @@ describe("optimized prompt header — v1.1.3 invariant", () => {
 
   test("perplexity target produces valid header", () => {
     const r = analyzePrompt("Research the latest AI models released in 2026.", "perplexity", "en", "text");
-    expect(r.optimizedPrompt).toMatch(/^PROMPTEA:\s*v1\.1\.3/i);
+    expect(r.optimizedPrompt).toMatch(/^PROMPTEA:\s*v1\.1\.4/i);
     expect(r.optimizedPrompt).toContain("MODEL: PERPLEXITY");
     expect(r.optimizedPrompt).toContain("PURPOSE: text");
   });

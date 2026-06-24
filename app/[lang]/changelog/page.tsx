@@ -11,6 +11,42 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.1.4 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.1.4</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 24-06-2026" : "Released: 2026-06-24"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Role prompting — cómo asignar personas de experto para mejores respuestas, con templates de asesor y revisor."
+              : "New guide: Role prompting — how to assign expert personas for better outputs, with advisor and reviewer templates."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de ChatGPT para el trabajo — templates para email profesional y resumen ejecutivo, con restricciones de formato."
+              : "New guide: ChatGPT prompts for work — professional email and executive summary templates with format constraints."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para Claude — XML tags, contexto extendido y razonamiento estructurado, con templates de Q&A con citas y análisis con perspectivas opuestas."
+              : "New guide: Prompts for Claude — XML tags, extended context, and structured reasoning, with document Q&A and competing-viewpoints templates."}
+          </li>
+          <li>
+            {isEs
+              ? "Fix: el heading 'Start here' en la página índice de Guías ahora está localizado ('Por dónde empezar' en español)."
+              : "Fix: the 'Start here' heading on the Guides index page is now properly localized in Spanish ('Por dónde empezar')."}
+          </li>
+          <li>
+            {isEs
+              ? "Versión del prompt optimizado actualizada a v1.1.4 (PROMPTEA: v1.1.4)."
+              : "Optimized prompt version updated to v1.1.4 (PROMPTEA: v1.1.4)."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.1.3 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

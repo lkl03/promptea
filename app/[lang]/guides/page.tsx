@@ -53,7 +53,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
 
       {/* ✅ SEO body content */}
       <section className="mt-10 surface p-5">
-        <h2 className="text-sm font-medium">{l === "es" ? "Start here" : "Start here"}</h2>
+        <h2 className="text-sm font-medium">{l === "es" ? "Por dónde empezar" : "Start here"}</h2>
         <div className="mt-2 space-y-2 text-sm opacity-85">
           <p>
             {l === "es"

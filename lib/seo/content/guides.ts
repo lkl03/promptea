@@ -657,6 +657,415 @@ Notas:
       },
     ],
   },
+  {
+    slug: "role-prompting",
+    title: {
+      en: "Role prompting: how to assign personas for better AI outputs",
+      es: "Role prompting: cómo asignar personas para mejores respuestas de la IA",
+    },
+    description: {
+      en: "Use expert roles to unlock specialized behavior in any AI model — and avoid the common mistake of vague titles that change nothing.",
+      es: "Usá roles de experto para obtener comportamientos especializados de cualquier modelo de IA — y evitá el error de títulos vagos que no cambian nada.",
+    },
+    sections: [
+      {
+        heading: { en: "When role prompting helps", es: "Cuándo ayuda el role prompting" },
+        bullets: {
+          en: [
+            "When you need domain-specific language: legal, medical, engineering, finance.",
+            "When the default tone is too generic or too casual for your audience.",
+            "When you want consistent behavior across a multi-turn conversation.",
+            "When you want the model to flag uncertainty instead of inventing answers.",
+          ],
+          es: [
+            "Cuando necesitás lenguaje de dominio: legal, médico, ingeniería, finanzas.",
+            "Cuando el tono genérico es demasiado vago o informal para tu audiencia.",
+            "Cuando querés comportamiento consistente en una conversación multi-turno.",
+            "Cuando querés que el modelo marque incertidumbre en vez de inventar respuestas.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to structure an effective role", es: "Cómo estructurar un rol efectivo" },
+        bullets: {
+          en: [
+            "Define who the model is, what it knows, and how it communicates.",
+            "Add constraints: what it won't do, what depth of detail it gives.",
+            "Avoid vague titles like 'expert' — specify the domain, years of experience, and context.",
+            "Test the role: give a task and check if the persona is consistent in the response.",
+          ],
+          es: [
+            "Definí quién es el modelo, qué sabe y cómo comunica.",
+            "Agregá restricciones: qué no hace, qué nivel de detalle da.",
+            "Evitá títulos vagos como 'experto' — especificá el dominio, años de experiencia y contexto.",
+            "Probá el rol: dá una tarea y verificá si la persona es consistente en la respuesta.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Domain expert advisor", es: "Asesor experto de dominio" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Role: You are a senior [domain, e.g. software engineer / tax consultant / UX researcher] with 10+ years of experience working with [context, e.g. early-stage startups / regulated industries].
+Audience: [who you are advising]
+Style: [direct / formal / simplified — pick one]
+Constraints:
+- Avoid jargon unless I ask for it.
+- Flag when something is outside your domain instead of guessing.
+- If the question is unclear, ask one clarifying question before answering.
+
+Task:
+[your question or request]`,
+          es: `Rol: Sos un/a [dominio, ej. ingeniero de software senior / consultor tributario / investigador de UX] con 10+ años de experiencia trabajando con [contexto, ej. startups en etapa temprana / industrias reguladas].
+Audiencia: [a quién estás asesorando]
+Estilo: [directo / formal / simplificado — elegí uno]
+Restricciones:
+- Evitá la jerga salvo que la pida.
+- Avisá cuando algo está fuera de tu dominio en vez de adivinar.
+- Si la pregunta no está clara, hacé una pregunta de aclaración antes de responder.
+
+Tarea:
+[tu pregunta o pedido]`,
+        },
+      },
+      {
+        title: { en: "Rigorous peer reviewer", es: "Revisor riguroso" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Role: You are a rigorous peer reviewer with deep expertise in [field].
+Your job: find weaknesses, gaps, and unsupported assumptions — not validate what already works.
+Rules:
+- Be specific: name the exact line, paragraph, or claim that fails.
+- No generic praise. If something is solid, skip it and move on.
+- End with three concrete changes that would make this stronger.
+
+Content to review:
+"""[paste]"""`,
+          es: `Rol: Sos un revisor riguroso con experiencia profunda en [campo].
+Tu trabajo: encontrar debilidades, huecos y supuestos sin respaldo — no validar lo que ya funciona.
+Reglas:
+- Sé específico: nombrá la línea, párrafo o afirmación exacta que falla.
+- Cero elogios genéricos. Si algo está sólido, saltealo y seguí.
+- Terminá con tres cambios concretos que mejorarían esto.
+
+Contenido a revisar:
+"""[pegá]"""`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Does adding a role actually change the output quality?", es: "¿Agregar un rol realmente cambia la calidad del output?" },
+        a: {
+          en: "Only if the role adds real constraints. 'Act as an expert' without specifics gives the same output as no role. The specifics (domain, style, constraints) are what steer the model.",
+          es: "Solo si el rol agrega restricciones reales. 'Actuá como experto' sin especificidades da el mismo output que sin rol. Los detalles (dominio, estilo, restricciones) son lo que guía al modelo.",
+        },
+      },
+      {
+        q: { en: "Can I use roles for every task?", es: "¿Puedo usar roles para cualquier tarea?" },
+        a: {
+          en: "Not always useful. Simple tasks like formatting or translation don't need a persona. Roles help most in advisory, review, or domain-specific writing tasks where tone and expertise matter.",
+          es: "No siempre sirve. Tareas simples como formatear o traducir no necesitan persona. Los roles ayudan más en asesoría, revisión o escritura de dominio donde el tono y la experiencia importan.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "chatgpt-prompts-for-work",
+    title: {
+      en: "ChatGPT prompts for work: email, reports, and meeting templates",
+      es: "Prompts de ChatGPT para el trabajo: email, reportes y reuniones",
+    },
+    description: {
+      en: "Reusable ChatGPT prompt templates for common workplace tasks — built to avoid the vague instructions that produce generic, padded output.",
+      es: "Plantillas reutilizables para tareas laborales cotidianas con ChatGPT — diseñadas para evitar instrucciones vagas que producen output genérico.",
+    },
+    sections: [
+      {
+        heading: { en: "Why work prompts fail", es: "Por qué fallan los prompts de trabajo" },
+        bullets: {
+          en: [
+            "Missing context: the model doesn't know your company, audience, or relationship with the recipient.",
+            "No format constraint: 'write an email' defaults to 300 words when you need 5 sentences.",
+            "No tone guidance: formal vs. casual vs. assertive produces very different output.",
+            "No length cap: without one, the model defaults to comprehensive over useful.",
+          ],
+          es: [
+            "Sin contexto: el modelo no sabe tu empresa, audiencia ni tu relación con el destinatario.",
+            "Sin restricción de formato: 'escribí un email' produce 300 palabras cuando necesitás 5 oraciones.",
+            "Sin guía de tono: formal vs casual vs asertivo produce output muy diferente.",
+            "Sin tope de longitud: sin uno, el modelo prioriza lo comprehensivo sobre lo útil.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Parameters that make work prompts consistent", es: "Parámetros que hacen los prompts de trabajo consistentes" },
+        bullets: {
+          en: [
+            "Recipient: who is reading and what do they care about most?",
+            "Goal: one clear action you want from the reader.",
+            "Tone: match the company culture and the relationship level.",
+            "Hard length limit: '3 paragraphs max', '5 bullets', '<= 150 words'.",
+            "What to avoid: filler phrases, passive voice, generic openers.",
+          ],
+          es: [
+            "Destinatario: ¿quién lee y qué le importa más?",
+            "Objetivo: una acción clara que querés del lector.",
+            "Tono: que coincida con la cultura de la empresa y el nivel de la relación.",
+            "Límite de longitud duro: 'máximo 3 párrafos', '5 bullets', '<= 150 palabras'.",
+            "Qué evitar: frases de relleno, voz pasiva, openers genéricos.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Professional email draft", es: "Borrador de email profesional" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Write a professional email.
+
+Recipient: [name / role / relationship, e.g. client I've worked with for 2 years]
+Goal: [one thing you want them to do]
+Key points (max 3):
+- [point 1]
+- [point 2]
+- [point 3]
+Tone: [formal / casual / assertive]
+Length: <= 150 words, 3 paragraphs.
+Avoid: filler phrases, passive voice, generic opener like "I hope this finds you well."
+Subject line: suggest one.`,
+          es: `Escribí un email profesional.
+
+Destinatario: [nombre / rol / relación, ej. cliente con quien trabajo hace 2 años]
+Objetivo: [una cosa que querés que haga]
+Puntos clave (máx 3):
+- [punto 1]
+- [punto 2]
+- [punto 3]
+Tono: [formal / casual / asertivo]
+Largo: <= 150 palabras, 3 párrafos.
+Evitar: frases de relleno, voz pasiva, apertura genérica como "Espero que te encuentres bien."
+Asunto: sugerí uno.`,
+        },
+      },
+      {
+        title: { en: "Executive summary of a report", es: "Resumen ejecutivo de un reporte" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Summarize this report for an executive audience.
+
+Output format:
+1. TL;DR: 1 sentence (single most important takeaway).
+2. Key findings: 3 bullets max — numbers and decisions only, no context padding.
+3. Recommended action: 1 concrete next step.
+
+Constraints:
+- <= 120 words total.
+- No passive voice, no filler phrases ("it is important that", "in conclusion").
+- If data is missing from the report, say so — do not fill in gaps.
+
+Report:
+"""[paste]"""`,
+          es: `Resumí este reporte para una audiencia ejecutiva.
+
+Formato de salida:
+1. TL;DR: 1 oración (el takeaway más importante).
+2. Hallazgos clave: máximo 3 bullets — solo números y decisiones, sin relleno.
+3. Acción recomendada: 1 próximo paso concreto.
+
+Restricciones:
+- <= 120 palabras en total.
+- Sin voz pasiva, sin frases de relleno ("es importante que", "en conclusión").
+- Si faltan datos en el reporte, decilo — no inventés información.
+
+Reporte:
+"""[pegá]"""`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can I use these templates with Claude or Gemini instead of ChatGPT?", es: "¿Puedo usar estas plantillas con Claude o Gemini en vez de ChatGPT?" },
+        a: {
+          en: "Yes. The structure works with any instruction-following model. ChatGPT handles professional tone well, but Claude and Gemini produce equally strong results for writing tasks.",
+          es: "Sí. La estructura funciona con cualquier modelo que siga instrucciones. ChatGPT maneja bien el tono profesional, pero Claude y Gemini dan resultados igual de sólidos para tareas de escritura.",
+        },
+      },
+      {
+        q: { en: "What if the output is still too long?", es: "¿Qué hago si el output sigue siendo muy largo?" },
+        a: {
+          en: "Make the length constraint a hard rule and add a consequence: 'If your output exceeds 150 words, cut it before returning.' Repeating the constraint at the end of the prompt reinforces it.",
+          es: "Hacé la restricción de longitud una regla dura y agregá una consecuencia: 'Si tu output supera 150 palabras, recortalo antes de devolverlo.' Repetir la restricción al final del prompt la refuerza.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "claude-prompt-guide",
+    title: {
+      en: "Prompts for Claude: XML tags, extended context, and structured reasoning",
+      es: "Prompts para Claude: XML tags, contexto extendido y razonamiento estructurado",
+    },
+    description: {
+      en: "How to write prompts that take advantage of Claude's XML tag support, large context window, and careful, citation-aware reasoning.",
+      es: "Cómo escribir prompts que aprovechen el soporte de XML tags de Claude, su ventana de contexto extensa y su razonamiento cuidadoso.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes Claude different", es: "Qué hace diferente a Claude" },
+        bullets: {
+          en: [
+            "Claude responds well to XML tags for structure: <instructions>, <context>, <output>, <rules>.",
+            "Large context window: you can paste long documents and ask questions at the end without truncation.",
+            "Tends to be careful about uncertainty — it flags when something is unclear rather than guessing.",
+            "Follows nuanced instructions well: numbered lists of rules, precedence between rules, exceptions.",
+          ],
+          es: [
+            "Claude responde bien a XML tags para estructurar: <instructions>, <context>, <output>, <rules>.",
+            "Ventana de contexto grande: podés pegar documentos largos y hacer preguntas al final sin truncamiento.",
+            "Tiende a ser cuidadoso con la incertidumbre — señala cuando algo no está claro en vez de adivinar.",
+            "Sigue instrucciones matizadas: listas numeradas de reglas, precedencia entre reglas, excepciones.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Patterns that work well with Claude", es: "Patrones que funcionan bien con Claude" },
+        bullets: {
+          en: [
+            "Use XML tags to separate context from instructions — this reduces confusion on long prompts.",
+            "Put the task at the end, after all context — Claude processes what it has before answering.",
+            "Number your rules (1, 2, 3...) and state which takes priority if they conflict.",
+            "Ask Claude to think step by step before giving a final answer on complex tasks.",
+            "Request citations or quotes from the pasted document to ground answers in the source.",
+          ],
+          es: [
+            "Usá XML tags para separar contexto de instrucciones — reduce confusión en prompts largos.",
+            "Poné la tarea al final, después de todo el contexto — Claude procesa lo que tiene antes de responder.",
+            "Numerá tus reglas (1, 2, 3...) e indicá cuál tiene prioridad si hay conflicto.",
+            "Pedile que piense paso a paso antes de dar la respuesta final en tareas complejas.",
+            "Pedí citas o fragmentos del documento pegado para anclar las respuestas en la fuente.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Document Q&A with citations", es: "Preguntas sobre documento con citas" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `<instructions>
+Answer questions about the document below. Follow these rules:
+1. Base every answer strictly on the document — do not add outside knowledge.
+2. Quote the relevant passage (max 2 sentences) before each answer.
+3. If the answer is not in the document, say "Not found in document."
+4. If the question is ambiguous, ask one clarifying question before answering.
+</instructions>
+
+<document>
+[paste document here]
+</document>
+
+<question>
+[your question]
+</question>`,
+          es: `<instrucciones>
+Respondé preguntas sobre el documento de abajo. Seguí estas reglas:
+1. Basá cada respuesta estrictamente en el documento — no agregues conocimiento externo.
+2. Citá el fragmento relevante (máx 2 oraciones) antes de cada respuesta.
+3. Si la respuesta no está en el documento, decí "No encontrado en el documento."
+4. Si la pregunta es ambigua, hacé una pregunta aclaratoria antes de responder.
+</instrucciones>
+
+<documento>
+[pegá el documento acá]
+</documento>
+
+<pregunta>
+[tu pregunta]
+</pregunta>`,
+        },
+      },
+      {
+        title: { en: "Structured analysis with competing viewpoints", es: "Análisis estructurado con perspectivas opuestas" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `<instructions>
+Analyze the topic below from two opposing perspectives.
+Rules:
+1. Steel-man both sides — represent each as its best advocate would.
+2. Do not express a personal preference.
+3. End with: the single most important fact a decision-maker needs.
+Output format: use the XML tags below.
+</instructions>
+
+<topic>
+[describe the decision, question, or situation]
+</topic>
+
+<output_format>
+<perspective_a>
+[strongest case for position A]
+</perspective_a>
+<perspective_b>
+[strongest case for position B]
+</perspective_b>
+<key_fact>
+[the one thing that matters most]
+</key_fact>
+</output_format>`,
+          es: `<instrucciones>
+Analizá el tema de abajo desde dos perspectivas opuestas.
+Reglas:
+1. Steel-man ambos lados — representá cada uno como lo haría su mejor defensor.
+2. No expresés preferencia personal.
+3. Terminá con: el único hecho más importante para quien tiene que decidir.
+Formato de salida: usá los XML tags de abajo.
+</instrucciones>
+
+<tema>
+[describí la decisión, pregunta o situación]
+</tema>
+
+<formato_de_salida>
+<perspectiva_a>
+[el argumento más fuerte para la posición A]
+</perspectiva_a>
+<perspectiva_b>
+[el argumento más fuerte para la posición B]
+</perspectiva_b>
+<hecho_clave>
+[la única cosa que más importa]
+</hecho_clave>
+</formato_de_salida>`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Do I need to use XML tags with Claude?", es: "¿Necesito usar XML tags con Claude?" },
+        a: {
+          en: "No, but they help on longer prompts. When context and instructions are mixed in plain text, Claude may blend them. XML tags create clear boundaries the model respects reliably.",
+          es: "No, pero ayudan en prompts largos. Cuando el contexto y las instrucciones se mezclan en texto plano, Claude puede mezclarlos. Los XML tags crean límites claros que el modelo respeta de forma consistente.",
+        },
+      },
+      {
+        q: { en: "How long a document can I paste into a Claude prompt?", es: "¿Qué tan largo puede ser el documento que pego en un prompt de Claude?" },
+        a: {
+          en: "Claude's context window supports hundreds of pages. For practical accuracy on Q&A, shorter focused documents work better than dumping an entire book. If you have a large document, extract the relevant sections first.",
+          es: "La ventana de contexto de Claude soporta cientos de páginas. Para precisión práctica en Q&A, documentos cortos y enfocados funcionan mejor que un libro completo. Si el documento es largo, extraé primero las secciones relevantes.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
