@@ -1066,6 +1066,435 @@ Formato de salida: usá los XML tags de abajo.
       },
     ],
   },
+  {
+    slug: "gemini-prompt-guide",
+    title: {
+      en: "Prompts for Gemini: format control, grounding, and structured output",
+      es: "Prompts para Gemini: control de formato, grounding y salida estructurada",
+    },
+    description: {
+      en: "How to write prompts that get consistent, well-structured output from Gemini — including format examples, grounding constraints, and multimodal tips.",
+      es: "Cómo escribir prompts que producen salidas consistentes y estructuradas con Gemini — con ejemplos de formato, restricciones de grounding y tips multimodal.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes Gemini different", es: "Qué hace diferente a Gemini" },
+        bullets: {
+          en: [
+            "Gemini responds well to a visible output template — showing the exact format you expect reduces variation.",
+            "It benefits from an explicit example of the final structure, even a short one.",
+            "For grounded tasks, specify the source: 'Base your answer only on the text below — do not add outside knowledge.'",
+            "Gemini tends to be verbose; set a hard word or sentence limit to prevent padding.",
+            "For multimodal prompts (image + text), state what role the image plays before the question.",
+          ],
+          es: [
+            "Gemini responde bien a una plantilla de salida visible — mostrar el formato exacto que esperás reduce la variación.",
+            "Se beneficia de un ejemplo corto del resultado esperado.",
+            "Para tareas de grounding, especificá la fuente: 'Basá tu respuesta solo en el texto de abajo — no agregues conocimiento externo.'",
+            "Gemini tiende a ser verboso; poné un límite duro de palabras u oraciones para evitar relleno.",
+            "Para prompts multimodal (imagen + texto), aclarás qué rol cumple la imagen antes de la pregunta.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Patterns that work well with Gemini", es: "Patrones que funcionan bien con Gemini" },
+        bullets: {
+          en: [
+            "Show a mini template: 'Return your answer in this format: [field]: [value]'.",
+            "Separate context from instruction with a header line (e.g., '--- Context ---', '--- Task ---').",
+            "Ask it to list assumptions before the final answer on ambiguous tasks.",
+            "For long inputs, use a priority hint: 'Focus on the sections marked [PRIORITY]'.",
+            "If you need JSON, define the schema inline and add 'Return ONLY valid JSON, no explanation'.",
+          ],
+          es: [
+            "Mostrá una mini plantilla: 'Devolvé tu respuesta en este formato: [campo]: [valor]'.",
+            "Separás contexto de instrucción con una línea de encabezado (ej: '--- Contexto ---', '--- Tarea ---').",
+            "Pedile que liste supuestos antes de la respuesta final en tareas ambiguas.",
+            "Para inputs largos, usá un hint de prioridad: 'Enfocate en las secciones marcadas [PRIORIDAD]'.",
+            "Si necesitás JSON, definí el esquema inline y agregá 'Devolvé SOLO JSON válido, sin explicación'.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Structured analysis with format template", es: "Análisis estructurado con plantilla de formato" },
+        purpose: "text",
+        target: "gemini",
+        prompt: {
+          en: `Analyze the topic below and return your answer in the exact format shown.
+
+Topic: [describe the topic or question]
+
+Format (use exactly this structure):
+Summary: [1 sentence]
+Key points:
+- [point 1]
+- [point 2]
+- [point 3]
+Assumptions I'm making: [list any assumptions]
+Confidence: [high / medium / low] — [reason in 1 sentence]
+
+Constraints:
+- Max 200 words total.
+- If a field cannot be filled, write 'N/A' — do not omit it.`,
+          es: `Analizá el tema de abajo y devolvé tu respuesta en el formato exacto mostrado.
+
+Tema: [describí el tema o pregunta]
+
+Formato (usá exactamente esta estructura):
+Resumen: [1 oración]
+Puntos clave:
+- [punto 1]
+- [punto 2]
+- [punto 3]
+Supuestos que estoy haciendo: [listá los supuestos]
+Confianza: [alta / media / baja] — [razón en 1 oración]
+
+Restricciones:
+- Máximo 200 palabras en total.
+- Si no podés completar un campo, escribí 'N/A' — no lo omitas.`,
+        },
+      },
+      {
+        title: { en: "Grounded Q&A (source-only answers)", es: "Q&A con grounding (respuestas solo de la fuente)" },
+        purpose: "text",
+        target: "gemini",
+        prompt: {
+          en: `Answer the question below using ONLY the source text provided.
+
+Rules:
+1. Do not add facts from outside the source.
+2. If the answer is not in the source, say: "Not found in source."
+3. Quote the relevant sentence (max 1 sentence) before your answer.
+4. Keep the answer to 2-3 sentences.
+
+--- Source ---
+[paste source text here]
+--- End source ---
+
+Question: [your question]`,
+          es: `Respondé la pregunta de abajo usando SOLO el texto fuente provisto.
+
+Reglas:
+1. No agregues hechos de afuera de la fuente.
+2. Si la respuesta no está en la fuente, decí: "No encontrado en la fuente."
+3. Citá la oración relevante (máx 1 oración) antes de tu respuesta.
+4. Mantené la respuesta en 2-3 oraciones.
+
+--- Fuente ---
+[pegá el texto fuente acá]
+--- Fin de la fuente ---
+
+Pregunta: [tu pregunta]`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Why does Gemini ignore my format instructions?", es: "¿Por qué Gemini ignora mis instrucciones de formato?" },
+        a: {
+          en: "Usually because the format was described in words but not shown. Add a literal template — even a 2-line example — and Gemini follows it much more reliably.",
+          es: "Generalmente porque el formato fue descrito con palabras pero no mostrado. Agregá una plantilla literal — incluso de 2 líneas — y Gemini lo sigue mucho más consistentemente.",
+        },
+      },
+      {
+        q: { en: "How do I stop Gemini from adding extra commentary?", es: "¿Cómo evito que Gemini agregue comentarios extra?" },
+        a: {
+          en: "End the prompt with an explicit constraint: 'Return ONLY the structured output above — no extra text, no preamble.' Repeating it at the end reinforces it.",
+          es: "Terminá el prompt con una restricción explícita: 'Devolvé SOLO la salida estructurada de arriba — sin texto extra, sin preámbulo.' Repetirla al final la refuerza.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "grok-prompt-guide",
+    title: {
+      en: "Prompts for Grok: directness, real-time context, and structured responses",
+      es: "Prompts para Grok: directness, contexto en tiempo real y respuestas estructuradas",
+    },
+    description: {
+      en: "How to write prompts that get direct, high-signal responses from Grok — including tone controls, real-time awareness, and structuring tips.",
+      es: "Cómo escribir prompts que producen respuestas directas y de alta señal con Grok — con controles de tono, conciencia de tiempo real y tips de estructura.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes Grok different", es: "Qué hace diferente a Grok" },
+        bullets: {
+          en: [
+            "Grok defaults to a direct, confident style — it cuts filler and gets to the point faster than most models.",
+            "It has real-time awareness for current events; use this with a date constraint when recency matters.",
+            "Tone is more flexible than other models — you can push it toward casual, sharp, or formal and it follows well.",
+            "On ambiguous questions, it picks an interpretation and commits; specify if you want alternatives.",
+            "Works best when the task is concrete — vague prompts get short, sometimes shallow responses.",
+          ],
+          es: [
+            "Grok tiene un estilo directo y seguro por defecto — corta el relleno y va al punto más rápido que la mayoría.",
+            "Tiene conciencia de eventos en tiempo real; usá esto con una restricción de fecha cuando la actualidad importa.",
+            "El tono es más flexible que otros modelos — podés empujarlo hacia casual, directo o formal y lo sigue bien.",
+            "En preguntas ambiguas, elige una interpretación y se compromete; especificá si querés alternativas.",
+            "Funciona mejor cuando la tarea es concreta — prompts vagos producen respuestas cortas y a veces superficiales.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Patterns that work well with Grok", es: "Patrones que funcionan bien con Grok" },
+        bullets: {
+          en: [
+            "State the exact output you want: 'Give me 3 options, each on a new line, no explanation.'",
+            "Use a tone instruction: 'Be direct. Skip the preamble. No hedging unless the uncertainty is real.'",
+            "For real-time tasks: 'As of [date], what is the current status of [topic]?'",
+            "Ask for alternatives explicitly: 'Give me two versions — one formal, one casual.'",
+            "For complex tasks, add a brief structure: 'First: [X]. Then: [Y]. Finally: [Z].'",
+          ],
+          es: [
+            "Especificá el output exacto que querés: 'Dame 3 opciones, cada una en una línea nueva, sin explicación.'",
+            "Usá una instrucción de tono: 'Sé directo. Saltate el preámbulo. Sin rodeos salvo que la incertidumbre sea real.'",
+            "Para tareas en tiempo real: 'A partir de [fecha], ¿cuál es el estado actual de [tema]?'",
+            "Pedí alternativas explícitamente: 'Dame dos versiones — una formal, una casual.'",
+            "Para tareas complejas, agregá una estructura breve: 'Primero: [X]. Luego: [Y]. Finalmente: [Z].'",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Direct opinion with trade-offs", es: "Opinión directa con trade-offs" },
+        purpose: "text",
+        target: "grok",
+        prompt: {
+          en: `Give me your direct assessment of this decision or topic.
+
+Topic: [describe the decision or question]
+Context: [brief background, 2-3 sentences max]
+
+I want:
+1. Your direct recommendation (1-2 sentences, no hedging unless uncertainty is real).
+2. The main trade-off I should know.
+3. One thing most people miss about this.
+
+Tone: direct and concise. No filler phrases.`,
+          es: `Dame tu evaluación directa de esta decisión o tema.
+
+Tema: [describí la decisión o pregunta]
+Contexto: [contexto breve, máx 2-3 oraciones]
+
+Quiero:
+1. Tu recomendación directa (1-2 oraciones, sin rodeos salvo que la incertidumbre sea real).
+2. El trade-off principal que debo conocer.
+3. Una cosa que la mayoría pasa por alto.
+
+Tono: directo y conciso. Sin frases de relleno.`,
+        },
+      },
+      {
+        title: { en: "Quick structured comparison", es: "Comparación estructurada rápida" },
+        purpose: "text",
+        target: "grok",
+        prompt: {
+          en: `Compare these options directly.
+
+Options:
+- Option A: [describe]
+- Option B: [describe]
+
+Format:
+Option A pros (max 3): [bullets]
+Option A cons (max 2): [bullets]
+Option B pros (max 3): [bullets]
+Option B cons (max 2): [bullets]
+Pick for [my use case: describe in 1 sentence]: [your direct pick and a 1-sentence reason]
+
+No preamble. No conclusion paragraph.`,
+          es: `Compará estas opciones directamente.
+
+Opciones:
+- Opción A: [describí]
+- Opción B: [describí]
+
+Formato:
+Pros de Opción A (máx 3): [bullets]
+Contras de Opción A (máx 2): [bullets]
+Pros de Opción B (máx 3): [bullets]
+Contras de Opción B (máx 2): [bullets]
+Elección para [mi caso de uso: describí en 1 oración]: [tu elección directa y una razón en 1 oración]
+
+Sin preámbulo. Sin párrafo de conclusión.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Does Grok work for technical tasks like code or data?", es: "¿Grok funciona para tareas técnicas como código o datos?" },
+        a: {
+          en: "Yes, but it shines most on opinion, analysis, and writing tasks. For code and data extraction, DeepSeek or Claude may produce more careful, verifiable answers. Use Grok when you want speed and directness over exhaustive detail.",
+          es: "Sí, pero brilla más en tareas de opinión, análisis y escritura. Para código y extracción de datos, DeepSeek o Claude pueden producir respuestas más cuidadosas y verificables. Usá Grok cuando priorizás velocidad y directness sobre detalle exhaustivo.",
+        },
+      },
+      {
+        q: { en: "How do I get Grok to slow down and be more thorough?", es: "¿Cómo hago que Grok sea más exhaustivo?" },
+        a: {
+          en: "Ask for a step-by-step breakdown and specify the number of points: 'Walk me through this in 5 steps. Don't skip steps.' Without a structure constraint, Grok tends to compress.",
+          es: "Pedí un desglose paso a paso y especificá el número de puntos: 'Guiame por esto en 5 pasos. No saltees pasos.' Sin restricción de estructura, Grok tiende a comprimir.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompt-templates-for-business",
+    title: {
+      en: "AI prompt templates for business: planning, reports, and customer support",
+      es: "Templates de prompts de IA para negocios: planificación, reportes y soporte al cliente",
+    },
+    description: {
+      en: "Ready-to-use AI prompt templates for common business workflows — from project planning and status reports to customer support scripts and decision memos.",
+      es: "Templates de prompts de IA listos para usar en flujos de trabajo empresariales comunes — desde planificación de proyectos y reportes de estado hasta scripts de soporte al cliente y memos de decisión.",
+    },
+    sections: [
+      {
+        heading: { en: "Why generic business prompts fail", es: "Por qué fallan los prompts de negocio genéricos" },
+        bullets: {
+          en: [
+            "They omit stakeholder context: the model doesn't know who reads this or what they care about.",
+            "No format or length constraint: business docs need consistent structure, not creative flair.",
+            "Missing decision criteria: 'help me decide' without criteria produces balanced-but-useless analysis.",
+            "No tone guidance: the right tone for a board memo differs from a team standup update.",
+            "Scope creep: without a clear boundary, the model adds sections nobody asked for.",
+          ],
+          es: [
+            "Omiten el contexto del stakeholder: el modelo no sabe quién lee esto ni qué le importa.",
+            "Sin restricción de formato o largo: los documentos de negocio necesitan estructura consistente, no creatividad.",
+            "Sin criterios de decisión: 'ayudame a decidir' sin criterios produce análisis equilibrado pero inútil.",
+            "Sin guía de tono: el tono correcto para un memo de directorio difiere de una actualización de standup.",
+            "Scope creep: sin un límite claro, el modelo agrega secciones que nadie pidió.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Business prompt parameters that work", es: "Parámetros de prompts de negocio que funcionan" },
+        bullets: {
+          en: [
+            "Audience + their goal: 'For the CFO, who needs to decide whether to approve budget.'",
+            "Hard format: specify exactly the sections, their order, and word limits per section.",
+            "Decision criteria: list what makes an option better or worse before asking for a recommendation.",
+            "Tone: 'formal and precise' / 'short and direct for async team reading' / 'reassuring but honest'.",
+            "What to omit: 'Do not include background I already know. Focus on [specific gap].'",
+          ],
+          es: [
+            "Audiencia + su objetivo: 'Para el CFO, que necesita decidir si aprobar presupuesto.'",
+            "Formato duro: especificá exactamente las secciones, su orden y límites de palabras por sección.",
+            "Criterios de decisión: listá qué hace mejor o peor a una opción antes de pedir recomendación.",
+            "Tono: 'formal y preciso' / 'corto y directo para lectura asincrónica del equipo' / 'tranquilizador pero honesto'.",
+            "Qué omitir: 'No incluyas contexto que ya sé. Enfocate en [gap específico].'",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Project status report", es: "Reporte de estado de proyecto" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Write a project status report.
+
+Audience: [team / manager / executive — pick one]
+Project: [name and one-line description]
+Reporting period: [e.g. Week of July 7]
+
+Sections (use exactly these, in order):
+1. Status: [On track / At risk / Blocked] — 1 sentence why.
+2. Completed this period: 3 bullets max.
+3. In progress: 3 bullets max, each with % done if known.
+4. Blockers: [list or 'None'] — for each blocker: what it is, who owns removing it.
+5. Next period goals: 3 bullets max.
+
+Constraints:
+- Total: <= 200 words.
+- No passive voice.
+- If data is missing, write '[TBD]' — do not fill in with estimates unless told to.`,
+          es: `Escribí un reporte de estado de proyecto.
+
+Audiencia: [equipo / manager / ejecutivo — elegí uno]
+Proyecto: [nombre y descripción en una línea]
+Período reportado: [ej. Semana del 7 de julio]
+
+Secciones (usá exactamente estas, en orden):
+1. Estado: [En camino / En riesgo / Bloqueado] — 1 oración explicando por qué.
+2. Completado este período: máx 3 bullets.
+3. En progreso: máx 3 bullets, cada uno con % completado si se conoce.
+4. Bloqueadores: [lista o 'Ninguno'] — por cada bloqueador: qué es, quién lo resuelve.
+5. Objetivos del próximo período: máx 3 bullets.
+
+Restricciones:
+- Total: <= 200 palabras.
+- Sin voz pasiva.
+- Si falta un dato, escribí '[POR DEFINIR]' — no rellenes con estimaciones salvo que se indique.`,
+        },
+      },
+      {
+        title: { en: "Decision memo with criteria", es: "Memo de decisión con criterios" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a decision memo.
+
+Decision to make: [describe what needs to be decided]
+Audience: [who will read and decide]
+Options being considered:
+- Option A: [brief description]
+- Option B: [brief description]
+Decision criteria (most important first):
+1. [criterion 1]
+2. [criterion 2]
+3. [criterion 3]
+
+Output format:
+1. One-line recommendation (most important first).
+2. Why this option scores better on the top criteria.
+3. The main risk of this choice and how to mitigate it.
+4. What we'd need to change our minds (trigger condition).
+
+Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
+          es: `Escribí un memo de decisión.
+
+Decisión a tomar: [describí qué hay que decidir]
+Audiencia: [quién leerá y decidirá]
+Opciones consideradas:
+- Opción A: [descripción breve]
+- Opción B: [descripción breve]
+Criterios de decisión (los más importantes primero):
+1. [criterio 1]
+2. [criterio 2]
+3. [criterio 3]
+
+Formato de salida:
+1. Recomendación en una línea (lo más importante primero).
+2. Por qué esta opción puntúa mejor en los criterios principales.
+3. El riesgo principal de esta elección y cómo mitigarlo.
+4. Qué tendría que cambiar para reconsiderar (condición de cambio).
+
+Restricciones: <= 250 palabras. Sin rodeos en la recomendación — sé directo.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can I use these templates with any AI model?", es: "¿Puedo usar estos templates con cualquier modelo de IA?" },
+        a: {
+          en: "Yes. The structure works across GPT, Claude, Gemini, and Grok. For sensitive or confidential business content, check your organization's AI usage policy before pasting internal data into any model.",
+          es: "Sí. La estructura funciona con GPT, Claude, Gemini y Grok. Para contenido empresarial sensible o confidencial, verificá la política de uso de IA de tu organización antes de pegar datos internos en cualquier modelo.",
+        },
+      },
+      {
+        q: { en: "The model keeps adding sections I didn't ask for. How do I stop it?", es: "El modelo sigue agregando secciones que no pedí. ¿Cómo lo paro?" },
+        a: {
+          en: "Add an explicit closing instruction: 'Return ONLY the sections listed above, in that order. Do not add an introduction, conclusion, or any section not listed.' Listing what to exclude is often more effective than just listing what to include.",
+          es: "Agregá una instrucción de cierre explícita: 'Devolvé SOLO las secciones listadas arriba, en ese orden. No agregues introducción, conclusión ni ninguna sección que no esté listada.' Listar qué excluir suele ser más efectivo que solo listar qué incluir.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

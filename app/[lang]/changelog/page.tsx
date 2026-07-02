@@ -11,6 +11,42 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.1.5 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.1.5</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 02-07-2026" : "Released: 2026-07-02"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para Gemini — control de formato con plantillas visibles, Q&A con grounding y cómo evitar verbosidad."
+              : "New guide: Prompts for Gemini — format control with visible templates, grounded Q&A, and how to prevent verbosity."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para Grok — cómo obtener respuestas directas, uso de contexto en tiempo real y comparaciones estructuradas rápidas."
+              : "New guide: Prompts for Grok — how to get direct responses, using real-time context, and quick structured comparisons."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Templates de prompts de IA para negocios — reportes de estado de proyecto, memos de decisión con criterios y templates de soporte al cliente."
+              : "New guide: AI prompt templates for business — project status reports, decision memos with criteria, and customer support templates."}
+          </li>
+          <li>
+            {isEs
+              ? "Mejora: la descripción SEO de la página índice de Guías actualizada para reflejar el catálogo completo actual."
+              : "Improvement: Guides index page SEO description updated to reflect the full current guide catalog."}
+          </li>
+          <li>
+            {isEs
+              ? "Versión del prompt optimizado actualizada a v1.1.5 (PROMPTEA: v1.1.5)."
+              : "Optimized prompt version updated to v1.1.5 (PROMPTEA: v1.1.5)."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.1.4 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

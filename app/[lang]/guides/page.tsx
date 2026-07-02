@@ -18,8 +18,8 @@ export async function generateMetadata({
     title: l === "es" ? "Guías de prompting (sin humo)" : "Prompting guides (no fluff)",
     description:
       l === "es"
-        ? "Guías accionables para escribir prompts mejores: checklist, JSON estricto, código y marketing."
-        : "Actionable guides to write better prompts: checklist, strict JSON, code, and marketing.",
+        ? "Guías accionables para escribir prompts mejores: checklist, JSON estricto, código, rol, ChatGPT, Claude, Gemini, Grok y flujos de trabajo empresariales."
+        : "Actionable guides to write better prompts: checklist, strict JSON, code, role prompting, ChatGPT, Claude, Gemini, Grok, and business workflows.",
     alternates: {
       canonical: `/${l}/guides`,
       languages: { es: "/es/guides", en: "/en/guides" },

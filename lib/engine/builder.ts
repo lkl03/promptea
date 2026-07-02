@@ -2,7 +2,7 @@ import type { Lang, TargetAI } from "../promptTemplates";
 import type { TaskType, PromptPurpose } from "./types";
 import type { AttachmentContext } from "@/lib/attachments";
 
-const DEFAULT_PROMPTEA_PROMPT_VERSION = "1.1.4";
+const DEFAULT_PROMPTEA_PROMPT_VERSION = "1.1.5";
 
 type BuilderPurpose = PromptPurpose | "translation" | "summarization";
 
