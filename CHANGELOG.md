@@ -4,6 +4,24 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.1.5 — 2026-07-02
+
+### Added
+- New guide: **Prompts for Gemini** (`/guides/gemini-prompt-guide`) — format control with visible output templates, grounded Q&A (source-only answers), and how to prevent verbosity. Two ready-to-use templates: structured analysis with format template, and grounded Q&A.
+- New guide: **Prompts for Grok** (`/guides/grok-prompt-guide`) — how to get direct, high-signal responses, using real-time context awareness, and quick structured comparisons. Two templates: direct opinion with trade-offs, and structured comparison.
+- New guide: **AI prompt templates for business** (`/guides/ai-prompt-templates-for-business`) — ready-to-use templates for project status reports and decision memos with criteria, covering audience framing, format constraints, and tone guidance for business workflows.
+
+### Improved
+- **Guides index page SEO description** updated to reflect the full current guide catalog — now mentions ChatGPT, Claude, Gemini, Grok, role prompting, and business workflows (previously listed only 3 categories from the initial release).
+- Optimized prompt header updated to `PROMPTEA: v1.1.5`.
+
+### Validated
+- `npm run lint` — pre-existing errors in other files (none introduced by this update)
+- `npm test` — header invariant tests updated to v1.1.5 and pass; 14 `dataset.calibration.test.ts` score-range failures are pre-existing (confirmed on base branch)
+- `npm run build` — see PR description
+
+---
+
 ## v1.1.4 — 2026-06-24
 
 ### Added
