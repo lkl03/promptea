@@ -4,6 +4,25 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.1.6 — 2026-07-09
+
+### Added
+- New guide: **Prompts for DeepSeek** (`/guides/deepseek-prompt-guide`) — how to get precise output for code tasks with strict constraints, JSON extraction with schema adherence, and multi-step analytical reasoning. Templates: code task with constraints and analytical reasoning with explicit steps.
+- New guide: **Few-shot prompting** (`/guides/few-shot-prompting`) — when examples outperform verbal instructions, how to format input/output pairs effectively, diversity requirements, and delimiter conventions. Templates: text classification with examples and style rewriting with examples.
+- New guide: **Prompt quality scoring** (`/guides/prompt-quality-scoring`) — five-dimension self-evaluation framework (goal clarity, context completeness, output format, constraint coverage, edge case handling), common patterns that lower scores. Templates: self-review checklist prompt and rapid prompt debug.
+
+### Improved
+- **Changelog page SEO metadata**: added `generateMetadata` export to `app/[lang]/changelog/page.tsx` — the page now has its own localized title ("Changelog" / "Historial de versiones"), description, and canonical URL instead of inheriting the generic app title. Minor but improves discoverability in search.
+- **Guides index page SEO description** updated to mention DeepSeek, few-shot prompting, and prompt scoring alongside the existing catalog entries.
+- Optimized prompt header updated to `PROMPTEA: v1.1.6`.
+
+### Validated
+- `npm run lint` — pre-existing errors in other files (none introduced by this update)
+- `npm test` — header invariant tests updated to v1.1.6 and pass; 14 `dataset.calibration.test.ts` score-range failures are pre-existing (confirmed on base branch)
+- `npm run build` — see PR description
+
+---
+
 ## v1.1.5 — 2026-07-02
 
 ### Added
