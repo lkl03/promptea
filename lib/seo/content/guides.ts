@@ -1495,6 +1495,449 @@ Restricciones: <= 250 palabras. Sin rodeos en la recomendación — sé directo.
       },
     ],
   },
+  {
+    slug: "deepseek-prompt-guide",
+    title: {
+      en: "Prompts for DeepSeek: code, data extraction, and analytical reasoning",
+      es: "Prompts para DeepSeek: código, extracción de datos y razonamiento analítico",
+    },
+    description: {
+      en: "How to write prompts that get precise, well-structured output from DeepSeek — including code tasks, strict JSON extraction, and multi-step analytical reasoning.",
+      es: "Cómo escribir prompts que producen salidas precisas y estructuradas con DeepSeek — incluyendo tareas de código, extracción de JSON estricto y razonamiento analítico multi-paso.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes DeepSeek different", es: "Qué hace diferente a DeepSeek" },
+        bullets: {
+          en: [
+            "DeepSeek excels at analytical and reasoning-heavy tasks — it handles multi-step logic with high precision.",
+            "Strong code generation and debugging: it reads constraints carefully and tends to produce tighter, less padded code than general-purpose models.",
+            "Reliable JSON extraction: state the schema explicitly and it follows it closely, with fewer hallucinated fields.",
+            "Works well with numbered rules and explicit step-by-step instructions.",
+            "Responds better to direct task framing than to narrative-style prompts.",
+          ],
+          es: [
+            "DeepSeek sobresale en tareas analíticas y de razonamiento — maneja lógica multi-paso con alta precisión.",
+            "Fuerte en generación y debugging de código: lee restricciones cuidadosamente y tiende a producir código más ajustado y con menos relleno.",
+            "Extracción de JSON confiable: especificá el esquema explícitamente y lo sigue de cerca, con menos campos inventados.",
+            "Funciona bien con reglas numeradas e instrucciones explícitas paso a paso.",
+            "Responde mejor a tareas formuladas directamente que a prompts en estilo narrativo.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Patterns that work well with DeepSeek", es: "Patrones que funcionan bien con DeepSeek" },
+        bullets: {
+          en: [
+            "Number your steps: 'Step 1: analyze. Step 2: extract. Step 3: format as JSON.'",
+            "For code: include the language, version, and constraints before the task.",
+            "For data: define the schema inline and add 'Return ONLY the JSON — no explanation, no markdown.'",
+            "Ask it to verify its own output: 'Before returning, check that all required fields are present and match the schema.'",
+            "On complex reasoning: ask it to state its assumptions before drawing conclusions.",
+          ],
+          es: [
+            "Numerá tus pasos: 'Paso 1: analizá. Paso 2: extraé. Paso 3: formateá como JSON.'",
+            "Para código: incluí el lenguaje, la versión y las restricciones antes de la tarea.",
+            "Para datos: definí el esquema inline y agregá 'Devolvé SOLO el JSON — sin explicación, sin markdown.'",
+            "Pedile que verifique su propio output: 'Antes de devolver, verificá que todos los campos requeridos están presentes y coinciden con el esquema.'",
+            "En razonamiento complejo: pedile que enuncie sus supuestos antes de sacar conclusiones.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Code task with strict constraints", es: "Tarea de código con restricciones estrictas" },
+        purpose: "code",
+        target: "deepseek",
+        prompt: {
+          en: `Language: [e.g. TypeScript / Python 3.12]
+Task: [what to implement or fix]
+
+Constraints:
+- Do not use external libraries unless listed here: [list or 'none'].
+- Keep the solution under [N] lines.
+- Maintain the existing public API — only change internals.
+- Handle edge cases: [list, e.g. empty input, null, out-of-range].
+
+Return:
+1. The implementation (code only, no markdown fences unless asked).
+2. A brief list of edge cases covered.
+3. Any assumption you made that could affect the output.`,
+          es: `Lenguaje: [ej. TypeScript / Python 3.12]
+Tarea: [qué implementar o corregir]
+
+Restricciones:
+- No uses librerías externas salvo las listadas aquí: [lista o 'ninguna'].
+- Mantené la solución en menos de [N] líneas.
+- Conservá la API pública existente — solo cambiá los internos.
+- Manejá casos límite: [lista, ej. input vacío, null, fuera de rango].
+
+Devolvé:
+1. La implementación (solo código, sin markdown fence salvo que se pida).
+2. Una lista breve de casos límite cubiertos.
+3. Cualquier supuesto que hayas hecho que pueda afectar el output.`,
+        },
+      },
+      {
+        title: { en: "Analytical reasoning with explicit steps", es: "Razonamiento analítico con pasos explícitos" },
+        purpose: "data",
+        target: "deepseek",
+        prompt: {
+          en: `Analyze the following and return structured output.
+
+Input:
+"""[paste your data or problem description]"""
+
+Step 1 — Parse: identify the key entities, numbers, and relationships.
+Step 2 — Reason: work through the logic step by step. State each inference.
+Step 3 — Conclude: state your conclusion and confidence level (high / medium / low).
+Step 4 — Flag: list anything that is ambiguous or requires additional input.
+
+Format:
+Entities: [bullet list]
+Reasoning: [numbered steps]
+Conclusion: [1-2 sentences]
+Confidence: [high / medium / low] — [reason]
+Flags: [list or 'None']
+
+Return ONLY this structure. No preamble.`,
+          es: `Analizá lo siguiente y devolvé salida estructurada.
+
+Input:
+"""[pegá tus datos o descripción del problema]"""
+
+Paso 1 — Parsear: identificá las entidades clave, números y relaciones.
+Paso 2 — Razonar: trabajá la lógica paso a paso. Enunciá cada inferencia.
+Paso 3 — Concluir: enunciá tu conclusión y nivel de confianza (alto / medio / bajo).
+Paso 4 — Marcar: listá todo lo que es ambiguo o requiere input adicional.
+
+Formato:
+Entidades: [lista de bullets]
+Razonamiento: [pasos numerados]
+Conclusión: [1-2 oraciones]
+Confianza: [alta / media / baja] — [razón]
+Flags: [lista o 'Ninguno']
+
+Devolvé SOLO esta estructura. Sin preámbulo.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Is DeepSeek better than GPT or Claude for coding tasks?", es: "¿DeepSeek es mejor que GPT o Claude para tareas de código?" },
+        a: {
+          en: "It depends on the task. DeepSeek is particularly strong on analytical reasoning and code tasks with explicit constraints. For nuanced writing or long document Q&A, Claude and GPT tend to produce more polished results. Test on your specific use case.",
+          es: "Depende de la tarea. DeepSeek es especialmente fuerte en razonamiento analítico y tareas de código con restricciones explícitas. Para escritura matizada o Q&A sobre documentos largos, Claude y GPT tienden a producir resultados más pulidos. Probalo en tu caso de uso específico.",
+        },
+      },
+      {
+        q: { en: "Do I need to change my prompts significantly to use DeepSeek?", es: "¿Necesito cambiar mucho mis prompts para usar DeepSeek?" },
+        a: {
+          en: "Not fundamentally. The core principles — clear task, explicit constraints, defined output format — work across all models. With DeepSeek, you get better results by being more explicit about steps and schema, and by avoiding narrative-style framing.",
+          es: "No fundamentalmente. Los principios básicos — tarea clara, restricciones explícitas, formato de salida definido — funcionan en todos los modelos. Con DeepSeek, obtenés mejores resultados siendo más explícito sobre pasos y esquema, y evitando el estilo narrativo.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "few-shot-prompting",
+    title: {
+      en: "Few-shot prompting: how to show examples instead of just explaining",
+      es: "Few-shot prompting: cómo mostrar ejemplos en vez de solo explicar",
+    },
+    description: {
+      en: "Few-shot prompting uses examples inside the prompt to show the model exactly what you want — more reliable than verbal instructions alone for formatting, tone, and structure.",
+      es: "El few-shot prompting usa ejemplos dentro del prompt para mostrarle al modelo exactamente qué querés — más confiable que solo instrucciones verbales para formato, tono y estructura.",
+    },
+    sections: [
+      {
+        heading: { en: "When few-shot beats plain instructions", es: "Cuándo few-shot supera a las instrucciones normales" },
+        bullets: {
+          en: [
+            "When the format is hard to describe but easy to show: tables, structured labels, custom JSON shapes.",
+            "When tone needs to be precise: formal vs. casual, technical vs. plain — examples anchor the register.",
+            "When the task has unusual patterns the model hasn't seen in training (niche domains, internal formats).",
+            "When you've tried zero-shot and the output is inconsistent across runs.",
+            "When the model keeps misunderstanding the instruction despite rewording it.",
+          ],
+          es: [
+            "Cuando el formato es difícil de describir pero fácil de mostrar: tablas, etiquetas estructuradas, JSON personalizado.",
+            "Cuando el tono necesita ser preciso: formal vs casual, técnico vs simple — los ejemplos anclan el registro.",
+            "Cuando la tarea tiene patrones inusuales que el modelo no vio en entrenamiento (dominios nicho, formatos internos).",
+            "Cuando probaste zero-shot y el output es inconsistente entre ejecuciones.",
+            "Cuando el modelo sigue malinterpretando la instrucción a pesar de reescribirla.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to write effective few-shot examples", es: "Cómo escribir ejemplos few-shot efectivos" },
+        bullets: {
+          en: [
+            "Use 2-5 examples — enough to show the pattern, not so many that you burn tokens.",
+            "Keep examples diverse: cover different lengths, edge cases, or content types the task might encounter.",
+            "Show the exact input-output format you want — not a paraphrase of it.",
+            "Use consistent delimiter markers (e.g. Input: / Output: or --- Example --- blocks) so the model sees structure.",
+            "Place examples before the actual task, and mark the end of examples clearly.",
+          ],
+          es: [
+            "Usá 2-5 ejemplos — suficientes para mostrar el patrón, no tantos como para desperdiciar tokens.",
+            "Hacé los ejemplos diversos: cubrí distintas longitudes, casos límite o tipos de contenido que puede encontrar la tarea.",
+            "Mostrá el formato de input-output exacto que querés — no una paráfrasis.",
+            "Usá marcadores delimitadores consistentes (ej. Entrada: / Salida: o bloques --- Ejemplo ---) para que el modelo vea estructura.",
+            "Poné los ejemplos antes de la tarea real, y marcá claramente el fin de los ejemplos.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Classify text with examples", es: "Clasificar texto con ejemplos" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `Classify the sentiment of each text as: Positive, Negative, or Neutral.
+
+Examples:
+Input: "The delivery was fast and the product works great."
+Output: Positive
+
+Input: "Arrived damaged and customer support didn't help."
+Output: Negative
+
+Input: "Package arrived on Tuesday."
+Output: Neutral
+
+---
+
+Now classify these:
+Input: "[text 1]"
+Output:
+
+Input: "[text 2]"
+Output:
+
+Return ONLY the classification label for each. No explanation.`,
+          es: `Clasificá el sentimiento de cada texto como: Positivo, Negativo o Neutro.
+
+Ejemplos:
+Entrada: "La entrega fue rápida y el producto funciona genial."
+Salida: Positivo
+
+Entrada: "Llegó dañado y el soporte no ayudó."
+Salida: Negativo
+
+Entrada: "El paquete llegó el martes."
+Salida: Neutro
+
+---
+
+Ahora clasificá estos:
+Entrada: "[texto 1]"
+Salida:
+
+Entrada: "[texto 2]"
+Salida:
+
+Devolvé SOLO la etiqueta de clasificación para cada uno. Sin explicación.`,
+        },
+      },
+      {
+        title: { en: "Rewrite in a specific style using examples", es: "Reescribir en un estilo específico con ejemplos" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Rewrite the text in the style shown by the examples below.
+
+Style characteristics shown in examples:
+- [e.g. short sentences, active voice, no jargon, direct address]
+
+Example 1:
+Original: "The implementation of the new feature requires coordination between multiple stakeholders."
+Rewritten: "This feature needs three teams to sync. Set up a kickoff this week."
+
+Example 2:
+Original: "There are several considerations that must be taken into account before proceeding."
+Rewritten: "Check these three things before you start: [list them]."
+
+---
+
+Now rewrite this text:
+"""[paste your text]"""`,
+          es: `Reescribí el texto en el estilo que muestran los ejemplos de abajo.
+
+Características del estilo mostradas en los ejemplos:
+- [ej. oraciones cortas, voz activa, sin jerga, apelación directa]
+
+Ejemplo 1:
+Original: "La implementación de la nueva funcionalidad requiere coordinación entre múltiples stakeholders."
+Reescrito: "Esta feature necesita que tres equipos se sincronicen. Organizá un kickoff esta semana."
+
+Ejemplo 2:
+Original: "Existen varias consideraciones que deben tenerse en cuenta antes de proceder."
+Reescrito: "Revisá estas tres cosas antes de empezar: [listalas]."
+
+---
+
+Ahora reescribí este texto:
+"""[pegá tu texto]"""`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How many examples should I include?", es: "¿Cuántos ejemplos debo incluir?" },
+        a: {
+          en: "2-3 examples cover most cases. More than 5 rarely improves results and burns token budget. The quality of examples matters more than quantity — diverse, representative examples beat many similar ones.",
+          es: "2-3 ejemplos cubren la mayoría de los casos. Más de 5 raramente mejora los resultados y consume tokens. La calidad de los ejemplos importa más que la cantidad — ejemplos diversos y representativos son mejores que muchos similares.",
+        },
+      },
+      {
+        q: { en: "Can few-shot prompting fix hallucinations?", es: "¿El few-shot prompting corrige las alucinaciones?" },
+        a: {
+          en: "Not directly, but it helps with format hallucinations — cases where the model invents fields, adds extra text, or uses the wrong structure. For factual accuracy, you still need grounding (citing sources or providing reference data).",
+          es: "No directamente, pero ayuda con alucinaciones de formato — casos donde el modelo inventa campos, agrega texto extra o usa la estructura incorrecta. Para precisión factual, igual necesitás grounding (citar fuentes o proveer datos de referencia).",
+        },
+      },
+    ],
+  },
+  {
+    slug: "prompt-quality-scoring",
+    title: {
+      en: "How to score and improve your prompt quality before sending it",
+      es: "Cómo puntuar y mejorar la calidad de tu prompt antes de enviarlo",
+    },
+    description: {
+      en: "A self-evaluation framework to score prompt quality before running it — covering goal clarity, context completeness, format constraints, and common failure modes.",
+      es: "Un framework de autoevaluación para puntuar la calidad de un prompt antes de ejecutarlo — con claridad del objetivo, completitud del contexto, restricciones de formato y modos de falla comunes.",
+    },
+    sections: [
+      {
+        heading: { en: "The five dimensions of prompt quality", es: "Las cinco dimensiones de calidad de un prompt" },
+        bullets: {
+          en: [
+            "Goal clarity: is the success condition unambiguous? Could two people read this and expect the same output?",
+            "Context completeness: does the model have the minimum information needed to answer correctly?",
+            "Output format: is the structure, length, and format explicitly specified?",
+            "Constraint coverage: are the key 'do not' rules stated? Missing constraints are the most common source of unwanted output.",
+            "Edge case handling: what should happen on missing data, ambiguity, or an out-of-scope request?",
+          ],
+          es: [
+            "Claridad del objetivo: ¿la condición de éxito es inequívoca? ¿Dos personas leyendo esto esperarían el mismo output?",
+            "Completitud del contexto: ¿el modelo tiene la información mínima necesaria para responder correctamente?",
+            "Formato de salida: ¿la estructura, longitud y formato están especificados explícitamente?",
+            "Cobertura de restricciones: ¿las reglas de 'no hacer' están enunciadas? Las restricciones faltantes son la fuente más común de output no deseado.",
+            "Manejo de casos límite: ¿qué debería pasar con datos faltantes, ambigüedad o un pedido fuera de scope?",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common patterns that lower prompt scores", es: "Patrones comunes que bajan el score de un prompt" },
+        bullets: {
+          en: [
+            "No output format: 'Write a summary' without length or structure guidance.",
+            "Conflicting instructions: 'Be concise' and 'cover everything in detail' in the same prompt.",
+            "Missing audience: the model can't calibrate depth or tone without knowing who will read the output.",
+            "Asking for 'the best' without criteria: the model picks criteria and the result feels arbitrary.",
+            "Vague scope: 'help me with my project' — what kind of help, what project constraints?",
+          ],
+          es: [
+            "Sin formato de salida: 'Escribí un resumen' sin guía de longitud o estructura.",
+            "Instrucciones contradictorias: 'Sé conciso' y 'cubrí todo en detalle' en el mismo prompt.",
+            "Sin audiencia: el modelo no puede calibrar profundidad o tono sin saber quién leerá el output.",
+            "Pedir 'lo mejor' sin criterios: el modelo elige los criterios y el resultado se siente arbitrario.",
+            "Scope vago: 'ayudame con mi proyecto' — ¿qué tipo de ayuda, qué restricciones del proyecto?",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Self-review checklist prompt", es: "Prompt de checklist de autorevisión" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Review this prompt and score it on a scale of 1-10 for each dimension below.
+
+Prompt to review:
+"""[paste your prompt here]"""
+
+Score each dimension:
+1. Goal clarity (1-10): [is the success condition unambiguous?]
+2. Context completeness (1-10): [does the model have what it needs?]
+3. Output format (1-10): [is structure/length/format specified?]
+4. Constraint coverage (1-10): [are 'do not' rules stated?]
+5. Edge case handling (1-10): [what happens on missing data or ambiguity?]
+
+Overall score: [average]
+Top 2 improvements: [specific, actionable fixes only — no generic advice]
+Rewritten version: [the improved prompt, ready to copy-paste]`,
+          es: `Revisá este prompt y puntualo del 1 al 10 en cada dimensión de abajo.
+
+Prompt a revisar:
+"""[pegá tu prompt acá]"""
+
+Puntúa cada dimensión:
+1. Claridad del objetivo (1-10): [¿la condición de éxito es inequívoca?]
+2. Completitud del contexto (1-10): [¿el modelo tiene lo que necesita?]
+3. Formato de salida (1-10): [¿estructura/longitud/formato están especificados?]
+4. Cobertura de restricciones (1-10): [¿las reglas de 'no hacer' están enunciadas?]
+5. Manejo de casos límite (1-10): [¿qué pasa con datos faltantes o ambigüedad?]
+
+Score general: [promedio]
+Top 2 mejoras: [fixes específicos y accionables — sin consejos genéricos]
+Versión mejorada: [el prompt mejorado, listo para copiar-pegar]`,
+        },
+      },
+      {
+        title: { en: "Rapid prompt debug — find the weak spot", es: "Debug rápido de prompt — encontrá el punto débil" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Diagnose what is wrong with this prompt. Be specific.
+
+Prompt:
+"""[paste prompt here]"""
+
+Do this:
+1. Identify the single most likely cause of inconsistent or low-quality output.
+2. Quote the exact phrase or omission causing the problem.
+3. Rewrite only the problematic part (not the whole prompt).
+4. Add one constraint that would prevent the most common failure.
+
+Do not give generic writing advice. Focus on the structural issue.`,
+          es: `Diagnosticá qué está mal con este prompt. Sé específico.
+
+Prompt:
+"""[pegá el prompt acá]"""
+
+Hacé esto:
+1. Identificá la causa más probable de output inconsistente o de baja calidad.
+2. Citá la frase exacta u omisión que causa el problema.
+3. Reescribí solo la parte problemática (no el prompt completo).
+4. Agregá una restricción que prevendría el fallo más común.
+
+No des consejos genéricos de escritura. Enfocate en el problema estructural.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can I use Promptea to score my prompts automatically?", es: "¿Puedo usar Promptea para puntuar mis prompts automáticamente?" },
+        a: {
+          en: "Yes — that's what Promptea does. Paste your prompt, select the AI model and task type, and Promptea scores it across multiple dimensions, flags specific issues, and generates an optimized version ready to copy-paste.",
+          es: "Sí — eso es lo que hace Promptea. Pegá tu prompt, seleccioná el modelo de IA y tipo de tarea, y Promptea lo puntúa en múltiples dimensiones, señala problemas específicos y genera una versión optimizada lista para copiar-pegar.",
+        },
+      },
+      {
+        q: { en: "Is a higher score always better?", es: "¿Un score más alto siempre es mejor?" },
+        a: {
+          en: "Not always. Simple tasks don't need long, structured prompts — a lean prompt that fits the task scores better in practice than an over-specified one. The goal is the minimum prompt that gets consistent, correct output. Use the score as a diagnostic, not a target to maximize.",
+          es: "No siempre. Las tareas simples no necesitan prompts largos y estructurados — un prompt ajustado que encaja con la tarea funciona mejor en práctica que uno sobre-especificado. El objetivo es el prompt mínimo que produce output consistente y correcto. Usá el score como diagnóstico, no como objetivo a maximizar.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

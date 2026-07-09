@@ -1,5 +1,22 @@
 import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const l = lang === "en" ? "en" : "es";
+  return {
+    title: l === "es" ? "Historial de versiones" : "Changelog",
+    description:
+      l === "es"
+        ? "Historial completo de versiones de Promptea: nuevas guías SEO, mejoras del analizador de prompts y correcciones de producto."
+        : "Full version history for Promptea: new SEO guides, prompt analyzer improvements, and product fixes.",
+    alternates: {
+      canonical: `/${l}/changelog`,
+      languages: { es: "/es/changelog", en: "/en/changelog" },
+    },
+  };
+}
 
 export default async function ChangelogPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -10,6 +27,42 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
+
+      {/* v1.1.6 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.1.6</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 09-07-2026" : "Released: 2026-07-09"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para DeepSeek — código con restricciones estrictas, extracción de JSON, y razonamiento analítico paso a paso."
+              : "New guide: Prompts for DeepSeek — code with strict constraints, JSON extraction, and step-by-step analytical reasoning."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Few-shot prompting — cómo mostrar ejemplos en vez de solo explicar, con templates de clasificación de texto y reescritura de estilo."
+              : "New guide: Few-shot prompting — how to show examples instead of just explaining, with text classification and style rewriting templates."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Scoring de calidad de prompts — framework de autoevaluación en cinco dimensiones con templates de revisión y debug rápido."
+              : "New guide: Prompt quality scoring — five-dimension self-evaluation framework with review and rapid debug templates."}
+          </li>
+          <li>
+            {isEs
+              ? "Mejora: la página de Changelog ahora incluye metadata SEO propia (título, descripción, canonical) en lugar de heredar el título genérico de la app."
+              : "Improvement: the Changelog page now has its own SEO metadata (title, description, canonical) instead of inheriting the generic app title."}
+          </li>
+          <li>
+            {isEs
+              ? "Versión del prompt optimizado actualizada a v1.1.6 (PROMPTEA: v1.1.6)."
+              : "Optimized prompt version updated to v1.1.6 (PROMPTEA: v1.1.6)."}
+          </li>
+        </ul>
+      </div>
 
       {/* v1.1.5 */}
       <div className="surface-soft p-4 space-y-2">
