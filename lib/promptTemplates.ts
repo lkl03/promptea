@@ -1,20 +1,14 @@
 // lib/promptTemplates.ts
-export type Lang = "es" | "en";
-export type TargetAI = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek" | "perplexity";
+//
+// Types now live in lib/domain.ts (single source of truth) and are
+// re-exported here so existing imports keep working.
+export type { Lang, TargetAI } from "@/lib/domain";
+import type { Lang, TargetAI } from "@/lib/domain";
 
-export type TaskType =
-  | "coding"
-  | "debugging"
-  | "refactor"
-  | "research"
-  | "marketing"
-  | "writing"
-  | "summarization"
-  | "translation"
-  | "data_extraction"
-  | "planning"
-  | "customer_support"
-  | "general";
+/** Task type as used by templates: canonical domain TaskType plus the
+ * classifier's "general" bucket for unclassified prompts. */
+import type { TaskType as DomainTaskType } from "@/lib/domain";
+export type TaskType = DomainTaskType | "general";
 
 export type OutputPreset = {
   title: string; // label en UI/opt prompt

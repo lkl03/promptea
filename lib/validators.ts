@@ -1,16 +1,10 @@
 import { z } from "zod";
 import { MAX_ATTACHMENTS, MAX_ATTACHMENT_SIZE_BYTES } from "@/lib/attachments";
+import { PURPOSES, TARGETS, LANGS, FORMAT_CHOICES } from "@/lib/domain";
 
-export const PurposeSchema = z.enum([
-  "text",
-  "study",
-  "code",
-  "data",
-  "image",
-  "marketing",
-  "translation",
-  "summarization",
-]);
+// Schemas derive from the canonical domain arrays so API validation can
+// never drift from the UI or engine unions.
+export const PurposeSchema = z.enum(PURPOSES);
 
 export type PromptPurpose = z.infer<typeof PurposeSchema>;
 
@@ -23,11 +17,11 @@ export const AttachmentInputSchema = z.object({
 
 export const AnalyzeSchema = z.object({
   prompt: z.string().min(1).max(20000),
-  target: z.enum(["gpt", "gemini", "grok", "claude", "kimi", "deepseek", "perplexity"]),
-  lang: z.enum(["es", "en"]),
+  target: z.enum(TARGETS),
+  lang: z.enum(LANGS),
   sessionId: z.string().min(10),
   purpose: PurposeSchema,
   attachments: z.array(AttachmentInputSchema).max(MAX_ATTACHMENTS).optional(),
-  format: z.enum(["checklist", "json"]).optional(),
+  format: z.enum(FORMAT_CHOICES).optional(),
   modelId: z.string().min(1).max(80).optional().nullable(),
 });
