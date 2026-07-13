@@ -75,7 +75,7 @@ describe("API /api/analyze", () => {
     expect(res.status).toBe(200);
 
     const json = await res.json();
-    const findingIds = (json.findings ?? []).map((f: any) => f.id);
+    const findingIds = (json.findings ?? []).map((f: { id: string }) => f.id);
 
     expect(findingIds).not.toContain("prompt_injection");
     expect(findingIds).not.toContain("missing_goal");
@@ -142,7 +142,7 @@ describe("API /api/analyze", () => {
     expect(res.status).toBe(200);
 
     expect(upsertAnalysisEvent).toHaveBeenCalledTimes(1);
-    const arg = (upsertAnalysisEvent as any).mock.calls[0][0];
+    const arg = vi.mocked(upsertAnalysisEvent).mock.calls[0][0];
     expect(arg.purpose).toBe("summarization");
     expect(typeof arg.score).toBe("number");
   });

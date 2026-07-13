@@ -1,8 +1,12 @@
 import type { Lang, TargetAI } from "../promptTemplates";
 import type { TaskType, PromptPurpose } from "./types";
+import type { Complexity } from "@/lib/domain";
 import type { AttachmentContext } from "@/lib/attachments";
+import { APP_VERSION } from "@/lib/version";
 
-const DEFAULT_PROMPTEA_PROMPT_VERSION = "1.1.6";
+// Derived from the canonical app version (lib/version.ts) so the optimized
+// prompt header can never drift from the release version again.
+const DEFAULT_PROMPTEA_PROMPT_VERSION = APP_VERSION;
 
 type BuilderPurpose = PromptPurpose | "translation" | "summarization";
 
@@ -978,13 +982,20 @@ function attachmentSection(lang: Lang, attachments: AttachmentContext[]) {
   return [header, intro, "", ...blocks].join("\n");
 }
 
+export type BuildOptions = {
+  /** Router-detected complexity. "simple" prompts get a light, natural body
+   * instead of the full framework scaffold (v1.2.0 non-bloat behavior). */
+  complexity?: Complexity;
+};
+
 export function buildOptimizedPrompt(
   core: string,
   taskType: TaskType | string,
   target: TargetAI,
   lang: Lang,
   purpose: BuilderPurpose = "text",
-  attachments: AttachmentContext[] = []
+  attachments: AttachmentContext[] = [],
+  opts: BuildOptions = {}
 ) {
   const trimmed = String(core ?? "").trim();
 
@@ -993,6 +1004,44 @@ export function buildOptimizedPrompt(
   const title = `PROMPTEA: v${getPrompteaPromptVersion()}`;
   const modelLine = `MODEL: ${String(target).toUpperCase()}`;
   const normalizedTask = canonicalTask(taskType, purpose);
+
+  // ── Light path: simple prompts stay natural — header + short guidance +
+  // the task itself. No GOAL/OUTPUT/CONSTRAINTS scaffolding.
+  const structuredPurposes: BuilderPurpose[] = ["data", "image"];
+  if (
+    opts.complexity === "simple" &&
+    attachments.length === 0 &&
+    !structuredPurposes.includes(purpose)
+  ) {
+    const instrHeaderLight = t(lang, "INSTRUCCIONES:", "INSTRUCTIONS:");
+    const taskHeaderLight = t(lang, "TASK:", "TASK:");
+    const lightInstructions = bullet(
+      t(
+        lang,
+        [
+          "Respondé en el mismo idioma de la tarea.",
+          "Sé específico y directo; si falta información crítica, hacé hasta 2 preguntas antes de asumir.",
+        ],
+        [
+          "Respond in the same language as the task.",
+          "Be specific and direct; if critical information is missing, ask up to 2 questions before assuming.",
+        ]
+      )
+    );
+
+    return [
+      title,
+      modelLine,
+      `PURPOSE: ${purpose}`,
+      `TASK_TYPE: ${String(taskType)}`,
+      "",
+      instrHeaderLight,
+      lightInstructions,
+      "",
+      taskHeaderLight,
+      trimmed,
+    ].join("\n");
+  }
 
   const instrHeader = t(lang, "INSTRUCCIONES:", "INSTRUCTIONS:");
   const taskHeader = t(lang, "TASK:", "TASK:");

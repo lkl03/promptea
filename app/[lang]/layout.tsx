@@ -2,7 +2,7 @@
 import "../globals.css";
 import { getDictionary, hasLocale } from "./dictionaries";
 import { notFound } from "next/navigation";
-import { Montserrat, Quicksand } from "next/font/google";
+import localFont from "next/font/local";
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -14,18 +14,36 @@ import ToastProvider from "@/components/ToastProvider";
 
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID; // e.g. "AW-17937226636"
 
-const titleFont = Montserrat({
-  subsets: ["latin"],
+// v1.2.0: fonts are self-hosted (app/fonts, sourced from Fontsource, OFL).
+// No build-time Google Fonts fetch -> reproducible offline builds, no CDN
+// dependency, no layout shift from late font swaps.
+const titleFont = localFont({
+  src: [
+    { path: "../fonts/space-grotesk-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/space-grotesk-latin-600-normal.woff2", weight: "600", style: "normal" },
+    { path: "../fonts/space-grotesk-latin-700-normal.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-title",
   display: "swap",
-  weight: ["500", "600", "700"],
 });
 
-const bodyFont = Quicksand({
-  subsets: ["latin"],
+const bodyFont = localFont({
+  src: [
+    { path: "../fonts/inter-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/inter-latin-500-normal.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/inter-latin-600-normal.woff2", weight: "600", style: "normal" },
+  ],
   variable: "--font-body",
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+});
+
+const monoFont = localFont({
+  src: [
+    { path: "../fonts/jetbrains-mono-latin-400-normal.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/jetbrains-mono-latin-500-normal.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 function getSiteUrl(): string {
@@ -41,7 +59,7 @@ function seoForLang(lang: "es" | "en") {
     return {
       title: "Promptea — Prompt analyzer & optimizer for GPT, Claude, Gemini, Grok",
       description:
-        "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek and Kimi. Score, fix and rewrite prompts for code, data/JSON, marketing, study, image and more.",
+        "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity. Score, fix and rewrite prompts for text, code, data/JSON, marketing, study, image, translation and summaries.",
       locale: "en_US",
       keywords: [
         "prompt analyzer",
@@ -59,7 +77,7 @@ function seoForLang(lang: "es" | "en") {
   return {
     title: "Promptea — Analizá y optimizá prompts para GPT, Claude, Gemini, Grok",
     description:
-      "Analizador y optimizador de prompts gratis para ChatGPT, Claude, Gemini, Grok, DeepSeek y Kimi. Puntúa, mejora y reescribe prompts para código, data/JSON, marketing, estudio, imagen y más.",
+      "Analizador y optimizador de prompts gratis para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi y Perplexity. Puntúa, mejora y reescribe prompts para texto, código, data/JSON, marketing, estudio, imagen, traducción y resúmenes.",
     locale: "es_AR",
     keywords: [
       "analizador de prompts",
@@ -160,7 +178,7 @@ export default async function RootLayout({
   const { lang: rawLang } = await params;
   if (!hasLocale(rawLang)) notFound();
 
-  await getDictionary(rawLang as any);
+  await getDictionary(rawLang as "es" | "en");
 
   const lang = (rawLang === "en" ? "en" : "es") as "es" | "en";
   const jsonLd = softwareApplicationJsonLd(lang);
@@ -173,7 +191,6 @@ export default async function RootLayout({
           <>
             <script async src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`} />
             <script
-              // eslint-disable-next-line react/no-danger
               dangerouslySetInnerHTML={{
                 __html: `
                   window.dataLayer = window.dataLayer || [];
@@ -189,7 +206,6 @@ export default async function RootLayout({
         {/* ✅ JSON-LD: SoftwareApplication */}
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
@@ -198,8 +214,8 @@ export default async function RootLayout({
         className={[
           titleFont.variable,
           bodyFont.variable,
-          "font-body min-h-dvh",
-          "bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50",
+          monoFont.variable,
+          "min-h-dvh",
           "transition-colors duration-200",
         ].join(" ")}
       >

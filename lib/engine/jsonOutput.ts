@@ -6,7 +6,7 @@
 //
 // Schema:
 // {
-//   "promptea_version": "v1.1.1",
+//   "promptea_version": "v<APP_VERSION>",
 //   "model": "GPT" | "Claude" | ...,
 //   "purpose": "...",
 //   "task_type": "...",
@@ -23,7 +23,8 @@ import type { Lang, TargetAI } from "@/lib/promptTemplates";
 import type { PromptPurpose, TaskType } from "./types";
 import type { AttachmentContext } from "@/lib/attachments";
 
-const PROMPTEA_JSON_VERSION = "v1.1.1";
+import { APP_VERSION } from "@/lib/version";
+const PROMPTEA_JSON_VERSION = `v${APP_VERSION}`;
 
 function t<T>(lang: Lang, es: T, en: T): T {
   return lang === "es" ? es : en;

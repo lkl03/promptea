@@ -17,13 +17,11 @@ export default function TopBar({ lang }: { lang: "es" | "en" }) {
         {/* Wordmark */}
         <Link
           href={`/${lang}`}
-          className="font-title text-base font-semibold tracking-tight
-                     text-zinc-900 dark:text-zinc-50
-                     hover:opacity-80 transition-opacity focus:outline-none
-                     focus:ring-2 focus:ring-zinc-400/40 rounded-sm"
+          className="font-title text-base font-semibold tracking-tight text-ink
+                     hover:opacity-80 transition-opacity rounded-sm"
           aria-label="Promptea — home"
         >
-          Promptea
+          Promptea<span className="text-accent">.</span>
         </Link>
 
         {/* Nav links — wrap on small screens */}
@@ -33,10 +31,8 @@ export default function TopBar({ lang }: { lang: "es" | "en" }) {
               <li key={item.key}>
                 <Link
                   href={item.href(lang)}
-                  className="px-2.5 py-1 rounded-lg opacity-70 hover:opacity-100
-                             hover:bg-zinc-100/60 dark:hover:bg-zinc-800/50
-                             focus:outline-none focus:ring-2 focus:ring-zinc-400/40 dark:focus:ring-zinc-500/40
-                             transition-all"
+                  className="px-2.5 py-1 rounded-lg text-ink-muted hover:text-ink
+                             hover:bg-surface-soft transition-colors"
                 >
                   {item.label[lang]}
                 </Link>

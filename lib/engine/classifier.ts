@@ -30,14 +30,24 @@ export function classifyTask(core: string): TaskType | "general" {
 
   const bump = (k: keyof typeof scores, n: number) => (scores[k] += n);
 
-  bump("coding", scoreKeywords(t, [/(typescript|javascript|python|go|rust|java|c\+\+|c#|sql|api|endpoint|nextjs|react|node)/]));
+  // \b boundaries matter: without them "go" matched inside "Goal:" and
+  // "java" inside "javascript"-adjacent words, misclassifying plain text.
+  bump("coding", scoreKeywords(t, [/\b(typescript|javascript|python|go|rust|java|sql|api|endpoint|next\.?js|react|node)\b|c\+\+|c#/]));
   bump("debugging", scoreKeywords(t, [/(bug|error|exception|stack|trace|fails|falla|rompe|crash|no anda)/]));
   bump("refactor", scoreKeywords(t, [/(refactor|restructure|clean up|limpi(ar|á)|optimizar código|optimizar codigo|mejorar código|mejorar codigo)/]));
   bump("research", scoreKeywords(t, [/(research|investig(a|á)|sources|fuentes|papers|estudios|evidence|evidencia)/]));
   bump("marketing", scoreKeywords(t, [/(marketing|ads|anuncio|copy|seo|cta|conversion|conversión|landing|brand|marca)/]));
   bump("summarization", scoreKeywords(t, [/(summary|summarize|summarise|resumen|resum(i|í|e)|resumime|tl;dr|puntos clave)/]));
   bump("translation", scoreKeywords(t, [/(translate|translation|tradu(c|z)í|traduce|traducir|traducción)/]));
-  bump("data_extraction", scoreKeywords(t, [/(extract|extracción|extraer|json|schema|campos|required fields|parse|parser)/]));
+  // Split into several patterns so multi-signal extraction prompts
+  // ("return ONLY JSON", "fields:", "table with columns") outrank
+  // single-keyword matches from other categories.
+  bump("data_extraction", scoreKeywords(t, [
+    /(extract|extracción|extraer|extraé|parse|parser)/,
+    /(json|schema|esquema)/,
+    /(campos|required fields|fields:)/,
+    /(tabla con columnas|table with columns|columnas:|columns:)/,
+  ]));
   bump("planning", scoreKeywords(t, [/(plan|roadmap|cronograma|timeline|milestones|checklist|pasos|step-by-step)/]));
   bump("customer_support", scoreKeywords(t, [/(support|soporte|cliente|ticket|reclamo|queja|disculpa|apology)/]));
   bump("writing", scoreKeywords(t, [/(write|escrib(i|í|e)|redact(a|á)|story|cuento|guion|artículo|articulo|post)/]));

@@ -102,7 +102,7 @@ export function wantsJson(outputFormat: OutputFormat | null | undefined, prompt:
   );
 }
 
-export function isExtractionLike(taskType: any, prompt: string, lang: Lang) {
+export function isExtractionLike(taskType: string | undefined, prompt: string, lang: Lang) {
   const low = (prompt ?? "").toLowerCase();
   const byTask = String(taskType ?? "").toLowerCase() === "data_extraction";
 
@@ -114,7 +114,7 @@ export function isExtractionLike(taskType: any, prompt: string, lang: Lang) {
   return byTask || byWords;
 }
 
-export function isDebugLike(taskType: any, prompt: string, lang: Lang) {
+export function isDebugLike(taskType: string | undefined, prompt: string, lang: Lang) {
   const low = (prompt ?? "").toLowerCase();
   const byTask = String(taskType ?? "").toLowerCase() === "debugging";
 

@@ -9,9 +9,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unsupported content-type" }, { status: 415 });
   }
 
-  let body: any;
+  let body: Record<string, unknown> | null = null;
   try {
-    body = await req.json();
+    body = (await req.json()) as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }

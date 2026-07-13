@@ -1,4 +1,5 @@
 import { describe, expect, test, vi, afterEach } from "vitest";
+import { APP_VERSION } from "@/lib/version";
 import { buildOptimizedPrompt } from "@/lib/engine/builder";
 import { analyzePrompt } from "@/lib/analyzePrompt";
 
@@ -39,7 +40,8 @@ describe("engine/builder attachments", () => {
       "summarization"
     );
 
-    expect(result).toContain("PROMPTEA: v1.1");
+    // Default now derives from APP_VERSION (lib/version.ts).
+    expect(result).toContain(`PROMPTEA: v${APP_VERSION}`);
   });
 
   test("injects ATTACHED CONTEXT block", () => {

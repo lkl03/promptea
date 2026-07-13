@@ -2,7 +2,7 @@
 import type { TelemetryEvent } from "./types";
 
 export async function sendTelemetry(e: TelemetryEvent) {
-  const analysisId = String((e as any)?.analysisId ?? "").trim();
+  const analysisId = String(e?.analysisId ?? "").trim();
   if (analysisId.length < 10) return; // ✅ evita 400/spam
 
   try {

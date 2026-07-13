@@ -14,6 +14,8 @@ import { detectStructured, extractCorePrompt } from "./extractor";
 import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
 import { classifyTask } from "./classifier";
+import { selectStrategy, type RoutingDecision } from "@/lib/refine/router";
+import { normalizePurpose } from "@/lib/domain";
 
 export type OutputFormatChoice = "checklist" | "json";
 
@@ -92,26 +94,6 @@ function parseEmbeddedAttachments(raw: string): AttachmentContext[] {
     .filter((item) => item.text.length > 0);
 }
 
-function normalizePurpose(p: any): PromptPurpose {
-  if (p === "data_json") return "data";
-  if (p === "translate") return "translation";
-  if (p === "summary" || p === "summarize") return "summarization";
-
-  if (
-    p === "text" ||
-    p === "study" ||
-    p === "code" ||
-    p === "data" ||
-    p === "image" ||
-    p === "marketing" ||
-    p === "translation" ||
-    p === "summarization"
-  ) {
-    return p;
-  }
-
-  return "text";
-}
 
 function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
   const fallback = TASK_FROM_PURPOSE[purpose] ?? "text";
@@ -124,11 +106,25 @@ function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
     case "data":
       return "data_extraction";
     case "text":
+      // v1.2.0: detect the real task even when the user kept the default
+      // "text" purpose — a JSON-extraction or debugging prompt typed under
+      // "text" should be scored and structured as what it actually is.
       if (
         classified === "research" ||
         classified === "planning" ||
         classified === "customer_support" ||
-        classified === "writing"
+        classified === "writing" ||
+        classified === "summarization" ||
+        classified === "translation" ||
+        classified === "data_extraction"
+      ) {
+        return classified;
+      }
+      // Coding/debugging need real code-work intent, not just a tech noun
+      // ("improve my React CV" is a text task, not a coding task).
+      if (
+        (classified === "coding" || classified === "debugging") &&
+        /(fix|debug|implement|bug|error|write code|refactor|function|función|funcion|snippet|compile|compilar|deploy|```)/i.test(raw)
       ) {
         return classified;
       }
@@ -227,7 +223,7 @@ export function analyzePrompt(
   prompt: string,
   target: TargetAI,
   lang: Lang,
-  purposeInput: any = "text",
+  purposeInput: unknown = "text",
   attachmentsOrOptions: AttachmentContext[] | AnalyzeOptions = []
 ): AnalyzeResult {
   const opts: AnalyzeOptions = Array.isArray(attachmentsOrOptions)
@@ -274,6 +270,24 @@ export function analyzePrompt(
     taskType
   );
 
+  // v1.2.0: when the extractor strips structured sections (OUTPUT FORMAT,
+  // CONSTRAINTS, etc.) out of the analyzed core, the user still WROTE them —
+  // credit those features from the raw text so scores don't punish
+  // well-structured prompts.
+  if (coreExtracted && !promptea) {
+    const rawFeatures = extractFeatures(raw, taskType, lang);
+    features = {
+      ...features,
+      hasOutputFormat: features.hasOutputFormat || rawFeatures.hasOutputFormat,
+      hasConstraints: features.hasConstraints || rawFeatures.hasConstraints,
+      hasTone: features.hasTone || rawFeatures.hasTone,
+      hasLengthHint: features.hasLengthHint || rawFeatures.hasLengthHint,
+      hasAudience: features.hasAudience || rawFeatures.hasAudience,
+      hasExamples: features.hasExamples || rawFeatures.hasExamples,
+      hasSuccessCriteria: features.hasSuccessCriteria || rawFeatures.hasSuccessCriteria,
+    };
+  }
+
   if (promptea) {
     features = {
       ...features,
@@ -291,6 +305,14 @@ export function analyzePrompt(
   const sameModel = (promptea?.model ?? null) === targetLower;
   const samePurpose = (promptea?.purpose ?? null) === String(purpose);
 
+  // v1.2.0: route refinement strategy + complexity from the prompt itself.
+  const routing: RoutingDecision = selectStrategy({
+    prompt: cleanAnalysisInput,
+    taskType,
+    purpose,
+    attachmentsCount: effectiveAttachments.length,
+  });
+
   let optimizedPrompt: string;
   if (formatChoice === "json") {
     optimizedPrompt = buildJsonOptimizedPrompt({
@@ -305,7 +327,9 @@ export function analyzePrompt(
     optimizedPrompt = canonicalize(raw);
   } else {
     optimizedPrompt = canonicalize(
-      buildOptimizedPrompt(cleanAnalysisInput, taskType as any, target, lang, purpose, effectiveAttachments)
+      buildOptimizedPrompt(cleanAnalysisInput, taskType, target, lang, purpose, effectiveAttachments, {
+        complexity: routing.complexity,
+      })
     );
   }
 
@@ -349,6 +373,7 @@ export function analyzePrompt(
       })),
       formatChoice,
       modelId,
+      routing,
       scoreCriteria: feedback.scoreCriteria,
       strengths: feedback.strengths,
       criticalIssues: feedback.criticalIssues,

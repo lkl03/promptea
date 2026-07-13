@@ -2,31 +2,9 @@ import type { Lang, TargetAI } from "../promptTemplates";
 import type { OutputFormat } from "./lint/types";
 import type { AttachmentContext } from "@/lib/attachments";
 
-export type PromptPurpose =
-  | "text"
-  | "study"
-  | "code"
-  | "data"
-  | "image"
-  | "marketing"
-  | "translation"
-  | "summarization";
-
-export type TaskType =
-  | "text"
-  | "study"
-  | "coding"
-  | "debugging"
-  | "refactor"
-  | "research"
-  | "planning"
-  | "customer_support"
-  | "writing"
-  | "data_extraction"
-  | "image"
-  | "marketing"
-  | "translation"
-  | "summarization";
+// Canonical unions live in lib/domain.ts; re-exported here for engine consumers.
+export type { PromptPurpose, TaskType } from "@/lib/domain";
+import type { PromptPurpose, TaskType } from "@/lib/domain";
 
 export type Severity = "low" | "medium" | "high";
 export type Impact = "low" | "medium" | "high";
@@ -95,6 +73,11 @@ export type AnalyzeResult = {
     attachmentsUsed?: Array<Pick<AttachmentContext, "name" | "kind" | "truncated">>;
     formatChoice?: "checklist" | "json";
     modelId?: string | null;
+    routing?: {
+      strategy: string;
+      complexity: string;
+      signals: string[];
+    };
     scoreCriteria?: Array<{ key: string; label: { es: string; en: string } }>;
     strengths?: string[];
     criticalIssues?: string[];

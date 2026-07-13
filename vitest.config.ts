@@ -5,7 +5,9 @@ export default defineConfig({
   test: {
     environment: "node",
     globals: true,
-    include: ["**/*.test.ts"],
+    // v1.2.0: *.spec.ts files existed but were never picked up by the old
+    // "**/*.test.ts" pattern — five suites silently skipped. Include both.
+    include: ["**/*.test.ts", "**/*.spec.ts"],
     exclude: ["node_modules", ".next", "dist", "build"],
   },
   resolve: {

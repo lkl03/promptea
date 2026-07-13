@@ -1,15 +1,9 @@
 import type { Locale } from "./site";
+import type { PromptPurpose, TargetAI } from "@/lib/domain";
 
-export type Purpose =
-  | "text"
-  | "study"
-  | "code"
-  | "data"
-  | "image"
-  | "marketing"
-  | "translation"
-  | "summarization";
-export type TargetModel = "gpt" | "gemini" | "claude" | "grok" | "kimi" | "deepseek";
+// v1.2.0: derive from the shared domain model (perplexity was missing here).
+export type Purpose = PromptPurpose;
+export type TargetModel = TargetAI;
 
 export function buildPrefillHref(opts: {
   lang: Locale;

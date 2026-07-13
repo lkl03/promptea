@@ -5,10 +5,10 @@ import AdSlot from "@/components/AdSlot";
 import PromptOfTheDay from "@/components/PromptOfTheDay";
 import HowItWorks from "@/components/HowItWorks";
 
-type TargetValue = "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek" | "perplexity";
-
-// ✅ IMPORTANT: este type tiene que matchear el que usa PromptBox (usa "data", no "data_json")
-type PromptPurpose = "text" | "study" | "code" | "data" | "image" | "marketing";
+// v1.2.0: types + normalization come from the shared domain module, so URL
+// prefill supports every purpose (translation/summarization were silently
+// dropped before) and can never drift from PromptBox or the API schema.
+import { isPurpose, isTarget, normalizePurpose as normalizePurposeAlias, type PromptPurpose, type TargetAI } from "@/lib/domain";
 
 function pickFirst(v: string | string[] | undefined): string | null {
   if (!v) return null;
@@ -23,20 +23,19 @@ function safeDecode(v: string) {
   }
 }
 
-function normalizeTarget(v: string | null): TargetValue | undefined {
+function normalizeTarget(v: string | null): TargetAI | undefined {
   const x = (v ?? "").toLowerCase().trim();
-  const allowed: TargetValue[] = ["gpt", "gemini", "grok", "claude", "kimi", "deepseek", "perplexity"];
-  return allowed.includes(x as any) ? (x as TargetValue) : undefined;
+  return isTarget(x) ? x : undefined;
 }
 
 function normalizePurpose(v: string | null): PromptPurpose | undefined {
-  const x = (v ?? "").toLowerCase().trim();
-
-  // ✅ compat aliases (links viejos o externos)
-  if (x === "data_json" || x === "data" || x === "json" || x === "data/json") return "data";
-
-  const allowed: PromptPurpose[] = ["text", "study", "code", "data", "image", "marketing"];
-  return allowed.includes(x as any) ? (x as PromptPurpose) : undefined;
+  if (!v) return undefined;
+  const normalized = normalizePurposeAlias(v);
+  // normalizePurposeAlias falls back to "text" for unknown values; only
+  // prefill when the URL actually named a valid purpose or alias.
+  const x = v.toLowerCase().trim();
+  const wasAlias = ["data_json", "json", "data/json", "translate", "summary", "summarize"].includes(x);
+  return isPurpose(x) || wasAlias ? normalized : undefined;
 }
 
 export default async function Page({

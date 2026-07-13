@@ -31,7 +31,12 @@ function detectGoal(text: string, task: TaskType) {
   const genericGoal = hasAny(text, [
     /\b(goal|objective|objetivo|meta)\b/,
     /\b(quiero|necesito|busco|i want|i need|i'm trying to|my goal is)\b/,
-    /\b(haceme|hazme|make|build|create|generate|write|escribí|redactá)\b/,
+    /\b(haceme|hazme|make|build|create|generate|write|escribí|redactá|redacta)\b/,
+    // v1.2.0: imperative request verbs are goal statements too.
+    /\b(give me|dame|decime|tell me|help me|ayudame|ayúdame|improve|mejorar|mejorá|mejora)\b/,
+    /\b(extraé|extrae|devolvé|devolveme|devuelve|generá|genera|armá|arma|draft|reescribí|reescribe|rewrite|suggest|recommend|recomendá|recomienda)\b/,
+    /\b(explicá|explica|explain|resumí|resume|summarize|traducí|traduce|translate|fix|arreglá|arregla|invitar|invite)\b/,
+    /\b(reply|respond|respondé|responde|contestá|contesta|answer)\b/,
   ]);
 
   if (genericGoal) return true;
@@ -90,9 +95,13 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
   const hasInputs =
     hasAny(t, [
       /\b(input|inputs|dataset|csv|json|xml|yaml|logs?|stacktrace|traceback)\b/,
-      /\b(texto:|text:|contexto:|context:|artículo:|articulo:|article:|documento:|document:)\b/,
+      // NOTE: no trailing \b after ":" — ":" is a non-word char, so a word
+      // boundary there never matches (pre-v1.2.0 bug: these markers were dead).
+      /\b(texto:|text:|contexto:|context:|artículo:|articulo:|article:|documento:|document:)/,
       /\b(source text|original text|texto original|archivo|file|adjunto|attached)\b/,
-      /\b(código:|codigo:|code:)\b/,
+      /\b(código:|codigo:|code:|email:|correo:)/,
+      // Quoted source material ("...") of meaningful length is input data.
+      /["“][^"”]{10,}["”]/,
     ]) || /```/.test(clean) || words > 80;
 
   const hasAudience = hasAny(t, [
@@ -125,21 +134,26 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
   const hasOutputFormat = hasAny(t, [
     /\b(output format|format|json|table|steps|bullets?|paragraph|sections?)\b/,
     /\b(formato de salida|json|tabla|pasos|viñetas|vinyetas|párrafo|parrafo|secciones)\b/,
+    // Colon-style spec lines: "Output: subject + body", "Formato: ..."
+    /\b(output:|salida:|formato:)/,
   ]);
 
   const hasSuccessCriteria = hasAny(t, [
-    /\b(success criteria|acceptance criteria|must include|verify|validation)\b/,
+    /\b(success criteri(?:a|on)|acceptance criteri(?:a|on)|must include|verify|validation)\b/,
     /\b(criterios? de éxito|criterios? de exito|debe incluir|validar|verificar|aceptación|aceptacion)\b/,
   ]);
 
   const hasTone = hasAny(t, [
-    /\b(tone|formal|casual|friendly|serious|literal|natural)\b/,
-    /\b(tono|formal|casual|amigable|serio|literal|natural)\b/,
+    /\b(tone|formal|casual|friendly|serious|literal|natural|professional\w*)\b/,
+    /\b(tono|formal|casual|amigable|serio|literal|natural|profesional\w*)\b/,
   ]);
 
   const hasLengthHint = hasAny(t, [
     /\b(short|brief|concise|long|detailed|1 paragraph|2 paragraphs|3 bullets|5 bullets)\b/,
     /\b(corto|breve|resumido|largo|extenso|detallado|1 párrafo|1 parrafo|3 viñetas|5 viñetas)\b/,
+    // Numeric limits: "max 120 words", "máximo 120 palabras", "120 caracteres"
+    /\b(max|máx|maximo|máximo|minimum|min|mínimo|minimo)\b.{0,12}\d+/,
+    /\d+\s*(palabras|words|caracteres|characters|líneas|lineas|lines)\b/,
   ]);
 
   const hasTimeframe = hasAny(t, [

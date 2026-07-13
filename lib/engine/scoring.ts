@@ -47,7 +47,10 @@ function getWeights(taskType: TaskType): Weights {
     case "customer_support":
       return { clarity: 0.24, context: 0.20, constraints: 0.18, output: 0.16, verifiability: 0.12, safety: 0.10 };
     default:
-      return { clarity: 0.24, context: 0.20, constraints: 0.18, output: 0.16, verifiability: 0.12, safety: 0.10 };
+      // v1.2.0: for conversational/writing tasks, verifiability (success
+      // criteria, error details, repro steps) rarely applies — over-weighting
+      // it systematically punished well-formed everyday prompts.
+      return { clarity: 0.27, context: 0.20, constraints: 0.18, output: 0.19, verifiability: 0.06, safety: 0.10 };
   }
 }
 
@@ -92,12 +95,20 @@ function clarityScore(taskType: TaskType, f: Features) {
 
 function contextScore(taskType: TaskType, f: Features) {
   const hits = (f.hasInputs ? 1 : 0) + (f.hasAudience ? 1 : 0) + (f.hasExamples ? 1 : 0);
-  let score = hits * 22;
+  let score = hits * 26;
 
   if (f.hasInputs) {
     if (taskType === "summarization" || taskType === "translation") score = Math.max(score, 72);
     if (taskType === "data_extraction") score = Math.max(score, 78);
     if (taskType === "coding" || taskType === "debugging") score = Math.max(score, 68);
+  }
+
+  // For people-facing text tasks, a named audience IS the key context.
+  if (
+    f.hasAudience &&
+    (taskType === "text" || taskType === "writing" || taskType === "marketing" || taskType === "study")
+  ) {
+    score = Math.max(score, 45);
   }
 
   if (taskType === "study" && f.hasAudience) score += 10;
@@ -138,6 +149,10 @@ function verifiabilityScore(taskType: TaskType, f: Features) {
   if (f.hasReproSteps) score += 30;
 
   if (taskType === "debugging" && f.hasErrorDetails && f.hasReproSteps) score += 10;
+
+  // An explicit schema/format IS a verifiable contract for extraction tasks.
+  if (taskType === "data_extraction" && f.hasOutputFormat) score = Math.max(score, 45);
+
   return clamp(score);
 }
 

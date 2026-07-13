@@ -34,7 +34,7 @@ export function getAdminApp(): App {
   if (g.__PROMPTEA_ADMIN_APP__) return g.__PROMPTEA_ADMIN_APP__;
 
   const serviceAccount = parseServiceAccountFromBase64();
-  const projectId = process.env.FIREBASE_PROJECT_ID ?? (serviceAccount as any).project_id;
+  const projectId = process.env.FIREBASE_PROJECT_ID ?? (serviceAccount as { project_id?: string }).project_id;
 
   const app = initializeApp({
     credential: cert(serviceAccount),

@@ -38,8 +38,10 @@ Necesito que la respuesta sea en viñetas y con próximos pasos.`;
     expect(opt2).toBe(opt1);
     expect(opt3).toBe(opt1);
 
-    // ✅ Invariante: OUTPUT FORMAT no se duplica
-    expect(countOccurrences(opt1, /OUTPUT FORMAT\s*:/gi)).toBe(1);
+    // ✅ Invariante: OUTPUT FORMAT no se duplica.
+    // v1.2.0: prompts simples usan el path liviano sin sección OUTPUT FORMAT,
+    // así que el invariante es "como máximo una vez", nunca duplicado.
+    expect(countOccurrences(opt1, /OUTPUT FORMAT\s*:/gi)).toBeLessThanOrEqual(1);
   });
 
   test("Claude: optimizedPrompt debe ser idempotente al re-analizarlo", () => {

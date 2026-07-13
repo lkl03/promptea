@@ -74,7 +74,7 @@ function detectGoal(low: string, taskType?: string) {
 export function lintPrompt(
   prompt: string,
   lang: Lang,
-  taskType?: any,
+  taskType?: string,
   opts?: { attachmentsPresent?: boolean }
 ): LintResult {
   const p = (prompt ?? "").trim();
@@ -97,7 +97,7 @@ export function lintPrompt(
     pushReco(recommendations, "add_goal", "high", lang);
   }
 
-  const outputFormat: OutputFormat | null | undefined = detectOutputFormat(p, lang);
+  const outputFormat: OutputFormat | null | undefined = detectOutputFormat(p);
 
   if (!outputFormat) {
     pushFinding(findings, "missing_output_format", "high", lang);
@@ -156,8 +156,8 @@ export function lintPrompt(
     pushReco(recommendations, "add_context", "high", lang);
   }
 
-  const addFinding = (id: any, severity: any) => pushFinding(findings, id, severity, lang);
-  const addReco = (id: any, impact: any) => pushReco(recommendations, id, impact, lang);
+  const addFinding = (id: LintFinding["id"], severity: Severity) => pushFinding(findings, id, severity, lang);
+  const addReco = (id: LintRecommendation["id"], impact: Impact) => pushReco(recommendations, id, impact, lang);
 
   if (task === "summarization") {
     const hasSourceMaterial =
