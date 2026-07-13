@@ -15,6 +15,7 @@ import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
 import { classifyTask } from "./classifier";
 import { selectStrategy, type RoutingDecision } from "@/lib/refine/router";
+import { normalizePurpose } from "@/lib/domain";
 
 export type OutputFormatChoice = "checklist" | "json";
 
@@ -93,26 +94,6 @@ function parseEmbeddedAttachments(raw: string): AttachmentContext[] {
     .filter((item) => item.text.length > 0);
 }
 
-function normalizePurpose(p: any): PromptPurpose {
-  if (p === "data_json") return "data";
-  if (p === "translate") return "translation";
-  if (p === "summary" || p === "summarize") return "summarization";
-
-  if (
-    p === "text" ||
-    p === "study" ||
-    p === "code" ||
-    p === "data" ||
-    p === "image" ||
-    p === "marketing" ||
-    p === "translation" ||
-    p === "summarization"
-  ) {
-    return p;
-  }
-
-  return "text";
-}
 
 function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
   const fallback = TASK_FROM_PURPOSE[purpose] ?? "text";
@@ -242,7 +223,7 @@ export function analyzePrompt(
   prompt: string,
   target: TargetAI,
   lang: Lang,
-  purposeInput: any = "text",
+  purposeInput: unknown = "text",
   attachmentsOrOptions: AttachmentContext[] | AnalyzeOptions = []
 ): AnalyzeResult {
   const opts: AnalyzeOptions = Array.isArray(attachmentsOrOptions)

@@ -18,9 +18,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unsupported content-type" }, { status: 415 });
   }
 
-  let body: any;
+  let body: Record<string, unknown> | null = null;
   try {
-    body = await req.json();
+    body = (await req.json()) as Record<string, unknown>;
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
@@ -35,7 +35,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid sessionId" }, { status: 400 });
   }
 
-  const db = getAdminFirestore();
+  // Telemetry must degrade gracefully: without Firestore credentials (local
+  // dev, misconfigured env) we acknowledge and skip instead of surfacing 500s.
+  let db: ReturnType<typeof getAdminFirestore>;
+  try {
+    db = getAdminFirestore();
+  } catch {
+    return NextResponse.json({ ok: true, skipped: "telemetry_unavailable" }, { status: 200 });
+  }
+
   const sessionsRef = db.collection("telemetry_sessions").doc(sessionId);
 
   const day = todayKey();

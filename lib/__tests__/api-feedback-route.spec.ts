@@ -30,7 +30,7 @@ describe("API /api/feedback", () => {
     expect(res.status).toBe(200);
 
     expect(setFeedback).toHaveBeenCalledTimes(1);
-    expect((setFeedback as any).mock.calls[0][0]).toEqual({
+    expect(vi.mocked(setFeedback).mock.calls[0][0]).toEqual({
       analysisId: "123e4567-e89b-12d3-a456-426614174000",
       helpful: "no",
       reason: "It missed the output format.",

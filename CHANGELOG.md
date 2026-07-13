@@ -4,6 +4,44 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.2.0 — 2026-07-12
+
+Major product-quality release: full redesign, adaptive prompt-refinement engine, and a verified model catalog.
+
+### Added
+- **Adaptive refinement pipeline** (`lib/refine/`): strategy router (15 strategies — from `message_polish` to `agent_workflow` and `data_schema`), complexity classifier, protected-literal extraction, es/en language detection, deliberate input budgeting for long prompts (head + explicit requirements + tail are preserved; never blind truncation), Zod-validated LLM contract, post-generation quality gate, one bounded repair attempt, and typed fallback reasons for every external failure class.
+- **Theme system** with four themes — Day, Dusk, Night, Paper — built on semantic CSS tokens (`canvas/surface/line/ink/accent/state`) adapted from an internal reference architecture. System preference respected; selection persists; no hydration flash; WCAG AA contrast verified per theme.
+- **Improved/Original comparison** on the result panel, plus a concise "What changed" summary with key improvements, assumptions, and follow-up questions when the adaptive engine ran.
+- **Verified model registry**: every entry carries `status` (stable/preview/legacy/deprecated), `verifiedAt` (2026-07-12), `sourceUrl` (official provider docs), `apiModelId`, `replacementId`, and a single explicit default per target. New: GPT-5.6 (Sol/Terra/Luna), Claude Sonnet 5 + Haiku 4.5, Gemini 3.1 Pro + 3.1 Flash-Lite, Grok 4.5, Kimi K2.6, Sonar + Sonar Deep Research.
+- **Golden evaluation dataset** (17 EN/ES cases) asserting structural invariants: strategy routing, protected-literal & language preservation, non-bloat growth caps, idempotency.
+- Version-consistency and EN/ES dictionary-parity test suites; `npm run typecheck` script.
+
+### Changed
+- **Full redesign**: self-hosted typography (Space Grotesk / Inter / JetBrains Mono — no Google Fonts fetch at build), calm theme-aware ambient background (the neon orbs are gone), semantic-token component primitives, monospace prompt blocks, staggered result reveal, and meaningful processing states instead of a static spinner.
+- **Simple prompts no longer receive the full GOAL/OUTPUT/CONSTRAINTS scaffold** — the deterministic builder is complexity-aware and keeps short requests natural (header + guidance + task).
+- The engine detects the real task even under the default "text" purpose (a JSON-extraction or debugging prompt typed as "text" is scored and structured as what it is).
+- `PromptBox` and `ResultsPanel` decomposed into focused feature modules (`components/analyzer/*`, `components/results/*`); analyze requests are supersede-safe (in-flight fetch aborted on reset/resubmit) and prompt text survives recoverable errors.
+- Legacy model aliases (GPT-4o, Claude Sonnet/Opus/Haiku generics, Gemini Pro/Flash generics, Grok legacy, `deepseek-chat`, `kimi`, Llama 3 70B) are retained but no longer selectable; DeepSeek deprecates `deepseek-chat` on 2026-07-24.
+
+### Fixed
+- **Scoring under-rated well-formed prompts** (14 calibration cases failing since v1.1.x): the extractor stripped OUTPUT FORMAT/CONSTRAINTS sections before feature detection, `texto:`/`text:` input markers never matched due to a dead word-boundary after `:`, the classifier matched `go` inside "Goal:", and verifiability over-weighted conversational tasks. All 14 cases now pass without loosening the dataset.
+- Five `*.spec.ts` test suites existed but were never executed (vitest include pattern); they now run, and the empty telemetry spec is a real sanitization suite.
+- URL prefill silently dropped `translation`/`summarization` purposes; Perplexity was missing from the SEO prefill target type.
+
+### Accessibility
+- Full keyboard navigation with a single consistent focus treatment; menus close on Escape and restore focus; screen-reader announcements for analysis completion and copy confirmation; `prefers-reduced-motion` drops movement while keeping opacity cues; AA contrast validated across all four themes.
+
+### Performance
+- No backdrop blur on nested soft surfaces (the single most expensive compositing cost); GPU-only animations (transform/opacity); fonts subset and self-hosted (~172 KB total).
+
+### Developer experience
+- Single domain module (`lib/domain.ts`) for languages, targets, purposes, task types, formats, strategies, and fallback reasons — Zod schemas and UI options derive from it. Lint is now clean repo-wide (was 78 errors). API routes fully typed.
+
+### Migration / environment notes
+- No new required environment variables. `GROQ_API_KEY` (optional) enables the adaptive refiner; without it Promptea uses the deterministic engine, now clearly indicated in the UI. `GROQ_MODEL` still overrides the refiner model.
+
+---
+
 ## v1.1.6 — 2026-07-09
 
 ### Added

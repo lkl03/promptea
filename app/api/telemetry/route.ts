@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Invalid telemetry payload" }, { status: 400 });
   }
 
-  const analysisId = String((event as any).analysisId ?? "").trim();
-  const sessionId = String((event as any).sessionId ?? "anon").trim();
+  const analysisId = String(event.analysisId ?? "").trim();
+  const sessionId = String(event.sessionId ?? "anon").trim();
 
   if (analysisId.length < 10) {
     return NextResponse.json(
@@ -45,23 +45,31 @@ export async function POST(req: NextRequest) {
     await upsertAnalysisEvent({
       analysisId,
       sessionId,
-      projectId: (event as any).projectId ?? process.env.FIREBASE_PROJECT_ID ?? null,
+      projectId: event.projectId ?? process.env.FIREBASE_PROJECT_ID ?? null,
       lang: (event.lang === "en" ? "en" : "es") as "es" | "en",
-      target: String((event as any).target ?? "gpt"),
-      taskType: (event as any).taskType ?? null,
-      engineVersion: String((event as any).engineVersion ?? "unknown"),
-      score: Number((event as any).score ?? 0),
-      confidence: Number((event as any).confidence ?? 0),
-      words: Number((event as any).words ?? 0),
-      approxTokens: Number((event as any).approxTokens ?? 0),
+      target: String(event.target ?? "gpt"),
+      taskType: event.taskType ?? null,
+      engineVersion: String(event.engineVersion ?? "unknown"),
+      score: Number(event.score ?? 0),
+      confidence: Number(event.confidence ?? 0),
+      words: Number(event.words ?? 0),
+      approxTokens: Number(event.approxTokens ?? 0),
       findingIds: (event.findingIds ?? []).map(String),
       recoIds: (event.recoIds ?? []).map(String),
-      outputFormat: (event as any).outputFormat ?? null,
-      purpose: String((event as any).purpose ?? "").trim() || null,
+      outputFormat:
+        event.outputFormatKind &&
+        ["json", "table", "steps", "bullets"].includes(event.outputFormatKind)
+          ? {
+              kind: event.outputFormatKind as "json" | "table" | "steps" | "bullets",
+              strict: Boolean(event.outputFormatStrict),
+            }
+          : null,
+      purpose: String(event.purpose ?? "").trim() || null,
     });
 
     return NextResponse.json({ ok: true }, { status: 200 });
-  } catch (e: any) {
-    return NextResponse.json({ ok: false, error: e?.message ?? "Telemetry write failed" }, { status: 500 });
+  } catch (e) {
+    const message = e instanceof Error ? e.message : "Telemetry write failed";
+    return NextResponse.json({ ok: false, error: message }, { status: 500 });
   }
 }

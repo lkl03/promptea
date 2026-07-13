@@ -2,14 +2,6 @@ import { describe, expect, test } from "vitest";
 import { analyzePrompt } from "@/lib/analyzePrompt";
 import { loadDatasetCases } from "@/lib/engine/dataset/load";
 
-function norm(s: string) {
-  return (s ?? "").replace(/\r\n/g, "\n").trim();
-}
-
-function lower(s: string) {
-  return String(s ?? "").toLowerCase();
-}
-
 describe("Dataset calibration", () => {
   const cases = loadDatasetCases();
 
@@ -22,18 +14,20 @@ describe("Dataset calibration", () => {
       const r = analyzePrompt(c.prompt, c.target, c.lang);
 
       // score range
-      expect(r.score).toBeGreaterThanOrEqual(c.expect.scoreRange[0]);
-      expect(r.score).toBeLessThanOrEqual(c.expect.scoreRange[1]);
+      if (c.expect.scoreRange) {
+        expect(r.score).toBeGreaterThanOrEqual(c.expect.scoreRange[0]);
+        expect(r.score).toBeLessThanOrEqual(c.expect.scoreRange[1]);
+      }
 
       // confidence
       if (typeof c.expect.confidenceMin === "number") {
         expect(Number(r.meta?.confidence ?? 0)).toBeGreaterThanOrEqual(c.expect.confidenceMin);
       }
 
-      const findingIds = (r.findings ?? []).map((f: any) => f.id);
-      const recIds = (r.recommendations ?? []).map((x: any) => x.id).filter(Boolean);
+      const findingIds = (r.findings ?? []).map((f) => f.id);
+      const recIds = (r.recommendations ?? []).map((x) => x.id).filter((id): id is string => Boolean(id));
       const recBlob = (r.recommendations ?? [])
-        .map((x: any) => `${x.title ?? ""}\n${x.detail ?? ""}`)
+        .map((x) => `${x.title ?? ""}\n${x.detail ?? ""}`)
         .join("\n")
         .toLowerCase();
 

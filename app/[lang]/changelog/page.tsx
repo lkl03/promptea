@@ -28,6 +28,52 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.2.0 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.2.0</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 12-07-2026" : "Released: 2026-07-12"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Rediseño completo: nueva tipografía, cuatro temas (Día, Atardecer, Noche y Papel) con tokens semánticos y contraste AA, fondo ambiental calmo y bloques de prompt en fuente mono."
+              : "Full redesign: new typography, four themes (Day, Dusk, Night, and Paper) built on semantic tokens with AA contrast, a calm ambient background, and monospace prompt blocks."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevo motor de refinamiento adaptativo: enruta cada prompt a una estrategia (mensaje corto, código, JSON estricto, tarea de agente, etc.), protege literales como URLs y rutas, valida el resultado con un quality gate y siempre cae al motor determinístico si algo falla."
+              : "New adaptive refinement engine: routes each prompt to a strategy (short message, coding, strict JSON, agent task, etc.), protects literals like URLs and file paths, validates output through a quality gate, and always falls back to the deterministic engine on failure."}
+          </li>
+          <li>
+            {isEs
+              ? "Los prompts simples ya no reciben el andamiaje completo de secciones: la reescritura se adapta a la complejidad real del pedido."
+              : "Simple prompts no longer receive the full section scaffold: the rewrite adapts to the request's real complexity."}
+          </li>
+          <li>
+            {isEs
+              ? "Comparación Mejorado/Original en el resultado, con resumen de qué cambió, supuestos y preguntas pendientes cuando corre el refinador con IA."
+              : "Improved/Original comparison on the result, with a summary of what changed, assumptions, and open questions when the AI refiner ran."}
+          </li>
+          <li>
+            {isEs
+              ? "Catálogo de modelos verificado contra documentación oficial (12-07-2026): GPT-5.6, Claude Fable 5 / Opus 4.8 / Sonnet 5 / Haiku 4.5, Gemini 3.5 Flash y 3.1 Pro, Grok 4.5, DeepSeek V4, Kimi K2.6 y la familia Sonar. Los alias viejos quedan marcados como legacy."
+              : "Model catalog verified against official docs (2026-07-12): GPT-5.6, Claude Fable 5 / Opus 4.8 / Sonnet 5 / Haiku 4.5, Gemini 3.5 Flash and 3.1 Pro, Grok 4.5, DeepSeek V4, Kimi K2.6, and the Sonar family. Old aliases are now marked legacy."}
+          </li>
+          <li>
+            {isEs
+              ? "Corrección del scoring: los prompts bien formados ya no quedaban subvalorados por bugs de detección; los 14 casos de calibración que fallaban ahora pasan."
+              : "Scoring fix: well-formed prompts were being under-rated by detection bugs; the 14 failing calibration cases now pass."}
+          </li>
+          <li>
+            {isEs
+              ? "Accesibilidad: navegación completa por teclado, anuncios para lectores de pantalla, y respeto de prefers-reduced-motion."
+              : "Accessibility: full keyboard navigation, screen-reader announcements, and prefers-reduced-motion support."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.1.6 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

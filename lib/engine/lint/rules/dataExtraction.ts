@@ -7,7 +7,7 @@ type AddReco = (id: RecommendationId, impact: Impact) => void;
 export function applyDataExtractionRules(opts: {
   prompt: string;
   lang: Lang;
-  taskType?: any;
+  taskType?: string;
   outputFormat?: OutputFormat | null;
   addFinding: AddFinding;
   addReco: AddReco;

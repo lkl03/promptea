@@ -1,10 +1,10 @@
-import type { OutputFormat, Lang } from "./types";
+import type { OutputFormat } from "./types";
 
 function hasAny(text: string, patterns: RegExp[]) {
   return patterns.some((r) => r.test(text));
 }
 
-export function detectOutputFormat(prompt: string, lang: Lang): OutputFormat | null {
+export function detectOutputFormat(prompt: string): OutputFormat | null {
   const p = (prompt ?? "").toLowerCase();
 
   // “estricto”: SOLO JSON / ONLY JSON / JSON válido y nada más

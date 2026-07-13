@@ -2,11 +2,13 @@ import type { TelemetryEvent } from "./types";
 
 const BLOCKED_KEYS = ["prompt", "optimizedPrompt", "input", "text", "content"];
 
-export function sanitizeTelemetry(input: any): TelemetryEvent | null {
+export function sanitizeTelemetry(input: unknown): TelemetryEvent | null {
   if (!input || typeof input !== "object") return null;
 
+  const record = input as Record<string, unknown>;
+
   // Si viene algo con keys prohibidas, lo descartamos directo
-  for (const k of Object.keys(input)) {
+  for (const k of Object.keys(record)) {
     if (BLOCKED_KEYS.includes(k)) return null;
   }
 
@@ -32,9 +34,9 @@ export function sanitizeTelemetry(input: any): TelemetryEvent | null {
     "reason",
   ];
 
-  const out: any = {};
+  const out: Partial<Record<keyof TelemetryEvent, unknown>> = {};
   for (const k of allowed) {
-    if (k in input) out[k] = input[k];
+    if (k in record) out[k] = record[k];
   }
 
   // validaciones mínimas
