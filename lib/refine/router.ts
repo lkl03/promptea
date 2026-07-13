@@ -58,6 +58,10 @@ export function classifyComplexity(prompt: string, attachmentsCount = 0): Comple
   if (attachmentsCount > 0) score++;
   if (REPO_AGENT.test(text)) score++;
 
+  // Repo/agent work is never "simple": commands, branches, and validation
+  // steps always deserve structure even when phrased in one sentence.
+  if (REPO_AGENT.test(text)) return score >= 3 ? "complex" : "moderate";
+
   if (score <= 1 && words <= 60) return "simple";
   if (score >= 3) return "complex";
   return "moderate";
