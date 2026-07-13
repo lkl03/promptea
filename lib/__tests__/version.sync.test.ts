@@ -34,6 +34,13 @@ describe("version synchronization", () => {
     expect(r.optimizedPrompt.startsWith(`PROMPTEA: v${APP_VERSION}`)).toBe(true);
   });
 
+  test("JSON-format output carries APP_VERSION too", () => {
+    const r = analyzePrompt("Extract fields {a, b} from the text as JSON.", "gpt", "en", "data", {
+      format: "json",
+    });
+    expect(r.optimizedPrompt).toContain(`"promptea_version": "v${APP_VERSION}"`);
+  });
+
   test("newest CHANGELOG.md entry is APP_VERSION (history untouched)", () => {
     const changelog = readFileSync(join(root, "CHANGELOG.md"), "utf8");
     const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)/gm)].map((m) => m[1]);
