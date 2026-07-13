@@ -82,6 +82,11 @@ export default function FormatExplainModal({ lang }: Props) {
 
   useFocusTrap(dialogRef, open);
 
+  function handleClose() {
+    setOpen(false);
+    requestAnimationFrame(() => triggerRef.current?.focus());
+  }
+
   useEffect(() => {
     if (!open) return;
 
@@ -100,11 +105,6 @@ export default function FormatExplainModal({ lang }: Props) {
       window.removeEventListener("keydown", onKey);
     };
   }, [open]);
-
-  function handleClose() {
-    setOpen(false);
-    requestAnimationFrame(() => triggerRef.current?.focus());
-  }
 
   return (
     <>

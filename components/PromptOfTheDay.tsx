@@ -1,7 +1,7 @@
 // components/PromptOfTheDay.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { categoryLabel, getDailyPrompt, type DailyPrompt } from "@/lib/prompts/daily";
 
 type Props = {
@@ -19,10 +19,12 @@ function formatDate(date: Date, lang: "es" | "en") {
 
 export default function PromptOfTheDay({ lang, initialDate }: Props) {
   // Avoid hydration mismatch: render the date label only after mount.
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // useSyncExternalStore avoids the setState-in-effect cascade lint issue.
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   // Track analyzer locked state broadcast by PromptBox so the CTA is
   // hidden while a result is shown, analysis is pending, or files are loading.

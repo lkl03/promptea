@@ -1,78 +1,133 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { THEMES, THEME_LABELS, type ThemeName } from "@/lib/themes";
 
-function SunIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-    </svg>
+function subscribeNoop() {
+  return () => {};
+}
+
+/** Hydration-safe mounted flag without setState-in-effect. */
+function useMounted() {
+  return useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false
   );
 }
 
-function MoonIcon({ className }: { className?: string }) {
+function SwatchIcon({ theme, className }: { theme: ThemeName | "system"; className?: string }) {
+  if (theme === "system") {
+    return (
+      <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="13" rx="2" />
+        <path d="M8 21h8M12 17v4" />
+      </svg>
+    );
+  }
+  // A small filled circle previewing the theme's canvas + accent.
+  const preview: Record<ThemeName, { bg: string; dot: string }> = {
+    light: { bg: "#faf9f7", dot: "#9a5b1e" },
+    dark: { bg: "#16130f", dot: "#e0a458" },
+    night: { bg: "#09090b", dot: "#7dd3fc" },
+    paper: { bg: "#f6f1e7", dot: "#7c5a2b" },
+  };
+  const p = preview[theme];
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="9" fill={p.bg} stroke="currentColor" strokeOpacity="0.35" />
+      <circle cx="12" cy="12" r="3.5" fill={p.dot} />
     </svg>
   );
 }
 
 export default function ThemeToggle({ lang = "en" }: { lang?: "es" | "en" }) {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const mounted = useMounted();
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
+  // Close on outside click / Escape.
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!open) return;
+    function onPointerDown(e: PointerEvent) {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
+    }
+    window.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
 
-  // While unmounted, render a stable placeholder of the same size to avoid
-  // hydration mismatch and layout shift. The icon stays neutral.
+  const label = lang === "es" ? "Tema" : "Theme";
+  const current = (theme ?? "system") as ThemeName | "system";
+  const options: Array<ThemeName | "system"> = ["system", ...THEMES];
+
   if (!mounted) {
     return (
-      <button
-        type="button"
-        suppressHydrationWarning
-        aria-label={lang === "es" ? "Cambiar tema" : "Toggle theme"}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border
-                   border-zinc-300/60 bg-white/30 text-zinc-700
-                   dark:border-white/10 dark:bg-zinc-950/30 dark:text-zinc-200
-                   transition-colors"
-      >
-        <SunIcon className="h-4 w-4 opacity-70" />
+      <button type="button" suppressHydrationWarning aria-label={label} className="btn-icon">
+        <SwatchIcon theme="system" className="h-4 w-4 opacity-70" />
       </button>
     );
   }
 
-  const isDark = resolvedTheme === "dark";
-  const next = isDark ? "light" : "dark";
-  const label =
-    lang === "es"
-      ? isDark
-        ? "Cambiar a tema claro"
-        : "Cambiar a tema oscuro"
-      : isDark
-      ? "Switch to light theme"
-      : "Switch to dark theme";
-
   return (
-    <button
-      type="button"
-      onClick={() => setTheme(next)}
-      aria-label={label}
-      title={label}
-      aria-pressed={isDark}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full border
-                 border-zinc-300/60 bg-white/30 text-zinc-700
-                 hover:bg-white/55
-                 dark:border-white/10 dark:bg-zinc-950/30 dark:text-zinc-200
-                 dark:hover:bg-zinc-900/50
-                 focus:outline-none focus:ring-2 focus:ring-zinc-400/40 dark:focus:ring-zinc-500/40
-                 transition-colors"
-    >
-      {isDark ? <MoonIcon className="h-4 w-4" /> : <SunIcon className="h-4 w-4" />}
-    </button>
+    <div ref={rootRef} className="relative">
+      <button
+        ref={buttonRef}
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-label={label}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        title={label}
+        className="btn-icon"
+      >
+        <SwatchIcon theme={current === "system" ? "system" : (current as ThemeName)} className="h-4 w-4" />
+      </button>
+
+      {open && (
+        <div role="menu" aria-label={label} className="surface absolute right-0 top-11 z-50 min-w-40 p-1 animate-toast-in">
+          {options.map((opt) => {
+            const active = current === opt;
+            return (
+              <button
+                key={opt}
+                role="menuitemradio"
+                aria-checked={active}
+                type="button"
+                onClick={() => {
+                  setTheme(opt);
+                  setOpen(false);
+                  buttonRef.current?.focus();
+                }}
+                className={[
+                  "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition-colors",
+                  active ? "bg-accent-soft text-ink font-medium" : "text-ink-muted hover:bg-surface-soft hover:text-ink",
+                ].join(" ")}
+              >
+                <SwatchIcon theme={opt} className="h-4 w-4 shrink-0" />
+                <span className="flex-1">{THEME_LABELS[opt][lang]}</span>
+                {active && (
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-accent" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
