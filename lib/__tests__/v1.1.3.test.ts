@@ -7,7 +7,11 @@ import {
   getModelsForTarget,
   defaultModelIdForTarget,
 } from "@/lib/models";
-import { adaptPromptWithGroq, isGroqEnabled } from "@/lib/llm/groq";
+import { isGroqEnabled } from "@/lib/llm/groq";
+import { refinePromptAdaptive } from "@/lib/refine/adaptive";
+import { APP_VERSION } from "@/lib/version";
+
+const HEADER_RE = new RegExp(`^PROMPTEA:\\s*v${APP_VERSION.replace(/\./g, "\\.")}`, "i");
 
 // ---------------------------------------------------------------------------
 // Model registry — v1.1.3 additions
@@ -82,23 +86,23 @@ describe("models registry — v1.1.3", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Prompt header invariant — must start with PROMPTEA: v1.1.6
+// Prompt header invariant — must start with PROMPTEA: v<APP_VERSION>
 // ---------------------------------------------------------------------------
 
-describe("optimized prompt header — v1.1.6 invariant", () => {
+describe("optimized prompt header — APP_VERSION invariant", () => {
   const targets = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek", "perplexity"] as const;
 
   for (const target of targets) {
-    test(`${target}: optimized prompt starts with PROMPTEA: v1.1.6`, () => {
+    test(`${target}: optimized prompt starts with PROMPTEA: v${APP_VERSION}`, () => {
       const r = analyzePrompt("Write a summary of this document for my team.", target, "en", "text");
-      expect(r.optimizedPrompt).toMatch(/^PROMPTEA:\s*v1\.1\.6/i);
+      expect(r.optimizedPrompt).toMatch(HEADER_RE);
     });
   }
 
   test("optimized prompt always has MODEL, PURPOSE, TASK_TYPE lines after PROMPTEA", () => {
     const r = analyzePrompt("Corregí este bug en mi app de React.", "gpt", "es", "code");
     const lines = r.optimizedPrompt.split("\n");
-    expect(lines[0]).toMatch(/^PROMPTEA:\s*v1\.1\.6/i);
+    expect(lines[0]).toMatch(HEADER_RE);
     expect(lines[1]).toMatch(/^MODEL:/i);
     expect(lines[2]).toMatch(/^PURPOSE:/i);
     expect(lines[3]).toMatch(/^TASK_TYPE:/i);
@@ -106,7 +110,7 @@ describe("optimized prompt header — v1.1.6 invariant", () => {
 
   test("perplexity target produces valid header", () => {
     const r = analyzePrompt("Research the latest AI models released in 2026.", "perplexity", "en", "text");
-    expect(r.optimizedPrompt).toMatch(/^PROMPTEA:\s*v1\.1\.6/i);
+    expect(r.optimizedPrompt).toMatch(HEADER_RE);
     expect(r.optimizedPrompt).toContain("MODEL: PERPLEXITY");
     expect(r.optimizedPrompt).toContain("PURPOSE: text");
   });
@@ -116,7 +120,13 @@ describe("optimized prompt header — v1.1.6 invariant", () => {
 // Groq adaptive layer — fallback behavior (no real API key in tests)
 // ---------------------------------------------------------------------------
 
-describe("Groq adaptive layer — fallback behavior", () => {
+describe("Adaptive refinement layer — fallback behavior (v1.2.0)", () => {
+  const routing = {
+    strategy: "message_polish",
+    complexity: "simple",
+    signals: [],
+  } as const;
+
   test("isGroqEnabled returns false when GROQ_API_KEY is absent", () => {
     const originalKey = process.env.GROQ_API_KEY;
     delete process.env.GROQ_API_KEY;
@@ -124,11 +134,11 @@ describe("Groq adaptive layer — fallback behavior", () => {
     if (originalKey !== undefined) process.env.GROQ_API_KEY = originalKey;
   });
 
-  test("adaptPromptWithGroq falls back when GROQ_API_KEY is missing", async () => {
+  test("refinePromptAdaptive falls back when GROQ_API_KEY is missing", async () => {
     const originalKey = process.env.GROQ_API_KEY;
     delete process.env.GROQ_API_KEY;
 
-    const deterministicPrompt = `PROMPTEA: v1.1.3
+    const deterministicPrompt = `PROMPTEA: v${APP_VERSION}
 MODEL: GPT
 PURPOSE: text
 TASK_TYPE: text
@@ -139,29 +149,28 @@ INSTRUCTIONS:
 TASK:
 Explain transformers.`;
 
-    const result = await adaptPromptWithGroq({
+    const result = await refinePromptAdaptive({
       originalPrompt: "Explain transformers.",
-      optimizedPrompt: deterministicPrompt,
-      model: "gpt",
+      deterministicPrompt,
+      target: "gpt",
       purpose: "text",
       taskType: "text",
-      language: "en",
+      uiLang: "en",
+      routing: { ...routing, signals: [] },
     });
 
-    expect(result.adaptiveFallback).toBe(true);
-    expect(result.adaptiveReason).toContain("groq_disabled");
+    expect(result.execution.engine).toBe("deterministic");
+    expect(result.execution.fallbackReason).toBe("disabled");
     expect(result.optimizedPrompt).toBe(deterministicPrompt);
 
     if (originalKey !== undefined) process.env.GROQ_API_KEY = originalKey;
   });
 
-  test("repairPrompteaHeader: fallback result always starts with the deterministic header", async () => {
-    // Simulate a scenario where adaptPromptWithGroq would need to repair a stripped header.
-    // We test the public contract: the returned optimizedPrompt must contain the header.
+  test("fallback result always starts with the deterministic header", async () => {
     const originalKey = process.env.GROQ_API_KEY;
     delete process.env.GROQ_API_KEY;
 
-    const deterministicPrompt = `PROMPTEA: v1.1.3
+    const deterministicPrompt = `PROMPTEA: v${APP_VERSION}
 MODEL: CLAUDE
 PURPOSE: code
 TASK_TYPE: coding
@@ -169,35 +178,17 @@ TASK_TYPE: coding
 TASK:
 Fix this bug.`;
 
-    const result = await adaptPromptWithGroq({
+    const result = await refinePromptAdaptive({
       originalPrompt: "Fix this bug.",
-      optimizedPrompt: deterministicPrompt,
-      model: "claude",
+      deterministicPrompt,
+      target: "claude",
       purpose: "code",
       taskType: "coding",
-      language: "en",
+      uiLang: "en",
+      routing: { strategy: "debugging_review", complexity: "simple", signals: [] },
     });
 
-    // With no key, we get the deterministic prompt back unchanged.
-    expect(result.optimizedPrompt.startsWith("PROMPTEA: v1.1.3")).toBe(true);
-
-    if (originalKey !== undefined) process.env.GROQ_API_KEY = originalKey;
-  });
-
-  test("adaptiveEngine is always 'groq' in the result", async () => {
-    const originalKey = process.env.GROQ_API_KEY;
-    delete process.env.GROQ_API_KEY;
-
-    const result = await adaptPromptWithGroq({
-      originalPrompt: "Test.",
-      optimizedPrompt: "PROMPTEA: v1.1.3\nMODEL: GPT\nPURPOSE: text\nTASK_TYPE: text\n\nTASK:\nTest.",
-      model: "gpt",
-      purpose: "text",
-      taskType: "text",
-      language: "en",
-    });
-
-    expect(result.adaptiveEngine).toBe("groq");
+    expect(result.optimizedPrompt.startsWith(`PROMPTEA: v${APP_VERSION}`)).toBe(true);
 
     if (originalKey !== undefined) process.env.GROQ_API_KEY = originalKey;
   });
