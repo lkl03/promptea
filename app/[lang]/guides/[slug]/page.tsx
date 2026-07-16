@@ -67,10 +67,37 @@ export default async function GuidePage({
     })),
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: l === "es" ? "Inicio" : "Home",
+        item: `/${l}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: l === "es" ? "Guías" : "Guides",
+        item: `/${l}/guides`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: guide.title[l],
+        item: `/${l}/guides/${slug}`,
+      },
+    ],
+  };
+
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
       {/* JSON-LD FAQ */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      {/* JSON-LD BreadcrumbList */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{guide.title[l]}</h1>

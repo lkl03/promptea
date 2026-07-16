@@ -4,6 +4,30 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.2.1 — 2026-07-16
+
+Weekly update: three SEO guides and a structured-data improvement.
+
+### Added
+- **New guide: System prompts** (`/guides/system-prompts`) — how to write persistent instructions for ChatGPT, Claude, and Gemini that shape every response without repeating yourself. Covers persona, scope, format defaults, escalation rules, and common mistakes. Templates: customer support assistant system prompt and writing assistant with style constraints.
+- **New guide: AI translation prompts** (`/guides/translation-prompts`) — templates for translating content with AI that preserve meaning, tone, and register. Covers register guidance, domain glossaries, format preservation, and length drift prevention. Templates: document translation with register and glossary, and UI strings batch translation.
+- **New guide: Image generation prompts** (`/guides/image-generation-prompts`) — how to write image prompts for DALL-E, Gemini Imagen, and similar models with consistent, intentional results. Covers subject, style, composition, lighting, color palette, and negative constraints. Templates: photorealistic product image and illustrated explainer diagram.
+
+### Improved
+- **BreadcrumbList JSON-LD on guide pages**: each guide detail page (`/[lang]/guides/[slug]`) now emits a `BreadcrumbList` structured data block alongside the existing `FAQPage` block. This enables breadcrumb paths in Google search result snippets, improving click-through rates and contextual visibility for guide pages.
+- **Guides index SEO description** updated to mention system prompts, translation, and image generation guides alongside the existing catalog.
+
+### Changed
+- Version bumped to `v1.2.1`. `package.json`, `package-lock.json`, and `lib/version.ts` updated consistently. Optimized prompt header will carry `PROMPTEA: v1.2.1`.
+
+### Validated
+- `npm run lint` — pre-existing errors in other files (none introduced by this update)
+- `npm test` — header invariant tests updated to v1.2.1 and pass; 14 `dataset.calibration.test.ts` score-range failures are pre-existing (confirmed on base branch)
+- `npm run typecheck` — see PR description
+- `npm run build` — see PR description
+
+---
+
 ## v1.2.0 — 2026-07-12
 
 Major product-quality release: full redesign, adaptive prompt-refinement engine, and a verified model catalog.
