@@ -1938,6 +1938,503 @@ No des consejos genéricos de escritura. Enfocate en el problema estructural.`,
       },
     ],
   },
+  {
+    slug: "system-prompts",
+    title: {
+      en: "System prompts: how to set persistent instructions for ChatGPT, Claude, and Gemini",
+      es: "System prompts: cómo configurar instrucciones persistentes para ChatGPT, Claude y Gemini",
+    },
+    description: {
+      en: "How to write system prompts (custom instructions) that shape every response without repeating yourself — covering persona, constraints, output format, and escalation rules.",
+      es: "Cómo escribir system prompts (instrucciones personalizadas) que moldean cada respuesta sin repetirse — con persona, restricciones, formato de salida y reglas de escalado.",
+    },
+    sections: [
+      {
+        heading: { en: "What system prompts are and when to use them", es: "Qué son los system prompts y cuándo usarlos" },
+        bullets: {
+          en: [
+            "A system prompt is persistent context that runs before every user message — it shapes tone, persona, constraints, and behavior across the whole conversation.",
+            "Use system prompts when you need consistent behavior across many interactions: a support bot, a writing assistant, a code reviewer, an internal tool.",
+            "Without a system prompt, each request starts from scratch — you lose consistent tone, format, and safety rules between turns.",
+            "System prompts are available natively in ChatGPT (Custom Instructions or GPT system prompt), Claude (system parameter), and Gemini (system instruction).",
+          ],
+          es: [
+            "Un system prompt es contexto persistente que corre antes de cada mensaje del usuario — moldea el tono, la persona, las restricciones y el comportamiento en toda la conversación.",
+            "Usá system prompts cuando necesitás comportamiento consistente en muchas interacciones: un bot de soporte, un asistente de escritura, un revisor de código, una herramienta interna.",
+            "Sin system prompt, cada pedido empieza de cero — perdés tono consistente, formato y reglas de seguridad entre turnos.",
+            "Los system prompts están disponibles nativamente en ChatGPT (Custom Instructions o system prompt de GPT), Claude (parámetro system) y Gemini (system instruction).",
+          ],
+        },
+      },
+      {
+        heading: { en: "What to put in a system prompt", es: "Qué poner en un system prompt" },
+        bullets: {
+          en: [
+            "Persona: who the model is, what domain it knows, and how it communicates (tone, formality, length defaults).",
+            "Scope: what it helps with and — equally important — what it does not help with.",
+            "Output format defaults: if every answer should use bullets, a specific structure, or a length limit, state it here so you don't repeat it each turn.",
+            "Escalation rules: what to do when a request is out of scope, ambiguous, or requires information the model doesn't have.",
+            "Safety constraints: what claims to avoid, what disclaimers to add, what topics require caution.",
+          ],
+          es: [
+            "Persona: quién es el modelo, qué dominio conoce y cómo comunica (tono, formalidad, extensión por defecto).",
+            "Alcance: con qué ayuda y — igualmente importante — con qué no ayuda.",
+            "Formato de salida por defecto: si cada respuesta debe usar bullets, una estructura específica o un límite de longitud, especificalo acá para no repetirlo en cada turno.",
+            "Reglas de escalado: qué hacer cuando un pedido está fuera de scope, es ambiguo o requiere info que el modelo no tiene.",
+            "Restricciones de seguridad: qué afirmaciones evitar, qué disclaimers agregar, qué temas requieren cuidado.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common system prompt mistakes", es: "Errores comunes en system prompts" },
+        bullets: {
+          en: [
+            "Overloading with rules: a 2000-word system prompt buries the most important constraints. Keep it focused — prioritize the 5-7 rules that matter most.",
+            "Contradicting the user prompt: if the system prompt says 'be concise' and the user asks for exhaustive detail, the model will blend them unpredictably. Resolve conflicts in the system prompt explicitly.",
+            "Forgetting format defaults: not setting a default format means every response varies unless the user specifies one each time.",
+            "Vague persona: 'be helpful and professional' gives the model nothing to distinguish its behavior from a default response. Specify domain, audience, and what helpful means here.",
+          ],
+          es: [
+            "Sobrecarga de reglas: un system prompt de 2000 palabras entierra las restricciones más importantes. Mantenelo enfocado — priorizá las 5-7 reglas que más importan.",
+            "Contradecir el user prompt: si el system prompt dice 'sé conciso' y el usuario pide detalle exhaustivo, el modelo los mezclará de forma impredecible. Resolvé conflictos en el system prompt explícitamente.",
+            "Olvidar el formato por defecto: no definir un formato por defecto hace que cada respuesta varíe salvo que el usuario especifique uno cada vez.",
+            "Persona vaga: 'sé útil y profesional' no le da al modelo nada que diferencie su comportamiento de una respuesta por defecto. Especificá dominio, audiencia y qué significa ser útil aquí.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Customer support assistant system prompt", es: "System prompt para asistente de soporte al cliente" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `You are a customer support assistant for [Company Name], a [brief description of the product/service].
+
+Persona:
+- Tone: friendly, direct, and patient.
+- Domain: [product area, e.g. "SaaS billing and account management"].
+- Audience: [e.g. "paying customers who may not be technical"].
+
+What you help with:
+- Answering questions about [specific topics].
+- Troubleshooting [specific issues].
+- Explaining pricing and plan details.
+
+What you do NOT do:
+- Make promises about future features or timelines.
+- Process refunds or account changes directly — redirect to [e.g. "the billing team at billing@company.com"].
+- Give legal or financial advice.
+
+When you don't know the answer:
+- Say "I don't have that information, but I can connect you with someone who does."
+- Never invent facts or policies.
+
+Output format defaults:
+- Keep answers to 3-5 sentences unless the issue requires more detail.
+- Use numbered steps when explaining a process.
+- End every response with a clear next action for the user.`,
+          es: `Sos un asistente de soporte al cliente para [Nombre de la empresa], un/a [descripción breve del producto/servicio].
+
+Persona:
+- Tono: amigable, directo y paciente.
+- Dominio: [área del producto, ej. "facturación y gestión de cuentas SaaS"].
+- Audiencia: [ej. "clientes pagadores que pueden no ser técnicos"].
+
+Con qué ayudás:
+- Responder preguntas sobre [temas específicos].
+- Resolver problemas de [problemas específicos].
+- Explicar precios y detalles de planes.
+
+Con qué NO ayudás:
+- Hacer promesas sobre funcionalidades futuras o plazos.
+- Procesar reembolsos o cambios de cuenta directamente — derivar a [ej. "el equipo de facturación en facturacion@empresa.com"].
+- Dar asesoramiento legal o financiero.
+
+Cuando no sabés la respuesta:
+- Decí "No tengo esa información, pero puedo conectarte con alguien que sí la tiene."
+- Nunca inventes hechos o políticas.
+
+Formato de salida por defecto:
+- Mantené las respuestas en 3-5 oraciones salvo que el problema requiera más detalle.
+- Usá pasos numerados cuando expliques un proceso.
+- Terminá cada respuesta con una acción clara para el usuario.`,
+        },
+      },
+      {
+        title: { en: "Writing assistant with style constraints", es: "Asistente de escritura con restricciones de estilo" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `You are a writing assistant. Your job is to help improve, edit, and write content.
+
+Style constraints (apply to every response):
+- Prefer short sentences (under 20 words each).
+- Active voice only — flag passive voice when you see it.
+- No filler words: remove "very", "just", "really", "basically", "essentially".
+- No hedge phrases: "it could be argued", "one might say", "in some ways".
+- Word count ceiling: unless asked otherwise, keep suggestions under 150 words.
+
+When reviewing text:
+1. Quote the specific phrase that needs improvement.
+2. Explain the problem in one sentence.
+3. Provide a rewritten version.
+
+When writing from scratch:
+- Ask one clarifying question about audience and goal before starting.
+- Deliver 2 variants when the tone is ambiguous.
+
+What you do not do:
+- Write in a style that violates the constraints above, even if asked.
+- Pad responses with encouragement or summaries nobody asked for.`,
+          es: `Sos un asistente de escritura. Tu trabajo es ayudar a mejorar, editar y escribir contenido.
+
+Restricciones de estilo (aplicar en cada respuesta):
+- Preferí oraciones cortas (menos de 20 palabras cada una).
+- Solo voz activa — marcá la voz pasiva cuando la veas.
+- Sin palabras de relleno: eliminá "muy", "básicamente", "realmente", "simplemente", "esencialmente".
+- Sin frases de rodeo: "podría argumentarse", "en cierta forma", "de algún modo".
+- Techo de palabras: salvo que se indique, mantené las sugerencias en menos de 150 palabras.
+
+Al revisar texto:
+1. Citá la frase específica que necesita mejora.
+2. Explicá el problema en una oración.
+3. Proporcioná una versión reescrita.
+
+Al escribir desde cero:
+- Hacé una pregunta de aclaración sobre audiencia y objetivo antes de empezar.
+- Entregá 2 variantes cuando el tono sea ambiguo.
+
+Qué no hacés:
+- Escribir en un estilo que viole las restricciones anteriores, aunque se te pida.
+- Rellenar respuestas con elogios o resúmenes que nadie pidió.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Is a system prompt the same as a custom instruction in ChatGPT?", es: "¿Un system prompt es lo mismo que una instrucción personalizada en ChatGPT?" },
+        a: {
+          en: "Functionally yes. ChatGPT's Custom Instructions are injected as a system-level message before each conversation. In the API, you pass it explicitly as the 'system' role message. In Claude and Gemini it's the 'system' parameter. Same concept, different surface.",
+          es: "Funcionalmente sí. Las Custom Instructions de ChatGPT se inyectan como un mensaje de nivel sistema antes de cada conversación. En la API, lo pasás explícitamente como el mensaje de rol 'system'. En Claude y Gemini es el parámetro 'system'. El mismo concepto, diferente superficie.",
+        },
+      },
+      {
+        q: { en: "Can a user override the system prompt in their message?", es: "¿Puede un usuario anular el system prompt en su mensaje?" },
+        a: {
+          en: "In most models, yes — a strong user instruction can override system-level guidance, especially if there's a direct conflict. To make a constraint stick, state it explicitly and repeat it near the end of the system prompt. For critical safety rules, test edge cases before deploying.",
+          es: "En la mayoría de los modelos, sí — una instrucción fuerte del usuario puede anular la guía del sistema, especialmente si hay un conflicto directo. Para que una restricción se mantenga, enunciala explícitamente y repetila cerca del final del system prompt. Para reglas de seguridad críticas, probá casos límite antes de desplegar.",
+        },
+      },
+      {
+        q: { en: "How long should a system prompt be?", es: "¿Qué tan largo debe ser un system prompt?" },
+        a: {
+          en: "As short as it can be while covering what matters. A 200-400 word system prompt with 5-7 clear rules outperforms a 2000-word one where important constraints are buried. Add detail only when a rule is ambiguous enough that the model will interpret it differently without it.",
+          es: "Lo más corto posible cubriendo lo que importa. Un system prompt de 200-400 palabras con 5-7 reglas claras supera a uno de 2000 palabras donde las restricciones importantes están enterradas. Agregá detalle solo cuando una regla es tan ambigua que el modelo la interpretará de forma diferente sin él.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "translation-prompts",
+    title: {
+      en: "AI translation prompts that preserve meaning, tone, and register",
+      es: "Prompts de traducción para IA que preservan significado, tono y registro",
+    },
+    description: {
+      en: "Templates for translating content with AI — with tone matching, register controls, domain glossaries, and constraints to prevent common translation failures.",
+      es: "Plantillas para traducir contenido con IA — con coincidencia de tono, controles de registro, glosarios de dominio y restricciones para evitar fallos comunes de traducción.",
+    },
+    sections: [
+      {
+        heading: { en: "Why AI translation fails without constraints", es: "Por qué la traducción con IA falla sin restricciones" },
+        bullets: {
+          en: [
+            "No register guidance: a formal legal document and a casual marketing email require different registers — without guidance, the model picks one arbitrarily.",
+            "Missing domain glossary: industry terms (legal, medical, technical) often have established translations the model may not default to. Provide the glossary explicitly.",
+            "No handling rules for untranslatable terms: brand names, product names, acronyms, and proper nouns often should not be translated — state what to preserve.",
+            "No format preservation constraint: line breaks, bullet points, and HTML tags in the source often get mangled without an explicit 'preserve formatting' instruction.",
+            "Length drift: translations can be 20-30% longer or shorter than the source without a length constraint — this matters for UI strings, subtitles, and print.",
+          ],
+          es: [
+            "Sin guía de registro: un documento legal formal y un email de marketing casual requieren registros distintos — sin guía, el modelo elige uno arbitrariamente.",
+            "Sin glosario de dominio: los términos del sector (legal, médico, técnico) suelen tener traducciones establecidas que el modelo puede no usar por defecto. Proveé el glosario explícitamente.",
+            "Sin reglas para términos intraducibles: nombres de marca, nombres de producto, acrónimos y nombres propios a menudo no deberían traducirse — especificá qué preservar.",
+            "Sin restricción de preservación de formato: saltos de línea, bullets y etiquetas HTML en el fuente suelen distorsionarse sin una instrucción explícita de 'preservar formato'.",
+            "Deriva de longitud: las traducciones pueden ser 20-30% más largas o cortas que el fuente sin restricción de longitud — esto importa para strings de UI, subtítulos e impresión.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Controls that improve translation quality", es: "Controles que mejoran la calidad de la traducción" },
+        bullets: {
+          en: [
+            "Name the target language and region variant: 'Spanish (Mexico)' vs 'Spanish (Spain)' produce different vocabulary and formality conventions.",
+            "Specify register: formal / informal / technical / conversational — one word adds significant consistency.",
+            "Give a domain glossary for 3-10 key terms — it prevents the most common errors without overloading the prompt.",
+            "State what not to translate: brand names, code snippets, proper nouns, and UI labels often must stay in the source language.",
+            "Ask for a confidence note: 'Flag any phrase where the meaning is ambiguous or there is no direct equivalent.'",
+          ],
+          es: [
+            "Nombrá el idioma destino y la variante regional: 'Español (México)' vs 'Español (España)' producen vocabulario y convenciones de formalidad diferentes.",
+            "Especificá el registro: formal / informal / técnico / conversacional — una palabra agrega consistencia significativa.",
+            "Dá un glosario de dominio para 3-10 términos clave — previene los errores más comunes sin sobrecargar el prompt.",
+            "Indicá qué no traducir: nombres de marca, fragmentos de código, nombres propios y etiquetas de UI a menudo deben quedar en el idioma fuente.",
+            "Pedí una nota de confianza: 'Marcá cualquier frase donde el significado sea ambiguo o no haya equivalente directo.'",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Document translation with register and glossary", es: "Traducción de documento con registro y glosario" },
+        purpose: "translation",
+        target: "claude",
+        prompt: {
+          en: `Translate the document below from [source language] to [target language, e.g. Spanish (Spain)].
+
+Register: [formal / informal / technical — pick one]
+Audience: [who will read this, e.g. "legal professionals" / "general public"]
+
+Glossary (use these translations exactly):
+- [source term 1] → [target term 1]
+- [source term 2] → [target term 2]
+
+Do not translate:
+- Brand names and product names (keep as-is).
+- Proper nouns and place names (unless there is a standard established translation).
+- Acronyms: [list, e.g. "API, URL, SLA"].
+
+Formatting rules:
+- Preserve all line breaks, bullet points, and heading structure.
+- Do not add or remove paragraphs.
+
+Ambiguity handling:
+- If a phrase has no direct equivalent, translate the meaning and add a footnote: [Translator note: ...].
+
+Document:
+"""[paste source document here]"""`,
+          es: `Traducí el documento de abajo del [idioma fuente] al [idioma destino, ej. inglés (EE. UU.)].
+
+Registro: [formal / informal / técnico — elegí uno]
+Audiencia: [quién leerá esto, ej. "profesionales legales" / "público general"]
+
+Glosario (usá estas traducciones exactamente):
+- [término fuente 1] → [término destino 1]
+- [término fuente 2] → [término destino 2]
+
+No traducir:
+- Nombres de marca y productos (mantener tal cual).
+- Nombres propios y lugares (salvo que haya una traducción estándar establecida).
+- Acrónimos: [lista, ej. "API, URL, SLA"].
+
+Reglas de formato:
+- Preservá todos los saltos de línea, bullets y estructura de encabezados.
+- No agregues ni elimines párrafos.
+
+Manejo de ambigüedad:
+- Si una frase no tiene equivalente directo, traducí el significado y agregá una nota: [Nota del traductor: ...].
+
+Documento:
+"""[pegá el documento fuente acá]"""`,
+        },
+      },
+      {
+        title: { en: "UI strings batch translation (short texts)", es: "Traducción en lote de strings de UI (textos cortos)" },
+        purpose: "translation",
+        target: "gpt",
+        prompt: {
+          en: `Translate the following UI strings from English to [target language].
+
+Rules:
+1. Each string must be translated individually — do not merge or reorder.
+2. Keep translations short: UI labels must fit the same space as the original.
+3. Do not translate: variables in {curly_braces}, HTML tags, and brand names.
+4. Preserve capitalization style: if the source is Title Case, the translation should match it.
+5. Register: [formal / informal].
+
+Return format (JSON array, same order as input):
+[
+  { "key": "source_key", "original": "source string", "translation": "translated string" }
+]
+
+Strings to translate:
+[
+  { "key": "btn_save", "original": "Save changes" },
+  { "key": "error_required", "original": "This field is required" },
+  { "key": "label_email", "original": "Email address" }
+]`,
+          es: `Traducí los siguientes strings de UI del inglés al [idioma destino].
+
+Reglas:
+1. Cada string debe traducirse individualmente — no fusiones ni reordenes.
+2. Mantené las traducciones cortas: las etiquetas de UI deben caber en el mismo espacio que el original.
+3. No traducir: variables en {llaves_rizadas}, etiquetas HTML y nombres de marca.
+4. Preservá el estilo de mayúsculas: si el fuente usa Title Case, la traducción debe coincidir.
+5. Registro: [formal / informal].
+
+Formato de retorno (array JSON, en el mismo orden que el input):
+[
+  { "key": "clave_fuente", "original": "string fuente", "translation": "string traducido" }
+]
+
+Strings a traducir:
+[
+  { "key": "btn_save", "original": "Save changes" },
+  { "key": "error_required", "original": "This field is required" },
+  { "key": "label_email", "original": "Email address" }
+]`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Is AI translation good enough for professional use?", es: "¿La traducción con IA es suficientemente buena para uso profesional?" },
+        a: {
+          en: "It depends on the domain and risk level. For internal documents, UI strings, and low-stakes content, well-constrained AI translation is fast and accurate. For legal contracts, medical content, or published materials, use AI as a first draft and have a professional translator review it. The templates above reduce errors significantly but don't eliminate the need for human review on high-stakes text.",
+          es: "Depende del dominio y el nivel de riesgo. Para documentos internos, strings de UI y contenido de bajo riesgo, la traducción con IA bien restringida es rápida y precisa. Para contratos legales, contenido médico o materiales publicados, usá la IA como primer borrador y hacé que un traductor profesional lo revise. Las plantillas anteriores reducen errores significativamente pero no eliminan la necesidad de revisión humana en textos de alto riesgo.",
+        },
+      },
+      {
+        q: { en: "Which model is best for translation tasks?", es: "¿Qué modelo es mejor para tareas de traducción?" },
+        a: {
+          en: "Claude and GPT-4 class models both produce strong translation results. Claude tends to follow nuanced register and glossary instructions reliably. GPT handles batch and structured-output translation well. For languages with less training data (non-Latin scripts, regional variants), test both and compare the result on a sample before committing.",
+          es: "Los modelos de la clase Claude y GPT-4 producen resultados de traducción sólidos. Claude tiende a seguir instrucciones de registro y glosario con matices de manera confiable. GPT maneja bien la traducción en lote y con salida estructurada. Para idiomas con menos datos de entrenamiento (escrituras no latinas, variantes regionales), probá ambos y compará el resultado en una muestra antes de comprometerte.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "image-generation-prompts",
+    title: {
+      en: "Image generation prompts: structure, style, and composition for better AI images",
+      es: "Prompts de generación de imágenes: estructura, estilo y composición para mejores imágenes de IA",
+    },
+    description: {
+      en: "How to write image prompts that get consistent, intentional results — covering subject, style, composition, lighting, and negative constraints for DALL-E, Gemini Imagen, and similar models.",
+      es: "Cómo escribir prompts de imagen que producen resultados consistentes e intencionales — con sujeto, estilo, composición, iluminación y restricciones negativas para DALL-E, Gemini Imagen y modelos similares.",
+    },
+    sections: [
+      {
+        heading: { en: "The anatomy of an effective image prompt", es: "La anatomía de un prompt de imagen efectivo" },
+        bullets: {
+          en: [
+            "Subject: who or what is in the scene — be specific (not 'a person' but 'a woman in her 30s reading at a café table').",
+            "Style: the visual look — photography, illustration, oil painting, flat design, 3D render, watercolor, line art.",
+            "Composition: where things are placed — close-up, wide shot, overhead, rule of thirds, centered.",
+            "Lighting: the mood and time of day — soft morning light, dramatic side lighting, overcast, golden hour, studio lighting.",
+            "Color palette: restrict or guide the colors — muted earth tones, high contrast black and white, pastel, vivid primaries.",
+            "Negative constraints: what to exclude — 'no text', 'no watermarks', 'no extra limbs', 'no cluttered background'.",
+          ],
+          es: [
+            "Sujeto: quién o qué hay en la escena — sé específico (no 'una persona' sino 'una mujer de unos 30 años leyendo en una mesa de café').",
+            "Estilo: el aspecto visual — fotografía, ilustración, pintura al óleo, diseño plano, render 3D, acuarela, arte de línea.",
+            "Composición: dónde se ubican las cosas — primer plano, plano abierto, cenital, regla de los tercios, centrado.",
+            "Iluminación: el ambiente y hora del día — luz suave de mañana, iluminación lateral dramática, nublado, hora dorada, iluminación de estudio.",
+            "Paleta de colores: restringí o guiá los colores — tonos tierra apagados, blanco y negro de alto contraste, pastel, primarios vívidos.",
+            "Restricciones negativas: qué excluir — 'sin texto', 'sin marcas de agua', 'sin extremidades extra', 'sin fondo recargado'.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common image prompt mistakes", es: "Errores comunes en prompts de imagen" },
+        bullets: {
+          en: [
+            "Too vague: 'a nice landscape' gives you a random result every time. Describe the scene, season, time of day, and mood.",
+            "Conflicting style cues: mixing 'photorealistic' with 'cartoon' confuses the model — pick one primary style.",
+            "No composition guidance: without it, the subject placement is random. Add 'centered', 'rule of thirds', or a framing hint.",
+            "Missing negative constraints: asking for 'a clean background' works better than hoping the model avoids clutter by default.",
+            "Prompt too long: the most important elements should come first — image models weight earlier tokens more heavily.",
+          ],
+          es: [
+            "Demasiado vago: 'un paisaje lindo' te da un resultado diferente cada vez. Describí la escena, estación, hora del día y ambiente.",
+            "Señales de estilo conflictivas: mezclar 'fotorrealista' con 'caricatura' confunde al modelo — elegí un estilo principal.",
+            "Sin guía de composición: sin ella, la ubicación del sujeto es aleatoria. Agregá 'centrado', 'regla de los tercios' o un hint de encuadre.",
+            "Sin restricciones negativas: pedir 'un fondo limpio' funciona mejor que esperar que el modelo evite el desorden por defecto.",
+            "Prompt demasiado largo: los elementos más importantes deben ir primero — los modelos de imagen ponderan más los tokens al inicio.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Photorealistic product image prompt", es: "Prompt para imagen de producto fotorrealista" },
+        purpose: "image",
+        target: "gpt",
+        prompt: {
+          en: `Photorealistic product photography of [product name and brief description].
+
+Setting: [e.g. clean white studio background / wooden table surface / outdoor natural setting]
+Lighting: [e.g. soft diffused studio lighting / natural window light from the left / dramatic side lighting]
+Composition: [e.g. centered, slight 3/4 angle / overhead flat lay / close-up on the main feature]
+Color palette: [e.g. neutral whites and grays / warm earth tones / brand colors: navy and gold]
+Camera style: [e.g. macro lens for fine detail / wide product shot / lifestyle context shot]
+
+Additional details:
+- [any props or context elements to include, or 'none']
+- [specific textures or materials to emphasize]
+
+Exclude: watermarks, text overlays, shadows on white background, extra objects not listed above.`,
+          es: `Fotografía de producto fotorrealista de [nombre del producto y descripción breve].
+
+Escenario: [ej. fondo de estudio blanco limpio / superficie de mesa de madera / ambiente natural al aire libre]
+Iluminación: [ej. iluminación de estudio difusa suave / luz natural de ventana desde la izquierda / iluminación lateral dramática]
+Composición: [ej. centrado, ligero ángulo de 3/4 / flat lay cenital / primer plano del elemento principal]
+Paleta de colores: [ej. blancos y grises neutros / tonos tierra cálidos / colores de marca: navy y dorado]
+Estilo de cámara: [ej. lente macro para detalle fino / plano abierto del producto / plano de contexto lifestyle]
+
+Detalles adicionales:
+- [props o elementos de contexto a incluir, o 'ninguno']
+- [texturas o materiales específicos a enfatizar]
+
+Excluir: marcas de agua, texto superpuesto, sombras sobre fondo blanco, objetos extra no listados arriba.`,
+        },
+      },
+      {
+        title: { en: "Illustrated explainer diagram prompt", es: "Prompt para diagrama explicativo ilustrado" },
+        purpose: "image",
+        target: "gemini",
+        prompt: {
+          en: `Flat design illustration explaining [concept or process in 1 sentence].
+
+Style: clean flat design, minimal detail, bold readable icons.
+Color palette: [e.g. 3-4 colors maximum: blue, white, light gray, and one accent color]
+Layout: [e.g. left-to-right flow with 4 steps / circular diagram / comparison: before vs after]
+Text in image: [e.g. include short labels on each step (max 3 words each) / no text — labels will be added later]
+Icons: simple geometric shapes, no photorealism, consistent line weight.
+Background: solid [color] or transparent.
+
+Exclude: gradients, drop shadows, 3D effects, decorative borders, watermarks, photographic elements.`,
+          es: `Ilustración de diseño plano que explica [concepto o proceso en 1 oración].
+
+Estilo: diseño plano limpio, mínimo detalle, íconos grandes y legibles.
+Paleta de colores: [ej. máximo 3-4 colores: azul, blanco, gris claro y un color de acento]
+Layout: [ej. flujo de izquierda a derecha con 4 pasos / diagrama circular / comparación: antes vs después]
+Texto en imagen: [ej. incluir etiquetas cortas en cada paso (máx 3 palabras cada una) / sin texto — las etiquetas se agregarán después]
+Íconos: formas geométricas simples, sin fotorrealismo, peso de línea consistente.
+Fondo: sólido [color] o transparente.
+
+Excluir: degradados, sombras, efectos 3D, bordes decorativos, marcas de agua, elementos fotográficos.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Do these templates work with Midjourney and Stable Diffusion, or only DALL-E and Gemini?", es: "¿Estos templates funcionan con Midjourney y Stable Diffusion, o solo con DALL-E y Gemini?" },
+        a: {
+          en: "The core structure — subject, style, composition, lighting, negative constraints — works across all image generation models. Syntax differs: Midjourney uses parameters like --style, --ar, and --no; Stable Diffusion uses separate positive and negative prompt fields. Adapt the structure to the model's expected format, but the concepts are universal.",
+          es: "La estructura base — sujeto, estilo, composición, iluminación, restricciones negativas — funciona en todos los modelos de generación de imágenes. La sintaxis difiere: Midjourney usa parámetros como --style, --ar y --no; Stable Diffusion usa campos separados de prompt positivo y negativo. Adaptá la estructura al formato esperado del modelo, pero los conceptos son universales.",
+        },
+      },
+      {
+        q: { en: "How do I get consistent results across multiple image generations?", es: "¿Cómo logro resultados consistentes en múltiples generaciones de imágenes?" },
+        a: {
+          en: "Consistency comes from locking the variables that matter most: style, color palette, and composition. Save your prompt exactly as-is when you get a good result and reuse it. For character or product consistency across multiple images, some models support reference images or seed locking — check the model's documentation for this feature.",
+          es: "La consistencia viene de fijar las variables que más importan: estilo, paleta de colores y composición. Guardá tu prompt exactamente tal cual cuando obtenés un buen resultado y reutilizalo. Para consistencia de personaje o producto en múltiples imágenes, algunos modelos soportan imágenes de referencia o fijación de seed — revisá la documentación del modelo para esta función.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

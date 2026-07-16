@@ -4,9 +4,11 @@ Analyze your prompt, detect issues, and generate an optimized version tailored t
 
 Bilingual (English / Spanish) with full feature parity.
 
-## Latest update — v1.2.0 (2026-07-12)
+## Latest update — v1.2.1 (2026-07-16)
 
-Major release: full redesign (four themes on semantic tokens, self-hosted typography, AA contrast), an adaptive prompt-refinement engine with strategy routing and a strict quality gate, a source-verified model catalog, and a repo-wide architecture cleanup. Details in [CHANGELOG.md](./CHANGELOG.md).
+Weekly update: three new SEO guides (system prompts, AI translation prompts, and image generation prompts) and a product improvement — BreadcrumbList JSON-LD structured data on all guide pages for better search snippet visibility. Changes are in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous major release: v1.2.0 (2026-07-12) — full redesign, adaptive prompt-refinement engine, verified model catalog._
 
 ## How it works
 
