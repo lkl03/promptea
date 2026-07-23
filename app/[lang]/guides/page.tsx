@@ -18,8 +18,8 @@ export async function generateMetadata({
     title: l === "es" ? "Guías de prompting (sin humo)" : "Prompting guides (no fluff)",
     description:
       l === "es"
-        ? "Guías accionables para escribir prompts mejores: checklist, JSON estricto, código, rol, ChatGPT, Claude, Gemini, Grok, DeepSeek, few-shot, scoring de prompts, flujos de trabajo empresariales, system prompts, traducción e imágenes."
-        : "Actionable guides to write better prompts: checklist, strict JSON, code, role prompting, ChatGPT, Claude, Gemini, Grok, DeepSeek, few-shot prompting, prompt scoring, business workflows, system prompts, translation, and image generation.",
+        ? "Guías accionables para escribir prompts mejores: checklist, JSON estricto, código, rol, ChatGPT, Claude, Gemini, Grok, DeepSeek, few-shot, scoring, flujos de trabajo empresariales, system prompts, traducción, imágenes, encadenamiento de prompts, redacción con IA y prompts multimodales."
+        : "Actionable guides to write better prompts: checklist, strict JSON, code, role prompting, ChatGPT, Claude, Gemini, Grok, DeepSeek, few-shot prompting, prompt scoring, business workflows, system prompts, translation, image generation, prompt chaining, AI writing prompts, and multimodal prompts.",
     alternates: {
       canonical: `/${l}/guides`,
       languages: { es: "/es/guides", en: "/en/guides" },

@@ -2435,6 +2435,556 @@ Excluir: degradados, sombras, efectos 3D, bordes decorativos, marcas de agua, el
       },
     ],
   },
+  {
+    slug: "prompt-chaining",
+    title: {
+      en: "Prompt chaining: how to break complex tasks into sequential AI steps",
+      es: "Encadenamiento de prompts: cómo dividir tareas complejas en pasos secuenciales",
+    },
+    description: {
+      en: "Prompt chaining feeds the output of one prompt as input to the next, handling tasks too complex for a single round-trip. Learn the core patterns and where they fail.",
+      es: "El encadenamiento de prompts usa la salida de un prompt como entrada del siguiente, para tareas demasiado complejas para una sola consulta. Aprendé los patrones clave y dónde fallan.",
+    },
+    sections: [
+      {
+        heading: { en: "What prompt chaining is and when to use it", es: "Qué es el encadenamiento de prompts y cuándo usarlo" },
+        bullets: {
+          en: [
+            "A prompt chain is a sequence of prompts where each output becomes part of the next prompt's input.",
+            "Use it when a task has distinct phases that benefit from separate focus: research → outline → draft → edit.",
+            "Use it when a single prompt would exceed the model's useful context or require too many competing instructions.",
+            "Use it when you need to validate or transform data between steps before passing it downstream.",
+            "Avoid it for simple tasks — chaining adds complexity and latency that isn't justified unless the task genuinely requires sequential reasoning.",
+          ],
+          es: [
+            "Una cadena de prompts es una secuencia donde cada salida se convierte en parte de la entrada del siguiente prompt.",
+            "Usala cuando una tarea tiene fases distintas que se benefician del foco separado: investigar → esquema → borrador → edición.",
+            "Usala cuando un solo prompt excedería el contexto útil del modelo o requeriría demasiadas instrucciones en competencia.",
+            "Usala cuando necesitás validar o transformar datos entre pasos antes de pasarlos al siguiente.",
+            "Evitala para tareas simples — el encadenamiento agrega complejidad y latencia que no se justifica si la tarea no requiere razonamiento secuencial real.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Three chaining patterns", es: "Tres patrones de encadenamiento" },
+        bullets: {
+          en: [
+            "Sequential: Step A → Step B → Step C. Each step consumes only the prior step's output. Good for linear workflows like extract → validate → format.",
+            "Branching: one input generates multiple outputs in parallel, then a final step synthesizes them. Good for competitive drafts or multi-perspective research.",
+            "Looping: a step runs repeatedly until a quality condition is met (e.g., a reviewer prompt judges the output and requests a rewrite until passing). Use with a hard iteration cap.",
+            "Mix patterns when needed — a sequential chain can have a branching step inside it.",
+          ],
+          es: [
+            "Secuencial: Paso A → Paso B → Paso C. Cada paso consume solo la salida del anterior. Ideal para flujos lineales como extraer → validar → formatear.",
+            "Ramificado: una entrada genera múltiples salidas en paralelo y un paso final las sintetiza. Ideal para borradores competitivos o investigación multi-perspectiva.",
+            "En bucle: un paso se ejecuta repetidamente hasta cumplir una condición de calidad (ej: un prompt revisor juzga la salida y pide reescritura hasta aprobar). Usalo con un límite máximo de iteraciones.",
+            "Combiná patrones según sea necesario — una cadena secuencial puede tener un paso ramificado adentro.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common prompt chaining mistakes", es: "Errores comunes en el encadenamiento de prompts" },
+        bullets: {
+          en: [
+            "Passing unvalidated output: if Step A can produce malformed JSON or incomplete data, Step B inherits that problem. Validate or clean outputs between steps.",
+            "Accumulating too much context: pasting entire prior outputs into every step bloats the context. Pass only what the next step actually needs.",
+            "No stopping condition on loops: always define what 'done' looks like and cap iterations. Without it, a looping chain can run indefinitely.",
+            "Skipping intermediate verification: for high-stakes chains, add a quick review step between heavy transforms instead of discovering errors at the final step.",
+          ],
+          es: [
+            "Pasar salidas sin validar: si el Paso A puede producir JSON malformado o datos incompletos, el Paso B hereda ese problema. Validá o limpiá las salidas entre pasos.",
+            "Acumular demasiado contexto: pegar salidas previas completas en cada paso infla el contexto. Pasá solo lo que el siguiente paso realmente necesita.",
+            "Sin condición de parada en bucles: siempre definí cómo se ve el 'listo' y poné un límite de iteraciones. Sin eso, una cadena en bucle puede ejecutarse indefinidamente.",
+            "Saltar la verificación intermedia: en cadenas críticas, agregá un paso de revisión rápida entre transformaciones pesadas en lugar de descubrir errores al final.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Data extraction pipeline: extract → validate → format", es: "Pipeline de extracción de datos: extraer → validar → formatear" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `STEP 1 — EXTRACT
+From the raw text below, extract all invoice line items.
+Return ONLY JSON: {"items": [{"description": "string", "quantity": number, "unit_price": number}]}
+If a field is missing, use null. Do not invent values.
+
+Raw text:
+"""[paste invoice text here]"""
+
+---
+STEP 2 — VALIDATE (send Step 1 output here)
+Review the JSON below for correctness.
+- Flag any items where quantity or unit_price is null.
+- Flag any descriptions that look like headers or totals, not line items.
+- Return: {"valid_items": [...], "flagged": [...], "issues": ["string"]}
+
+JSON from Step 1:
+"""[paste Step 1 output here]"""
+
+---
+STEP 3 — FORMAT (send Step 2 valid_items here)
+Convert the validated items below into a Markdown table with columns: Description | Quantity | Unit Price | Line Total.
+Calculate Line Total = quantity × unit_price. If either is null, show "—".
+Sort by Line Total descending.
+
+valid_items:
+"""[paste valid_items from Step 2 here]"""`,
+          es: `PASO 1 — EXTRAER
+Del texto sin procesar a continuación, extraé todos los ítems de factura.
+Devolvé SOLO JSON: {"items": [{"description": "string", "quantity": número, "unit_price": número}]}
+Si falta un campo, usá null. No inventes valores.
+
+Texto sin procesar:
+"""[pegá el texto de la factura aquí]"""
+
+---
+PASO 2 — VALIDAR (enviá la salida del Paso 1 aquí)
+Revisá el JSON de abajo para verificar su corrección.
+- Marcá los ítems donde quantity o unit_price sea null.
+- Marcá las descripciones que parezcan encabezados o totales, no ítems de línea.
+- Devolvé: {"valid_items": [...], "flagged": [...], "issues": ["string"]}
+
+JSON del Paso 1:
+"""[pegá la salida del Paso 1 aquí]"""
+
+---
+PASO 3 — FORMATEAR (enviá los valid_items del Paso 2 aquí)
+Convertí los ítems validados de abajo en una tabla Markdown con columnas: Descripción | Cantidad | Precio unitario | Total de línea.
+Calculá Total de línea = quantity × unit_price. Si alguno es null, mostrá "—".
+Ordená por Total de línea de mayor a menor.
+
+valid_items:
+"""[pegá los valid_items del Paso 2 aquí]"""`,
+        },
+      },
+      {
+        title: { en: "Research-to-report chain: gather → outline → draft", es: "Cadena investigación-a-informe: recopilar → esquema → borrador" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `STEP 1 — GATHER KEY POINTS
+Topic: [your topic]
+Audience: [who will read this]
+
+List the 5–7 most important things someone in this audience needs to understand about this topic.
+For each point, note: (a) why it matters to this audience, (b) a concrete example or evidence.
+Format: numbered list. Be direct — no filler sentences.
+
+---
+STEP 2 — OUTLINE (send Step 1 output here)
+Using the key points below, create a structured outline for a [blog post / report / briefing] of approximately [word count] words.
+Each section must map to one or more key points.
+Format: ## Section title → bullet list of what each paragraph will cover.
+
+Key points from Step 1:
+"""[paste Step 1 output here]"""
+
+---
+STEP 3 — DRAFT (send Step 2 outline here)
+Write the full [blog post / report / briefing] following the outline below.
+Tone: [professional / conversational / technical]
+Constraints:
+- Stay within [word count] words (±10%).
+- Do not add sections not in the outline.
+- Do not use filler phrases like "In today's world" or "It's important to note".
+- End with a clear takeaway or next step.
+
+Outline:
+"""[paste Step 2 outline here]"""`,
+          es: `PASO 1 — RECOPILAR PUNTOS CLAVE
+Tema: [tu tema]
+Audiencia: [quién lo leerá]
+
+Listá los 5–7 puntos más importantes que alguien en esta audiencia necesita entender sobre este tema.
+Para cada punto, anotá: (a) por qué importa a esta audiencia, (b) un ejemplo concreto o evidencia.
+Formato: lista numerada. Sé directo — sin frases de relleno.
+
+---
+PASO 2 — ESQUEMA (enviá la salida del Paso 1 aquí)
+Usando los puntos clave de abajo, creá un esquema estructurado para un/una [post de blog / informe / resumen ejecutivo] de aproximadamente [cantidad de palabras] palabras.
+Cada sección debe mapear a uno o más puntos clave.
+Formato: ## Título de sección → lista de bullets de qué cubrirá cada párrafo.
+
+Puntos clave del Paso 1:
+"""[pegá la salida del Paso 1 aquí]"""
+
+---
+PASO 3 — BORRADOR (enviá el esquema del Paso 2 aquí)
+Escribí el/la [post de blog / informe / resumen ejecutivo] completo siguiendo el esquema de abajo.
+Tono: [profesional / conversacional / técnico]
+Restricciones:
+- Mantenete dentro de [cantidad de palabras] palabras (±10%).
+- No agregues secciones que no estén en el esquema.
+- No uses frases de relleno como "En el mundo actual" o "Es importante destacar".
+- Terminá con una conclusión clara o próximo paso.
+
+Esquema:
+"""[pegá el esquema del Paso 2 aquí]"""`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How many steps is too many in a prompt chain?", es: "¿Cuántos pasos son demasiados en una cadena de prompts?" },
+        a: {
+          en: "There is no fixed maximum, but each step adds latency, cost, and a new failure point. In practice, most tasks resolve well with 2–4 steps. If your chain exceeds 6 steps, reconsider whether some steps can be merged or whether the task should be split into independent sub-tasks with separate chains.",
+          es: "No hay un máximo fijo, pero cada paso agrega latencia, costo y un nuevo punto de falla. En la práctica, la mayoría de las tareas se resuelven bien con 2–4 pasos. Si tu cadena supera los 6 pasos, reconsiderá si algunos pueden fusionarse o si la tarea debería dividirse en subtareas independientes con cadenas separadas.",
+        },
+      },
+      {
+        q: { en: "Do I need to send all previous outputs to every subsequent step?", es: "¿Necesito enviar todas las salidas previas a cada paso siguiente?" },
+        a: {
+          en: "No — and you usually should not. Send only what the next step needs to do its job. Passing the full history of every prior step inflates the context, increases cost, and can confuse the model by giving it irrelevant prior reasoning to 'consider'. Extract and pass the relevant subset.",
+          es: "No — y generalmente no deberías. Enviá solo lo que el siguiente paso necesita para hacer su trabajo. Pasar el historial completo de todos los pasos anteriores infla el contexto, aumenta el costo y puede confundir al modelo dándole razonamiento previo irrelevante para 'considerar'. Extraé y pasá solo el subconjunto relevante.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-writing-prompts",
+    title: {
+      en: "AI writing prompts for blogs, emails, and creative content",
+      es: "Prompts de redacción con IA para blogs, emails y contenido creativo",
+    },
+    description: {
+      en: "Writing prompts that produce structured, on-brand content — with tone, audience, format, and length controls built in. No generic filler.",
+      es: "Prompts de escritura que generan contenido estructurado y alineado con tu voz — con controles de tono, audiencia, formato y extensión. Sin relleno genérico.",
+    },
+    sections: [
+      {
+        heading: { en: "What a writing prompt needs beyond the topic", es: "Qué necesita un prompt de escritura más allá del tema" },
+        bullets: {
+          en: [
+            "Audience: who is reading, what they already know, and what they care about. 'Write about productivity' gives you a generic output; 'write for senior engineers who are skeptical of new tools' gives you something useful.",
+            "Tone and register: professional, conversational, direct, empathetic. Mixing 'be authoritative' with 'be approachable' without examples leads to inconsistency.",
+            "Format: prose, bullet list, numbered steps, Q&A, table. Specify it explicitly or the model picks whatever is convenient.",
+            "Length or scope: a target word count (or range) and the number of key ideas to cover. Without this, AI writing tends to pad.",
+            "What to avoid: generic openers ('In today's digital world'), corporate buzzwords, unsupported claims, passive voice when you want active.",
+          ],
+          es: [
+            "Audiencia: quién lee, qué ya saben y qué les importa. 'Escribí sobre productividad' da un resultado genérico; 'escribí para ingenieros senior que son escépticos de nuevas herramientas' da algo útil.",
+            "Tono y registro: profesional, conversacional, directo, empático. Mezclar 'sé autoridad' con 'sé cercano' sin ejemplos genera inconsistencia.",
+            "Formato: prosa, lista de bullets, pasos numerados, preguntas y respuestas, tabla. Especificalo explícitamente o el modelo elige lo que le sea conveniente.",
+            "Extensión o alcance: un conteo de palabras objetivo (o rango) y la cantidad de ideas clave a cubrir. Sin esto, la escritura con IA tiende al relleno.",
+            "Qué evitar: aperturas genéricas ('En el mundo digital actual'), palabras de jerga corporativa, afirmaciones sin respaldo, voz pasiva cuando querés activa.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Tone and voice control", es: "Control de tono y voz" },
+        bullets: {
+          en: [
+            "Give examples of the tone, not just labels. 'Tone: like a knowledgeable friend, not a textbook' is more useful than 'tone: informal'.",
+            "Specify what the tone is NOT: 'avoid corporate jargon', 'no rhetorical questions', 'don't start sentences with I'.",
+            "If you have existing content that matches the voice you want, paste 2–3 sentences and ask the model to match that style.",
+            "For brand voice consistency across multiple pieces: describe 3–5 defining characteristics and paste them at the top of every writing prompt.",
+          ],
+          es: [
+            "Dá ejemplos del tono, no solo etiquetas. 'Tono: como un amigo conocedor, no un libro de texto' es más útil que 'tono: informal'.",
+            "Especificá lo que el tono NO es: 'evitar jerga corporativa', 'sin preguntas retóricas', 'no empezar oraciones con Yo'.",
+            "Si tenés contenido existente que tiene la voz que buscás, pegá 2–3 oraciones y pedí al modelo que iguale ese estilo.",
+            "Para consistencia de voz de marca en múltiples piezas: describí 3–5 características definitorias y pegálas al inicio de cada prompt de escritura.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common writing prompt mistakes", es: "Errores comunes en prompts de escritura" },
+        bullets: {
+          en: [
+            "Topic without angle: 'write about remote work' gives the model nothing to stand on. Add your specific angle: 'write about why async-first remote teams outperform real-time-first ones for creative work'.",
+            "No format constraint: without one, the model defaults to whatever structure feels natural, which changes between runs.",
+            "Conflicting length signals: 'be concise but cover everything' is a contradiction. Pick one or set a word count.",
+            "Asking for 'creative' without saying what creative means to you: it could mean unexpected analogies, narrative structure, humor, or unusual formatting — specify.",
+          ],
+          es: [
+            "Tema sin ángulo: 'escribí sobre trabajo remoto' no le da nada al modelo en qué apoyarse. Agregá tu ángulo específico: 'escribí sobre por qué los equipos remotos async-first superan a los real-time-first para trabajo creativo'.",
+            "Sin restricción de formato: sin ella, el modelo elige la estructura que siente natural, que cambia entre ejecuciones.",
+            "Señales de longitud contradictorias: 'sé conciso pero cubrí todo' es una contradicción. Elegí uno o poné un conteo de palabras.",
+            "Pedir 'creatividad' sin decir qué significa para vos: puede ser analogías inesperadas, estructura narrativa, humor o formato inusual — especificalo.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Blog post outline with audience and tone", es: "Esquema de post de blog con audiencia y tono" },
+        purpose: "marketing",
+        target: "gpt",
+        prompt: {
+          en: `Create a detailed outline for a blog post on the following topic.
+
+Topic: [your topic]
+Target audience: [describe the reader — role, experience level, main concern]
+Angle / thesis: [the specific position or insight this post will argue]
+Tone: [e.g. direct and opinionated, not neutral / conversational, like a practitioner talking to peers]
+Target length: [word count] words
+Format for each section: ## Heading → 3–5 bullet points describing what each paragraph will say
+
+Requirements:
+- Start with a hook that states the problem or tension directly (no "In today's world" openers).
+- Each section must connect to the thesis, not just be loosely related to the topic.
+- End with a clear takeaway or call to action — one sentence max.
+- Do not include a generic introduction or conclusion — make every section earn its place.
+
+Do not avoid: [word], [buzzword], [phrase to exclude]`,
+          es: `Creá un esquema detallado para un post de blog sobre el siguiente tema.
+
+Tema: [tu tema]
+Audiencia objetivo: [describí al lector — rol, nivel de experiencia, preocupación principal]
+Ángulo / tesis: [la posición o perspectiva específica que argumentará este post]
+Tono: [ej. directo y con opinión, no neutral / conversacional, como un practicante hablando con pares]
+Extensión objetivo: [cantidad de palabras] palabras
+Formato para cada sección: ## Título → 3–5 bullets describiendo qué dirá cada párrafo
+
+Requisitos:
+- Empezá con un gancho que exprese el problema o tensión directamente (sin aperturas de "En el mundo actual").
+- Cada sección debe conectar con la tesis, no solo estar vagamente relacionada con el tema.
+- Terminá con una conclusión clara o llamado a la acción — una oración máximo.
+- No incluyas introducción o conclusión genérica — hacé que cada sección se justifique.
+
+Evitar: [palabra], [buzzword], [frase a excluir]`,
+        },
+      },
+      {
+        title: { en: "Professional email from bullet notes", es: "Email profesional a partir de notas en bullets" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a professional email from the notes below.
+
+Sender context: [your role and relationship to the recipient]
+Recipient: [their role and what they care about]
+Goal of this email: [what you need them to do or understand after reading]
+Tone: [e.g. collegial and direct / formal and diplomatic / warm but concise]
+
+Notes (unordered — use your judgment on what to include):
+- [note 1]
+- [note 2]
+- [note 3]
+
+Constraints:
+- Subject line: one sentence, action-oriented, under 60 characters.
+- Body: no filler phrases like "I hope this email finds you well" or "Please don't hesitate to reach out."
+- Length: 3–5 short paragraphs maximum.
+- End with a clear single ask or next step, not a list of options.
+- Match the tone to the recipient's seniority level.`,
+          es: `Escribí un email profesional a partir de las notas de abajo.
+
+Contexto del remitente: [tu rol y relación con el destinatario]
+Destinatario: [su rol y qué le importa]
+Objetivo del email: [qué necesitás que haga o entienda después de leerlo]
+Tono: [ej. colegial y directo / formal y diplomático / cálido pero conciso]
+
+Notas (sin orden — usá tu criterio sobre qué incluir):
+- [nota 1]
+- [nota 2]
+- [nota 3]
+
+Restricciones:
+- Asunto: una oración, orientado a la acción, menos de 60 caracteres.
+- Cuerpo: sin frases de relleno como "Espero que estés bien" o "No dudes en contactarme".
+- Extensión: máximo 3–5 párrafos cortos.
+- Terminá con una única solicitud clara o próximo paso, no una lista de opciones.
+- Ajustá el tono al nivel de seniority del destinatario.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How do I stop AI writing from sounding generic?", es: "¿Cómo evito que la escritura de IA suene genérica?" },
+        a: {
+          en: "Generic output usually comes from under-specified prompts. Add a specific angle (not just a topic), a named audience with a concrete concern, explicit tone examples, and a list of things to avoid. The more constraints you give, the less the model fills gaps with defaults. Pasting 2–3 sentences of your own writing and asking it to match the style also helps significantly.",
+          es: "Las salidas genéricas suelen venir de prompts poco especificados. Agregá un ángulo específico (no solo un tema), una audiencia nombrada con una preocupación concreta, ejemplos de tono explícitos y una lista de cosas a evitar. Cuantas más restricciones des, menos el modelo llenará vacíos con valores por defecto. Pegar 2–3 oraciones de tu propia escritura y pedirle que iguale el estilo también ayuda significativamente.",
+        },
+      },
+      {
+        q: { en: "Can I get consistent voice across multiple pieces?", es: "¿Puedo lograr voz consistente en múltiples piezas?" },
+        a: {
+          en: "Yes, with a reusable voice block. Define 3–5 characteristics of your brand voice (e.g. 'direct without being blunt', 'uses concrete examples before abstract claims', 'avoids exclamation marks and buzzwords') and paste them at the start of every writing prompt. Keep this block in a text file and update it as you refine your voice.",
+          es: "Sí, con un bloque de voz reutilizable. Definí 3–5 características de tu voz de marca (ej. 'directo sin ser brusco', 'usa ejemplos concretos antes de afirmaciones abstractas', 'evita signos de exclamación y buzzwords') y pegálas al inicio de cada prompt de escritura. Guardá este bloque en un archivo de texto y actualizalo a medida que refinás tu voz.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "multimodal-prompts",
+    title: {
+      en: "How to write prompts for AI with image and file inputs (multimodal)",
+      es: "Cómo escribir prompts para IA con imágenes y archivos (multimodal)",
+    },
+    description: {
+      en: "Multimodal prompts combine text instructions with images, PDFs, or screenshots. Learn how to direct AI attention to what matters and extract structured output reliably.",
+      es: "Los prompts multimodales combinan instrucciones de texto con imágenes, PDFs o capturas de pantalla. Aprendé a dirigir la atención de la IA a lo que importa y extraer salida estructurada de forma confiable.",
+    },
+    sections: [
+      {
+        heading: { en: "What multimodal AI models can and cannot do", es: "Qué pueden y no pueden hacer los modelos de IA multimodal" },
+        bullets: {
+          en: [
+            "They can: describe image content, read text in images (OCR-like), extract data from tables and forms, analyze charts and diagrams, compare multiple images, and answer questions grounded in what they see.",
+            "They cannot: reliably read very small text in low-resolution images, count objects precisely in dense scenes, or guarantee pixel-level accuracy on complex diagrams.",
+            "Quality of output depends heavily on image resolution and clarity. Blurry or low-contrast images produce vague descriptions.",
+            "For PDFs: some APIs accept PDFs directly; others require converting pages to images first. Check your model's documentation.",
+          ],
+          es: [
+            "Pueden: describir el contenido de imágenes, leer texto en imágenes (tipo OCR), extraer datos de tablas y formularios, analizar gráficos y diagramas, comparar múltiples imágenes y responder preguntas basadas en lo que ven.",
+            "No pueden: leer de forma confiable texto muy pequeño en imágenes de baja resolución, contar objetos con precisión en escenas densas, ni garantizar precisión a nivel de píxel en diagramas complejos.",
+            "La calidad de la salida depende mucho de la resolución y claridad de la imagen. Las imágenes borrosas o de bajo contraste producen descripciones vagas.",
+            "Para PDFs: algunas APIs los aceptan directamente; otras requieren convertir páginas a imágenes primero. Revisá la documentación de tu modelo.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to direct AI attention in images", es: "Cómo dirigir la atención de la IA en imágenes" },
+        bullets: {
+          en: [
+            "Name what you want analyzed: 'Focus on the bar chart in the top-right corner' is clearer than 'analyze this image'.",
+            "Describe what the image contains if the model might not recognize the context: 'This is a screenshot of a warehouse management dashboard showing inventory levels.'",
+            "For documents and forms, specify which fields matter: 'Extract only the vendor name, invoice number, date, and total amount. Ignore line items.'",
+            "Use spatial anchors: 'the table in the second column', 'the highlighted row', 'the legend at the bottom'.",
+            "If the image has multiple elements, tell the model what to prioritize first and what to skip.",
+          ],
+          es: [
+            "Nombrá lo que querés analizar: 'Enfocate en el gráfico de barras en la esquina superior derecha' es más claro que 'analizá esta imagen'.",
+            "Describí qué contiene la imagen si el modelo podría no reconocer el contexto: 'Esta es una captura de pantalla de un dashboard de gestión de almacenes mostrando niveles de inventario.'",
+            "Para documentos y formularios, especificá qué campos importan: 'Extraé solo el nombre del proveedor, número de factura, fecha y monto total. Ignorá los ítems de línea.'",
+            "Usá anclajes espaciales: 'la tabla en la segunda columna', 'la fila resaltada', 'la leyenda en la parte inferior'.",
+            "Si la imagen tiene múltiples elementos, decile al modelo qué priorizar primero y qué omitir.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common multimodal prompt mistakes", es: "Errores comunes en prompts multimodales" },
+        bullets: {
+          en: [
+            "No image description: asking 'what does this show?' without context forces the model to guess the purpose. Tell it what kind of document or image you're sending.",
+            "Expecting precision on messy inputs: a photo of a handwritten note taken at an angle in dim lighting will produce uncertain results — scan or crop before prompting.",
+            "No output format specified: without one, the model might describe the image in prose when you needed JSON, or give you a table when you needed a summary.",
+            "Assuming it reads all text: models process images as visual patterns. Very small text, rotated text, or text on complex backgrounds may be missed or misread.",
+          ],
+          es: [
+            "Sin descripción de la imagen: preguntar '¿qué muestra esto?' sin contexto fuerza al modelo a adivinar el propósito. Decile qué tipo de documento o imagen estás enviando.",
+            "Esperar precisión en entradas desordenadas: una foto de una nota manuscrita tomada en ángulo con poca luz producirá resultados inciertos — escaneá o recortá antes de hacer el prompt.",
+            "Sin formato de salida especificado: sin uno, el modelo podría describir la imagen en prosa cuando necesitabas JSON, o darte una tabla cuando necesitabas un resumen.",
+            "Asumir que lee todo el texto: los modelos procesan imágenes como patrones visuales. Texto muy pequeño, rotado o sobre fondos complejos puede ser omitido o mal leído.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Visual data extraction from an image or screenshot", es: "Extracción de datos visuales de una imagen o captura de pantalla" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `I'm sending you [a screenshot of a dashboard / a photo of a form / a chart image].
+
+Context: [describe what the image contains and where it comes from — e.g. "This is a weekly sales report screenshot from our internal reporting tool."]
+
+Extract the following fields:
+- [Field 1]: [what it looks like or where it appears]
+- [Field 2]: [what it looks like or where it appears]
+- [Field 3]: [what it looks like or where it appears]
+
+Return ONLY JSON:
+{
+  "field_1": "value or null",
+  "field_2": "value or null",
+  "field_3": "value or null",
+  "extraction_notes": "any uncertainty or ambiguity noted"
+}
+
+Rules:
+- Use null for any field you cannot read clearly.
+- Do not guess or infer values not visible in the image.
+- Add a note in extraction_notes if any field was difficult to read.`,
+          es: `Te envío [una captura de pantalla de un dashboard / una foto de un formulario / una imagen de un gráfico].
+
+Contexto: [describí qué contiene la imagen y de dónde viene — ej. "Esta es una captura de pantalla del reporte semanal de ventas de nuestra herramienta interna de reporting."]
+
+Extraé los siguientes campos:
+- [Campo 1]: [cómo se ve o dónde aparece]
+- [Campo 2]: [cómo se ve o dónde aparece]
+- [Campo 3]: [cómo se ve o dónde aparece]
+
+Devolvé SOLO JSON:
+{
+  "campo_1": "valor o null",
+  "campo_2": "valor o null",
+  "campo_3": "valor o null",
+  "notas_extraccion": "cualquier incertidumbre o ambigüedad detectada"
+}
+
+Reglas:
+- Usá null para cualquier campo que no puedas leer claramente.
+- No adivines ni infieras valores no visibles en la imagen.
+- Agregá una nota en notas_extraccion si algún campo fue difícil de leer.`,
+        },
+      },
+      {
+        title: { en: "Document Q&A with source citation", es: "Preguntas y respuestas sobre un documento con cita de fuente" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `I'm sending you [a PDF / a set of document images / a scanned contract].
+
+Context: [briefly describe what the document is — e.g. "This is a vendor contract for software licensing, approximately 12 pages."]
+
+Answer the following questions based ONLY on the content visible in the document:
+1. [Your question 1]
+2. [Your question 2]
+3. [Your question 3]
+
+For each answer:
+- Quote the exact sentence or section that supports your answer.
+- If the document does not contain the answer, say "Not found in the document" — do not infer.
+- If the answer is ambiguous, explain why and quote the relevant passage.
+
+Format:
+**Q1:** [restate the question]
+**Answer:** [your answer]
+**Source:** "[exact quote from document]" (Page X / Section Y if identifiable)`,
+          es: `Te envío [un PDF / un conjunto de imágenes de un documento / un contrato escaneado].
+
+Contexto: [describí brevemente qué es el documento — ej. "Este es un contrato de proveedor para licenciamiento de software, de aproximadamente 12 páginas."]
+
+Respondé las siguientes preguntas basándote SOLO en el contenido visible en el documento:
+1. [Tu pregunta 1]
+2. [Tu pregunta 2]
+3. [Tu pregunta 3]
+
+Para cada respuesta:
+- Citá la oración o sección exacta que respalda tu respuesta.
+- Si el documento no contiene la respuesta, decí "No encontrado en el documento" — no inferras.
+- Si la respuesta es ambigua, explicá por qué y citá el pasaje relevante.
+
+Formato:
+**P1:** [replanteá la pregunta]
+**Respuesta:** [tu respuesta]
+**Fuente:** "[cita textual del documento]" (Página X / Sección Y si es identificable)`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Which AI models support image inputs?", es: "¿Qué modelos de IA soportan entradas de imagen?" },
+        a: {
+          en: "As of mid-2026, image inputs are supported by GPT-4o and later OpenAI models, Claude 3 and later Anthropic models, Gemini 1.5 and later Google models, and Grok 2 Vision. DeepSeek and Kimi also have multimodal variants. Always verify image support in the model's current documentation, as capabilities vary by API tier and may change.",
+          es: "A mediados de 2026, las entradas de imagen son soportadas por GPT-4o y modelos OpenAI posteriores, Claude 3 y modelos Anthropic posteriores, Gemini 1.5 y modelos Google posteriores, y Grok 2 Vision. DeepSeek y Kimi también tienen variantes multimodales. Siempre verificá el soporte de imágenes en la documentación actual del modelo, ya que las capacidades varían por nivel de API y pueden cambiar.",
+        },
+      },
+      {
+        q: { en: "How do I extract a table from a PDF using AI?", es: "¿Cómo extraigo una tabla de un PDF usando IA?" },
+        a: {
+          en: "The most reliable approach: convert the PDF page containing the table to a high-resolution image (300 DPI or higher), then send it with a prompt that specifies the table location, the columns you need, and the output format (JSON or Markdown table). Ask the model to flag cells it cannot read clearly. For native-digital PDFs where text is selectable, copy-paste the table text directly into your prompt instead — text extraction is more reliable than visual OCR.",
+          es: "El enfoque más confiable: convertí la página del PDF que contiene la tabla a una imagen de alta resolución (300 DPI o superior), luego enviala con un prompt que especifique la ubicación de la tabla, las columnas que necesitás y el formato de salida (JSON o tabla Markdown). Pedí al modelo que marque las celdas que no puede leer claramente. Para PDFs nativos digitales donde el texto es seleccionable, copiá y pegá el texto de la tabla directamente en tu prompt — la extracción de texto es más confiable que el OCR visual.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

@@ -4,6 +4,30 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.2.2 — 2026-07-23
+
+Weekly update: three SEO guides covering prompt chaining, AI writing prompts, and multimodal prompts; plus guide-page Open Graph and Twitter Card metadata.
+
+### Added
+- **New guide: Prompt chaining** (`/guides/prompt-chaining`) — how to decompose complex tasks into sequential AI steps. Covers the three core chaining patterns (sequential, branching, looping), when chaining is worth the overhead, and common failure modes including unvalidated intermediate outputs and missing stop conditions. Templates: data extraction pipeline (extract → validate → format) and a research-to-report chain.
+- **New guide: AI writing prompts** (`/guides/ai-writing-prompts`) — writing prompts that produce structured, on-brand content for blogs, emails, and creative pieces. Covers the five elements a writing prompt needs beyond the topic (audience, tone, format, length, avoidance list), tone and voice control techniques, and common writing prompt mistakes. Templates: blog post outline with audience and tone, and a professional email from bullet notes.
+- **New guide: Multimodal prompts** (`/guides/multimodal-prompts`) — how to write prompts when the input includes images, screenshots, or PDFs. Covers what multimodal models can and cannot do reliably, how to direct AI attention with spatial anchors and context descriptions, and common mistakes like missing output format constraints. Templates: visual data extraction to JSON, and document Q&A with source citation.
+
+### Improved
+- **Guide detail pages now emit page-specific Open Graph and Twitter Card metadata** (`app/[lang]/guides/[slug]/page.tsx`). Previously, guide detail pages set only `title`, `description`, and `canonical` — the `openGraph` and `twitter` blocks were inherited from the root layout, meaning social sharing previews showed the generic Promptea title and description instead of the guide's own. Each guide detail page now explicitly sets `openGraph.title`, `openGraph.description`, `openGraph.type: "article"`, `openGraph.locale`, `twitter.card`, `twitter.title`, and `twitter.description`. This improves click-through rates from social shares.
+- **Guides index SEO description** updated to mention prompt chaining, AI writing prompts, and multimodal prompts alongside the existing catalog.
+
+### Changed
+- Version bumped to `v1.2.2`. `package.json`, `package-lock.json`, and `lib/version.ts` updated consistently. Optimized prompt header will carry `PROMPTEA: v1.2.2`.
+
+### Validated
+- `npm run lint` — pre-existing errors in other files (none introduced by this update)
+- `npm test` — header invariant tests auto-resolve to v1.2.2 via `APP_VERSION`; 14 `dataset.calibration.test.ts` score-range failures are pre-existing (confirmed on base branch)
+- `npm run typecheck` — see PR description
+- `npm run build` — see PR description
+
+---
+
 ## v1.2.1 — 2026-07-16
 
 Weekly update: three SEO guides and a structured-data improvement.

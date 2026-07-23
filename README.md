@@ -4,11 +4,11 @@ Analyze your prompt, detect issues, and generate an optimized version tailored t
 
 Bilingual (English / Spanish) with full feature parity.
 
-## Latest update — v1.2.1 (2026-07-16)
+## Latest update — v1.2.2 (2026-07-23)
 
-Weekly update: three new SEO guides (system prompts, AI translation prompts, and image generation prompts) and a product improvement — BreadcrumbList JSON-LD structured data on all guide pages for better search snippet visibility. Changes are in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+Weekly update: three new SEO guides (prompt chaining, AI writing prompts, and multimodal prompts) and a product improvement — guide detail pages now emit page-specific Open Graph and Twitter Card metadata for better social sharing previews. Changes are in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous major release: v1.2.0 (2026-07-12) — full redesign, adaptive prompt-refinement engine, verified model catalog._
+_Previous update: v1.2.1 (2026-07-16) — system prompts, AI translation prompts, and image generation guides; BreadcrumbList JSON-LD on guide pages._
 
 ## How it works
 
