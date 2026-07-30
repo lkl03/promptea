@@ -2985,6 +2985,475 @@ Formato:
       },
     ],
   },
+  {
+    slug: "zero-shot-prompting",
+    title: {
+      en: "Zero-shot prompting: how to get reliable results without providing examples",
+      es: "Zero-shot prompting: cómo obtener resultados confiables sin dar ejemplos",
+    },
+    description: {
+      en: "Zero-shot prompting asks the model to solve a task from instructions alone — no examples included. Learn when it works, when to add examples, and the constraints that make zero-shot reliable.",
+      es: "El zero-shot prompting le pide al modelo que resuelva una tarea solo con instrucciones — sin ejemplos incluidos. Aprendé cuándo funciona, cuándo agregar ejemplos y las restricciones que lo hacen confiable.",
+    },
+    sections: [
+      {
+        heading: { en: "What zero-shot prompting is and when it works", es: "Qué es el zero-shot prompting y cuándo funciona" },
+        bullets: {
+          en: [
+            "Zero-shot means no examples in the prompt — the model uses only the instruction and its training knowledge to produce the output.",
+            "It works well for tasks the model has seen many times in training: summarization, translation, classification with clear categories, simple rewrites.",
+            "It also works when you can fully specify the output in words: 'a three-column table with columns X, Y, Z' is often enough without a concrete example.",
+            "Zero-shot fails when the output pattern is unusual, when format precision is critical, or when the task involves a niche domain the model is unlikely to have seen often.",
+            "The practical rule: try zero-shot first. Add examples only when you get inconsistent results across runs.",
+          ],
+          es: [
+            "Zero-shot significa sin ejemplos en el prompt — el modelo usa solo la instrucción y su conocimiento de entrenamiento para producir el output.",
+            "Funciona bien para tareas que el modelo vio muchas veces en entrenamiento: resumen, traducción, clasificación con categorías claras, rewrites simples.",
+            "También funciona cuando podés especificar completamente el output con palabras: 'una tabla de tres columnas con columnas X, Y, Z' suele ser suficiente sin un ejemplo concreto.",
+            "El zero-shot falla cuando el patrón de output es inusual, cuando la precisión de formato es crítica, o cuando la tarea involucra un dominio nicho que el modelo probablemente no vio con frecuencia.",
+            "La regla práctica: probá zero-shot primero. Agregá ejemplos solo cuando obtengas resultados inconsistentes entre ejecuciones.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Why zero-shot fails and how to fix it without adding examples", es: "Por qué falla el zero-shot y cómo arreglarlo sin agregar ejemplos" },
+        bullets: {
+          en: [
+            "Format ambiguity: 'list the main points' can mean bullets, numbered steps, or prose. Add 'as a numbered list, one item per line' to lock it.",
+            "No output length constraint: without one, the model calibrates to what it thinks is appropriate — which varies between runs. Add a hard limit.",
+            "Missing decision rules for edge cases: if the input has missing data, ambiguous content, or out-of-scope requests, the model will guess. State what to do explicitly.",
+            "Vague task framing: 'analyze this text' is under-specified. Replace vague verbs with specific ones: extract, classify, score, rank, summarize to N sentences.",
+            "If zero-shot still produces inconsistent results after adding format, length, and edge-case constraints — that's the signal to switch to few-shot with 2–3 targeted examples.",
+          ],
+          es: [
+            "Ambigüedad de formato: 'listá los puntos principales' puede significar bullets, pasos numerados o prosa. Agregá 'como lista numerada, un ítem por línea' para fijarlo.",
+            "Sin restricción de longitud de output: sin una, el modelo calibra a lo que cree apropiado — que varía entre ejecuciones. Agregá un límite duro.",
+            "Sin reglas de decisión para casos límite: si el input tiene datos faltantes, contenido ambiguo o pedidos fuera de scope, el modelo adivinará. Especificá qué hacer explícitamente.",
+            "Formulación vaga de la tarea: 'analizá este texto' está poco especificado. Reemplazá verbos vagos con específicos: extraé, clasificá, puntuá, rankeá, resumí a N oraciones.",
+            "Si el zero-shot sigue produciendo resultados inconsistentes después de agregar restricciones de formato, longitud y casos límite — esa es la señal para cambiar a few-shot con 2–3 ejemplos dirigidos.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Zero-shot task with format and constraints", es: "Tarea zero-shot con formato y restricciones" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `[Action verb]: [what you want — be specific]
+
+Input:
+"""[paste your content here]"""
+
+Output format:
+- [exact structure: numbered list / table with columns X, Y / 3-sentence paragraph]
+- Length: [hard limit, e.g. "3 bullets max" or "<= 100 words"]
+
+Rules:
+- [constraint 1, e.g. "preserve all numbers and proper nouns"]
+- [constraint 2, e.g. "do not add information not present in the input"]
+- If the input is missing [edge case], [what to do: "skip it" / "flag it" / "write N/A"]
+
+Return ONLY the output. No preamble, no commentary.`,
+          es: `[Verbo de acción]: [qué querés — sé específico]
+
+Input:
+"""[pegá tu contenido acá]"""
+
+Formato de salida:
+- [estructura exacta: lista numerada / tabla con columnas X, Y / párrafo de 3 oraciones]
+- Extensión: [límite duro, ej. "máx 3 bullets" o "<= 100 palabras"]
+
+Reglas:
+- [restricción 1, ej. "preservá todos los números y nombres propios"]
+- [restricción 2, ej. "no agregues información que no esté en el input"]
+- Si el input no tiene [caso límite], [qué hacer: "saltalo" / "marcalo" / "escribí N/A"]
+
+Devolvé SOLO el output. Sin preámbulo, sin comentarios.`,
+        },
+      },
+      {
+        title: { en: "Zero-shot classification with decision rules", es: "Clasificación zero-shot con reglas de decisión" },
+        purpose: "data",
+        target: "claude",
+        prompt: {
+          en: `Classify each item below into one of the categories: [Category A / Category B / Category C].
+
+Classification rules:
+- Category A: [define exactly what belongs here]
+- Category B: [define exactly what belongs here]
+- Category C: [define exactly what belongs here]
+- If an item could belong to more than one category, assign it to [priority category] and add a note.
+- If an item clearly fits no category, label it "Uncategorized" and note why.
+
+Return format — one row per item, exactly:
+[Item] | [Category] | [Note or "—"]
+
+Items to classify:
+- [item 1]
+- [item 2]
+- [item 3]
+
+No explanation outside the table.`,
+          es: `Clasificá cada ítem de abajo en una de las categorías: [Categoría A / Categoría B / Categoría C].
+
+Reglas de clasificación:
+- Categoría A: [definí exactamente qué pertenece acá]
+- Categoría B: [definí exactamente qué pertenece acá]
+- Categoría C: [definí exactamente qué pertenece acá]
+- Si un ítem podría pertenecer a más de una categoría, asignalo a [categoría prioritaria] y agregá una nota.
+- Si un ítem claramente no encaja en ninguna categoría, etiquetalo como "Sin categoría" y explicá por qué.
+
+Formato de respuesta — una fila por ítem, exactamente:
+[Ítem] | [Categoría] | [Nota o "—"]
+
+Ítems a clasificar:
+- [ítem 1]
+- [ítem 2]
+- [ítem 3]
+
+Sin explicación fuera de la tabla.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "What is the difference between zero-shot and few-shot prompting?", es: "¿Cuál es la diferencia entre zero-shot y few-shot prompting?" },
+        a: {
+          en: "Zero-shot includes only the instruction; the model produces output without seeing any examples. Few-shot includes 2–5 input/output examples before the real task, showing the model exactly what you want. Zero-shot is faster to write and cheaper in tokens; few-shot produces more consistent format and style. Use zero-shot for well-understood tasks, few-shot when the output pattern is unusual or you're getting inconsistent results.",
+          es: "El zero-shot incluye solo la instrucción; el modelo produce output sin ver ejemplos. El few-shot incluye 2–5 ejemplos de input/output antes de la tarea real, mostrándole al modelo exactamente qué querés. El zero-shot es más rápido de escribir y más barato en tokens; el few-shot produce formato y estilo más consistentes. Usá zero-shot para tareas bien comprendidas, few-shot cuando el patrón de output es inusual o estás obteniendo resultados inconsistentes.",
+        },
+      },
+      {
+        q: { en: "Can zero-shot prompting handle complex tasks?", es: "¿El zero-shot prompting puede manejar tareas complejas?" },
+        a: {
+          en: "Yes, for tasks where complexity is in the logic rather than the output format — like multi-step analysis, decision trees, or long-form reasoning. The key is breaking the task into explicit steps inside the prompt ('First: X. Then: Y. Finally: Z.') rather than asking for everything at once. For complex formatting or style, few-shot examples work better than trying to describe the pattern in words.",
+          es: "Sí, para tareas donde la complejidad está en la lógica y no en el formato de salida — como análisis multi-paso, árboles de decisión o razonamiento de forma larga. La clave es descomponer la tarea en pasos explícitos dentro del prompt ('Primero: X. Luego: Y. Finalmente: Z.') en vez de pedir todo de una vez. Para formateo o estilo complejo, los ejemplos few-shot funcionan mejor que intentar describir el patrón con palabras.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "gpt-prompt-guide",
+    title: {
+      en: "Prompts for GPT: how to get structured, reliable output from ChatGPT",
+      es: "Prompts para GPT: cómo obtener salida estructurada y confiable de ChatGPT",
+    },
+    description: {
+      en: "How to write prompts that get consistent, well-structured output from GPT models — using format templates, output constraints, and instruction placement to reduce variation.",
+      es: "Cómo escribir prompts que producen salida consistente y bien estructurada con modelos GPT — usando plantillas de formato, restricciones de salida y posicionamiento de instrucciones para reducir la variación.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes GPT respond reliably", es: "Qué hace que GPT responda de forma confiable" },
+        bullets: {
+          en: [
+            "GPT models follow clear imperative instructions well: start with an action verb ('Write', 'Extract', 'Classify', 'List') rather than a description of what you want.",
+            "They respond to explicit format specifications — showing the exact structure you want (e.g. a labeled template) reduces format variation more than describing it in prose.",
+            "GPT tends to add helpful context and preamble unless you constrain it: 'Return ONLY the output — no explanation' removes commentary reliably.",
+            "Instruction placement matters: for most tasks, put the main instruction before the content. For long documents, placing the question at the end (after the context) often improves accuracy.",
+            "GPT follows numbered rule lists well — if you have multiple constraints, list them as 1, 2, 3 rather than mixing them into a paragraph.",
+          ],
+          es: [
+            "Los modelos GPT siguen bien las instrucciones imperativas claras: empezá con un verbo de acción ('Escribí', 'Extraé', 'Clasificá', 'Listá') en vez de una descripción de qué querés.",
+            "Responden a especificaciones de formato explícitas — mostrar la estructura exacta que querés (ej. una plantilla etiquetada) reduce la variación de formato más que describirla en prosa.",
+            "GPT tiende a agregar contexto útil y preámbulo salvo que lo restrinjas: 'Devolvé SOLO el output — sin explicación' elimina el comentario de forma confiable.",
+            "La posición de las instrucciones importa: para la mayoría de las tareas, poné la instrucción principal antes del contenido. Para documentos largos, colocar la pregunta al final (después del contexto) suele mejorar la precisión.",
+            "GPT sigue bien las listas de reglas numeradas — si tenés múltiples restricciones, listalas como 1, 2, 3 en vez de mezclarlas en un párrafo.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Patterns that consistently work with GPT models", es: "Patrones que funcionan de forma consistente con modelos GPT" },
+        bullets: {
+          en: [
+            "Show a format template: instead of 'provide a summary with key points', write 'Format: Summary: [1 sentence]. Key points: [3 bullets max].' GPT will follow the labels.",
+            "Use a constraint block: group all rules under a 'Rules:' or 'Constraints:' header so they're easy to scan and enforce.",
+            "Repeat the most important constraint at the end of the prompt — it gets higher weight in GPT's processing and reduces the chance of being overridden by a long context block.",
+            "Ask GPT to check its own work before responding: 'Before returning, verify that all fields are present and match the format.' This catches most structural errors.",
+            "For open-ended tasks, narrow the scope explicitly: 'Focus on [specific aspect]. Do not cover [out-of-scope area].' Without a scope, GPT defaults to comprehensive coverage.",
+          ],
+          es: [
+            "Mostrá una plantilla de formato: en vez de 'proporcioná un resumen con puntos clave', escribí 'Formato: Resumen: [1 oración]. Puntos clave: [máx 3 bullets].' GPT seguirá las etiquetas.",
+            "Usá un bloque de restricciones: agrupá todas las reglas bajo un encabezado 'Reglas:' o 'Restricciones:' para que sean fáciles de ver y aplicar.",
+            "Repetí la restricción más importante al final del prompt — tiene mayor peso en el procesamiento de GPT y reduce la posibilidad de ser sobreescrita por un bloque de contexto largo.",
+            "Pedile a GPT que revise su propio trabajo antes de responder: 'Antes de devolver, verificá que todos los campos estén presentes y coincidan con el formato.' Esto detecta la mayoría de los errores estructurales.",
+            "Para tareas abiertas, limitá el alcance explícitamente: 'Enfocate en [aspecto específico]. No cubras [área fuera de scope].' Sin un scope, GPT por defecto busca cobertura comprehensiva.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Structured task with a labeled format template", es: "Tarea estructurada con plantilla de formato etiquetado" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `[Task — start with an action verb]: [what you need in one sentence]
+
+Context:
+[Audience]: [who will read or use this]
+[Background]: [minimum context the model needs — 2-3 sentences max]
+
+Output format (use these labels and structure exactly):
+Overview: [1 sentence]
+Key points:
+- [point 1]
+- [point 2]
+- [point 3]
+Recommendation: [1 sentence, direct]
+Open questions: [list, or "None"]
+
+Rules:
+1. Keep total output under [N] words.
+2. Do not add sections not listed above.
+3. If a field cannot be filled from the context provided, write "Insufficient information."
+
+Return ONLY the formatted output above.`,
+          es: `[Tarea — empezá con un verbo de acción]: [qué necesitás en una oración]
+
+Contexto:
+[Audiencia]: [quién leerá o usará esto]
+[Antecedentes]: [contexto mínimo que necesita el modelo — máx 2-3 oraciones]
+
+Formato de salida (usá exactamente estas etiquetas y estructura):
+Resumen: [1 oración]
+Puntos clave:
+- [punto 1]
+- [punto 2]
+- [punto 3]
+Recomendación: [1 oración, directa]
+Preguntas abiertas: [lista, o "Ninguna"]
+
+Reglas:
+1. Mantené el output total en menos de [N] palabras.
+2. No agregues secciones que no estén listadas arriba.
+3. Si un campo no puede completarse con el contexto provisto, escribí "Información insuficiente."
+
+Devolvé SOLO el output formateado de arriba.`,
+        },
+      },
+      {
+        title: { en: "Constrained data extraction", es: "Extracción de datos con restricciones" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `Extract the following fields from the text below.
+
+Fields to extract:
+- Name: [person's full name, or "Not found"]
+- Date: [date in YYYY-MM-DD format, or "Not found"]
+- Amount: [number with currency, or "Not found"]
+- Action required: [what needs to happen next, 1 sentence, or "Not stated"]
+
+Rules:
+1. Use the exact values from the text — do not rephrase or infer.
+2. If a field is ambiguous (multiple possible values), list all of them separated by " / ".
+3. If a field is missing, write "Not found" — do not guess.
+4. Before returning, check that every field has a value (even if "Not found").
+
+Return ONLY the field list above, no additional text.
+
+Text:
+"""[paste your text here]"""`,
+          es: `Extraé los siguientes campos del texto de abajo.
+
+Campos a extraer:
+- Nombre: [nombre completo de la persona, o "No encontrado"]
+- Fecha: [fecha en formato YYYY-MM-DD, o "No encontrado"]
+- Monto: [número con moneda, o "No encontrado"]
+- Acción requerida: [qué debe pasar a continuación, 1 oración, o "No especificado"]
+
+Reglas:
+1. Usá los valores exactos del texto — no reformules ni infieras.
+2. Si un campo es ambiguo (múltiples valores posibles), listalos todos separados por " / ".
+3. Si falta un campo, escribí "No encontrado" — no adivines.
+4. Antes de devolver, verificá que cada campo tenga un valor (aunque sea "No encontrado").
+
+Devolvé SOLO la lista de campos de arriba, sin texto adicional.
+
+Texto:
+"""[pegá tu texto acá]"""`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Does prompt placement matter for GPT — should instructions go first or last?", es: "¿Importa la posición del prompt en GPT — las instrucciones van primero o al final?" },
+        a: {
+          en: "For short prompts, it rarely matters. For long prompts where you paste a large document, placing the question or task at the end (after the content) often improves accuracy — GPT pays more attention to context that directly precedes what it needs to generate. The main instruction should still appear first as a brief header, with the full document in the middle and the specific question repeated at the end.",
+          es: "Para prompts cortos, rara vez importa. Para prompts largos donde pegás un documento grande, colocar la pregunta o tarea al final (después del contenido) suele mejorar la precisión — GPT presta más atención al contexto que precede directamente lo que necesita generar. La instrucción principal igual debe aparecer primero como un encabezado breve, con el documento completo en el medio y la pregunta específica repetida al final.",
+        },
+      },
+      {
+        q: { en: "How is prompting for GPT different from prompting for Claude or Gemini?", es: "¿En qué se diferencia hacer prompts para GPT de hacerlos para Claude o Gemini?" },
+        a: {
+          en: "GPT tends to follow numbered rule lists and labeled format templates very reliably. Claude responds particularly well to XML tags for separating context from instructions. Gemini benefits from seeing a concrete output template — even a short one — rather than a description of the format. The core principles (clear task, explicit constraints, defined output format) apply to all three; the syntax and emphasis differ slightly per model.",
+          es: "GPT tiende a seguir listas de reglas numeradas y plantillas de formato etiquetado de forma muy confiable. Claude responde particularmente bien a XML tags para separar contexto de instrucciones. Gemini se beneficia de ver una plantilla de output concreta — aunque sea corta — en vez de una descripción del formato. Los principios básicos (tarea clara, restricciones explícitas, formato de salida definido) aplican a los tres; la sintaxis y el énfasis difieren ligeramente por modelo.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "brainstorming-prompts",
+    title: {
+      en: "AI brainstorming prompts: generate and filter ideas without generic filler",
+      es: "Prompts de brainstorming con IA: generá y filtrá ideas sin relleno genérico",
+    },
+    description: {
+      en: "How to use AI for brainstorming without getting obvious, repetitive ideas — covering divergent generation, constraint-based prompting, and structured filtering.",
+      es: "Cómo usar IA para brainstorming sin obtener ideas obvias y repetitivas — con generación divergente, prompting basado en restricciones y filtrado estructurado.",
+    },
+    sections: [
+      {
+        heading: { en: "Why AI brainstorming often produces generic ideas", es: "Por qué el brainstorming con IA suele producir ideas genéricas" },
+        bullets: {
+          en: [
+            "Vague prompts produce safe, central ideas: 'give me ideas for my app' returns the most common suggestions the model has seen — not the most useful for your specific situation.",
+            "No diversity requirement means clusters: without asking for variety, the model generates ideas that are similar to each other in angle and approach.",
+            "Asking for 'creative' ideas without constraints isn't enough — creativity needs a constraint to push against. 'Creative' alone defaults to novelty-sounding but structurally ordinary ideas.",
+            "Mixing generation and evaluation in the same prompt produces filtered, cautious output. AI self-censors during generation when it knows ideas will be judged immediately.",
+            "No domain specificity means generic: the model defaults to industry-standard suggestions without knowing your constraints, audience, or context.",
+          ],
+          es: [
+            "Los prompts vagos producen ideas seguras y centrales: 'dame ideas para mi app' devuelve las sugerencias más comunes que el modelo vio — no las más útiles para tu situación específica.",
+            "Sin requisito de diversidad hay clusters: sin pedir variedad, el modelo genera ideas similares entre sí en ángulo y enfoque.",
+            "Pedir ideas 'creativas' sin restricciones no es suficiente — la creatividad necesita una restricción contra la cual empujar. 'Creativa' sola produce ideas que suenan novedosas pero son estructuralmente ordinarias.",
+            "Mezclar generación y evaluación en el mismo prompt produce output filtrado y cauteloso. La IA se autocensura durante la generación cuando sabe que las ideas serán juzgadas inmediatamente.",
+            "Sin especificidad de dominio el resultado es genérico: el modelo por defecto ofrece sugerencias estándar del sector sin conocer tus restricciones, audiencia o contexto.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Constraints that produce better ideas", es: "Restricciones que producen mejores ideas" },
+        bullets: {
+          en: [
+            "Ban the obvious: list 2–3 categories that are too common and explicitly exclude them. 'Don't suggest social sharing features, gamification, or push notifications' forces the model past the defaults.",
+            "Force diversity: ask for ideas from different angles — 'one that reduces cost, one that increases speed, one that changes the target user completely.'",
+            "Use cross-domain combinations: 'apply the core mechanic of [unrelated domain] to solve [your problem]' produces ideas that feel genuinely different.",
+            "Separate generation from evaluation: run one prompt for raw idea generation (quantity, no filtering), then a separate prompt to evaluate and rank. Mixing them cuts quantity and diversity.",
+            "Add a constraint as a creative pressure: 'what would this look like if it had to work with zero budget?' or 'what's the minimum version that still solves the core problem?'",
+          ],
+          es: [
+            "Prohibí lo obvio: listá 2–3 categorías que son demasiado comunes y excluílas explícitamente. 'No sugieras funcionalidades de compartir en redes sociales, gamificación ni notificaciones push' fuerza al modelo a ir más allá de los defaults.",
+            "Forzá la diversidad: pedí ideas desde diferentes ángulos — 'una que reduzca costos, una que aumente velocidad, una que cambie completamente el usuario objetivo.'",
+            "Usá combinaciones de distintos dominios: 'aplicá la mecánica central de [dominio no relacionado] para resolver [tu problema]' produce ideas que se sienten genuinamente diferentes.",
+            "Separás la generación de la evaluación: ejecutá un prompt para generación pura de ideas (cantidad, sin filtrar), luego un prompt separado para evaluar y rankear. Mezclarlos reduce cantidad y diversidad.",
+            "Agregá una restricción como presión creativa: '¿cómo se vería esto si tuviera que funcionar con presupuesto cero?' o '¿cuál es la versión mínima que igual resuelve el problema central?'",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Divergent idea generation with forced diversity", es: "Generación divergente de ideas con diversidad forzada" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Generate [N] ideas for [problem or opportunity].
+
+Context:
+- What it is: [brief description of the product/project/goal]
+- Target user: [who this is for]
+- Current constraint: [the main limitation — budget, time, technical, etc.]
+
+Diversity requirement — generate at least one idea in each of these directions:
+1. One that reduces cost or complexity.
+2. One that completely changes the target user or use case.
+3. One borrowed from a different industry or domain.
+4. One that is the simplest possible version.
+5. [Optional: add your own angle]
+
+Do NOT suggest: [list 2-3 obvious ideas to exclude]
+
+Format: numbered list. For each idea: one-line description + why it fits the constraint.
+
+Do not evaluate or recommend yet — just generate.`,
+          es: `Generá [N] ideas para [problema u oportunidad].
+
+Contexto:
+- Qué es: [descripción breve del producto/proyecto/objetivo]
+- Usuario objetivo: [para quién es]
+- Restricción actual: [la limitación principal — presupuesto, tiempo, técnica, etc.]
+
+Requisito de diversidad — generá al menos una idea en cada una de estas direcciones:
+1. Una que reduzca costo o complejidad.
+2. Una que cambie completamente el usuario objetivo o caso de uso.
+3. Una tomada de otro sector o dominio.
+4. Una que sea la versión más simple posible.
+5. [Opcional: agregá tu propio ángulo]
+
+NO sugieras: [listá 2-3 ideas obvias a excluir]
+
+Formato: lista numerada. Para cada idea: descripción en una línea + por qué encaja con la restricción.
+
+Todavía no evalúes ni recomiendes — solo generá.`,
+        },
+      },
+      {
+        title: { en: "Idea evaluation and filtering", es: "Evaluación y filtrado de ideas" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Evaluate these ideas and help me prioritize them.
+
+Ideas:
+[paste your list of ideas here]
+
+Evaluation criteria (most important first):
+1. [Criterion 1, e.g. "feasibility with a 3-person team in 2 weeks"]
+2. [Criterion 2, e.g. "solves the core user pain, not just a nice-to-have"]
+3. [Criterion 3, e.g. "low reversibility risk — easy to undo if it doesn't work"]
+
+For each idea, return:
+- Score: [1-5] for each criterion
+- Strongest point: [what makes this idea worth considering]
+- Biggest risk: [the main reason it could fail]
+- Verdict: [Keep / Develop further / Drop]
+
+End with:
+- Top 2 ideas to develop further and why.
+- One idea that looks weak but might be worth revisiting with a different constraint.`,
+          es: `Evaluá estas ideas y ayudame a priorizarlas.
+
+Ideas:
+[pegá tu lista de ideas acá]
+
+Criterios de evaluación (los más importantes primero):
+1. [Criterio 1, ej. "factibilidad con un equipo de 3 personas en 2 semanas"]
+2. [Criterio 2, ej. "resuelve el dolor central del usuario, no solo un nice-to-have"]
+3. [Criterio 3, ej. "bajo riesgo de reversibilidad — fácil de deshacer si no funciona"]
+
+Para cada idea, devolvé:
+- Puntaje: [1-5] para cada criterio
+- Punto más fuerte: [qué hace que esta idea valga la pena considerar]
+- Riesgo principal: [la razón principal por la que podría fallar]
+- Veredicto: [Mantener / Desarrollar más / Descartar]
+
+Terminá con:
+- Las 2 mejores ideas para desarrollar más y por qué.
+- Una idea que parece débil pero podría valer la pena revisitar con una restricción diferente.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How do I get AI to generate genuinely original ideas?", es: "¿Cómo hago para que la IA genere ideas genuinamente originales?" },
+        a: {
+          en: "There's no guarantee of true originality, but you can push toward less common territory by banning the obvious categories, asking for cross-domain combinations, forcing diversity requirements, and adding unusual constraints. Originality also depends on your follow-up: use AI-generated ideas as starting points, not final answers. The value is in covering more ground quickly so you can identify the non-obvious angles worth exploring.",
+          es: "No hay garantía de originalidad real, pero podés empujar hacia territorio menos común prohibiendo las categorías obvias, pidiendo combinaciones de distintos dominios, forzando requisitos de diversidad y agregando restricciones inusuales. La originalidad también depende de tu seguimiento: usá las ideas generadas por IA como puntos de partida, no como respuestas finales. El valor está en cubrir más terreno rápido para identificar los ángulos no obvios que vale la pena explorar.",
+        },
+      },
+      {
+        q: { en: "Should I use AI for all my brainstorming?", es: "¿Debo usar IA para todo mi brainstorming?" },
+        a: {
+          en: "AI is best for quantity and breadth: quickly covering the idea space and surfacing angles you might not have considered. Use it early in a process to generate a large set of candidates. Human judgment remains essential for filtering — you understand context, stakeholder dynamics, and implementation realities better than the model. A good workflow: AI for generation, you for filtering and developing the best candidates.",
+          es: "La IA es mejor para cantidad y amplitud: cubrir rápidamente el espacio de ideas y hacer emerger ángulos que podrías no haber considerado. Usala al inicio de un proceso para generar un gran conjunto de candidatos. El criterio humano sigue siendo esencial para el filtrado — entendés mejor que el modelo el contexto, la dinámica de los stakeholders y las realidades de implementación. Un buen flujo: IA para generación, vos para filtrar y desarrollar los mejores candidatos.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
