@@ -4,11 +4,11 @@ Analyze your prompt, detect issues, and generate an optimized version tailored t
 
 Bilingual (English / Spanish) with full feature parity.
 
-## Latest update — v1.2.2 (2026-07-23)
+## Latest update — v1.2.3 (2026-07-30)
 
-Weekly update: three new SEO guides (prompt chaining, AI writing prompts, and multimodal prompts) and a product improvement — guide detail pages now emit page-specific Open Graph and Twitter Card metadata for better social sharing previews. Changes are in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+Weekly update: three new SEO guides (zero-shot prompting, GPT prompt guide, and AI brainstorming prompts) and a copy fix — the "Templates" section heading on guide pages now correctly reads "Plantillas" in Spanish. Changes are in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.2.1 (2026-07-16) — system prompts, AI translation prompts, and image generation guides; BreadcrumbList JSON-LD on guide pages._
+_Previous update: v1.2.2 (2026-07-23) — prompt chaining, AI writing prompts, and multimodal prompts guides; guide detail pages now emit page-specific Open Graph and Twitter Card metadata._
 
 ## How it works
 

@@ -138,7 +138,7 @@ export default async function GuidePage({
 
       {/* Templates */}
       <section className="mt-10">
-        <div className="text-sm font-medium">{l === "es" ? "Templates" : "Templates"}</div>
+        <div className="text-sm font-medium">{l === "es" ? "Plantillas" : "Templates"}</div>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {guide.templates.map((t, idx) => {

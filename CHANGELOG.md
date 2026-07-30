@@ -4,6 +4,30 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.2.3 — 2026-07-30
+
+Weekly update: three new SEO guides (zero-shot prompting, GPT prompt guide, and AI brainstorming prompts) and a copy localization fix — the "Templates" section heading on guide pages now correctly reads "Plantillas" in Spanish.
+
+### Added
+- **New guide: Zero-shot prompting** (`/guides/zero-shot-prompting`) — when zero-shot works vs. when to switch to few-shot, how to fix inconsistent zero-shot results without adding examples, and the constraints (format, length, edge-case rules) that make instruction-only prompts reliable. Templates: zero-shot task with format and constraints, and zero-shot classification with decision rules.
+- **New guide: Prompts for GPT** (`/guides/gpt-prompt-guide`) — how to write prompts optimized for GPT and ChatGPT models, including labeled format templates, constraint block patterns, instruction placement for long documents, and self-verification requests. Templates: structured task with a labeled format template, and constrained data extraction.
+- **New guide: AI brainstorming prompts** (`/guides/brainstorming-prompts`) — why AI brainstorming defaults to generic ideas, and the techniques that produce better output: banning obvious categories, forced diversity angles, cross-domain combinations, and separating generation from evaluation. Templates: divergent idea generation with forced diversity, and idea evaluation and filtering.
+
+### Improved
+- **Guide detail pages: "Templates" section heading now localized** (`app/[lang]/guides/[slug]/page.tsx`). The heading was hardcoded as "Templates" for both English and Spanish. It now reads "Plantillas" in Spanish — a small copy clarity fix consistent with the rest of the Spanish UI.
+- **Guides index SEO description** updated to mention zero-shot prompting, GPT, and brainstorming alongside the existing catalog.
+
+### Changed
+- Version bumped to `v1.2.3`. `package.json`, `package-lock.json`, and `lib/version.ts` updated consistently. Optimized prompt header will carry `PROMPTEA: v1.2.3`.
+
+### Validated
+- `npm run lint` — clean (no output, no errors introduced by this update; pre-existing `ERR_MODULE_NOT_FOUND` only appears without `npm ci`)
+- `npm test` — 159/159 tests pass across 16 test files; all 33 `dataset.calibration.test.ts` tests pass; version sync tests pass at v1.2.3
+- `npm run typecheck` — clean (no output)
+- `npm run build` — see PR description
+
+---
+
 ## v1.2.2 — 2026-07-23
 
 Weekly update: three SEO guides covering prompt chaining, AI writing prompts, and multimodal prompts; plus guide-page Open Graph and Twitter Card metadata.
