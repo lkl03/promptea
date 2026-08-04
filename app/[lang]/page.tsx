@@ -4,6 +4,7 @@ import PromptBox from "@/components/PromptBox";
 import AdSlot from "@/components/AdSlot";
 import PromptOfTheDay from "@/components/PromptOfTheDay";
 import HowItWorks from "@/components/HowItWorks";
+import ModeSwitcher from "@/components/ModeSwitcher";
 
 // v1.2.0: types + normalization come from the shared domain module, so URL
 // prefill supports every purpose (translation/summarization were silently
@@ -54,10 +55,15 @@ export default async function Page({
   const rawPrompt = pickFirst(sp.prompt);
   const rawPurpose = pickFirst(sp.purpose);
   const rawTarget = pickFirst(sp.target);
+  const rawModel = pickFirst(sp.model);
 
   const initialPrompt = rawPrompt ? safeDecode(rawPrompt).slice(0, 6000) : "";
   const initialPurpose = normalizePurpose(rawPurpose);
   const initialTarget = normalizeTarget(rawTarget);
+  const initialModelId = rawModel ? safeDecode(rawModel).slice(0, 80) : undefined;
+  // v1.3.0 matcher → optimizer handoff: the payload travels via
+  // sessionStorage (promptea:handoff); the flag just tells PromptBox to read it.
+  const handoff = pickFirst(sp.handoff) === "1";
 
   const showAds = process.env.NEXT_PUBLIC_ENABLE_ADS === "true";
 
@@ -81,6 +87,10 @@ export default async function Page({
             </div>
           </header>
 
+          <div className="mt-6">
+            <ModeSwitcher lang={lang as "es" | "en"} active="improve" dict={dict.mode} />
+          </div>
+
           {/* Mobile: Prompt of the Day above the analyzer */}
           <div className="mt-6 xl:hidden">
             <PromptOfTheDay lang={lang as "es" | "en"} />
@@ -93,6 +103,8 @@ export default async function Page({
               initialPrompt={initialPrompt}
               initialPurpose={initialPurpose}
               initialTarget={initialTarget}
+              initialModelId={initialModelId}
+              handoff={handoff}
             />
           </div>
         </section>

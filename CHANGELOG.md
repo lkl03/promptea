@@ -4,6 +4,35 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.3.0 — 2026-08-04
+
+Major release: Promptea becomes a two-mode prompt utility — **Improve Prompt** (the evolved analyzer) and **Find the Best AI** (a new deterministic AI/model matcher) — with voice input in both modes, a fully personalized shape-preserving refinement engine (no more fixed `PROMPTEA:` template), a complete visual redesign around the **Aqua** (light) and **Metro** (dark) themes plus an **Old version** theme for users who prefer the previous look, and general app feedback stored in Firestore instead of opening an email client.
+
+### Added
+- **Find the Best AI mode** (`/[lang]/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI fits it best. Route-addressable (refresh, deep links, back/forward, and locale switches preserve the mode), with a prominent keyboard-accessible mode switcher shared by both experiences.
+- **Deterministic matcher engine** (`lib/matcher/`) — versioned rubric (`RUBRIC_VERSION`) of 24 independently testable signals (repo paths, shell commands, git workflow, citations, recency, strict JSON, multimodal references, creative writing, translation…) feeding weighted evidence into 15 match categories; scoring against verified per-model capability data with hard capability gates (e.g. models without native search cannot win research prompts); high/medium/low confidence plus explicit tie handling with a deciding-factor explanation. Interaction profiles distinguish **Claude Code and other repo coding agents from plain chat** — an agent environment is never treated as just another model. An LLM never chooses or reorders the ranking; explanations are deterministic bilingual templates that cite the detected signals.
+- **Matcher → optimizer handoff** — "Improve my prompt for this AI" transfers the full prompt with the recommended target, model, and detected purpose preselected via a sessionStorage contract (`promptea:handoff`) with a URL-prefill fallback; no copy-paste, no length limits.
+- **Voice input in both modes** (`components/voice/`, `POST /api/transcribe`) — MediaRecorder capture with recording timer, cancel, 2-minute cap and automatic media-track cleanup; server-side transcription through Groq `whisper-large-v3-turbo` (override with `GROQ_TRANSCRIPTION_MODEL`); mime/size validation, typed bilingual errors for every failure class, and a mandatory review step — transcripts are editable and nothing is analyzed until the user decides. Audio is never stored or logged.
+- **General app feedback → Firestore** (`POST /api/app-feedback`, collection `app_feedback`) — modal with optional category (bug/suggestion/design/result quality/other), Zod validation, client+server cooldowns, success/error states. Stores message, category, locale, page/mode, app version, theme, anonymous session hash, and coarse UA class — never the user's prompt, never an email address.
+- **Model registry capability data** (`lib/models.ts`) — every selectable entry now carries verified `capabilities` (modalities, context window, latency class, structured-output/tool-use/native-search flags, reasoning tier, coding-agent fit, 15-category task-fit scores, per-model prompt guidance in ES+EN) and `interactionProfiles`; re-verified against official provider docs on 2026-08-03 (new entries incl. `claude-opus-5`, `gemini-3.6-flash`, `kimi-k3`; `gpt-o3` marked deprecated per OpenAI's shutdown schedule).
+- **Privacy-safe operational telemetry** (`POST /api/telemetry/app` + match events in `/api/match`) — mode opened, matcher submitted/recommendation category, handoff, voice started/succeeded/failed by typed reason. No prompt content, no transcripts, no audio, ever.
+
+### Changed
+- **The optimized prompt no longer starts with the `PROMPTEA: vX / MODEL / PURPOSE / TASK_TYPE` header.** Version, model, purpose, strategy, and engine metadata are returned as structured result metadata and shown in the UI — never inserted into the text you copy. The JSON output format keeps `promptea_version` as machine-readable data.
+- **Shape-preserving personalization** (`lib/engine/shapes.ts`) — each refinement strategy now produces its own output shape gated by complexity: short natural messages stay short (light path with a single guarded clarifier line), repo/agent tasks get objective/steps/validation structure, data prompts get schema+rules+output, image prompts get visual attributes, translations get preserve rules, and already-strong prompts are returned with minimal or no edits (`already_optimized`). Idempotency no longer depends on a header: re-analysis extracts the core from the shape's registered headings and rebuilds byte-identically; v1.2-era headers are stripped and migrated into the new shapes.
+- **Adaptive refiner** rewritten around shape mirroring (format, formality, and voice of the original preserved; sections only when the task needs them) with the quality gate now rejecting metadata headers instead of requiring them. All existing protections remain: protected literals, language preservation, format retention, no task-answering, bounded growth, one bounded repair, typed fallback reasons.
+- **Themes: Aqua, Metro, Old version.** Aqua (light) faithfully ports pro-all-in-one's macOS Liquid Glass system — layered radial wash, saturate(200%)+blur(32px) glass cards with inset hairlines, Apple accent palette, SF-stack typography. Metro (dark) ports the Windows 8 Metro system — flat `#1A1A1A` tiles, azure `#0078D7`, Segoe UI light type ramp, azure focus rectangles, and the universal no-radius/no-shadow rule. "Old version" (Versión anterior) preserves the previous Día/Atardecer look (system-preference aware) with the previous fonts, as a gift for users who prefer it. System preference maps to Aqua (light) / Metro (dark); legacy stored themes migrate automatically (`light`/`paper`→Aqua, `dark`/`night`→Metro) before first paint; the semantic token architecture is unchanged, and the last hardcoded palette classes were migrated to tokens.
+- Footer/results copy updated for the header-free output; analyzer page gains the mode switcher; top navigation links both modes.
+
+### Removed
+- The `mailto:` general-feedback flow and the dead `/api/share-feedback` Resend route (unreferenced since v1.2.0 and non-functional in production — `RESEND_API_KEY` was never configured). Result-level helpfulness feedback (`/api/feedback`) is unchanged.
+- The `PROMPTEA_PROMPT_VERSION` env override (it only versioned the removed header). The Day/Dusk/Night/Paper theme registry (replaced as described above; stored values migrate).
+
+### Validated
+- See the v1.3.0 PR description for the full validation matrix (lint, typecheck, tests, build, and the manual QA matrix across themes × modes × locales × viewports).
+
+---
+
 ## v1.2.3 — 2026-07-30
 
 Weekly update: three new SEO guides (zero-shot prompting, GPT prompt guide, and AI brainstorming prompts) and a copy localization fix — the "Templates" section heading on guide pages now correctly reads "Plantillas" in Spanish.

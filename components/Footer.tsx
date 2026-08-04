@@ -2,6 +2,7 @@
 import Link from "next/link";
 import AppFeedbackButton from "@/components/AppFeedbackButton";
 import { APP_VERSION } from "@/lib/version";
+import type { AppFeedbackDict } from "@/lib/uiDict";
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -14,7 +15,13 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-export default function Footer({ lang }: { lang: "es" | "en" }) {
+export default function Footer({
+  lang,
+  appFeedbackDict,
+}: {
+  lang: "es" | "en";
+  appFeedbackDict: AppFeedbackDict;
+}) {
   const year = new Date().getFullYear();
   const privacyLabel = lang === "es" ? "Privacidad" : "Privacy";
   const homeLabel = lang === "es" ? "Inicio" : "Home";
@@ -29,7 +36,7 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
 
   return (
     <footer className="mx-auto w-full max-w-6xl px-4 pb-8 pt-10 3xl:max-w-7xl">
-      <div className="h-px w-full bg-zinc-200/70 dark:bg-zinc-800/60" />
+      <div className="h-px w-full bg-line" />
 
       {/* Primary navigation */}
       <nav
@@ -50,7 +57,7 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
           {privacyLabel}
         </Link>
 
-        <AppFeedbackButton lang={lang} />
+        <AppFeedbackButton lang={lang} dict={appFeedbackDict} />
 
         <a
           href={xUrl}
@@ -58,16 +65,14 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
           rel="noreferrer"
           aria-label={followLabel}
           className="group relative inline-flex items-center justify-center h-8 w-8 rounded-full border
-                     border-zinc-900/10 bg-white/20 hover:bg-white/35
-                     dark:border-white/10 dark:bg-zinc-950/20 dark:hover:bg-zinc-950/35
+                     border-line bg-surface-soft hover:border-line-strong hover:text-ink
                      transition"
         >
           <XIcon className="h-4 w-4 opacity-90" />
           <span
             className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap
                        rounded-full border px-2.5 py-1 text-[11px] leading-none
-                       bg-white text-zinc-900 border-zinc-900/10
-                       dark:bg-zinc-950 dark:text-zinc-50 dark:border-white/10
+                       bg-surface-raised text-ink border-line
                        opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0
                        transition"
           >
@@ -102,10 +107,10 @@ export default function Footer({ lang }: { lang: "es" | "en" }) {
       </div>
 
       {/* Copyright */}
-      <div className="mt-4 flex flex-wrap items-center justify-center text-xs text-gray-400">
+      <div className="mt-4 flex flex-wrap items-center justify-center text-xs text-ink-faint">
         <span>
           © {year} · {eterlabMessage}{" "}
-          <Link href="https://eterlab.co" className="hover:text-white! transition-all ease-in-out">
+          <Link href="https://eterlab.co" className="hover:text-ink transition-all ease-in-out">
             eterlab
           </Link>
           .

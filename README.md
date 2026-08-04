@@ -1,34 +1,41 @@
 # Promptea
 
-Analyze your prompt, detect issues, and generate an optimized version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
+A two-mode prompt utility:
 
-Bilingual (English / Spanish) with full feature parity.
+- **Improve Prompt** (`/`) — analyze your prompt, detect issues, score it, and generate a genuinely personalized improved version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
+- **Find the Best AI** (`/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI, model, or working environment (e.g. Claude Code vs. plain chat) fits it best, with ranked alternatives and concrete adaptation advice.
 
-## Latest update — v1.2.3 (2026-07-30)
+Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-Weekly update: three new SEO guides (zero-shot prompting, GPT prompt guide, and AI brainstorming prompts) and a copy fix — the "Templates" section heading on guide pages now correctly reads "Plantillas" in Spanish. Changes are in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+## Latest update — v1.3.0 (2026-08-04)
 
-_Previous update: v1.2.2 (2026-07-23) — prompt chaining, AI writing prompts, and multimodal prompts guides; guide detail pages now emit page-specific Open Graph and Twitter Card metadata._
+Major release: the two-mode product split, the deterministic AI matcher, voice input via Groq Whisper, shape-preserving prompt refinement (the fixed `PROMPTEA:` template is gone — outputs now mirror each prompt's own shape), the Aqua/Metro visual redesign (+ an "Old version" theme), and general feedback stored in Firestore. Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.2.3 (2026-07-30) — weekly SEO guides + copy fix._
 
 ## How it works
 
 ```text
-User intent → prompt entry → analysis → adaptive refinement → explanation → copy/reuse → feedback
+Improve Prompt:   prompt entry → analysis → adaptive refinement → explanation → copy/reuse → feedback
+Find the Best AI: prompt entry → signal extraction → deterministic scoring → recommendation → handoff to Improve
 ```
 
-1. **Deterministic engine** (`lib/engine/`) — always runs, no network. Normalizes the input, classifies the real task (even when the selected purpose is imperfect), lints for risks (missing context, format, constraints, injection-like content), scores six dimensions, and builds an optimized prompt whose structure matches the request's complexity: short asks get a light natural rewrite, complex coding/agent/data tasks get full scaffolding.
+1. **Deterministic engine** (`lib/engine/`) — always runs, no network. Normalizes the input, classifies the real task (even when the selected purpose is imperfect), lints for risks (missing context, format, constraints, injection-like content), scores six dimensions, and builds an optimized prompt whose SHAPE matches the request (`lib/engine/shapes.ts`): short asks stay short and natural, repo/agent tasks get objective/steps/validation structure, data prompts get schema+rules, image prompts get visual attributes — no fixed template, no metadata header. Already-strong prompts are returned with minimal or no edits. Re-analysis is idempotent by core extraction, not by a header signature.
 2. **Adaptive refiner** (`lib/refine/`, optional) — when `GROQ_API_KEY` is set, the deterministic baseline is refined by an LLM using a strategy selected from the prompt itself (15 strategies: message polish, long-form writing, summarization, translation, tutoring, coding, debugging/review, agent/repo workflow, data/JSON schema, research, marketing, image generation, brainstorming, planning, general). The response must pass:
    - Zod schema validation (strict JSON contract),
    - a quality gate (protected literals preserved verbatim — URLs, paths, code spans, versions, amounts; language preserved; requested format retained; not answering the task; no leakage; bounded verbosity),
    - with one bounded repair attempt. Any failure (timeout, rate limit, invalid key, bad JSON, schema mismatch, unsafe output…) falls back to the deterministic result with a typed reason — the analyzer can never break because an external provider did.
 3. Long inputs are budgeted deliberately: the beginning, requirement-looking lines, and the ending survive; elisions are marked. The most important part of a long prompt is never silently truncated.
+4. **Deterministic matcher** (`lib/matcher/`, powers Find the Best AI) — a versioned rubric of independently testable signals accumulates weighted evidence per category (coding agent, research, long context, multimodal, strict data, creative, translation…); candidates from the verified model registry are scored against that evidence with hard capability gates; confidence and ties are explicit. The ranking is 100% deterministic application code — no LLM chooses or reorders results — and every reason cites a signal actually detected in the submitted prompt. `Claude Code`/`Codex`/`Gemini CLI` are recommended as *interaction environments* when repo signals warrant it, never conflated with chat models.
+5. **Voice input** (`components/voice/`, `POST /api/transcribe`) — browser MediaRecorder → server-side Groq Whisper (`whisper-large-v3-turbo` by default, `GROQ_TRANSCRIPTION_MODEL` to override). Transcripts always pass through an editable review step; audio is never stored or logged.
 
 ## Tech
 
 - Next.js (App Router) + React, Tailwind CSS v4
-- Firebase Admin (Firestore) for telemetry + feedback (optional in dev)
-- Vitest (`npm test`) — engine, refine pipeline, registry, i18n parity, version sync, API contracts
-- Self-hosted fonts (Space Grotesk / Inter / JetBrains Mono via Fontsource, OFL) — no external font fetch at build or runtime
+- Firebase Admin (Firestore) for telemetry + app feedback (optional in dev)
+- Vitest (`npm test`) — engine, refine pipeline, matcher, registry, i18n parity, version sync, API contracts
+- Themes: **Aqua** (light, macOS Liquid Glass) and **Metro** (dark, Windows 8 Metro) on a semantic token system, plus **Old version** (the pre-1.3 look). System preference maps to Aqua/Metro; legacy stored themes migrate automatically.
+- Self-hosted fonts (Space Grotesk / Inter used by the Old version theme; JetBrains Mono for prompt blocks everywhere) — Aqua/Metro use their native system font stacks
 
 ## Local setup
 
@@ -45,12 +52,11 @@ npm run build      # production build (works offline — fonts are local)
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `FIREBASE_SERVICE_ACCOUNT_BASE64` | prod only | Firestore telemetry/feedback (server-only). Without it, telemetry writes fail gracefully. |
+| `FIREBASE_SERVICE_ACCOUNT_BASE64` | prod only | Firestore telemetry/app feedback (server-only). Without it, writes fail gracefully. |
 | `FIREBASE_PROJECT_ID` | prod only | Firestore project id. |
-| `GROQ_API_KEY` | optional | Enables the adaptive refiner. Never exposed to the client. |
+| `GROQ_API_KEY` | optional | Enables the adaptive refiner AND voice transcription. Never exposed to the client. |
 | `GROQ_MODEL` | optional | Overrides the refiner model (default `llama-3.3-70b-versatile`). |
-| `PROMPTEA_PROMPT_VERSION` | optional | Overrides the optimized-prompt header version (defaults to the app version). |
-| `RESEND_API_KEY` / feedback vars | optional | Share-feedback email route. |
+| `GROQ_TRANSCRIPTION_MODEL` | optional | Overrides the speech-to-text model (default `whisper-large-v3-turbo`). |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |

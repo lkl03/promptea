@@ -23,7 +23,8 @@ const PromptEditor = forwardRef<
     disabled: boolean;
     onChange: (value: string) => void;
     onSubmit: () => void;
-    onTryExample: () => void;
+    /** Omit to hide the example helper (e.g. matcher mode). */
+    onTryExample?: () => void;
   }
 >(function PromptEditor({ dict, placeholder, value, disabled, onChange, onSubmit, onTryExample }, ref) {
   const words = useMemo(() => countWords(value), [value]);
@@ -59,7 +60,7 @@ const PromptEditor = forwardRef<
         <div className="text-xs text-ink-faint tabular-nums" aria-live="polite" aria-atomic="true">
           {counterText}
         </div>
-        {!disabled && (
+        {!disabled && onTryExample && (
           <button
             type="button"
             onClick={onTryExample}

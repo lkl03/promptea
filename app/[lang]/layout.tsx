@@ -94,10 +94,17 @@ function seoForLang(lang: "es" | "en") {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+    { media: "(prefers-color-scheme: light)", color: "#eaf1fe" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a1a1a" },
   ],
 };
+
+// v1.2 → v1.3 persisted-theme migration. Must run BEFORE next-themes' own
+// inline script reads localStorage, so it lives at the top of <head>. Old
+// light-like themes (light/paper) resolve to Aqua, dark-like (dark/night) to
+// Metro; unknown values are dropped so next-themes falls back to system.
+// Keep in sync with LEGACY_THEME_MAP in lib/themes.ts.
+const THEME_MIGRATION_SCRIPT = `(function(){try{var k="theme",v=localStorage.getItem(k);if(!v)return;var m={light:"aqua",paper:"aqua",dark:"metro",night:"metro"};if(m[v]){localStorage.setItem(k,m[v]);}else if(v!=="aqua"&&v!=="metro"&&v!=="classic"&&v!=="system"){localStorage.removeItem(k);}}catch(e){}})();`;
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang: rawLang } = await params;
@@ -178,7 +185,7 @@ export default async function RootLayout({
   const { lang: rawLang } = await params;
   if (!hasLocale(rawLang)) notFound();
 
-  await getDictionary(rawLang as "es" | "en");
+  const dict = await getDictionary(rawLang as "es" | "en");
 
   const lang = (rawLang === "en" ? "en" : "es") as "es" | "en";
   const jsonLd = softwareApplicationJsonLd(lang);
@@ -186,6 +193,9 @@ export default async function RootLayout({
   return (
     <html lang={lang} suppressHydrationWarning>
       <head>
+        {/* Legacy theme migration — before next-themes boots. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_MIGRATION_SCRIPT }} />
+
         {/* ✅ Google Ads (gtag.js) */}
         {GOOGLE_ADS_ID && (
           <>
@@ -224,7 +234,7 @@ export default async function RootLayout({
             <AnimatedBackground />
             <TopBar lang={lang} />
             {children}
-            <Footer lang={lang} />
+            <Footer lang={lang} appFeedbackDict={dict.appFeedback} />
           </ToastProvider>
         </Providers>
         <Analytics />

@@ -70,10 +70,7 @@ export default function PromptOfTheDay({ lang, initialDate }: Props) {
         className={[
           "list-none cursor-pointer surface p-3 sm:p-4",
           "rotate-[-0.5deg]",
-          "shadow-[0_8px_24px_-12px_rgba(0,0,0,0.25)]",
-          "border-amber-300/60 dark:border-amber-200/15",
-          "bg-amber-50/80 dark:bg-amber-200/[0.03]",
-          "text-amber-950 dark:text-amber-100/90",
+          "border-accent/30 bg-accent-soft text-ink",
           "transition-transform group-open:rotate-0",
         ].join(" ")}
       >
@@ -94,8 +91,7 @@ export default function PromptOfTheDay({ lang, initialDate }: Props) {
       <div
         className={[
           "mt-2 p-3 sm:p-4 surface-soft",
-          "border-amber-300/60 dark:border-amber-200/15",
-          "bg-amber-50/60 dark:bg-amber-200/[0.02]",
+          "border-accent/20",
         ].join(" ")}
       >
         <pre className="whitespace-pre-wrap text-xs leading-relaxed font-body opacity-90 max-h-72 overflow-auto">

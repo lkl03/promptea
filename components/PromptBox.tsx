@@ -12,15 +12,17 @@ import ResultsPanel from "./ResultsPanel";
 import HowItWorks from "./HowItWorks";
 import { useToast } from "./ToastProvider";
 import { getSessionId } from "@/lib/telemetry/session";
+import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
 import { isPurposeAttachmentEnabled, type AttachmentInput } from "@/lib/attachments";
 import { defaultModelIdForTarget, getModelsForTarget } from "@/lib/models";
-import type { FormatChoice, PromptPurpose, TargetAI } from "@/lib/domain";
+import { isPurpose, isTarget, type FormatChoice, type PromptPurpose, type TargetAI } from "@/lib/domain";
 import type { AnalyzeResponse } from "@/lib/analyzeClient";
 import TargetPicker from "./analyzer/TargetPicker";
 import PurposePicker from "./analyzer/PurposePicker";
 import PromptEditor from "./analyzer/PromptEditor";
 import AttachmentsPanel from "./analyzer/AttachmentsPanel";
 import FormatPicker from "./analyzer/FormatPicker";
+import VoiceRecorderButton from "./voice/VoiceRecorderButton";
 
 import type { UiDict } from "@/lib/uiDict";
 
@@ -60,6 +62,28 @@ I need:
 
 /** sessionStorage key for persisting analyzer form state across navigation */
 const SESSION_KEY = "promptea:form-state";
+
+/** v1.3.0 matcher → optimizer handoff payload (written by MatcherBox). */
+const HANDOFF_KEY = "promptea:handoff";
+
+type HandoffPayload = {
+  prompt?: string;
+  target?: string;
+  modelId?: string;
+  purpose?: string;
+};
+
+function readHandoff(): HandoffPayload | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(HANDOFF_KEY);
+    if (!raw) return null;
+    sessionStorage.removeItem(HANDOFF_KEY); // one-shot
+    return JSON.parse(raw) as HandoffPayload;
+  } catch {
+    return null;
+  }
+}
 
 type SavedState = {
   prompt?: string;
@@ -134,12 +158,17 @@ export default function PromptBox({
   initialPrompt,
   initialPurpose,
   initialTarget,
+  initialModelId,
+  handoff = false,
 }: {
   dict: Dict;
   lang: "es" | "en";
   initialPrompt?: string;
   initialPurpose?: PromptPurpose;
   initialTarget?: TargetAI;
+  initialModelId?: string;
+  /** When true, read the matcher handoff payload from sessionStorage. */
+  handoff?: boolean;
 }) {
   const [prompt, setPrompt] = useState("");
   const [target, setTarget] = useState<TargetAI | null>(null);
@@ -182,11 +211,40 @@ export default function PromptBox({
     if (didInitRef.current) return;
     didInitRef.current = true;
 
+    trackAppEvent({ event: "mode_opened", lang, mode: "improve" });
+
+    // v1.3.0 matcher handoff takes top priority: full prompt + recommended
+    // target/model/purpose, no copy-paste, no URL-length limits.
+    if (handoff) {
+      const payload = readHandoff();
+      if (payload && typeof payload.prompt === "string" && payload.prompt.trim().length > 0) {
+        setPrompt(payload.prompt);
+        const handoffTarget = isTarget(payload.target) ? payload.target : undefined;
+        if (handoffTarget) {
+          setTarget(handoffTarget);
+          const models = getModelsForTarget(handoffTarget);
+          setModelId(
+            payload.modelId && models.some((m) => m.id === payload.modelId)
+              ? payload.modelId
+              : defaultModelIdForTarget(handoffTarget)
+          );
+        }
+        if (isPurpose(payload.purpose)) setPurpose(payload.purpose);
+        requestAnimationFrame(() => textareaRef.current?.focus());
+        return;
+      }
+    }
+
     // URL params take priority over sessionStorage
     if (typeof initialPrompt === "string" && initialPrompt.trim().length > 0) {
       if (initialTarget) {
         setTarget(initialTarget);
-        setModelId(defaultModelIdForTarget(initialTarget));
+        const models = getModelsForTarget(initialTarget);
+        setModelId(
+          initialModelId && models.some((m) => m.id === initialModelId)
+            ? initialModelId
+            : defaultModelIdForTarget(initialTarget)
+        );
       }
       if (initialPurpose) setPurpose(initialPurpose);
       setPrompt(initialPrompt);
@@ -212,7 +270,7 @@ export default function PromptBox({
       setModelId(defaultModelIdForTarget(initialTarget));
     }
     if (initialPurpose) setPurpose(initialPurpose);
-  }, [initialPrompt, initialPurpose, initialTarget]);
+  }, [handoff, initialModelId, initialPrompt, initialPurpose, initialTarget, lang]);
 
   // Persist form state on every change (except while locked)
   useEffect(() => {
@@ -398,6 +456,23 @@ export default function PromptBox({
         onSubmit={analyze}
         onTryExample={loadExample}
       />
+
+      {!locked && (
+        <VoiceRecorderButton
+          lang={lang}
+          dict={dict.voice}
+          disabled={locked}
+          hasExistingText={prompt.trim().length > 0}
+          onInsert={(text) => {
+            setPrompt(text);
+            requestAnimationFrame(() => textareaRef.current?.focus());
+          }}
+          onAppend={(text) => {
+            setPrompt((prev) => (prev.trim().length > 0 ? `${prev.trimEnd()}\n\n${text}` : text));
+            requestAnimationFrame(() => textareaRef.current?.focus());
+          }}
+        />
+      )}
 
       <AttachmentsPanel
         dict={dict.analyzer}

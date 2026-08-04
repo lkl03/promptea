@@ -1,6 +1,7 @@
 // lib/version.ts
 //
 // Single source of truth for the user-facing app release version.
-// Keep in sync with package.json. Do not confuse with
-// PROMPTEA_PROMPT_VERSION, which versions the optimized prompt scaffold.
-export const APP_VERSION = "1.2.3";
+// Keep in sync with package.json (test-enforced). Since v1.3.0 the
+// optimized prompt carries NO version header — the version appears only in
+// UI metadata, API headers, telemetry, and the JSON output format.
+export const APP_VERSION = "1.3.0";

@@ -1,24 +1,115 @@
 @import "tailwindcss";
 
 /* ───────────────────────────────────────────────────────────────────────────
-   Promptea theme layer (v1.2.0)
+   Promptea theme layer (v1.3.0)
 
-   Architecture (adapted from the pro-all-in-one reference project):
+   Architecture:
    - One semantic token set (canvas/surface/line/ink/accent/states) defined as
      CSS custom properties per theme. Components use ONLY semantic utilities
      (bg-surface, text-ink-muted, border-line…) — never raw palette values —
      so adding a theme means adding one block here, not touching components.
-   - next-themes stamps BOTH a class and data-theme on <html>. `dark` and
-     `night` are dark-based; `light` and `paper` are light-based.
-   - Effects that can't live in color tokens (background wash, grain) key off
-     [data-theme] at the end of this file.
+   - Themes (v1.3.0): aqua (light, macOS Liquid Glass), metro (dark, Windows 8
+     Metro), classic (the pre-1.3 look; follows system preference between the
+     old Día and Atardecer sets). next-themes stamps class + data-theme on
+     <html>; system preference maps to aqua/metro via the provider's value map.
+   - Faithful ports: Aqua reproduces pro-all-in-one's layered radial wash,
+     saturate(200%)+blur glass recipe, Apple accents and SF type metrics;
+     Metro reproduces the flat tiles, azure #0078D7, Segoe UI light ramp, and
+     the universal no-radius/no-shadow rule.
    ─────────────────────────────────────────────────────────────────────────── */
 
-/* Tailwind `dark:` variant → any dark-based theme (dark, night). */
-@custom-variant dark (&:where(.dark, .dark *, .night, .night *));
+/* Tailwind `dark:` variant → the dark-based theme (metro). */
+@custom-variant dark (&:where(.metro, .metro *, [data-theme="metro"], [data-theme="metro"] *));
 
-/* ── Day (default) — warm paper-white, ink text, tea-amber accent ────────── */
+/* ── Aqua (default) — light, macOS Liquid Glass ──────────────────────────── */
 :root {
+  color-scheme: light;
+
+  --canvas: #eaf1fe;
+  --canvas-deep: #e3e9f8;
+  --surface: rgba(255, 255, 255, 0.08);
+  --surface-soft: rgba(255, 255, 255, 0.5);
+  --surface-raised: #ffffff;
+  --line: rgba(120, 140, 180, 0.22);
+  --line-strong: rgba(96, 110, 140, 0.4);
+  --ink: #1d1d1f;
+  --ink-muted: #5e5e63;
+  --ink-faint: #86868b;
+  --accent: #007aff;
+  --accent-strong: #0061cc;
+  --accent-soft: rgba(0, 122, 255, 0.12);
+  --on-accent: #ffffff;
+  --ring: rgba(0, 122, 255, 0.5);
+  --success: #248a3d;
+  --success-soft: rgba(36, 138, 61, 0.12);
+  --warning: #b36a00;
+  --warning-soft: rgba(179, 106, 0, 0.12);
+  --danger: #d70015;
+  --danger-soft: rgba(215, 0, 21, 0.1);
+  --info: #007aff;
+  --info-soft: rgba(0, 122, 255, 0.1);
+  --shadow-color: 45 65 120;
+
+  /* Per-theme typography (mapped to Tailwind fonts in @theme inline). */
+  --app-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --app-font-title: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --body-tracking: -0.006em;
+  --title-tracking: -0.022em;
+  --title-weight: 650;
+}
+
+/* Explicit selection keeps the same block (system maps to it via provider). */
+.aqua,
+[data-theme="aqua"] {
+  color-scheme: light;
+}
+
+/* ── Metro — dark, Windows 8 Metro tiles ─────────────────────────────────── */
+.metro,
+[data-theme="metro"] {
+  color-scheme: dark;
+
+  --canvas: #1a1a1a;
+  --canvas-deep: #111111;
+  --surface: #252526;
+  --surface-soft: #222222;
+  --surface-raised: #2b2b2d;
+  --line: #3c3c3e;
+  --line-strong: #4d4d4d;
+  --ink: #ffffff;
+  --ink-muted: #a6a6a6;
+  --ink-faint: #7a7a7a;
+  --accent: #0078d7;
+  --accent-strong: #1ba1e2;
+  --accent-soft: rgba(0, 120, 215, 0.18);
+  --on-accent: #ffffff;
+  --ring: #0078d7;
+  --success: #9bd34d;
+  --success-soft: rgba(96, 169, 23, 0.16);
+  --warning: #e8d24a;
+  --warning-soft: rgba(227, 200, 0, 0.14);
+  --danger: #ff6a5c;
+  --danger-soft: rgba(229, 20, 0, 0.16);
+  --info: #1ba1e2;
+  --info-soft: rgba(27, 161, 226, 0.14);
+  --shadow-color: 0 0 0;
+
+  --app-font-sans: "Segoe UI", "Segoe UI Web (West European)", Segoe, "Helvetica Neue",
+    Arial, sans-serif;
+  --app-font-title: "Segoe UI", "Segoe UI Web (West European)", Segoe, "Helvetica Neue",
+    Arial, sans-serif;
+  --body-tracking: 0;
+  --title-tracking: 0;
+  --title-weight: 300;
+}
+
+/* ── Classic ("Old version") — the pre-1.3 Promptea look ─────────────────── */
+/* Light half = the old Día tokens; dark half (via system preference) = the
+   old Atardecer tokens. Keeps the old self-hosted fonts. */
+.classic,
+[data-theme="classic"] {
   color-scheme: light;
 
   --canvas: #faf9f7;
@@ -45,101 +136,44 @@
   --info: #1d4ed8;
   --info-soft: rgba(29, 78, 216, 0.09);
   --shadow-color: 28 25 23;
+
+  --app-font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --app-font-title: var(--font-title), var(--font-body), ui-sans-serif, sans-serif;
+  --body-tracking: 0;
+  --title-tracking: -0.02em;
+  --title-weight: 600;
 }
 
-/* ── Dusk — warm charcoal, soft contrast ─────────────────────────────────── */
-html.dark,
-[data-theme="dark"] {
-  color-scheme: dark;
+@media (prefers-color-scheme: dark) {
+  .classic,
+  [data-theme="classic"] {
+    color-scheme: dark;
 
-  --canvas: #16130f;
-  --canvas-deep: #0f0d0a;
-  --surface: rgba(255, 251, 245, 0.055);
-  --surface-soft: rgba(255, 251, 245, 0.035);
-  --surface-raised: #221e19;
-  --line: rgba(250, 245, 235, 0.1);
-  --line-strong: rgba(250, 245, 235, 0.2);
-  --ink: #f3efe9;
-  --ink-muted: #b8b0a4;
-  --ink-faint: #8c847a;
-  --accent: #e0a458;
-  --accent-strong: #edbd7d;
-  --accent-soft: rgba(224, 164, 88, 0.13);
-  --on-accent: #1c1408;
-  --ring: rgba(224, 164, 88, 0.5);
-  --success: #4ade80;
-  --success-soft: rgba(74, 222, 128, 0.12);
-  --warning: #fbbf24;
-  --warning-soft: rgba(251, 191, 36, 0.12);
-  --danger: #f87171;
-  --danger-soft: rgba(248, 113, 113, 0.12);
-  --info: #93c5fd;
-  --info-soft: rgba(147, 197, 253, 0.12);
-  --shadow-color: 0 0 0;
-}
-
-/* ── Night — near-black, higher contrast, cooler accent (from the reference
-      project's Night theme: for late sessions and OLED) ───────────────────── */
-.night,
-[data-theme="night"] {
-  color-scheme: dark;
-
-  --canvas: #09090b;
-  --canvas-deep: #050506;
-  --surface: rgba(244, 244, 245, 0.06);
-  --surface-soft: rgba(244, 244, 245, 0.035);
-  --surface-raised: #18181b;
-  --line: rgba(244, 244, 245, 0.12);
-  --line-strong: rgba(244, 244, 245, 0.24);
-  --ink: #fafafa;
-  --ink-muted: #c2c2c9;
-  --ink-faint: #92929b;
-  --accent: #7dd3fc;
-  --accent-strong: #a5e0fd;
-  --accent-soft: rgba(125, 211, 252, 0.12);
-  --on-accent: #06222e;
-  --ring: rgba(125, 211, 252, 0.55);
-  --success: #4ade80;
-  --success-soft: rgba(74, 222, 128, 0.14);
-  --warning: #facc15;
-  --warning-soft: rgba(250, 204, 21, 0.14);
-  --danger: #f87171;
-  --danger-soft: rgba(248, 113, 113, 0.14);
-  --info: #7dd3fc;
-  --info-soft: rgba(125, 211, 252, 0.14);
-  --shadow-color: 0 0 0;
-}
-
-/* ── Paper — warm cream, bookish calm (from the reference project's Vanilla
-      direction, tuned for long reading sessions) ─────────────────────────── */
-.paper,
-[data-theme="paper"] {
-  color-scheme: light;
-
-  --canvas: #f6f1e7;
-  --canvas-deep: #ede5d5;
-  --surface: rgba(255, 253, 248, 0.88);
-  --surface-soft: rgba(255, 253, 248, 0.6);
-  --surface-raised: #fffdf8;
-  --line: rgba(66, 50, 28, 0.14);
-  --line-strong: rgba(66, 50, 28, 0.24);
-  --ink: #2c2417;
-  --ink-muted: #5f5340;
-  --ink-faint: #6e614a; /* ≥4.5:1 on --canvas (WCAG AA) */
-  --accent: #7c5a2b;
-  --accent-strong: #614423;
-  --accent-soft: rgba(124, 90, 43, 0.12);
-  --on-accent: #fffdf8;
-  --ring: rgba(124, 90, 43, 0.45);
-  --success: #3f6212;
-  --success-soft: rgba(63, 98, 18, 0.12);
-  --warning: #92610a;
-  --warning-soft: rgba(146, 97, 10, 0.14);
-  --danger: #9f1239;
-  --danger-soft: rgba(159, 18, 57, 0.1);
-  --info: #1e40af;
-  --info-soft: rgba(30, 64, 175, 0.1);
-  --shadow-color: 66 50 28;
+    --canvas: #16130f;
+    --canvas-deep: #0f0d0a;
+    --surface: rgba(255, 251, 245, 0.055);
+    --surface-soft: rgba(255, 251, 245, 0.035);
+    --surface-raised: #221e19;
+    --line: rgba(250, 245, 235, 0.1);
+    --line-strong: rgba(250, 245, 235, 0.2);
+    --ink: #f3efe9;
+    --ink-muted: #b8b0a4;
+    --ink-faint: #8c847a;
+    --accent: #e0a458;
+    --accent-strong: #edbd7d;
+    --accent-soft: rgba(224, 164, 88, 0.13);
+    --on-accent: #1c1408;
+    --ring: rgba(224, 164, 88, 0.5);
+    --success: #4ade80;
+    --success-soft: rgba(74, 222, 128, 0.12);
+    --warning: #fbbf24;
+    --warning-soft: rgba(251, 191, 36, 0.12);
+    --danger: #f87171;
+    --danger-soft: rgba(248, 113, 113, 0.12);
+    --info: #93c5fd;
+    --info-soft: rgba(147, 197, 253, 0.12);
+    --shadow-color: 0 0 0;
+  }
 }
 
 /* ── Tailwind v4 semantic color + font mapping ───────────────────────────── */
@@ -167,11 +201,11 @@ html.dark,
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
 
-  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-title: var(--font-title), var(--font-body), ui-sans-serif, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, "Cascadia Code", monospace;
+  --font-sans: var(--app-font-sans);
+  --font-title: var(--app-font-title);
+  --font-mono: var(--font-mono), ui-monospace, "Cascadia Code", Consolas, monospace;
 
-  /* Motion vocabulary (see emil-style easing notes) */
+  /* Motion vocabulary */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
 }
@@ -181,13 +215,16 @@ html.dark,
     font-family: var(--font-sans);
     background-color: var(--canvas);
     color: var(--ink);
+    letter-spacing: var(--body-tracking);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-title);
-    letter-spacing: -0.02em;
+    font-weight: var(--title-weight);
+    letter-spacing: var(--title-tracking);
     text-wrap: balance;
   }
 
@@ -226,7 +263,8 @@ html.dark,
       background-color 200ms ease,
       color 200ms ease,
       border-color 200ms ease,
-      box-shadow 200ms ease;
+      box-shadow 200ms ease,
+      filter 160ms ease;
   }
   .btn:active:not(:disabled) {
     transform: scale(0.97);
@@ -370,6 +408,31 @@ html.dark,
     font-size: 12.5px;
     line-height: 1.65;
   }
+
+  /* v1.3.0 mode switcher (segmented control). */
+  .mode-switch {
+    @apply inline-flex items-stretch gap-1 rounded-2xl border p-1;
+    background: var(--surface-soft);
+    border-color: var(--line);
+  }
+  .mode-switch-item {
+    @apply flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-center select-none;
+    color: var(--ink-muted);
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  .mode-switch-item[aria-current="true"] {
+    background: var(--surface-raised);
+    color: var(--ink);
+    box-shadow: 0 1px 3px rgb(var(--shadow-color) / 0.12);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .mode-switch-item:not([aria-current="true"]):hover {
+      color: var(--ink);
+    }
+  }
 }
 
 /* ── Motion ──────────────────────────────────────────────────────────────── */
@@ -429,6 +492,15 @@ html.dark,
   border-radius: 12px;
 }
 
+/* Recording pulse for the voice button. */
+@keyframes recPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.45; transform: scale(0.82); }
+}
+.rec-pulse {
+  animation: recPulse 1.2s ease-in-out infinite;
+}
+
 /* Analyze progress states — a thin sweep, not a static spinner. */
 @keyframes sweep {
   0%   { transform: translateX(-100%); }
@@ -447,8 +519,9 @@ html.dark,
   animation: sweep 1.2s var(--ease-in-out-strong) infinite;
 }
 
-/* ── Ambient background (theme-aware, calm) ──────────────────────────────── */
+/* ── Ambient background (theme-aware) ────────────────────────────────────── */
 
+/* Classic keeps the calm v1.2 wash; Aqua and Metro override below. */
 .ambient {
   background:
     radial-gradient(60rem 32rem at 18% -8%, var(--accent-soft), transparent 60%),
@@ -456,15 +529,204 @@ html.dark,
     var(--canvas);
 }
 
-/* Fine grain so large flat areas don't feel sterile. */
+/* Aqua: the reference's five-layer radial wash over a soft linear base. */
+.aqua .ambient,
+[data-theme="aqua"] .ambient {
+  background:
+    radial-gradient(38rem 30rem at 12% 8%, rgba(120, 170, 255, 0.55), transparent 60%),
+    radial-gradient(34rem 28rem at 88% 2%, rgba(196, 150, 255, 0.5), transparent 60%),
+    radial-gradient(40rem 34rem at 78% 88%, rgba(120, 225, 205, 0.45), transparent 62%),
+    radial-gradient(32rem 30rem at 8% 92%, rgba(255, 175, 205, 0.42), transparent 60%),
+    radial-gradient(30rem 26rem at 50% 50%, rgba(150, 200, 255, 0.28), transparent 70%),
+    linear-gradient(160deg, #eaf1fe 0%, #ece9f8 45%, #eaf3fb 100%);
+  background-attachment: fixed;
+}
+
+/* Metro: authentically flat. */
+.metro .ambient,
+[data-theme="metro"] .ambient {
+  background: var(--canvas);
+}
+
+/* Fine grain: classic only — Aqua glass and Metro tiles stay clean. */
 .grain::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.5;
+  opacity: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.028'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.classic .grain::before,
+[data-theme="classic"] .grain::before {
+  opacity: 0.5;
+}
+
+/* ── Aqua glass recipe (faithful to the reference implementation) ────────── */
+
+.aqua .surface,
+[data-theme="aqua"] .surface {
+  border-radius: 18px;
+  backdrop-filter: saturate(200%) blur(32px);
+  border-color: var(--line);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    0 14px 44px rgba(45, 65, 120, 0.14),
+    0 3px 10px rgba(45, 65, 120, 0.08);
+}
+
+.aqua .btn,
+[data-theme="aqua"] .btn {
+  transition:
+    filter 150ms ease,
+    transform 150ms ease,
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .aqua .btn:hover:not(:disabled),
+  [data-theme="aqua"] .btn:hover:not(:disabled) {
+    filter: brightness(1.03);
+  }
+}
+.aqua .btn:active:not(:disabled),
+[data-theme="aqua"] .btn:active:not(:disabled) {
+  filter: brightness(0.97);
+}
+
+.aqua ::selection,
+[data-theme="aqua"] ::selection {
+  background: rgba(0, 122, 255, 0.22);
+  color: var(--ink);
+}
+
+/* Aqua scrollbar: rounded pill thumb. */
+[data-theme="aqua"] ::-webkit-scrollbar,
+.aqua ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+[data-theme="aqua"] ::-webkit-scrollbar-track,
+.aqua ::-webkit-scrollbar-track {
+  background: transparent;
+}
+[data-theme="aqua"] ::-webkit-scrollbar-thumb,
+.aqua ::-webkit-scrollbar-thumb {
+  background: rgba(96, 110, 140, 0.4);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+[data-theme="aqua"] ::-webkit-scrollbar-thumb:hover,
+.aqua ::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 110, 140, 0.6);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+/* ── Metro: the five principles, done properly ───────────────────────────── */
+
+/* Authentically digital: NOTHING is rounded, NOTHING floats. The universal
+   flattener is the point — content over chrome. */
+[data-theme="metro"] *,
+[data-theme="metro"] *::before,
+[data-theme="metro"] *::after,
+.metro *,
+.metro *::before,
+.metro *::after {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+[data-theme="metro"] .surface,
+.metro .surface {
+  backdrop-filter: none;
+}
+
+/* Metro typographic ramp — big type goes light. */
+[data-theme="metro"] h1,
+.metro h1 {
+  font-weight: 300 !important;
+  letter-spacing: 0 !important;
+}
+[data-theme="metro"] h2,
+.metro h2 {
+  font-weight: 350 !important;
+}
+
+/* The Metro azure focus rectangle, not a glow. */
+[data-theme="metro"] :focus-visible,
+.metro :focus-visible {
+  outline: 2px solid #0078d7 !important;
+  outline-offset: -2px;
+}
+[data-theme="metro"] .field:focus-within,
+[data-theme="metro"] .field:focus,
+.metro .field:focus-within,
+.metro .field:focus {
+  border-color: #0078d7 !important;
+}
+
+/* Snappy digital transitions. */
+[data-theme="metro"] .btn,
+[data-theme="metro"] .pill,
+[data-theme="metro"] .btn-icon,
+.metro .btn,
+.metro .pill,
+.metro .btn-icon {
+  transition:
+    background-color 0.08s linear,
+    color 0.08s linear,
+    border-color 0.08s linear,
+    transform 0.05s linear;
+}
+[data-theme="metro"] .btn:active:not(:disabled),
+.metro .btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+/* Active pills become solid azure tiles. */
+[data-theme="metro"] .pill[aria-pressed="true"],
+[data-theme="metro"] .pill[aria-checked="true"],
+.metro .pill[aria-pressed="true"],
+.metro .pill[aria-checked="true"] {
+  background: #0078d7;
+  color: #ffffff;
+  border-color: #0078d7;
+}
+[data-theme="metro"] .mode-switch-item[aria-current="true"],
+.metro .mode-switch-item[aria-current="true"] {
+  background: #0078d7;
+  color: #ffffff;
+}
+
+[data-theme="metro"] ::selection,
+.metro ::selection {
+  background: #0078d7;
+  color: #ffffff;
+}
+
+/* Metro scrollbar: square, chunky, azure on hover. */
+[data-theme="metro"] ::-webkit-scrollbar,
+.metro ::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+[data-theme="metro"] ::-webkit-scrollbar-track,
+.metro ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+[data-theme="metro"] ::-webkit-scrollbar-thumb,
+.metro ::-webkit-scrollbar-thumb {
+  background: #4d4d4d;
+  border: 3px solid #1a1a1a;
+}
+[data-theme="metro"] ::-webkit-scrollbar-thumb:hover,
+.metro ::-webkit-scrollbar-thumb:hover {
+  background: #0078d7;
 }
 
 /* ── Reduced motion: keep opacity cues, drop movement ────────────────────── */
@@ -477,7 +739,8 @@ html.dark,
     animation-delay: 0ms !important;
   }
   .skeleton,
-  .progress-sweep::after {
+  .progress-sweep::after,
+  .rec-pulse {
     animation: none !important;
   }
   html {
