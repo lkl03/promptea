@@ -1,4 +1,14 @@
 import { normalizeText } from "./normalize";
+import { CORE_HEADINGS, SHAPE_HEADINGS } from "./shapes";
+
+function escapeRe(s: string) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// v1.3.0 shape headings (both languages) — registered so re-analyzing an
+// optimized prompt detects the structure and recovers the original core.
+const SHAPE_HEADING_RES = SHAPE_HEADINGS.map((h) => new RegExp(`^${escapeRe(h)}\\s*$`, "i"));
+const CORE_HEADING_RES = CORE_HEADINGS.map((h) => new RegExp(`^${escapeRe(h)}\\s*$`, "i"));
 
 const SECTION_HEADERS = [
   /^prompt-evaluator\s*:/i,
@@ -19,7 +29,33 @@ const SECTION_HEADERS = [
 
 function isHeader(line: string) {
   const t = line.trim();
-  return SECTION_HEADERS.some((re) => re.test(t));
+  return SECTION_HEADERS.some((re) => re.test(t)) || SHAPE_HEADING_RES.some((re) => re.test(t));
+}
+
+function isCoreHeading(line: string) {
+  const t = line.trim();
+  return CORE_HEADING_RES.some((re) => re.test(t));
+}
+
+/**
+ * v1.3.0: invert a shaped build. If the input contains a registered core
+ * heading, return its block verbatim (up to the next registered heading).
+ * Rebuilding from this core reproduces the same output byte-for-byte, which
+ * is what replaces the old header-based idempotency detection.
+ */
+function extractShapedCore(raw: string): string | null {
+  const lines = raw.split("\n");
+  const start = lines.findIndex((line) => isCoreHeading(line));
+  if (start === -1) return null;
+
+  const coreLines: string[] = [];
+  for (let i = start + 1; i < lines.length; i++) {
+    if (isHeader(lines[i])) break;
+    coreLines.push(lines[i]);
+  }
+
+  const core = normalizeText(coreLines.join("\n"));
+  return core || null;
 }
 
 /**
@@ -39,7 +75,7 @@ export function detectStructured(input: string) {
     const t = line.trim();
     if (!t) continue;
 
-    if (SECTION_HEADERS.some((re) => re.test(t))) {
+    if (isHeader(t)) {
       hits++;
       if (hits >= 2) return true; // 2+ headers => scaffold
     }
@@ -50,6 +86,10 @@ export function detectStructured(input: string) {
 
 export function extractCorePrompt(input: string): { core: string; extracted: boolean } {
   const raw = normalizeText(input);
+
+  // 0) v1.3.0 shaped output: registered core heading → verbatim block.
+  const shapedCore = extractShapedCore(raw);
+  if (shapedCore) return { core: shapedCore, extracted: true };
 
   // 1) Claude XML con CDATA
   const xmlCdata = raw.match(/<task><!\[cdata\[\s*([\s\S]*?)\s*\]\]><\/task>/i);

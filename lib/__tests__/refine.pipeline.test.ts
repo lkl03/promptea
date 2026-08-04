@@ -7,6 +7,7 @@ import { detectPromptLanguage, languageMatches } from "@/lib/refine/language";
 import { budgetPromptInput } from "@/lib/refine/budget";
 import { classifyComplexity, selectStrategy } from "@/lib/refine/router";
 import { analyzePrompt } from "@/lib/analyzePrompt";
+import { SHAPE_HEADINGS } from "@/lib/engine/shapes";
 
 describe("protected literals", () => {
   test("extracts URLs, paths, versions, code spans, and amounts", () => {
@@ -126,14 +127,19 @@ describe("strategy router", () => {
   });
 });
 
-describe("deterministic non-bloat (v1.2.0)", () => {
-  test("simple prompt gets light body: no OUTPUT FORMAT / CONSTRAINTS scaffold", () => {
+describe("deterministic non-bloat (v1.3.0)", () => {
+  test("simple prompt gets light body: natural text + clarifier, no shape headings", () => {
     const r = analyzePrompt("Haceme más claro este mensaje para mi equipo.", "gpt", "es", "text");
-    expect(r.optimizedPrompt).toMatch(/^PROMPTEA: v/);
-    expect(r.optimizedPrompt).toContain("TASK:");
-    expect(r.optimizedPrompt).not.toContain("OUTPUT FORMAT:");
-    expect(r.optimizedPrompt).not.toContain("RESTRICCIONES:");
     expect(r.meta.routing?.complexity).toBe("simple");
+    expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
+    // Light path: guarded clarifier sentence in the user's language…
+    expect(r.optimizedPrompt).toContain(
+      "Si te falta información clave, hacé hasta 2 preguntas antes de asumir."
+    );
+    // …and no structured shape headings at all (ES or EN).
+    for (const heading of SHAPE_HEADINGS) {
+      expect(r.optimizedPrompt, `unexpected shape heading ${heading}`).not.toContain(heading);
+    }
   });
 
   test("complex coding prompt keeps the full structured scaffold", () => {
@@ -151,8 +157,13 @@ export function ProductList({ products }) { return products.map(p => p.name) }
 I need root cause, a minimal fix, and how to verify it.`;
     const r = analyzePrompt(prompt, "gpt", "en", "code");
     expect(r.meta.routing?.complexity).not.toBe("simple");
-    expect(r.optimizedPrompt).toContain("OUTPUT FORMAT:");
-    expect(r.optimizedPrompt).toContain("CONSTRAINTS:");
+    // v1.3.0 agent-workflow shape headings replace the old generic scaffold.
+    expect(r.optimizedPrompt).toContain("OBJECTIVE:");
+    expect(r.optimizedPrompt).toContain("STEPS & VALIDATION:");
+    expect(r.optimizedPrompt).toContain("DELIVERY:");
+    expect(r.optimizedPrompt).not.toContain("OUTPUT FORMAT:");
+    expect(r.optimizedPrompt).not.toContain("CONSTRAINTS:");
+    expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
   });
 
   test("simple light output is idempotent on re-analysis", () => {

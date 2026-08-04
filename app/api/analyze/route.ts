@@ -95,6 +95,7 @@ export async function POST(req: NextRequest) {
         signals: result.meta.routing.signals,
       },
       signal: req.signal,
+      alreadyOptimized: result.meta.alreadyOptimized === true,
     }).catch(() => null);
   }
 

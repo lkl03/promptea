@@ -1,29 +1,37 @@
 import { describe, expect, test } from "vitest";
 import { analyzePrompt } from "@/lib/analyzePrompt";
 
+// v1.3.0 light-path clarifier sentences (guarded, per language).
+const CLARIFIER_EN = "If key information is missing, ask up to 2 questions before assuming.";
+const CLARIFIER_ES = "Si te falta información clave, hacé hasta 2 preguntas antes de asumir.";
+
 describe("engine/analyzePrompt", () => {
   test("EN output should be in English", () => {
     const r = analyzePrompt("hi how are you?", "gpt", "en", "text");
-    expect(r.optimizedPrompt).toContain("INSTRUCTIONS:");
-    expect(r.optimizedPrompt).not.toContain("INSTRUCCIONES:");
+    expect(r.optimizedPrompt).toContain(CLARIFIER_EN);
+    expect(r.optimizedPrompt).not.toContain(CLARIFIER_ES);
   });
 
   test("ES output should be in Spanish", () => {
     const r = analyzePrompt("hola, ¿cómo estás?", "gpt", "es", "text");
-    expect(r.optimizedPrompt).toContain("INSTRUCCIONES:");
-    expect(r.optimizedPrompt).not.toContain("INSTRUCTIONS:");
+    expect(r.optimizedPrompt).toContain(CLARIFIER_ES);
+    expect(r.optimizedPrompt).not.toContain(CLARIFIER_EN);
   });
 
   test("purpose=translation keeps translation task type", () => {
     const r = analyzePrompt("Traducí este texto al inglés.", "gpt", "es", "translation");
-    expect(r.optimizedPrompt).toContain("PURPOSE: translation");
-    expect(r.optimizedPrompt).toContain("TASK_TYPE: translation");
+    expect(r.meta.purpose).toBe("translation");
+    expect(r.meta.taskType).toBe("translation");
+    // Simple translation requests take the light path: core stays untouched.
+    expect(r.optimizedPrompt).toBe("Traducí este texto al inglés.");
   });
 
   test("purpose=summarization keeps summarization task type", () => {
     const r = analyzePrompt("Haceme un resumen breve de este texto.", "gpt", "es", "summarization");
-    expect(r.optimizedPrompt).toContain("PURPOSE: summarization");
-    expect(r.optimizedPrompt).toContain("TASK_TYPE: summarization");
+    expect(r.meta.purpose).toBe("summarization");
+    expect(r.meta.taskType).toBe("summarization");
+    // Simple summarization requests take the light path: core stays untouched.
+    expect(r.optimizedPrompt).toBe("Haceme un resumen breve de este texto.");
   });
 
   test("summarization with attachment should not flag missing_goal or prompt_injection", () => {

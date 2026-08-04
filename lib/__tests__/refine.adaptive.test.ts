@@ -45,8 +45,11 @@ function groqHttpError(status: number): typeof fetch {
   return (async () => new Response("err", { status })) as unknown as typeof fetch;
 }
 
+// v1.3.0: a good rewrite is a natural prompt with NO metadata header. It must
+// keep the protected literals from the original (support@acme.com, #123).
 const GOOD_LLM_JSON = {
-  optimizedPrompt: `${HEADER}\n\nTASK:\nWrite a concise, professional email to the client at support@acme.com about invoice #123, stating the issue and the requested action.`,
+  optimizedPrompt:
+    "Write a concise, professional email to the client at support@acme.com about invoice #123. State the billing issue, the action you need from them, and the date you need a reply by. Keep the tone polite and direct.",
   summary: "Clarified the ask and kept the recipient and invoice number.",
   keyImprovements: ["Added explicit action request"],
   assumptions: [],
@@ -144,7 +147,12 @@ describe("refinePromptAdaptive fallback classes", () => {
     const r = await refinePromptAdaptive({ ...baseArgs, fetchImpl: groqResponse(GOOD_LLM_JSON) });
     expect(r.execution.engine).toBe("adaptive");
     expect(r.execution.provider).toBe("groq");
-    expect(r.optimizedPrompt.startsWith(HEADER)).toBe(true);
+    // v1.3.0: the adaptive result never starts with a metadata header…
+    expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
+    expect(r.optimizedPrompt).not.toMatch(/^(MODEL|PURPOSE|TASK_TYPE):\s/m);
+    // …while protected literals survive the rewrite.
+    expect(r.optimizedPrompt).toContain("support@acme.com");
+    expect(r.optimizedPrompt).toContain("#123");
     expect(r.summary.length).toBeGreaterThan(0);
     expect(r.quality.passed).toBe(true);
   });
@@ -166,29 +174,26 @@ describe("refinePromptAdaptive fallback classes", () => {
 describe("quality gate directly", () => {
   const literals = extractProtectedLiterals("Keep https://a.dev/x and file src/x.ts and $200");
 
-  test("rejects header loss, language switch, and verbosity explosions", () => {
+  test("rejects metadata headers, literal loss, and verbosity explosions", () => {
     const gate = runQualityGate({
       original: "Keep https://a.dev/x and file src/x.ts and $200",
-      deterministic: "PROMPTEA: v1.2.0\nMODEL: GPT\nPURPOSE: text\nTASK_TYPE: text\n\nTASK:\nshort",
-      candidate: "totally different text ".repeat(400),
+      deterministic: "PEDIDO:\nshort",
+      candidate: "PROMPTEA: v1.3.0\nMODEL: GPT\n\n" + "totally different text ".repeat(400),
       language: "en",
       literals,
-      requiredHeader: "PROMPTEA: v1.2.0\nMODEL: GPT\nPURPOSE: text\nTASK_TYPE: text",
     });
     expect(gate.passed).toBe(false);
-    expect(gate.failures).toContain("header_lost");
+    expect(gate.failures).toContain("metadata_header_added");
     expect(gate.failures).toContain("protected_literal_loss");
   });
 
   test("keeps JSON demand", () => {
-    const header = "PROMPTEA: v1.2.0\nMODEL: GPT\nPURPOSE: data\nTASK_TYPE: data_extraction";
     const gate = runQualityGate({
       original: "Return ONLY valid JSON with fields a,b",
-      deterministic: `${header}\n\nTASK:\nx`,
-      candidate: `${header}\n\nTASK:\nExtract the fields a and b from the text and answer in plain prose.`,
+      deterministic: "TASK:\nx",
+      candidate: "Extract the fields a and b from the text and answer in plain prose.",
       language: "en",
       literals: [],
-      requiredHeader: header,
     });
     expect(gate.passed).toBe(false);
     expect(gate.failures).toContain("format_requirement_lost");

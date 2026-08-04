@@ -156,5 +156,101 @@ export const FALLBACK_REASONS = [
   "protected_literal_loss",
   "quality_gate_failed",
   "superseded",
+  "already_optimized", // input is already a strong/Promptea-shaped prompt — minimal edits, no LLM call
 ] as const;
 export type FallbackReason = (typeof FALLBACK_REASONS)[number];
+
+// ---------------------------------------------------------------------------
+// Application modes (v1.3.0 two-mode product)
+// ---------------------------------------------------------------------------
+
+/** The two route-addressable product experiences. */
+export const APP_MODES = ["improve", "best-ai"] as const;
+export type AppMode = (typeof APP_MODES)[number];
+
+export function isAppMode(v: unknown): v is AppMode {
+  return APP_MODES.includes(v as AppMode);
+}
+
+// ---------------------------------------------------------------------------
+// Matcher domain (Find the Best AI)
+// ---------------------------------------------------------------------------
+
+/**
+ * Task categories the matcher scores against. Each model in the registry
+ * carries a 0-3 fit score per category; the rubric weights detected prompt
+ * signals into these categories.
+ */
+export const MATCH_CATEGORIES = [
+  "chat",
+  "coding",
+  "codingAgent",
+  "research",
+  "longContext",
+  "multimodal",
+  "dataExtraction",
+  "creativeWriting",
+  "marketing",
+  "translation",
+  "summarization",
+  "tutoring",
+  "imagePrompts",
+  "complexReasoning",
+  "fastLightweight",
+] as const;
+export type MatchCategory = (typeof MATCH_CATEGORIES)[number];
+
+/**
+ * Interaction profiles: HOW the user should work with the AI, beyond which
+ * model family. "codingAgent" (e.g. Claude Code) is an environment with
+ * different prompt requirements than plain chat — never treated as a model.
+ */
+export const INTERACTION_PROFILES = [
+  "chat",
+  "codingAgent",
+  "researchAssistant",
+  "multimodalAssistant",
+  "codeSpecialist",
+] as const;
+export type InteractionProfile = (typeof INTERACTION_PROFILES)[number];
+
+export const MATCH_CONFIDENCES = ["high", "medium", "low"] as const;
+export type MatchConfidence = (typeof MATCH_CONFIDENCES)[number];
+
+// ---------------------------------------------------------------------------
+// Voice transcription
+// ---------------------------------------------------------------------------
+
+/** Typed server-side transcription failure reasons (bilingual UI maps them). */
+export const TRANSCRIBE_ERROR_REASONS = [
+  "unsupported_media",
+  "file_too_large",
+  "empty_audio",
+  "no_speech",
+  "recording_too_long",
+  "missing_api_key",
+  "invalid_api_key",
+  "timeout",
+  "rate_limited",
+  "provider_error",
+  "invalid_response",
+  "network",
+] as const;
+export type TranscribeErrorReason = (typeof TRANSCRIBE_ERROR_REASONS)[number];
+
+// ---------------------------------------------------------------------------
+// General app feedback (stored in Firestore, never contains prompt content)
+// ---------------------------------------------------------------------------
+
+export const APP_FEEDBACK_CATEGORIES = [
+  "bug",
+  "suggestion",
+  "design",
+  "result_quality",
+  "other",
+] as const;
+export type AppFeedbackCategory = (typeof APP_FEEDBACK_CATEGORIES)[number];
+
+export function isAppFeedbackCategory(v: unknown): v is AppFeedbackCategory {
+  return APP_FEEDBACK_CATEGORIES.includes(v as AppFeedbackCategory);
+}
