@@ -1,9 +1,12 @@
-// Golden evaluation dataset for the v1.2.0 refinement engine (§ brief 7.9).
+// Golden evaluation dataset for the refinement engine (§ brief 7.9).
 //
 // Where exact wording is non-deterministic we assert structural and semantic
 // invariants — never full-output snapshots: intent preservation (protected
 // literals present), strategy routing, language preservation, non-bloat for
 // simple prompts, format retention, and deterministic fallback stability.
+// v1.3.0: the optimized prompt carries NO metadata header — its absence is a
+// universal invariant, and structured cases assert their strategy-specific
+// shape headings (lib/engine/shapes.ts) instead of the old fixed scaffold.
 
 import { describe, expect, test } from "vitest";
 import { analyzePrompt } from "@/lib/analyzePrompt";
@@ -43,7 +46,8 @@ const CASES: GoldenCase[] = [
     expect: {
       strategy: "message_polish",
       complexity: "simple",
-      mustNotContain: ["OUTPUT FORMAT:", "CONSTRAINTS:"],
+      mustContain: ["If key information is missing, ask up to 2 questions before assuming."],
+      mustNotContain: ["OUTPUT FORMAT:", "CONSTRAINTS:", "REQUEST:", "PROMPTEA:"],
       maxGrowth: 12,
     },
   },
@@ -56,7 +60,8 @@ const CASES: GoldenCase[] = [
     expect: {
       strategy: "message_polish",
       complexity: "simple",
-      mustNotContain: ["OUTPUT FORMAT:", "RESTRICCIONES:"],
+      mustContain: ["Si te falta información clave, hacé hasta 2 preguntas antes de asumir."],
+      mustNotContain: ["OUTPUT FORMAT:", "RESTRICCIONES:", "PEDIDO:", "PROMPTEA:"],
       preservesLanguage: true,
       maxGrowth: 12,
     },
@@ -124,7 +129,8 @@ const CASES: GoldenCase[] = [
       strategy: "agent_workflow",
       complexity: ["moderate", "complex"],
       preservesLiterals: true,
-      mustContain: ["fix/nav-overflow", "components/Nav.tsx", "npm run lint"],
+      // v1.3.0 agent-workflow shape headings (lib/engine/shapes.ts).
+      mustContain: ["fix/nav-overflow", "components/Nav.tsx", "npm run lint", "OBJECTIVE:", "STEPS & VALIDATION:"],
     },
   },
   {
@@ -137,7 +143,9 @@ const CASES: GoldenCase[] = [
     expect: {
       strategy: "data_schema",
       preservesLiterals: true,
-      mustContain: ["JSON"],
+      // v1.3.0 data-schema shape headings (lib/engine/shapes.ts).
+      mustContain: ["JSON", "SCHEMA & RULES:", "OUTPUT:"],
+      mustNotContain: ["OUTPUT FORMAT:"],
     },
   },
   {
@@ -182,6 +190,8 @@ const CASES: GoldenCase[] = [
     prompt: "A cozy reading nook at golden hour, watercolor style, 3:2 aspect ratio, soft warm light, no people.",
     expect: {
       strategy: "image_generation",
+      // v1.3.0 image shape headings (lib/engine/shapes.ts).
+      mustContain: ["DESCRIPTION:", "VISUAL ATTRIBUTES:"],
     },
   },
   {
@@ -193,6 +203,7 @@ const CASES: GoldenCase[] = [
     expect: {
       strategy: "message_polish",
       complexity: "simple",
+      mustContain: ["If key information is missing, ask up to 2 questions before assuming."],
       maxGrowth: 40,
     },
   },
@@ -276,10 +287,9 @@ describe("golden refinement dataset (deterministic invariants)", () => {
         expect(check.ok, `${c.id}: missing literals ${check.missing.map((m) => m.value).join(", ")}`).toBe(true);
       }
       if (c.expect.preservesLanguage) {
-        // The TASK body keeps the user's language (header/section labels may
-        // be localized by UI language, which equals prompt language here).
-        const body = opt.split(/\nTASK:\n/i)[1] ?? opt;
-        expect(detectPromptLanguage(body, c.lang).lang, `${c.id}: language`).toBe(c.lang);
+        // Shape section labels are localized to the UI language, which equals
+        // the prompt language in these cases — detect over the whole output.
+        expect(detectPromptLanguage(opt, c.lang).lang, `${c.id}: language`).toBe(c.lang);
       }
       if (c.expect.maxGrowth) {
         expect(opt.length, `${c.id}: output ballooned`).toBeLessThanOrEqual(
@@ -287,8 +297,10 @@ describe("golden refinement dataset (deterministic invariants)", () => {
         );
       }
 
-      // Universal invariants: header present, deterministic re-analysis stable.
-      expect(opt).toMatch(/^PROMPTEA: v/);
+      // Universal invariants (v1.3.0): NO metadata header anywhere, and
+      // deterministic re-analysis stays byte-stable.
+      expect(opt, `${c.id}: metadata header leaked`).not.toMatch(/^PROMPTEA:/i);
+      expect(opt, `${c.id}: metadata line leaked`).not.toMatch(/^(MODEL|PURPOSE|TASK_TYPE):\s/m);
       const r2 = analyzePrompt(opt, c.target, c.lang, c.purpose);
       expect(r2.optimizedPrompt.trim(), `${c.id}: idempotency`).toBe(opt.trim());
     });

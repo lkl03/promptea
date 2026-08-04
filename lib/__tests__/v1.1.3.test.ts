@@ -11,7 +11,8 @@ import { isGroqEnabled } from "@/lib/llm/groq";
 import { refinePromptAdaptive } from "@/lib/refine/adaptive";
 import { APP_VERSION } from "@/lib/version";
 
-const HEADER_RE = new RegExp(`^PROMPTEA:\\s*v${APP_VERSION.replace(/\./g, "\\.")}`, "i");
+// v1.3.0: the optimized prompt must never carry internal metadata lines.
+const METADATA_LINE_RE = /^(MODEL|PURPOSE|TASK_TYPE):\s/im;
 
 // ---------------------------------------------------------------------------
 // Model registry — v1.1.3 additions
@@ -86,33 +87,35 @@ describe("models registry — v1.1.3", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Prompt header invariant — must start with PROMPTEA: v<APP_VERSION>
+// Prompt header invariant — v1.3.0: the PROMPTEA/MODEL/PURPOSE/TASK_TYPE
+// metadata header is GONE from checklist output. Metadata lives in result
+// meta only; the copyable prompt must never carry it, for any target.
 // ---------------------------------------------------------------------------
 
-describe("optimized prompt header — APP_VERSION invariant", () => {
+describe("optimized prompt header — v1.3.0 metadata removal invariant", () => {
   const targets = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek", "perplexity"] as const;
 
   for (const target of targets) {
-    test(`${target}: optimized prompt starts with PROMPTEA: v${APP_VERSION}`, () => {
+    test(`${target}: optimized prompt does NOT start with a PROMPTEA header`, () => {
       const r = analyzePrompt("Write a summary of this document for my team.", target, "en", "text");
-      expect(r.optimizedPrompt).toMatch(HEADER_RE);
+      expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
+      expect(r.optimizedPrompt).not.toMatch(METADATA_LINE_RE);
     });
   }
 
-  test("optimized prompt always has MODEL, PURPOSE, TASK_TYPE lines after PROMPTEA", () => {
+  test("optimized prompt never has MODEL, PURPOSE, or TASK_TYPE metadata lines", () => {
     const r = analyzePrompt("Corregí este bug en mi app de React.", "gpt", "es", "code");
-    const lines = r.optimizedPrompt.split("\n");
-    expect(lines[0]).toMatch(HEADER_RE);
-    expect(lines[1]).toMatch(/^MODEL:/i);
-    expect(lines[2]).toMatch(/^PURPOSE:/i);
-    expect(lines[3]).toMatch(/^TASK_TYPE:/i);
+    expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
+    expect(r.optimizedPrompt).not.toMatch(/^MODEL:\s/im);
+    expect(r.optimizedPrompt).not.toMatch(/^PURPOSE:\s/im);
+    expect(r.optimizedPrompt).not.toMatch(/^TASK_TYPE:\s/im);
   });
 
-  test("perplexity target produces valid header", () => {
+  test("perplexity target output is metadata-free too", () => {
     const r = analyzePrompt("Research the latest AI models released in 2026.", "perplexity", "en", "text");
-    expect(r.optimizedPrompt).toMatch(HEADER_RE);
-    expect(r.optimizedPrompt).toContain("MODEL: PERPLEXITY");
-    expect(r.optimizedPrompt).toContain("PURPOSE: text");
+    expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
+    expect(r.optimizedPrompt).not.toContain("MODEL: PERPLEXITY");
+    expect(r.optimizedPrompt).not.toContain("PURPOSE: text");
   });
 });
 

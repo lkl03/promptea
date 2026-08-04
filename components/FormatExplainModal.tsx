@@ -114,9 +114,8 @@ export default function FormatExplainModal({ lang }: Props) {
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="text-xs underline decoration-dotted underline-offset-2 opacity-70
-                   hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-zinc-400/40
-                   dark:focus:ring-zinc-500/40 rounded transition-opacity"
+        className="text-xs underline decoration-dotted underline-offset-2 text-ink-muted
+                   hover:text-ink rounded transition-colors"
       >
         {copy.trigger}
       </button>

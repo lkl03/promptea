@@ -20,14 +20,14 @@ export default function LanguageSwitcher({ lang }: { lang: "es" | "en" }) {
   const enHref = replaceLocale(pathname, "en");
 
   return (
-    <div className="inline-flex h-9 items-center rounded-full border bg-transparent p-1 text-xs">
+    <div className="inline-flex h-9 items-center rounded-full border border-line bg-transparent p-1 text-xs">
       <Link
         href={esHref}
         className={[
           "px-3 py-1 rounded-full transition",
           lang === "es"
-            ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-            : "opacity-80 hover:opacity-100",
+            ? "bg-ink text-canvas font-medium"
+            : "text-ink-muted hover:text-ink",
         ].join(" ")}
       >
         ES
@@ -37,8 +37,8 @@ export default function LanguageSwitcher({ lang }: { lang: "es" | "en" }) {
         className={[
           "px-3 py-1 rounded-full transition",
           lang === "en"
-            ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-            : "opacity-80 hover:opacity-100",
+            ? "bg-ink text-canvas font-medium"
+            : "text-ink-muted hover:text-ink",
         ].join(" ")}
       >
         EN

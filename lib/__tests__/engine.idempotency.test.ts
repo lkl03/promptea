@@ -14,12 +14,6 @@ function countOccurrences(haystack: string, needle: RegExp) {
   return m ? m.length : 0;
 }
 
-function extractTaskBlock(opt: string) {
-  // para prompts markdown (no Claude XML)
-  const m = opt.match(/(^|\n)\s*TASK:\s*\n([\s\S]*?)(?=\n\s*OUTPUT FORMAT\s*:|\n\s*$|$)/i);
-  return norm(m?.[2] ?? "");
-}
-
 describe("Engine Contract — Idempotency", () => {
   test("GPT: optimizedPrompt debe ser idempotente al re-analizarlo", () => {
     const core = `Quiero que mejores este prompt para que sea claro.
@@ -57,26 +51,34 @@ Quiero un resumen y luego próximos pasos.`;
     expect(opt2).toBe(opt1);
   });
 
-  test("El TASK no debe “contaminarse” con OUTPUT FORMAT al re-analizar", () => {
+  test("El core no debe “contaminarse” ni duplicarse al re-analizar", () => {
     const core = `Arreglá este bug en Next.js. Te paso el error y el archivo.
 Quiero un fix paso a paso y un patch final.`;
 
     const r1 = analyzePrompt(core, "gpt", "es");
     const opt1 = norm(r1.optimizedPrompt);
-
-    const task1 = extractTaskBlock(opt1);
-    expect(task1.length).toBeGreaterThan(0);
+    expect(opt1.length).toBeGreaterThan(0);
 
     const r2 = analyzePrompt(opt1, "gpt", "es");
     const opt2 = norm(r2.optimizedPrompt);
 
-    const task2 = extractTaskBlock(opt2);
+    const r3 = analyzePrompt(opt2, "gpt", "es");
+    const opt3 = norm(r3.optimizedPrompt);
 
-    // ✅ La parte TASK debe mantenerse igual
-    expect(task2).toBe(task1);
+    // ✅ Estabilidad byte a byte en 3 pasadas (v1.3.0: sin firma de header,
+    // el extractor recupera el core desde el heading del shape y reconstruye
+    // idéntico).
+    expect(opt2).toBe(opt1);
+    expect(opt3).toBe(opt1);
 
-    // ✅ Y OUTPUT FORMAT no debe terminar dentro del TASK
-    expect(task2.toLowerCase()).not.toContain("output format");
+    // ✅ El texto del usuario aparece exactamente UNA vez — nunca anidado
+    // dentro de otra sección ni duplicado.
+    expect(countOccurrences(opt1, /Arreglá este bug en Next\.js\./g)).toBe(1);
+    expect(countOccurrences(opt1, /Quiero un fix paso a paso y un patch final\./g)).toBe(1);
+
+    // ✅ Sin scaffolding legacy: ni header de metadata ni OUTPUT FORMAT.
+    expect(opt1).not.toMatch(/^PROMPTEA:/i);
+    expect(opt1.toLowerCase()).not.toContain("output format");
   });
 
   test("meta.engineVersion debe existir", () => {

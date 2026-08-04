@@ -125,13 +125,11 @@ export default function HowItWorks({ lang }: { lang: "es" | "en" }) {
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-expanded={open}
-        className="inline-flex items-center gap-1.5 rounded-full border border-zinc-300/60 dark:border-zinc-700/60
-                   bg-white/60 dark:bg-zinc-900/60 px-3 py-1.5
+        className="inline-flex items-center gap-1.5 rounded-full border border-line
+                   bg-surface-soft px-3 py-1.5
                    text-xs font-medium
-                   text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white
-                   hover:bg-white/80 dark:hover:bg-zinc-900/80
+                   text-ink-muted hover:text-ink hover:border-line-strong
                    shadow-sm
-                   focus:outline-none focus:ring-2 focus:ring-zinc-400/40 dark:focus:ring-zinc-500/40
                    transition-all"
       >
         <span aria-hidden>ⓘ</span>

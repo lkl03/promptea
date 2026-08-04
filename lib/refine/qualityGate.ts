@@ -15,8 +15,6 @@ export type QualityGateInput = {
   candidate: string;
   language: Lang;
   literals: ProtectedLiteral[];
-  /** The candidate must start with this exact header block. */
-  requiredHeader: string;
 };
 
 export type QualityGateResult = {
@@ -37,6 +35,10 @@ const ANSWER_LIKE =
 
 const JSON_DEMAND = /\b(only\s+(valid\s+)?json|solo\s+json|devolv[eé]\s+solo\s+json|return\s+only\s+json)\b/i;
 
+// v1.3.0: the optimized prompt must NOT carry internal metadata headers —
+// version/model/purpose belong in result metadata, never in prompt content.
+const METADATA_HEADER = /^(PROMPTEA:|MODEL:\s|PURPOSE:\s|TASK_TYPE:\s)/im;
+
 export function runQualityGate(input: QualityGateInput): QualityGateResult {
   const failures: string[] = [];
   const warnings: string[] = [];
@@ -46,9 +48,10 @@ export function runQualityGate(input: QualityGateInput): QualityGateResult {
   if (candidate.length < 20) failures.push("too_short");
   if (candidate.length > 24000) failures.push("too_long");
 
-  // 2. Header invariant (Promptea signature block).
-  if (input.requiredHeader && !candidate.startsWith(input.requiredHeader)) {
-    failures.push("header_lost");
+  // 2. No internal metadata headers in user-facing prompt content.
+  const firstLines = candidate.split("\n").slice(0, 4).join("\n");
+  if (METADATA_HEADER.test(firstLines)) {
+    failures.push("metadata_header_added");
   }
 
   // 3. Expected language.
@@ -69,8 +72,7 @@ export function runQualityGate(input: QualityGateInput): QualityGateResult {
   }
 
   // 6. Must be a prompt, not the answer to the task.
-  const body = candidate.slice(input.requiredHeader.length).trimStart();
-  if (ANSWER_LIKE.test(body)) failures.push("answers_instead_of_prompting");
+  if (ANSWER_LIKE.test(candidate)) failures.push("answers_instead_of_prompting");
 
   // 7. No internal/system leakage or refusal noise.
   if (INTERNAL_LEAK.test(candidate)) failures.push("internal_leakage");

@@ -1,49 +1,11 @@
-import { describe, expect, test, vi, afterEach } from "vitest";
-import { APP_VERSION } from "@/lib/version";
+import { describe, expect, test } from "vitest";
 import { buildOptimizedPrompt } from "@/lib/engine/builder";
 import { analyzePrompt } from "@/lib/analyzePrompt";
 
+// v1.3.0: PROMPTEA_PROMPT_VERSION is no longer read anywhere and the
+// optimized prompt carries no version header — those env tests are gone.
+
 describe("engine/builder attachments", () => {
-  const originalEnv = process.env.PROMPTEA_PROMPT_VERSION;
-
-  afterEach(() => {
-    if (typeof originalEnv === "string") {
-      process.env.PROMPTEA_PROMPT_VERSION = originalEnv;
-    } else {
-      delete process.env.PROMPTEA_PROMPT_VERSION;
-    }
-    vi.restoreAllMocks();
-  });
-
-  test("uses PROMPTEA_PROMPT_VERSION dynamically", () => {
-    process.env.PROMPTEA_PROMPT_VERSION = "1.1";
-
-    const result = buildOptimizedPrompt(
-      "Translate this to English.",
-      "translation",
-      "gpt",
-      "en",
-      "translation"
-    );
-
-    expect(result).toContain("PROMPTEA: v1.1");
-  });
-
-  test("falls back to default version when env is invalid", () => {
-    process.env.PROMPTEA_PROMPT_VERSION = "vX-invalid";
-
-    const result = buildOptimizedPrompt(
-      "Summarize this text.",
-      "summarization",
-      "gpt",
-      "en",
-      "summarization"
-    );
-
-    // Default now derives from APP_VERSION (lib/version.ts).
-    expect(result).toContain(`PROMPTEA: v${APP_VERSION}`);
-  });
-
   test("injects ATTACHED CONTEXT block", () => {
     const result = buildOptimizedPrompt(
       "Summarize the attached notes in 3 bullets.",
@@ -70,26 +32,29 @@ describe("engine/builder attachments", () => {
     expect(result).toContain('<file name="notes.md" kind="markdown">');
   });
 
-  test("keeps idempotency when already optimized and no new attachments are passed", () => {
-    const existing = `PROMPTEA: v1.1
-MODEL: GPT
-PURPOSE: text
-TASK_TYPE: text
+  test("keeps idempotency: re-analyzing a built prompt rebuilds byte-identically", () => {
+    const core =
+      "In the repo, create branch feat/exporter, implement lib/export.ts, run npm test and npm run lint, then open a PR against main with validation notes.";
 
-INSTRUCTIONS:
-- Respond in the UI language.
+    const first = analyzePrompt(core, "gpt", "en", "code");
+    const routing = first.meta.routing!;
 
-TASK:
-Write a short email.
+    // The builder, fed the router's decision, reproduces the engine's output…
+    const built = buildOptimizedPrompt(core, first.meta.taskType, "gpt", "en", "code", [], {
+      complexity: routing.complexity as import("@/lib/domain").Complexity,
+      strategy: routing.strategy as import("@/lib/domain").RefinementStrategy,
+    });
+    expect(built).toBe(first.optimizedPrompt);
 
-OUTPUT FORMAT:
-- Bullet answer.
+    // …and re-analyzing that output extracts the core from the shape's core
+    // heading and rebuilds byte-identically — the v1.3.0 idempotency contract
+    // (structural equality, no legacy header short-circuit).
+    const again = analyzePrompt(built, "gpt", "en", "code");
+    expect(again.optimizedPrompt).toBe(built);
+    expect(again.meta.alreadyOptimized).toBe(true);
 
-CONSTRAINTS:
-- Do not invent facts.`;
-
-    const result = buildOptimizedPrompt(existing, "text", "gpt", "en", "text");
-    expect(result).toBe(existing);
+    // Metadata headers never appear in built output.
+    expect(built).not.toMatch(/^PROMPTEA:/i);
   });
 
   test("analyzePrompt should preserve embedded attachments when reanalyzing an optimized prompt", () => {

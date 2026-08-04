@@ -26,14 +26,21 @@ function SwatchIcon({ theme, className }: { theme: ThemeName | "system"; classNa
       </svg>
     );
   }
-  // A small filled circle previewing the theme's canvas + accent.
-  const preview: Record<ThemeName, { bg: string; dot: string }> = {
-    light: { bg: "#faf9f7", dot: "#9a5b1e" },
-    dark: { bg: "#16130f", dot: "#e0a458" },
-    night: { bg: "#09090b", dot: "#7dd3fc" },
-    paper: { bg: "#f6f1e7", dot: "#7c5a2b" },
+  if (theme === "metro") {
+    // Metro: a flat azure tile — square on purpose.
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <rect x="4" y="4" width="16" height="16" fill="#1a1a1a" stroke="currentColor" strokeOpacity="0.35" />
+        <rect x="8" y="8" width="8" height="8" fill="#0078d7" />
+      </svg>
+    );
+  }
+  // Round swatches previewing canvas + accent (mirrors globals.css values).
+  const preview: Record<Exclude<ThemeName, "metro">, { bg: string; dot: string }> = {
+    aqua: { bg: "#eaf1fe", dot: "#007aff" },
+    classic: { bg: "#faf9f7", dot: "#9a5b1e" },
   };
-  const p = preview[theme];
+  const p = preview[theme as Exclude<ThemeName, "metro">];
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
       <circle cx="12" cy="12" r="9" fill={p.bg} stroke="currentColor" strokeOpacity="0.35" />
@@ -70,7 +77,8 @@ export default function ThemeToggle({ lang = "en" }: { lang?: "es" | "en" }) {
   }, [open]);
 
   const label = lang === "es" ? "Tema" : "Theme";
-  const current = (theme ?? "system") as ThemeName | "system";
+  const stored = (theme ?? "system") as ThemeName | "system";
+  const current: ThemeName | "system" = stored === "system" || THEMES.includes(stored as ThemeName) ? stored : "system";
   const options: Array<ThemeName | "system"> = ["system", ...THEMES];
 
   if (!mounted) {
@@ -93,11 +101,11 @@ export default function ThemeToggle({ lang = "en" }: { lang?: "es" | "en" }) {
         title={label}
         className="btn-icon"
       >
-        <SwatchIcon theme={current === "system" ? "system" : (current as ThemeName)} className="h-4 w-4" />
+        <SwatchIcon theme={current} className="h-4 w-4" />
       </button>
 
       {open && (
-        <div role="menu" aria-label={label} className="surface absolute right-0 top-11 z-50 min-w-40 p-1 animate-toast-in">
+        <div role="menu" aria-label={label} className="surface absolute right-0 top-11 z-50 min-w-44 p-1 animate-toast-in">
           {options.map((opt) => {
             const active = current === opt;
             return (

@@ -25,3 +25,11 @@ export const AnalyzeSchema = z.object({
   format: z.enum(FORMAT_CHOICES).optional(),
   modelId: z.string().min(1).max(80).optional().nullable(),
 });
+
+/** v1.3.0 — Find the Best AI. */
+export const MatchSchema = z.object({
+  prompt: z.string().min(1).max(20000),
+  lang: z.enum(LANGS).optional(),
+  sessionId: z.string().min(10).optional(),
+  attachments: z.array(AttachmentInputSchema).max(MAX_ATTACHMENTS).optional(),
+});

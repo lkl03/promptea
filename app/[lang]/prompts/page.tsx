@@ -112,7 +112,7 @@ export default async function PromptsIndexPage({
           <Link key={p.href} href={p.href} className="surface p-5 block hover:opacity-95 transition">
             <div className="flex items-center justify-between gap-3">
               <div className="text-sm font-medium">{p.name}</div>
-              <span className="inline-flex items-center rounded-full border border-zinc-300/60 dark:border-zinc-700/50 bg-zinc-100/60 dark:bg-zinc-800/50 px-2 py-0.5 text-[11px] opacity-80 shrink-0">
+              <span className="inline-flex items-center rounded-full border border-line bg-surface-soft px-2 py-0.5 text-[11px] text-ink-muted shrink-0">
                 {p.count} {l === "es" ? "prompts" : "prompts"}
               </span>
             </div>

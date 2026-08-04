@@ -1,96 +1,263 @@
-// components/AppFeedbackButton.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+// components/AppFeedbackButton.tsx
+//
+// v1.3.0: general product feedback goes to Firestore via /api/app-feedback.
+// The old mailto workflow is gone. Never sends the user's prompt content.
 
-function mailtoUrl(body: string) {
-  const to = "contact.eterlab@gmail.com";
-  const subject = "Feedback Promptea";
-  return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+import { useEffect, useRef, useState } from "react";
+import { useFocusTrap } from "@/lib/useFocusTrap";
+import { APP_FEEDBACK_CATEGORIES, type AppFeedbackCategory, type AppMode } from "@/lib/domain";
+import type { AppFeedbackDict } from "@/lib/uiDict";
+
+type Status = "idle" | "submitting" | "success" | "error";
+type ErrorKey = "too_short" | "too_long" | "cooldown" | "generic";
+
+const COOLDOWN_KEY = "promptea:app-feedback-at";
+const COOLDOWN_MS = 60_000;
+
+function categoryLabel(dict: AppFeedbackDict, category: AppFeedbackCategory): string {
+  switch (category) {
+    case "bug":
+      return dict.categoryBug;
+    case "suggestion":
+      return dict.categorySuggestion;
+    case "design":
+      return dict.categoryDesign;
+    case "result_quality":
+      return dict.categoryResultQuality;
+    default:
+      return dict.categoryOther;
+  }
 }
 
-export default function AppFeedbackButton({ lang }: { lang: "es" | "en" }) {
+function errorMessage(dict: AppFeedbackDict, key: ErrorKey): string {
+  switch (key) {
+    case "too_short":
+      return dict.errorTooShort;
+    case "too_long":
+      return dict.errorTooLong;
+    case "cooldown":
+      return dict.errorCooldown;
+    default:
+      return dict.errorGeneric;
+  }
+}
+
+export default function AppFeedbackButton({
+  lang,
+  dict,
+}: {
+  lang: "es" | "en";
+  dict: AppFeedbackDict;
+}) {
   const [open, setOpen] = useState(false);
-  const [text, setText] = useState("");
+  const [message, setMessage] = useState("");
+  const [category, setCategory] = useState<AppFeedbackCategory | null>(null);
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorKey, setErrorKey] = useState<ErrorKey>("generic");
 
-  const hint = useMemo(() => {
-    return lang === "es"
-      ? "Esto NO envía nada automáticamente. Al tocar “Abrir email”, se abre tu app de correo con el mensaje pre-cargado, y vos lo enviás."
-      : "This does NOT send anything automatically. Clicking “Open email” opens your email app with a pre-filled message, and you send it yourself.";
-  }, [lang]);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const closeTimer = useRef<number | null>(null);
 
-  const title = lang === "es" ? "Feedback de la app" : "App feedback";
-  const placeholder =
-    lang === "es"
-      ? "Contanos qué te gustó, qué te frustró o qué mejorarías…"
-      : "Tell us what you liked, what was frustrating, or what you’d improve…";
+  useFocusTrap(dialogRef, open);
 
-  const openEmailLabel = lang === "es" ? "Abrir email" : "Open email";
-  const cancelLabel = lang === "es" ? "Cancelar" : "Cancel";
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
-  const body = useMemo(() => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    return [
-      "Feedback Promptea",
-      "",
-      text.trim(),
-      "",
-      `URL: ${url}`,
-      "",
-      "(Podés borrar esto si querés.)",
-    ].join("\n");
-  }, [text]);
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  function openModal() {
+    setStatus("idle");
+    setOpen(true);
+  }
+
+  async function submit() {
+    const trimmed = message.trim();
+    if (trimmed.length < 10) {
+      setErrorKey("too_short");
+      setStatus("error");
+      return;
+    }
+    if (trimmed.length > 2000) {
+      setErrorKey("too_long");
+      setStatus("error");
+      return;
+    }
+
+    try {
+      const last = Number(sessionStorage.getItem(COOLDOWN_KEY) ?? 0);
+      if (Date.now() - last < COOLDOWN_MS) {
+        setErrorKey("cooldown");
+        setStatus("error");
+        return;
+      }
+    } catch {
+      // sessionStorage unavailable — server cooldown still applies.
+    }
+
+    setStatus("submitting");
+
+    const pathname = window.location.pathname;
+    const mode: AppMode = pathname.includes("/best-ai") ? "best-ai" : "improve";
+
+    let sessionId: string | undefined;
+    try {
+      sessionId = localStorage.getItem("promptea_session_id") ?? undefined;
+    } catch {
+      sessionId = undefined;
+    }
+
+    try {
+      const res = await fetch("/api/app-feedback", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          message: trimmed,
+          category: category ?? undefined,
+          lang,
+          mode,
+          page: pathname,
+          theme: document.documentElement.dataset.theme ?? undefined,
+          sessionId,
+        }),
+      });
+
+      if (res.ok) {
+        try {
+          sessionStorage.setItem(COOLDOWN_KEY, String(Date.now()));
+        } catch {
+          // ignore
+        }
+        setStatus("success");
+        setMessage("");
+        setCategory(null);
+        closeTimer.current = window.setTimeout(() => {
+          setOpen(false);
+          setStatus("idle");
+          triggerRef.current?.focus();
+        }, 1600);
+        return;
+      }
+
+      const data = (await res.json().catch(() => null)) as { error?: string } | null;
+      const err = data?.error;
+      setErrorKey(err === "too_short" || err === "too_long" || err === "cooldown" ? err : "generic");
+      setStatus("error");
+    } catch {
+      setErrorKey("generic");
+      setStatus("error");
+    }
+  }
 
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
-        className="hover:underline underline-offset-4"
-        onClick={() => setOpen(true)}
+        onClick={openModal}
+        className="hover:underline underline-offset-2 transition-all ease-in-out"
       >
-        {lang === "es" ? "Feedback" : "Feedback"}
+        {dict.open}
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50">
-          {/* ✅ overlay más fuerte */}
           <div
-            className="absolute inset-0 bg-black/80"
-            onClick={() => setOpen(false)}
+            className="absolute inset-0 bg-black/45 backdrop-blur-[2px]"
+            onClick={() => {
+              setOpen(false);
+              triggerRef.current?.focus();
+            }}
             aria-hidden="true"
           />
+          <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="app-feedback-title"
+            className="surface relative mx-auto mt-24 w-[min(560px,calc(100%-24px))] p-5 animate-toast-in"
+          >
+            <h2 id="app-feedback-title" className="text-base font-semibold text-ink">
+              {dict.title}
+            </h2>
+            <p className="mt-1 text-sm text-ink-muted">{dict.subtitle}</p>
 
-          {/* ✅ panel sólido */}
-          <div className="relative mx-auto mt-28 w-[min(720px,calc(100%-24px))] rounded-2xl border border-white/10 bg-zinc-950 p-5 text-zinc-100 shadow-2xl">
-            <div className="flex items-start justify-between gap-4">
-              <div className="text-sm font-semibold">{title}</div>
-              <button
-                type="button"
-                className="btn-icon h-9 w-9"
-                aria-label="Close"
-                onClick={() => setOpen(false)}
-              >
-                ✕
-              </button>
+            <fieldset className="mt-4">
+              <legend className="text-xs font-medium text-ink-muted">{dict.categoryLabel}</legend>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {APP_FEEDBACK_CATEGORIES.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    className="pill"
+                    aria-pressed={category === c}
+                    onClick={() => setCategory((prev) => (prev === c ? null : c))}
+                  >
+                    {categoryLabel(dict, c)}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <label htmlFor="app-feedback-message" className="mt-4 block text-xs font-medium text-ink-muted">
+              {dict.messageLabel}
+            </label>
+            <textarea
+              id="app-feedback-message"
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                if (status === "error") setStatus("idle");
+              }}
+              maxLength={2000}
+              rows={5}
+              placeholder={dict.messagePlaceholder}
+              className="field mt-1.5 w-full resize-y p-3"
+              disabled={status === "submitting" || status === "success"}
+            />
+            <div className="mt-1 text-right text-[11px] tabular-nums text-ink-faint">
+              {message.trim().length}/2000
             </div>
 
-            <textarea
-              className="mt-4 w-full rounded-2xl border border-white/10 bg-zinc-900/60 p-3 text-sm outline-none focus:ring-2 focus:ring-white/10"
-              placeholder={placeholder}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              rows={6}
-            />
+            <div aria-live="polite" className="min-h-5 text-sm">
+              {status === "success" && <span className="text-success">{dict.success}</span>}
+              {status === "error" && <span className="text-danger">{errorMessage(dict, errorKey)}</span>}
+            </div>
 
-            <div className="mt-3 text-xs text-zinc-300/80">{hint}</div>
-
-            <div className="mt-4 flex items-center justify-end gap-2">
-              <button type="button" className="btn btn-ghost h-10 px-4" onClick={() => setOpen(false)}>
-                {cancelLabel}
+            <div className="mt-3 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => {
+                  setOpen(false);
+                  triggerRef.current?.focus();
+                }}
+              >
+                {dict.cancel}
               </button>
-              <a className="btn btn-primary h-10 px-4" href={mailtoUrl(body)} onClick={() => setOpen(false)}>
-                {openEmailLabel}
-              </a>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={submit}
+                disabled={status === "submitting" || status === "success" || message.trim().length === 0}
+              >
+                {status === "submitting" ? dict.submitting : dict.submit}
+              </button>
             </div>
           </div>
         </div>
@@ -98,5 +265,3 @@ export default function AppFeedbackButton({ lang }: { lang: "es" | "en" }) {
     </>
   );
 }
-
-

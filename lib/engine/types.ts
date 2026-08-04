@@ -78,6 +78,8 @@ export type AnalyzeResult = {
       complexity: string;
       signals: string[];
     };
+    /** v1.3.0: input already is (or matches) an optimized prompt — minimal edits, adaptive layer skipped. */
+    alreadyOptimized?: boolean;
     scoreCriteria?: Array<{ key: string; label: { es: string; en: string } }>;
     strengths?: string[];
     criticalIssues?: string[];

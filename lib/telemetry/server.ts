@@ -91,6 +91,52 @@ export async function upsertAnalysisEvent(input: UpsertAnalysisEventInput) {
   return { ok: true };
 }
 
+// v1.3.0 — matcher events. Same privacy rules as analysis events: category
+// and confidence metadata only, never prompt content.
+type RecordMatchEventInput = {
+  matchId: string;
+  sessionId: string;
+  lang: "es" | "en";
+  rubricVersion: string;
+  profile: string;
+  topCategory: string;
+  recommendedTarget: string;
+  recommendedModelId: string;
+  confidence: string;
+  isTie: boolean;
+  signalIds: string[];
+  attachmentsCount: number;
+};
+
+export async function recordMatchEvent(input: RecordMatchEventInput) {
+  const db = getAdminFirestore();
+
+  const now = new Date();
+  const expires = new Date(now.getTime() + ttlDays() * 24 * 60 * 60 * 1000);
+
+  const payload = {
+    name: "match",
+    matchId: input.matchId,
+    sessionId: input.sessionId,
+    lang: input.lang,
+    rubricVersion: input.rubricVersion,
+    profile: input.profile,
+    topCategory: input.topCategory,
+    recommendedTarget: input.recommendedTarget,
+    recommendedModelId: input.recommendedModelId,
+    confidence: input.confidence,
+    isTie: input.isTie,
+    signalIds: input.signalIds.slice(0, 50),
+    attachmentsCount: input.attachmentsCount,
+    ts: Timestamp.fromDate(now),
+    createdAt: FieldValue.serverTimestamp(),
+    expiresAt: Timestamp.fromDate(expires),
+  };
+
+  await db.collection(COLLECTION).doc(input.matchId).set(payload, { merge: true });
+  return { ok: true };
+}
+
 export async function setFeedback(input: SetFeedbackInput) {
   const db = getAdminFirestore();
 

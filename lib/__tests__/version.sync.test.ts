@@ -1,6 +1,7 @@
 // Version consistency across every surface. Future releases cannot silently
-// diverge: package.json, lib/version.ts, the optimized-prompt header, and the
-// newest changelog entry must all agree.
+// diverge: package.json, lib/version.ts, the JSON-format output, and the
+// newest changelog entry must all agree. Since v1.3.0 the checklist output
+// carries NO version header — that absence is itself an invariant here.
 
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
@@ -29,9 +30,10 @@ describe("version synchronization", () => {
     expect(lock.packages?.[""]?.version).toBe(APP_VERSION);
   });
 
-  test("optimized prompt header carries APP_VERSION", () => {
+  test("checklist output carries NO PROMPTEA version header (v1.3.0)", () => {
     const r = analyzePrompt("Write a short note to my team about the launch.", "gpt", "en", "text");
-    expect(r.optimizedPrompt.startsWith(`PROMPTEA: v${APP_VERSION}`)).toBe(true);
+    expect(r.optimizedPrompt).not.toContain("PROMPTEA: v");
+    expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
   });
 
   test("JSON-format output carries APP_VERSION too", () => {

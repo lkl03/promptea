@@ -3,10 +3,12 @@ import { analyzePrompt } from "@/lib/analyzePrompt";
 import { isValidJson } from "@/lib/engine/jsonOutput";
 
 describe("Engine — JSON output format", () => {
-  test("checklist remains the default and produces a Promptea scaffold", () => {
+  test("checklist remains the default and produces a header-free shaped prompt", () => {
     const r = analyzePrompt("Write a launch email", "gpt", "en", "marketing");
-    expect(r.optimizedPrompt).toContain("PROMPTEA: v");
-    expect(r.optimizedPrompt).toContain("INSTRUCTIONS:");
+    // v1.3.0: checklist output never carries the PROMPTEA metadata header.
+    expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/);
+    expect(r.optimizedPrompt).not.toContain("PROMPTEA: v");
+    expect(r.optimizedPrompt.length).toBeGreaterThan(0);
     expect(r.meta.formatChoice).toBe("checklist");
   });
 

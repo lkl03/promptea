@@ -11,6 +11,7 @@ import { buildFeedbackBlock } from "./feedback";
 
 import { normalizeText, wordCount, approxTokensFromWords } from "./normalize";
 import { detectStructured, extractCorePrompt } from "./extractor";
+import { stripGuardedGuidance } from "./shapes";
 import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
 import { classifyTask } from "./classifier";
@@ -236,7 +237,6 @@ export function analyzePrompt(
 
   const raw = canonicalize(normalizeText(prompt));
   const purpose: PromptPurpose = normalizePurpose(purposeInput);
-  const taskType: TaskType = resolveTaskType(raw, purpose);
 
   const promptea = parsePromptea(raw);
   const embeddedAttachments = attachments.length === 0 ? parseEmbeddedAttachments(raw) : [];
@@ -254,7 +254,15 @@ export function analyzePrompt(
     coreExtracted = extracted.extracted;
   }
 
-  const cleanAnalysisInput = canonicalize(normalizeText(analysisInput));
+  // v1.3.0: light-path outputs carry a guarded guidance sentence — strip it
+  // so analysis, routing, and scoring always operate on the user's own text
+  // and re-analysis converges to the same core.
+  const cleanAnalysisInput = canonicalize(normalizeText(stripGuardedGuidance(analysisInput)));
+
+  // v1.3.0: classify from the extracted core, not the raw scaffold — this is
+  // what makes re-analysis of an optimized prompt land on the same task type
+  // (and therefore the same shape) as the original pass.
+  const taskType: TaskType = resolveTaskType(cleanAnalysisInput, purpose);
 
   const lint = softenLintWithAttachments(
     lintPrompt(cleanAnalysisInput, lang, taskType, {
@@ -301,10 +309,6 @@ export function analyzePrompt(
     attachmentsCount: effectiveAttachments.length,
   });
 
-  const targetLower = String(target).toLowerCase();
-  const sameModel = (promptea?.model ?? null) === targetLower;
-  const samePurpose = (promptea?.purpose ?? null) === String(purpose);
-
   // v1.2.0: route refinement strategy + complexity from the prompt itself.
   const routing: RoutingDecision = selectStrategy({
     prompt: cleanAnalysisInput,
@@ -313,7 +317,15 @@ export function analyzePrompt(
     attachmentsCount: effectiveAttachments.length,
   });
 
+  // v1.3.0 idempotency without a header signature: rebuild from the
+  // extracted core. If the rebuild reproduces the input byte-for-byte, the
+  // input already IS the optimized prompt. A high-scoring natural prompt is
+  // also left untouched (minimal-edits rule). Legacy v1.2 headers are never
+  // passed through — they always rebuild into the new shapes.
+  const ALREADY_STRONG_SCORE = 88;
   let optimizedPrompt: string;
+  let alreadyOptimized = false;
+
   if (formatChoice === "json") {
     optimizedPrompt = buildJsonOptimizedPrompt({
       core: cleanAnalysisInput,
@@ -323,14 +335,24 @@ export function analyzePrompt(
       purpose,
       attachments: effectiveAttachments,
     });
-  } else if (promptea && sameModel && samePurpose && attachments.length === 0) {
-    optimizedPrompt = canonicalize(raw);
   } else {
-    optimizedPrompt = canonicalize(
+    const built = canonicalize(
       buildOptimizedPrompt(cleanAnalysisInput, taskType, target, lang, purpose, effectiveAttachments, {
         complexity: routing.complexity,
+        strategy: routing.strategy,
       })
     );
+    const rawCanonical = canonicalize(raw);
+
+    if (!promptea && built === rawCanonical && detectStructured(raw)) {
+      optimizedPrompt = rawCanonical;
+      alreadyOptimized = true;
+    } else if (!promptea && !detectStructured(raw) && scored.score >= ALREADY_STRONG_SCORE) {
+      optimizedPrompt = rawCanonical;
+      alreadyOptimized = true;
+    } else {
+      optimizedPrompt = built;
+    }
   }
 
   const words = wordCount(raw);
@@ -374,6 +396,7 @@ export function analyzePrompt(
       formatChoice,
       modelId,
       routing,
+      alreadyOptimized,
       scoreCriteria: feedback.scoreCriteria,
       strengths: feedback.strengths,
       criticalIssues: feedback.criticalIssues,
