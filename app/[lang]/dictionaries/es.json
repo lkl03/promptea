@@ -135,6 +135,7 @@
     "recommendedModel": "Modelo recomendado"
   },
   "voice": {
+    "hint": "¿Preferís hablar? Dictá tu prompt con el micrófono y lo convertimos en texto que podés revisar.",
     "start": "Dictar con tu voz",
     "stop": "Detener grabación",
     "cancel": "Cancelar",

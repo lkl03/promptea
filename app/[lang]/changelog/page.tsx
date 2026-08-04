@@ -28,6 +28,181 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.3.1 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.3.1</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 04-08-2026" : "Released: 2026-08-04"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Historial de versiones puesto al día: esta página ahora documenta v1.2.1, v1.2.2, v1.2.3 y v1.3.0, que faltaban desde julio."
+              : "Version history caught up: this page now documents v1.2.1, v1.2.2, v1.2.3, and v1.3.0, which were missing since July."}
+          </li>
+          <li>
+            {isEs
+              ? "El botón de dictado por voz ahora tiene un texto al lado que explica para qué sirve, en ambos modos."
+              : "The voice dictation button now has a short explainer next to it describing what it does, in both modes."}
+          </li>
+          <li>
+            {isEs
+              ? "El botón “¿Nuevo? Mirá cómo funciona →” ahora también aparece en Elegir la mejor IA, con una explicación paso a paso propia de ese modo (señales detectadas, puntaje determinístico, alternativas y el pase al optimizador)."
+              : "The “New? See how it works →” button now also appears on Find the Best AI, with its own step-by-step explanation of that mode (detected signals, deterministic scoring, alternatives, and the handoff to the optimizer)."}
+          </li>
+          <li>
+            {isEs
+              ? "Retoques de copy en el modal de ayuda del analizador: los pasos ahora mencionan el dictado por voz y el conteo de pasos quedó correcto."
+              : "Copy touch-ups in the analyzer help modal: the steps now mention voice dictation and the step count reads correctly."}
+          </li>
+        </ul>
+      </div>
+
+      {/* v1.3.0 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.3.0</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 04-08-2026" : "Released: 2026-08-04"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Promptea ahora tiene dos modos con rutas propias: Mejorar prompt (el analizador de siempre, evolucionado) y Elegir la mejor IA, una experiencia nueva que te dice qué IA conviene para el prompt que ya tenés."
+              : "Promptea now has two route-addressable modes: Improve Prompt (the analyzer you know, evolved) and Find the Best AI, a new experience that tells you which AI fits the prompt you already have."}
+          </li>
+          <li>
+            {isEs
+              ? "Elegir la mejor IA usa un matcher 100% determinístico: detecta señales concretas en tu prompt (rutas de repo, pedidos de fuentes, JSON estricto, imágenes, traducción…), puntúa cada IA según capacidades verificadas contra documentación oficial, distingue entornos como Claude Code del chat común, y muestra puntaje, confianza, empates honestos, hasta 3 alternativas con sus contras y consejos que citan lo que encontró en tu texto."
+              : "Find the Best AI runs a 100% deterministic matcher: it detects concrete signals in your prompt (repo paths, source requests, strict JSON, images, translation…), scores each AI against capabilities verified from official docs, distinguishes environments like Claude Code from plain chat, and shows a score, confidence, honest ties, up to 3 alternatives with trade-offs, and advice that cites what it found in your text."}
+          </li>
+          <li>
+            {isEs
+              ? "Con un clic, “Mejorar mi prompt para esta IA” pasa tu prompt completo al optimizador con la IA, el modelo y el propósito recomendados ya preseleccionados — sin copiar y pegar."
+              : "One click on “Improve my prompt for this AI” transfers your full prompt to the optimizer with the recommended AI, model, and purpose preselected — no copy-paste."}
+          </li>
+          <li>
+            {isEs
+              ? "El prompt optimizado ya no arranca con el encabezado PROMPTEA: la versión, el modelo y el propósito ahora viven en la metadata del resultado. Cada tipo de tarea recibe su propia forma: los mensajes cortos quedan naturales, las tareas de repo llevan objetivo y validación, los pedidos de datos llevan schema y reglas — y un prompt que ya está bien vuelve casi intacto."
+              : "The optimized prompt no longer starts with the PROMPTEA header: version, model, and purpose now live in result metadata. Each task type gets its own shape: short messages stay natural, repo tasks get objective and validation sections, data requests get schema and rules — and an already-good prompt comes back nearly untouched."}
+          </li>
+          <li>
+            {isEs
+              ? "Dictado por voz en ambos modos: grabás (hasta 2 minutos), lo transcribimos con Whisper vía Groq, y SIEMPRE revisás y editás el texto antes de usarlo. El audio nunca se guarda."
+              : "Voice dictation in both modes: record (up to 2 minutes), we transcribe it with Whisper via Groq, and you ALWAYS review and edit the text before using it. Audio is never stored."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevos temas: Aqua (claro, estilo vidrio líquido con acentos Apple) y Metro (oscuro, fiel al Metro de Windows 8: azulejos planos, azure #0078D7, tipografía Segoe). El tema “Versión anterior” conserva el look previo para quien lo prefiera. La preferencia del sistema mapea a Aqua/Metro y los temas guardados viejos migran solos."
+              : "New themes: Aqua (light, liquid-glass style with Apple accents) and Metro (dark, faithful to Windows 8 Metro: flat tiles, azure #0078D7, Segoe type). The “Old version” theme keeps the previous look for anyone who prefers it. System preference maps to Aqua/Metro and legacy saved themes migrate automatically."}
+          </li>
+          <li>
+            {isEs
+              ? "El feedback general ahora se envía desde un modal y se guarda de forma segura (sin tu prompt, sin email, sin identificadores crudos) en lugar de abrir tu cliente de correo. El feedback de utilidad del análisis sigue funcionando igual."
+              : "General feedback is now sent from a modal and stored safely (without your prompt, email, or raw identifiers) instead of opening your email client. Analysis helpfulness feedback keeps working as before."}
+          </li>
+          <li>
+            {isEs
+              ? "Página de privacidad actualizada (voz y feedback), telemetría solo operativa y tipificada, y la suite de tests creció de 159 a 249 casos en 22 archivos."
+              : "Updated privacy page (voice and feedback), typed operational-only telemetry, and the test suite grew from 159 to 249 cases across 22 files."}
+          </li>
+        </ul>
+      </div>
+
+      {/* v1.2.3 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.2.3</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 30-07-2026" : "Released: 2026-07-30"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Zero-shot prompting — cuándo funciona sin ejemplos y cuándo conviene pasar a few-shot, cómo arreglar resultados inconsistentes y las restricciones que hacen confiable un prompt de solo instrucciones."
+              : "New guide: Zero-shot prompting — when instruction-only prompts work and when to switch to few-shot, how to fix inconsistent results, and the constraints that make them reliable."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para GPT — plantillas con formato etiquetado, bloques de restricciones, ubicación de instrucciones en documentos largos y pedidos de auto-verificación."
+              : "New guide: Prompts for GPT — labeled format templates, constraint block patterns, instruction placement for long documents, and self-verification requests."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de brainstorming con IA — técnicas para salir de las ideas genéricas: prohibir lo obvio, ángulos de diversidad forzada, combinaciones entre dominios y separar generación de evaluación."
+              : "New guide: AI brainstorming prompts — techniques to escape generic ideas: banning the obvious, forced diversity angles, cross-domain combinations, and separating generation from evaluation."}
+          </li>
+          <li>
+            {isEs
+              ? "Fix de localización: el encabezado “Templates” en las páginas de guías ahora dice “Plantillas” en español."
+              : "Localization fix: the “Templates” section heading on guide pages now correctly reads “Plantillas” in Spanish."}
+          </li>
+        </ul>
+      </div>
+
+      {/* v1.2.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.2.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 23-07-2026" : "Released: 2026-07-23"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompt chaining — cómo dividir tareas complejas en pasos secuenciales de IA, los tres patrones de encadenado (secuencial, con ramas, con loops) y sus modos de falla más comunes."
+              : "New guide: Prompt chaining — how to break complex tasks into sequential AI steps, the three chaining patterns (sequential, branching, looping), and their most common failure modes."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de escritura con IA — los cinco elementos que un prompt de escritura necesita además del tema (audiencia, tono, formato, largo y lista de cosas a evitar) y técnicas de control de voz."
+              : "New guide: AI writing prompts — the five elements a writing prompt needs beyond the topic (audience, tone, format, length, avoidance list) and voice-control techniques."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts multimodales — cómo escribir prompts cuando el input incluye imágenes, capturas o PDFs, con anclas espaciales y restricciones de formato de salida."
+              : "New guide: Multimodal prompts — how to write prompts when the input includes images, screenshots, or PDFs, with spatial anchors and output format constraints."}
+          </li>
+          <li>
+            {isEs
+              ? "Las páginas de cada guía ahora emiten metadata Open Graph y Twitter Card propia, para mejores previews al compartir."
+              : "Guide detail pages now emit page-specific Open Graph and Twitter Card metadata for better share previews."}
+          </li>
+        </ul>
+      </div>
+
+      {/* v1.2.1 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.2.1</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 16-07-2026" : "Released: 2026-07-16"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: System prompts — cómo escribir instrucciones persistentes para ChatGPT, Claude y Gemini que moldean todas las respuestas sin repetirte: persona, alcance, formatos por defecto y reglas de escalado."
+              : "New guide: System prompts — how to write persistent instructions for ChatGPT, Claude, and Gemini that shape every response without repeating yourself: persona, scope, format defaults, and escalation rules."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de traducción con IA — plantillas que preservan sentido, tono y registro, con glosarios por dominio, preservación de formato y control del largo."
+              : "New guide: AI translation prompts — templates that preserve meaning, tone, and register, with domain glossaries, format preservation, and length drift prevention."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de generación de imágenes — sujeto, estilo, composición, iluminación, paleta y restricciones negativas para resultados consistentes en DALL-E, Imagen y similares."
+              : "New guide: Image generation prompts — subject, style, composition, lighting, palette, and negative constraints for consistent results in DALL-E, Imagen, and similar models."}
+          </li>
+          <li>
+            {isEs
+              ? "Las páginas de guías ahora emiten BreadcrumbList JSON-LD junto al FAQPage existente, habilitando migas de pan en los resultados de Google."
+              : "Guide pages now emit BreadcrumbList JSON-LD alongside the existing FAQPage block, enabling breadcrumb paths in Google search results."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.2.0 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

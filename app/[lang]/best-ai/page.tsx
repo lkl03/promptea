@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import ModeSwitcher from "@/components/ModeSwitcher";
 import MatcherBox from "@/components/matcher/MatcherBox";
+import HowItWorks from "@/components/HowItWorks";
 
 function getSiteUrl(): string {
   const env = process.env.NEXT_PUBLIC_SITE_URL;
@@ -62,6 +63,9 @@ export default async function BestAiPage({ params }: { params: Promise<{ lang: s
           <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">
             {dict.matcher.subtitle}
           </p>
+          <div className="mt-3 flex justify-center">
+            <HowItWorks lang={lang as "es" | "en"} mode="best-ai" />
+          </div>
         </header>
 
         <div className="mt-6">

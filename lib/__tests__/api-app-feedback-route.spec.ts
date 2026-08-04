@@ -23,6 +23,7 @@ vi.mock("firebase-admin/firestore", () => ({
 }));
 
 import { POST } from "@/app/api/app-feedback/route";
+import { APP_VERSION } from "@/lib/version";
 
 let sessionCounter = 0;
 function freshSession() {
@@ -69,7 +70,7 @@ describe("API /api/app-feedback", () => {
     expect(doc.mode).toBe("best-ai");
     expect(doc.page).toBe("/en/best-ai");
     expect(doc.theme).toBe("aqua");
-    expect(doc.appVersion).toBe("1.3.0");
+    expect(doc.appVersion).toBe(APP_VERSION);
     expect(doc.status).toBe("new");
     expect(doc.uaCategory).toBe("desktop");
     // Privacy contract: hashed session, no raw id, no email, no prompt keys.

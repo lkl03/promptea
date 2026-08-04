@@ -130,6 +130,7 @@
     "recommendedModel": "Recommended model"
   },
   "voice": {
+    "hint": "Prefer talking? Dictate your prompt with the mic and we'll turn it into text you can review.",
     "start": "Dictate with your voice",
     "stop": "Stop recording",
     "cancel": "Cancel",

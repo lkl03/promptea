@@ -79,6 +79,8 @@ export type MatcherDict = {
 
 /** Voice input (both modes). */
 export type VoiceDict = {
+  /** Idle-state explainer shown next to the mic button. */
+  hint: string;
   start: string;
   stop: string;
   cancel: string;

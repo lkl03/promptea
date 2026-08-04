@@ -111,8 +111,9 @@ export default function VoiceRecorderButton({
           )}
         </button>
 
-        {/* Status region: recording timer / processing note / errors. */}
+        {/* Status region: idle explainer / recording timer / processing note / errors. */}
         <div aria-live="polite" className="min-w-0 flex-1 text-xs">
+          {state === "idle" && <span className="text-ink-faint">{dict.hint}</span>}
           {recording && (
             <span className="inline-flex items-center gap-2 text-ink-muted">
               <span className="font-medium text-danger">{dict.recording}</span>

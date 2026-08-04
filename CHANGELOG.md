@@ -4,6 +4,23 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.3.1 — 2026-08-04
+
+Post-release polish for v1.3.0: the public changelog page catches up, and the two features new users hit first (voice dictation and the Best-AI mode) explain themselves better.
+
+### Added
+- **Changelog page catch-up** (`/[lang]/changelog`): the page had stopped at v1.2.0 — it now documents v1.2.1, v1.2.2, v1.2.3, v1.3.0, and this release, fully bilingual (EN/ES) and consistent with `CHANGELOG.md`.
+- **Voice recorder explainer**: an idle-state hint next to the mic button ("Prefer talking? Dictate your prompt with the mic…" / "¿Preferís hablar? Dictá tu prompt con el micrófono…") so the feature is self-describing in both modes. New `voice.hint` dictionary key (EN/ES parity test-enforced).
+- **"New? See how it works →" on Find the Best AI**: the help modal now also exists on `/[lang]/best-ai` with mode-specific steps — paste/dictate, signal detection, deterministic comparison, recommendation with confidence/ties, and the one-click handoff to Improve Prompt. `HowItWorks` gained a `mode` prop ("improve" | "best-ai") with per-mode bilingual copy.
+
+### Improved
+- Analyzer help modal copy: step 2 now mentions voice dictation, and the intro's step count is correct ("Five quick steps" — it said three while listing five).
+
+### Changed
+- Version bumped to `v1.3.1` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+---
+
 ## v1.3.0 — 2026-08-04
 
 Major release: Promptea becomes a two-mode prompt utility — **Improve Prompt** (the evolved analyzer) and **Find the Best AI** (a new deterministic AI/model matcher) — with voice input in both modes, a fully personalized shape-preserving refinement engine (no more fixed `PROMPTEA:` template), a complete visual redesign around the **Aqua** (light) and **Metro** (dark) themes plus an **Old version** theme for users who prefer the previous look, and general app feedback stored in Firestore instead of opening an email client.

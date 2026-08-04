@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.3.0 (2026-08-04)
+## Latest update — v1.3.1 (2026-08-04)
 
-Major release: the two-mode product split, the deterministic AI matcher, voice input via Groq Whisper, shape-preserving prompt refinement (the fixed `PROMPTEA:` template is gone — outputs now mirror each prompt's own shape), the Aqua/Metro visual redesign (+ an "Old version" theme), and general feedback stored in Firestore. Details in [CHANGELOG.md](./CHANGELOG.md).
+Post-release polish: the public changelog page now documents v1.2.1 through v1.3.0 (it had stopped at v1.2.0), the voice recorder has an idle explainer next to the mic, and "New? See how it works →" also exists on Find the Best AI with mode-specific steps. Details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.2.3 (2026-07-30) — weekly SEO guides + copy fix._
+_Previous update: v1.3.0 (2026-08-04) — two-mode product split, deterministic AI matcher, voice input via Groq Whisper, shape-preserving refinement (no more fixed `PROMPTEA:` template), Aqua/Metro redesign + "Old version" theme, Firestore feedback._
 
 ## How it works
 
