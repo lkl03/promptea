@@ -31,9 +31,13 @@ function fitFor(entry: ModelEntry, category: MatchCategory): number {
 }
 
 export function scoreCandidates(features: MatcherFeatures, candidates: ModelEntry[]): ScoredModel[] {
-  const evidenced = Object.entries(features.evidence).filter(([, v]) => (v ?? 0) > 0) as Array<
-    [MatchCategory, number]
-  >;
+  // The chat baseline keeps generalists in the race for signal-less prompts.
+  // Once the evidence supports a specialized profile, that baseline would
+  // only dilute the specialists (a search-first prompt must not be won on
+  // general-chat polish) — so it is excluded from specialized scoring.
+  const evidenced = (Object.entries(features.evidence) as Array<[MatchCategory, number]>).filter(
+    ([category, v]) => (v ?? 0) > 0 && (features.profile === "chat" || category !== "chat")
+  );
   const maxPossible = evidenced.reduce((sum, [, v]) => sum + v * MAX_FIT, 0);
 
   const scored: ScoredModel[] = candidates.map((entry) => {
@@ -50,6 +54,14 @@ export function scoreCandidates(features: MatcherFeatures, candidates: ModelEntr
   const profileAlignment = (entry: ModelEntry | undefined, profile: InteractionProfile) =>
     entry?.interactionProfiles?.includes(profile) ? 1 : 0;
 
+  // Among equally-scored, equally-aligned candidates, the SPECIALIST wins its
+  // own profile: a search-first product beats a generalist with search bolted
+  // on for a researchAssistant prompt (fewer profiles = more specialized).
+  const specialization = (entry: ModelEntry | undefined, profile: InteractionProfile) => {
+    if (!entry?.interactionProfiles?.includes(profile) || profile === "chat") return 0;
+    return 10 - Math.min(entry.interactionProfiles.length, 9);
+  };
+
   const byId = new Map(candidates.map((c) => [c.id, c]));
 
   scored.sort((a, b) => {
@@ -57,6 +69,9 @@ export function scoreCandidates(features: MatcherFeatures, candidates: ModelEntr
     const pa = profileAlignment(byId.get(a.modelId), features.profile);
     const pb = profileAlignment(byId.get(b.modelId), features.profile);
     if (pb !== pa) return pb - pa;
+    const sa = specialization(byId.get(a.modelId), features.profile);
+    const sb = specialization(byId.get(b.modelId), features.profile);
+    if (sb !== sa) return sb - sa;
     const da = byId.get(a.modelId)?.defaultForTarget ? 1 : 0;
     const db = byId.get(b.modelId)?.defaultForTarget ? 1 : 0;
     if (db !== da) return db - da;

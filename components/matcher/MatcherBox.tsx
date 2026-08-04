@@ -14,42 +14,11 @@ import VoiceRecorderButton from "@/components/voice/VoiceRecorderButton";
 import MatcherResults from "./MatcherResults";
 import { getSessionId } from "@/lib/telemetry/session";
 import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
-import type { MatchCategory, PromptPurpose } from "@/lib/domain";
+import { HANDOFF_KEY, purposeForCategory, type HandoffPayload } from "@/lib/matcher/handoff";
 import type { MatchResult } from "@/lib/matcher/types";
 import type { UiDict } from "@/lib/uiDict";
 
 const FORM_STATE_KEY = "promptea:form-state";
-export const HANDOFF_KEY = "promptea:handoff";
-
-export type HandoffPayload = {
-  prompt: string;
-  target: string;
-  modelId: string;
-  purpose: PromptPurpose;
-};
-
-/** Detected matcher category → analyzer purpose for the handoff prefill. */
-function purposeForCategory(category: MatchCategory | undefined): PromptPurpose {
-  switch (category) {
-    case "coding":
-    case "codingAgent":
-      return "code";
-    case "dataExtraction":
-      return "data";
-    case "imagePrompts":
-      return "image";
-    case "marketing":
-      return "marketing";
-    case "translation":
-      return "translation";
-    case "summarization":
-      return "summarization";
-    case "tutoring":
-      return "study";
-    default:
-      return "text";
-  }
-}
 
 function readSharedPrompt(): string {
   try {

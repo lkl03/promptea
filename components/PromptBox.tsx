@@ -23,6 +23,7 @@ import PromptEditor from "./analyzer/PromptEditor";
 import AttachmentsPanel from "./analyzer/AttachmentsPanel";
 import FormatPicker from "./analyzer/FormatPicker";
 import VoiceRecorderButton from "./voice/VoiceRecorderButton";
+import { HANDOFF_KEY, type HandoffPayload } from "@/lib/matcher/handoff";
 
 import type { UiDict } from "@/lib/uiDict";
 
@@ -63,23 +64,13 @@ I need:
 /** sessionStorage key for persisting analyzer form state across navigation */
 const SESSION_KEY = "promptea:form-state";
 
-/** v1.3.0 matcher → optimizer handoff payload (written by MatcherBox). */
-const HANDOFF_KEY = "promptea:handoff";
-
-type HandoffPayload = {
-  prompt?: string;
-  target?: string;
-  modelId?: string;
-  purpose?: string;
-};
-
-function readHandoff(): HandoffPayload | null {
+function readHandoff(): Partial<HandoffPayload> | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = sessionStorage.getItem(HANDOFF_KEY);
     if (!raw) return null;
     sessionStorage.removeItem(HANDOFF_KEY); // one-shot
-    return JSON.parse(raw) as HandoffPayload;
+    return JSON.parse(raw) as Partial<HandoffPayload>;
   } catch {
     return null;
   }

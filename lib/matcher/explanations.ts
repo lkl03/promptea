@@ -130,6 +130,15 @@ export function buildReasons(
       )
     );
   }
+  if (reasons.length < 2) {
+    reasons.push(
+      t(
+        lang,
+        "Tu prompt no muestra señales especializadas (código, datos, búsqueda…), así que conviene un asistente conversacional versátil.",
+        "Your prompt shows no specialized signals (code, data, search…), so a versatile conversational assistant is the safest fit."
+      )
+    );
+  }
 
   return reasons.slice(0, 3);
 }

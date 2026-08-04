@@ -9,7 +9,7 @@
 
 import type { InteractionProfile, Lang, MatchCategory } from "@/lib/domain";
 
-export const RUBRIC_VERSION = "2026-08-03.1";
+export const RUBRIC_VERSION = "2026-08-04.1";
 
 export type SignalDef = {
   id: string;
@@ -32,7 +32,7 @@ export type SignalContext = {
 const RE = {
   repoPath: /(\b[\w.-]+\/[\w.-]+\/[\w./-]+\.(ts|tsx|js|jsx|py|go|rs|rb|java|kt|swift|php|c|cpp|h|css|scss|sql|json|ya?ml|md)\b|\b(src|lib|app|components|pages|tests?)\/[\w./-]+|[A-Za-z]:\\[\w\\.-]+)/,
   fileName: /\b[\w-]+\.(ts|tsx|js|jsx|py|go|rs|rb|java|kt|swift|php|cpp|sql|json|ya?ml|toml|css|scss|html|md|csv|txt|log)\b/i,
-  shellCommand: /\b(npm (run|ci|install|test)|pnpm|yarn|npx|pip install|cargo (build|run|test)|docker (build|run|compose)|make(file)?\b|git (checkout|pull|push|commit|merge|rebase|clone|add)|bash|zsh|curl -)/i,
+  shellCommand: /\b(npm (run|ci|install|test)|pnpm|yarn|npx|pip install|cargo (build|run|test)|docker (build|run|compose)|makefile\b|make (install|build|test|clean|all)\b|git (checkout|pull|push|commit|merge|rebase|clone|add)|bash|zsh|curl -)/i,
   gitWorkflow: /\b(pull request|PR\b|branch|rama|merge|commit|rebase|checkout|main\b|repositorio|repository|repo\b)/i,
   testsAcceptance: /\b(tests?( suite)?|testing|criterios de aceptaci[oó]n|acceptance criteria|CI\b|pipeline|coverage|lint(er)?|typecheck|validaci[oó]n autom[aá]tica)\b/i,
   autonomousAgent: /\b(claude code|codex|copilot (agent|workspace)|cursor|agente( de c[oó]digo)?|coding agent|aut[oó]nom[oa]|multi[- ]?step|paso a paso ejecut|end[- ]to[- ]end|de punta a punta|implement[aá]?(r| the| la| el)|migra(r|ci[oó]n)|refactoriz)/i,
