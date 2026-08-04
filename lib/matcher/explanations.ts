@@ -78,11 +78,18 @@ export function buildReasons(
   const reasons: string[] = [];
   const tops = topContributions(scored);
 
-  for (const c of tops.slice(0, 2)) {
+  // Don't repeat near-identical sentences: one reason per distinct signal set.
+  const citedSignalSets = new Set<string>();
+  for (const c of tops) {
+    if (reasons.length >= 2) break;
     const signalNames = features.signals
       .filter((s) => s.categories.includes(c.category))
       .map((s) => s.label.toLowerCase())
       .slice(0, 2);
+    const key = signalNames.join("|") || c.category;
+    if (citedSignalSets.has(key)) continue;
+    citedSignalSets.add(key);
+
     const evidenceTxt = signalNames.length
       ? t(lang, ` (detectamos: ${signalNames.join(", ")})`, ` (detected: ${signalNames.join(", ")})`)
       : "";

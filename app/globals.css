@@ -137,11 +137,23 @@
   --info-soft: rgba(29, 78, 216, 0.09);
   --shadow-color: 28 25 23;
 
-  --app-font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --app-font-title: var(--font-title), var(--font-body), ui-sans-serif, sans-serif;
   --body-tracking: 0;
   --title-tracking: -0.02em;
   --title-weight: 600;
+}
+
+/* Classic keeps the old self-hosted fonts. The next/font variables
+   (--font-body/--font-title) are declared on <body>, and custom properties
+   compute where they are DECLARED (children inherit computed values) — so
+   classic sets font-family directly at body scope instead of routing through
+   the :root token chain. */
+.classic body,
+[data-theme="classic"] body {
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+.classic :is(h1, h2, h3, h4, h5, h6),
+[data-theme="classic"] :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-title), var(--font-body), ui-sans-serif, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

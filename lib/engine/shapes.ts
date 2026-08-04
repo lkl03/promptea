@@ -286,7 +286,7 @@ function lightPath(args: ShapeArgs): string {
 export function buildShapedPrompt(args: ShapeArgs): string {
   const core = String(args.core ?? "").trim();
   const shaped: ShapeArgs = { ...args, core };
-  const { lang, complexity } = shaped;
+  const { complexity } = shaped;
 
   if (!needsStructuredShape(shaped.strategy, complexity, shaped.attachments.length)) {
     return lightPath(shaped);
