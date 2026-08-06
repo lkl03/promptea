@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.3.1 (2026-08-04)
+## Latest update — v1.3.2 (2026-08-06)
 
-Post-release polish: the public changelog page now documents v1.2.1 through v1.3.0 (it had stopped at v1.2.0), the voice recorder has an idle explainer next to the mic, and "New? See how it works →" also exists on Find the Best AI with mode-specific steps. Details in [CHANGELOG.md](./CHANGELOG.md).
+Three new SEO guides: [Prompts for Kimi](/en/guides/kimi-prompt-guide) (long context, document analysis, multi-source research), [AI prompts for data analysis](/en/guides/data-analysis-prompts) (SQL generation, trend interpretation), and [AI prompts for learning](/en/guides/ai-prompts-for-learning) (calibrated tutoring, study plans). Also fixed a sitemap gap — `/best-ai`, `/prompts/code`, `/prompts/image`, and `/prompts/marketing` were missing from `sitemap.xml`. Changes are in the [weekly update PR](./CHANGELOG.md).
 
-_Previous update: v1.3.0 (2026-08-04) — two-mode product split, deterministic AI matcher, voice input via Groq Whisper, shape-preserving refinement (no more fixed `PROMPTEA:` template), Aqua/Metro redesign + "Old version" theme, Firestore feedback._
+_Previous update: v1.3.1 (2026-08-04) — changelog page catch-up, voice recorder idle hint, and "New? See how it works →" on Find the Best AI._
 
 ## How it works
 

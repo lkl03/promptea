@@ -3454,6 +3454,475 @@ Terminá con:
       },
     ],
   },
+  {
+    slug: "kimi-prompt-guide",
+    title: {
+      en: "Prompts for Kimi: long context, document analysis, and deep research",
+      es: "Prompts para Kimi: contexto largo, análisis de documentos e investigación profunda",
+    },
+    description: {
+      en: "How to write prompts that get the most out of Kimi's large context window and strong document-understanding capabilities.",
+      es: "Cómo escribir prompts que aprovechan la ventana de contexto extensa de Kimi y sus capacidades de comprensión de documentos.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes Kimi different", es: "Qué hace diferente a Kimi" },
+        bullets: {
+          en: [
+            "Kimi supports very long context windows — you can paste entire documents, lengthy codebases, or multiple sources without hitting length limits quickly.",
+            "It handles long-range dependencies well: questions that require connecting information from different sections of the same document.",
+            "Strong at structured document understanding: contracts, research papers, technical specs, and multi-section reports.",
+            "For deep research tasks, Kimi can hold a large volume of reference material in context while answering focused questions about it.",
+            "It tends to be thorough; set an explicit length limit if you want concise output.",
+          ],
+          es: [
+            "Kimi soporta ventanas de contexto muy largas — podés pegar documentos completos, bases de código extensas o múltiples fuentes sin llegar rápidamente al límite.",
+            "Maneja bien las dependencias de largo alcance: preguntas que requieren conectar información de distintas secciones del mismo documento.",
+            "Sólido en comprensión de documentos estructurados: contratos, artículos de investigación, specs técnicas y reportes de múltiples secciones.",
+            "Para tareas de investigación profunda, Kimi puede mantener un gran volumen de material de referencia en contexto mientras responde preguntas específicas.",
+            "Tiende a ser exhaustivo; poné un límite explícito de longitud si querés salida concisa.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Patterns that work well with Kimi", es: "Patrones que funcionan bien con Kimi" },
+        bullets: {
+          en: [
+            "Paste the full document first, then ask your question at the end — Kimi reads everything before answering.",
+            "Use section markers to help Kimi navigate large documents: label sections with '=== Section: [name] ===' for clear anchoring.",
+            "For multi-document tasks, separate sources clearly with headers and tell Kimi which source to prioritize if they conflict.",
+            "Ask Kimi to cite the specific passage it's drawing from — this surfaces exactly where in the document the answer lives.",
+            "For research tasks, give Kimi a list of sources and a specific question; ask it to synthesize across all sources rather than answering from just one.",
+            "When accuracy is critical, ask Kimi to flag anything it's uncertain about instead of filling gaps with inference.",
+          ],
+          es: [
+            "Pegá el documento completo primero y luego hacé tu pregunta al final — Kimi lee todo antes de responder.",
+            "Usá marcadores de sección para ayudar a Kimi a navegar documentos grandes: etiquetá secciones con '=== Sección: [nombre] ===' para anclar claramente.",
+            "Para tareas con múltiples documentos, separalas claramente con encabezados e indicá cuál fuente priorizar si hay conflicto.",
+            "Pedile a Kimi que cite el fragmento específico del que extrae la respuesta — esto muestra exactamente dónde vive la respuesta en el documento.",
+            "Para tareas de investigación, dale a Kimi una lista de fuentes y una pregunta específica; pedile que sintetice entre todas las fuentes en lugar de responder de una sola.",
+            "Cuando la precisión es crítica, pedile a Kimi que marque lo que no está seguro en vez de llenar huecos con inferencia.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Long-document Q&A with source anchoring", es: "Q&A sobre documento largo con anclaje de fuente" },
+        purpose: "text",
+        target: "kimi",
+        prompt: {
+          en: `Answer questions about the document below using ONLY the content in the document.
+
+Rules:
+1. For each answer, quote the relevant passage (max 2 sentences) before your response.
+2. If the answer is not in the document, say: "Not found in document."
+3. If information appears in multiple sections, note each location.
+4. Do not add outside knowledge.
+5. If a question is ambiguous, ask one clarifying question before answering.
+
+=== Document Start ===
+[paste the full document here]
+=== Document End ===
+
+Question:
+[your question]`,
+          es: `Respondé preguntas sobre el documento de abajo usando SOLO el contenido del documento.
+
+Reglas:
+1. Para cada respuesta, citá el fragmento relevante (máx 2 oraciones) antes de tu respuesta.
+2. Si la respuesta no está en el documento, decí: "No encontrado en el documento."
+3. Si la información aparece en múltiples secciones, mencioná cada ubicación.
+4. No agregues conocimiento externo.
+5. Si una pregunta es ambigua, hacé una pregunta aclaratoria antes de responder.
+
+=== Inicio del documento ===
+[pegá el documento completo acá]
+=== Fin del documento ===
+
+Pregunta:
+[tu pregunta]`,
+        },
+      },
+      {
+        title: { en: "Multi-source research synthesis", es: "Síntesis de investigación con múltiples fuentes" },
+        purpose: "text",
+        target: "kimi",
+        prompt: {
+          en: `You will receive multiple sources. Synthesize them to answer the research question below.
+
+Research question: [your question]
+
+Sources:
+--- Source 1: [title or description] ---
+[paste source 1]
+
+--- Source 2: [title or description] ---
+[paste source 2]
+
+--- Source 3: [title or description] (optional) ---
+[paste source 3 or remove this section]
+
+Instructions:
+1. Answer based only on the provided sources — do not add outside knowledge.
+2. When sources agree, state the consensus and cite which sources agree.
+3. When sources conflict, state the disagreement explicitly and do not pick a side without evidence.
+4. End with: gaps — what the sources do NOT cover that would be needed for a complete answer.
+5. Keep the total response under 400 words.`,
+          es: `Vas a recibir múltiples fuentes. Sintetizalas para responder la pregunta de investigación de abajo.
+
+Pregunta de investigación: [tu pregunta]
+
+Fuentes:
+--- Fuente 1: [título o descripción] ---
+[pegá fuente 1]
+
+--- Fuente 2: [título o descripción] ---
+[pegá fuente 2]
+
+--- Fuente 3: [título o descripción] (opcional) ---
+[pegá fuente 3 o eliminá esta sección]
+
+Instrucciones:
+1. Respondé basándote solo en las fuentes provistas — no agregues conocimiento externo.
+2. Cuando las fuentes coincidan, enunciá el consenso y citá qué fuentes coinciden.
+3. Cuando las fuentes contradigan, enunciá el desacuerdo explícitamente y no elijas un lado sin evidencia.
+4. Terminá con: brechas — qué NO cubren las fuentes y que haría falta para una respuesta completa.
+5. Mantenés el total de la respuesta en menos de 400 palabras.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How large a document can I paste into Kimi?", es: "¿Qué tan largo puede ser el documento que pego en Kimi?" },
+        a: {
+          en: "Kimi's context window is large enough to handle book-length documents. For practical accuracy, focused questions on specific sections work better than open-ended 'tell me everything' prompts. If accuracy is critical, split very long documents into logical segments and query each segment separately before synthesizing.",
+          es: "La ventana de contexto de Kimi es lo suficientemente grande para manejar documentos del tamaño de un libro. Para precisión práctica, las preguntas enfocadas en secciones específicas funcionan mejor que los prompts abiertos del tipo 'contame todo'. Si la precisión es crítica, dividí documentos muy largos en segmentos lógicos y consultá cada segmento por separado antes de sintetizar.",
+        },
+      },
+      {
+        q: { en: "Does Kimi work well for technical research papers?", es: "¿Kimi funciona bien para artículos de investigación técnicos?" },
+        a: {
+          en: "Yes — Kimi handles technical language well and can track terminology across long academic documents. For research papers, specify exactly what you want: a summary of the methodology, the key findings, limitations, or a comparison with other cited works. 'Summarize this paper' is too vague; 'summarize the methodology section in 3 bullets and list the stated limitations' gives consistent results.",
+          es: "Sí — Kimi maneja bien el lenguaje técnico y puede rastrear terminología a lo largo de documentos académicos largos. Para artículos de investigación, especificá exactamente lo que querés: un resumen de la metodología, los hallazgos clave, las limitaciones o una comparación con otras obras citadas. 'Resumí este paper' es demasiado vago; 'resumí la sección de metodología en 3 bullets y listá las limitaciones declaradas' da resultados consistentes.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "data-analysis-prompts",
+    title: {
+      en: "AI prompts for data analysis: SQL, trends, and interpretation",
+      es: "Prompts de IA para análisis de datos: SQL, tendencias e interpretación",
+    },
+    description: {
+      en: "Prompt templates for data analysis tasks — generating SQL queries, interpreting results, spotting trends, and cleaning messy datasets.",
+      es: "Plantillas de prompts para tareas de análisis de datos — generación de SQL, interpretación de resultados, detección de tendencias y limpieza de datasets.",
+    },
+    sections: [
+      {
+        heading: { en: "Why data analysis prompts fail", es: "Por qué fallan los prompts de análisis de datos" },
+        bullets: {
+          en: [
+            "No schema provided: the model invents column names and table structures it doesn't have.",
+            "Underspecified goal: 'analyze this data' can mean dozens of things — specify what decision the analysis should support.",
+            "Missing constraints: no row limits, no date ranges, no filter criteria — the model guesses.",
+            "No output format: data analysis results need a specific format (table, SQL query, bullet summary) or they become walls of text.",
+            "No validation request: SQL can look correct and still have logic errors — always ask for a check step.",
+          ],
+          es: [
+            "Sin schema provisto: el modelo inventa nombres de columnas y estructuras de tablas que no tiene.",
+            "Objetivo poco especificado: 'analizá este dato' puede significar docenas de cosas — especificá qué decisión debe apoyar el análisis.",
+            "Sin restricciones: sin límites de filas, sin rangos de fechas, sin criterios de filtro — el modelo adivina.",
+            "Sin formato de salida: los resultados de análisis de datos necesitan un formato específico (tabla, query SQL, resumen en bullets) o se convierten en paredes de texto.",
+            "Sin pedido de validación: el SQL puede verse correcto y tener errores de lógica — siempre pedí un paso de verificación.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Parameters that make data prompts reliable", es: "Parámetros que hacen los prompts de datos confiables" },
+        bullets: {
+          en: [
+            "Always provide the schema: table name, column names, data types, and a 2-3 row sample.",
+            "State the decision: 'The output will be used to decide [X]' gives the model the right level of detail to target.",
+            "Specify output format: query only, table, or bullet list with key numbers.",
+            "Ask for a logic check: 'Explain what the query does and flag any assumptions you made about the data.'",
+            "For trend analysis: specify the time grain (daily/weekly/monthly) and the metric definition explicitly.",
+          ],
+          es: [
+            "Siempre provee el schema: nombre de tabla, nombres de columnas, tipos de datos y una muestra de 2-3 filas.",
+            "Enunciá la decisión: 'El output se usará para decidir [X]' le da al modelo el nivel de detalle correcto a apuntar.",
+            "Especificá el formato de salida: solo query, tabla o lista de bullets con números clave.",
+            "Pedí una verificación de lógica: 'Explicá qué hace el query y marcá los supuestos que hiciste sobre los datos.'",
+            "Para análisis de tendencias: especificá el grano temporal (diario/semanal/mensual) y la definición de la métrica explícitamente.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "SQL query from plain-English requirements", es: "Query SQL a partir de requisitos en lenguaje natural" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `Write a SQL query for the following requirement.
+
+Database: [PostgreSQL / MySQL / SQLite — specify]
+
+Table schema:
+Table name: [name]
+Columns: [column_name (type), column_name (type), ...]
+Sample rows (2-3):
+[paste 2-3 rows]
+
+Requirement:
+[describe what the query should return in plain English]
+
+Constraints:
+- Filter to: [date range / status / category — specify or remove]
+- Limit results to: [number] rows if no specific filter
+- Sort by: [column and direction]
+
+Output:
+1. The SQL query.
+2. A plain-English explanation of what it does (2-3 sentences).
+3. Assumptions you made about the data.
+4. Any edge cases this query does not handle.`,
+          es: `Escribí un query SQL para el siguiente requisito.
+
+Base de datos: [PostgreSQL / MySQL / SQLite — especificá]
+
+Schema de tabla:
+Nombre de tabla: [nombre]
+Columnas: [nombre_columna (tipo), nombre_columna (tipo), ...]
+Filas de muestra (2-3):
+[pegá 2-3 filas]
+
+Requisito:
+[describí en lenguaje natural qué debe devolver el query]
+
+Restricciones:
+- Filtrar por: [rango de fechas / estado / categoría — especificá o eliminá]
+- Limitar resultados a: [número] filas si no hay filtro específico
+- Ordenar por: [columna y dirección]
+
+Salida:
+1. El query SQL.
+2. Una explicación en lenguaje natural de qué hace (2-3 oraciones).
+3. Supuestos que hiciste sobre los datos.
+4. Casos límite que este query no maneja.`,
+        },
+      },
+      {
+        title: { en: "Trend analysis and interpretation", es: "Análisis e interpretación de tendencias" },
+        purpose: "data",
+        target: "claude",
+        prompt: {
+          en: `Analyze the data below and identify meaningful trends.
+
+Metric: [what is being measured]
+Time grain: [daily / weekly / monthly]
+Period: [start date] to [end date]
+Decision this analysis supports: [one sentence on what you will decide with this]
+
+Data:
+[paste data as CSV, table, or bullet list]
+
+Output:
+1. The main trend in 1-2 sentences (direction, magnitude, notable changes).
+2. Up to 3 specific observations worth investigating (not generic statements — name the exact time period or data point).
+3. What the data does NOT tell you (limitations, missing context).
+4. One follow-up question to answer before acting on this data.
+
+Constraints:
+- Do not speculate about causes unless the data explicitly supports it.
+- If a trend has contradictory signals, note the contradiction instead of picking one.
+- Keep the total response under 250 words.`,
+          es: `Analizá los datos de abajo e identificá tendencias significativas.
+
+Métrica: [qué se está midiendo]
+Grano temporal: [diario / semanal / mensual]
+Período: [fecha de inicio] al [fecha de fin]
+Decisión que apoya este análisis: [una oración sobre qué decidirás con esto]
+
+Datos:
+[pegá datos en CSV, tabla o lista de bullets]
+
+Salida:
+1. La tendencia principal en 1-2 oraciones (dirección, magnitud, cambios notables).
+2. Hasta 3 observaciones específicas que vale la pena investigar (no enunciados genéricos — nombrá el período o punto de dato exacto).
+3. Qué NO te dicen los datos (limitaciones, contexto faltante).
+4. Una pregunta de seguimiento a responder antes de actuar sobre estos datos.
+
+Restricciones:
+- No especules sobre causas salvo que los datos las soporten explícitamente.
+- Si una tendencia tiene señales contradictorias, notá la contradicción en vez de elegir una.
+- Mantenés el total de la respuesta en menos de 250 palabras.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Which AI model is best for SQL generation?", es: "¿Qué modelo de IA es mejor para generación de SQL?" },
+        a: {
+          en: "For SQL generation, GPT and Claude are both strong. GPT tends to write cleaner queries quickly; Claude handles complex multi-step logic well and is more likely to flag ambiguities in the schema. For data interpretation, Claude's tendency to note uncertainty is useful — it will flag when the data doesn't support a strong conclusion instead of speculating.",
+          es: "Para generación de SQL, GPT y Claude son ambos sólidos. GPT tiende a escribir queries limpios rápidamente; Claude maneja bien la lógica compleja de múltiples pasos y es más propenso a señalar ambigüedades en el schema. Para interpretación de datos, la tendencia de Claude a notar incertidumbre es útil — señalará cuando los datos no apoyan una conclusión fuerte en vez de especular.",
+        },
+      },
+      {
+        q: { en: "How do I avoid hallucinated column names in SQL prompts?", es: "¿Cómo evito nombres de columnas inventados en prompts SQL?" },
+        a: {
+          en: "Always paste the exact schema — table name, column names, types, and at least 2 sample rows. The model cannot invent a name it can see in front of it. If you add the constraint 'Use only the column names listed in the schema above — do not invent new ones,' most models will respect it. For critical queries, ask it to list all column names it used and verify them against the schema.",
+          es: "Siempre pegá el schema exacto — nombre de tabla, nombres de columnas, tipos y al menos 2 filas de muestra. El modelo no puede inventar un nombre que puede ver delante. Si agregás la restricción 'Usá solo los nombres de columnas listados en el schema de arriba — no inventes nuevos', la mayoría de los modelos lo respetará. Para queries críticos, pedile que liste todos los nombres de columnas que usó y verificalos contra el schema.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-learning",
+    title: {
+      en: "AI prompts for learning: tutoring, concept checks, and study guides",
+      es: "Prompts de IA para aprender: tutoría, checks de concepto y guías de estudio",
+    },
+    description: {
+      en: "Prompt templates that turn AI into a patient tutor — for explaining concepts, testing understanding, building study plans, and connecting new material to what you already know.",
+      es: "Plantillas de prompts que convierten la IA en un tutor paciente — para explicar conceptos, testear comprensión, construir planes de estudio y conectar material nuevo con lo que ya sabés.",
+    },
+    sections: [
+      {
+        heading: { en: "Why AI tutoring prompts fail", es: "Por qué fallan los prompts de tutoría con IA" },
+        bullets: {
+          en: [
+            "No level specified: the model can't calibrate whether 'explain recursion' means explain it to a beginner or a senior developer.",
+            "No prior knowledge stated: without knowing what you already understand, the model either over-explains basics or skips foundational steps.",
+            "No check step: explanations with no comprehension check leave gaps — you don't know what you missed.",
+            "Single pass only: one explanation is rarely enough for hard concepts; prompts that invite follow-up are more effective.",
+            "Too broad: 'help me learn machine learning' produces a reading list; a focused topic with a specific question produces understanding.",
+          ],
+          es: [
+            "Sin nivel especificado: el modelo no puede calibrar si 'explicá recursión' significa explicársela a un principiante o a un desarrollador senior.",
+            "Sin conocimiento previo declarado: sin saber qué ya entendés, el modelo o sobre-explica conceptos básicos o saltea pasos fundamentales.",
+            "Sin paso de verificación: las explicaciones sin check de comprensión dejan huecos — no sabés qué perdiste.",
+            "Solo una pasada: una explicación raramente es suficiente para conceptos difíciles; los prompts que invitan al seguimiento son más efectivos.",
+            "Demasiado amplio: 'ayudame a aprender machine learning' produce una lista de lecturas; un tema enfocado con una pregunta específica produce comprensión.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What makes AI tutoring effective", es: "Qué hace efectiva la tutoría con IA" },
+        bullets: {
+          en: [
+            "State your level and what you already know — this is the single most useful signal for calibration.",
+            "Ask for examples first, then the principle: concrete cases are easier to reason from than abstract definitions.",
+            "Request a comprehension check at the end: 'Give me 2 questions to test whether I understood this correctly.'",
+            "Use the Feynman test prompt: ask the model to explain what you just learned as if you need to teach it to someone else — gaps become obvious.",
+            "If something doesn't click, describe what is confusing specifically — 'I don't understand X because Y' gets better help than 'explain again'.",
+            "For complex topics, ask for a concept map: 'Draw the relationships between these ideas before explaining each one.'",
+          ],
+          es: [
+            "Declarás tu nivel y lo que ya sabés — esta es la señal de calibración más útil.",
+            "Pedís ejemplos primero, luego el principio: los casos concretos son más fáciles de razonar que las definiciones abstractas.",
+            "Solicitás un check de comprensión al final: 'Dame 2 preguntas para testear si entendí esto correctamente.'",
+            "Usás el prompt del test de Feynman: pedile al modelo que explique lo que acabás de aprender como si necesitaras enseñárselo a alguien — los huecos se vuelven obvios.",
+            "Si algo no hace click, describís específicamente qué es lo confuso — 'No entiendo X porque Y' obtiene mejor ayuda que 'explicá de nuevo'.",
+            "Para temas complejos, pedís un mapa conceptual: 'Dibujá las relaciones entre estas ideas antes de explicar cada una.'",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Calibrated concept explanation", es: "Explicación calibrada de un concepto" },
+        purpose: "study",
+        target: "claude",
+        prompt: {
+          en: `Explain [concept] to me.
+
+My level: [complete beginner / familiar with basics / intermediate — pick one]
+What I already know: [describe in 1-2 sentences, or 'nothing yet']
+Goal: [why you're learning this — e.g. 'to use it in my Python scripts' / 'for a job interview']
+
+Instructions:
+1. Start with a concrete real-world example before the formal definition.
+2. Explain using analogies to [something I'm already familiar with, e.g. spreadsheets / cooking / building construction].
+3. Show a simple worked example.
+4. Highlight the 1-2 most common mistakes beginners make.
+5. End with: 2 short questions that test whether I actually understood, not just memorized.`,
+          es: `Explicame [concepto].
+
+Mi nivel: [principiante completo / familiarizado con los básicos / intermedio — elegí uno]
+Lo que ya sé: [describí en 1-2 oraciones, o 'nada todavía']
+Objetivo: [por qué estás aprendiendo esto — ej. 'para usarlo en mis scripts de Python' / 'para una entrevista de trabajo']
+
+Instrucciones:
+1. Empezás con un ejemplo concreto del mundo real antes de la definición formal.
+2. Explicás usando analogías con [algo con lo que ya estoy familiarizado, ej. planillas / cocina / construcción].
+3. Mostrás un ejemplo simple resuelto.
+4. Destacás los 1-2 errores más comunes que cometen los principiantes.
+5. Terminás con: 2 preguntas cortas que testean si realmente lo entendí, no solo lo memoricé.`,
+        },
+      },
+      {
+        title: { en: "Study plan for a specific topic", es: "Plan de estudio para un tema específico" },
+        purpose: "study",
+        target: "gpt",
+        prompt: {
+          en: `Build a focused study plan for me.
+
+Topic: [what you want to learn]
+My current level: [beginner / some familiarity / intermediate]
+Time available: [hours per week] for [number of weeks]
+Goal: [what you want to be able to DO at the end — specific task, not 'understand it better']
+
+Output format:
+1. Learning path: ordered list of sub-topics (most foundational first).
+2. For each sub-topic: one practice exercise I can do to confirm I understand it.
+3. The 3 resources to prioritize (type only: 'video tutorial', 'hands-on project', 'official docs' — do not recommend specific paid resources).
+4. Weekly milestone: what I should be able to do after each week.
+5. Warning: one common mistake people make when learning this that delays progress.
+
+Constraints:
+- Keep the plan achievable in the time I specified.
+- Do not pad with optional 'nice to have' topics.
+- If my time is too short for the goal, say so directly and suggest a reduced scope.`,
+          es: `Construime un plan de estudio enfocado.
+
+Tema: [qué querés aprender]
+Mi nivel actual: [principiante / alguna familiaridad / intermedio]
+Tiempo disponible: [horas por semana] durante [número de semanas]
+Objetivo: [qué querés poder HACER al final — tarea específica, no 'entenderlo mejor']
+
+Formato de salida:
+1. Ruta de aprendizaje: lista ordenada de sub-temas (el más fundamental primero).
+2. Por cada sub-tema: un ejercicio práctico que puedo hacer para confirmar que lo entendí.
+3. Los 3 recursos a priorizar (solo tipo: 'tutorial en video', 'proyecto práctico', 'documentación oficial' — no recomendés recursos de pago específicos).
+4. Hito semanal: qué debería poder hacer después de cada semana.
+5. Advertencia: un error común que comete la gente cuando aprende esto y que retrasa el progreso.
+
+Restricciones:
+- Mantené el plan alcanzable en el tiempo que especifiqué.
+- No rellenes con temas opcionales 'nice to have'.
+- Si mi tiempo es demasiado corto para el objetivo, decilo directamente y sugerí un alcance reducido.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Is AI a good replacement for a human tutor?", es: "¿La IA reemplaza bien a un tutor humano?" },
+        a: {
+          en: "For structured content that doesn't require hands-on feedback — concepts, worked examples, practice problems — AI tutors are genuinely useful and available at any hour. For skills that need real-time observation (public speaking, physical technique, lab work) or mentorship on career and judgment calls, a human tutor is much better. The highest-value AI tutoring use case is the thing you'd be embarrassed to ask a human 20 times: explaining the same concept differently until it clicks.",
+          es: "Para contenido estructurado que no requiere retroalimentación práctica — conceptos, ejemplos resueltos, problemas de práctica — los tutores de IA son genuinamente útiles y están disponibles a cualquier hora. Para habilidades que necesitan observación en tiempo real (oratoria, técnica física, trabajo de laboratorio) o mentoría en carrera y decisiones de criterio, un tutor humano es mucho mejor. El caso de uso de mayor valor en la tutoría con IA es lo que te daría vergüenza preguntarle a un humano 20 veces: explicar el mismo concepto de distintas maneras hasta que haga click.",
+        },
+      },
+      {
+        q: { en: "How do I know if AI explanations are accurate?", es: "¿Cómo sé si las explicaciones de la IA son correctas?" },
+        a: {
+          en: "AI explanations can be wrong, especially on niche topics, cutting-edge research, or precise technical details. Cross-check key claims against official documentation or authoritative sources. Ask the model to flag its uncertainty: 'Mark anything you're not confident about.' For foundational topics in well-established fields (standard algorithms, core language features, classical physics), accuracy is generally high. For anything recent or specialized, verify before relying on it.",
+          es: "Las explicaciones de la IA pueden estar equivocadas, especialmente en temas de nicho, investigación de vanguardia o detalles técnicos precisos. Verificá afirmaciones clave contra documentación oficial o fuentes autorizadas. Pedile al modelo que marque su incertidumbre: 'Marcá todo sobre lo que no estés seguro.' Para temas fundamentales en campos bien establecidos (algoritmos estándar, características centrales de lenguajes, física clásica), la precisión generalmente es alta. Para cualquier cosa reciente o especializada, verificá antes de confiar en ello.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
