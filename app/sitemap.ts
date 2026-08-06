@@ -33,12 +33,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   for (const lang of LOCALES) {
     const corePaths = [
       `/${lang}`,
+      `/${lang}/best-ai`,
       `/${lang}/changelog`,
       `/${lang}/privacy`,
       `/${lang}/prompts`,
       `/${lang}/prompts/study`,
       `/${lang}/prompts/text`,
       `/${lang}/prompts/data`,
+      `/${lang}/prompts/code`,
+      `/${lang}/prompts/image`,
+      `/${lang}/prompts/marketing`,
       `/${lang}/guides`,
       `/${lang}/models`,
       `/${lang}/glossary`,

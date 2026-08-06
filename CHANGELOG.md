@@ -4,6 +4,30 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.3.2 — 2026-08-06
+
+Weekly update: three new SEO guides (Kimi prompts, data analysis prompts, AI learning prompts) and a sitemap completeness fix — four public routes (`/best-ai`, `/prompts/code`, `/prompts/image`, `/prompts/marketing`) were missing from `sitemap.xml`.
+
+### Added
+- **New guide: Prompts for Kimi** (`/guides/kimi-prompt-guide`) — how to use Kimi's large context window for long-document Q&A, multi-source research synthesis, and precise document anchoring. Covers section marking, source citation, and handling conflicting sources. Templates: long-document Q&A with source anchoring, and multi-source research synthesis.
+- **New guide: AI prompts for data analysis** (`/guides/data-analysis-prompts`) — prompt templates for SQL generation, trend identification, and data interpretation. Covers schema provision, constraint specification, logic verification, and avoiding hallucinated column names. Templates: SQL query from plain-English requirements, and trend analysis and interpretation.
+- **New guide: AI prompts for learning** (`/guides/ai-prompts-for-learning`) — how to use AI as a calibrated tutor for explaining concepts, testing comprehension, and building study plans. Covers level calibration, the Feynman test prompt, and accuracy verification. Templates: calibrated concept explanation, and study plan for a specific topic.
+
+### Fixed
+- **Sitemap completeness** (`app/sitemap.ts`): four public routes were absent from `sitemap.xml` — `/[lang]/best-ai`, `/[lang]/prompts/code`, `/[lang]/prompts/image`, and `/[lang]/prompts/marketing`. All four are now included with appropriate `changeFrequency` and `priority` values. This is a pure SEO improvement; no routing or content was changed.
+
+### Changed
+- Version bumped to `v1.3.2` (`package.json`, `package-lock.json`, `lib/version.ts`).
+- **Guides index SEO description** updated to mention Kimi, data analysis, and AI learning prompts.
+
+### Validated
+- `npm run lint` — clean (no new errors introduced)
+- `npm test` — see PR description
+- `npm run typecheck` — see PR description
+- `npm run build` — see PR description
+
+---
+
 ## v1.3.1 — 2026-08-04
 
 Post-release polish for v1.3.0: the public changelog page catches up, and the two features new users hit first (voice dictation and the Best-AI mode) explain themselves better.
