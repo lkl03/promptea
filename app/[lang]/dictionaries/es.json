@@ -187,6 +187,7 @@
   },
   "blog": {
     "sectionName": "IA al Día",
+    "eyebrow": "Blog",
     "tagline": "Una noticia de IA verificada, cada mañana.",
     "indexTitle": "IA al Día",
     "indexDescription": "La novedad de IA más relevante del día, chequeada contra fuentes primarias y contada en criollo — para que sepas qué cambió y qué significa para tus prompts.",
@@ -243,11 +244,14 @@
     "filters": {
       "heading": "Buscá una historia",
       "searchLabel": "Buscar",
+      "searchAction": "Buscar",
       "searchPlaceholder": "Buscá en títulos, bajadas y etiquetas…",
+      "moreFilters": "Filtros",
+      "activeCount": "{n} filtro(s) activo(s)",
       "companyLabel": "Empresa",
       "allCompanies": "Todas las empresas",
       "editionLabel": "Edición",
-      "allEditions": "Todas las ediciones",
+      "allEditions": "Todas",
       "categoryLabel": "Categoría",
       "allCategories": "Todas las categorías",
       "fromLabel": "Desde",
