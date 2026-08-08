@@ -254,3 +254,115 @@ export type AppFeedbackCategory = (typeof APP_FEEDBACK_CATEGORIES)[number];
 export function isAppFeedbackCategory(v: unknown): v is AppFeedbackCategory {
   return APP_FEEDBACK_CATEGORIES.includes(v as AppFeedbackCategory);
 }
+
+// ---------------------------------------------------------------------------
+// AI Daily editorial blog (v1.4.0)
+//
+// Every union the blog needs lives here so the Zod schemas in lib/blog/types.ts,
+// the Firestore reader, and the UI cannot drift. Same rule as the rest of this
+// file: readonly array + derived type + guard.
+// ---------------------------------------------------------------------------
+
+/**
+ * Publication lifecycle. Only `published` and `corrected` are publicly visible;
+ * `draft` and `archived` are hidden from the feed, article routes, sitemap and
+ * the RSS feed.
+ */
+export const BLOG_STATUSES = ["draft", "published", "corrected", "archived"] as const;
+export type BlogStatus = (typeof BLOG_STATUSES)[number];
+
+export function isBlogStatus(v: unknown): v is BlogStatus {
+  return BLOG_STATUSES.includes(v as BlogStatus);
+}
+
+/** Statuses that render publicly. Used by every public query and by the sitemap. */
+export const PUBLIC_BLOG_STATUSES = ["published", "corrected"] as const;
+export type PublicBlogStatus = (typeof PUBLIC_BLOG_STATUSES)[number];
+
+export function isPubliclyVisible(status: unknown): status is PublicBlogStatus {
+  return PUBLIC_BLOG_STATUSES.includes(status as PublicBlogStatus);
+}
+
+/** Editorial category of the day's story. */
+export const BLOG_CATEGORIES = [
+  "model-release",
+  "product",
+  "research",
+  "policy",
+  "funding",
+  "infrastructure",
+  "security",
+  "developer-tools",
+  "digest",
+  "other",
+] as const;
+export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
+
+export function isBlogCategory(v: unknown): v is BlogCategory {
+  return BLOG_CATEGORIES.includes(v as BlogCategory);
+}
+
+/**
+ * Editorial priority, per the routine's scoring rubric.
+ * P0 breaking/industry-shaping, P1 major, P2 useful.
+ */
+export const BLOG_IMPORTANCE = ["P0", "P1", "P2"] as const;
+export type BlogImportance = (typeof BLOG_IMPORTANCE)[number];
+
+export function isBlogImportance(v: unknown): v is BlogImportance {
+  return BLOG_IMPORTANCE.includes(v as BlogImportance);
+}
+
+/**
+ * Source classification. `primary` on the source object is the authoritative
+ * "is this a first-party source" flag; sourceType records what kind it is so
+ * the article can visually distinguish an official model card from reporting.
+ */
+export const BLOG_SOURCE_TYPES = [
+  "announcement",
+  "documentation",
+  "model-card",
+  "research-paper",
+  "changelog",
+  "repository",
+  "regulatory",
+  "reporting",
+  "other",
+] as const;
+export type BlogSourceType = (typeof BLOG_SOURCE_TYPES)[number];
+
+export function isBlogSourceType(v: unknown): v is BlogSourceType {
+  return BLOG_SOURCE_TYPES.includes(v as BlogSourceType);
+}
+
+/**
+ * Block kinds allowed in an article body. The renderer supports exactly these
+ * and nothing else — there is no HTML passthrough anywhere in the pipeline.
+ */
+export const BLOG_BLOCK_TYPES = ["paragraph", "heading", "list", "quote"] as const;
+export type BlogBlockType = (typeof BLOG_BLOCK_TYPES)[number];
+
+export function isBlogBlockType(v: unknown): v is BlogBlockType {
+  return BLOG_BLOCK_TYPES.includes(v as BlogBlockType);
+}
+
+/** Terminal outcome of one routine run, recorded in `blog_runs`. */
+export const BLOG_RUN_STATUSES = [
+  "PUBLISHED",
+  "ALREADY_PUBLISHED",
+  "NO_ELIGIBLE_STORY",
+  "RESEARCH_FAILED",
+  "VERIFICATION_FAILED",
+  "PUBLICATION_FAILED",
+] as const;
+export type BlogRunStatus = (typeof BLOG_RUN_STATUSES)[number];
+
+export function isBlogRunStatus(v: unknown): v is BlogRunStatus {
+  return BLOG_RUN_STATUSES.includes(v as BlogRunStatus);
+}
+
+/** Editorial author shown publicly. Never a fabricated human byline. */
+export const BLOG_AUTHOR = "Promptea Editorial" as const;
+
+/** The editorial timezone that defines "today" for the freshness guard. */
+export const EDITORIAL_TIMEZONE = "America/Argentina/Buenos_Aires" as const;
