@@ -29,6 +29,7 @@ export default function Footer({
   const guidesLabel = lang === "es" ? "Guías" : "Guides";
   const modelsLabel = lang === "es" ? "Modelos" : "Models";
   const glossaryLabel = lang === "es" ? "Glosario" : "Glossary";
+  const blogLabel = lang === "es" ? "IA al Día" : "AI Daily";
   const resourcesLabel = lang === "es" ? "Recursos útiles" : "Useful resources";
   const eterlabMessage = lang === "es" ? "diseñado y desarrollado por" : "designed and developed by";
   const followLabel = lang === "es" ? "Seguinos en X" : "Follow us on X";
@@ -99,6 +100,10 @@ export default function Footer({
 
         <Link href={`/${lang}/glossary`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {glossaryLabel}
+        </Link>
+
+        <Link href={`/${lang}/blog`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {blogLabel}
         </Link>
 
         <Link href={`/${lang}/landing/prompt-analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">
