@@ -4,6 +4,36 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.0 — 2026-08-08
+
+**AI Daily**: Promptea gains a bilingual editorial section — one verified, source-backed story about AI per day, at `/en/blog` and `/es/blog`. Articles live in Firestore (collection `blog_posts`) instead of being shipped as static content, they are published through a signed internal API by an automated routine that never holds Firebase credentials, and a same-day freshness rule keeps the section from quietly going stale.
+
+### Added
+- **AI Daily section** (`/[lang]/blog`) — a bilingual, paginated index of published articles plus per-article pages at `/[lang]/blog/[slug]`. Content is read from Firestore (`blog_posts`), server-rendered and ISR-cached. If Firestore is unreachable the section renders empty; the rest of the site is unaffected and the build still succeeds.
+- **Source-backed article pages** — each article shows its sources (title, publisher, link, primary/secondary), a "why this matters" block, key takeaways, estimated reading time, and a visible correction notice when one has been issued. A story with a single source must carry an explicit justification for it.
+- **Publication states** — `draft`, `published`, `corrected`, `archived`. Only `published` and `corrected` are public; drafts and archived posts are excluded from listings, article routes, the sitemap, and the feeds.
+- **Same-day freshness guard** — an article's verified *event* date must equal its publication date in `America/Argentina/Buenos_Aires`. The event date is stored separately from the publication timestamp, and stale stories are rejected server-side rather than merely hidden in the UI.
+- **Internal publishing API** (`POST /api/internal/blog/publish`) — authenticated with HMAC-SHA256 request signing over the raw body, a ±5-minute replay window, single-use nonce rejection, and a payload-size limit. Firebase credentials stay server-side; the automated publishing routine holds only a publish-only secret.
+- **Idempotent daily publication** — the Firestore document id is derived from the editorial date and creation runs inside a transaction, so a retried or duplicated run cannot create a second article for the same day.
+- **Blog SEO** — per-article canonical URL with EN/ES `hreflang` alternates, `NewsArticle` and `BreadcrumbList` structured data, sitemap integration for every published article, an RSS 2.0 feed per locale, and generated OpenGraph cover images.
+- **Run log** (collection `blog_runs`) — one typed outcome recorded per execution: `PUBLISHED`, `ALREADY_PUBLISHED`, `NO_ELIGIBLE_STORY`, `RESEARCH_FAILED`, `VERIFICATION_FAILED`, `PUBLICATION_FAILED`.
+
+### Changed
+- `sitemap.xml` now covers the blog index and every published article per locale, degrading to the previous static route set when Firestore is unavailable.
+- README documents the AI Daily methodology, the primary/secondary source-verification policy, the manual publish and correction procedures, the run-outcome troubleshooting table, and the new `BLOG_PUBLISH_SECRET` variable.
+- Version bumped to `v1.4.0` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Fixed
+- **Public changelog page drift** (`app/[lang]/changelog/page.tsx`): the page had fallen one release behind — its newest card was v1.3.1 while `CHANGELOG.md`, `package.json`, `package-lock.json` and `lib/version.ts` were all at v1.3.2. The missing v1.3.2 card (three new SEO guides + the sitemap completeness fix) was reconstructed from release history and inserted, and this release's card sits above it. The drift was possible because the version-sync suite checks the manifests and `CHANGELOG.md` but not the rendered changelog page.
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on the files changed in this release
+- `npm test` — `lib/__tests__/version.sync.test.ts` passes at v1.4.0; full suite see PR description
+- `npm run build` — see PR description
+
+---
+
 ## v1.3.2 — 2026-08-06
 
 Weekly update: three new SEO guides (Kimi prompts, data analysis prompts, AI learning prompts) and a sitemap completeness fix — four public routes (`/best-ai`, `/prompts/code`, `/prompts/image`, `/prompts/marketing`) were missing from `sitemap.xml`.
