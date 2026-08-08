@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.4.1 (2026-08-08)
+## Latest update — v1.4.2 (2026-08-08)
 
-**AI Daily grows an archive and a week.** The index gains reader-facing search and filtering — by text, company, edition, category and date range, with sorting — built as a plain `GET` form, so every filtered view is a real shareable, crawlable URL that works without JavaScript. Two weekly editions join the daily story: a Saturday week-in-review and a Sunday week-ahead. And a daily story about an earlier event can now be published deliberately, with a stated reason rendered on the article, capped at 14 days. See [AI Daily](#ai-daily) below and the [changelog](./CHANGELOG.md).
+**The AI Daily index reads like a blog, not a control panel.** A design pass over the section shipped in v1.4.1: the filter panel gives way to a single prominent search field matching the homepage input, the remaining filters (company, edition, category, date range, sorting) collapse into a compact secondary control with their behaviour unchanged, and the listing is rebuilt as a spacious single-column editorial read. The featured-article treatment is held back until the archive is large enough to justify it — until then the index simply shows the latest articles. See [AI Daily](#ai-daily) below and the [changelog](./CHANGELOG.md).
 
-_Previous update: v1.4.0 (2026-08-08) — the AI Daily section itself: one verified, source-backed story about AI per day at `/en/blog` and `/es/blog`, Firestore-backed, published through a signed internal API._
+_Previous update: v1.4.1 (2026-08-08) — reader-facing search and filtering on the AI Daily index as a plain `GET` form (every filtered view a shareable, crawlable URL), two weekly editions alongside the daily story, and disclosed backdating capped at 14 days._
 
 ## How it works
 

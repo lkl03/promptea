@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 08-08-2026" : "Released: 2026-08-08"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "AI Daily ahora se abre con un buscador grande y a la vista, igual al de la página principal: entrás, escribís y listo, sin tener que pasar por un panel de opciones."
+              : "AI Daily now opens with one big, obvious search box, the same one you use on the homepage: you arrive, you type, done — no panel of options to get past first."}
+          </li>
+          <li>
+            {isEs
+              ? "Los filtros por empresa, edición, categoría y fechas siguen estando y funcionan igual que antes, pero ahora quedan guardados en un control chiquito, sin ocupar la parte de arriba de la página."
+              : "The filters by company, edition, category, and date are all still there and work exactly as before — they just tuck into a small control now instead of taking over the top of the page."}
+          </li>
+          <li>
+            {isEs
+              ? "La lista de notas se rediseñó en una sola columna, más ancha y más aireada: se lee de corrido, como un blog, y no como una grilla apretada."
+              : "The article list was redesigned as a single, wider, airier column: it reads straight down like a blog instead of as a tight grid."}
+          </li>
+          <li>
+            {isEs
+              ? "Por ahora el índice muestra simplemente las notas más recientes primero. La nota “destacada” vuelve cuando el archivo sea lo bastante grande como para que destacar una signifique algo."
+              : "For now the index simply shows the most recent stories first. The “featured” story comes back once the archive is big enough for singling one out to actually mean something."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.1 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

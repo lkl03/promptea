@@ -4,6 +4,24 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.2 — 2026-08-08
+
+**The AI Daily index reads like a blog, not a control panel.** v1.4.1 gave the section real filtering; it also gave the index a filter panel that greeted every reader with a row of controls before a single headline. This release is a design pass over that same page: the filtering behaviour is untouched, but the search field is promoted to the top as the one obvious way in, the remaining filters step back into a compact secondary control, and the article list is rebuilt as a spacious single-column editorial read. Nothing about what you can filter by has changed — only how much of it the page puts in front of you.
+
+### Changed
+- **Search promoted to the primary control on the AI Daily index** (`/[lang]/blog`) — the filter panel is replaced by a single prominent search field styled to match the prompt input on the homepage, so the section opens with one clear action instead of a form. Company, edition, category, date-range and sorting are unchanged in behaviour and still live in the query string; they now sit behind a compact, low-profile control rather than occupying the top of the page.
+- **Article listing rebuilt as a single-column editorial list** — wider measure, more vertical breathing room, and a stronger typographic hierarchy between headline, deck and metadata, replacing the denser grid-style listing. The result is a page you read down rather than scan across.
+- **Featured-article treatment held back until the archive earns it** — the index simply shows the latest articles, newest first. A dedicated lead-story treatment only makes sense once there is enough published history for a "featured" pick to mean something; with an archive this young it would have singled out an article for no editorial reason. It returns when the archive is large enough to justify it.
+- Version bumped to `v1.4.2` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npx tsc --noEmit` — clean
+- `npx eslint` — clean on the files changed in this release
+- `npm test` — `lib/__tests__/version.sync.test.ts` passes at v1.4.2; full suite see PR description
+- `npm run build` — see PR description
+
+---
+
 ## v1.4.1 — 2026-08-08
 
 **AI Daily grows an archive and a week.** The section shipped in v1.4.0 as a single daily story with a chronological index; three days in, that index is already something you need to search rather than scroll. This release adds reader-facing filtering built as a plain GET form — every filtered view is a real, shareable, crawlable URL that works without JavaScript — plus two weekly editions (a Saturday week-in-review and a Sunday week-ahead) alongside the daily story, and a disclosed backdate mechanism for the case the same-day rule was too strict for: a genuinely important event that surfaced late.
