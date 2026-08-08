@@ -767,3 +767,120 @@ html {
 /* Legacy animation class names still referenced by untouched components. */
 .bg-wash { display: none; }
 .bg-orb-1, .bg-orb-2, .bg-orb-3 { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.4.2 — AI Daily editorial index
+
+   Additive only. Consumed by app/[lang]/blog/page.tsx,
+   components/blog/BlogFilters.tsx and components/blog/ArticleCardItem.tsx.
+
+   Everything here is state + motion. Layout, spacing and colour stay in the
+   markup as Tailwind utilities, and these rules live in @layer components so a
+   utility can still win — the unlayered blocks above this file's theme section
+   would otherwise outrank every utility.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* ── Facet chip: a .pill rendered as a navigation <Link> ─────────────────
+     `aria-pressed` belongs to buttons; a link that represents the current view
+     states itself with `aria-current`, so it needs the same selected skin.
+     The hover rule has to out-specify `.pill:hover:not([aria-pressed="true"])`
+     (0,4,1), which would otherwise paint --ink text on an --ink background. */
+  .pill[aria-current="page"] {
+    background: var(--ink);
+    color: var(--canvas);
+    border-color: var(--ink);
+    font-weight: 600;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .pill[aria-current="page"]:hover:not(:disabled):not([aria-pressed="true"]) {
+      color: var(--canvas);
+      border-color: var(--ink);
+    }
+  }
+
+  /* ── <details> disclosure styled as a chip ───────────────────────────────
+     The native marker is replaced by our own chevron so the summary can be a
+     .pill. `list-style: none` covers Firefox; the pseudo-elements cover
+     WebKit/Blink. No JavaScript is involved — this is the platform widget. */
+  .summary-pill {
+    cursor: pointer;
+    list-style: none;
+  }
+  .summary-pill::-webkit-details-marker {
+    display: none;
+  }
+  .summary-pill::marker {
+    content: "";
+  }
+  .summary-chevron {
+    transition: transform 180ms var(--ease-out-strong);
+  }
+  details[open] > .summary-pill .summary-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ── Editorial list rows ─────────────────────────────────────────────────
+     One link per row, so the hover state has to read as "this whole band is
+     the target". A background tint plus a headline colour shift does that
+     without moving anything the eye is trying to read; only the trailing
+     arrow translates. This page is revisited daily — that is the whole budget. */
+  .blog-row {
+    transition: background-color 180ms ease;
+  }
+  .blog-lead {
+    transition: border-color 200ms ease;
+  }
+  .blog-row-title {
+    transition: color 180ms ease;
+  }
+  .blog-row-arrow {
+    transition: transform 180ms var(--ease-out-strong);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .blog-row:hover {
+      background: var(--surface-soft);
+    }
+    .blog-lead:hover {
+      border-color: var(--line-strong);
+    }
+    .blog-row:hover .blog-row-title,
+    .blog-lead:hover .blog-row-title {
+      color: var(--accent);
+    }
+    .blog-row:hover .blog-row-arrow,
+    .blog-lead:hover .blog-row-arrow {
+      transform: translateX(3px);
+    }
+  }
+}
+
+/* Metro: a selected facet chip is a solid azure tile, exactly like every other
+   selected pill in this theme. Unlayered, to sit with the other Metro overrides. */
+[data-theme="metro"] .pill[aria-current="page"],
+.metro .pill[aria-current="page"] {
+  background: #0078d7;
+  color: #ffffff;
+  border-color: #0078d7;
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-theme="metro"] .pill[aria-current="page"]:hover,
+  .metro .pill[aria-current="page"]:hover {
+    color: #ffffff;
+    border-color: #0078d7;
+  }
+}
+
+/* Reduced motion: the chevron and the arrow still change state, they just stop
+   travelling. Colour and background cues are kept — they carry the meaning. */
+@media (prefers-reduced-motion: reduce) {
+  .summary-chevron,
+  .blog-row-arrow {
+    transition: none;
+  }
+  .blog-row:hover .blog-row-arrow,
+  .blog-lead:hover .blog-row-arrow {
+    transform: none;
+  }
+}

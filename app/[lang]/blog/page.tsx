@@ -1,8 +1,9 @@
 // app/[lang]/blog/page.tsx
 //
 // v1.4.1 — the AI Daily index, now filterable.
+// v1.4.2 — rebuilt so it reads as a publication instead of a query console.
 //
-// Three deliberate choices:
+// Three deliberate choices, unchanged since v1.4.1:
 //
 //   * Firestore is optional at render time. A missing service account (local
 //     `next build`) or an outage degrades to an empty feed, never a 500.
@@ -16,8 +17,13 @@
 //     infinite-scroll-only path.
 //
 // The unfiltered front page and a filtered result set are two different things
-// and are treated as such: only the front page gets a lead story, and only the
-// front page is offered to crawlers as indexable (see generateMetadata).
+// and are treated as such: only the front page can carry a lead story, and only
+// the front page is offered to crawlers as indexable (see generateMetadata).
+//
+// The v1.4.2 layout, in reading order: a masthead (eyebrow, title, one-line
+// promise, the editorial disclosure), one search bar, a one-line facet bar over
+// a collapsed disclosure, then the articles. Everything above the list fits in
+// roughly the height of two article rows — the list is the page.
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -46,6 +52,23 @@ import { getSiteUrl } from "@/lib/seo/site";
 export const revalidate = 300;
 
 const PAGE_SIZE = 12;
+
+/**
+ * How many published articles must exist before the front page promotes a lead
+ * story.
+ *
+ * A "featured" treatment is a claim about relative importance. With three
+ * articles in the archive there is nothing to be relatively more important
+ * than, so the promotion reads as a layout accident — the lead is visibly just
+ * "the newest one, but bigger". Seven is about a week of daily publishing:
+ * enough of a list underneath the lead for the promotion to look like an
+ * editorial judgement rather than a template.
+ *
+ * Below the threshold the page is a plain "Latest" list, which is the correct
+ * shape for a young feed. The lead-story code path is kept, not deleted — this
+ * threshold is the only thing standing between today and that layout.
+ */
+const FEATURED_MIN_ARTICLES = 7;
 
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -194,12 +217,15 @@ export default async function BlogIndexPage({
     edition: t.edition,
   };
 
-  // Explicit rather than `{...t.filters}` so the panel's contract stays visible:
+  // Explicit rather than `{...t.filters}` so the bar's contract stays visible:
   // it receives the strings it renders and nothing else.
   const filtersDict: BlogFiltersDict = {
     heading: t.filters.heading,
     searchLabel: t.filters.searchLabel,
+    searchAction: t.filters.searchAction,
     searchPlaceholder: t.filters.searchPlaceholder,
+    moreFilters: t.filters.moreFilters,
+    activeCount: t.filters.activeCount,
     companyLabel: t.filters.companyLabel,
     allCompanies: t.filters.allCompanies,
     editionLabel: t.filters.editionLabel,
@@ -219,9 +245,11 @@ export default async function BlogIndexPage({
 
   // The lead-story treatment belongs to the edition front page only. A filtered
   // or reordered list is a result set, and promoting its first row would claim
-  // an editorial judgement nobody made.
+  // an editorial judgement nobody made. It is additionally gated on the archive
+  // being big enough for a promotion to mean anything — see the constant.
   const isFrontPage = page === 1 && !isNarrowed(filters);
-  const featured = isFrontPage ? (items[0] ?? null) : null;
+  const featured =
+    isFrontPage && all.length >= FEATURED_MIN_ARTICLES ? (items[0] ?? null) : null;
   const rest = featured ? items.slice(1) : items;
 
   const resultCount = t.filters.resultCount.replace("{n}", String(total));
@@ -237,34 +265,59 @@ export default async function BlogIndexPage({
   });
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
+    // max-w-4xl, not 6xl: this is a text-first archive with no photography, so
+    // the container is sized to the measure of the prose rather than leaving a
+    // narrow column stranded in a wide frame.
+    <main className="mx-auto w-full max-w-4xl px-4 pt-8 pb-16 sm:pt-10 3xl:max-w-5xl">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(indexLd) }} />
 
-      <div className="mx-auto max-w-3xl text-center space-y-2">
-        <h1 className="font-title text-3xl sm:text-4xl font-semibold">{t.indexTitle}</h1>
-        <p className="opacity-80 text-sm sm:text-base">{t.indexDescription}</p>
+      <p className="text-xs">
+        <Link
+          href={`/${l}`}
+          className="text-ink-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
+        >
+          {l === "es" ? "← Volver al inicio" : "← Back to home"}
+        </Link>
+      </p>
 
-        <p className="pt-1 text-xs opacity-70">{t.editorialNote}</p>
+      {/* ── Masthead ──────────────────────────────────────────────────────
+          Eyebrow, name, one-line promise, disclosure. Four lines total: the
+          reader should be able to see the first article without scrolling. */}
+      <header className="mt-5 text-center sm:mt-10">
+        <p>
+          <span className="pill h-7 px-3 text-[11px] uppercase tracking-[0.14em]">
+            {t.eyebrow}
+          </span>
+        </p>
 
-        <div className="pt-2 text-xs opacity-70">
-          <Link href={`/${l}`} className="hover:underline underline-offset-2">
-            {l === "es" ? "← Volver al inicio" : "← Back to home"}
-          </Link>
-        </div>
-      </div>
+        <h1 className="font-title mt-3 text-4xl font-semibold leading-[1.06] sm:mt-4 sm:text-5xl">
+          {t.indexTitle}
+        </h1>
+
+        <p className="mx-auto mt-2 max-w-xl text-base text-ink-muted sm:mt-3 sm:text-lg">
+          {t.tagline}
+        </p>
+
+        {/* Transparency note. It has to stay discoverable, but on a phone it
+            wraps to three lines and pushes the first headline off-screen, so it
+            is hidden below `sm` and repeated under the list instead. */}
+        <p className="mx-auto mt-3 hidden max-w-xl text-xs leading-relaxed text-ink-muted sm:block">
+          {t.editorialNote}
+        </p>
+      </header>
 
       {all.length === 0 ? (
         // Nothing has ever been published (or Firestore is unreachable). This is
         // a first-run state, not a failed search — no filters, no "clear".
-        <section className="mt-10 surface p-8 sm:p-10 text-center">
-          <h2 className="font-title text-xl sm:text-2xl font-semibold">{t.emptyTitle}</h2>
-          <p className="mx-auto mt-2 max-w-xl text-sm opacity-80">{t.empty}</p>
+        <section className="surface mt-10 p-8 text-center sm:p-10">
+          <h2 className="font-title text-xl font-semibold sm:text-2xl">{t.emptyTitle}</h2>
+          <p className="mx-auto mt-2 max-w-xl text-sm text-ink-muted">{t.empty}</p>
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             <Link className="btn btn-primary h-9 px-4" href={`/${l}/guides`}>
               {t.relatedGuides}
             </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/models`}>
+            <Link className="btn btn-secondary h-9 px-4" href={`/${l}/models`}>
               {t.relatedModels}
             </Link>
           </div>
@@ -281,12 +334,14 @@ export default async function BlogIndexPage({
 
           {items.length === 0 ? (
             // Articles exist, these filters just match none of them.
-            <section className="mt-6 surface-soft p-6 text-center">
+            <section className="surface-soft mx-auto mt-10 max-w-xl p-6 text-center">
               <p className="text-sm font-medium">{t.filters.noResults}</p>
-              <p className="mx-auto mt-1.5 max-w-md text-sm opacity-70">{t.filters.noResultsHint}</p>
+              <p className="mx-auto mt-1.5 max-w-md text-sm text-ink-muted">
+                {t.filters.noResultsHint}
+              </p>
 
               <div className="mt-4">
-                <Link className="btn h-9 px-4" href={`/${l}/blog`}>
+                <Link className="btn btn-secondary h-9 px-4" href={`/${l}/blog`}>
                   {t.filters.clear}
                 </Link>
               </div>
@@ -294,23 +349,29 @@ export default async function BlogIndexPage({
           ) : (
             <>
               {featured ? (
-                <section aria-label={t.featured} className="mt-8">
+                <section aria-label={t.featured} className="mt-10 sm:mt-12">
                   <ArticleCardItem card={featured} lang={l} dict={cardDict} featured />
                 </section>
               ) : null}
 
               {rest.length > 0 ? (
-                <section aria-labelledby="blog-latest" className="mt-8">
-                  <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <h2 id="blog-latest" className="text-sm font-medium">
+                <section
+                  aria-labelledby="blog-latest"
+                  className={featured ? "mt-10" : "mt-10 sm:mt-12"}
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-line pb-3">
+                    <h2 id="blog-latest" className="font-title text-lg font-semibold sm:text-xl">
                       {t.latest}
                     </h2>
-                    <p className="text-xs opacity-70 tabular-nums">{resultCount}</p>
+                    <p className="text-xs tabular-nums text-ink-muted">{resultCount}</p>
                   </div>
 
-                  <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  <ul>
                     {rest.map((card) => (
-                      <li key={`${card.canonicalSlug}-${card.slug}`}>
+                      <li
+                        key={`${card.canonicalSlug}-${card.slug}`}
+                        className="border-b border-line last:border-b-0"
+                      >
                         <ArticleCardItem card={card} lang={l} dict={cardDict} />
                       </li>
                     ))}
@@ -318,21 +379,21 @@ export default async function BlogIndexPage({
                 </section>
               ) : (
                 // Exactly one result, already shown as the lead story.
-                <p className="mt-8 text-xs opacity-70 tabular-nums">{resultCount}</p>
+                <p className="mt-8 text-xs tabular-nums text-ink-muted">{resultCount}</p>
               )}
 
               {pages > 1 ? (
                 <nav
                   aria-label={l === "es" ? "Paginación" : "Pagination"}
-                  className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm"
+                  className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm"
                 >
                   {hasPrev ? (
-                    <Link href={hrefForPage(page - 1)} className="btn h-9 px-4">
+                    <Link href={hrefForPage(page - 1)} className="btn btn-secondary h-9 px-4">
                       {l === "es" ? "← Notas más recientes" : "← Newer articles"}
                     </Link>
                   ) : null}
 
-                  <span className="text-xs opacity-70 tabular-nums">
+                  <span className="text-xs tabular-nums text-ink-muted">
                     {l === "es" ? `Página ${page} de ${pages}` : `Page ${page} of ${pages}`}
                   </span>
 
@@ -347,6 +408,12 @@ export default async function BlogIndexPage({
           )}
         </>
       )}
+
+      {/* Mobile counterpart of the masthead disclosure. Hidden from `sm` up,
+          where the header already carries it — so it is never duplicated. */}
+      <p className="mt-10 border-t border-line pt-5 text-xs leading-relaxed text-ink-muted sm:hidden">
+        {t.editorialNote}
+      </p>
     </main>
   );
 }

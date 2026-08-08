@@ -187,6 +187,7 @@
   },
   "blog": {
     "sectionName": "AI Daily",
+    "eyebrow": "Blog",
     "tagline": "One verified AI story, every morning.",
     "indexTitle": "AI Daily",
     "indexDescription": "The day's most relevant AI development, cross-checked against primary sources and written in plain language — so you know what changed and what it means for your prompts.",
@@ -243,11 +244,14 @@
     "filters": {
       "heading": "Find a story",
       "searchLabel": "Search",
+      "searchAction": "Search",
       "searchPlaceholder": "Search headlines, decks and tags…",
+      "moreFilters": "Filters",
+      "activeCount": "{n} filter(s) active",
       "companyLabel": "Company",
       "allCompanies": "All companies",
       "editionLabel": "Edition",
-      "allEditions": "All editions",
+      "allEditions": "All",
       "categoryLabel": "Category",
       "allCategories": "All categories",
       "fromLabel": "From",
