@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.3.2 (2026-08-06)
+## Latest update — v1.4.0 (2026-08-08)
 
-Three new SEO guides: [Prompts for Kimi](/en/guides/kimi-prompt-guide) (long context, document analysis, multi-source research), [AI prompts for data analysis](/en/guides/data-analysis-prompts) (SQL generation, trend interpretation), and [AI prompts for learning](/en/guides/ai-prompts-for-learning) (calibrated tutoring, study plans). Also fixed a sitemap gap — `/best-ai`, `/prompts/code`, `/prompts/image`, and `/prompts/marketing` were missing from `sitemap.xml`. Changes are in the [weekly update PR](./CHANGELOG.md).
+**AI Daily** — a bilingual editorial section at `/en/blog` and `/es/blog`: one verified, source-backed story about AI per day, with visible sources, a "why this matters" block, key takeaways, and corrections that are never silent. Articles are stored in Firestore and server-rendered with ISR; a same-day freshness rule means an empty day beats a stale story. Publication runs through a signed internal API, so the automated routine never holds Firebase credentials. See [AI Daily](#ai-daily) below and the [changelog](./CHANGELOG.md).
 
-_Previous update: v1.3.1 (2026-08-04) — changelog page catch-up, voice recorder idle hint, and "New? See how it works →" on Find the Best AI._
+_Previous update: v1.3.2 (2026-08-06) — three new SEO guides (Kimi prompts, data analysis prompts, AI learning prompts) and a sitemap completeness fix._
 
 ## How it works
 
@@ -28,6 +28,35 @@ Find the Best AI: prompt entry → signal extraction → deterministic scoring �
 3. Long inputs are budgeted deliberately: the beginning, requirement-looking lines, and the ending survive; elisions are marked. The most important part of a long prompt is never silently truncated.
 4. **Deterministic matcher** (`lib/matcher/`, powers Find the Best AI) — a versioned rubric of independently testable signals accumulates weighted evidence per category (coding agent, research, long context, multimodal, strict data, creative, translation…); candidates from the verified model registry are scored against that evidence with hard capability gates; confidence and ties are explicit. The ranking is 100% deterministic application code — no LLM chooses or reorders results — and every reason cites a signal actually detected in the submitted prompt. `Claude Code`/`Codex`/`Gemini CLI` are recommended as *interaction environments* when repo signals warrant it, never conflated with chat models.
 5. **Voice input** (`components/voice/`, `POST /api/transcribe`) — browser MediaRecorder → server-side Groq Whisper (`whisper-large-v3-turbo` by default, `GROQ_TRANSCRIPTION_MODEL` to override). Transcripts always pass through an editable review step; audio is never stored or logged.
+
+## AI Daily
+
+A bilingual editorial section — one story per day about what actually happened in AI — at `/[lang]/blog` (index) and `/[lang]/blog/[slug]` (article).
+
+**Storage and serving.** Articles live in Firestore (collection `blog_posts`), one document per editorial day carrying both locales. Pages read through `lib/blog/server.ts` (server-only) and are ISR-cached (`revalidate = 300`). Every read is wrapped so a Firestore outage degrades to an empty section instead of a broken route or a failed build.
+
+**Editorial methodology.** Each run surveys the last 24 hours of AI news, ranks candidates by importance and reader relevance, and selects at most one. Categories and importance levels are fixed in `lib/domain.ts` (`BLOG_CATEGORIES`, `BLOG_IMPORTANCE`) — the routine classifies, it does not invent taxonomy. Both locales are written from the same verified facts; the Spanish version is not a machine translation of the English one. The byline is always `Promptea Editorial` — never a fabricated human name.
+
+**Source verification.** A story needs at least one *primary* source: the company's own announcement, paper, filing, or official documentation. Secondary sources add context and are never the sole basis for a claim. Each source is stored with title, publisher, URL, type, primary flag, and access timestamp, and is rendered on the article. A single-source story is allowed only with an explicit `singleSourceJustification`, which is shown to the reader.
+
+**Same-day freshness.** The *event* date is tracked separately from the publication timestamp precisely so it can be checked: `eventDate` must equal today in `America/Argentina/Buenos_Aires` (`EDITORIAL_TIMEZONE`, `lib/blog/dates.ts`), and the publish endpoint rejects anything else. If the publication timestamp were the only date, a delayed or re-run publication would silently pass yesterday's news off as today's. Nothing eligible means nothing is published — an empty day is a valid outcome, not a failure.
+
+**The automated routine.** A scheduled Claude Code routine researches, verifies, writes both locales, and `POST`s the payload to `/api/internal/blog/publish`. The request is signed with HMAC-SHA256 over the raw body together with a timestamp and a nonce; the server rejects signatures outside a ±5-minute window, replayed nonces, and oversized payloads. The Firestore document id is derived from the editorial date and creation runs in a transaction, so a retried run reports `ALREADY_PUBLISHED` instead of creating a duplicate. Every execution writes one typed outcome to `blog_runs`.
+
+**Why the routine has no Firebase credentials.** It holds only `BLOG_PUBLISH_SECRET`, which can do exactly one thing: submit a publish payload the server validates. A leaked publish secret cannot read telemetry or app feedback, cannot delete anything, and cannot touch any other collection. `FIREBASE_SERVICE_ACCOUNT_BASE64` stays on the server only.
+
+**Manual publish and corrections.** If the routine fails, an administrator can publish by hand: build the same payload and send a signed request (any short script that computes the HMAC with `BLOG_PUBLISH_SECRET` works — the signed endpoint is deliberately the only write path). To fix a published article, issue a correction rather than editing silently: the post moves to `corrected` and carries a `{ note, correctedAt }` block rendered on the page. To pull an article, set its status to `archived` — it leaves the index, the sitemap, and the feeds, and its URL stops resolving.
+
+**Run outcomes** (recorded in `blog_runs`):
+
+| Outcome | Meaning | Action |
+| --- | --- | --- |
+| `PUBLISHED` | Today's article was created. | None. |
+| `ALREADY_PUBLISHED` | Today's article already existed; this run was a retry or duplicate. | None — the idempotency guard working as designed. |
+| `NO_ELIGIBLE_STORY` | Nothing cleared the same-day and importance bar. | None. A quiet day is expected. |
+| `RESEARCH_FAILED` | The research step could not gather usable candidates. | Check the routine's network and tool access, then re-run. |
+| `VERIFICATION_FAILED` | A candidate was found but its sources or event date did not hold up. | Correct behaviour — inspect the run log. Publish manually only if you can verify the story yourself. |
+| `PUBLICATION_FAILED` | The payload was rejected or the write failed (bad signature, clock skew, oversized payload, Firestore error). | Check that `BLOG_PUBLISH_SECRET` matches on both sides, that the routine host's clock is within ±5 minutes, and that Firestore is reachable; then re-run — retries are safe. |
 
 ## Tech
 
@@ -52,8 +81,9 @@ npm run build      # production build (works offline — fonts are local)
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `FIREBASE_SERVICE_ACCOUNT_BASE64` | prod only | Firestore telemetry/app feedback (server-only). Without it, writes fail gracefully. |
+| `FIREBASE_SERVICE_ACCOUNT_BASE64` | prod only | Firestore telemetry/app feedback **and AI Daily articles** (server-only). Without it, writes fail gracefully and the blog renders empty. |
 | `FIREBASE_PROJECT_ID` | prod only | Firestore project id. |
+| `BLOG_PUBLISH_SECRET` | required to publish AI Daily | Shared secret for HMAC-SHA256 signing of `POST /api/internal/blog/publish`. Use ≥32 random characters. Set it in Vercel **and** in the publishing routine's configuration — the two must match. Never commit it. Reading the blog does not need it; without it, publishing is simply disabled. |
 | `GROQ_API_KEY` | optional | Enables the adaptive refiner AND voice transcription. Never exposed to the client. |
 | `GROQ_MODEL` | optional | Overrides the refiner model (default `llama-3.3-70b-versatile`). |
 | `GROQ_TRANSCRIPTION_MODEL` | optional | Overrides the speech-to-text model (default `whisper-large-v3-turbo`). |
@@ -61,12 +91,16 @@ npm run build      # production build (works offline — fonts are local)
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
 
+AI Daily adds no Firebase configuration of its own: it reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PROJECT_ID`, and `NEXT_PUBLIC_SITE_URL` for canonical, `hreflang`, sitemap, and feed URLs. `BLOG_PUBLISH_SECRET` is the only new variable.
+
 ## Architecture map
 
 - `lib/domain.ts` — single source of truth for languages, targets, purposes, task types, formats, refinement strategies, and fallback reasons. Zod schemas (`lib/validators.ts`) and UI options derive from it; drift is test-enforced.
 - `lib/engine/` — deterministic analyzer (lint, features, scoring, builder, classifier).
 - `lib/refine/` — adaptive pipeline (router, literals, language, budget, quality gate, Groq orchestrator, schema).
 - `lib/models.ts` — verified model registry (see policy below).
+- `lib/blog/` — AI Daily module: `types.ts` (Zod schemas for posts, blocks, sources, publish payload), `dates.ts` (editorial timezone, freshness guard, idempotency key and document id), `render.ts` (inline markup parsing, plain-text, word count, reading time, XML escaping), `server.ts` (server-only Firestore access: list, fetch by slug, publish, correct, run log).
+- `app/[lang]/blog/` — AI Daily index and article pages (server-rendered, ISR-cached, degrade to empty when Firestore is unavailable); `app/api/internal/blog/publish/` — the HMAC-signed publish endpoint.
 - `components/analyzer/`, `components/results/` — decomposed feature modules; `PromptBox`/`ResultsPanel` orchestrate.
 - `app/globals.css` + `lib/themes.ts` — theme tokens (Day / Dusk / Night / Paper) and registry.
 - `app/[lang]/dictionaries/` — EN/ES copy (key parity is test-enforced).

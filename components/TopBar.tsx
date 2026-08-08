@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { key: "guides", href: (l: string) => `/${l}/guides`, label: { es: "Guías", en: "Guides" } },
   { key: "models", href: (l: string) => `/${l}/models`, label: { es: "Modelos", en: "Models" } },
   { key: "glossary", href: (l: string) => `/${l}/glossary`, label: { es: "Glosario", en: "Glossary" } },
+  { key: "blog", href: (l: string) => `/${l}/blog`, label: { es: "IA al Día", en: "AI Daily" } },
 ] as const;
 
 export default function TopBar({ lang }: { lang: "es" | "en" }) {

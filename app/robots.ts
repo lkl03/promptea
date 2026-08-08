@@ -12,6 +12,10 @@ function getSiteUrl(): string {
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = getSiteUrl().replace(/\/+$/, "");
 
+  // AI Daily needs no rule of its own: /[lang]/blog and every published article
+  // are enumerated in sitemap.xml below, and the per-locale RSS feeds live at
+  // /[lang]/blog/feed.xml, which is discovered from the page's <link rel="alternate">
+  // rather than from robots.txt.
   return {
     rules: [
       {

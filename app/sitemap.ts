@@ -5,6 +5,16 @@ import { guides } from "@/lib/seo/content/guides";
 import { modelPages } from "@/lib/seo/content/models";
 import { glossary } from "@/lib/seo/content/glossary";
 import { landings } from "@/lib/seo/content/landings";
+import { listAllPublishedArticles } from "@/lib/blog/server";
+import type { PublicArticle } from "@/lib/blog/types";
+
+/**
+ * The sitemap now enumerates AI Daily, which gains an article every day. Without
+ * this it would be prerendered once at build time and every article published
+ * after the deploy would stay invisible to crawlers until the next one. The
+ * static entries below are unaffected — they are recomputed identically.
+ */
+export const revalidate = 300;
 
 function getSiteUrl(): string {
   const env = process.env.NEXT_PUBLIC_SITE_URL;
@@ -23,7 +33,18 @@ function joinUrl(siteUrl: string, path: string) {
   return `${base}${p}`;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+/**
+ * Parse an ISO instant, tolerating null and garbage. Firestore server
+ * timestamps read back as null until they resolve, so the caller supplies a
+ * fallback rather than emitting an Invalid Date into the XML.
+ */
+function toDate(iso: string | null | undefined, fallback: Date): Date {
+  if (!iso) return fallback;
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? fallback : d;
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = getSiteUrl().replace(/\/+$/, "");
   const now = new Date();
 
@@ -46,18 +67,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
       `/${lang}/guides`,
       `/${lang}/models`,
       `/${lang}/glossary`,
+      `/${lang}/blog`,
     ];
 
     for (const p of corePaths) {
       const isHome = p === `/${lang}`;
       const isChangelog = p.includes("/changelog");
       const isPrivacy = p.includes("/privacy");
+      // AI Daily is a news index: it gains an article every day.
+      const isBlog = p === `/${lang}/blog`;
 
       urls.push({
         url: joinUrl(siteUrl, p),
         lastModified: now,
-        changeFrequency: isHome ? "daily" : isChangelog ? "weekly" : isPrivacy ? "yearly" : "weekly",
-        priority: isHome ? 1 : isPrivacy ? 0.2 : isChangelog ? 0.6 : p.includes("/prompts") ? 0.8 : 0.7,
+        changeFrequency: isHome
+          ? "daily"
+          : isBlog
+            ? "daily"
+            : isChangelog
+              ? "weekly"
+              : isPrivacy
+                ? "yearly"
+                : "weekly",
+        priority: isHome
+          ? 1
+          : isBlog
+            ? 0.8
+            : isPrivacy
+              ? 0.2
+              : isChangelog
+                ? 0.6
+                : p.includes("/prompts")
+                  ? 0.8
+                  : 0.7,
       });
     }
 
@@ -93,6 +135,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: joinUrl(siteUrl, `/${lang}/landing/${page.slug}`),
         lastModified: now,
         changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+
+    // --- AI Daily articles -------------------------------------------------
+    // Firestore is optional here: a build with no service-account credentials
+    // (or an outage) degrades to "no articles yet" instead of failing the whole
+    // sitemap and taking every static URL above down with it.
+    // listAllPublishedArticles already filters to published/corrected, so
+    // drafts and archived posts can never reach this list.
+    let articles: PublicArticle[] = [];
+    try {
+      articles = await listAllPublishedArticles(lang);
+    } catch {
+      articles = [];
+    }
+
+    for (const article of articles) {
+      urls.push({
+        url: joinUrl(siteUrl, `/${lang}/blog/${article.slug}`),
+        lastModified: toDate(article.updatedAt ?? article.publishedAt, now),
+        changeFrequency: "daily",
         priority: 0.7,
       });
     }

@@ -28,6 +28,78 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.0 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.0</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 08-08-2026" : "Released: 2026-08-08"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva sección AI Daily (/blog): una nota por día sobre lo que pasó en IA, en español y en inglés, con índice propio y feed RSS por idioma."
+              : "New AI Daily section (/blog): one story a day about what happened in AI, in Spanish and English, with its own index and an RSS feed per language."}
+          </li>
+          <li>
+            {isEs
+              ? "Cada nota muestra de dónde salió: fuentes con enlace, cuál es primaria y cuál secundaria, un bloque de “por qué importa”, los puntos clave y el tiempo estimado de lectura."
+              : "Every article shows where it came from: linked sources marked primary or secondary, a “why this matters” block, key takeaways, and estimated reading time."}
+          </li>
+          <li>
+            {isEs
+              ? "Regla del mismo día: solo se publica si el hecho ocurrió ese mismo día (hora de Buenos Aires). Si no hay nada verificable, no sale nada — preferimos un día vacío antes que una nota recalentada."
+              : "Same-day rule: a story only goes out if the event happened that same day (Buenos Aires time). If nothing verifiable happened, nothing is published — an empty day beats a warmed-over story."}
+          </li>
+          <li>
+            {isEs
+              ? "Correcciones visibles: si una nota se corrige después de publicarse, la corrección queda anotada en la nota con su fecha. No se edita en silencio."
+              : "Visible corrections: if an article is corrected after publication, the correction is recorded on the article with its date. Nothing is edited silently."}
+          </li>
+          <li>
+            {isEs
+              ? "Publicación automática y segura: la rutina que arma la nota diaria publica por un canal firmado y con permisos mínimos, no puede publicar dos veces la misma nota, y deja registro de cada intento."
+              : "Secure automated publishing: the routine that assembles the daily story publishes through a signed, least-privilege channel, cannot publish the same story twice, and logs every attempt."}
+          </li>
+          <li>
+            {isEs
+              ? "Historial de versiones al día otra vez: esta página se había quedado una versión atrás, así que recuperamos la ficha de v1.3.2 que faltaba."
+              : "Version history back in sync: this page had fallen one release behind, so the missing v1.3.2 entry was restored."}
+          </li>
+        </ul>
+      </div>
+
+      {/* v1.3.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.3.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 06-08-2026" : "Released: 2026-08-06"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para Kimi — cómo aprovechar su ventana de contexto grande para Q&A sobre documentos largos, síntesis de investigación multi-fuente y anclaje preciso en el documento."
+              : "New guide: Prompts for Kimi — how to use its large context window for long-document Q&A, multi-source research synthesis, and precise document anchoring."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para análisis de datos — plantillas para generar SQL, identificar tendencias e interpretar resultados, con schema explícito para evitar nombres de columna inventados."
+              : "New guide: AI prompts for data analysis — templates for SQL generation, trend identification, and data interpretation, with explicit schema to avoid hallucinated column names."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para aprender — cómo usar la IA como tutor calibrado a tu nivel, el test de Feynman para chequear que entendiste, y armado de planes de estudio."
+              : "New guide: AI prompts for learning — how to use AI as a tutor calibrated to your level, the Feynman test to check comprehension, and building study plans."}
+          </li>
+          <li>
+            {isEs
+              ? "Fix de sitemap: cuatro rutas públicas (/best-ai, /prompts/code, /prompts/image y /prompts/marketing) faltaban en sitemap.xml y ahora están incluidas."
+              : "Sitemap fix: four public routes (/best-ai, /prompts/code, /prompts/image, and /prompts/marketing) were missing from sitemap.xml and are now included."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.3.1 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
