@@ -172,6 +172,9 @@ function basePayload(eventDate: string): PublishPayload {
     routineRunId: "run-2026-08-07-0930",
     canonicalSlug: "example-labs-launches-orion",
     status: "published",
+    // v1.4.1: every payload declares its edition; daily is the news story.
+    edition: "daily",
+    allowBackdate: false,
     eventDate,
     importance: "P1",
     category: "model-release",

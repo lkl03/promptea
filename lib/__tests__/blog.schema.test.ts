@@ -392,6 +392,8 @@ describe("freshness gate — what the schema cannot see", () => {
     expect(checkFreshness(modelLaunchPayload.eventDate, FIXED_INSTANT)).toEqual({
       ok: true,
       today: TODAY,
+      backdated: false,
+      daysStale: 0,
     });
   });
 
@@ -451,7 +453,12 @@ describe("freshness gate — what the schema cannot see", () => {
 
   test("the digest's own items are each same-day, so the gate agrees with the schema", () => {
     for (const item of digestPayload.digestItems ?? []) {
-      expect(checkFreshness(item.eventDate, FIXED_INSTANT)).toEqual({ ok: true, today: TODAY });
+      expect(checkFreshness(item.eventDate, FIXED_INSTANT)).toEqual({
+        ok: true,
+        today: TODAY,
+        backdated: false,
+        daysStale: 0,
+      });
     }
   });
 });
