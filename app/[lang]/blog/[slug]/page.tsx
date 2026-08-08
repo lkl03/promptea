@@ -1,6 +1,7 @@
 // app/[lang]/blog/[slug]/page.tsx
 //
 // v1.4.0 — one AI Daily article.
+// v1.4.1 — edition chip, coverage window, and an up-front backdating notice.
 //
 // No generateStaticParams: the content is produced daily by a routine, so the
 // route is resolved at request time and cached by `revalidate`. Firestore is
@@ -136,6 +137,18 @@ export default async function BlogArticlePage({
   const reading = t.readingTime.replace("{n}", String(article.readingMinutes));
   const modelLinks = relatedModelLinks(article);
 
+  // "daily" is the default cadence and carries no chip. The weekly editions do,
+  // because a recap or a look-ahead must never be read as same-day news.
+  const editionLabel =
+    article.edition === "daily" ? null : (t.edition[article.edition] ?? article.edition);
+
+  const coveredRange =
+    article.coveredFrom && article.coveredTo
+      ? t.coveredRange
+          .replace("{from}", formatEditorialDate(article.coveredFrom, l))
+          .replace("{to}", formatEditorialDate(article.coveredTo, l))
+      : null;
+
   const articleUrl = absUrl(blogArticlePath(l, article.slug));
   const newsLd = newsArticleJsonLd(article, {
     url: articleUrl,
@@ -171,6 +184,7 @@ export default async function BlogArticlePage({
         <article className="mt-4">
           <header className="space-y-3">
             <div className="flex flex-wrap items-center gap-2">
+              {editionLabel ? <span className="badge badge-info">{editionLabel}</span> : null}
               <span className="badge badge-neutral">{categoryLabel}</span>
               <span className="badge badge-accent">{importanceLabel}</span>
             </div>
@@ -208,7 +222,24 @@ export default async function BlogArticlePage({
                 </>
               ) : null}
             </div>
+
+            {/* Weekly editions state the window they cover, so the reader knows
+                exactly how much time the story accounts for. */}
+            {coveredRange ? <p className="text-xs opacity-70">{coveredRange}</p> : null}
           </header>
+
+          {/* A backdated story says so above the fold: event day, publication day
+              and the stated reason. It must never pass as same-day news. */}
+          {article.backdateReason ? (
+            <aside role="note" className="mt-6 surface-soft p-4 border-l-4">
+              <div className="text-sm font-medium">
+                {t.backdateNotice
+                  .replace("{event}", formatEditorialDate(article.eventDate, l))
+                  .replace("{published}", formatEditorialDate(publishedDay, l))}
+              </div>
+              <p className="mt-1 text-sm opacity-85">{article.backdateReason}</p>
+            </aside>
+          ) : null}
 
           {/* A correction is always visible. History is never rewritten silently. */}
           {article.correction ? (

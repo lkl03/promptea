@@ -1,6 +1,7 @@
 // components/blog/ArticleCardItem.tsx
 //
 // v1.4.0 — one AI Daily feed card.
+// v1.4.1 — weekly editions carry a chip; the daily card is untouched.
 //
 // The whole card is a single Link, so there is exactly one tab stop per
 // article and the click target is the full surface. Nothing inside is
@@ -16,6 +17,12 @@ export type ArticleCardDict = {
   readArticle: string;
   readingTime: string;
   category: Record<string, string>;
+  /**
+   * v1.4.1 — `dict.blog.edition`. Optional so a caller that has not wired it yet
+   * still compiles; when it is missing the raw edition id is shown rather than
+   * dropping the chip, because hiding it would let a recap read as today's news.
+   */
+  edition?: Record<string, string>;
 };
 
 /**
@@ -47,6 +54,11 @@ export default function ArticleCardItem({
   const reading = dict.readingTime.replace("{n}", String(card.readingMinutes));
   const tags = card.tags.slice(0, featured ? 4 : 3);
 
+  // The daily card is unchanged: "daily" is the default cadence. The two weekly
+  // editions get a chip so the feed never mixes them up with same-day news.
+  const editionLabel =
+    card.edition === "daily" ? null : (dict.edition?.[card.edition] ?? card.edition);
+
   return (
     <article className="h-full">
       <Link
@@ -58,6 +70,7 @@ export default function ArticleCardItem({
       >
         <div className="flex flex-wrap items-center gap-2">
           {featured ? <span className="badge badge-accent">{dict.featured}</span> : null}
+          {editionLabel ? <span className="badge badge-info">{editionLabel}</span> : null}
           <span className="badge badge-neutral">{categoryLabel}</span>
           <time dateTime={card.publishedAt ?? card.eventDate} className="text-xs opacity-70">
             {formatEditorialDate(date, lang)}

@@ -5,6 +5,7 @@ import AdSlot from "@/components/AdSlot";
 import PromptOfTheDay from "@/components/PromptOfTheDay";
 import HowItWorks from "@/components/HowItWorks";
 import ModeSwitcher from "@/components/ModeSwitcher";
+import AiDailyPromo from "@/components/blog/AiDailyPromo";
 
 // v1.2.0: types + normalization come from the shared domain module, so URL
 // prefill supports every purpose (translation/summarization were silently
@@ -84,6 +85,12 @@ export default async function Page({
             <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">{dict.app.subtitle}</p>
             <div className="mt-3 flex justify-center">
               <HowItWorks lang={lang as "es" | "en"} />
+            </div>
+            {/* v1.4.1: AI Daily promo closes the hero block — visible without
+                scrolling and above the mode switcher, so it never sits between
+                the analyzer input and its actions. */}
+            <div className="mt-3">
+              <AiDailyPromo lang={lang as "es" | "en"} dict={dict.blog.promo} />
             </div>
           </header>
 

@@ -232,6 +232,40 @@
       "P0": "De último momento",
       "P1": "Importante",
       "P2": "Para tener en cuenta"
+    },
+    "edition": {
+      "daily": "Diaria",
+      "weekly-recap": "Resumen de la semana",
+      "week-ahead": "La semana que viene"
+    },
+    "coveredRange": "Cubre del {from} al {to}",
+    "backdateNotice": "Esta nota cubre un hecho del {event}, publicada el {published}.",
+    "filters": {
+      "heading": "Buscá una historia",
+      "searchLabel": "Buscar",
+      "searchPlaceholder": "Buscá en títulos, bajadas y etiquetas…",
+      "companyLabel": "Empresa",
+      "allCompanies": "Todas las empresas",
+      "editionLabel": "Edición",
+      "allEditions": "Todas las ediciones",
+      "categoryLabel": "Categoría",
+      "allCategories": "Todas las categorías",
+      "fromLabel": "Desde",
+      "toLabel": "Hasta",
+      "sortLabel": "Orden",
+      "sortNewest": "Más recientes primero",
+      "sortOldest": "Más antiguas primero",
+      "apply": "Aplicar filtros",
+      "clear": "Limpiar",
+      "resultCount": "{n} nota(s)",
+      "noResults": "Ninguna nota coincide con esos filtros.",
+      "noResultsHint": "Probá vaciar el buscador o ampliar el rango de fechas."
+    },
+    "promo": {
+      "badge": "Nuevo",
+      "title": "IA al Día",
+      "blurb": "Una noticia de IA verificada por día, con sus fuentes a la vista.",
+      "cta": "Leer la edición de hoy"
     }
   }
 }
