@@ -4,6 +4,33 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.1 — 2026-08-08
+
+**AI Daily grows an archive and a week.** The section shipped in v1.4.0 as a single daily story with a chronological index; three days in, that index is already something you need to search rather than scroll. This release adds reader-facing filtering built as a plain GET form — every filtered view is a real, shareable, crawlable URL that works without JavaScript — plus two weekly editions (a Saturday week-in-review and a Sunday week-ahead) alongside the daily story, and a disclosed backdate mechanism for the case the same-day rule was too strict for: a genuinely important event that surfaced late.
+
+### Added
+- **Filtering and search on the AI Daily index** (`lib/blog/filters.ts`, `/[lang]/blog`) — full-text search across headlines, decks and tags (accent- and case-insensitive), plus filters by company, edition, category and event-date range, and newest/oldest sorting. Implemented as a plain `GET` form: state lives entirely in the query string, so a filtered view is a real URL you can share, bookmark, and crawl, back/forward works, and the whole thing functions with JavaScript disabled. Filtering, faceting and pagination are pure functions over the fetched cards, unit-testable without Firestore.
+- **Weekly editions** (`BLOG_EDITIONS` in `lib/domain.ts`) — alongside the `daily` story, a Saturday `weekly-recap` ("the week in review") and a Sunday `week-ahead` ("what to watch"). Each carries the range it covers (`coveredFrom`/`coveredTo`), is labelled as such on the card and the article, and is filterable as its own edition.
+- **Disclosed backdating for daily stories** — a daily article about an earlier event can now be published, but only deliberately: the request must pass an explicit override *and* state a reason, the event may be at most `MAX_BACKDATE_DAYS` (14) days old, and the stated reason together with both the event date and the publication date is rendered visibly on the article. Nothing is quietly re-dated. The automated routine is not permitted to use the override — it remains a same-day publisher.
+
+### Changed
+- **Per-edition document ids and idempotency keys** (`editionDocId`, `editionIdempotencyKey`) — the id is now derived from the editorial date *and* the edition rather than the date alone, so a Saturday can legitimately carry both the weekly recap and a breaking daily story without either overwriting the other. The retry guarantee is unchanged: a re-run of the same edition on the same date still addresses the same document.
+- **Freshness guard extended rather than relaxed** (`checkFreshness`) — it now takes the edition and the backdate override and returns whether the result was backdated and by how many days. Weekly editions cannot be backdated at all (they are dated the day they run), and a post-dated event is still refused for every edition, override or not.
+- **Filtered views are excluded from indexing** — any `/[lang]/blog` request carrying filter parameters is marked `noindex, follow` with its canonical pointing at the clean index, so filter permutations do not compete with the section as duplicate content while the clean index and every article stay fully indexable.
+- **AI Daily moved up in the header**, now sitting directly after Best AI instead of at the end of the navigation, plus a homepage promo block introducing the section.
+- Version bumped to `v1.4.1` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Fixed
+- **Same-date edition collision** — under v1.4.0 the Firestore document id was `ai-daily_<date>`, so a second article on the same editorial date resolved to the existing document and reported `ALREADY_PUBLISHED`. With weekly editions that would have made a Saturday recap and a Saturday breaking story mutually exclusive; per-edition keys remove the collision.
+
+### Validated
+- `npx tsc --noEmit` — clean
+- `npx eslint` — clean on the files changed in this release
+- `npm test` — `lib/__tests__/version.sync.test.ts` passes at v1.4.1; full suite see PR description
+- `npm run build` — see PR description
+
+---
+
 ## v1.4.0 — 2026-08-08
 
 **AI Daily**: Promptea gains a bilingual editorial section — one verified, source-backed story about AI per day, at `/en/blog` and `/es/blog`. Articles live in Firestore (collection `blog_posts`) instead of being shipped as static content, they are published through a signed internal API by an automated routine that never holds Firebase credentials, and a same-day freshness rule keeps the section from quietly going stale.

@@ -5,11 +5,11 @@ import LanguageSwitcher from "./LanguageSwitcher";
 const NAV_LINKS = [
   { key: "home", href: (l: string) => `/${l}`, label: { es: "Analizador", en: "Analyzer" } },
   { key: "best-ai", href: (l: string) => `/${l}/best-ai`, label: { es: "Elegir IA", en: "Best AI" } },
+  { key: "blog", href: (l: string) => `/${l}/blog`, label: { es: "IA al Día", en: "AI Daily" } },
   { key: "prompts", href: (l: string) => `/${l}/prompts`, label: { es: "Prompts", en: "Prompts" } },
   { key: "guides", href: (l: string) => `/${l}/guides`, label: { es: "Guías", en: "Guides" } },
   { key: "models", href: (l: string) => `/${l}/models`, label: { es: "Modelos", en: "Models" } },
   { key: "glossary", href: (l: string) => `/${l}/glossary`, label: { es: "Glosario", en: "Glossary" } },
-  { key: "blog", href: (l: string) => `/${l}/blog`, label: { es: "IA al Día", en: "AI Daily" } },
 ] as const;
 
 export default function TopBar({ lang }: { lang: "es" | "en" }) {

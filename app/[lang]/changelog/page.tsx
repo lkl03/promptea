@@ -28,6 +28,42 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.1 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.1</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 08-08-2026" : "Released: 2026-08-08"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Ahora podés buscar en el archivo de AI Daily: escribís y busca en títulos, bajadas y etiquetas de todas las notas publicadas."
+              : "You can now search the AI Daily archive: type and it looks across the headlines, decks, and tags of every published story."}
+          </li>
+          <li>
+            {isEs
+              ? "Filtros por empresa, tipo de edición, categoría y rango de fechas, más orden de más nuevo a más viejo o al revés. Cada combinación tiene su propia dirección web, así que la podés compartir o guardar en favoritos y funciona incluso sin JavaScript."
+              : "Filters by company, edition type, category, and date range, plus newest-first or oldest-first sorting. Every combination has its own web address, so you can share it or bookmark it — and it works even with JavaScript off."}
+          </li>
+          <li>
+            {isEs
+              ? "Dos ediciones nuevas además de la nota diaria: los sábados, “la semana en resumen”, y los domingos, “qué mirar la semana que viene”. Cada una dice qué período cubre, y un sábado puede tener el resumen y además una noticia fuerte del día."
+              : "Two new editions alongside the daily story: a Saturday “week in review” and a Sunday “what to watch next week”. Each one states the period it covers, and a Saturday can carry both the recap and a big story that broke that day."}
+          </li>
+          <li>
+            {isEs
+              ? "Notas sobre hechos de días anteriores, cuando las hay, salen claramente etiquetadas: se muestra la fecha del hecho, la fecha de publicación y el motivo por el que se publicó más tarde. Como máximo se puede volver 14 días atrás, y la rutina automática sigue publicando solo lo del día."
+              : "When a story covers an earlier event, it says so plainly: you see the event date, the publication date, and the stated reason it ran late. It can only reach 14 days back, and the automated routine still publishes same-day news only."}
+          </li>
+          <li>
+            {isEs
+              ? "AI Daily pasó a estar más arriba en el menú, justo después de Elegir la mejor IA, y la página principal ahora presenta la sección."
+              : "AI Daily moved up in the menu, right after Find the Best AI, and the homepage now introduces the section."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.0 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

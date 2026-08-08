@@ -144,7 +144,7 @@ describe("daysBetween", () => {
 describe("checkFreshness", () => {
   test("today's editorial date is fresh", () => {
     const verdict = checkFreshness(TODAY, FIXED_INSTANT);
-    expect(verdict).toEqual({ ok: true, today: TODAY });
+    expect(verdict).toEqual({ ok: true, today: TODAY, backdated: false, daysStale: 0 });
   });
 
   test("yesterday's event is stale by exactly one day", () => {
@@ -186,7 +186,12 @@ describe("checkFreshness", () => {
     // 2026-08-08T02:30:00Z is 23:30 on 2026-08-07 in Buenos Aires. An event
     // dated 2026-08-07 is therefore TODAY's news, not yesterday's.
     const lateNight = at("2026-08-08T02:30:00Z");
-    expect(checkFreshness("2026-08-07", lateNight)).toEqual({ ok: true, today: "2026-08-07" });
+    expect(checkFreshness("2026-08-07", lateNight)).toEqual({
+      ok: true,
+      today: "2026-08-07",
+      backdated: false,
+      daysStale: 0,
+    });
 
     // And the UTC date is, correctly, one day in the future from ART's view.
     expect(checkFreshness("2026-08-08", lateNight)).toEqual({
@@ -202,6 +207,8 @@ describe("checkFreshness", () => {
     expect(checkFreshness("2026-08-08", justAfterMidnight)).toEqual({
       ok: true,
       today: "2026-08-08",
+      backdated: false,
+      daysStale: 0,
     });
     expect(checkFreshness("2026-08-07", justAfterMidnight)).toMatchObject({
       ok: false,

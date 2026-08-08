@@ -41,7 +41,12 @@
     "formatLabel": "Optimized prompt format",
     "formatChecklist": "Checklist",
     "formatJson": "JSON",
-    "analyzingSteps": ["Reading your prompt…", "Detecting the real task…", "Scoring and rewriting…", "Polishing the result…"],
+    "analyzingSteps": [
+      "Reading your prompt…",
+      "Detecting the real task…",
+      "Scoring and rewriting…",
+      "Polishing the result…"
+    ],
     "promptLoaded": "Prompt loaded",
     "genericError": "Something went wrong. Your prompt was kept — try again.",
     "editorLabel": "Your prompt"
@@ -227,6 +232,40 @@
       "P0": "Breaking",
       "P1": "Major",
       "P2": "Notable"
+    },
+    "edition": {
+      "daily": "Daily",
+      "weekly-recap": "Week in review",
+      "week-ahead": "Week ahead"
+    },
+    "coveredRange": "Covers {from} – {to}",
+    "backdateNotice": "This story covers an event from {event}, published on {published}.",
+    "filters": {
+      "heading": "Find a story",
+      "searchLabel": "Search",
+      "searchPlaceholder": "Search headlines, decks and tags…",
+      "companyLabel": "Company",
+      "allCompanies": "All companies",
+      "editionLabel": "Edition",
+      "allEditions": "All editions",
+      "categoryLabel": "Category",
+      "allCategories": "All categories",
+      "fromLabel": "From",
+      "toLabel": "To",
+      "sortLabel": "Sort",
+      "sortNewest": "Newest first",
+      "sortOldest": "Oldest first",
+      "apply": "Apply filters",
+      "clear": "Clear",
+      "resultCount": "{n} article(s)",
+      "noResults": "No articles match those filters.",
+      "noResultsHint": "Try clearing the search box or widening the date range."
+    },
+    "promo": {
+      "badge": "New",
+      "title": "AI Daily",
+      "blurb": "One verified AI story a day, with its sources attached.",
+      "cta": "Read today's edition"
     }
   }
 }

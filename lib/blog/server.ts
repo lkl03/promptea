@@ -25,7 +25,7 @@ import {
   isPubliclyVisible,
 } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
-import { dailyDocId, editorialDate } from "@/lib/blog/dates";
+import { editionDocId, editorialDate } from "@/lib/blog/dates";
 import { readingMinutes } from "@/lib/blog/render";
 import type {
   ArticleCard,
@@ -60,7 +60,12 @@ function normalizePost(id: string, raw: Record<string, unknown>): BlogPost | nul
     id,
     canonicalSlug: String(raw.canonicalSlug ?? ""),
     status: raw.status as BlogPost["status"],
+    // Documents written before v1.4.1 have no edition; they are all daily.
+    edition: (raw.edition as BlogPost["edition"]) ?? "daily",
     eventDate: String(raw.eventDate ?? ""),
+    coveredFrom: (raw.coveredFrom as string | null) ?? null,
+    coveredTo: (raw.coveredTo as string | null) ?? null,
+    backdateReason: (raw.backdateReason as string | null) ?? null,
     publishedAt: tsToIso(raw.publishedAt),
     updatedAt: tsToIso(raw.updatedAt),
     importance: raw.importance as BlogPost["importance"],
@@ -99,7 +104,11 @@ export function toPublicArticle(post: BlogPost, lang: Lang): PublicArticle | nul
     keyTakeaways: content.keyTakeaways,
     seoTitle: content.seoTitle,
     metaDescription: content.metaDescription,
+    edition: post.edition,
     eventDate: post.eventDate,
+    coveredFrom: post.coveredFrom,
+    coveredTo: post.coveredTo,
+    backdateReason: post.backdateReason,
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
     category: post.category,
@@ -133,6 +142,7 @@ function toCard(article: PublicArticle): ArticleCard {
     lang: article.lang,
     title: article.title,
     deck: article.deck,
+    edition: article.edition,
     eventDate: article.eventDate,
     publishedAt: article.publishedAt,
     category: article.category,
@@ -251,10 +261,13 @@ export async function listAllPublishedArticles(lang: Lang, max = 500): Promise<P
   return out;
 }
 
-/** Read one post by its editorial date, regardless of status. Used by the routine. */
-export async function getPostByDate(date: string): Promise<BlogPost | null> {
+/** Read one post by its editorial date and edition, regardless of status. */
+export async function getPostByDate(
+  date: string,
+  edition: BlogPost["edition"] = "daily"
+): Promise<BlogPost | null> {
   const db = getAdminFirestore();
-  const snap = await db.collection(COLLECTION).doc(dailyDocId(date)).get();
+  const snap = await db.collection(COLLECTION).doc(editionDocId(date, edition)).get();
   if (!snap.exists) return null;
   return normalizePost(snap.id, snap.data() as Record<string, unknown>);
 }
@@ -281,7 +294,9 @@ export async function publishPost(
   meta: { publishedAtDate?: Date }
 ): Promise<PublishOutcome> {
   const db = getAdminFirestore();
-  const docId = dailyDocId(payload.eventDate);
+  // Keyed by edition as well as date, so a Saturday can carry both the weekly
+  // recap and a breaking daily story without either overwriting the other.
+  const docId = editionDocId(payload.eventDate, payload.edition);
   const ref = db.collection(COLLECTION).doc(docId);
   const slugIndex = slugIndexFor(payload);
   const now = meta.publishedAtDate ?? new Date();
@@ -321,7 +336,11 @@ export async function publishPost(
       canonicalSlug: payload.canonicalSlug,
       slugIndex,
       status: payload.status,
+      edition: payload.edition,
       eventDate: payload.eventDate,
+      coveredFrom: payload.coveredFrom ?? null,
+      coveredTo: payload.coveredTo ?? null,
+      backdateReason: payload.allowBackdate ? (payload.backdateReason ?? null) : null,
 
       importance: payload.importance,
       category: payload.category,
