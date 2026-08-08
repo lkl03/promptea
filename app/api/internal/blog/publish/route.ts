@@ -126,11 +126,21 @@ export async function POST(req: NextRequest) {
   // --- the same-day editorial guard -----------------------------------------
   // Enforced server-side so a routine bug, a clock skew or a hand-crafted
   // request cannot publish yesterday's news as today's.
-  const freshness = checkFreshness(payload.eventDate);
+  //
+  // `allowBackdate` is a deliberate, human-operated escape hatch: it requires a
+  // stated reason, is capped at MAX_BACKDATE_DAYS, applies only to the daily
+  // edition, and the reason is rendered on the article so the reader always
+  // sees that the event predates publication. It is never silent.
+  const freshness = checkFreshness(payload.eventDate, {
+    edition: payload.edition,
+    allowBackdate: payload.allowBackdate,
+  });
+
   if (payload.status === "published" && !freshness.ok) {
     return fail(freshness.reason, 422, {
       today: freshness.today,
       eventDate: payload.eventDate,
+      edition: payload.edition,
     });
   }
   // A draft may be backdated, but never post-dated.
@@ -147,8 +157,10 @@ export async function POST(req: NextRequest) {
         dryRun: true,
         outcome: "validated",
         canonicalSlug: payload.canonicalSlug,
+        edition: payload.edition,
         eventDate: payload.eventDate,
         today: freshness.today,
+        backdated: freshness.ok ? freshness.backdated : false,
         sourceCount: payload.sources.length,
         primarySourceCount: payload.sources.filter((s) => s.primary).length,
       },

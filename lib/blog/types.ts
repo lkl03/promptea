@@ -15,9 +15,25 @@
 //      an automatically published article must pass freshness and sourcing.
 
 import { z } from "zod";
-import { BLOG_CATEGORIES, BLOG_IMPORTANCE, BLOG_SOURCE_TYPES } from "@/lib/domain";
-import type { BlogCategory, BlogImportance, BlogStatus, Lang } from "@/lib/domain";
-import { dailyIdempotencyKey, isEditorialDate } from "@/lib/blog/dates";
+import {
+  BLOG_CATEGORIES,
+  BLOG_EDITIONS,
+  BLOG_IMPORTANCE,
+  BLOG_SOURCE_TYPES,
+} from "@/lib/domain";
+import type {
+  BlogCategory,
+  BlogEdition,
+  BlogImportance,
+  BlogStatus,
+  Lang,
+} from "@/lib/domain";
+import {
+  editionIdempotencyKey,
+  isEditorialDate,
+  recapWindow,
+  weekAheadWindow,
+} from "@/lib/blog/dates";
 
 // ---------------------------------------------------------------------------
 // Size ceilings — enforced by Zod so an oversized payload is a 400, not an OOM.
@@ -164,7 +180,7 @@ export type DigestItem = z.infer<typeof DigestItemSchema>;
 
 export const PublishPayloadSchema = z
   .object({
-    /** Must be `ai-daily:<eventDate>`; cross-checked in superRefine. */
+    /** Must be `<editionPrefix>:<eventDate>`; cross-checked in superRefine. */
     idempotencyKey: z.string().trim().min(10).max(64),
     routineRunId: trimmed(4, 100),
 
@@ -172,6 +188,25 @@ export const PublishPayloadSchema = z
     /** The routine may only create drafts or published articles. */
     status: z.enum(["draft", "published"]),
     eventDate: EditorialDateSchema,
+
+    /** Which edition this is. Defaults to the same-day news story. */
+    edition: z.enum(BLOG_EDITIONS).default("daily"),
+
+    /**
+     * The window a weekly edition covers. Required for weekly-recap and
+     * week-ahead, forbidden for daily.
+     */
+    coveredFrom: EditorialDateSchema.nullish(),
+    coveredTo: EditorialDateSchema.nullish(),
+
+    /**
+     * Explicit, disclosed override for publishing a daily story about an
+     * earlier event. Both fields must be supplied together; the reason is
+     * rendered on the article so the reader always sees that the event date and
+     * the publication date differ. The automated routine must never set this.
+     */
+    allowBackdate: z.boolean().default(false),
+    backdateReason: trimmed(20, 400).nullish(),
 
     importance: z.enum(BLOG_IMPORTANCE),
     category: z.enum(BLOG_CATEGORIES),
@@ -200,12 +235,67 @@ export const PublishPayloadSchema = z
     dryRun: z.boolean().default(false),
   })
   .superRefine((v, ctx) => {
-    // --- idempotency key must be derived from the event date -----------------
-    if (v.idempotencyKey !== dailyIdempotencyKey(v.eventDate)) {
+    // --- idempotency key must be derived from the edition + event date -------
+    const expectedKey = editionIdempotencyKey(v.eventDate, v.edition);
+    if (v.idempotencyKey !== expectedKey) {
       ctx.addIssue({
         code: "custom",
         path: ["idempotencyKey"],
-        message: `idempotencyKey must be "${dailyIdempotencyKey(v.eventDate)}" for eventDate ${v.eventDate}`,
+        message: `idempotencyKey must be "${expectedKey}" for a ${v.edition} edition dated ${v.eventDate}`,
+      });
+    }
+
+    // --- edition-specific coverage window ------------------------------------
+    if (v.edition === "daily") {
+      if (v.coveredFrom || v.coveredTo) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["coveredFrom"],
+          message: "a daily story covers one event and must not declare a coverage window",
+        });
+      }
+    } else {
+      if (!v.coveredFrom || !v.coveredTo) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["coveredFrom"],
+          message: `a ${v.edition} edition must declare coveredFrom and coveredTo`,
+        });
+      } else {
+        const expected =
+          v.edition === "weekly-recap" ? recapWindow(v.eventDate) : weekAheadWindow(v.eventDate);
+        if (v.coveredFrom !== expected.from || v.coveredTo !== expected.to) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["coveredFrom"],
+            message: `a ${v.edition} dated ${v.eventDate} must cover ${expected.from} to ${expected.to}`,
+          });
+        }
+      }
+    }
+
+    // --- backdating requires a stated, disclosable reason ---------------------
+    if (v.allowBackdate) {
+      if (v.edition !== "daily") {
+        ctx.addIssue({
+          code: "custom",
+          path: ["allowBackdate"],
+          message: "only a daily story can be backdated; weekly editions carry their run date",
+        });
+      }
+      if (!v.backdateReason) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["backdateReason"],
+          message:
+            "backdateReason is required when allowBackdate is set — it is shown to readers on the article",
+        });
+      }
+    } else if (v.backdateReason) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["allowBackdate"],
+        message: "backdateReason was supplied without allowBackdate",
       });
     }
 
@@ -294,7 +384,11 @@ export type BlogPost = {
   id: string;
   canonicalSlug: string;
   status: BlogStatus;
+  edition: BlogEdition;
   eventDate: string;
+  coveredFrom: string | null;
+  coveredTo: string | null;
+  backdateReason: string | null;
   publishedAt: string | null;
   updatedAt: string | null;
   importance: BlogImportance;
@@ -331,7 +425,12 @@ export type PublicArticle = {
   keyTakeaways: string[];
   seoTitle: string;
   metaDescription: string;
+  edition: BlogEdition;
   eventDate: string;
+  coveredFrom: string | null;
+  coveredTo: string | null;
+  /** Rendered as a visible notice when the event predates publication. */
+  backdateReason: string | null;
   publishedAt: string | null;
   updatedAt: string | null;
   category: BlogCategory;
@@ -358,6 +457,7 @@ export type ArticleCard = Pick<
   | "lang"
   | "title"
   | "deck"
+  | "edition"
   | "eventDate"
   | "publishedAt"
   | "category"

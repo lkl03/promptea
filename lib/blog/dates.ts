@@ -12,7 +12,8 @@
 // Everything here is derived from Intl with an explicit timeZone, so it stays
 // correct without hardcoding the UTC-3 offset.
 
-import { EDITORIAL_TIMEZONE } from "@/lib/domain";
+import { EDITION_KEY_PREFIX, EDITORIAL_TIMEZONE, MAX_BACKDATE_DAYS } from "@/lib/domain";
+import type { BlogEdition } from "@/lib/domain";
 
 /** `YYYY-MM-DD` — the only date shape stored or compared anywhere in the blog. */
 export type EditorialDate = string;
@@ -93,36 +94,112 @@ export function daysBetween(a: EditorialDate, b: EditorialDate): number {
  * machine-readable reason.
  */
 export type FreshnessVerdict =
-  | { ok: true; today: EditorialDate }
+  | { ok: true; today: EditorialDate; backdated: boolean; daysStale: number }
   | { ok: false; reason: "invalid_event_date"; today: EditorialDate }
   | { ok: false; reason: "stale_event"; today: EditorialDate; daysStale: number }
+  | { ok: false; reason: "backdate_too_old"; today: EditorialDate; daysStale: number }
   | { ok: false; reason: "future_event"; today: EditorialDate; daysAhead: number };
 
-export function checkFreshness(eventDate: unknown, now: Date = new Date()): FreshnessVerdict {
-  const today = editorialDate(now);
+export type FreshnessOptions = {
+  now?: Date;
+  /** Weekly editions are dated the day they run, so they must be exactly today. */
+  edition?: BlogEdition;
+  /**
+   * Explicit human override for a daily story about an earlier event. Requires
+   * a stated reason at the schema layer, is capped at MAX_BACKDATE_DAYS, and is
+   * disclosed on the rendered article. The automated routine must never set it.
+   */
+  allowBackdate?: boolean;
+};
+
+export function checkFreshness(
+  eventDate: unknown,
+  opts: FreshnessOptions | Date = {}
+): FreshnessVerdict {
+  // Back-compat: earlier callers passed a bare Date as the second argument.
+  const o: FreshnessOptions = opts instanceof Date ? { now: opts } : opts;
+  const today = editorialDate(o.now ?? new Date());
 
   if (!isEditorialDate(eventDate)) return { ok: false, reason: "invalid_event_date", today };
 
   const delta = daysBetween(today, eventDate);
-  if (delta > 0) return { ok: false, reason: "stale_event", today, daysStale: delta };
+
+  // A post-dated event is never acceptable, for any edition or override.
   if (delta < 0) return { ok: false, reason: "future_event", today, daysAhead: -delta };
 
-  return { ok: true, today };
-}
+  if (delta === 0) return { ok: true, today, backdated: false, daysStale: 0 };
 
-/** Deterministic idempotency key for a given editorial day. */
-export function dailyIdempotencyKey(date: EditorialDate): string {
-  return `ai-daily:${date}`;
+  // Weekly editions carry the date they were published; they cannot be backdated.
+  const edition = o.edition ?? "daily";
+  if (edition !== "daily") return { ok: false, reason: "stale_event", today, daysStale: delta };
+
+  if (!o.allowBackdate) return { ok: false, reason: "stale_event", today, daysStale: delta };
+  if (delta > MAX_BACKDATE_DAYS) {
+    return { ok: false, reason: "backdate_too_old", today, daysStale: delta };
+  }
+
+  return { ok: true, today, backdated: true, daysStale: delta };
 }
 
 /**
- * Firestore document id for a given editorial day. Deterministic so a retried
- * routine run addresses the SAME document instead of creating a duplicate.
- * `:` is legal in a Firestore id but awkward in URLs and CLI tooling, so the
- * id uses an underscore while the stored idempotencyKey keeps the `:` form.
+ * Deterministic idempotency key for a given editorial day and edition.
+ *
+ * Keyed per edition so a Saturday can legitimately carry BOTH the weekly recap
+ * and a breaking daily story without either colliding with the other.
  */
-export function dailyDocId(date: EditorialDate): string {
-  return `ai-daily_${date}`;
+export function editionIdempotencyKey(
+  date: EditorialDate,
+  edition: BlogEdition = "daily"
+): string {
+  return `${EDITION_KEY_PREFIX[edition]}:${date}`;
+}
+
+/**
+ * Firestore document id for a given editorial day and edition. Deterministic so
+ * a retried routine run addresses the SAME document instead of creating a
+ * duplicate. `:` is legal in a Firestore id but awkward in URLs and CLI
+ * tooling, so the id uses an underscore while the stored idempotencyKey keeps
+ * the `:` form.
+ */
+export function editionDocId(date: EditorialDate, edition: BlogEdition = "daily"): string {
+  return `${EDITION_KEY_PREFIX[edition]}_${date}`;
+}
+
+/** Back-compat aliases — the daily edition is still the common case. */
+export const dailyIdempotencyKey = (date: EditorialDate) => editionIdempotencyKey(date, "daily");
+export const dailyDocId = (date: EditorialDate) => editionDocId(date, "daily");
+
+/**
+ * Day of week in the editorial timezone. 0 = Sunday … 6 = Saturday.
+ * Derived via Intl rather than getDay() so it reflects Buenos Aires, not UTC.
+ */
+export function editorialWeekday(instant: Date = new Date()): number {
+  const name = new Intl.DateTimeFormat("en-US", {
+    timeZone: EDITORIAL_TIMEZONE,
+    weekday: "short",
+  }).format(instant);
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(name);
+}
+
+/** Shift an editorial date by whole days, returning `YYYY-MM-DD`. */
+export function addDays(date: EditorialDate, delta: number): EditorialDate {
+  const [y, m, d] = date.split("-").map(Number);
+  const shifted = new Date(Date.UTC(y, m - 1, d + delta));
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`;
+}
+
+/**
+ * The seven-day window a Saturday recap covers: the preceding Sunday through
+ * the Saturday itself, inclusive.
+ */
+export function recapWindow(date: EditorialDate): { from: EditorialDate; to: EditorialDate } {
+  return { from: addDays(date, -6), to: date };
+}
+
+/** The seven-day window a Sunday look-ahead covers: that Sunday through the following Saturday. */
+export function weekAheadWindow(date: EditorialDate): { from: EditorialDate; to: EditorialDate } {
+  return { from: date, to: addDays(date, 6) };
 }
 
 /**

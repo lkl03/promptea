@@ -283,6 +283,31 @@ export function isPubliclyVisible(status: unknown): status is PublicBlogStatus {
   return PUBLIC_BLOG_STATUSES.includes(status as PublicBlogStatus);
 }
 
+/**
+ * Which edition a post belongs to (v1.4.1).
+ *
+ * `daily` is a same-day news story and is the only edition the freshness guard
+ * applies to. The two weekly editions are published ON their date but describe
+ * a range or a forward view, so "event date" for them simply means the day the
+ * edition ran — they are not claiming a past event happened today.
+ */
+export const BLOG_EDITIONS = ["daily", "weekly-recap", "week-ahead"] as const;
+export type BlogEdition = (typeof BLOG_EDITIONS)[number];
+
+export function isBlogEdition(v: unknown): v is BlogEdition {
+  return BLOG_EDITIONS.includes(v as BlogEdition);
+}
+
+/** Document-id and idempotency-key prefix per edition, so two editions can coexist on one date. */
+export const EDITION_KEY_PREFIX: Record<BlogEdition, string> = {
+  daily: "ai-daily",
+  "weekly-recap": "ai-weekly",
+  "week-ahead": "ai-ahead",
+};
+
+/** How far back a manually backdated post may reach, in days. */
+export const MAX_BACKDATE_DAYS = 14;
+
 /** Editorial category of the day's story. */
 export const BLOG_CATEGORIES = [
   "model-release",
