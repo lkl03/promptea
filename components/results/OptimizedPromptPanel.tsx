@@ -50,7 +50,9 @@ export default function OptimizedPromptPanel({
   const toast = useToast();
   const [view, setView] = useState<"improved" | "original">("improved");
   const [copied, setCopied] = useState(false);
+  const [copiedOriginal, setCopiedOriginal] = useState(false);
   const copyTimerRef = useRef<number | null>(null);
+  const copyOriginalTimerRef = useRef<number | null>(null);
 
   const refinement = result.meta.refinement;
   const isAdaptive = refinement?.execution.engine === "adaptive";
@@ -63,6 +65,15 @@ export default function OptimizedPromptPanel({
     setCopied(true);
     if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
     copyTimerRef.current = window.setTimeout(() => setCopied(false), 2200);
+    toast.show(dict.copied, "success");
+  }
+
+  async function handleCopyOriginal() {
+    if (!originalPrompt.trim()) return;
+    await navigator.clipboard.writeText(originalPrompt);
+    setCopiedOriginal(true);
+    if (copyOriginalTimerRef.current) window.clearTimeout(copyOriginalTimerRef.current);
+    copyOriginalTimerRef.current = window.setTimeout(() => setCopiedOriginal(false), 2200);
     toast.show(dict.copied, "success");
   }
 
@@ -171,7 +182,7 @@ export default function OptimizedPromptPanel({
         role="tabpanel"
       >
         {view === "improved" ? result.optimizedPrompt : originalPrompt}
-        {view === "improved" && (
+        {view === "improved" ? (
           <button
             type="button"
             className="btn-icon absolute bottom-3 right-3 h-9 w-9 bg-surface-raised"
@@ -180,6 +191,16 @@ export default function OptimizedPromptPanel({
             onClick={handleCopy}
           >
             {copied ? <CheckIcon className="h-4 w-4 text-success" /> : <CopyIcon className="h-4 w-4" />}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="btn-icon absolute bottom-3 right-3 h-9 w-9 bg-surface-raised"
+            aria-label={copiedOriginal ? dict.copied : dict.copy}
+            title={copiedOriginal ? dict.copied : dict.copy}
+            onClick={handleCopyOriginal}
+          >
+            {copiedOriginal ? <CheckIcon className="h-4 w-4 text-success" /> : <CopyIcon className="h-4 w-4" />}
           </button>
         )}
       </div>

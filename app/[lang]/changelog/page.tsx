@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.3 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.3</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 13-08-2026" : "Released: 2026-08-13"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para Perplexity — cuándo elegirlo sobre un modelo estático, cómo restringir tipos de fuentes, patrones para investigación del estado actual y comparaciones competitivas con datos en tiempo real."
+              : "New guide: Prompts for Perplexity — when to choose it over a static model, how to constrain source types, patterns for current-state research, and competitive comparisons with live data."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Cómo depurar un prompt que da resultados malos — los seis modos de falla más comunes, un proceso de depuración de cinco pasos, y plantillas para auto-diagnóstico y comparación de outputs."
+              : "New guide: How to debug a prompt that gives bad output — the six most common failure modes, a five-step debugging process, and templates for prompt self-diagnosis and output comparison."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para product managers — dónde la IA ahorra más tiempo (specs, síntesis, priorización, comunicación con stakeholders), cómo obtener output estructurado confiable, y plantillas para PRD simplificado y síntesis de entrevistas."
+              : "New guide: AI prompts for product managers — where AI saves the most time (specs, synthesis, prioritization, stakeholder communication), how to get reliable structured output, and templates for lean PRD drafts and user-interview synthesis."}
+          </li>
+          <li>
+            {isEs
+              ? "El panel de resultados ahora tiene el botón de copiar en ambas pestañas — la vista del prompt original ya tiene su propio botón de copiar, igual que la vista del prompt mejorado."
+              : "The result panel now has a copy button on both tabs — the original-prompt view now has its own copy button, symmetric with the improved-prompt view."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.2 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

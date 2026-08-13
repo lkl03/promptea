@@ -3923,6 +3923,447 @@ Restricciones:
       },
     ],
   },
+  {
+    slug: "perplexity-prompt-guide",
+    title: {
+      en: "Prompts for Perplexity: grounded answers from the web",
+      es: "Prompts para Perplexity: respuestas respaldadas por la web",
+    },
+    description: {
+      en: "How to write prompts that get the most out of Perplexity Sonar — real-time web search, cited sources, and accurate current information.",
+      es: "Cómo escribir prompts que aprovechan al máximo Perplexity Sonar: búsqueda web en tiempo real, fuentes citadas e información actualizada.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes Perplexity different", es: "Qué hace diferente a Perplexity" },
+        bullets: {
+          en: [
+            "Perplexity searches the web before answering — every response cites real, recent sources you can verify.",
+            "It handles current events, prices, product specs, and rapidly changing facts far better than a model without web access.",
+            "Sonar Pro adds deeper research capability: multi-step reasoning over multiple sources before composing the answer.",
+            "Use Perplexity when freshness matters: today's news, the latest framework version, current regulations, live pricing.",
+            "Avoid it for creative writing, long-form generation, or tasks where web retrieval adds noise rather than grounding.",
+          ],
+          es: [
+            "Perplexity busca en la web antes de responder — cada respuesta cita fuentes reales y recientes que podés verificar.",
+            "Maneja eventos actuales, precios, especificaciones de productos y datos que cambian rápido mucho mejor que un modelo sin acceso web.",
+            "Sonar Pro agrega capacidad de investigación más profunda: razonamiento en múltiples pasos sobre varias fuentes antes de componer la respuesta.",
+            "Usá Perplexity cuando la actualidad importa: noticias de hoy, la última versión de un framework, regulaciones actuales, precios en tiempo real.",
+            "Evitalo para escritura creativa, generación de texto largo o tareas donde la recuperación web agrega ruido en lugar de fundamento.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Patterns that work well with Perplexity", es: "Patrones que funcionan bien con Perplexity" },
+        bullets: {
+          en: [
+            "Ask for a specific date range: 'What changed in [topic] between January and June 2026?' — this focuses the search.",
+            "Request source types: 'Only use official announcements, not opinion pieces.' Perplexity respects source-type constraints.",
+            "Use it for comparison: 'Compare the current pricing of [A] vs [B] as of today, with sources.' It aggregates across pages.",
+            "For research: 'Find 3–5 credible sources that [claim]. Summarize each and note any disagreements.' Great for literature review.",
+            "Ask it to flag uncertainty: 'If you can't find a source for a specific claim, say so explicitly.' Reduces confident-sounding gaps.",
+            "Combine with follow-up: paste its sourced summary into a more capable model (Claude, GPT) for deeper synthesis or writing.",
+          ],
+          es: [
+            "Pedí un rango de fechas específico: '¿Qué cambió en [tema] entre enero y junio de 2026?' — esto enfoca la búsqueda.",
+            "Solicitá tipos de fuentes: 'Usá solo anuncios oficiales, no artículos de opinión.' Perplexity respeta restricciones de tipo de fuente.",
+            "Usalo para comparaciones: 'Comparé el precio actual de [A] vs [B] a la fecha de hoy, con fuentes.' Agrega datos de múltiples páginas.",
+            "Para investigación: 'Encontrá 3–5 fuentes confiables que [afirmación]. Resumí cada una y anotá los desacuerdos.' Ideal para revisión de literatura.",
+            "Pedile que marque la incertidumbre: 'Si no encontrás una fuente para una afirmación específica, decilo explícitamente.' Reduce los huecos que suenan seguros.",
+            "Combinalo con seguimiento: pegá su resumen con fuentes en un modelo más potente (Claude, GPT) para síntesis o escritura más profunda.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Current-state research with sources", es: "Investigación del estado actual con fuentes" },
+        purpose: "text",
+        target: "perplexity",
+        prompt: {
+          en: `Research the current state of [topic] as of [month year].
+
+I need:
+1. The 3 most important recent developments (last 6 months preferred).
+2. For each: what changed, who it affects, and why it matters.
+3. One credible source per point — official announcements or primary sources preferred.
+4. A brief summary of what is still uncertain or actively debated.
+
+Constraints:
+- If a claim has no verifiable source, flag it explicitly.
+- Avoid opinion pieces as primary sources.
+- Keep each point to 3–4 sentences.`,
+          es: `Investigá el estado actual de [tema] a partir de [mes año].
+
+Necesito:
+1. Los 3 desarrollos recientes más importantes (últimos 6 meses preferido).
+2. Por cada uno: qué cambió, a quién afecta y por qué importa.
+3. Una fuente confiable por punto — anuncios oficiales o fuentes primarias preferidas.
+4. Un resumen breve de lo que todavía es incierto o está activamente debatido.
+
+Restricciones:
+- Si una afirmación no tiene fuente verificable, marcala explícitamente.
+- Evitá artículos de opinión como fuentes primarias.
+- Mantené cada punto en 3–4 oraciones.`,
+        },
+      },
+      {
+        title: { en: "Competitive comparison with live data", es: "Comparación competitiva con datos actuales" },
+        purpose: "text",
+        target: "perplexity",
+        prompt: {
+          en: `Compare [Option A] and [Option B] as of today.
+
+Comparison dimensions:
+- [dimension 1, e.g., pricing]
+- [dimension 2, e.g., feature set]
+- [dimension 3, e.g., recent changes or updates]
+
+Format:
+- A short paragraph per dimension, noting differences.
+- A source for each factual claim.
+- A final "best for" sentence: who should choose A vs B based on the data.
+
+If the information is outdated or unavailable for a dimension, say so.`,
+          es: `Comparé [Opción A] y [Opción B] a la fecha de hoy.
+
+Dimensiones de comparación:
+- [dimensión 1, ej. precios]
+- [dimensión 2, ej. características]
+- [dimensión 3, ej. cambios o actualizaciones recientes]
+
+Formato:
+- Un párrafo corto por dimensión, señalando diferencias.
+- Una fuente por cada afirmación factual.
+- Una frase final de "mejor para": quién debería elegir A vs B basándose en los datos.
+
+Si la información está desactualizada o no está disponible para una dimensión, decilo.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "When should I use Perplexity instead of ChatGPT or Claude?", es: "¿Cuándo uso Perplexity en vez de ChatGPT o Claude?" },
+        a: {
+          en: "Use Perplexity when the answer depends on facts that change — current prices, recent product releases, today's news, updated regulations, or anything from the last few weeks. ChatGPT and Claude have training cutoffs and can confidently give you stale information. Use them for tasks where reasoning, long-form generation, or nuanced judgment matter more than factual freshness.",
+          es: "Usá Perplexity cuando la respuesta depende de hechos que cambian — precios actuales, lanzamientos recientes de productos, noticias de hoy, regulaciones actualizadas o cualquier cosa de las últimas semanas. ChatGPT y Claude tienen fechas de corte de entrenamiento y pueden darte información desactualizada con confianza. Usalos para tareas donde el razonamiento, la generación de texto largo o el criterio matizado importan más que la actualidad factual.",
+        },
+      },
+      {
+        q: { en: "How do I check if Perplexity's sources are reliable?", es: "¿Cómo verifico si las fuentes de Perplexity son confiables?" },
+        a: {
+          en: "Always click through to the cited sources, especially for important decisions. Perplexity surfaces what ranks well and what it can access — that isn't the same as editorial curation. For medical, legal, or financial decisions, treat the output as a starting point for your own source review, not a final answer. Asking explicitly for 'official announcements or primary sources only' shifts the retrieval toward more authoritative pages.",
+          es: "Siempre hacé click en las fuentes citadas, especialmente para decisiones importantes. Perplexity muestra lo que rankea bien y lo que puede acceder — eso no es lo mismo que curaduría editorial. Para decisiones médicas, legales o financieras, tratá el resultado como punto de partida para tu propia revisión de fuentes, no como respuesta final. Pedir explícitamente 'solo anuncios oficiales o fuentes primarias' orienta la recuperación hacia páginas más autorizadas.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "prompt-debugging",
+    title: {
+      en: "How to debug a prompt that gives bad output",
+      es: "Cómo depurar un prompt que da resultados malos",
+    },
+    description: {
+      en: "A systematic method for diagnosing why a prompt fails and fixing it without trial and error.",
+      es: "Un método sistemático para diagnosticar por qué falla un prompt y corregirlo sin prueba y error.",
+    },
+    sections: [
+      {
+        heading: { en: "The most common failure modes", es: "Los modos de falla más comunes" },
+        bullets: {
+          en: [
+            "Missing goal: you described the task but not what success looks like — the model guesses the acceptance criteria.",
+            "Ambiguous scope: 'brief' means 50 words to you and 500 to the model. Specify numbers.",
+            "Missing context: the model lacks the constraints, definitions, or background that make the task unambiguous in your head.",
+            "Wrong format: you want a table, the model gives prose. You want JSON, the model adds markdown fences.",
+            "Conflicting instructions: 'be concise' plus 'cover everything' in the same prompt produce averaged-out garbage.",
+            "No anchor for missing info: when the model doesn't know something, it fills the gap. Telling it to flag gaps prevents hallucinations.",
+          ],
+          es: [
+            "Objetivo faltante: describiste la tarea pero no cómo se ve el éxito — el modelo adivina los criterios de aceptación.",
+            "Alcance ambiguo: 'breve' significa 50 palabras para vos y 500 para el modelo. Especificá números.",
+            "Contexto faltante: el modelo no tiene las restricciones, definiciones o antecedentes que hacen que la tarea sea inequívoca en tu cabeza.",
+            "Formato incorrecto: querés una tabla, el modelo da prosa. Querés JSON, el modelo agrega fences de markdown.",
+            "Instrucciones contradictorias: 'sé conciso' más 'cubrí todo' en el mismo prompt producen basura promediada.",
+            "Sin ancla para información faltante: cuando el modelo no sabe algo, llena el hueco. Decirle que marque los huecos previene alucinaciones.",
+          ],
+        },
+      },
+      {
+        heading: { en: "The debugging process", es: "El proceso de depuración" },
+        bullets: {
+          en: [
+            "Step 1 — isolate the symptom: write down exactly what went wrong. 'Too long', 'wrong format', 'hallucinated facts', 'missed the point', 'inconsistent across runs'.",
+            "Step 2 — find the missing instruction: for each symptom, ask 'what would I need to say to a capable human to prevent this?' That missing instruction is what goes into the prompt.",
+            "Step 3 — add one fix at a time: change a single variable per run so you know what actually fixed it. Multiple changes at once make it impossible to know which one worked.",
+            "Step 4 — test with edge cases: run the fixed prompt on a harder version of the task, a short input, a long input, and an input with missing data. Real prompts need to handle all of these.",
+            "Step 5 — lock what works with a format example: once the output is right, add a one-line example of the exact format you want. It prevents drift when you reuse the prompt.",
+          ],
+          es: [
+            "Paso 1 — aislá el síntoma: anotá exactamente qué salió mal. 'Demasiado largo', 'formato incorrecto', 'hechos inventados', 'se fue por las ramas', 'inconsistente entre corridas'.",
+            "Paso 2 — encontrá la instrucción faltante: por cada síntoma, preguntate '¿qué necesitaría decirle a un humano capaz para prevenir esto?' Esa instrucción faltante es lo que va en el prompt.",
+            "Paso 3 — agregá un fix a la vez: cambiá una sola variable por corrida para saber qué realmente lo arregló. Múltiples cambios a la vez hacen imposible saber cuál funcionó.",
+            "Paso 4 — testeá con casos límite: corrés el prompt corregido en una versión más difícil de la tarea, un input corto, uno largo y uno con datos faltantes. Los prompts reales tienen que manejar todo esto.",
+            "Paso 5 — bloqueá lo que funciona con un ejemplo de formato: una vez que el output es correcto, agregá un ejemplo de una línea del formato exacto que querés. Previene la deriva cuando reutilizás el prompt.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Prompt self-diagnostic", es: "Auto-diagnóstico de prompt" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `You are a prompt quality reviewer. Analyze the following prompt and identify the top 3 reasons it might produce bad output.
+
+For each issue:
+1. Name the failure mode (e.g., "missing format constraint", "ambiguous scope", "no anchor for missing info").
+2. Quote the exact part of the prompt that causes it.
+3. Write a 1-sentence fix.
+
+Then rewrite the full prompt with all three fixes applied.
+
+Prompt to review:
+"""
+[paste the prompt that is giving bad results]
+"""`,
+          es: `Sos un revisor de calidad de prompts. Analizá el siguiente prompt e identificá las 3 razones principales por las que podría dar resultados malos.
+
+Por cada problema:
+1. Nombrá el modo de falla (ej. "restricción de formato faltante", "alcance ambiguo", "sin ancla para información faltante").
+2. Citá la parte exacta del prompt que lo causa.
+3. Escribí un fix de 1 oración.
+
+Después reescribí el prompt completo con los tres fixes aplicados.
+
+Prompt a revisar:
+"""
+[pegá el prompt que está dando resultados malos]
+"""`,
+        },
+      },
+      {
+        title: { en: "Output comparison: what changed?", es: "Comparación de outputs: ¿qué cambió?" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Compare these two prompt outputs and explain what instruction change would produce output B instead of output A.
+
+Output A (bad):
+"""
+[paste the bad output]
+"""
+
+Output B (good):
+"""
+[paste an example of the output you actually want]
+"""
+
+Focus on:
+- What output format rule was missing in the prompt that generated A?
+- What constraint or example would make A impossible and B predictable?
+- Write the minimum addition to the original prompt (1–3 lines) that closes the gap.`,
+          es: `Comparé estos dos outputs de prompt y explicá qué cambio de instrucción produciría el output B en lugar del output A.
+
+Output A (malo):
+"""
+[pegá el output malo]
+"""
+
+Output B (bueno):
+"""
+[pegá un ejemplo del output que realmente querés]
+"""
+
+Enfocate en:
+- ¿Qué regla de formato de output faltaba en el prompt que generó A?
+- ¿Qué restricción o ejemplo haría que A fuera imposible y B predecible?
+- Escribí el agregado mínimo al prompt original (1–3 líneas) que cierra la brecha.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Why does my prompt work sometimes but not others?", es: "¿Por qué mi prompt a veces funciona y a veces no?" },
+        a: {
+          en: "Inconsistent outputs usually mean the prompt has ambiguity the model resolves differently each time — no single correct interpretation, so it picks one at random. The fix is to reduce ambiguity: specify the format with an example, constrain the scope with numbers, and remove conflicting instructions. When strict consistency matters, also lower the model's temperature setting if you control it, or lock the output to a JSON schema where one is available.",
+          es: "Los outputs inconsistentes generalmente significan que el prompt tiene ambigüedad que el modelo resuelve de manera diferente cada vez — sin una interpretación correcta única, elige una al azar. El fix es reducir la ambigüedad: especificá el formato con un ejemplo, restringí el alcance con números y eliminá instrucciones contradictorias. Cuando la consistencia estricta importa, también bajá la configuración de temperatura del modelo si la controlás, o bloqueá el output a un JSON schema cuando haya uno disponible.",
+        },
+      },
+      {
+        q: { en: "How many iterations does it usually take to fix a prompt?", es: "¿Cuántas iteraciones suele llevar arreglar un prompt?" },
+        a: {
+          en: "Most prompt problems are fixed in 2–3 iterations when you change one thing at a time. Common mistakes that drag it out: changing multiple things at once (so you can't tell what worked), testing only on the original input (missing edge cases), and fixing symptoms instead of root causes. A prompt that handles 5 diverse test inputs reliably is genuinely fixed. One that passes only the original test case will break in production.",
+          es: "La mayoría de los problemas de prompts se arreglan en 2–3 iteraciones cuando cambiás una cosa a la vez. Los errores comunes que lo prolongan: cambiar múltiples cosas a la vez (así no podés saber qué funcionó), testear solo en el input original (sin casos límite), y arreglar síntomas en lugar de causas raíz. Un prompt que maneja de manera confiable 5 inputs diversos está genuinamente arreglado. Uno que pasa solo el caso de test original se va a romper en producción.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-product-managers",
+    title: {
+      en: "AI prompts for product managers: PRDs, user research, and prioritization",
+      es: "Prompts de IA para product managers: PRDs, investigación de usuarios y priorización",
+    },
+    description: {
+      en: "Copy-paste prompt templates for the recurring PM workflows that AI handles well: writing specs, synthesizing research, and structuring prioritization decisions.",
+      es: "Plantillas de prompts copy-paste para los flujos de trabajo recurrentes de un PM que la IA maneja bien: escribir specs, sintetizar investigación y estructurar decisiones de priorización.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI saves PMs the most time", es: "Dónde la IA ahorra más tiempo a los PMs" },
+        bullets: {
+          en: [
+            "First-draft specs: a well-structured PRD template takes 30 minutes to fill instead of 3 hours to start from scratch.",
+            "User interview synthesis: summarizing 10 interviews into themes, evidence, and gaps is mechanical work — AI handles it well when you give it structure.",
+            "Prioritization frameworks: scoring features against RICE, ICE, or a custom rubric is faster when AI fills in the reasoning for each criterion.",
+            "Stakeholder communication: translating technical scope into executive summaries or customer-facing notes is a common AI strength.",
+            "Competitive landscape: summarizing how competitors address a specific problem saves hours of tab-switching (especially with a web-grounded model).",
+          ],
+          es: [
+            "Borradores de specs: una plantilla de PRD bien estructurada toma 30 minutos de completar en lugar de 3 horas para empezar desde cero.",
+            "Síntesis de entrevistas de usuarios: resumir 10 entrevistas en temas, evidencias y huecos es trabajo mecánico — la IA lo maneja bien cuando le das estructura.",
+            "Frameworks de priorización: puntuar features contra RICE, ICE o una rúbrica propia es más rápido cuando la IA completa el razonamiento por cada criterio.",
+            "Comunicación con stakeholders: traducir el alcance técnico en resúmenes ejecutivos o notas orientadas al cliente es una fortaleza común de la IA.",
+            "Panorama competitivo: resumir cómo los competidores abordan un problema específico ahorra horas de cambiar de pestaña (especialmente con un modelo con acceso web).",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to get reliable output for PM work", es: "Cómo obtener outputs confiables para trabajo de PM" },
+        bullets: {
+          en: [
+            "Always give the model the business context: who the user is, what the product does, and what constraint matters most (time, scope, resources).",
+            "Paste raw material in: interview notes, support tickets, data snippets. The model synthesizes better when it has real input rather than invented scenarios.",
+            "Ask for structure before prose: 'Give me the 5 themes first, then I'll tell you which to expand.' Reviewing structure is faster than reviewing paragraphs.",
+            "Specify the audience: a PRD for engineers needs different depth than a one-pager for the CEO. Name the reader.",
+            "Use the model to stress-test: 'Play devil's advocate. What are the strongest objections to this prioritization?' Surfaces gaps before the team meeting.",
+          ],
+          es: [
+            "Siempre dale al modelo el contexto de negocio: quién es el usuario, qué hace el producto y qué restricción importa más (tiempo, alcance, recursos).",
+            "Pegá el material crudo: notas de entrevistas, tickets de soporte, fragmentos de datos. El modelo sintetiza mejor cuando tiene input real en lugar de escenarios inventados.",
+            "Pedí estructura antes de prosa: 'Dame los 5 temas primero, y luego te digo cuál expandir.' Revisar estructura es más rápido que revisar párrafos.",
+            "Especificá la audiencia: un PRD para ingenieros necesita diferente profundidad que un one-pager para el CEO. Nombrá al lector.",
+            "Usá el modelo para stress-test: 'Jugá al abogado del diablo. ¿Cuáles son las objeciones más fuertes a esta priorización?' Saca a la luz los huecos antes de la reunión de equipo.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Lean PRD first draft", es: "Primer borrador de PRD simplificado" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a lean PRD first draft for this feature.
+
+Feature: [what it does in one sentence]
+User problem: [the pain point it solves, from the user's perspective]
+Target user: [who specifically — role, context, or user segment]
+Business goal: [the metric this is expected to move, and by roughly how much]
+Scope constraints: [what is explicitly out of scope for v1]
+Key open questions: [2–3 things that need answers before build]
+
+Output format:
+## Problem
+## Proposed solution (2–3 sentences)
+## User stories (3–5, as "As a [user], I want [action] so that [outcome]")
+## Success criteria (measurable, not aspirational)
+## Out of scope
+## Open questions
+
+Keep it under 600 words. This is a first draft for team alignment, not a final spec.`,
+          es: `Escribí un primer borrador de PRD simplificado para esta funcionalidad.
+
+Funcionalidad: [qué hace en una oración]
+Problema del usuario: [el pain point que resuelve, desde la perspectiva del usuario]
+Usuario objetivo: [quién específicamente — rol, contexto o segmento de usuario]
+Objetivo de negocio: [la métrica que se espera mover, y en aproximadamente cuánto]
+Restricciones de alcance: [qué está explícitamente fuera del alcance para v1]
+Preguntas abiertas clave: [2–3 cosas que necesitan respuesta antes de construir]
+
+Formato de salida:
+## Problema
+## Solución propuesta (2–3 oraciones)
+## User stories (3–5, como "Como [usuario], quiero [acción] para [resultado]")
+## Criterios de éxito (medibles, no aspiracionales)
+## Fuera del alcance
+## Preguntas abiertas
+
+Mantené menos de 600 palabras. Este es un primer borrador para alineación del equipo, no una spec final.`,
+        },
+      },
+      {
+        title: { en: "User interview synthesis", es: "Síntesis de entrevistas de usuarios" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Synthesize the following user interview notes into structured findings.
+
+Interview notes:
+"""
+[paste raw notes from 3–10 interviews here]
+"""
+
+Output:
+1. Top 5 themes — each with:
+   - Theme name (3–5 words)
+   - 1-sentence description
+   - 2–3 direct quotes or paraphrases that support it
+   - Which user segment mentioned it most
+
+2. Top 3 unmet needs (things users said they wish existed or complained about most)
+
+3. Gaps — what important questions remain unanswered by these interviews?
+
+Constraints:
+- Only include themes supported by at least 2 different users.
+- Do not invent quotes or add outside assumptions.
+- Flag anything where the evidence is thin (only 1 user mentioned it).`,
+          es: `Sintetizá las siguientes notas de entrevistas de usuarios en hallazgos estructurados.
+
+Notas de entrevistas:
+"""
+[pegá notas crudas de 3–10 entrevistas acá]
+"""
+
+Output:
+1. Top 5 temas — cada uno con:
+   - Nombre del tema (3–5 palabras)
+   - Descripción de 1 oración
+   - 2–3 citas directas o paráfrasis que lo respalden
+   - Qué segmento de usuario lo mencionó más
+
+2. Top 3 necesidades no cubiertas (cosas que los usuarios dijeron que desearían que existiera o sobre lo que más se quejaron)
+
+3. Huecos — ¿qué preguntas importantes quedan sin respuesta en estas entrevistas?
+
+Restricciones:
+- Incluí solo temas respaldados por al menos 2 usuarios diferentes.
+- No inventes citas ni agregues suposiciones externas.
+- Marcá cualquier cosa donde la evidencia sea escasa (solo 1 usuario lo mencionó).`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI replace user research?", es: "¿Puede la IA reemplazar la investigación de usuarios?" },
+        a: {
+          en: "No. AI synthesizes information you give it; it cannot observe behavior, pick up on tone, notice what users avoid saying, or ask follow-up questions in the moment. Where AI genuinely saves time is after the research: transcribing, synthesizing across interviews, grouping themes, and drafting summaries. The judgment about which themes matter for your product and which user quotes reveal something real versus situational still needs a PM who understands the context.",
+          es: "No. La IA sintetiza la información que le das; no puede observar comportamiento, captar el tono, notar lo que los usuarios evitan decir, ni hacer preguntas de seguimiento en el momento. Donde la IA realmente ahorra tiempo es después de la investigación: transcribir, sintetizar entre entrevistas, agrupar temas y redactar resúmenes. El criterio sobre qué temas importan para tu producto y qué citas de usuarios revelan algo real versus situacional todavía necesita un PM que entienda el contexto.",
+        },
+      },
+      {
+        q: { en: "How do I get AI to write a PRD in our internal format?", es: "¿Cómo hago que la IA escriba un PRD en nuestro formato interno?" },
+        a: {
+          en: "Paste a real example from your team (anonymized or with sensitive details replaced) and say: 'Use exactly this structure and heading format for the new PRD I'm about to describe.' One well-chosen example is more effective than a detailed description of your format — the model infers section order, tone, depth, and terminology from the example. Keep the example short enough that the new content dominates the context.",
+          es: "Pegá un ejemplo real de tu equipo (anonimizado o con detalles sensibles reemplazados) y decí: 'Usá exactamente esta estructura y formato de encabezados para el nuevo PRD que voy a describir.' Un ejemplo bien elegido es más efectivo que una descripción detallada de tu formato — el modelo infiere el orden de secciones, el tono, la profundidad y la terminología del ejemplo. Manté el ejemplo lo suficientemente corto como para que el nuevo contenido domine el contexto.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
