@@ -4,6 +4,27 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.3 — 2026-08-13
+
+**Three new evergreen guides + copy-original UX fix.** This week's update adds Perplexity prompting, a systematic prompt-debugging method, and AI prompts for product managers to the SEO content library, and ships a small UX improvement: the original-prompt view in the result panel now has a copy button so users can grab either version without switching tabs or manually selecting text.
+
+### Added
+- **New guide: Prompts for Perplexity** (`lib/seo/content/guides.ts`, slug `perplexity-prompt-guide`) — when to choose Perplexity over a static model, how to constrain source types, patterns for current-state research and competitive comparisons, and two copy-paste templates (sourced research and live comparison).
+- **New guide: How to debug a prompt that gives bad output** (`lib/seo/content/guides.ts`, slug `prompt-debugging`) — the six most common prompt failure modes, a five-step debugging process, and templates for prompt self-diagnosis and output comparison.
+- **New guide: AI prompts for product managers** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-product-managers`) — where AI saves PMs real time (specs, synthesis, prioritization, stakeholder communication), how to get reliable structured output, and templates for lean PRD drafts and user-interview synthesis.
+
+### Changed
+- **Copy button added to the original-prompt view** (`components/results/OptimizedPromptPanel.tsx`) — previously the copy button only appeared on the improved-prompt tab; users switching to the original view to compare had no way to copy it without selecting all. The button now appears symmetrically on both tabs with independent confirmation state.
+- Version bumped to `v1.4.3` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` — `lib/__tests__/version.sync.test.ts` passes at v1.4.3; full suite see PR description
+- `npm run build` — see PR description
+
+---
+
 ## v1.4.2 — 2026-08-08
 
 **The AI Daily index reads like a blog, not a control panel.** v1.4.1 gave the section real filtering; it also gave the index a filter panel that greeted every reader with a row of controls before a single headline. This release is a design pass over that same page: the filtering behaviour is untouched, but the search field is promoted to the top as the one obvious way in, the remaining filters step back into a compact secondary control, and the article list is rebuilt as a spacious single-column editorial read. Nothing about what you can filter by has changed — only how much of it the page puts in front of you.

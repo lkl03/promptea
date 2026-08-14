@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.4.2 (2026-08-08)
+## Latest update — v1.4.3 (2026-08-13)
 
-**The AI Daily index reads like a blog, not a control panel.** A design pass over the section shipped in v1.4.1: the filter panel gives way to a single prominent search field matching the homepage input, the remaining filters (company, edition, category, date range, sorting) collapse into a compact secondary control with their behaviour unchanged, and the listing is rebuilt as a spacious single-column editorial read. The featured-article treatment is held back until the archive is large enough to justify it — until then the index simply shows the latest articles. See [AI Daily](#ai-daily) below and the [changelog](./CHANGELOG.md).
+Three new evergreen guides in the SEO content library: **Prompts for Perplexity** (real-time web search, source-constrained research), **How to debug a prompt that gives bad output** (six failure modes, five-step fix process), and **AI prompts for product managers** (PRD drafts, user-interview synthesis, prioritization). Also ships a small UX fix: the original-prompt view in the result panel now has a copy button, symmetric with the improved view. See the [changelog](./CHANGELOG.md) for full details.
 
-_Previous update: v1.4.1 (2026-08-08) — reader-facing search and filtering on the AI Daily index as a plain `GET` form (every filtered view a shareable, crawlable URL), two weekly editions alongside the daily story, and disclosed backdating capped at 14 days._
+_Previous update: v1.4.2 (2026-08-08) — AI Daily index redesign: search field promoted to primary control, filters collapsed into a compact secondary control, article listing rebuilt as a single-column editorial read._
 
 ## How it works
 
