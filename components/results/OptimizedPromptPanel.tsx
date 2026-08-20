@@ -158,8 +158,10 @@ export default function OptimizedPromptPanel({
           {(["improved", "original"] as const).map((v) => (
             <button
               key={v}
+              id={`tab-${v}`}
               role="tab"
               aria-selected={view === v}
+              aria-controls="prompt-tabpanel"
               type="button"
               onClick={() => setView(v)}
               className={[
@@ -174,12 +176,14 @@ export default function OptimizedPromptPanel({
       )}
 
       <div
+        id="prompt-tabpanel"
         className={[
           "relative field p-4 whitespace-pre-wrap overflow-auto max-h-120 min-[1920px]:max-h-160",
           "prompt-block",
           view === "original" ? "opacity-80" : "",
         ].join(" ")}
         role="tabpanel"
+        aria-labelledby={hasOriginal ? `tab-${view}` : undefined}
       >
         {view === "improved" ? result.optimizedPrompt : originalPrompt}
         {view === "improved" ? (

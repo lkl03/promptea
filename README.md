@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.4.3 (2026-08-13)
+## Latest update — v1.4.4 (2026-08-20)
 
-Three new evergreen guides in the SEO content library: **Prompts for Perplexity** (real-time web search, source-constrained research), **How to debug a prompt that gives bad output** (six failure modes, five-step fix process), and **AI prompts for product managers** (PRD drafts, user-interview synthesis, prioritization). Also ships a small UX fix: the original-prompt view in the result panel now has a copy button, symmetric with the improved view. See the [changelog](./CHANGELOG.md) for full details.
+Three new evergreen guides in the SEO content library: **Prompt templates for summarization** (document, article, and meeting-notes templates with format and length controls), **How to write better prompts for Claude** (long-context patterns, instruction-following tips, voice-preserving editing template), and **AI prompts for sales teams** (cold outreach, discovery prep, and proposal executive summary templates). Also ships a small accessibility fix: the Improved/Original tab widget in the result panel now has complete ARIA wiring so screen readers correctly announce the active tab. See the [changelog](./CHANGELOG.md) for full details.
 
-_Previous update: v1.4.2 (2026-08-08) — AI Daily index redesign: search field promoted to primary control, filters collapsed into a compact secondary control, article listing rebuilt as a single-column editorial read._
+_Previous update: v1.4.3 (2026-08-13) — Three new evergreen guides: Prompts for Perplexity, How to debug a prompt that gives bad output, and AI prompts for product managers. Also shipped: copy button on the original-prompt tab in the result panel._
 
 ## How it works
 

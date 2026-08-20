@@ -4364,6 +4364,505 @@ Restricciones:
       },
     ],
   },
+  {
+    slug: "prompt-templates-for-summarization",
+    title: {
+      en: "Prompt templates for summarization: documents, meetings, and research",
+      es: "Plantillas de prompt para resumir: documentos, reuniones e investigación",
+    },
+    description: {
+      en: "Copy-paste templates to summarize long documents, meeting notes, and research reliably — with format and length controls built in.",
+      es: "Plantillas copy-paste para resumir documentos largos, notas de reuniones e investigaciones de forma confiable, con controles de formato y longitud incluidos.",
+    },
+    sections: [
+      {
+        heading: { en: "Why most summarization prompts fail", es: "Por qué la mayoría de los prompts de resumen fallan" },
+        bullets: {
+          en: [
+            "No length constraint: 'summarize this' gets whatever length the model prefers, not what you need.",
+            "No format specified: prose summaries and bullet lists carry different information density — pick one explicitly.",
+            "No audience specified: a summary for a technical team looks nothing like one for an executive or a customer.",
+            "No signal about what matters: the model weights recency and repetition by default, not importance to your actual goal.",
+            "No instruction for missing info: when input is ambiguous, the model fills gaps with assumptions rather than flagging them.",
+          ],
+          es: [
+            "Sin restricción de longitud: 'resumí esto' da lo que prefiere el modelo, no lo que necesitás.",
+            "Sin formato especificado: los resúmenes en prosa y las listas de bullets tienen diferente densidad de información — elegí uno explícitamente.",
+            "Sin audiencia especificada: un resumen para un equipo técnico no se parece al de un ejecutivo o un cliente.",
+            "Sin señal sobre qué importa: el modelo pondera recencia y repetición por defecto, no la importancia para tu objetivo real.",
+            "Sin instrucción para información faltante: cuando el input es ambiguo, el modelo llena huecos con suposiciones en lugar de marcarlos.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What makes a reliable summarization prompt", es: "Qué hace confiable a un prompt de resumen" },
+        bullets: {
+          en: [
+            "State the audience and purpose: 'For an executive who will not read the original' produces a different summary than 'For a teammate who needs to take action.'",
+            "Set a hard length: '5 bullets max', 'under 150 words', '3 sentences'. The constraint forces prioritization.",
+            "Name what to preserve: key decisions, numbers, dates, open questions, action items — whatever must survive the compression.",
+            "Name what to skip: background the reader knows, examples that only illustrate a point already made, repeated caveats.",
+            "Ask for a structured format: headline + bullets + action items is easier to scan and act on than unbroken prose.",
+          ],
+          es: [
+            "Indicá la audiencia y el propósito: 'Para un ejecutivo que no va a leer el original' produce un resumen diferente que 'Para un colega que necesita tomar acción.'",
+            "Poné una longitud fija: '5 bullets como máximo', 'menos de 150 palabras', '3 oraciones'. La restricción fuerza la priorización.",
+            "Nombrá qué preservar: decisiones clave, números, fechas, preguntas abiertas, ítems de acción — lo que sea que deba sobrevivir la compresión.",
+            "Nombrá qué saltear: contexto que el lector ya conoce, ejemplos que solo ilustran un punto ya hecho, advertencias repetidas.",
+            "Pedí un formato estructurado: título + bullets + ítems de acción es más fácil de escanear y actuar que prosa sin cortes.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Document or article summary", es: "Resumen de documento o artículo" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Summarize the following document.
+
+Audience: [who will read this — e.g., a product manager, a non-technical executive, a customer]
+Purpose: [what they will do with the summary — e.g., decide whether to read the full doc, prepare for a meeting, share with their team]
+
+Output format:
+- Headline (1 sentence): the single most important takeaway
+- Key points (3–5 bullets): decisions made, numbers that matter, open questions
+- Action items (if any): who needs to do what
+
+Constraints:
+- Under 200 words total
+- Do not include background the audience already knows
+- If something is unclear in the source, flag it rather than guessing
+
+Document:
+"""
+[paste document here]
+"""`,
+          es: `Resumí el siguiente documento.
+
+Audiencia: [quién va a leer esto — ej: un product manager, un ejecutivo no técnico, un cliente]
+Propósito: [qué va a hacer con el resumen — ej: decidir si leer el doc completo, prepararse para una reunión, compartir con su equipo]
+
+Formato de salida:
+- Titular (1 oración): el takeaway más importante
+- Puntos clave (3–5 bullets): decisiones tomadas, números que importan, preguntas abiertas
+- Ítems de acción (si los hay): quién tiene que hacer qué
+
+Restricciones:
+- Menos de 200 palabras en total
+- No incluyas contexto que la audiencia ya conoce
+- Si algo no está claro en el original, marcalo en lugar de adivinar
+
+Documento:
+"""
+[pegá el documento acá]
+"""`,
+        },
+      },
+      {
+        title: { en: "Meeting notes summary", es: "Resumen de notas de reunión" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Summarize the following meeting notes into a concise record.
+
+Output format:
+## One-line summary
+[What was decided or accomplished in one sentence]
+
+## Decisions made
+- [Decision 1 — who decided it, if mentioned]
+- [Decision 2]
+
+## Open questions
+- [Question that was raised but not resolved]
+
+## Action items
+| Owner | Task | Due date |
+|-------|------|----------|
+| [name] | [task] | [date or "TBD"] |
+
+## What was NOT decided
+[Scope, timeline, or resource questions still open]
+
+Constraints:
+- Keep the format exactly as above
+- If the notes don't mention something (e.g., no due dates), use "not mentioned" — do not invent
+- Flag any conflict or unresolved disagreement you see in the notes
+
+Meeting notes:
+"""
+[paste raw meeting notes here]
+"""`,
+          es: `Resumí las siguientes notas de reunión en un registro conciso.
+
+Formato de salida:
+## Resumen en una línea
+[Qué se decidió o logró en una oración]
+
+## Decisiones tomadas
+- [Decisión 1 — quién la tomó, si se menciona]
+- [Decisión 2]
+
+## Preguntas abiertas
+- [Pregunta que se planteó pero no se resolvió]
+
+## Ítems de acción
+| Responsable | Tarea | Fecha límite |
+|-------------|-------|--------------|
+| [nombre] | [tarea] | [fecha o "A definir"] |
+
+## Qué NO se decidió
+[Alcance, cronograma o preguntas de recursos aún abiertas]
+
+Restricciones:
+- Mantené el formato exactamente como está arriba
+- Si las notas no mencionan algo (ej: sin fechas límite), usá "no mencionado" — no inventes
+- Marcá cualquier conflicto o desacuerdo no resuelto que veas en las notas
+
+Notas de la reunión:
+"""
+[pegá las notas crudas de la reunión acá]
+"""`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Why does AI miss important details in my summaries?", es: "¿Por qué la IA omite detalles importantes en mis resúmenes?" },
+        a: {
+          en: "By default, models weight recency and frequency — content that appears late in the document or is mentioned multiple times is more likely to surface. If your key detail appears once, early, or in a footnote, it gets compressed out. The fix is to explicitly tell the model what must survive: 'Preserve all decisions, numbers, and action items.' If a specific detail is critical, name it: 'Do not lose the budget figure, even if the section around it is cut.'",
+          es: "Por defecto, los modelos ponderan recencia y frecuencia — el contenido que aparece tarde en el documento o se menciona varias veces tiene más probabilidades de aparecer. Si tu detalle clave aparece una vez, al principio, o en una nota al pie, se comprime. El fix es decirle explícitamente al modelo qué debe sobrevivir: 'Preservá todas las decisiones, números y ítems de acción.' Si un detalle específico es crítico, nombralo: 'No perdás la cifra del presupuesto, aunque se corte la sección que la rodea.'",
+        },
+      },
+      {
+        q: { en: "How do I summarize a document that is too long to paste?", es: "¿Cómo resumo un documento que es demasiado largo para pegarlo?" },
+        a: {
+          en: "If the document fits in the model's context window (which for modern models is typically 128k–200k tokens, or roughly 100k–150k words), paste it in full — models handle long inputs well when given explicit output constraints. If it doesn't fit, divide the document into logical sections, summarize each one with the same template, then ask the model to synthesize the section summaries into a final summary. Keep the section summaries short so the final synthesis step has room to work.",
+          es: "Si el documento entra en la ventana de contexto del modelo (que para modelos modernos suele ser 128k–200k tokens, o aproximadamente 100k–150k palabras), pegalo completo — los modelos manejan inputs largos bien cuando se les dan restricciones de output explícitas. Si no entra, dividí el documento en secciones lógicas, resumí cada una con la misma plantilla, y luego pedile al modelo que sintetice los resúmenes de sección en un resumen final. Mantené los resúmenes de sección cortos para que el paso de síntesis final tenga espacio para trabajar.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "claude-prompt-guide",
+    title: {
+      en: "How to write better prompts for Claude",
+      es: "Cómo escribir mejores prompts para Claude",
+    },
+    description: {
+      en: "Practical patterns for getting consistent, high-quality output from Claude — what it excels at, how to structure requests, and where it needs explicit guidance.",
+      es: "Patrones prácticos para obtener outputs consistentes y de alta calidad de Claude: en qué es fuerte, cómo estructurar pedidos, y dónde necesita instrucciones explícitas.",
+    },
+    sections: [
+      {
+        heading: { en: "Where Claude stands out", es: "Dónde Claude se destaca" },
+        bullets: {
+          en: [
+            "Long, nuanced tasks: Claude handles long-context documents (200k token window) better than most models. Paste the full contract, code file, or research paper and ask precise questions about it.",
+            "Following complex instructions: Claude is particularly good at applying a long set of rules simultaneously — a style guide, a review rubric, or a multi-part format constraint — without dropping items from the middle.",
+            "Calibrated uncertainty: Claude is more likely than other models to say 'I'm not sure' or flag a confidence limitation rather than confidently hallucinating a fact. Useful for research tasks where knowing what is uncertain matters.",
+            "Reasoning through ambiguity: when you say 'think through this carefully before answering', Claude tends to produce genuine reasoning steps rather than superficial filler.",
+            "Safe text editing: preserving the author's voice, not adding unsolicited opinions, staying in the requested format — Claude respects editorial boundaries well.",
+          ],
+          es: [
+            "Tareas largas y matizadas: Claude maneja documentos con contexto largo (ventana de 200k tokens) mejor que la mayoría de los modelos. Pegá el contrato completo, el archivo de código o el paper de investigación y hacé preguntas precisas sobre él.",
+            "Seguir instrucciones complejas: Claude es particularmente bueno aplicando un conjunto largo de reglas simultáneamente — una guía de estilo, una rúbrica de revisión o una restricción de formato de múltiples partes — sin perder ítems del medio.",
+            "Incertidumbre calibrada: Claude es más propenso que otros modelos a decir 'No estoy seguro' o marcar una limitación de confianza en lugar de alucinar un hecho con confianza. Útil para tareas de investigación donde importa saber qué es incierto.",
+            "Razonar a través de la ambigüedad: cuando decís 'pensá esto cuidadosamente antes de responder', Claude tiende a producir pasos de razonamiento genuinos en lugar de relleno superficial.",
+            "Edición segura de textos: preservar la voz del autor, no agregar opiniones no solicitadas, mantenerse en el formato pedido — Claude respeta bien los límites editoriales.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to structure requests for Claude", es: "Cómo estructurar pedidos para Claude" },
+        bullets: {
+          en: [
+            "State the goal before the context: Claude is trained to consider early instructions carefully. Put 'your task is X' before pasting a long document, not after.",
+            "Be explicit about format: Claude defaults to well-structured prose with headers. If you want bullets only, no prose, or a specific schema, say so directly.",
+            "Use 'think step by step' for reasoning tasks: for analysis, comparisons, or multi-step decisions, this phrase reliably produces more reasoned output.",
+            "Tell Claude what to skip: 'Do not add caveats about AI limitations', 'Do not start with a restatement of my request', 'Do not offer alternatives I didn't ask for' — Claude respects these constraints.",
+            "For very long inputs, anchor the task at the end too: after pasting a 50-page document, repeat the core instruction in 1 sentence. Claude reads the whole context but the final instruction carries recency weight.",
+          ],
+          es: [
+            "Poné el objetivo antes del contexto: Claude está entrenado para considerar con cuidado las instrucciones tempranas. Poné 'tu tarea es X' antes de pegar un documento largo, no después.",
+            "Sé explícito sobre el formato: Claude usa por defecto prosa bien estructurada con encabezados. Si querés solo bullets, sin prosa, o un esquema específico, decilo directamente.",
+            "Usá 'pensá paso a paso' para tareas de razonamiento: para análisis, comparaciones o decisiones de múltiples pasos, esta frase produce de manera confiable outputs más razonados.",
+            "Decile a Claude qué saltear: 'No agregues advertencias sobre limitaciones de la IA', 'No empieces con una repetición de mi pedido', 'No ofrezcas alternativas que no pedí' — Claude respeta estas restricciones.",
+            "Para inputs muy largos, ancorá la tarea al final también: después de pegar un documento de 50 páginas, repetí la instrucción central en 1 oración. Claude lee todo el contexto pero la instrucción final tiene peso de recencia.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Structured analysis with Claude", es: "Análisis estructurado con Claude" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Your task: analyze the document below and answer the specific questions listed.
+
+Think through the document carefully before answering. If a question cannot be answered from the document alone, say so explicitly rather than guessing.
+
+Questions to answer:
+1. [Your first specific question]
+2. [Your second specific question]
+3. [Your third specific question]
+
+Format: answer each question with a label (Q1:, Q2:, Q3:), followed by 2–4 sentences. Use a bullet for evidence when citing a specific part of the document.
+
+Do not include an introduction or conclusion. Start directly with Q1.
+
+Document:
+"""
+[paste document here]
+"""`,
+          es: `Tu tarea: analizá el documento de abajo y respondé las preguntas específicas listadas.
+
+Pensá cuidadosamente en el documento antes de responder. Si una pregunta no puede responderse solo con el documento, decilo explícitamente en lugar de adivinar.
+
+Preguntas a responder:
+1. [Tu primera pregunta específica]
+2. [Tu segunda pregunta específica]
+3. [Tu tercera pregunta específica]
+
+Formato: respondé cada pregunta con una etiqueta (P1:, P2:, P3:), seguida de 2–4 oraciones. Usá un bullet para evidencia cuando citás una parte específica del documento.
+
+No incluyas una introducción ni conclusión. Empezá directamente con P1.
+
+Documento:
+"""
+[pegá el documento acá]
+"""`,
+        },
+      },
+      {
+        title: { en: "Claude as a writing editor", es: "Claude como editor de escritura" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Edit the following text for clarity and concision.
+
+Rules:
+- Preserve my voice and phrasing wherever possible — only change what genuinely obscures the meaning
+- Do not add information, opinions, or examples I did not include
+- Do not convert my sentence structure to yours — if I use short sentences, keep them short
+- Flag any sentence you are unsure about rather than silently rewriting it
+- Do not add caveats or qualifications I did not write
+
+Output format:
+1. The edited text (full version)
+2. A brief note on what you changed and why (3–5 bullets max)
+
+Text to edit:
+"""
+[paste your draft here]
+"""`,
+          es: `Editá el siguiente texto para mayor claridad y concisión.
+
+Reglas:
+- Preservá mi voz y fraseado siempre que sea posible — solo cambiá lo que genuinamente oscurece el significado
+- No agregues información, opiniones ni ejemplos que yo no incluí
+- No conviertas mi estructura de oraciones a la tuya — si uso oraciones cortas, mantenerlas cortas
+- Marcá cualquier oración de la que no estés seguro en lugar de reescribirla silenciosamente
+- No agregues advertencias ni calificaciones que yo no escribí
+
+Formato de salida:
+1. El texto editado (versión completa)
+2. Una nota breve sobre qué cambiaste y por qué (máximo 3–5 bullets)
+
+Texto a editar:
+"""
+[pegá tu borrador acá]
+"""`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Does Claude need a system prompt?", es: "¿Claude necesita un system prompt?" },
+        a: {
+          en: "Not necessarily, but a clear role and ruleset at the top of your prompt acts like one. Claude respects early instructions carefully, so opening with 'You are a concise editor. Rules: preserve the author's voice, flag uncertainty, no added opinions.' shapes the entire response. For chat interfaces where you can't set a true system prompt, this pattern is the practical equivalent.",
+          es: "No necesariamente, pero un rol claro y un conjunto de reglas al principio del prompt actúa como uno. Claude respeta las instrucciones tempranas con cuidado, así que abrir con 'Sos un editor conciso. Reglas: preservá la voz del autor, marcá la incertidumbre, sin opiniones agregadas.' da forma a toda la respuesta. Para interfaces de chat donde no podés establecer un system prompt real, este patrón es el equivalente práctico.",
+        },
+      },
+      {
+        q: { en: "When should I use Claude versus GPT or Gemini?", es: "¿Cuándo usar Claude versus GPT o Gemini?" },
+        a: {
+          en: "Claude tends to perform better for tasks requiring careful instruction-following, long-document analysis, preserving an author's voice during editing, and nuanced reasoning where getting things wrong has real costs (legal, medical, financial). GPT and Gemini have their own strengths — GPT has deep tool-use and plugin ecosystems, Gemini integrates tightly with Google Workspace. For general tasks, the best model is often whichever one you have access to and have already tested with your specific prompts.",
+          es: "Claude tiende a rendir mejor para tareas que requieren seguimiento cuidadoso de instrucciones, análisis de documentos largos, preservar la voz de un autor durante la edición, y razonamiento matizado donde equivocarse tiene costos reales (legales, médicos, financieros). GPT y Gemini tienen sus propias fortalezas — GPT tiene ecosistemas profundos de uso de herramientas y plugins, Gemini se integra estrechamente con Google Workspace. Para tareas generales, el mejor modelo suele ser el que ya tenés acceso y ya probaste con tus prompts específicos.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-sales",
+    title: {
+      en: "AI prompts for sales teams: outreach, discovery, and proposals",
+      es: "Prompts de IA para equipos de ventas: outreach, discovery y propuestas",
+    },
+    description: {
+      en: "Copy-paste prompt templates for the recurring sales workflows where AI genuinely saves time — cold outreach, discovery prep, and proposal writing.",
+      es: "Plantillas de prompts copy-paste para los flujos de trabajo de ventas donde la IA realmente ahorra tiempo: outreach en frío, preparación de discovery y escritura de propuestas.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI fits in a sales workflow", es: "Dónde encaja la IA en un flujo de trabajo de ventas" },
+        bullets: {
+          en: [
+            "Personalized outreach at scale: drafting a first email tailored to a prospect's role, company, and recent news is faster with AI — but you must give it the specifics, not let it invent them.",
+            "Discovery call prep: summarizing a prospect's business from their website, press releases, and LinkedIn before a call saves 30–60 minutes of manual research.",
+            "Objection anticipation: 'What are the top 5 objections a [role] at a [company type] would have to adopting [your solution]?' gives you a sharper prep list than guessing.",
+            "Proposal first drafts: an executive summary, ROI framing, and scope section from a template is faster to refine than to write from scratch for each deal.",
+            "Follow-up sequencing: 'Write a 3-email follow-up sequence for a prospect who went quiet after a positive demo' is a task AI handles well with the right context.",
+          ],
+          es: [
+            "Outreach personalizado a escala: redactar un primer email adaptado al rol, empresa y noticias recientes de un prospecto es más rápido con IA — pero tenés que darle los detalles específicos, no dejar que los invente.",
+            "Preparación de llamada de discovery: resumir el negocio de un prospecto desde su sitio web, comunicados de prensa y LinkedIn antes de una llamada ahorra 30–60 minutos de investigación manual.",
+            "Anticipación de objeciones: '¿Cuáles son las 5 principales objeciones que tendría un [rol] en una [tipo de empresa] para adoptar [tu solución]?' te da una lista de preparación más precisa que adivinar.",
+            "Primeros borradores de propuestas: un resumen ejecutivo, encuadre de ROI y sección de alcance a partir de una plantilla es más rápido de refinar que escribir desde cero para cada deal.",
+            "Secuenciación de seguimiento: 'Escribí una secuencia de 3 emails de seguimiento para un prospecto que quedó en silencio después de una demo positiva' es una tarea que la IA maneja bien con el contexto correcto.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to get personalized output, not generic filler", es: "Cómo obtener output personalizado, no relleno genérico" },
+        bullets: {
+          en: [
+            "Paste real context: the prospect's job title, company size, industry, a recent news item, or a pain point they've mentioned. AI cannot personalize from nothing.",
+            "Specify the tone and relationship: 'We have never spoken' produces a different email than 'We met briefly at SaaStr and they mentioned they were evaluating tools.'",
+            "Name the call to action: 'The only goal of this email is to get a 20-minute call. Do not pitch features. Do not over-explain.' Generic outreach pitches the product; good outreach pitches the conversation.",
+            "Ask for multiple variations: 'Write 3 versions of this subject line' gives you options without extra prompts.",
+            "Review before sending: AI drafts are starting points. Read every word before hitting send — a wrong company name, wrong product feature, or a tone that doesn't fit you is worse than no email at all.",
+          ],
+          es: [
+            "Pegá contexto real: el cargo del prospecto, tamaño de empresa, industria, una noticia reciente, o un pain point que hayan mencionado. La IA no puede personalizar desde la nada.",
+            "Especificá el tono y la relación: 'Nunca hablamos' produce un email diferente que 'Nos cruzamos brevemente en SaaStr y mencionaron que estaban evaluando herramientas.'",
+            "Nombrá el call to action: 'El único objetivo de este email es conseguir una llamada de 20 minutos. No presentes features. No sobre-expliques.' El outreach genérico presenta el producto; el outreach bueno presenta la conversación.",
+            "Pedí múltiples variaciones: 'Escribí 3 versiones de este asunto' te da opciones sin prompts extra.",
+            "Revisá antes de enviar: los borradores de IA son puntos de partida. Leé cada palabra antes de enviar — un nombre de empresa incorrecto, una feature incorrecta del producto, o un tono que no te representa es peor que no enviar nada.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Cold outreach email (first touch)", es: "Email de outreach en frío (primer contacto)" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Write a cold outreach email for a sales first touch.
+
+Context:
+- My name: [Your name]
+- My role: [Your role, e.g. Account Executive at Acme]
+- What we sell: [One sentence — what it does, not features]
+- Prospect's name: [Name]
+- Prospect's role: [Title]
+- Prospect's company: [Company name] — [industry, size if known]
+- Specific reason for reaching out: [a recent news item, a trigger event, a role-specific pain point — be specific, do not invent]
+
+Goal of this email: get a 20-minute exploratory call. Nothing else.
+
+Rules:
+- Subject line: under 8 words, no clickbait
+- Opening: reference the specific reason for reaching out in the first sentence
+- Do not list product features
+- Do not use words like "synergies", "leverage", "solution", or "game-changer"
+- CTA: one specific ask (a call link, a reply, a specific date/time)
+- Length: under 120 words total
+- Tone: direct and respectful — not casual, not corporate
+
+Output: the subject line, then the email body.`,
+          es: `Escribí un email de outreach en frío para un primer contacto de ventas.
+
+Contexto:
+- Mi nombre: [Tu nombre]
+- Mi rol: [Tu rol, ej. Account Executive en Acme]
+- Qué vendemos: [Una oración — qué hace, no features]
+- Nombre del prospecto: [Nombre]
+- Rol del prospecto: [Cargo]
+- Empresa del prospecto: [Nombre de empresa] — [industria, tamaño si se sabe]
+- Razón específica para contactar: [una noticia reciente, un evento trigger, un pain point específico del rol — sé específico, no inventes]
+
+Objetivo de este email: conseguir una llamada exploratoria de 20 minutos. Nada más.
+
+Reglas:
+- Asunto: menos de 8 palabras, sin clickbait
+- Apertura: referenciá la razón específica para contactar en la primera oración
+- No listes features del producto
+- No uses palabras como "sinergias", "apalancar", "solución integral" o "cambio de juego"
+- CTA: un solo pedido específico (link de llamada, respuesta, fecha/hora específica)
+- Longitud: menos de 120 palabras en total
+- Tono: directo y respetuoso — ni casual, ni corporativo
+
+Output: el asunto, luego el cuerpo del email.`,
+        },
+      },
+      {
+        title: { en: "Proposal executive summary", es: "Resumen ejecutivo de propuesta" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write an executive summary section for a sales proposal.
+
+Deal context:
+- Prospect: [Company name] — [industry, size]
+- Decision maker: [Name, title]
+- Problem they described: [In their words if possible — what they said the pain is]
+- What we are proposing: [Brief description of scope]
+- Key business outcome they want: [The metric or result they care about — not our pitch, their goal]
+- Timeline: [Their desired timeline]
+
+Rules for the executive summary:
+- Start with their problem, not our product
+- Use their language for the problem, not ours
+- State the outcome we are committing to (not features we are delivering)
+- Under 200 words
+- No jargon, no acronyms unless they used them first
+- End with one sentence about why we are the right partner for this (specific reason, not generic)
+
+Do not write the full proposal — only the executive summary section.`,
+          es: `Escribí una sección de resumen ejecutivo para una propuesta de ventas.
+
+Contexto del deal:
+- Prospecto: [Nombre de empresa] — [industria, tamaño]
+- Tomador de decisiones: [Nombre, cargo]
+- Problema que describieron: [En sus palabras si es posible — qué dijeron que es el dolor]
+- Qué estamos proponiendo: [Descripción breve del alcance]
+- Resultado de negocio clave que quieren: [La métrica o resultado que les importa — no nuestro pitch, su objetivo]
+- Cronograma: [Su cronograma deseado]
+
+Reglas para el resumen ejecutivo:
+- Empezá con su problema, no con nuestro producto
+- Usá su lenguaje para el problema, no el nuestro
+- Indicá el resultado al que nos comprometemos (no las features que entregamos)
+- Menos de 200 palabras
+- Sin jerga, sin siglas a menos que ellos las hayan usado primero
+- Terminá con una oración sobre por qué somos el socio correcto para esto (razón específica, no genérica)
+
+No escribas la propuesta completa — solo la sección de resumen ejecutivo.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI write follow-up emails that don't sound like AI wrote them?", es: "¿Puede la IA escribir emails de seguimiento que no suenen a que los escribió una IA?" },
+        a: {
+          en: "Yes, with the right constraints. The reason AI follow-ups sound generic is that the prompt was generic — 'write a follow-up email' with no context. The fix: give the model the prospect's name, what was discussed in the last call, what they said their biggest concern was, and what the agreed next step was. Add 'match my tone exactly — do not add enthusiasm I did not express.' With real context and a tone constraint, the output is much closer to how you actually write.",
+          es: "Sí, con las restricciones correctas. La razón por la que los seguimientos de IA suenan genéricos es que el prompt era genérico — 'escribí un email de seguimiento' sin contexto. El fix: darle al modelo el nombre del prospecto, qué se discutió en la última llamada, cuál dijeron que era su mayor preocupación, y cuál fue el siguiente paso acordado. Agregar 'adaptá exactamente mi tono — no agregues entusiasmo que yo no expresé.' Con contexto real y una restricción de tono, el output es mucho más cercano a cómo realmente escribís.",
+        },
+      },
+      {
+        q: { en: "What sales tasks should I NOT use AI for?", es: "¿Qué tareas de ventas NO debería usar IA?" },
+        a: {
+          en: "Live conversations: calls, real-time negotiations, and relationship-building moments where the prospect can sense you are not present. Relationship history: AI does not know the trust and context built over months of relationship — do not let it rewrite an email to a key account without reading it yourself. Reference checks: never use AI to write what appears to be a customer quote or reference. Anything requiring real verification: if the accuracy of a claim matters (pricing, legal terms, technical specs), verify it yourself before it goes to the prospect.",
+          es: "Conversaciones en vivo: llamadas, negociaciones en tiempo real y momentos de construcción de relaciones donde el prospecto puede sentir que no estás presente. Historia de relación: la IA no conoce la confianza y el contexto construidos durante meses de relación — no la dejes reescribir un email a una cuenta clave sin leerlo vos mismo. Referencias: nunca uses IA para escribir lo que parece ser una cita o referencia de cliente. Cualquier cosa que requiera verificación real: si la precisión de una afirmación importa (precios, términos legales, specs técnicas), verificala vos mismo antes de que llegue al prospecto.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
