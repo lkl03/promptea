@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.4 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.4</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 20-08-2026" : "Released: 2026-08-20"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Plantillas de prompt para resumir — por qué la mayoría de los prompts de resumen fallan, qué los hace confiables, y dos plantillas: resumen de documento/artículo y resumen estructurado de notas de reunión con tablas de decisiones e ítems de acción."
+              : "New guide: Prompt templates for summarization — why most summarization prompts fail, what makes one reliable, and two templates: a document/article summary and a structured meeting-notes summary with decision and action-item tables."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Cómo escribir mejores prompts para Claude — en qué se destaca Claude (contexto largo, instrucciones complejas, incertidumbre calibrada), cómo estructurar pedidos, y plantillas para análisis de documentos y edición que preserva la voz del autor."
+              : "New guide: How to write better prompts for Claude — where Claude stands out (long context, complex instruction-following, calibrated uncertainty), how to structure requests, and templates for document analysis and voice-preserving editing."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para equipos de ventas — dónde encaja la IA en ventas (outreach, discovery, propuestas), cómo evitar outputs genéricos, y dos plantillas: email de primer contacto en frío y resumen ejecutivo de propuesta."
+              : "New guide: AI prompts for sales teams — where AI fits in a sales workflow (outreach, discovery, proposals), how to avoid generic-sounding output, and two templates: a cold first-touch email and a proposal executive summary."}
+          </li>
+          <li>
+            {isEs
+              ? "Mejora de accesibilidad en el panel de resultados: los botones del toggle Mejorado/Original ahora tienen IDs de ARIA y controles correctamente vinculados al panel — los lectores de pantalla anuncian correctamente qué pestaña está activa."
+              : "Accessibility improvement in the result panel: the Improved/Original toggle buttons now have proper ARIA ids, aria-controls, and aria-labelledby wiring — screen readers correctly announce which tab is active and which panel it controls."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.3 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

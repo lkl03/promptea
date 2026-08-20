@@ -4,6 +4,27 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.4 — 2026-08-20
+
+**Three new evergreen guides + ARIA tab accessibility fix.** This week's update adds summarization templates, a Claude-specific prompting guide, and AI prompts for sales teams to the SEO content library, and ships a small accessibility improvement: the Improved/Original tab widget in the results panel now has complete ARIA wiring (`id` on tabs, `aria-controls` + `aria-labelledby` on the tabpanel) so screen readers correctly announce which tab is active and which panel it controls.
+
+### Added
+- **New guide: Prompt templates for summarization** (`lib/seo/content/guides.ts`, slug `prompt-templates-for-summarization`) — why most summarization prompts fail, what makes one reliable, and two copy-paste templates: a document/article summary and a structured meeting-notes summary with decision/action-item tables.
+- **New guide: How to write better prompts for Claude** (`lib/seo/content/guides.ts`, slug `claude-prompt-guide`) — where Claude stands out (long context, complex instruction-following, calibrated uncertainty), how to structure requests for it, and two templates: a structured document analysis prompt and a voice-preserving editing prompt.
+- **New guide: AI prompts for sales teams** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-sales`) — where AI fits in a sales workflow, how to avoid generic-sounding output, and two templates: a cold outreach first-touch email and a proposal executive summary.
+
+### Changed
+- **ARIA tab wiring in the result panel** (`components/results/OptimizedPromptPanel.tsx`) — each tab button now has an `id` (`tab-improved` / `tab-original`) and `aria-controls="prompt-tabpanel"`; the tabpanel div now has `id="prompt-tabpanel"` and `aria-labelledby` pointing to the active tab. Previously the tab pattern used `role="tab"` and `aria-selected` but lacked the id/controls/labelledby wiring required for complete ARIA compliance.
+- Version bumped to `v1.4.4` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` (Vitest) — all suites pass, including version-sync and changelog-page parity checks
+- `npm run build` — not run (requires env vars for Firebase/Groq); no build-breaking changes introduced
+
+---
+
 ## v1.4.3 — 2026-08-13
 
 **Three new evergreen guides + copy-original UX fix.** This week's update adds Perplexity prompting, a systematic prompt-debugging method, and AI prompts for product managers to the SEO content library, and ships a small UX improvement: the original-prompt view in the result panel now has a copy button so users can grab either version without switching tabs or manually selecting text.
