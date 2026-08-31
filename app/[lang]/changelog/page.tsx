@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.5 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.5</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 31-08-2026" : "Released: 2026-08-31"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para soporte al cliente — dónde encaja la IA en los flujos de soporte (respuestas a tickets, FAQs, resúmenes de escalación), cómo mantener las respuestas en la voz de tu marca, y dos plantillas: respuesta de primer contacto a ticket y resumen de escalación para traspaso a especialista."
+              : "New guide: AI prompts for customer support — where AI fits in support workflows (ticket replies, FAQ drafting, escalation summaries), how to keep replies on-brand, and two templates: a first-response ticket reply and an escalation summary for specialist handoff."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts para output estructurado — los cinco modos de falla más comunes de los prompts de output estructurado (sin schema, filtración de prosa, campos inventados, estructura anidada incorrecta, formatos inconsistentes), los cuatro elementos de un prompt confiable, y dos plantillas: extracción de datos a JSON y tabla de comparación estructurada."
+              : "New guide: Structured output prompting — the five most common reasons structured output prompts fail (no schema, prose leakage, hallucinated fields, nested-structure mismatch, inconsistent formats), the four elements of a reliable prompt, and two templates: data extraction to JSON and a structured comparison table."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para RRHH y reclutamiento — dónde la IA ahorra tiempo real (descripciones de puesto, preguntas de entrevista, resúmenes de evaluación), qué no puede hacer la IA en contratación y qué verificar, y dos plantillas: primer borrador de descripción de puesto y set estructurado de preguntas de entrevista."
+              : "New guide: AI prompts for HR and recruiting — where AI saves real time (job descriptions, interview questions, evaluation summaries), what AI cannot do in hiring and what to verify, and two templates: a job description first draft and a structured interview question set."}
+          </li>
+          <li>
+            {isEs
+              ? "Fix: la guía 'Cómo escribir mejores prompts para Claude' (agregada en v1.4.4) tenía el mismo slug que la guía original de Claude de v1.1.4, así que su URL no cargaba. Ahora tiene su propio slug (better-prompts-for-claude) y es accesible."
+              : "Fix: the 'How to write better prompts for Claude' guide (added in v1.4.4) shared a slug with the original Claude guide from v1.1.4, so its URL never resolved. It now has its own slug (better-prompts-for-claude) and is accessible."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.4 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

@@ -4,6 +4,29 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.5 — 2026-08-31
+
+**Three new evergreen guides + duplicate-slug fix.** This week's update adds AI prompts for customer support, structured output prompting, and AI prompts for HR and recruiting to the SEO content library. The product improvement fixes a duplicate slug introduced in v1.4.4: the guide "How to write better prompts for Claude" was accidentally assigned the same slug (`claude-prompt-guide`) as the earlier v1.1.4 guide, making it unreachable via its own URL. The slug is renamed to `better-prompts-for-claude`, giving it a live, accessible route for the first time.
+
+### Added
+- **New guide: AI prompts for customer support** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-customer-support`) — where AI fits in support workflows (ticket replies, FAQ drafting, escalation summaries), how to keep AI replies on-brand, and two copy-paste templates: a first-response ticket reply and an escalation summary for specialist handoff.
+- **New guide: Structured output prompting** (`lib/seo/content/guides.ts`, slug `structured-output-prompting`) — the five most common reasons structured output prompts fail (no schema, prose leakage, hallucinated fields, nested-structure mismatch, inconsistent date formats), the four elements of a reliable structured output prompt, and two templates: data extraction to JSON and a structured comparison table.
+- **New guide: AI prompts for HR and recruiting** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-hr`) — where AI saves HR teams real time (job descriptions, interview questions, evaluation summaries), what AI cannot do in hiring and what to verify, and two templates: a job description first draft and a structured interview question set.
+
+### Fixed
+- **Duplicate slug resolved** (`lib/seo/content/guides.ts`) — the guide added in v1.4.4 under the title "How to write better prompts for Claude" was stored with slug `claude-prompt-guide`, which was already in use by the v1.1.4 guide "Prompts for Claude". Because `getGuide()` uses `.find()`, the v1.4.4 guide was effectively unreachable at `/guides/claude-prompt-guide`. It is now at `better-prompts-for-claude`, which is a live, accessible route. The v1.1.4 guide at `claude-prompt-guide` is unchanged.
+
+### Changed
+- Version bumped to `v1.4.5` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` (Vitest) — all suites pass, including version-sync and changelog-page parity checks
+- `npm run build` — not run (requires env vars for Firebase/Groq); no build-breaking changes introduced
+
+---
+
 ## v1.4.4 — 2026-08-20
 
 **Three new evergreen guides + ARIA tab accessibility fix.** This week's update adds summarization templates, a Claude-specific prompting guide, and AI prompts for sales teams to the SEO content library, and ships a small accessibility improvement: the Improved/Original tab widget in the results panel now has complete ARIA wiring (`id` on tabs, `aria-controls` + `aria-labelledby` on the tabpanel) so screen readers correctly announce which tab is active and which panel it controls.
