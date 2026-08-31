@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.4.4 (2026-08-20)
+## Latest update — v1.4.5 (2026-08-31)
 
-Three new evergreen guides in the SEO content library: **Prompt templates for summarization** (document, article, and meeting-notes templates with format and length controls), **How to write better prompts for Claude** (long-context patterns, instruction-following tips, voice-preserving editing template), and **AI prompts for sales teams** (cold outreach, discovery prep, and proposal executive summary templates). Also ships a small accessibility fix: the Improved/Original tab widget in the result panel now has complete ARIA wiring so screen readers correctly announce the active tab. See the [changelog](./CHANGELOG.md) for full details.
+Three new evergreen guides in the SEO content library: **AI prompts for customer support** (ticket reply and escalation summary templates), **Structured output prompting** (how to reliably get JSON, tables, and lists from any AI — the four elements of a solid structured output prompt and two copy-paste templates), and **AI prompts for HR and recruiting** (job description first draft and structured interview question set templates). Also ships a bug fix: the guide "How to write better prompts for Claude" (added in v1.4.4) had a duplicate slug (`claude-prompt-guide`) that made it unreachable — it is now at `better-prompts-for-claude`. See the [changelog](./CHANGELOG.md) for full details.
 
-_Previous update: v1.4.3 (2026-08-13) — Three new evergreen guides: Prompts for Perplexity, How to debug a prompt that gives bad output, and AI prompts for product managers. Also shipped: copy button on the original-prompt tab in the result panel._
+_Previous update: v1.4.4 (2026-08-20) — Three new evergreen guides: Prompt templates for summarization, How to write better prompts for Claude, and AI prompts for sales teams. Also shipped: ARIA tab wiring fix in the result panel._
 
 ## How it works
 

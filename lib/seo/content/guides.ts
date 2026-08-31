@@ -4546,7 +4546,7 @@ Notas de la reunión:
     ],
   },
   {
-    slug: "claude-prompt-guide",
+    slug: "better-prompts-for-claude",
     title: {
       en: "How to write better prompts for Claude",
       es: "Cómo escribir mejores prompts para Claude",
@@ -4859,6 +4859,583 @@ No escribas la propuesta completa — solo la sección de resumen ejecutivo.`,
         a: {
           en: "Live conversations: calls, real-time negotiations, and relationship-building moments where the prospect can sense you are not present. Relationship history: AI does not know the trust and context built over months of relationship — do not let it rewrite an email to a key account without reading it yourself. Reference checks: never use AI to write what appears to be a customer quote or reference. Anything requiring real verification: if the accuracy of a claim matters (pricing, legal terms, technical specs), verify it yourself before it goes to the prospect.",
           es: "Conversaciones en vivo: llamadas, negociaciones en tiempo real y momentos de construcción de relaciones donde el prospecto puede sentir que no estás presente. Historia de relación: la IA no conoce la confianza y el contexto construidos durante meses de relación — no la dejes reescribir un email a una cuenta clave sin leerlo vos mismo. Referencias: nunca uses IA para escribir lo que parece ser una cita o referencia de cliente. Cualquier cosa que requiera verificación real: si la precisión de una afirmación importa (precios, términos legales, specs técnicas), verificala vos mismo antes de que llegue al prospecto.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-customer-support",
+    title: {
+      en: "AI prompts for customer support: ticket responses, FAQs, and escalation scripts",
+      es: "Prompts de IA para soporte al cliente: respuestas a tickets, FAQs y scripts de escalación",
+    },
+    description: {
+      en: "Copy-paste prompt templates for the recurring customer support tasks where AI saves the most time — drafting ticket replies, writing help articles, and preparing escalation summaries.",
+      es: "Plantillas de prompts copy-paste para las tareas de soporte al cliente donde la IA ahorra más tiempo: respuestas a tickets, artículos de ayuda y resúmenes de escalación.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI fits in customer support", es: "Dónde encaja la IA en soporte al cliente" },
+        bullets: {
+          en: [
+            "First-draft ticket replies: AI can draft a reply to a support ticket in seconds. You still review and personalize, but the blank-page problem disappears.",
+            "Help article and FAQ drafting: given a list of common questions and your product's behavior, AI can produce a first draft of a help article or FAQ page in the correct voice.",
+            "Escalation summaries: before handing a ticket to a specialist or manager, AI can summarize the conversation thread — what was tried, what failed, what the customer's core issue is — so the escalation is productive from the first message.",
+            "Tone calibration: support copy has a specific register — calm, clear, not overly apologetic, not defensive. A well-constrained prompt produces responses in that register consistently.",
+            "Knowledge base gap spotting: paste recent ticket themes and ask AI to identify the three most common questions that do not have a clear help article. This is faster than manually categorizing tickets.",
+          ],
+          es: [
+            "Primeros borradores de respuestas a tickets: la IA puede redactar una respuesta a un ticket de soporte en segundos. Seguís revisando y personalizando, pero el problema de la página en blanco desaparece.",
+            "Redacción de artículos de ayuda y FAQs: dadas una lista de preguntas frecuentes y el comportamiento de tu producto, la IA puede producir un primer borrador de un artículo de ayuda o página de FAQ en la voz correcta.",
+            "Resúmenes de escalación: antes de pasar un ticket a un especialista o gerente, la IA puede resumir el hilo de conversación — qué se intentó, qué falló, cuál es el problema central del cliente — para que la escalación sea productiva desde el primer mensaje.",
+            "Calibración de tono: el copy de soporte tiene un registro específico — calmo, claro, no demasiado disculpatorio, no defensivo. Un prompt bien restringido produce respuestas en ese registro de manera consistente.",
+            "Identificación de brechas en la base de conocimientos: pegá los temas de tickets recientes y pedile a la IA que identifique las tres preguntas más comunes que no tienen un artículo de ayuda claro. Esto es más rápido que categorizar tickets manualmente.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to write support prompts that stay on-brand", es: "Cómo escribir prompts de soporte que se mantengan en la marca" },
+        bullets: {
+          en: [
+            "Paste your voice guidelines in the prompt: 'Our support tone is calm and direct. We say 'you' not 'dear customer'. We apologize once and move to resolution. We do not use corporate filler words.' This should appear in every support prompt.",
+            "Give the model the ticket text verbatim: do not summarize the customer's message before asking AI to draft a reply. The model needs the exact words to match tone and avoid missing context.",
+            "Specify what the reply must do: 'The reply must acknowledge the issue, confirm the workaround we sent in the previous message, and close with a next step.' Vague prompts produce vague replies.",
+            "State what NOT to include: 'Do not promise a resolution date. Do not ask for information we already have. Do not use phrases like 'Thank you for your patience' at the start.' Explicit avoidance lists reduce the review pass.",
+            "Ask for one version, not three: support teams need a single, usable reply. Multiple options create decision overhead in a workflow that already runs fast.",
+          ],
+          es: [
+            "Pegá tus guías de voz en el prompt: 'Nuestro tono de soporte es calmo y directo. Usamos 'vos' no 'estimado cliente'. Nos disculpamos una vez y vamos a la resolución. No usamos palabras de relleno corporativas.' Esto debería aparecer en cada prompt de soporte.",
+            "Dale al modelo el texto del ticket textualmente: no resumas el mensaje del cliente antes de pedirle a la IA que redacte una respuesta. El modelo necesita las palabras exactas para igualar el tono y evitar perder contexto.",
+            "Especificá qué debe hacer la respuesta: 'La respuesta debe reconocer el problema, confirmar el workaround que enviamos en el mensaje anterior, y cerrar con un próximo paso.' Los prompts vagos producen respuestas vagas.",
+            "Indicá qué NO incluir: 'No prometas una fecha de resolución. No pidas información que ya tenemos. No uses frases como 'Gracias por tu paciencia' al inicio.' Las listas de exclusión explícitas reducen el paso de revisión.",
+            "Pedí una versión, no tres: los equipos de soporte necesitan una respuesta única y utilizable. Las opciones múltiples crean sobrecarga de decisión en un flujo de trabajo que ya corre rápido.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Support ticket reply (first response)", es: "Respuesta a ticket de soporte (primera respuesta)" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Draft a customer support reply to the following ticket.
+
+Our support tone: calm, direct, and solution-focused. We use plain language. We do not use "dear customer", excessive apologies, or corporate filler phrases. We acknowledge the issue once, then move to the resolution.
+
+Customer ticket:
+"""
+[Paste the customer's ticket text here]
+"""
+
+Known context:
+- Product/feature the issue is about: [describe briefly]
+- What we know about the cause: [known bug / expected behavior / user error / under investigation]
+- Resolution or next step we can offer: [fix in next release / workaround / escalation / refund / etc.]
+- Anything we must NOT promise or commit to: [list any]
+
+Rules:
+- Open by acknowledging the specific issue the customer described, not with a generic apology
+- State the resolution or next step clearly in the first 3 sentences
+- If we are asking the customer to do something, list the steps as numbered items
+- Close with one clear next step or expectation-setting sentence
+- Under 150 words total
+- Do not repeat the customer's issue back to them in full`,
+          es: `Redactá una respuesta de soporte al cliente para el siguiente ticket.
+
+Nuestro tono de soporte: calmo, directo y enfocado en la solución. Usamos lenguaje simple. No usamos "estimado cliente", disculpas excesivas ni frases de relleno corporativas. Reconocemos el problema una vez, luego vamos a la resolución.
+
+Ticket del cliente:
+"""
+[Pegá el texto del ticket del cliente acá]
+"""
+
+Contexto conocido:
+- Producto/feature sobre el que es el problema: [describir brevemente]
+- Lo que sabemos sobre la causa: [bug conocido / comportamiento esperado / error del usuario / en investigación]
+- Resolución o próximo paso que podemos ofrecer: [fix en próxima release / workaround / escalación / reembolso / etc.]
+- Algo que NO debemos prometer o comprometer: [listar cualquiera]
+
+Reglas:
+- Abrí reconociendo el problema específico que describió el cliente, no con una disculpa genérica
+- Indicá la resolución o próximo paso claramente en las primeras 3 oraciones
+- Si le pedimos al cliente que haga algo, listá los pasos como ítems numerados
+- Cerrá con una oración clara de próximo paso o de establecimiento de expectativas
+- Menos de 150 palabras en total
+- No repitas el problema del cliente de vuelta en su totalidad`,
+        },
+      },
+      {
+        title: { en: "Escalation summary for a specialist handoff", es: "Resumen de escalación para traspaso a especialista" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a concise escalation summary for a customer support ticket being handed off to a specialist team.
+
+Ticket thread:
+"""
+[Paste the full conversation thread here — customer messages and previous support replies]
+"""
+
+Escalation context:
+- Team receiving this: [e.g. Billing team / Engineering / Account management]
+- Why it is being escalated: [e.g. billing discrepancy outside frontline authority / confirmed bug / VIP account]
+- What frontline support has already tried: [list steps taken]
+- What the customer's core problem is in one sentence: [your summary]
+
+Output format:
+1. Issue (1–2 sentences): what the customer is experiencing
+2. Impact on customer: severity, urgency, how long they have been waiting
+3. What has been tried: bullet list, no more than 5 items
+4. What we need from the receiving team: specific ask, not "please help"
+5. Relevant account info: [account tier / subscription / contract details if relevant]
+
+Keep the entire summary under 200 words.`,
+          es: `Escribí un resumen de escalación conciso para un ticket de soporte al cliente que se traspasa a un equipo especialista.
+
+Hilo del ticket:
+"""
+[Pegá el hilo de conversación completo acá — mensajes del cliente y respuestas de soporte anteriores]
+"""
+
+Contexto de escalación:
+- Equipo que lo recibe: [ej. Equipo de Facturación / Ingeniería / Gestión de cuentas]
+- Por qué se está escalando: [ej. discrepancia de facturación fuera de la autoridad de primera línea / bug confirmado / cuenta VIP]
+- Qué intentó el soporte de primera línea: [listar pasos tomados]
+- Cuál es el problema central del cliente en una oración: [tu resumen]
+
+Formato de output:
+1. Problema (1–2 oraciones): qué está experimentando el cliente
+2. Impacto en el cliente: severidad, urgencia, cuánto tiempo lleva esperando
+3. Qué se intentó: lista de bullets, no más de 5 ítems
+4. Qué necesitamos del equipo receptor: pedido específico, no "por favor ayuden"
+5. Información relevante de cuenta: [nivel de cuenta / suscripción / detalles de contrato si aplica]
+
+Mantené el resumen completo en menos de 200 palabras.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Should AI write support replies unsupervised?", es: "¿Debería la IA escribir respuestas de soporte sin supervisión?" },
+        a: {
+          en: "Not for anything that involves commitments, account changes, or sensitive situations. AI drafts are a productivity tool for the support agent writing the reply — the agent reviews, edits, and sends. Fully automated AI replies (no human in the loop) only work reliably for a narrow set of low-stakes confirmations like 'your ticket was received' or 'your refund has been processed'. For anything involving troubleshooting, billing, policy, or frustrated customers, keep a human in the loop.",
+          es: "No para nada que involucre compromisos, cambios de cuenta o situaciones delicadas. Los borradores de IA son una herramienta de productividad para el agente de soporte que escribe la respuesta — el agente revisa, edita y envía. Las respuestas de IA completamente automatizadas (sin humano en el circuito) solo funcionan de manera confiable para un conjunto reducido de confirmaciones de bajo riesgo como 'tu ticket fue recibido' o 'tu reembolso fue procesado'. Para cualquier cosa que involucre resolución de problemas, facturación, políticas o clientes frustrados, mantené un humano en el circuito.",
+        },
+      },
+      {
+        q: { en: "How do I keep AI replies consistent across a support team?", es: "¿Cómo mantengo las respuestas de IA consistentes en un equipo de soporte?" },
+        a: {
+          en: "Build a shared prompt library with your team's voice guidelines baked in. Every agent uses the same base prompt (with tone rules, avoidance lists, and product terminology) and then fills in the ticket-specific context. When the base prompt is consistent, the output voice is consistent — regardless of who runs it. Review the output of new agents more closely for the first week to catch cases where the base prompt needs updating.",
+          es: "Construí una biblioteca de prompts compartida con las guías de voz de tu equipo ya incorporadas. Cada agente usa el mismo prompt base (con reglas de tono, listas de exclusión y terminología del producto) y luego completa el contexto específico del ticket. Cuando el prompt base es consistente, la voz del output es consistente — sin importar quién lo ejecute. Revisá el output de los agentes nuevos más de cerca durante la primera semana para detectar casos en que el prompt base necesita actualización.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "structured-output-prompting",
+    title: {
+      en: "Structured output prompting: how to get reliable JSON, tables, and lists from any AI",
+      es: "Prompts para output estructurado: cómo obtener JSON, tablas y listas confiables de cualquier IA",
+    },
+    description: {
+      en: "Techniques and templates for prompting AI to return structured, machine-readable output consistently — without hallucinated fields, format drift, or plain-text contamination.",
+      es: "Técnicas y plantillas para que la IA devuelva output estructurado y legible por máquinas de manera consistente — sin campos inventados, desviación de formato ni contaminación de texto plano.",
+    },
+    sections: [
+      {
+        heading: { en: "Why structured output prompts fail", es: "Por qué fallan los prompts de output estructurado" },
+        bullets: {
+          en: [
+            "No schema: asking for 'JSON with the extracted data' without specifying exact field names, types, and nesting almost always produces inconsistent results across runs.",
+            "Prose leakage: the model adds an explanation before or after the JSON block. This breaks parsers. Fix: 'Return only the JSON object. No explanation, no markdown code fences, no other text.'",
+            "Hallucinated fields: the model invents field names it thinks you want. Fix: provide the exact schema — field names, their types, and what to put when a value is not found ('null', empty string, or a sentinel like 'N/A').",
+            "Nested structure mismatch: you ask for a list but get a dict, or vice versa. Fix: show an example output in the prompt — not just a description, but the actual structure with placeholder values.",
+            "Inconsistent date/number formats: the model formats dates differently across responses. Fix: specify the exact format ('ISO 8601: YYYY-MM-DD') and give an example value.",
+          ],
+          es: [
+            "Sin schema: pedir 'JSON con los datos extraídos' sin especificar nombres de campos exactos, tipos y anidamiento casi siempre produce resultados inconsistentes entre ejecuciones.",
+            "Filtración de prosa: el modelo agrega una explicación antes o después del bloque JSON. Esto rompe los parsers. Fix: 'Devolvé solo el objeto JSON. Sin explicación, sin code fences de markdown, sin otro texto.'",
+            "Campos inventados: el modelo inventa nombres de campos que cree que querés. Fix: proporcioná el schema exacto — nombres de campos, sus tipos, y qué poner cuando no se encuentra un valor ('null', string vacío, o un centinela como 'N/A').",
+            "Estructura anidada incorrecta: pedís una lista pero obtenés un dict, o viceversa. Fix: mostrá un output de ejemplo en el prompt — no solo una descripción, sino la estructura real con valores placeholder.",
+            "Formatos de fecha/número inconsistentes: el modelo formatea fechas de manera diferente entre respuestas. Fix: especificá el formato exacto ('ISO 8601: YYYY-MM-DD') y dá un valor de ejemplo.",
+          ],
+        },
+      },
+      {
+        heading: { en: "The four elements of a reliable structured output prompt", es: "Los cuatro elementos de un prompt de output estructurado confiable" },
+        bullets: {
+          en: [
+            "1. Task description: what to extract or generate, and from what input. 'Extract all line items from the invoice text below.'",
+            "2. Exact schema: the complete JSON structure with field names, types, and instructions for missing values. Paste the schema literally, not as a prose description.",
+            "3. Example output: a complete, filled-in example with realistic placeholder values. Models learn format from examples faster than from descriptions.",
+            "4. Output constraint: 'Return only the JSON. No commentary, no markdown formatting, no preamble.' Put this at the end of the prompt — it is the last instruction the model sees before generating.",
+          ],
+          es: [
+            "1. Descripción de la tarea: qué extraer o generar, y de qué input. 'Extraé todos los ítems de línea del texto de factura a continuación.'",
+            "2. Schema exacto: la estructura JSON completa con nombres de campos, tipos e instrucciones para valores faltantes. Pegá el schema literalmente, no como descripción en prosa.",
+            "3. Output de ejemplo: un ejemplo completo y rellenado con valores placeholder realistas. Los modelos aprenden el formato de los ejemplos más rápido que de las descripciones.",
+            "4. Restricción de output: 'Devolvé solo el JSON. Sin comentarios, sin formato markdown, sin preámbulo.' Poné esto al final del prompt — es la última instrucción que ve el modelo antes de generar.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Structured data extraction to JSON", es: "Extracción de datos estructurados a JSON" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `Extract structured data from the text below and return it as JSON.
+
+Text to process:
+"""
+[Paste the input text here — an invoice, email, form, article, etc.]
+"""
+
+Return a JSON object matching this exact schema:
+{
+  "field_one": string,         // [describe what this field contains]
+  "field_two": string | null,  // [describe; null if not found]
+  "field_three": number | null, // [describe; null if not found]
+  "items": [
+    {
+      "item_field_a": string,
+      "item_field_b": number | null
+    }
+  ]
+}
+
+Rules:
+- Use null (not "N/A", not empty string) for any field not found in the text
+- Dates in ISO 8601 format: YYYY-MM-DD
+- Numbers as numeric types, not strings
+- Do not add fields not in the schema
+- Return only the JSON object — no explanation, no markdown code fence, no other text
+
+Example output (for reference only — use values from the actual text):
+{
+  "field_one": "Example value",
+  "field_two": null,
+  "field_three": 42,
+  "items": [
+    { "item_field_a": "Item A", "item_field_b": 19.99 }
+  ]
+}`,
+          es: `Extraé datos estructurados del texto a continuación y devolvelos como JSON.
+
+Texto a procesar:
+"""
+[Pegá el texto de input acá — una factura, email, formulario, artículo, etc.]
+"""
+
+Devolvé un objeto JSON que coincida exactamente con este schema:
+{
+  "campo_uno": string,         // [describir qué contiene este campo]
+  "campo_dos": string | null,  // [describir; null si no se encuentra]
+  "campo_tres": number | null, // [describir; null si no se encuentra]
+  "items": [
+    {
+      "item_campo_a": string,
+      "item_campo_b": number | null
+    }
+  ]
+}
+
+Reglas:
+- Usá null (no "N/A", no string vacío) para cualquier campo no encontrado en el texto
+- Fechas en formato ISO 8601: YYYY-MM-DD
+- Números como tipos numéricos, no strings
+- No agregues campos que no estén en el schema
+- Devolvé solo el objeto JSON — sin explicación, sin code fence de markdown, sin otro texto
+
+Output de ejemplo (solo de referencia — usá los valores del texto real):
+{
+  "campo_uno": "Valor de ejemplo",
+  "campo_dos": null,
+  "campo_tres": 42,
+  "items": [
+    { "item_campo_a": "Ítem A", "item_campo_b": 19.99 }
+  ]
+}`,
+        },
+      },
+      {
+        title: { en: "Structured comparison table", es: "Tabla de comparación estructurada" },
+        purpose: "data",
+        target: "claude",
+        prompt: {
+          en: `Generate a structured comparison of the items listed below and return the result as a JSON array.
+
+Items to compare:
+1. [Item A]
+2. [Item B]
+3. [Item C — add more as needed]
+
+Dimensions to compare across (evaluate each item on each dimension):
+- [Dimension 1, e.g. "Ease of setup"]
+- [Dimension 2, e.g. "Cost"]
+- [Dimension 3, e.g. "Scalability"]
+- [Add or remove dimensions as needed]
+
+Return a JSON array in this exact format:
+[
+  {
+    "item": string,
+    "scores": {
+      "dimension_1": { "rating": "high" | "medium" | "low", "note": string },
+      "dimension_2": { "rating": "high" | "medium" | "low", "note": string },
+      "dimension_3": { "rating": "high" | "medium" | "low", "note": string }
+    },
+    "best_for": string,
+    "avoid_if": string
+  }
+]
+
+Rules:
+- Rating must be exactly "high", "medium", or "low" — no other values
+- Note: one sentence, under 20 words, factual, no superlatives
+- best_for: one sentence describing the ideal use case
+- avoid_if: one sentence describing when NOT to choose this item
+- Return only the JSON array — no preamble, no explanation, no markdown`,
+          es: `Generá una comparación estructurada de los ítems listados a continuación y devolvé el resultado como un array JSON.
+
+Ítems a comparar:
+1. [Ítem A]
+2. [Ítem B]
+3. [Ítem C — agregá más según sea necesario]
+
+Dimensiones a comparar (evaluá cada ítem en cada dimensión):
+- [Dimensión 1, ej. "Facilidad de configuración"]
+- [Dimensión 2, ej. "Costo"]
+- [Dimensión 3, ej. "Escalabilidad"]
+- [Agregá o quitá dimensiones según sea necesario]
+
+Devolvé un array JSON en este formato exacto:
+[
+  {
+    "item": string,
+    "puntuaciones": {
+      "dimension_1": { "nivel": "alto" | "medio" | "bajo", "nota": string },
+      "dimension_2": { "nivel": "alto" | "medio" | "bajo", "nota": string },
+      "dimension_3": { "nivel": "alto" | "medio" | "bajo", "nota": string }
+    },
+    "ideal_para": string,
+    "evitar_si": string
+  }
+]
+
+Reglas:
+- Nivel debe ser exactamente "alto", "medio" o "bajo" — sin otros valores
+- Nota: una oración, menos de 20 palabras, factual, sin superlativos
+- ideal_para: una oración describiendo el caso de uso ideal
+- evitar_si: una oración describiendo cuándo NO elegir este ítem
+- Devolvé solo el array JSON — sin preámbulo, sin explicación, sin markdown`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Which model is best for structured output?", es: "¿Qué modelo es mejor para output estructurado?" },
+        a: {
+          en: "GPT models (especially GPT-4 class and above) have reliable JSON mode and tool-use that produces schema-constrained output with near-zero format failures. Claude is also strong for structured tasks when the schema is explicit in the prompt — its instruction-following is precise. For critical production pipelines, use the model's native JSON mode or function-calling API rather than relying on the prompt alone: it enforces the schema at the generation level, not just as a request.",
+          es: "Los modelos GPT (especialmente clase GPT-4 y superior) tienen modo JSON confiable y uso de herramientas que produce output restringido a schema con casi cero fallos de formato. Claude también es fuerte para tareas estructuradas cuando el schema está explícito en el prompt — su seguimiento de instrucciones es preciso. Para pipelines de producción críticos, usá el modo JSON nativo del modelo o la API de function-calling en lugar de depender solo del prompt: aplica el schema a nivel de generación, no solo como un pedido.",
+        },
+      },
+      {
+        q: { en: "What should I do when the model keeps adding prose before the JSON?", es: "¿Qué hago cuando el modelo sigue agregando prosa antes del JSON?" },
+        a: {
+          en: "Two changes fix this in most cases. First, move the output constraint to the very end of your prompt: 'Return only the JSON. Nothing before it, nothing after it.' Second, start your user message with what you want the model to output: some models treat the first token of the response as completion of whatever you started. If you still get prose, switch to the model's native JSON mode if available — it enforces the constraint at the sampling level, making prose contamination structurally impossible.",
+          es: "Dos cambios solucionan esto en la mayoría de los casos. Primero, mové la restricción de output al final de tu prompt: 'Devolvé solo el JSON. Nada antes, nada después.' Segundo, empezá tu mensaje de usuario con lo que querés que el modelo genere: algunos modelos tratan el primer token de la respuesta como la finalización de lo que empezaste. Si seguís obteniendo prosa, cambiá al modo JSON nativo del modelo si está disponible — aplica la restricción a nivel de muestreo, haciendo que la contaminación de prosa sea estructuralmente imposible.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-hr",
+    title: {
+      en: "AI prompts for HR and recruiting: job descriptions, interview questions, and evaluations",
+      es: "Prompts de IA para RRHH y reclutamiento: descripciones de puesto, preguntas de entrevista y evaluaciones",
+    },
+    description: {
+      en: "Practical AI prompt templates for HR teams and recruiters — writing job descriptions that attract the right candidates, preparing structured interview question sets, and summarizing candidate evaluations.",
+      es: "Plantillas de prompts de IA prácticas para equipos de RRHH y reclutadores — redacción de descripciones de puesto que atraigan a los candidatos correctos, preparación de sets estructurados de preguntas de entrevista y resúmenes de evaluaciones de candidatos.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI saves HR and recruiting teams real time", es: "Dónde la IA ahorra tiempo real a los equipos de RRHH y reclutamiento" },
+        bullets: {
+          en: [
+            "Job description first drafts: a well-prompted AI can produce a first draft in under a minute. You still edit for accuracy and culture fit, but starting from a structured draft is faster than a blank document — especially for roles you hire infrequently.",
+            "Interview question banks: given a job description and the competencies you are evaluating, AI can generate a structured question set in seconds. Review for relevance and legal compliance, but the generation step is instant.",
+            "Candidate evaluation summaries: after an interview, pasting your notes and asking AI to structure them into an evaluation summary saves time and improves consistency across interviewers.",
+            "Offer letter and rejection email drafts: routine correspondence follows a pattern. AI can draft these faster than a template library for common variations.",
+            "Job description language audit: paste an existing job description and ask AI to flag language that may discourage qualified candidates (unnecessarily gendered terms, excessive requirements, vague qualifications). This catches patterns that are hard to see from inside.",
+          ],
+          es: [
+            "Primeros borradores de descripciones de puesto: una IA bien instruida puede producir un primer borrador en menos de un minuto. Seguís editando por precisión y ajuste cultural, pero empezar desde un borrador estructurado es más rápido que un documento en blanco — especialmente para roles que contratás con poca frecuencia.",
+            "Bancos de preguntas de entrevista: dada una descripción de puesto y las competencias que estás evaluando, la IA puede generar un set de preguntas estructuradas en segundos. Revisá por relevancia y cumplimiento legal, pero el paso de generación es instantáneo.",
+            "Resúmenes de evaluación de candidatos: después de una entrevista, pegar tus notas y pedirle a la IA que las estructure en un resumen de evaluación ahorra tiempo y mejora la consistencia entre entrevistadores.",
+            "Borradores de carta de oferta y email de rechazo: la correspondencia rutinaria sigue un patrón. La IA puede redactar estos más rápido que una biblioteca de plantillas para variaciones comunes.",
+            "Auditoría de lenguaje de descripción de puesto: pegá una descripción de puesto existente y pedile a la IA que marque el lenguaje que puede desalentar a candidatos calificados (términos innecesariamente con sesgo de género, requisitos excesivos, calificaciones vagas). Esto detecta patrones difíciles de ver desde adentro.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What AI cannot do in hiring — and what to verify", es: "Qué no puede hacer la IA en contratación — y qué verificar" },
+        bullets: {
+          en: [
+            "AI cannot evaluate candidates: a summary of interview notes is not an evaluation. Hiring decisions involve judgment about culture, potential, and team dynamics that AI does not have access to.",
+            "Bias amplification risk: if you prompt AI with biased inputs (a job description that skews toward a particular demographic, or a rubric that rewards background over demonstrated skill), it will produce biased outputs. Review AI-generated content for this before using it.",
+            "Legal compliance: employment law varies by jurisdiction. AI-generated job descriptions, rejection letters, and evaluation criteria need legal review before they become standard practice — AI is not a lawyer and will not flag jurisdiction-specific compliance issues reliably.",
+            "Sensitive conversations: compensation negotiations, performance improvement plans, termination conversations, and accommodation requests require human judgment and cannot be scripted by AI.",
+            "Reference checks: AI can help you write reference check questions. It cannot conduct the call, interpret tone, or judge credibility — that is the recruiter's job.",
+          ],
+          es: [
+            "La IA no puede evaluar candidatos: un resumen de notas de entrevista no es una evaluación. Las decisiones de contratación involucran juicio sobre cultura, potencial y dinámica del equipo al que la IA no tiene acceso.",
+            "Riesgo de amplificación de sesgo: si instruís a la IA con inputs sesgados (una descripción de puesto que se inclina hacia una demografía particular, o una rúbrica que recompensa el trasfondo sobre la habilidad demostrada), producirá outputs sesgados. Revisá el contenido generado por IA para esto antes de usarlo.",
+            "Cumplimiento legal: el derecho laboral varía según la jurisdicción. Las descripciones de puesto, cartas de rechazo y criterios de evaluación generados por IA necesitan revisión legal antes de convertirse en práctica estándar — la IA no es abogada y no marcará problemas de cumplimiento específicos de la jurisdicción de manera confiable.",
+            "Conversaciones delicadas: negociaciones de compensación, planes de mejora de desempeño, conversaciones de terminación y pedidos de adaptación requieren juicio humano y no pueden ser guionizados por IA.",
+            "Verificación de referencias: la IA puede ayudarte a escribir preguntas para la verificación de referencias. No puede realizar la llamada, interpretar el tono ni juzgar la credibilidad — ese es el trabajo del reclutador.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Job description first draft", es: "Primer borrador de descripción de puesto" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Write a job description for the role described below.
+
+Role details:
+- Job title: [e.g. Senior Product Designer]
+- Team / reporting line: [e.g. Design team, reports to Head of Design]
+- Location and work arrangement: [e.g. Remote (US only), hybrid (New York), on-site]
+- Employment type: [Full-time / Part-time / Contract]
+- Seniority: [e.g. Senior IC, no direct reports]
+- Core mission of the role (1–2 sentences): [what this person will own]
+- 3–5 core responsibilities: [list them — be specific, not generic]
+- Must-have qualifications: [skills, experience, or credentials that are truly required]
+- Nice-to-have qualifications: [genuinely optional — do not list these as requirements]
+- What success looks like in 90 days: [one concrete outcome]
+- Anything we must NOT include: [e.g. salary range (listed separately) / specific tool names that would over-constrain / anything legally sensitive]
+
+Rules:
+- Lead with the role's impact, not the company description
+- Use "you will" not "the candidate will" — address the reader directly
+- Keep qualifications honest: if a nice-to-have is listed as required, it discourages qualified candidates
+- Under 400 words total
+- No jargon, no superlatives ("world-class", "rockstar", "ninja")
+- End with a brief, factual company description (1–2 sentences max)`,
+          es: `Escribí una descripción de puesto para el rol descrito a continuación.
+
+Detalles del rol:
+- Título del puesto: [ej. Diseñador/a de Producto Senior]
+- Equipo / línea de reporte: [ej. Equipo de Diseño, reporta al Head of Design]
+- Ubicación y modalidad de trabajo: [ej. Remoto (solo Argentina), híbrido (Buenos Aires), presencial]
+- Tipo de empleo: [Tiempo completo / Medio tiempo / Contrato]
+- Seniority: [ej. Senior IC, sin reportes directos]
+- Misión principal del rol (1–2 oraciones): [qué va a tener esta persona a cargo]
+- 3–5 responsabilidades principales: [listarlas — ser específico, no genérico]
+- Calificaciones obligatorias: [habilidades, experiencia o credenciales que son verdaderamente requeridas]
+- Calificaciones deseables: [genuinamente opcionales — no listarlas como requisitos]
+- Cómo se ve el éxito a los 90 días: [un resultado concreto]
+- Algo que NO debemos incluir: [ej. rango salarial (listado por separado) / nombres de herramientas específicas que sobre-restringirían / cualquier cosa legalmente delicada]
+
+Reglas:
+- Comenzá con el impacto del rol, no con la descripción de la empresa
+- Usá "vas a" no "el/la candidato/a hará" — dirigite al lector directamente
+- Mantené las calificaciones honestas: si un deseable aparece como requerido, desalienta a candidatos calificados
+- Menos de 400 palabras en total
+- Sin jerga, sin superlativos ("de clase mundial", "rockstar", "ninja")
+- Terminá con una descripción breve y factual de la empresa (1–2 oraciones máximo)`,
+        },
+      },
+      {
+        title: { en: "Structured interview question set", es: "Set estructurado de preguntas de entrevista" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Generate a structured interview question set for the role and competencies listed below.
+
+Role: [Job title]
+Interview type: [e.g. Behavioral / Technical / Case / Culture / Final round]
+Interview length: [e.g. 45 minutes]
+Interviewer's focus: [e.g. problem-solving and collaboration — the hiring manager is covering technical skills in a separate round]
+
+Core competencies to evaluate in this interview (pick 3–4 max):
+1. [Competency 1, e.g. "Prioritization under constraints"]
+2. [Competency 2, e.g. "Cross-functional communication"]
+3. [Competency 3, e.g. "Dealing with ambiguity"]
+
+For each competency, provide:
+- 1 primary behavioral question (past-tense STAR format: "Tell me about a time...")
+- 1 follow-up probe to use if the answer is vague ("Can you tell me more about how you decided..." / "What would you do differently now?")
+- 1 signal to listen for in a strong answer (what a good response includes — not a "right answer")
+
+Also include:
+- 1 opening question to set the candidate at ease (not a competency question)
+- 1 closing question to give the candidate space to ask or add something
+
+Format each competency as:
+Competency: [name]
+Primary: [question]
+Follow-up: [probe]
+Strong signal: [what to listen for]
+
+Rules:
+- Questions must be legal in [jurisdiction, e.g. "the US" / "Argentina"] — no questions about age, family, origin, or protected characteristics
+- Use behavioral framing ("tell me about a time") not hypothetical ("what would you do if")
+- Keep each question under 30 words`,
+          es: `Generá un set estructurado de preguntas de entrevista para el rol y las competencias listadas a continuación.
+
+Rol: [Título del puesto]
+Tipo de entrevista: [ej. Conductual / Técnica / Case / Cultura / Ronda final]
+Duración de la entrevista: [ej. 45 minutos]
+Foco del entrevistador: [ej. resolución de problemas y colaboración — el hiring manager cubre las habilidades técnicas en una ronda separada]
+
+Competencias principales a evaluar en esta entrevista (elegí 3–4 máximo):
+1. [Competencia 1, ej. "Priorización bajo restricciones"]
+2. [Competencia 2, ej. "Comunicación cross-funcional"]
+3. [Competencia 3, ej. "Manejo de la ambigüedad"]
+
+Para cada competencia, proporcioná:
+- 1 pregunta conductual principal (formato STAR en pasado: "Contame sobre una vez...")
+- 1 sonda de seguimiento para usar si la respuesta es vaga ("¿Podés contarme más sobre cómo decidiste...?" / "¿Qué harías diferente ahora?")
+- 1 señal a escuchar en una respuesta fuerte (qué incluye una buena respuesta — no una "respuesta correcta")
+
+También incluí:
+- 1 pregunta de apertura para poner al candidato a gusto (no es una pregunta de competencia)
+- 1 pregunta de cierre para dar al candidato espacio para preguntar o agregar algo
+
+Formateá cada competencia como:
+Competencia: [nombre]
+Principal: [pregunta]
+Sonda: [seguimiento]
+Señal fuerte: [qué escuchar]
+
+Reglas:
+- Las preguntas deben ser legales en [jurisdicción, ej. "Argentina" / "España"] — sin preguntas sobre edad, familia, origen o características protegidas
+- Usá el encuadre conductual ("contame sobre una vez") no hipotético ("qué harías si")
+- Mantené cada pregunta en menos de 30 palabras`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI help reduce bias in job descriptions?", es: "¿Puede la IA ayudar a reducir el sesgo en las descripciones de puesto?" },
+        a: {
+          en: "Yes, in a targeted way. AI is good at flagging patterns in language that research has associated with lower application rates from certain groups — unnecessarily gendered words, long lists of 'requirements' that are really preferences, or vague qualifications that substitute for specific skills. Paste an existing job description and ask 'What language in this description might discourage qualified candidates? What specific changes would you suggest?' Review the suggestions critically — AI may over-flag in some domains — but it catches patterns that are genuinely hard to see from inside.",
+          es: "Sí, de manera dirigida. La IA es buena para marcar patrones en el lenguaje que la investigación ha asociado con tasas de postulación más bajas de ciertos grupos — palabras innecesariamente con sesgo de género, largas listas de 'requisitos' que en realidad son preferencias, o calificaciones vagas que sustituyen a habilidades específicas. Pegá una descripción de puesto existente y preguntá '¿Qué lenguaje en esta descripción podría desalentar a candidatos calificados? ¿Qué cambios específicos sugerirías?' Revisá las sugerencias críticamente — la IA puede sobre-marcar en algunos dominios — pero detecta patrones que son genuinamente difíciles de ver desde adentro.",
+        },
+      },
+      {
+        q: { en: "Is it ethical to use AI to screen resumes?", es: "¿Es ético usar IA para filtrar CVs?" },
+        a: {
+          en: "Automated resume screening carries documented risk of encoding historical hiring bias into the filter — systems trained on past hiring decisions tend to replicate past patterns, including ones you would not endorse if made explicit. Use AI to draft screening criteria (the rubric itself) and to draft questions for the human reviewer — not to rank or reject candidates autonomously. Keep a human in the loop for every screening decision, and audit the criteria for bias before applying them at scale.",
+          es: "El filtrado automático de CVs conlleva un riesgo documentado de codificar el sesgo histórico de contratación en el filtro — los sistemas entrenados en decisiones de contratación pasadas tienden a replicar patrones pasados, incluyendo los que no aprobarías si se hicieran explícitos. Usá la IA para redactar los criterios de filtrado (la rúbrica en sí) y para redactar preguntas para el revisor humano — no para clasificar o rechazar candidatos de forma autónoma. Mantené un humano en el circuito para cada decisión de filtrado, y auditá los criterios por sesgo antes de aplicarlos a escala.",
         },
       },
     ],
