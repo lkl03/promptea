@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.4.5 (2026-08-31)
+## Latest update — v1.4.6 (2026-09-03)
 
-Three new evergreen guides in the SEO content library: **AI prompts for customer support** (ticket reply and escalation summary templates), **Structured output prompting** (how to reliably get JSON, tables, and lists from any AI — the four elements of a solid structured output prompt and two copy-paste templates), and **AI prompts for HR and recruiting** (job description first draft and structured interview question set templates). Also ships a bug fix: the guide "How to write better prompts for Claude" (added in v1.4.4) had a duplicate slug (`claude-prompt-guide`) that made it unreachable — it is now at `better-prompts-for-claude`. See the [changelog](./CHANGELOG.md) for full details.
+Three new evergreen guides in the SEO content library: **AI prompts for legal teams** (contract clause drafting and targeted contract review templates), **AI prompts for finance teams** (earnings call structured summary and variance commentary draft templates), and **Context engineering** (how to structure AI inputs for reliable outputs — ordering, term definitions, negative constraints, and multi-document synthesis templates). Also ships a small accessibility improvement: the optional reason text input in the post-result feedback bar now has an `aria-label` (it previously had only a `placeholder`, which screen readers do not announce as a label). See the [changelog](./CHANGELOG.md) for full details. Changes are in the [weekly update PR](https://github.com/lkl03/promptea/pulls).
 
-_Previous update: v1.4.4 (2026-08-20) — Three new evergreen guides: Prompt templates for summarization, How to write better prompts for Claude, and AI prompts for sales teams. Also shipped: ARIA tab wiring fix in the result panel._
+_Previous update: v1.4.5 (2026-08-31) — Three new evergreen guides: AI prompts for customer support, Structured output prompting, and AI prompts for HR and recruiting. Also shipped: duplicate slug fix for the "How to write better prompts for Claude" guide._
 
 ## How it works
 

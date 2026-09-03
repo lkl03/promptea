@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.6 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.6</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 03-09-2026" : "Released: 2026-09-03"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para equipos legales — dónde la IA ayuda genuinamente (redacción de cláusulas, revisión de documentos por temas específicos, resumen de jurisprudencia, extracción estructurada de contratos), qué no puede hacer la IA en el trabajo legal y qué verificar, y dos plantillas: primer borrador de cláusula contractual y revisión de contrato por riesgo específico."
+              : "New guide: AI prompts for legal teams — where AI genuinely helps (clause drafting, document review for specific issues, case law summarization, structured data extraction from contracts), what AI cannot do in legal work and what to verify, and two templates: a contract clause first draft and a targeted contract review for a specific risk."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para equipos de finanzas — dónde la IA ahorra tiempo real (resumen de calls de resultados, comentarios de variaciones, análisis de estados financieros, comentarios para el directorio, documentación de modelos), qué no puede hacer la IA en finanzas y qué verificar, y dos plantillas: resumen estructurado de call de resultados y borrador de comentario de variaciones."
+              : "New guide: AI prompts for finance teams — where AI saves real time (earnings call summaries, variance commentary drafting, financial statement analysis, board deck commentary, model documentation), what AI cannot do in finance and what to verify, and two templates: an earnings call structured summary and a variance commentary draft."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Ingeniería de contexto — qué es y cómo se diferencia de la ingeniería de prompts, patrones prácticos para contexto de alta calidad (orden, definición de términos, separar fondo de instrucción, restricciones negativas, recorte agresivo de documentos largos), y dos plantillas: contexto estructurado para tareas basadas en documentos y síntesis de múltiples documentos con presupuesto de contexto explícito."
+              : "New guide: Context engineering — what it is and how it differs from prompt engineering, practical patterns for high-quality context (ordering, term definitions, separating background from instruction, negative constraints, aggressive trimming for long documents), and two templates: a structured context template for document tasks and a multi-document synthesis template with an explicit context budget."}
+          </li>
+          <li>
+            {isEs
+              ? "Mejora de accesibilidad en la barra de feedback: el campo de texto opcional para el motivo ahora tiene un aria-label — antes solo tenía placeholder, que los lectores de pantalla no anuncian como etiqueta."
+              : "Accessibility improvement in the feedback bar: the optional reason text input now has an aria-label — it previously had only a placeholder, which screen readers do not announce as a label."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.5 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

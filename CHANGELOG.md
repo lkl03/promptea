@@ -4,6 +4,27 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.6 — 2026-09-03
+
+**Three new evergreen guides + feedback input accessibility fix.** This week's update adds AI prompts for legal teams, AI prompts for finance teams, and a context engineering guide to the SEO content library. The product improvement adds an `aria-label` to the feedback text input in the results panel: the input previously had only a `placeholder` attribute, which is not treated as an accessible label by screen readers.
+
+### Added
+- **New guide: AI prompts for legal teams** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-legal`) — where AI genuinely helps legal teams (contract clause drafting, document review for specific issues, case law summarization, structured data extraction from agreements), what AI cannot do in legal work and what to verify, and two templates: a contract clause first draft and a targeted contract review for a specific risk.
+- **New guide: AI prompts for finance teams** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-finance`) — where AI saves finance teams real time (earnings call summarization, variance commentary drafting, financial statement analysis, board deck commentary, model documentation), what AI cannot do in finance and what to verify, and two templates: an earnings call structured summary and a variance commentary draft.
+- **New guide: Context engineering** (`lib/seo/content/guides.ts`, slug `context-engineering`) — what context engineering is and how it differs from prompt engineering, practical patterns for high-quality context (ordering, term definitions, separating background from instruction, negative constraints, aggressive trimming for long documents), and two templates: a structured context template for document-based tasks and a multi-document synthesis template with an explicit context budget.
+
+### Changed
+- **Feedback input `aria-label` added** (`components/results/FeedbackBar.tsx`) — the optional reason text input in the post-result feedback bar previously had only a `placeholder` attribute. Placeholder text is not announced as a label by screen readers, leaving the input unlabelled for assistive technology users. An `aria-label` matching the placeholder value is now present on the element.
+- Version bumped to `v1.4.6` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` (Vitest) — all suites pass, including version-sync and changelog-page parity checks
+- `npm run build` — not run (requires env vars for Firebase/Groq); no build-breaking changes introduced
+
+---
+
 ## v1.4.5 — 2026-08-31
 
 **Three new evergreen guides + duplicate-slug fix.** This week's update adds AI prompts for customer support, structured output prompting, and AI prompts for HR and recruiting to the SEO content library. The product improvement fixes a duplicate slug introduced in v1.4.4: the guide "How to write better prompts for Claude" was accidentally assigned the same slug (`claude-prompt-guide`) as the earlier v1.1.4 guide, making it unreachable via its own URL. The slug is renamed to `better-prompts-for-claude`, giving it a live, accessible route for the first time.
