@@ -5440,6 +5440,527 @@ Reglas:
       },
     ],
   },
+  {
+    slug: "ai-prompts-for-legal",
+    title: {
+      en: "AI prompts for legal teams: contract drafting, document review, and research",
+      es: "Prompts de IA para equipos legales: redacción de contratos, revisión de documentos e investigación",
+    },
+    description: {
+      en: "Practical AI prompt templates for lawyers, paralegals, and legal ops teams — drafting contract clauses, reviewing agreements for risk, summarizing case law, and extracting structured information from legal documents.",
+      es: "Plantillas de prompts de IA prácticas para abogados, paralegales y equipos de operaciones legales — redacción de cláusulas contractuales, revisión de acuerdos por riesgos, resumen de jurisprudencia y extracción de información estructurada de documentos legales.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI genuinely helps legal teams", es: "Dónde la IA ayuda genuinamente a los equipos legales" },
+        bullets: {
+          en: [
+            "First-draft contract clauses: AI produces a structurally sound first draft of common clauses (confidentiality, indemnification, limitation of liability, governing law) in seconds. A lawyer still reviews and adapts for jurisdiction, risk profile, and deal specifics — but starting from a structured draft is faster than a blank document.",
+            "Document review for specific issues: given a specific question ('does this agreement restrict assignment without consent?'), AI locates and quotes the relevant clause faster than manual search across long agreements. It surfaces the clause; the lawyer evaluates its enforceability.",
+            "Case law and statute summarization: pasting a judgment or statute section and asking for a structured summary — holding, key facts, applicable rule, limitations — compresses reading time without replacing legal analysis.",
+            "Extracting structured information from documents: pull defined terms, party names, key dates, obligations, and payment terms from agreements into a structured table. Useful for contract intake, due diligence, and portfolio analysis.",
+            "Internal legal memos: given a question and the relevant legal authority, AI drafts a first-pass memo structure. Useful for routine questions where the analysis is established and the work is in clear communication.",
+            "Drafting non-disclosure and routine agreements: NDAs, simple services agreements, and similar low-stakes documents follow predictable patterns. AI shortens the time from blank page to reviewable draft significantly for these document types.",
+          ],
+          es: [
+            "Primeros borradores de cláusulas contractuales: la IA produce un primer borrador estructuralmente sólido de cláusulas comunes (confidencialidad, indemnización, limitación de responsabilidad, ley aplicable) en segundos. Un abogado igual revisa y adapta por jurisdicción, perfil de riesgo y particularidades del negocio — pero empezar desde un borrador estructurado es más rápido que una página en blanco.",
+            "Revisión de documentos por temas específicos: dada una pregunta específica ('¿este acuerdo restringe la cesión sin consentimiento?'), la IA localiza y cita la cláusula relevante más rápido que la búsqueda manual en contratos largos. Muestra la cláusula; el abogado evalúa su ejecutabilidad.",
+            "Resumen de jurisprudencia y normativa: pegar un fallo o sección de ley y pedir un resumen estructurado — holding, hechos clave, regla aplicable, limitaciones — comprime el tiempo de lectura sin reemplazar el análisis legal.",
+            "Extracción de información estructurada de documentos: extraer términos definidos, nombres de partes, fechas clave, obligaciones y condiciones de pago de contratos en una tabla estructurada. Útil para intake de contratos, due diligence y análisis de cartera.",
+            "Memos legales internos: dada una pregunta y la autoridad legal relevante, la IA redacta una estructura de memo de primera pasada. Útil para consultas rutinarias donde el análisis está establecido y el trabajo está en la comunicación clara.",
+            "Redacción de acuerdos de confidencialidad y contratos rutinarios: los NDAs, acuerdos simples de servicios y documentos similares de bajo riesgo siguen patrones predecibles. La IA acorta significativamente el tiempo desde la página en blanco hasta un borrador revisable para estos tipos de documentos.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What AI cannot do in legal work — and what to verify", es: "Qué no puede hacer la IA en el trabajo legal — y qué verificar" },
+        bullets: {
+          en: [
+            "AI cannot give legal advice: a summary of case law is not advice about how to proceed in a specific matter. The application of law to facts requires a licensed lawyer with jurisdiction knowledge and professional accountability. AI can accelerate the research; it cannot replace the judgment.",
+            "Hallucination risk with citations: AI confidently cites cases that do not exist or misquotes holdings. Every citation from an AI output must be independently verified in an authoritative source before it appears in any document that leaves your desk. This is not a configuration problem — it is a structural limitation of current language models.",
+            "Jurisdiction specificity: a clause or precedent that is standard in one jurisdiction may be unenforceable, unusual, or illegal in another. AI does not reliably flag jurisdiction-specific variations. Legal review must cover jurisdiction.",
+            "Privilege and confidentiality: pasting privileged client information into a commercial AI service raises privilege and confidentiality concerns that vary by jurisdiction and firm policy. Understand your firm's AI use policy before including client-specific facts.",
+            "Enforcement and court filing: nothing AI produces is ready for court filing, regulatory submission, or client delivery without substantive review. AI output is a starting point, not a finished work product.",
+          ],
+          es: [
+            "La IA no puede dar asesoramiento legal: un resumen de jurisprudencia no es un consejo sobre cómo proceder en un asunto específico. La aplicación del derecho a los hechos requiere un abogado matriculado con conocimiento jurisdiccional y responsabilidad profesional. La IA puede acelerar la investigación; no puede reemplazar el juicio.",
+            "Riesgo de alucinación con citas: la IA cita con confianza casos que no existen o cita erróneamente los holdings. Cada cita de un output de IA debe verificarse de forma independiente en una fuente autorizada antes de que aparezca en cualquier documento que salga de tu escritorio. Esto no es un problema de configuración — es una limitación estructural de los modelos de lenguaje actuales.",
+            "Especificidad jurisdiccional: una cláusula o precedente estándar en una jurisdicción puede ser inejecutable, inusual o ilegal en otra. La IA no marca de manera confiable las variaciones específicas de cada jurisdicción. La revisión legal debe cubrir la jurisdicción.",
+            "Privilegio y confidencialidad: pegar información privilegiada del cliente en un servicio de IA comercial plantea preguntas sobre privilegio y confidencialidad que varían según la jurisdicción y la política del estudio. Entendé la política de uso de IA de tu estudio antes de incluir hechos específicos del cliente.",
+            "Ejecución y presentación judicial: nada de lo que produce la IA está listo para presentación judicial, envío regulatorio o entrega al cliente sin revisión sustantiva. El output de IA es un punto de partida, no un producto de trabajo terminado.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Contract clause first draft", es: "Primer borrador de cláusula contractual" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Draft a [clause type] clause for inclusion in a [agreement type] between [Party A description] and [Party B description].
+
+Context:
+- Governing law: [e.g., New York law / English law / Argentine law]
+- Deal context: [brief description of the transaction or relationship]
+- Key requirements for this clause:
+  1. [Requirement 1 — e.g., "must survive termination for 3 years"]
+  2. [Requirement 2 — e.g., "carve out for information already in the public domain"]
+  3. [Requirement 3 — e.g., "must not restrict use of residual knowledge"]
+- Anything the clause must NOT include: [e.g., "no automatic renewal provisions"]
+- Drafting style: [e.g., plain English / traditional formal / short-form]
+
+Rules:
+- Draft in the governing law style where it affects language
+- Flag any provision that is jurisdiction-sensitive and note why
+- Do not fabricate case citations or statutory references — leave a [VERIFY: ...] placeholder if a reference would help
+- After the clause, list: (1) what I should verify with a local lawyer, and (2) any common negotiation points on this clause type`,
+          es: `Redactá una cláusula de [tipo de cláusula] para incluir en un [tipo de acuerdo] entre [descripción de la Parte A] y [descripción de la Parte B].
+
+Contexto:
+- Ley aplicable: [ej. derecho de Nueva York / derecho inglés / derecho argentino]
+- Contexto de la operación: [breve descripción de la transacción o relación]
+- Requisitos clave para esta cláusula:
+  1. [Requisito 1 — ej. "debe sobrevivir a la terminación por 3 años"]
+  2. [Requisito 2 — ej. "excluir información que ya está en el dominio público"]
+  3. [Requisito 3 — ej. "no debe restringir el uso del conocimiento residual"]
+- Algo que la cláusula NO debe incluir: [ej. "sin cláusulas de renovación automática"]
+- Estilo de redacción: [ej. lenguaje llano / formal tradicional / formato corto]
+
+Reglas:
+- Redactá en el estilo de la ley aplicable donde afecte el lenguaje
+- Marcá cualquier disposición que sea sensible a la jurisdicción y explicá por qué
+- No inventes citas de casos ni referencias legales — dejá un placeholder [VERIFICAR: ...] si una referencia sería útil
+- Después de la cláusula, listá: (1) qué debo verificar con un abogado local, y (2) los puntos de negociación comunes en este tipo de cláusula`,
+        },
+      },
+      {
+        title: { en: "Contract review for specific risk", es: "Revisión de contrato por riesgo específico" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Review the contract excerpt below and answer the specific question I have about it.
+
+My question: [e.g., "Does this agreement restrict my client from hiring the other party's employees after termination?"]
+
+Context:
+- I am representing: [Party A or Party B]
+- Governing law: [e.g., California law]
+- What I already know: [any relevant background — e.g., "we are planning to terminate in 30 days"]
+
+Contract excerpt:
+"""
+[Paste the relevant section(s) here — or the full agreement if it is short enough]
+"""
+
+Please:
+1. Locate and quote the clause(s) most relevant to my question
+2. Explain what the clause says in plain language
+3. Identify any ambiguities that a court might need to resolve
+4. Note if there are related provisions elsewhere that interact with this clause
+5. List what I should verify with a lawyer in [governing law jurisdiction] before relying on this reading
+
+Do not give a definitive legal opinion. Identify what the text says and flag the uncertainties.`,
+          es: `Revisá el extracto de contrato que está abajo y respondé la pregunta específica que tengo sobre él.
+
+Mi pregunta: [ej. "¿Este acuerdo restringe a mi cliente de contratar empleados de la otra parte después de la terminación?"]
+
+Contexto:
+- Represento a: [Parte A o Parte B]
+- Ley aplicable: [ej. derecho de California]
+- Lo que ya sé: [cualquier antecedente relevante — ej. "estamos planeando terminar en 30 días"]
+
+Extracto del contrato:
+"""
+[Pegá aquí la/s sección/es relevante/s — o el acuerdo completo si es lo suficientemente corto]
+"""
+
+Por favor:
+1. Localizá y citá la/s cláusula/s más relevante/s para mi pregunta
+2. Explicá qué dice la cláusula en lenguaje llano
+3. Identificá cualquier ambigüedad que un tribunal podría necesitar resolver
+4. Notá si hay disposiciones relacionadas en otros lugares que interactúen con esta cláusula
+5. Listá qué debo verificar con un abogado en [jurisdicción de la ley aplicable] antes de basarme en esta lectura
+
+No emitas una opinión legal definitiva. Identificá qué dice el texto y marcá las incertidumbres.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can I use AI to draft contracts without a lawyer?", es: "¿Puedo usar IA para redactar contratos sin un abogado?" },
+        a: {
+          en: "For very simple, low-stakes documents with parties in the same jurisdiction where you can afford to be wrong, AI-generated first drafts can reduce the time to a usable document. For anything with meaningful legal or financial consequences — commercial agreements, employment contracts, IP assignments, financing documents — AI-generated drafts need substantive review by a licensed lawyer in the relevant jurisdiction. AI accelerates the drafting step; it does not replace the review step. A clause that looks correct to a non-lawyer can be unenforceable, one-sided, or inappropriate for the specific jurisdiction and deal structure.",
+          es: "Para documentos muy simples y de bajo riesgo entre partes en la misma jurisdicción donde podés permitirte equivocarte, los primeros borradores generados por IA pueden reducir el tiempo hasta un documento utilizable. Para cualquier cosa con consecuencias legales o financieras significativas — acuerdos comerciales, contratos de trabajo, cesiones de PI, documentos de financiamiento — los borradores generados por IA necesitan revisión sustantiva por parte de un abogado matriculado en la jurisdicción relevante. La IA acelera el paso de redacción; no reemplaza el paso de revisión. Una cláusula que parece correcta para un no abogado puede ser inejecutable, unilateral o inapropiada para la jurisdicción específica y la estructura del negocio.",
+        },
+      },
+      {
+        q: { en: "How do I avoid hallucinated case citations from AI?", es: "¿Cómo evito citas de casos inventadas por IA?" },
+        a: {
+          en: "Two steps. First, prompt the model not to cite cases unless it is certain they exist, and to use a [VERIFY: description of what you need] placeholder instead when a citation would help but confidence is low. Second, verify every citation that does appear in an authoritative legal database (Westlaw, LexisNexis, Fastcase, Google Scholar for US cases, or equivalent for your jurisdiction) before using it in any document. Even AI models that are generally reliable on legal topics hallucinate citations at a significant rate — this is a known structural issue, not a configuration problem you can prompt your way out of. Never submit a citation you have not personally verified.",
+          es: "Dos pasos. Primero, indicale al modelo que no cite casos a menos que esté seguro de que existen, y que use un placeholder [VERIFICAR: descripción de lo que necesitás] en su lugar cuando una cita ayudaría pero la confianza es baja. Segundo, verificá cada cita que aparezca en una base de datos legal autorizada (Westlaw, LexisNexis, Fastcase, Google Scholar para casos de EE.UU., o equivalente para tu jurisdicción) antes de usarla en cualquier documento. Incluso los modelos de IA que generalmente son confiables en temas legales alucinan citas a una tasa significativa — este es un problema estructural conocido, no un problema de configuración del que puedas salir con mejores prompts. Nunca presentes una cita que no hayas verificado personalmente.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-finance",
+    title: {
+      en: "AI prompts for finance teams: report analysis, earnings summaries, and financial modeling",
+      es: "Prompts de IA para equipos de finanzas: análisis de reportes, resúmenes de resultados y modelado financiero",
+    },
+    description: {
+      en: "Practical AI prompt templates for finance professionals — analyzing financial statements, summarizing earnings calls, explaining variances, drafting board-ready commentary, and accelerating financial modeling.",
+      es: "Plantillas de prompts de IA prácticas para profesionales de finanzas — análisis de estados financieros, resúmenes de calls de resultados, explicación de variaciones, redacción de comentarios para el directorio y aceleración del modelado financiero.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI saves finance teams real time", es: "Dónde la IA ahorra tiempo real a los equipos de finanzas" },
+        bullets: {
+          en: [
+            "Earnings call and report summarization: pasting the transcript of an earnings call or the narrative section of a 10-K and asking for a structured summary (key metrics, guidance changes, management's stated risks, year-over-year changes) compresses hours of reading into minutes. AI catches language and emphasis you might skim past.",
+            "Variance commentary drafting: given a table of actuals vs. budget and some context, AI produces a first-draft narrative explaining the variances. The numbers are yours; the commentary structure is the part AI can accelerate. Finance still validates the framing and adds business judgment.",
+            "Financial statement analysis: asking AI to identify trends, flag unusual line items, or compare ratios across periods gives you a fast first-pass reading. It is most useful for surfacing questions to investigate, not for final conclusions.",
+            "Board and executive deck commentary: finance decks need clear, non-technical language in the written commentary. AI drafts this faster than most finance professionals write it — the vocabulary shift from analyst language to executive language is exactly where AI adds efficiency.",
+            "Model documentation and assumption logging: AI writes model documentation (what each sheet does, what the key assumptions are, how outputs link) quickly and consistently. This is one of the most tedious finance tasks and one AI handles well.",
+            "Research on accounting standards: AI can explain specific ASC or IFRS sections in plain language, surface relevant guidance for a specific transaction type, and help frame a technical accounting question for a specialist. It is not a substitute for authoritative guidance; it accelerates the framing step.",
+          ],
+          es: [
+            "Resumen de calls de resultados y reportes: pegar la transcripción de una call de resultados o la sección narrativa de un 10-K y pedir un resumen estructurado (métricas clave, cambios en el guidance, riesgos declarados por la gerencia, cambios año a año) comprime horas de lectura en minutos. La IA detecta lenguaje y énfasis que podrías saltear.",
+            "Redacción de comentarios de variaciones: dada una tabla de reales vs. presupuesto y algo de contexto, la IA produce un primer borrador de narrativa que explica las variaciones. Los números son tuyos; la estructura del comentario es la parte que la IA puede acelerar. Finanzas igual valida el encuadre y agrega el juicio de negocio.",
+            "Análisis de estados financieros: pedirle a la IA que identifique tendencias, marque líneas inusuales o compare ratios a lo largo de períodos da una lectura rápida de primera pasada. Es más útil para identificar preguntas a investigar que para conclusiones finales.",
+            "Comentarios para decks de directorio y ejecutivos: los decks de finanzas necesitan lenguaje claro y no técnico en los comentarios escritos. La IA redacta esto más rápido que la mayoría de los profesionales de finanzas lo escriben — el cambio de vocabulario del lenguaje analista al lenguaje ejecutivo es exactamente donde la IA agrega eficiencia.",
+            "Documentación de modelos y registro de supuestos: la IA escribe documentación de modelos (qué hace cada hoja, cuáles son los supuestos clave, cómo se vinculan los outputs) de manera rápida y consistente. Esta es una de las tareas más tediosas en finanzas y una que la IA maneja bien.",
+            "Investigación sobre normas contables: la IA puede explicar secciones específicas de ASC o IFRS en lenguaje llano, identificar guía relevante para un tipo de transacción específico y ayudar a formular una pregunta técnica contable para un especialista. No es un sustituto de la guía autorizada; acelera el paso de formulación.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What AI cannot do in finance — and what to verify", es: "Qué no puede hacer la IA en finanzas — y qué verificar" },
+        bullets: {
+          en: [
+            "AI does not know your actual numbers: AI summarizes what you give it. It cannot pull live financial data, access your ERP, or verify that the figures you pasted are accurate. Any number in an AI output came from your input — validate it at the source.",
+            "Forward-looking statements require judgment AI does not have: revenue forecasts, valuation judgments, and guidance interpretations involve business context, competitive dynamics, and management credibility that AI cannot assess. AI can structure the analysis; the substance is yours.",
+            "Material non-public information: do not paste MNPI, pre-release financials, or client-specific deal data into a commercial AI service. Understand your firm's data governance and legal policies before deciding what information is appropriate to include.",
+            "Technical accounting for complex transactions: for purchase accounting, revenue recognition on multi-element arrangements, hedge accounting, or ASC 842/IFRS 16 implementation, AI can frame the question but cannot replace a technical accounting review or your auditor's position.",
+            "Audit trail and SOX compliance: AI outputs are not auditable artifacts. Finance processes with compliance significance need human review, documented sign-off, and retention practices that a chat interface does not provide.",
+          ],
+          es: [
+            "La IA no conoce tus números reales: la IA resume lo que le das. No puede extraer datos financieros en vivo, acceder a tu ERP ni verificar que las cifras que pegaste son precisas. Cualquier número en un output de IA vino de tu input — validalo en la fuente.",
+            "Las declaraciones prospectivas requieren juicio que la IA no tiene: las previsiones de ingresos, los juicios de valuación y las interpretaciones de guidance involucran contexto de negocio, dinámica competitiva y credibilidad de la gerencia que la IA no puede evaluar. La IA puede estructurar el análisis; la sustancia es tuya.",
+            "Información material no pública: no pegues MNPI, estados financieros previos al lanzamiento ni datos de transacciones específicas del cliente en un servicio de IA comercial. Entendé las políticas de gobernanza de datos y legales de tu empresa antes de decidir qué información es apropiado incluir.",
+            "Contabilidad técnica para transacciones complejas: para la contabilidad de compras, el reconocimiento de ingresos en arreglos de múltiples elementos, la contabilidad de coberturas o la implementación de ASC 842/IFRS 16, la IA puede formular la pregunta pero no puede reemplazar una revisión de contabilidad técnica ni la posición de tu auditor.",
+            "Pista de auditoría y cumplimiento SOX: los outputs de IA no son artefactos auditables. Los procesos financieros con significancia de cumplimiento necesitan revisión humana, aprobación documentada y prácticas de retención que una interfaz de chat no proporciona.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Earnings call structured summary", es: "Resumen estructurado de call de resultados" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Summarize the earnings call transcript below into a structured briefing for a financial analyst audience.
+
+Company: [Company name and ticker]
+Period: [e.g., Q2 FY2026]
+My focus areas: [e.g., "revenue growth and guidance" / "margin trajectory" / "segment performance"]
+
+Transcript:
+"""
+[Paste transcript here]
+"""
+
+Please structure the output as:
+1. Key financial results (3–5 bullet points, specific numbers with year-over-year comparisons where available)
+2. Guidance update (what changed, the new range, and management's stated rationale — quote the exact language used)
+3. Management's stated risks and headwinds (direct quotes where they were specific; paraphrase where they were vague)
+4. Analyst question themes (what topics dominated Q&A — not individual questions, the themes)
+5. What I should read more carefully in the filing (flag anything management was notably vague or hedging about)
+
+Rules:
+- Use only what is in the transcript — do not supplement with external knowledge
+- If a number was not mentioned, do not fill it in
+- Quote exact management language for guidance and risk statements — do not paraphrase guidance
+- Flag if the transcript appears to be incomplete or cut off`,
+          es: `Resumí la transcripción de la call de resultados que está abajo en un briefing estructurado para una audiencia de analistas financieros.
+
+Empresa: [Nombre de la empresa y ticker]
+Período: [ej. Q2 FY2026]
+Mis áreas de enfoque: [ej. "crecimiento de ingresos y guidance" / "trayectoria de márgenes" / "desempeño por segmento"]
+
+Transcripción:
+"""
+[Pegá la transcripción aquí]
+"""
+
+Por favor estructurá el output como:
+1. Resultados financieros clave (3–5 bullets, números específicos con comparaciones año a año donde estén disponibles)
+2. Actualización del guidance (qué cambió, el nuevo rango y la justificación declarada por la gerencia — citá el lenguaje exacto usado)
+3. Riesgos y vientos en contra declarados por la gerencia (citas directas donde fueron específicos; paráfrasis donde fueron vagos)
+4. Temas de preguntas de analistas (qué temas dominaron el Q&A — no preguntas individuales, los temas)
+5. Qué debo leer más cuidadosamente en el archivo (marcá cualquier cosa sobre la que la gerencia fue notablemente vaga o evasiva)
+
+Reglas:
+- Usá solo lo que está en la transcripción — no complementes con conocimiento externo
+- Si un número no fue mencionado, no lo completes
+- Citá el lenguaje exacto de la gerencia para declaraciones de guidance y riesgos — no parafrasees el guidance
+- Indicá si la transcripción parece estar incompleta o cortada`,
+        },
+      },
+      {
+        title: { en: "Variance commentary draft", es: "Borrador de comentario de variaciones" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Draft a variance commentary for the period and business unit described below. The commentary will be used in an internal management reporting package.
+
+Period: [e.g., Q3 2026 vs. Q3 2025 / Q3 2026 vs. Budget]
+Business unit / segment: [name]
+Audience: [e.g., CFO and segment heads / board of directors / external investors]
+
+Variance data (fill in the figures — remove any rows that do not apply):
+- Revenue: Actual [X], Prior/Budget [Y], Variance [+/- Z, %]
+- Gross profit: Actual [X], Prior/Budget [Y], Variance [+/- Z, %]
+- Operating expenses: Actual [X], Prior/Budget [Y], Variance [+/- Z, %]
+- EBITDA: Actual [X], Prior/Budget [Y], Variance [+/- Z, %]
+- [Add other key lines as needed]
+
+Context for the main drivers (be specific):
+- [Driver 1 — e.g., "Revenue was below budget due to delayed enterprise contract signings in EMEA — 3 deals pushed to Q4"]
+- [Driver 2 — e.g., "OpEx beat budget by 8% because two open headcount positions were not filled in the quarter"]
+- [Driver 3 — e.g., "Gross margin contracted 1.2pp vs. prior year due to higher logistics costs in H1"]
+
+Rules:
+- Write in clear, non-technical language appropriate for [audience]
+- State the driver, the direction of impact, and the magnitude — do not just name the line
+- Do not speculate about drivers not provided — use [TBD: add rationale] as a placeholder
+- Use active voice and specific numbers
+- Keep the total commentary to [3–5 sentences / one short paragraph / two paragraphs] depending on audience`,
+          es: `Redactá un comentario de variaciones para el período y unidad de negocio descritos abajo. El comentario se usará en un paquete de reportes de gestión interno.
+
+Período: [ej. Q3 2026 vs. Q3 2025 / Q3 2026 vs. Presupuesto]
+Unidad de negocio / segmento: [nombre]
+Audiencia: [ej. CFO y jefes de segmento / directorio / inversores externos]
+
+Datos de variaciones (completá las cifras — eliminá las filas que no apliquen):
+- Ingresos: Real [X], Anterior/Presupuesto [Y], Variación [+/- Z, %]
+- Ganancia bruta: Real [X], Anterior/Presupuesto [Y], Variación [+/- Z, %]
+- Gastos operativos: Real [X], Anterior/Presupuesto [Y], Variación [+/- Z, %]
+- EBITDA: Real [X], Anterior/Presupuesto [Y], Variación [+/- Z, %]
+- [Agregá otras líneas clave según sea necesario]
+
+Contexto para los principales impulsores (sé específico/a):
+- [Impulsor 1 — ej. "Los ingresos estuvieron por debajo del presupuesto debido a retrasos en la firma de contratos enterprise en EMEA — 3 acuerdos se movieron a Q4"]
+- [Impulsor 2 — ej. "Los gastos operativos superaron el presupuesto en un 8% porque dos posiciones abiertas no se cubrieron en el trimestre"]
+- [Impulsor 3 — ej. "El margen bruto se contrajo 1,2pp vs. año anterior debido a mayores costos logísticos en H1"]
+
+Reglas:
+- Escribí en lenguaje claro y no técnico apropiado para [audiencia]
+- Indicá el impulsor, la dirección del impacto y la magnitud — no solo nombrés la línea
+- No especules sobre impulsores no proporcionados — usá [POR DEFINIR: agregar justificación] como placeholder
+- Usá voz activa y números específicos
+- Mantené el comentario total en [3–5 oraciones / un párrafo corto / dos párrafos] según la audiencia`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI read and analyze financial statements accurately?", es: "¿Puede la IA leer y analizar estados financieros con precisión?" },
+        a: {
+          en: "AI reads and processes text-based financial statements well — it can identify trends, compare line items, flag unusual changes, and extract structured information. Three limitations matter in practice. First, AI can only work with what you paste in — it has no access to live filings, databases, or prior periods unless you provide them. Second, AI does not verify the numbers it reads; if you paste in incorrect figures, it analyzes them confidently. Third, complex footnote disclosures (hedge accounting, VIE consolidation, pension obligations) require careful reading that AI can support but not replace. Use AI for the first-pass read and the structuring work; keep the final analytical judgment with a human.",
+          es: "La IA lee y procesa bien los estados financieros basados en texto — puede identificar tendencias, comparar líneas, marcar cambios inusuales y extraer información estructurada. Tres limitaciones importan en la práctica. Primero, la IA solo puede trabajar con lo que pegás — no tiene acceso a presentaciones en vivo, bases de datos ni períodos anteriores a menos que los proporciones. Segundo, la IA no verifica los números que lee; si pegás cifras incorrectas, las analiza con confianza. Tercero, las revelaciones complejas en notas al pie (contabilidad de coberturas, consolidación de VIE, obligaciones de pensiones) requieren una lectura cuidadosa que la IA puede apoyar pero no reemplazar. Usá la IA para la lectura de primera pasada y el trabajo de estructuración; mantené el juicio analítico final con un humano.",
+        },
+      },
+      {
+        q: { en: "Is it safe to paste financial data into an AI tool?", es: "¿Es seguro pegar datos financieros en una herramienta de IA?" },
+        a: {
+          en: "It depends on what the data is and which tool you use. Publicly available financial data (filed 10-Ks, earnings transcripts, press releases) is generally fine to paste into an AI tool, since it is already public. Internal management accounts, pre-release earnings data, client financial information, and anything that could constitute material non-public information (MNPI) are a different matter: pasting them into a commercial AI service raises both legal compliance concerns (insider trading rules, fiduciary duty) and data governance concerns (the service's data handling practices). Before using any AI tool with non-public financial data, check your firm's AI use policy, your data governance guidelines, and the service's terms and privacy policy.",
+          es: "Depende de qué son los datos y qué herramienta usás. Los datos financieros disponibles públicamente (10-K presentados, transcripciones de resultados, comunicados de prensa) generalmente está bien pegarlos en una herramienta de IA, ya que son públicos. Las cuentas de gestión internas, los datos de resultados previos al lanzamiento, la información financiera del cliente y cualquier cosa que pueda constituir información material no pública (MNPI) son un asunto diferente: pegarlos en un servicio de IA comercial plantea tanto preguntas de cumplimiento legal (reglas de insider trading, deber fiduciario) como de gobernanza de datos (las prácticas de manejo de datos del servicio). Antes de usar cualquier herramienta de IA con datos financieros no públicos, revisá la política de uso de IA de tu empresa, tus pautas de gobernanza de datos y los términos y política de privacidad del servicio.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "context-engineering",
+    title: {
+      en: "Context engineering: how to structure what you give an AI for better outputs",
+      es: "Ingeniería de contexto: cómo estructurar lo que le das a una IA para mejores resultados",
+    },
+    description: {
+      en: "Context engineering is about deciding what information goes into an AI's input window, in what order, and at what level of detail. This guide explains why context quality often matters more than prompt phrasing, and gives you practical patterns for structuring inputs that get reliable outputs.",
+      es: "La ingeniería de contexto consiste en decidir qué información entra en la ventana de input de una IA, en qué orden y con qué nivel de detalle. Esta guía explica por qué la calidad del contexto suele importar más que la redacción del prompt, y te da patrones prácticos para estructurar inputs que obtienen outputs confiables.",
+    },
+    sections: [
+      {
+        heading: { en: "What context engineering is — and how it differs from prompt engineering", es: "Qué es la ingeniería de contexto — y en qué se diferencia de la ingeniería de prompts" },
+        bullets: {
+          en: [
+            "Prompt engineering focuses on the instruction — the task sentence, the format directive, the role you assign. Context engineering focuses on everything else in the input: the background facts, the examples, the constraints, the documents, the prior conversation, and the order in which all of that arrives.",
+            "A well-phrased instruction with weak context will underperform a plainly worded instruction with strong context. The model can only work with what it has been given. If the relevant fact is not in the context window, the model either hallucinates it or answers without it.",
+            "Context quality matters most when: the task depends on specific facts the model cannot know from training (current data, your company's definitions, the specifics of this case); the task requires consistency (the model needs to know what choices were already made); or the output will be reviewed against something the model needs to see.",
+            "Context window size is the outer limit, not the target. Packing the context window with loosely relevant information does not reliably help and often hurts — the model's attention is diluted, and the most important facts get buried. The goal is the highest-signal context that fits comfortably, not the maximum content that fits at all.",
+          ],
+          es: [
+            "La ingeniería de prompts se enfoca en la instrucción — la frase de tarea, la directiva de formato, el rol que asignás. La ingeniería de contexto se enfoca en todo lo demás en el input: los hechos de fondo, los ejemplos, las restricciones, los documentos, la conversación previa y el orden en que todo eso llega.",
+            "Una instrucción bien redactada con contexto débil tendrá un rendimiento inferior a una instrucción formulada llanamente con contexto fuerte. El modelo solo puede trabajar con lo que se le dio. Si el hecho relevante no está en la ventana de contexto, el modelo lo alucina o responde sin él.",
+            "La calidad del contexto importa más cuando: la tarea depende de hechos específicos que el modelo no puede saber de su entrenamiento (datos actuales, las definiciones de tu empresa, los detalles de este caso); la tarea requiere consistencia (el modelo necesita saber qué decisiones ya se tomaron); o el output se revisará contra algo que el modelo necesita ver.",
+            "El tamaño de la ventana de contexto es el límite externo, no el objetivo. Llenar la ventana de contexto con información vagamente relevante no ayuda de manera confiable y a menudo perjudica — la atención del modelo se diluye y los hechos más importantes quedan enterrados. El objetivo es el contexto de mayor señal que cabe cómodamente, no el máximo contenido que cabe en absoluto.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Practical patterns for high-quality context", es: "Patrones prácticos para contexto de alta calidad" },
+        bullets: {
+          en: [
+            "Put the most important information first: most models attend more strongly to content near the beginning and end of the context window. For long inputs, put the task and the most critical facts at the top, not buried in the middle of a pasted document.",
+            "Define your terms: if your input uses domain-specific terms, acronyms, or company-specific definitions, include them explicitly. ‘Our “activation rate” means the percentage of signed accounts who complete at least one workflow in the first 30 days’ is far more useful than assuming the model interprets it the same way you do.",
+            "Separate background from instruction: structure the input so it is clear what is context (background, data, documents) and what is the task (what to do with it). Use explicit section labels — Background:, Data:, Your task: — rather than letting context and instruction blend together.",
+            "Use examples for format and style, not just for content: if you need a specific output format (a table, a JSON object, a particular writing style), an example is often more reliable than a prose description. Show the model what done looks like.",
+            "Include negative constraints: tell the model what the output must not contain. 'Do not include personal names', 'do not use bullet points', 'do not add information not in the pasted text' — these constraints prevent the most common failure modes before they happen.",
+            "Trim aggressively for long documents: for documents longer than a few pages, either chunk the document and process each chunk separately, or extract and paste only the sections relevant to the task. Pasting a 50-page document for a task that depends on two paragraphs is not useful and may hurt performance on those two paragraphs.",
+            "State what is uncertain: if you are not sure about a fact in your context, say so explicitly ('I believe the contract date is March 2025 but this may be wrong — flag if you see a different date'). This cues the model to treat that fact as uncertain rather than definitive.",
+          ],
+          es: [
+            "Ponés la información más importante primero: la mayoría de los modelos prestan más atención al contenido cerca del principio y el final de la ventana de contexto. Para inputs largos, ponés la tarea y los hechos más críticos al principio, no enterrados en el medio de un documento pegado.",
+            "Definís tus términos: si tu input usa términos específicos del dominio, siglas o definiciones específicas de tu empresa, incluílos explícitamente. 'Nuestra “tasa de activación” significa el porcentaje de cuentas firmadas que completan al menos un flujo de trabajo en los primeros 30 días' es mucho más útil que asumir que el modelo lo interpreta igual que vos.",
+            "Separás el fondo de la instrucción: estructurás el input de modo que quede claro qué es contexto (fondo, datos, documentos) y qué es la tarea (qué hacer con eso). Usás etiquetas de sección explícitas — Fondo:, Datos:, Tu tarea: — en lugar de dejar que el contexto y la instrucción se mezclen.",
+            "Usás ejemplos para el formato y el estilo, no solo para el contenido: si necesitás un formato de output específico (una tabla, un objeto JSON, un estilo de escritura particular), un ejemplo suele ser más confiable que una descripción en prosa. Mostrale al modelo cómo se ve el resultado.",
+            "Incluís restricciones negativas: le decís al modelo qué no debe contener el output. 'No incluyas nombres personales', 'no uses bullets', 'no agregues información que no esté en el texto pegado' — estas restricciones previenen los modos de falla más comunes antes de que ocurran.",
+            "Recortás agresivamente para documentos largos: para documentos de más de unas pocas páginas, o dividís el documento y procesás cada parte por separado, o extraés y pegás solo las secciones relevantes para la tarea. Pegar un documento de 50 páginas para una tarea que depende de dos párrafos no es útil y puede perjudicar el rendimiento en esos dos párrafos.",
+            "Declarás qué es incierto: si no estás seguro/a de un hecho en tu contexto, decilo explícitamente ('Creo que la fecha del contrato es marzo de 2025 pero puede estar mal — marcá si ves una fecha diferente'). Esto le indica al modelo que trate ese hecho como incierto en lugar de definitivo.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Structured context template for document-based tasks", es: "Plantilla de contexto estructurado para tareas basadas en documentos" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `[BACKGROUND]
+What this is: [one sentence describing what the document or data you are providing is]
+Why it matters to the task: [one sentence on why this document is relevant]
+Terms to know:
+- [Term 1]: [definition as used in this context]
+- [Term 2]: [definition as used in this context]
+Uncertain facts (treat these as approximate, not definitive):
+- [Any fact in the material you are not sure about]
+
+[DATA / DOCUMENT]
+"""
+[Paste the document, data, or relevant excerpt here]
+"""
+
+[TASK]
+[Clear, specific statement of what you want done with the above]
+
+[OUTPUT FORMAT]
+- Format: [e.g., numbered list / table with columns X, Y, Z / plain prose / JSON]
+- Length: [e.g., under 200 words / as long as needed to cover each item / one sentence per finding]
+- Must include: [e.g., "the relevant quote from the document for each finding"]
+- Must NOT include: [e.g., "do not add facts not present in the document above"]`,
+          es: `[FONDO]
+Qué es esto: [una oración describiendo qué es el documento o dato que estás proporcionando]
+Por qué importa para la tarea: [una oración sobre por qué este documento es relevante]
+Términos a conocer:
+- [Término 1]: [definición tal como se usa en este contexto]
+- [Término 2]: [definición tal como se usa en este contexto]
+Hechos inciertos (tratá estos como aproximados, no definitivos):
+- [Cualquier hecho en el material sobre el que no estás seguro/a]
+
+[DATOS / DOCUMENTO]
+"""
+[Pegá el documento, los datos o el extracto relevante aquí]
+"""
+
+[TAREA]
+[Declaración clara y específica de qué querés que se haga con lo anterior]
+
+[FORMATO DE OUTPUT]
+- Formato: [ej. lista numerada / tabla con columnas X, Y, Z / prosa llana / JSON]
+- Extensión: [ej. menos de 200 palabras / lo que se necesite para cubrir cada ítem / una oración por hallazgo]
+- Debe incluir: [ej. "la cita relevante del documento para cada hallazgo"]
+- NO debe incluir: [ej. "no agregues hechos que no estén en el documento de arriba"]`,
+        },
+      },
+      {
+        title: { en: "Multi-document synthesis with explicit context budget", es: "Síntesis de múltiples documentos con presupuesto de contexto explícito" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `I need to synthesize information from multiple sources. I am providing [N] excerpts below, each labeled and limited to the most relevant section.
+
+Synthesis goal: [What you want to learn or produce from these sources combined]
+Output format: [table / structured bullets / short briefing / comparison]
+
+Source 1 — [Label, e.g., "Q2 2026 10-K, Risk Factors section"]:
+"""
+[Paste excerpt — keep to the specific section relevant to the synthesis goal]
+"""
+
+Source 2 — [Label]:
+"""
+[Paste excerpt]
+"""
+
+Source 3 — [Label]:
+"""
+[Paste excerpt]
+"""
+
+Rules:
+- Only use information from the sources above — do not add external knowledge
+- Where sources conflict, note the conflict explicitly rather than picking one
+- Cite which source each finding comes from (e.g., "Source 1 states...")
+- If a source does not address the synthesis goal, say so rather than inferring`,
+          es: `Necesito sintetizar información de múltiples fuentes. Estoy proporcionando [N] extractos abajo, cada uno etiquetado y limitado a la sección más relevante.
+
+Objetivo de síntesis: [Qué querés aprender o producir a partir de estas fuentes combinadas]
+Formato de output: [tabla / bullets estructurados / briefing corto / comparación]
+
+Fuente 1 — [Etiqueta, ej. "10-K Q2 2026, sección de Factores de Riesgo"]:
+"""
+[Pegá el extracto — limitalo a la sección específica relevante para el objetivo de síntesis]
+"""
+
+Fuente 2 — [Etiqueta]:
+"""
+[Pegá el extracto]
+"""
+
+Fuente 3 — [Etiqueta]:
+"""
+[Pegá el extracto]
+"""
+
+Reglas:
+- Usá solo la información de las fuentes de arriba — no agregues conocimiento externo
+- Donde las fuentes entren en conflicto, notá el conflicto explícitamente en lugar de elegir una
+- Citá de qué fuente proviene cada hallazgo (ej. "La Fuente 1 dice...")
+- Si una fuente no aborda el objetivo de síntesis, decílo en lugar de inferir`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "What is the difference between context engineering and prompt engineering?", es: "¿Cuál es la diferencia entre ingeniería de contexto e ingeniería de prompts?" },
+        a: {
+          en: "Prompt engineering typically refers to optimizing the instruction — how you word the task, what role you assign, what format you request. Context engineering refers to optimizing everything else: what background information you include, how you structure it, where you place it, and what you leave out. In practice the two overlap, but the distinction is useful because many prompt failures are not instruction failures — the instruction is clear, but the model is missing a fact, a definition, or an example that would let it do the task correctly. Recognizing the problem as a context problem, not an instruction problem, points to the right fix: add or restructure the input rather than reword the task sentence.",
+          es: "La ingeniería de prompts típicamente se refiere a optimizar la instrucción — cómo redactás la tarea, qué rol asignás, qué formato pedís. La ingeniería de contexto se refiere a optimizar todo lo demás: qué información de fondo incluís, cómo la estructurás, dónde la ponés y qué dejás afuera. En la práctica las dos se superponen, pero la distinción es útil porque muchos fallos de prompts no son fallos de instrucción — la instrucción es clara, pero al modelo le falta un hecho, una definición o un ejemplo que le permitiría hacer la tarea correctamente. Reconocer el problema como un problema de contexto, no de instrucción, apunta a la solución correcta: agregar o reestructurar el input en lugar de reformular la frase de tarea.",
+        },
+      },
+      {
+        q: { en: "How long should the context I provide be?", es: "¿Qué tan largo debe ser el contexto que proporciono?" },
+        a: {
+          en: "As long as necessary to give the model the information it cannot do without, and no longer. There is a common misconception that longer context is better — that giving the model everything you have is safer than editing it down. In practice, excess context increases the chance that the relevant information is diluted or that the model attends to the wrong part. A practical heuristic: for a task that depends on specific facts, include those facts and the minimum surrounding context needed to interpret them. For tasks involving a document, extract the relevant sections rather than pasting the whole thing. If you are not sure whether to include something, consider whether the output would be wrong or incomplete without it — if not, leave it out.",
+          es: "Tan largo como sea necesario para darle al modelo la información sin la que no puede funcionar, y nada más. Hay una idea errónea común de que el contexto más largo es mejor — que darle al modelo todo lo que tenés es más seguro que editarlo. En la práctica, el contexto excesivo aumenta la probabilidad de que la información relevante se diluya o de que el modelo preste atención a la parte equivocada. Una heurística práctica: para una tarea que depende de hechos específicos, incluí esos hechos y el contexto mínimo circundante necesario para interpretarlos. Para tareas que involucran un documento, extraé las secciones relevantes en lugar de pegar todo. Si no estás seguro/a de si incluir algo, pensá si el output sería incorrecto o incompleto sin ello — si no, dejalo afuera.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

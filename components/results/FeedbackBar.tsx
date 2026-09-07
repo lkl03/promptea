@@ -63,6 +63,7 @@ export default function FeedbackBar({
           <div className="w-full sm:max-w-md">
             <input
               className="field w-full px-3 py-2 text-sm"
+              aria-label={dict.feedbackPlaceholder}
               placeholder={dict.feedbackPlaceholder}
               value={reason}
               onChange={(e) => setReason(e.target.value)}
