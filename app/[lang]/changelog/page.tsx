@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.4.7 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.4.7</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 10-09-2026" : "Released: 2026-09-10"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para desarrolladores de software — dónde la IA realmente ahorra tiempo a desarrolladores (code review, descripciones de PRs, debugging, documentación, explicación de código desconocido), qué no puede hacer la IA de forma confiable en desarrollo, y dos plantillas: prompt de code review y generador de descripción de PR."
+              : "New guide: AI prompts for software developers — where AI genuinely saves developer time (code review, PR descriptions, debugging, documentation, explaining unfamiliar code), what AI cannot reliably do in development, and two templates: a code review prompt and a PR description generator."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompting negativo — por qué importan las restricciones negativas, las restricciones negativas más útiles (formato, tono, alcance del contenido, longitud, tipo de output), cómo escribir restricciones negativas que funcionen, y dos plantillas: prompt de reescritura con restricciones y email con restricciones de formato estrictas."
+              : "New guide: Negative prompting — why negative constraints matter, the most useful negative constraints (format, tone, content scope, length, output type), how to write negative constraints that actually stick, and two templates: a constrained rewrite prompt and an email with strict format constraints."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para creadores de contenido — dónde encaja la IA en un flujo de contenido (ideación, guiones, reutilización, SEO, primeros borradores), cómo preservar la voz al usar IA, tipos de contenido donde la IA ahorra más tiempo, y dos plantillas: esquema de guión de video y reutilización de contenido en múltiples formatos."
+              : "New guide: AI prompts for content creators — where AI fits in a content workflow (ideation, scripting, repurposing, SEO support, first drafts), how to preserve your voice when using AI, content types where AI saves the most time, and two templates: a video script outline and a content repurposing prompt."}
+          </li>
+          <li>
+            {isEs
+              ? "Mejora de accesibilidad en el anillo de puntuación: el contenedor del Quality Ring ahora tiene role='img' y aria-label con el puntaje y la etiqueta cualitativa, de modo que los lectores de pantalla anuncian '82% — Bueno' en lugar de ensamblar el puntaje a partir de fragmentos de texto."
+              : "Accessibility improvement to the quality score ring: the QualityRing container now has role='img' and an aria-label with the score and qualitative label, so screen readers announce '82% — Good' instead of piecing the score together from text fragments."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.6 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
