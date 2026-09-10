@@ -4,6 +4,27 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.4.7 — 2026-09-10
+
+**Three new evergreen guides + quality ring accessibility fix.** This week's update adds AI prompts for software developers, negative prompting, and AI prompts for content creators to the SEO content library. The product improvement adds `role="img"` and an `aria-label` to the QualityRing container in ScoreCard: previously the SVG was `aria-hidden` but the overlaid score text had no grouping or accessible label, so screen readers had to assemble the score from disconnected text fragments. Now they announce it as a single, complete description.
+
+### Added
+- **New guide: AI prompts for software developers** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-developers`) — where AI genuinely saves developer time (code review, PR descriptions, debugging, documentation, explaining unfamiliar code), what AI cannot reliably do in development and what to verify, and two templates: a structured code review prompt and a PR description generator.
+- **New guide: Negative prompting** (`lib/seo/content/guides.ts`, slug `negative-prompting`) — why negative constraints matter, the most useful constraint categories (format, tone, content scope, length, output type), how to write constraints that actually stick (specificity, position, pairing with positives, limiting count), and two templates: a constrained rewrite prompt and an email with strict format constraints.
+- **New guide: AI prompts for content creators** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-content-creators`) — where AI fits in a content workflow (ideation, scripting, repurposing, SEO support, first drafts), how to preserve your voice when using AI, the content types where AI saves the most production time, and two templates: a video script outline and a content repurposing prompt that outputs LinkedIn, Twitter/X thread, and email newsletter formats simultaneously.
+
+### Changed
+- **Quality ring `role="img"` and `aria-label` added** (`components/results/ScoreCard.tsx`) — the `QualityRing` container `div` now has `role="img"` and `aria-label="{score}% — {qualLabel}"`, and the overlaid text `div` is marked `aria-hidden`. Previously, assistive technology had to parse the score, quality label text, and qualitative label from separate, unlabelled elements. Now screen readers announce the ring as a single semantic image with a complete description.
+- Version bumped to `v1.4.7` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` (Vitest) — all suites pass, including version-sync and changelog-page parity checks
+- `npm run build` — not run (requires env vars for Firebase/Groq); no build-breaking changes introduced
+
+---
+
 ## v1.4.6 — 2026-09-03
 
 **Three new evergreen guides + feedback input accessibility fix.** This week's update adds AI prompts for legal teams, AI prompts for finance teams, and a context engineering guide to the SEO content library. The product improvement adds an `aria-label` to the feedback text input in the results panel: the input previously had only a `placeholder` attribute, which is not treated as an accessible label by screen readers.

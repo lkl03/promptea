@@ -67,7 +67,11 @@ function QualityRing({ score, label, qualLabel }: { score: number; label: string
   const dashOffset = ready ? targetOffset : circumference;
 
   return (
-    <div className="relative h-33 w-33 shrink-0">
+    <div
+      className="relative h-33 w-33 shrink-0"
+      role="img"
+      aria-label={`${clamped}% — ${qualLabel}`}
+    >
       <svg width={size} height={size} className="block" aria-hidden>
         <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="var(--line)" strokeWidth={stroke} />
         <circle
@@ -85,7 +89,7 @@ function QualityRing({ score, label, qualLabel }: { score: number; label: string
         />
       </svg>
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center" aria-hidden>
         <div className="font-title text-3xl font-semibold leading-none tabular-nums">{display}%</div>
         <div className="mt-1 text-xs text-ink-muted">{label}</div>
         <div className={["mt-0.5 text-[11px] font-medium", ringColorClass(clamped)].join(" ")}>{qualLabel}</div>

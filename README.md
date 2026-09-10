@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.4.6 (2026-09-03)
+## Latest update — v1.4.7 (2026-09-10)
 
-Three new evergreen guides in the SEO content library: **AI prompts for legal teams** (contract clause drafting and targeted contract review templates), **AI prompts for finance teams** (earnings call structured summary and variance commentary draft templates), and **Context engineering** (how to structure AI inputs for reliable outputs — ordering, term definitions, negative constraints, and multi-document synthesis templates). Also ships a small accessibility improvement: the optional reason text input in the post-result feedback bar now has an `aria-label` (it previously had only a `placeholder`, which screen readers do not announce as a label). See the [changelog](./CHANGELOG.md) for full details. Changes are in the [weekly update PR](https://github.com/lkl03/promptea/pulls).
+Three new evergreen guides in the SEO content library: **AI prompts for software developers** (code review and PR description templates), **Negative prompting** (how to use negative constraints effectively — format, tone, scope, and length constraints with templates), and **AI prompts for content creators** (video script outline and content repurposing prompt for YouTubers, bloggers, and social media creators). Also ships a small accessibility improvement: the quality score ring now has `role="img"` and an `aria-label` so screen readers announce the score as a single complete description rather than piecing it together from separate text elements. See the [changelog](./CHANGELOG.md) for full details. Changes are in the [weekly update PR](https://github.com/lkl03/promptea/pulls).
 
-_Previous update: v1.4.5 (2026-08-31) — Three new evergreen guides: AI prompts for customer support, Structured output prompting, and AI prompts for HR and recruiting. Also shipped: duplicate slug fix for the "How to write better prompts for Claude" guide._
+_Previous update: v1.4.6 (2026-09-03) — Three new evergreen guides: AI prompts for legal teams, AI prompts for finance teams, and Context engineering. Also shipped: `aria-label` on the feedback bar reason input._
 
 ## How it works
 

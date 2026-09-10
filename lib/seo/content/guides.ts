@@ -5961,6 +5961,460 @@ Reglas:
       },
     ],
   },
+  {
+    slug: "ai-prompts-for-developers",
+    title: {
+      en: "AI prompts for software developers",
+      es: "Prompts de IA para desarrolladores de software",
+    },
+    description: {
+      en: "Practical AI prompts for software engineers: code review, PR descriptions, debugging, documentation, and architecture decisions.",
+      es: "Prompts de IA prácticos para ingenieros de software: revisión de código, descripciones de PRs, debugging, documentación y decisiones de arquitectura.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI genuinely saves developer time", es: "Dónde la IA realmente ahorra tiempo a los desarrolladores" },
+        bullets: {
+          en: [
+            "Code review — catching logic errors, naming issues, missing edge cases, and security concerns in a draft before it reaches a human reviewer.",
+            "PR descriptions — turning a diff into a clear, structured summary that reviewers can scan in under a minute.",
+            "Debugging — reasoning through an error message with the relevant code to narrow down root cause before you start changing things.",
+            "Documentation — converting a function or module into inline docs, a README section, or an API reference from the actual code.",
+            "Explaining unfamiliar code — understanding a legacy module, a third-party library, or a codebase you just inherited.",
+          ],
+          es: [
+            "Revisión de código — detectar errores lógicos, nombres confusos, casos límite faltantes y problemas de seguridad en un borrador antes de que llegue a un revisor humano.",
+            "Descripciones de PRs — convertir un diff en un resumen claro y estructurado que los revisores puedan escanear en menos de un minuto.",
+            "Debugging — razonar sobre un mensaje de error con el código relevante para acotar la causa raíz antes de empezar a cambiar cosas.",
+            "Documentación — convertir una función o módulo en docs inline, una sección de README o una referencia de API a partir del código real.",
+            "Explicar código desconocido — entender un módulo legacy, una biblioteca de terceros o un codebase que acabás de heredar.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What AI cannot reliably do in development", es: "Qué no puede hacer la IA de forma confiable en desarrollo" },
+        bullets: {
+          en: [
+            "Guarantee correctness — AI-generated code must be read, tested, and reviewed like any other code. It can introduce subtle bugs.",
+            "Know your codebase — without context about your architecture, conventions, and constraints, suggestions may not fit.",
+            "Replace a code review — AI misses project-specific standards, team agreements, and the broader context a human reviewer brings.",
+            "Debug without the right code — the more relevant code and error context you provide, the better the diagnosis; vague snippets get vague answers.",
+          ],
+          es: [
+            "Garantizar corrección — el código generado por IA debe ser leído, testeado y revisado como cualquier otro código. Puede introducir bugs sutiles.",
+            "Conocer tu codebase — sin contexto sobre tu arquitectura, convenciones y restricciones, las sugerencias pueden no encajar.",
+            "Reemplazar una code review — la IA no conoce los estándares del proyecto, los acuerdos del equipo ni el contexto más amplio que aporta un revisor humano.",
+            "Debuggear sin el código correcto — cuanto más código relevante y contexto de error proporcionés, mejor es el diagnóstico; snippets vagos dan respuestas vagas.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to get useful output for code tasks", es: "Cómo obtener output útil en tareas de código" },
+        bullets: {
+          en: [
+            "Include the actual code, not a description of it — paste the relevant function, file, or diff rather than describing what it does.",
+            "State the language, framework, and version when they matter — 'TypeScript with React 19' changes what patterns are appropriate.",
+            "Specify what you want, not what you don't — 'write a unit test for this function' is clearer than 'help me with testing'.",
+            "For code review, list what to focus on — security, performance, readability, edge cases — so the model prioritizes.",
+            "For debugging, include the full error message and the exact line it points to, not a paraphrase.",
+          ],
+          es: [
+            "Incluí el código real, no una descripción del mismo — pegá la función, el archivo o el diff relevante en lugar de describir qué hace.",
+            "Indicá el lenguaje, framework y versión cuando importan — 'TypeScript con React 19' cambia qué patrones son apropiados.",
+            "Especificá lo que querés, no lo que no querés — 'escribí un unit test para esta función' es más claro que 'ayudame con testing'.",
+            "Para code review, listá en qué enfocarse — seguridad, performance, legibilidad, casos límite — para que el modelo priorice.",
+            "Para debugging, incluí el mensaje de error completo y la línea exacta a la que apunta, no una paráfrasis.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Code review prompt", es: "Prompt de code review" },
+        purpose: "code",
+        target: "claude",
+        prompt: {
+          en: `You are a senior software engineer doing a code review. Review the code below and give feedback in three sections:
+
+**Correctness and logic** — bugs, off-by-one errors, null/undefined handling, edge cases.
+**Security** — injection risks, exposed secrets, insecure defaults, trust-boundary issues.
+**Clarity and maintainability** — naming, unnecessary complexity, missing comments where the code is non-obvious.
+
+For each issue: state what it is, why it matters, and what the fix looks like. Skip sections where there is nothing to flag.
+
+Language/framework: [e.g. TypeScript / Next.js 15]
+Context: [e.g. This is a server action that handles user-submitted file uploads]
+
+\`\`\`
+[Paste the code here]
+\`\`\``,
+          es: `Sos un ingeniero de software senior haciendo una revisión de código. Revisá el código de abajo y dá feedback en tres secciones:
+
+**Corrección y lógica** — bugs, errores de rango, manejo de null/undefined, casos límite.
+**Seguridad** — riesgos de inyección, secretos expuestos, defaults inseguros, problemas de límites de confianza.
+**Claridad y mantenibilidad** — nombres, complejidad innecesaria, comentarios faltantes donde el código no es obvio.
+
+Para cada problema: indicá qué es, por qué importa y cómo se ve el fix. Saltá las secciones donde no hay nada que señalar.
+
+Lenguaje/framework: [ej. TypeScript / Next.js 15]
+Contexto: [ej. Este es un server action que maneja uploads de archivos enviados por usuarios]
+
+\`\`\`
+[Pegá el código acá]
+\`\`\``,
+        },
+      },
+      {
+        title: { en: "PR description generator", es: "Generador de descripción de PR" },
+        purpose: "code",
+        target: "gpt",
+        prompt: {
+          en: `Write a clear pull request description from the diff and context below.
+
+Structure it as:
+**What this PR does** — 2-3 sentences, plain language, no jargon.
+**Why** — the problem it solves or the requirement it addresses.
+**How to test** — the specific steps a reviewer should take to verify it works.
+**Notes** — anything the reviewer needs to know (breaking changes, follow-up tasks, known limitations).
+
+Context: [e.g. Fixes a bug where unauthenticated users could access draft posts]
+Diff or summary of changes:
+[Paste the diff or a description of what was changed]`,
+          es: `Escribí una descripción clara de pull request a partir del diff y el contexto de abajo.
+
+Estructuralo así:
+**Qué hace este PR** — 2-3 oraciones, lenguaje simple, sin jerga.
+**Por qué** — el problema que resuelve o el requerimiento que aborda.
+**Cómo testear** — los pasos específicos que un revisor debería seguir para verificar que funciona.
+**Notas** — cualquier cosa que el revisor necesite saber (breaking changes, tareas de seguimiento, limitaciones conocidas).
+
+Contexto: [ej. Corrige un bug donde usuarios no autenticados podían acceder a posts en borrador]
+Diff o resumen de cambios:
+[Pegá el diff o una descripción de qué cambió]`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Should I use AI for code review instead of a human reviewer?", es: "¿Debería usar IA para code review en lugar de un revisor humano?" },
+        a: {
+          en: "No — AI code review and human code review catch different things, and the two work best together. AI is fast at spotting common patterns: null handling, off-by-one errors, obvious security anti-patterns, inconsistent naming. Human reviewers catch things AI consistently misses: whether this change fits the team's architecture direction, whether the abstraction is the right one, whether a test is testing what the author thinks it is, and whether the change makes the system harder to understand for the team that will maintain it. Use AI as a pre-review step to clean up the obvious issues before a human reviewer sees the code.",
+          es: "No — la code review por IA y la revisión humana detectan cosas distintas, y ambas funcionan mejor juntas. La IA es rápida detectando patrones comunes: manejo de null, errores de rango, anti-patrones de seguridad obvios, nombres inconsistentes. Los revisores humanos detectan cosas que la IA consistentemente no capta: si este cambio encaja con la dirección de arquitectura del equipo, si la abstracción es la correcta, si un test está testeando lo que el autor cree que testa, y si el cambio hace el sistema más difícil de entender para el equipo que lo va a mantener. Usá la IA como paso previo a la revisión para limpiar los problemas obvios antes de que un revisor humano vea el código.",
+        },
+      },
+      {
+        q: { en: "How much code context should I paste into the prompt?", es: "¿Cuánto contexto de código debería pegar en el prompt?" },
+        a: {
+          en: "Enough for the model to understand what the code is doing without guessing, but not the entire codebase. For a bug or review, the relevant function plus any types or interfaces it depends on is usually sufficient. For a larger module, a summary of what it does plus the specific section you want reviewed is better than pasting everything. The key mistake is the opposite: pasting a function body without the types it uses, the error message without the relevant code, or a vague description instead of the actual code. AI diagnostic quality is proportional to the quality of the input.",
+          es: "Suficiente para que el modelo entienda qué hace el código sin adivinar, pero no todo el codebase. Para un bug o una revisión, la función relevante más los tipos o interfaces de los que depende generalmente es suficiente. Para un módulo más grande, un resumen de qué hace más la sección específica que querés revisar es mejor que pegar todo. El error clave es el opuesto: pegar el cuerpo de una función sin los tipos que usa, el mensaje de error sin el código relevante, o una descripción vaga en lugar del código real. La calidad del diagnóstico de la IA es proporcional a la calidad del input.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "negative-prompting",
+    title: {
+      en: "Negative prompting: how to tell AI what not to do",
+      es: "Prompting negativo: cómo decirle a la IA qué no hacer",
+    },
+    description: {
+      en: "A practical guide to using negative constraints in AI prompts — what to exclude, what to avoid, and how to set boundaries that actually stick.",
+      es: "Una guía práctica para usar restricciones negativas en prompts de IA — qué excluir, qué evitar y cómo establecer límites que realmente funcionen.",
+    },
+    sections: [
+      {
+        heading: { en: "Why negative constraints matter", es: "Por qué importan las restricciones negativas" },
+        bullets: {
+          en: [
+            "AI models default to completeness — without constraints, they include caveats, disclaimers, alternatives, and elaborations that may not be needed.",
+            "Some output problems are easier to describe as what you don't want than what you do — 'no bullet points' is clearer than describing the prose format you want.",
+            "Negative constraints prevent common defaults: filler phrases, generic advice, unnecessary hedging, repetition, overly formal tone.",
+            "They work best alongside positive instructions — 'write concisely' plus 'no filler phrases' outperforms either alone.",
+          ],
+          es: [
+            "Los modelos de IA apuntan a la exhaustividad por defecto — sin restricciones, incluyen advertencias, aclaraciones, alternativas y elaboraciones que pueden no ser necesarias.",
+            "Algunos problemas de output son más fáciles de describir como lo que no querés que como lo que querés — 'sin bullet points' es más claro que describir el formato en prosa que deseás.",
+            "Las restricciones negativas previenen defaults comunes: frases de relleno, consejos genéricos, hedging innecesario, repetición, tono excesivamente formal.",
+            "Funcionan mejor junto con instrucciones positivas — 'escribí de forma concisa' más 'sin frases de relleno' supera a cualquiera de las dos por separado.",
+          ],
+        },
+      },
+      {
+        heading: { en: "The most useful negative constraints", es: "Las restricciones negativas más útiles" },
+        bullets: {
+          en: [
+            "Format: 'No bullet points.', 'No headers.', 'No numbered lists.', 'No markdown formatting.' — for output that needs to be pasted into another system.",
+            "Tone and style: 'No corporate filler.', 'No phrases like \"certainly\" or \"of course\".', 'No excessive hedging.', 'No apologies or preambles.'",
+            "Content scope: 'Do not include general background.', 'Do not repeat information I gave you.', 'Do not add caveats unless the caveat is essential.'",
+            "Length: 'No padding to fill space.', 'Stop when the task is complete — do not summarize or add a closing remark.'",
+            "Output type: 'Do not write code.', 'Do not suggest alternatives — implement what I described.', 'Do not ask clarifying questions — make a reasonable assumption and state it.'",
+          ],
+          es: [
+            "Formato: 'Sin bullet points.', 'Sin encabezados.', 'Sin listas numeradas.', 'Sin formato markdown.' — para output que necesite pegarse en otro sistema.",
+            "Tono y estilo: 'Sin relleno corporativo.', 'Sin frases como \"claro que sí\" o \"por supuesto\".', 'Sin hedging excesivo.', 'Sin disculpas ni preámbulos.'",
+            "Alcance del contenido: 'No incluyas contexto general.', 'No repitas información que te proporcioné.', 'No agregues advertencias a menos que sean esenciales.'",
+            "Longitud: 'Sin relleno para ocupar espacio.', 'Detenete cuando la tarea esté completa — no resumas ni agregues un comentario de cierre.'",
+            "Tipo de output: 'No escribas código.', 'No sugieras alternativas — implementá lo que describí.', 'No hagas preguntas de aclaración — asumí algo razonable y declaralo.'",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to write negative constraints that work", es: "Cómo escribir restricciones negativas que funcionen" },
+        bullets: {
+          en: [
+            "Be specific — 'no fluff' is vague; 'no closing summary paragraph' is actionable.",
+            "State the constraint before the task, not after — models weight earlier instructions more heavily.",
+            "Pair negatives with positives — 'do not write in bullet points; write in short, direct prose instead' gives the model a clear alternative.",
+            "Limit the number of constraints — more than five or six prohibitions compete for attention and some get dropped. Prioritize the ones that matter most.",
+            "Test and iterate — if a constraint is being ignored, restate it more specifically or move it earlier in the prompt.",
+          ],
+          es: [
+            "Sé específico/a — 'sin relleno' es vago; 'sin párrafo de resumen al final' es accionable.",
+            "Declará la restricción antes de la tarea, no después — los modelos ponderan más las instrucciones anteriores.",
+            "Combiná negativos con positivos — 'no escribas en bullet points; escribí en prosa corta y directa' le da al modelo una alternativa clara.",
+            "Limitá la cantidad de restricciones — más de cinco o seis prohibiciones compiten por atención y algunas se omiten. Priorizá las que más importan.",
+            "Testeá e iterá — si una restricción está siendo ignorada, reformulala de forma más específica o movela más arriba en el prompt.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Constrained rewrite prompt", es: "Prompt de reescritura con restricciones" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Rewrite the text below. Follow these constraints exactly:
+
+Do not:
+- Add bullet points, headers, or lists
+- Include a closing summary or sign-off
+- Add caveats or qualifications unless they are in the original
+- Use phrases like "certainly", "of course", "great question", or "I'd be happy to"
+- Pad the text to be longer than necessary
+
+Do:
+- Keep the same core information and tone
+- Make sentences direct and specific
+- Stop when the content is complete
+
+Text to rewrite:
+[Paste your text here]`,
+          es: `Reescribí el texto de abajo. Seguí estas restricciones exactamente:
+
+No:
+- Agregar bullet points, encabezados o listas
+- Incluir un resumen de cierre o despedida
+- Agregar advertencias o calificaciones que no están en el original
+- Usar frases como "claro", "por supuesto", "excelente pregunta" o "con gusto"
+- Rellenar el texto para que sea más largo de lo necesario
+
+Sí:
+- Mantener la misma información central y tono
+- Hacer las oraciones directas y específicas
+- Detenerte cuando el contenido esté completo
+
+Texto a reescribir:
+[Pegá tu texto acá]`,
+        },
+      },
+      {
+        title: { en: "Email with strict format constraints", es: "Email con restricciones de formato estrictas" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a professional email based on the details below.
+
+Strict constraints:
+- No more than 150 words
+- No bullet points or lists — prose only
+- No subject line (I will add it myself)
+- No greeting phrase like "I hope this finds you well" or similar filler
+- No closing pleasantries beyond a single sign-off line
+- Do not ask clarifying questions — write the best version from what I give you
+
+Recipient and purpose: [e.g. Follow-up to a client after a proposal was sent last week]
+Key points to include: [e.g. Ask for their timeline, confirm they received the PDF, offer a 20-minute call]
+Tone: [e.g. Professional and direct, not formal]`,
+          es: `Escribí un email profesional basado en los detalles de abajo.
+
+Restricciones estrictas:
+- No más de 150 palabras
+- Sin bullet points ni listas — solo prosa
+- Sin línea de asunto (la voy a agregar yo)
+- Sin frases de saludo como "espero que estés bien" o similar relleno
+- Sin frases de cierre más allá de una sola línea de despedida
+- No hagas preguntas de aclaración — escribí la mejor versión con lo que te doy
+
+Destinatario y propósito: [ej. Seguimiento a un cliente después de enviar una propuesta la semana pasada]
+Puntos clave a incluir: [ej. Preguntar por sus tiempos, confirmar que recibió el PDF, ofrecer una llamada de 20 minutos]
+Tono: [ej. Profesional y directo, no formal]`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Do negative constraints actually work, or does the model ignore them?", es: "¿Las restricciones negativas realmente funcionan, o el modelo las ignora?" },
+        a: {
+          en: "They work — but their reliability depends on how specific they are and where they appear in the prompt. A vague constraint like 'be concise' is easy for the model to interpret loosely; a specific one like 'no paragraph longer than two sentences' is harder to violate accidentally. Position matters too: constraints stated early in the prompt, before the task description, are followed more consistently than constraints buried at the end. If a model is repeatedly ignoring a constraint, the most effective fix is to make the constraint more specific and move it earlier.",
+          es: "Funcionan — pero su confiabilidad depende de qué tan específicas son y dónde aparecen en el prompt. Una restricción vaga como 'sé conciso' es fácil de interpretar libremente para el modelo; una específica como 'ningún párrafo de más de dos oraciones' es más difícil de violar accidentalmente. La posición también importa: las restricciones declaradas al principio del prompt, antes de la descripción de la tarea, se siguen de forma más consistente que las que aparecen al final. Si un modelo está ignorando repetidamente una restricción, el fix más efectivo es hacerla más específica y moverla más arriba.",
+        },
+      },
+      {
+        q: { en: "Is there such a thing as too many negative constraints?", es: "¿Existe algo así como demasiadas restricciones negativas?" },
+        a: {
+          en: "Yes. When a prompt contains more than five or six prohibitions, the model has to track a long list of things to avoid while also completing the main task, and some constraints get dropped — usually the later ones, or the ones that are hardest to follow simultaneously. If you find yourself writing many constraints, treat it as a signal: either the task description itself needs to be clearer, or you are describing the output format in two directions at once (do this, not that) where a single positive description would be tighter. Reserve negative constraints for things that are genuinely easier to state as prohibitions.",
+          es: "Sí. Cuando un prompt contiene más de cinco o seis prohibiciones, el modelo tiene que rastrear una lista larga de cosas que evitar mientras también completa la tarea principal, y algunas restricciones se omiten — generalmente las últimas, o las más difíciles de seguir simultáneamente. Si te encontrás escribiendo muchas restricciones, tomalo como una señal: o la descripción de la tarea en sí necesita ser más clara, o estás describiendo el formato de output en dos direcciones a la vez (hacé esto, no aquello) donde una sola descripción positiva sería más precisa. Reservá las restricciones negativas para cosas que genuinamente son más fáciles de declarar como prohibiciones.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-content-creators",
+    title: {
+      en: "AI prompts for content creators",
+      es: "Prompts de IA para creadores de contenido",
+    },
+    description: {
+      en: "AI prompts for YouTubers, bloggers, and social media creators: ideation, scripting, repurposing, and publishing workflows that save real production time.",
+      es: "Prompts de IA para YouTubers, bloggers y creadores de redes sociales: ideación, guiones, reutilización de contenido y flujos de publicación que ahorran tiempo real de producción.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI fits in a content workflow", es: "Dónde encaja la IA en un flujo de contenido" },
+        bullets: {
+          en: [
+            "Ideation — generating angle variations, alternative titles, and related topic clusters from a single seed idea.",
+            "Scripting and outlines — turning a topic and key points into a structured script, talking points, or section outline.",
+            "Repurposing — converting a video transcript, podcast episode, or long-form article into shorter formats: social posts, email newsletters, short clips, thread summaries.",
+            "SEO support — generating keyword-rich titles, meta descriptions, and tag suggestions from your existing content.",
+            "First drafts — producing a working draft of a blog post, video description, or community post from a rough set of notes.",
+          ],
+          es: [
+            "Ideación — generar variaciones de ángulos, títulos alternativos y clusters de temas relacionados a partir de una idea semilla.",
+            "Guiones y esquemas — convertir un tema y puntos clave en un guión estructurado, talking points o esquema de secciones.",
+            "Reutilización de contenido — convertir una transcripción de video, episodio de podcast o artículo largo en formatos más cortos: posts de redes sociales, newsletters, clips cortos, resúmenes en hilo.",
+            "Soporte SEO — generar títulos ricos en keywords, meta descripciones y sugerencias de tags a partir de tu contenido existente.",
+            "Primeros borradores — producir un borrador funcional de un blog post, descripción de video o post de comunidad a partir de un conjunto de notas en bruto.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to preserve your voice when using AI", es: "Cómo preservar tu voz al usar IA" },
+        bullets: {
+          en: [
+            "Provide examples — paste 1-2 sentences from your existing content and ask AI to match that style rather than describing it abstractly.",
+            "Describe what makes your voice distinctive — direct, casual, technical, narrative, irreverent, warm — and give the model something concrete to anchor to.",
+            "Edit AI output as a draft, not a finished product — the goal is to get to a working first draft faster, not to publish without review.",
+            "Use AI for structure and variations, your own judgment for the angle — AI can generate 10 title options, but you know which one fits your audience.",
+            "Flag what to keep verbatim — if there is a phrase, running gag, or format your audience expects, tell the model explicitly to preserve it.",
+          ],
+          es: [
+            "Proporcioná ejemplos — pegá 1-2 oraciones de tu contenido existente y pedile a la IA que iguale ese estilo en lugar de describirlo de forma abstracta.",
+            "Describí qué hace tu voz distintiva — directa, casual, técnica, narrativa, irreverente, cálida — y dale al modelo algo concreto a lo que anclarse.",
+            "Editá el output de la IA como un borrador, no como un producto terminado — el objetivo es llegar a un primer borrador funcional más rápido, no publicar sin revisión.",
+            "Usá la IA para estructura y variaciones, tu propio criterio para el ángulo — la IA puede generar 10 opciones de título, pero vos sabés cuál encaja con tu audiencia.",
+            "Indicá qué conservar textualmente — si hay una frase, un running gag o un formato que tu audiencia espera, decíle al modelo explícitamente que lo preserve.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Content types where AI saves the most time", es: "Tipos de contenido donde la IA ahorra más tiempo" },
+        bullets: {
+          en: [
+            "Video descriptions and timestamps — converting a transcript or rough outline into a structured description with linked sections.",
+            "Social captions — adapting the same content hook for Twitter/X, LinkedIn, and Instagram with the right length and tone for each.",
+            "Email subject line variations — generating 8-10 alternatives and asking you to pick the strongest.",
+            "Thumbnail and title testing — generating three to five title/hook variants to A/B test before publishing.",
+            "Community Q&A responses — drafting replies to frequent questions using your established voice and position.",
+          ],
+          es: [
+            "Descripciones de video y timestamps — convertir una transcripción o esquema en bruto en una descripción estructurada con secciones vinculadas.",
+            "Captions para redes sociales — adaptar el mismo hook de contenido para Twitter/X, LinkedIn e Instagram con la longitud y el tono correctos para cada una.",
+            "Variaciones de líneas de asunto de email — generar 8-10 alternativas y pedirte que elijas la más fuerte.",
+            "Testing de miniaturas y títulos — generar tres a cinco variantes de título/hook para hacer A/B test antes de publicar.",
+            "Respuestas a preguntas de la comunidad — redactar respuestas a preguntas frecuentes usando tu voz y posición establecidas.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Video script outline", es: "Esquema de guión de video" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a structured outline for a YouTube video on the topic below.
+
+Include:
+- Hook (first 30 seconds): what problem or question opens the video
+- Intro (1-2 minutes): what you will cover and why the viewer should stay
+- Main sections (3-5): each with a heading, the 2-3 key points to cover, and a transition to the next
+- Conclusion: what the viewer should do or think differently now, and the call to action
+
+Tone: [e.g. Informative but conversational, like talking to a knowledgeable friend]
+Target audience: [e.g. Early-career product designers who use Figma daily]
+Topic: [e.g. 5 Figma shortcuts that save 30 minutes a week]
+Video length target: [e.g. 8-12 minutes]`,
+          es: `Escribí un esquema estructurado para un video de YouTube sobre el tema de abajo.
+
+Incluí:
+- Hook (primeros 30 segundos): qué problema o pregunta abre el video
+- Intro (1-2 minutos): qué vas a cubrir y por qué el espectador debería quedarse
+- Secciones principales (3-5): cada una con un título, los 2-3 puntos clave a cubrir y una transición a la siguiente
+- Conclusión: qué debería hacer o pensar diferente el espectador ahora, y el llamado a la acción
+
+Tono: [ej. Informativo pero conversacional, como hablarle a un amigo con conocimiento]
+Audiencia objetivo: [ej. Diseñadores de producto en sus primeros años de carrera que usan Figma a diario]
+Tema: [ej. 5 atajos de Figma que ahorran 30 minutos por semana]
+Duración objetivo del video: [ej. 8-12 minutos]`,
+        },
+      },
+      {
+        title: { en: "Content repurposing prompt", es: "Prompt de reutilización de contenido" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Repurpose the content below into three formats. Keep the core ideas and my voice — do not add information that is not in the original.
+
+Format 1 — LinkedIn post (200-250 words): professional tone, leads with the most interesting insight, ends with a question or call to action.
+Format 2 — Twitter/X thread (5-7 tweets): each tweet stands alone, hook in tweet 1, key point per tweet, brief CTA in the last.
+Format 3 — Email newsletter section (150-200 words): conversational, reads like a personal note, actionable takeaway at the end.
+
+My voice: [e.g. Direct, practical, no corporate language — I write like I talk]
+
+Original content:
+[Paste your article, transcript section, or notes here]`,
+          es: `Reutilizá el contenido de abajo en tres formatos. Conservá las ideas centrales y mi voz — no agregues información que no esté en el original.
+
+Formato 1 — Post de LinkedIn (200-250 palabras): tono profesional, empezá con el insight más interesante, terminá con una pregunta o llamado a la acción.
+Formato 2 — Hilo de Twitter/X (5-7 tweets): cada tweet funciona solo, hook en el tweet 1, punto clave por tweet, CTA breve en el último.
+Formato 3 — Sección de newsletter de email (150-200 palabras): conversacional, que se lea como una nota personal, takeaway accionable al final.
+
+Mi voz: [ej. Directa, práctica, sin lenguaje corporativo — escribo como hablo]
+
+Contenido original:
+[Pegá tu artículo, sección de transcripción o notas acá]`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Will AI-generated content hurt my SEO or get flagged as spam?", es: "¿El contenido generado por IA perjudicará mi SEO o será marcado como spam?" },
+        a: {
+          en: "Search engines rank content based on quality, relevance, and usefulness — not whether it was drafted with AI assistance. Content that is accurate, genuinely helpful, and well-edited performs well regardless of how the first draft was produced. The risks are different: thin content that adds no value, content that is factually wrong, and content that reads like a generic AI template with nothing specific to say — those perform poorly, whether AI was involved or not. Use AI to accelerate production of content that is worth producing, and edit the output until it reflects genuine expertise and a clear point of view.",
+          es: "Los motores de búsqueda clasifican el contenido basándose en calidad, relevancia y utilidad — no en si fue redactado con asistencia de IA. El contenido que es preciso, genuinamente útil y bien editado funciona bien independientemente de cómo se produjo el primer borrador. Los riesgos son diferentes: el contenido delgado que no agrega valor, el contenido que es factualmente incorrecto y el contenido que se lee como una plantilla genérica de IA sin nada específico que decir — esos funcionan mal, independientemente de si participó la IA. Usá la IA para acelerar la producción de contenido que vale la pena producir, y editá el output hasta que refleje experiencia genuina y un punto de vista claro.",
+        },
+      },
+      {
+        q: { en: "How do I use AI without losing what makes my content different?", es: "¿Cómo uso la IA sin perder lo que hace diferente a mi contenido?" },
+        a: {
+          en: "The answer is in the inputs, not the outputs. If you give AI a generic topic and ask for a video script, you get a generic video script. If you give it your perspective, your audience, an example of your existing style, and the specific angle you want to take, you get a draft that reflects your thinking — which you then edit to tighten. The creators who lose their voice to AI are the ones who skip the input work and publish the output with minimal changes. The ones who use it well treat AI as a production accelerator, not a replacement for having something original to say.",
+          es: "La respuesta está en los inputs, no en los outputs. Si le das a la IA un tema genérico y pedís un guión de video, obtenés un guión genérico. Si le das tu perspectiva, tu audiencia, un ejemplo de tu estilo existente y el ángulo específico que querés tomar, obtenés un borrador que refleja tu pensamiento — que luego editás para afinarlo. Los creadores que pierden su voz ante la IA son los que omiten el trabajo de input y publican el output con cambios mínimos. Los que la usan bien tratan la IA como un acelerador de producción, no como un reemplazo de tener algo original que decir.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
