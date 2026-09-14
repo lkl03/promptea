@@ -4,6 +4,48 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.5.0 — 2026-09-14
+
+**AI Daily goes twice daily, Promptea Weekly foundation, and newsletter subscriptions.** AI Daily can now publish two stories per day — a morning edition and the existing evening edition — with cross-run deduplication and expanded editorial categories. Promptea Weekly adds a curated weekly digest page at `/[lang]/weekly` with a newsletter subscription infrastructure built on Resend, ready for email delivery in a future release.
+
+### Added
+- **Morning edition for AI Daily** (`lib/domain.ts`, `lib/blog/dates.ts`) — a new `daily-morning` edition runs alongside the existing `daily` slot. Morning stories use the `ai-morning_` document id prefix, so both editions coexist on the same day without collision. The freshness guard treats morning editions identically to daily: same-day required, backdate eligible.
+- **Expanded editorial categories** (`lib/domain.ts`) — five new categories for broader coverage: `open-source`, `agents`, `benchmarks`, `business`, `energy`. Existing categories unchanged.
+- **Promptea Weekly preview page** (`/[lang]/weekly`) — a public, bilingual preview of the latest weekly newsletter edition, ISR-cached, with full SEO metadata. Degrades to an empty state with subscribe CTA when no edition exists.
+- **Newsletter subscription** (`POST /api/newsletter/subscribe`) — email collection with Zod validation, explicit consent checkbox, rate limiting (5/10min per IP), SHA-256 email hashing for duplicate detection. Emails are never logged, never appear in telemetry. Firestore collection `newsletter_subscribers`.
+- **Newsletter unsubscribe** (`GET /api/newsletter/unsubscribe?token=...`) — one-click unsubscribe returning a bilingual confirmation page. Token-based, no email in the URL.
+- **Newsletter data model** (`lib/newsletter/types.ts`) — Zod schemas for editions, stories, tools, subscribers, and the subscribe API contract.
+- **Newsletter generation** (`lib/newsletter/generate.ts`) — derives weekly digest content from the AI Daily archive. Ranks articles by importance, extracts tools/launches, and builds bilingual content. No independent fact claims — every story traces to a published AI Daily article.
+- **Newsletter email rendering** (`lib/newsletter/email.ts`) — produces email-safe HTML with inline styles for delivery through Resend. Delivery gated behind `NEWSLETTER_DELIVERY_ENABLED` (default `false`).
+- **Subscribe CTA** (`components/newsletter/SubscribeCTA.tsx`) — lightweight inline subscription form placed on the AI Daily index, article pages, and the weekly preview page. No popups, no interstitials.
+- **Newsletter edition viewer** (`components/newsletter/WeeklyEditionView.tsx`) — renders hero, top stories, tools, editorial, and sponsor sections in Promptea's design language.
+- **Run log observability** (`lib/blog/server.ts`) — `recordRun` now stores `edition`, `slot` (morning/evening), and `deduplicatedAgainst` for cross-run auditing.
+
+### Changed
+- **Privacy page updated** for newsletter data: discloses what subscriber information is stored, how it is used, the email provider (Resend), and the unsubscribe mechanism. Both EN and ES.
+- **Footer** gains a "Weekly" / "Semanal" link to the newsletter preview.
+- **Sitemap** includes `/[lang]/weekly`.
+- Version bumped to `v1.5.0` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Intentionally NOT enabled
+- **Newsletter email delivery** is architecturally complete but disabled by default. `NEWSLETTER_DELIVERY_ENABLED` must be set to `true`, `promptea.me` must be verified in Resend, and `RESEND_API_KEY` must be configured in Vercel before emails will send.
+- **Advertising** (ads implementation deferred to v1.5.1). The existing ad scaffolding (`AdSlot`, gtag conversion tracking) is unchanged.
+
+### Environment variables (new)
+| Variable | Scope | Required | Purpose |
+| --- | --- | --- | --- |
+| `NEWSLETTER_DELIVERY_ENABLED` | server | no | Gate for email sending. Default `false`. |
+| `RESEND_API_KEY` | server | for delivery | Resend API key. Not needed until delivery is enabled. |
+| `NEWSLETTER_FROM_ADDRESS` | server | for delivery | Sender address (default `Promptea Weekly <weekly@promptea.me>`). |
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` — all suites pass, including version-sync, newsletter schema, morning-edition, and subscribe-API tests
+- `npm run build` — not run locally (requires Firebase env vars); no build-breaking changes introduced
+
+---
+
 ## v1.4.7 — 2026-09-10
 
 **Three new evergreen guides + quality ring accessibility fix.** This week's update adds AI prompts for software developers, negative prompting, and AI prompts for content creators to the SEO content library. The product improvement adds `role="img"` and an `aria-label` to the QualityRing container in ScoreCard: previously the SVG was `aria-hidden` but the overlaid score text had no grouping or accessible label, so screen readers had to assemble the score from disconnected text fragments. Now they announce it as a single, complete description.

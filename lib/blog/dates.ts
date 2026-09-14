@@ -130,8 +130,9 @@ export function checkFreshness(
   if (delta === 0) return { ok: true, today, backdated: false, daysStale: 0 };
 
   // Weekly editions carry the date they were published; they cannot be backdated.
+  // Both daily slots (morning and main) follow the same freshness and backdate rules.
   const edition = o.edition ?? "daily";
-  if (edition !== "daily") return { ok: false, reason: "stale_event", today, daysStale: delta };
+  if (edition !== "daily" && edition !== "daily-morning") return { ok: false, reason: "stale_event", today, daysStale: delta };
 
   if (!o.allowBackdate) return { ok: false, reason: "stale_event", today, daysStale: delta };
   if (delta > MAX_BACKDATE_DAYS) {

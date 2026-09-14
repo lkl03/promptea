@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.4.7 (2026-09-10)
+## Latest update — v1.5.0 (2026-09-14)
 
-Three new evergreen guides in the SEO content library: **AI prompts for software developers** (code review and PR description templates), **Negative prompting** (how to use negative constraints effectively — format, tone, scope, and length constraints with templates), and **AI prompts for content creators** (video script outline and content repurposing prompt for YouTubers, bloggers, and social media creators). Also ships a small accessibility improvement: the quality score ring now has `role="img"` and an `aria-label` so screen readers announce the score as a single complete description rather than piecing it together from separate text elements. See the [changelog](./CHANGELOG.md) for full details. Changes are in the [weekly update PR](https://github.com/lkl03/promptea/pulls).
+**AI Daily goes twice daily + Promptea Weekly foundation.** AI Daily can now publish two verified stories per day — a morning edition and the existing evening edition — with cross-run deduplication and five new editorial categories (open-source, agents, benchmarks, business, energy). Promptea Weekly adds a curated weekly digest preview at `/[lang]/weekly` with newsletter subscription collection via Resend. Email delivery is architecturally complete but intentionally disabled until `promptea.me` is verified in Resend. See the [changelog](./CHANGELOG.md) for full details.
 
-_Previous update: v1.4.6 (2026-09-03) — Three new evergreen guides: AI prompts for legal teams, AI prompts for finance teams, and Context engineering. Also shipped: `aria-label` on the feedback bar reason input._
+_Previous update: v1.4.7 (2026-09-10) — Three new SEO guides (AI prompts for software developers, negative prompting, AI prompts for content creators) and a score-ring accessibility fix._
 
 ## How it works
 
@@ -96,8 +96,11 @@ npm run build      # production build (works offline — fonts are local)
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
+| `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to enable weekly newsletter email sending. Default `false`. Requires `RESEND_API_KEY` and `promptea.me` verified in Resend. |
+| `RESEND_API_KEY` | for newsletter delivery | Resend API key. Not needed until `NEWSLETTER_DELIVERY_ENABLED=true`. |
+| `NEWSLETTER_FROM_ADDRESS` | optional | Sender address for the newsletter (default `Promptea Weekly <weekly@promptea.me>`). |
 
-AI Daily adds no Firebase configuration of its own: it reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PROJECT_ID`, and `NEXT_PUBLIC_SITE_URL` for canonical, `hreflang`, sitemap, and feed URLs. `BLOG_PUBLISH_SECRET` is the only new variable.
+AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PROJECT_ID`, and `NEXT_PUBLIC_SITE_URL` for canonical, `hreflang`, sitemap, and feed URLs. `BLOG_PUBLISH_SECRET` is the only required variable for AI Daily publishing. Newsletter subscriptions are stored in Firestore using the same Firebase configuration.
 
 ## Architecture map
 

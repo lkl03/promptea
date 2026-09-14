@@ -48,6 +48,7 @@ import type { BlogFilterState } from "@/lib/blog/filters";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 import { getSiteUrl } from "@/lib/seo/site";
+import SubscribeCTA from "@/components/newsletter/SubscribeCTA";
 
 export const revalidate = 300;
 
@@ -414,6 +415,10 @@ export default async function BlogIndexPage({
       <p className="mt-10 border-t border-line pt-5 text-xs leading-relaxed text-ink-muted sm:hidden">
         {t.editorialNote}
       </p>
+
+      <div className="mt-10">
+        <SubscribeCTA lang={l} dict={dict.newsletter.subscribe} />
+      </div>
     </main>
   );
 }

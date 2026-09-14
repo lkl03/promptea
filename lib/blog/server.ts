@@ -423,12 +423,15 @@ export async function applyCorrection(input: {
 export async function recordRun(input: {
   runId: string;
   status: string;
+  edition?: string | null;
+  slot?: "morning" | "evening" | null;
   candidateCount?: number;
   selectedCategory?: string | null;
   selectedImportance?: string | null;
   sourceCount?: number;
   articleId?: string | null;
   errorCode?: string | null;
+  deduplicatedAgainst?: string | null;
 }): Promise<{ ok: true }> {
   const db = getAdminFirestore();
   const date = editorialDate();
@@ -441,12 +444,15 @@ export async function recordRun(input: {
         runId: input.runId,
         date,
         status: input.status,
+        edition: input.edition ?? null,
+        slot: input.slot ?? null,
         candidateCount: input.candidateCount ?? null,
         selectedCategory: input.selectedCategory ?? null,
         selectedImportance: input.selectedImportance ?? null,
         sourceCount: input.sourceCount ?? null,
         articleId: input.articleId ?? null,
         errorCode: input.errorCode ?? null,
+        deduplicatedAgainst: input.deduplicatedAgainst ?? null,
         completedAt: FieldValue.serverTimestamp(),
       },
       { merge: true }

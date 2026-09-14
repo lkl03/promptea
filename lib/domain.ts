@@ -291,7 +291,7 @@ export function isPubliclyVisible(status: unknown): status is PublicBlogStatus {
  * a range or a forward view, so "event date" for them simply means the day the
  * edition ran — they are not claiming a past event happened today.
  */
-export const BLOG_EDITIONS = ["daily", "weekly-recap", "week-ahead"] as const;
+export const BLOG_EDITIONS = ["daily", "daily-morning", "weekly-recap", "week-ahead"] as const;
 export type BlogEdition = (typeof BLOG_EDITIONS)[number];
 
 export function isBlogEdition(v: unknown): v is BlogEdition {
@@ -301,6 +301,7 @@ export function isBlogEdition(v: unknown): v is BlogEdition {
 /** Document-id and idempotency-key prefix per edition, so two editions can coexist on one date. */
 export const EDITION_KEY_PREFIX: Record<BlogEdition, string> = {
   daily: "ai-daily",
+  "daily-morning": "ai-morning",
   "weekly-recap": "ai-weekly",
   "week-ahead": "ai-ahead",
 };
@@ -318,6 +319,11 @@ export const BLOG_CATEGORIES = [
   "infrastructure",
   "security",
   "developer-tools",
+  "open-source",
+  "agents",
+  "benchmarks",
+  "business",
+  "energy",
   "digest",
   "other",
 ] as const;

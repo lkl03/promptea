@@ -226,6 +226,11 @@
       "infrastructure": "Infraestructura",
       "security": "Seguridad",
       "developer-tools": "Herramientas para devs",
+      "open-source": "Código abierto",
+      "agents": "Agentes",
+      "benchmarks": "Benchmarks",
+      "business": "Negocios",
+      "energy": "Energía",
       "digest": "Resumen del día",
       "other": "Otros"
     },
@@ -236,6 +241,7 @@
     },
     "edition": {
       "daily": "Diaria",
+      "daily-morning": "Mañana",
       "weekly-recap": "Resumen de la semana",
       "week-ahead": "La semana que viene"
     },
@@ -270,6 +276,38 @@
       "title": "IA al Día",
       "blurb": "Una noticia de IA verificada por día, con sus fuentes a la vista.",
       "cta": "Leer la edición de hoy"
+    }
+  },
+  "newsletter": {
+    "title": "Promptea Semanal",
+    "subtitle": "La semana en IA, curada desde nuestra cobertura diaria verificada.",
+    "editionLabel": "Edición",
+    "heroLabel": "La nota de la semana",
+    "topStoriesLabel": "Esta semana en IA",
+    "toolsLabel": "Herramientas y lanzamientos que quizás te perdiste",
+    "editorialLabel": "Algo para pensar",
+    "sponsorLabel": "Sponsor",
+    "readMore": "Leer la nota completa →",
+    "emptyTitle": "La primera edición se está preparando",
+    "empty": "Promptea Semanal es un resumen curado de las historias de IA más importantes de los últimos siete días. La primera edición está en camino.",
+    "subscribe": {
+      "heading": "Recibí Promptea Semanal en tu email",
+      "description": "Un email cada lunes — las mejores historias de IA de la semana, verificadas y resumidas.",
+      "emailPlaceholder": "tu@email.com",
+      "languageLabel": "Idioma preferido",
+      "consentLabel": "Quiero recibir el newsletter Promptea Semanal.",
+      "submit": "Suscribirme",
+      "submitting": "Suscribiendo…",
+      "success": "¡Ya estás suscripto! Esperá tu primera edición el lunes.",
+      "alreadySubscribed": "Ese email ya está suscripto.",
+      "invalidEmail": "Ingresá una dirección de email válida.",
+      "rateLimit": "Demasiados intentos. Intentá de nuevo más tarde.",
+      "error": "Algo salió mal. Intentá de nuevo."
+    },
+    "footer": {
+      "unsubscribe": "Desuscribirme",
+      "preferences": "Preferencias",
+      "privacy": "Privacidad"
     }
   }
 }

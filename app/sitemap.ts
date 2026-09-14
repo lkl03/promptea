@@ -68,6 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       `/${lang}/models`,
       `/${lang}/glossary`,
       `/${lang}/blog`,
+      `/${lang}/weekly`,
     ];
 
     for (const p of corePaths) {

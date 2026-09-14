@@ -83,11 +83,40 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
           </li>
         </ul>
 
+        <h2 className="text-lg font-medium mt-6">{isEs ? "Newsletter (Promptea Semanal)" : "Newsletter (Promptea Weekly)"}</h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            {isEs
+              ? "Si te suscribís al newsletter, guardamos tu dirección de email, tu preferencia de idioma y la fecha de suscripción."
+              : "If you subscribe to the newsletter, we store your email address, language preference, and subscription date."}
+          </li>
+          <li>
+            {isEs
+              ? "Tu email se usa exclusivamente para enviarte el newsletter semanal. No lo compartimos con terceros ni lo usamos para otros fines."
+              : "Your email is used exclusively to send you the weekly newsletter. We do not share it with third parties or use it for other purposes."}
+          </li>
+          <li>
+            {isEs
+              ? "Tu email nunca aparece en logs del servidor, en telemetría ni en analytics. Internamente almacenamos un hash criptográfico para detectar duplicados."
+              : "Your email never appears in server logs, telemetry, or analytics. Internally we store a cryptographic hash for duplicate detection."}
+          </li>
+          <li>
+            {isEs
+              ? "Podés desuscribirte en cualquier momento usando el enlace incluido en cada edición del newsletter."
+              : "You can unsubscribe at any time using the link included in every newsletter edition."}
+          </li>
+          <li>
+            {isEs
+              ? "El envío se realiza a través de Resend, nuestro proveedor de email. Consultá su política de privacidad en resend.com/legal/privacy-policy."
+              : "Delivery is handled by Resend, our email provider. See their privacy policy at resend.com/legal/privacy-policy."}
+          </li>
+        </ul>
+
         <h2 className="text-lg font-medium mt-6">{isEs ? "Retención" : "Retention"}</h2>
         <p>
           {isEs
-            ? "La telemetría se retiene por tiempo limitado con una política TTL (time-to-live) y luego se elimina automáticamente. El feedback general se conserva mientras sea útil para mejorar el producto."
-            : "Telemetry is retained for a limited time using a TTL (time-to-live) policy and then removed automatically. General feedback is kept for as long as it is useful for improving the product."}
+            ? "La telemetría se retiene por tiempo limitado con una política TTL (time-to-live) y luego se elimina automáticamente. El feedback general se conserva mientras sea útil para mejorar el producto. Los datos de suscripción al newsletter se conservan mientras tu suscripción esté activa; al desuscribirte, tu email se marca como inactivo."
+            : "Telemetry is retained for a limited time using a TTL (time-to-live) policy and then removed automatically. General feedback is kept for as long as it is useful for improving the product. Newsletter subscription data is kept while your subscription is active; upon unsubscribing, your email is marked inactive."}
         </p>
       </section>
     </main>

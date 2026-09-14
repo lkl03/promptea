@@ -28,6 +28,42 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.5.0 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.5.0</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 14-09-2026" : "Released: 2026-09-14"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "IA al Día ahora puede publicar dos historias por día — una edición matutina y la edición existente de la noche — con deduplicación cruzada entre ejecuciones y cinco nuevas categorías editoriales (código abierto, agentes, benchmarks, negocios, energía)."
+              : "AI Daily can now publish two stories per day — a morning edition and the existing evening edition — with cross-run deduplication and five new editorial categories (open-source, agents, benchmarks, business, energy)."}
+          </li>
+          <li>
+            {isEs
+              ? "Promptea Semanal: nueva página de previsualización del newsletter semanal en /[lang]/weekly con resumen curado de las historias de IA más importantes de la semana, derivado del archivo de IA al Día."
+              : "Promptea Weekly: new weekly newsletter preview page at /[lang]/weekly with a curated digest of the most important AI stories of the week, derived from the AI Daily archive."}
+          </li>
+          <li>
+            {isEs
+              ? "Suscripción al newsletter: formulario de captura de email con validación, consentimiento explícito, rate limiting, y hash SHA-256 para detección de duplicados. Los emails nunca aparecen en logs ni en telemetría."
+              : "Newsletter subscription: email capture form with validation, explicit consent, rate limiting, and SHA-256 hashing for duplicate detection. Emails never appear in logs or telemetry."}
+          </li>
+          <li>
+            {isEs
+              ? "Infraestructura de envío de email preparada con Resend pero deshabilitada por defecto. El envío se activará en una versión futura cuando promptea.me esté verificado en Resend."
+              : "Email delivery infrastructure built with Resend but disabled by default. Sending will be enabled in a future release once promptea.me is verified in Resend."}
+          </li>
+          <li>
+            {isEs
+              ? "Página de privacidad actualizada con la información sobre recolección de datos del newsletter."
+              : "Privacy page updated with newsletter data collection disclosure."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.4.7 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
