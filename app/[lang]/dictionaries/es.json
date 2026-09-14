@@ -290,6 +290,24 @@
     "readMore": "Leer la nota completa →",
     "emptyTitle": "La primera edición se está preparando",
     "empty": "Promptea Semanal es un resumen curado de las historias de IA más importantes de los últimos siete días. La primera edición está en camino.",
+    "bar": {
+      "barText": "Recibí las mejores historias de IA de la semana cada lunes.",
+      "barCta": "Suscribirme",
+      "emailPlaceholder": "tu@email.com",
+      "languageLabel": "Idioma",
+      "consentLabel": "Quiero recibir el newsletter Promptea Semanal.",
+      "submit": "Suscribirme",
+      "submitting": "Suscribiendo…",
+      "success": "¡Ya estás suscripto! Esperá tu primera edición el lunes.",
+      "alreadySubscribed": "Ese email ya está suscripto.",
+      "invalidEmail": "Ingresá una dirección de email válida.",
+      "rateLimit": "Demasiados intentos. Intentá de nuevo más tarde.",
+      "error": "Algo salió mal. Intentá de nuevo."
+    },
+    "marquee": {
+      "text": "Promptea Semanal — lo mejor de la semana en IA, cada lunes",
+      "cta": "Suscribirme"
+    },
     "subscribe": {
       "heading": "Recibí Promptea Semanal en tu email",
       "description": "Un email cada lunes — las mejores historias de IA de la semana, verificadas y resumidas.",

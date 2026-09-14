@@ -6,6 +6,7 @@ import PromptOfTheDay from "@/components/PromptOfTheDay";
 import HowItWorks from "@/components/HowItWorks";
 import ModeSwitcher from "@/components/ModeSwitcher";
 import AiDailyPromo from "@/components/blog/AiDailyPromo";
+import NewsletterMarquee from "@/components/newsletter/NewsletterMarquee";
 
 // v1.2.0: types + normalization come from the shared domain module, so URL
 // prefill supports every purpose (translation/summarization were silently
@@ -91,6 +92,9 @@ export default async function Page({
                 the analyzer input and its actions. */}
             <div className="mt-3">
               <AiDailyPromo lang={lang as "es" | "en"} dict={dict.blog.promo} />
+            </div>
+            <div className="mt-2">
+              <NewsletterMarquee lang={lang as "es" | "en"} dict={dict.newsletter.marquee} />
             </div>
           </header>
 

@@ -48,7 +48,7 @@ import type { BlogFilterState } from "@/lib/blog/filters";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 import { getSiteUrl } from "@/lib/seo/site";
-import SubscribeCTA from "@/components/newsletter/SubscribeCTA";
+import NewsletterBar from "@/components/newsletter/NewsletterBar";
 
 export const revalidate = 300;
 
@@ -333,6 +333,8 @@ export default async function BlogIndexPage({
             dict={filtersDict}
           />
 
+          <NewsletterBar lang={l} dict={dict.newsletter.bar} />
+
           {items.length === 0 ? (
             // Articles exist, these filters just match none of them.
             <section className="surface-soft mx-auto mt-10 max-w-xl p-6 text-center">
@@ -416,9 +418,6 @@ export default async function BlogIndexPage({
         {t.editorialNote}
       </p>
 
-      <div className="mt-10">
-        <SubscribeCTA lang={l} dict={dict.newsletter.subscribe} />
-      </div>
     </main>
   );
 }
