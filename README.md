@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.5.0 (2026-09-14)
+## Latest update — v1.5.1 (2026-09-14)
 
-**AI Daily goes twice daily + Promptea Weekly foundation.** AI Daily can now publish two verified stories per day — a morning edition and the existing evening edition — with cross-run deduplication and five new editorial categories (open-source, agents, benchmarks, business, energy). Promptea Weekly adds a curated weekly digest preview at `/[lang]/weekly` with newsletter subscription collection via Resend. Email delivery is architecturally complete but intentionally disabled until `promptea.me` is verified in Resend. See the [changelog](./CHANGELOG.md) for full details.
+**Newsletter subscribe bar and homepage marquee.** The newsletter subscription CTA moves from a full card at the bottom of AI Daily to a compact one-line bar right below the filter chips — click "Subscribe" to expand the inline form. The homepage gains a subtle marquee pill linking to Promptea Weekly. See the [changelog](./CHANGELOG.md) for full details.
 
-_Previous update: v1.4.7 (2026-09-10) — Three new SEO guides (AI prompts for software developers, negative prompting, AI prompts for content creators) and a score-ring accessibility fix._
+_Previous update: v1.5.0 (2026-09-14) — AI Daily goes twice daily, Promptea Weekly foundation, newsletter subscriptions, expanded editorial categories._
 
 ## How it works
 

@@ -290,6 +290,24 @@
     "readMore": "Read the full story →",
     "emptyTitle": "The first edition is being prepared",
     "empty": "Promptea Weekly is a curated digest of the most important AI stories from the past seven days. The first edition is on its way.",
+    "bar": {
+      "barText": "Get the week's best AI stories in your inbox every Monday.",
+      "barCta": "Subscribe",
+      "emailPlaceholder": "your@email.com",
+      "languageLabel": "Language",
+      "consentLabel": "I want to receive the Promptea Weekly newsletter.",
+      "submit": "Subscribe",
+      "submitting": "Subscribing…",
+      "success": "You're subscribed! Expect your first edition on Monday.",
+      "alreadySubscribed": "That email is already subscribed.",
+      "invalidEmail": "Please enter a valid email address.",
+      "rateLimit": "Too many attempts. Please try again later.",
+      "error": "Something went wrong. Please try again."
+    },
+    "marquee": {
+      "text": "Promptea Weekly — the week's best AI stories, every Monday",
+      "cta": "Subscribe"
+    },
     "subscribe": {
       "heading": "Get Promptea Weekly in your inbox",
       "description": "One email every Monday — the best AI stories of the week, verified and summarized.",

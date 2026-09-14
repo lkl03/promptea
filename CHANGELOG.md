@@ -4,6 +4,23 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.5.1 — 2026-09-14
+
+**Newsletter subscribe bar on AI Daily, homepage marquee, and weekly digest routine.** The newsletter subscription CTA moves from a full card at the bottom of the page to a compact one-line bar right below the AI Daily filter chips — click "Subscribe" to expand the inline form. The homepage gains a subtle marquee pill linking to Promptea Weekly. A cloud routine for generating and sending the weekly digest is now live.
+
+### Changed
+- **Newsletter bar replaces full-card CTA on AI Daily index** (`components/newsletter/NewsletterBar.tsx`, `app/[lang]/blog/page.tsx`) — a single-line bar with "Subscribe" button that expands into an inline form (email, language, consent) right below the filter chips, where the user's eye naturally lands after the masthead. The old full-card CTA at the bottom of the page is removed.
+- **Homepage newsletter marquee** (`components/newsletter/NewsletterMarquee.tsx`, `app/[lang]/page.tsx`) — a small pill below the AI Daily promo linking to `/[lang]/weekly`, matching the existing promo-pill design language.
+- Version bumped to `v1.5.1` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` — all suites pass, including version-sync checks
+- `npm run build` — not run locally (requires Firebase env vars); no build-breaking changes introduced
+
+---
+
 ## v1.5.0 — 2026-09-14
 
 **AI Daily goes twice daily, Promptea Weekly foundation, and newsletter subscriptions.** AI Daily can now publish two stories per day — a morning edition and the existing evening edition — with cross-run deduplication and expanded editorial categories. Promptea Weekly adds a curated weekly digest page at `/[lang]/weekly` with a newsletter subscription infrastructure built on Resend, ready for email delivery in a future release.

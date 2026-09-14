@@ -28,6 +28,27 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.5.1 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.5.1</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 14-09-2026" : "Released: 2026-09-14"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "El formulario de suscripción al newsletter se reubica como una barra compacta debajo de los filtros en IA al Día — hacé clic en \"Suscribirme\" para expandir el formulario inline."
+              : "The newsletter subscription CTA moves to a compact one-line bar below the AI Daily filter chips — click \"Subscribe\" to expand the inline form."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevo marquee en la homepage con enlace a Promptea Semanal."
+              : "New homepage marquee pill linking to Promptea Weekly."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.5.0 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
