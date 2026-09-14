@@ -226,6 +226,11 @@
       "infrastructure": "Infrastructure",
       "security": "Security",
       "developer-tools": "Developer tools",
+      "open-source": "Open source",
+      "agents": "Agents",
+      "benchmarks": "Benchmarks",
+      "business": "Business",
+      "energy": "Energy",
       "digest": "Digest",
       "other": "Other"
     },
@@ -236,6 +241,7 @@
     },
     "edition": {
       "daily": "Daily",
+      "daily-morning": "Morning",
       "weekly-recap": "Week in review",
       "week-ahead": "Week ahead"
     },
@@ -270,6 +276,38 @@
       "title": "AI Daily",
       "blurb": "One verified AI story a day, with its sources attached.",
       "cta": "Read today's edition"
+    }
+  },
+  "newsletter": {
+    "title": "Promptea Weekly",
+    "subtitle": "The week in AI, curated from our verified daily coverage.",
+    "editionLabel": "Edition",
+    "heroLabel": "The big story",
+    "topStoriesLabel": "This week in AI",
+    "toolsLabel": "Tools and launches you may have missed",
+    "editorialLabel": "One thing worth thinking about",
+    "sponsorLabel": "Sponsor",
+    "readMore": "Read the full story →",
+    "emptyTitle": "The first edition is being prepared",
+    "empty": "Promptea Weekly is a curated digest of the most important AI stories from the past seven days. The first edition is on its way.",
+    "subscribe": {
+      "heading": "Get Promptea Weekly in your inbox",
+      "description": "One email every Monday — the best AI stories of the week, verified and summarized.",
+      "emailPlaceholder": "your@email.com",
+      "languageLabel": "Preferred language",
+      "consentLabel": "I want to receive the Promptea Weekly newsletter.",
+      "submit": "Subscribe",
+      "submitting": "Subscribing…",
+      "success": "You're subscribed! Expect your first edition on Monday.",
+      "alreadySubscribed": "That email is already subscribed.",
+      "invalidEmail": "Please enter a valid email address.",
+      "rateLimit": "Too many attempts. Please try again later.",
+      "error": "Something went wrong. Please try again."
+    },
+    "footer": {
+      "unsubscribe": "Unsubscribe",
+      "preferences": "Preferences",
+      "privacy": "Privacy"
     }
   }
 }

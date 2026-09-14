@@ -246,7 +246,8 @@ export const PublishPayloadSchema = z
     }
 
     // --- edition-specific coverage window ------------------------------------
-    if (v.edition === "daily") {
+    const isDailyEdition = v.edition === "daily" || v.edition === "daily-morning";
+    if (isDailyEdition) {
       if (v.coveredFrom || v.coveredTo) {
         ctx.addIssue({
           code: "custom",
@@ -276,7 +277,7 @@ export const PublishPayloadSchema = z
 
     // --- backdating requires a stated, disclosable reason ---------------------
     if (v.allowBackdate) {
-      if (v.edition !== "daily") {
+      if (v.edition !== "daily" && v.edition !== "daily-morning") {
         ctx.addIssue({
           code: "custom",
           path: ["allowBackdate"],

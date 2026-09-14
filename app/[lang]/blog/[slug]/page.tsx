@@ -13,6 +13,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import SubscribeCTA from "@/components/newsletter/SubscribeCTA";
 import type { Metadata } from "next";
 
 import { getDictionary, hasLocale } from "../../dictionaries";
@@ -355,6 +356,10 @@ export default async function BlogArticlePage({
             ))}
           </div>
         </section>
+
+        <div className="mt-10">
+          <SubscribeCTA lang={l} dict={dict.newsletter.subscribe} />
+        </div>
       </div>
     </main>
   );
