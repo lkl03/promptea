@@ -4,6 +4,27 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.5.2 — 2026-09-17
+
+**Three new evergreen guides + Open Graph metadata on glossary term pages.** This week's update adds guides on prompting reasoning models, AI prompts for educators, and iterative prompt rewriting to the SEO content library. The product improvement adds Open Graph and Twitter Card metadata to the glossary term detail pages — they previously inherited only the generic app title/description when shared on social platforms, the same gap that was closed for guide pages in v1.2.2.
+
+### Added
+- **New guide: How to prompt reasoning models** (`lib/seo/content/guides.ts`, slug `reasoning-model-prompts`) — what makes reasoning models (o3, Claude thinking, Gemini thinking) different, what to specify vs. leave to the model, why explicit step-by-step instructions are often counterproductive, and two templates: a complex multi-step reasoning prompt and a structured analysis prompt with justification.
+- **New guide: AI prompts for teachers and educators** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-education`) — where AI genuinely saves teacher preparation time (lesson plans, rubrics, student feedback drafts, differentiated materials, exercise generation), what AI cannot do in educational contexts and what always requires human review, and two templates: a lesson plan outline and an assessment rubric.
+- **New guide: How to rewrite a prompt for better results** (`lib/seo/content/guides.ts`, slug `prompt-rewriting`) — a five-step rewriting process (diagnose first, one change at a time, explicit goal, negative constraint, add one example), the four most common structural problems in prompts, and two templates: a prompt self-critique and rewrite, and a side-by-side output comparison.
+
+### Changed
+- **Open Graph and Twitter Card metadata added to glossary term pages** (`app/[lang]/glossary/[slug]/page.tsx`) — glossary term detail pages now emit page-specific `openGraph` and `twitter` metadata, matching what guide pages have had since v1.2.2. Shares of glossary terms on social platforms now show the term title and description instead of the generic app metadata.
+- Version bumped to `v1.5.2` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` — all suites pass, including version-sync checks
+- `npm run build` — not run locally (requires Firebase env vars); no build-breaking changes introduced
+
+---
+
 ## v1.5.1 — 2026-09-14
 
 **Newsletter subscribe bar on AI Daily, homepage marquee, and weekly digest routine.** The newsletter subscription CTA moves from a full card at the bottom of the page to a compact one-line bar right below the AI Daily filter chips — click "Subscribe" to expand the inline form. The homepage gains a subtle marquee pill linking to Promptea Weekly. A cloud routine for generating and sending the weekly digest is now live.

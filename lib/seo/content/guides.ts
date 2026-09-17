@@ -6415,6 +6415,391 @@ Contenido original:
       },
     ],
   },
+  {
+    slug: "reasoning-model-prompts",
+    title: {
+      en: "How to prompt reasoning models (o3, Claude thinking, Gemini thinking)",
+      es: "Cómo hacer prompts para modelos de razonamiento (o3, Claude thinking, Gemini thinking)",
+    },
+    description: {
+      en: "Practical patterns for prompting chain-of-thought models: what to let the model figure out, what to specify, and what to avoid.",
+      es: "Patrones prácticos para modelos que piensan paso a paso: qué dejarle al modelo, qué especificar y qué evitar.",
+    },
+    sections: [
+      {
+        heading: { en: "What makes reasoning models different", es: "Qué hace diferente a los modelos de razonamiento" },
+        bullets: {
+          en: [
+            "Reasoning models (o3, Claude with extended thinking, Gemini thinking) run an internal chain-of-thought before producing output — they spend tokens on exploration before answering.",
+            "They handle ambiguous, multi-step tasks better than standard models, but require a different prompting style: less scaffolding from you, more clarity about what success looks like.",
+            "Explicit step-by-step prompting (like 'think step by step') is often redundant — the model already does this internally. Overloading it with process instructions can interfere with its own reasoning.",
+          ],
+          es: [
+            "Los modelos de razonamiento (o3, Claude con thinking extendido, Gemini thinking) corren una cadena de pensamiento interna antes de generar la respuesta — gastan tokens explorando antes de responder.",
+            "Manejan mejor tareas ambiguas y de varios pasos que los modelos estándar, pero requieren un estilo de prompting diferente: menos andamiaje de tu parte, más claridad sobre cómo se ve el éxito.",
+            "El prompting paso a paso explícito (como 'pensá paso a paso') suele ser redundante — el modelo ya lo hace internamente. Sobrecargar con instrucciones de proceso puede interferir con su propio razonamiento.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What to specify and what to leave to the model", es: "Qué especificar y qué dejarle al modelo" },
+        bullets: {
+          en: [
+            "Specify: the goal, the constraints, the output format, and what counts as a correct answer. Give it enough grounding to evaluate its own work.",
+            "Leave to the model: the reasoning path, intermediate steps, and how to decompose the problem. It handles this better than you can prescribe.",
+            "For factual or research tasks: require citations or grounded claims. Reasoning models can still hallucinate — they reason better, but they are not immune to confabulation.",
+            "For mathematical or logical tasks: ask for a final answer with a short justification, not a full narration of every step. Narrated steps can introduce errors in long chains.",
+          ],
+          es: [
+            "Especificá: el objetivo, las restricciones, el formato de salida y qué cuenta como respuesta correcta. Dale suficiente base para que evalúe su propio trabajo.",
+            "Dejale al modelo: el camino de razonamiento, los pasos intermedios y cómo descomponer el problema. Lo maneja mejor de lo que podés prescribir.",
+            "Para tareas factuales o de investigación: pedí citas o claims con base. Los modelos de razonamiento también alucinan — razonan mejor, pero no son inmunes a la confabulación.",
+            "Para tareas matemáticas o lógicas: pedí una respuesta final con una justificación corta, no una narración de cada paso. Los pasos narrados pueden introducir errores en cadenas largas.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common mistakes", es: "Errores comunes" },
+        bullets: {
+          en: [
+            "Over-scaffolding: adding 'First, list all options. Then, evaluate each. Finally, pick the best.' — the model already does this; your instructions can conflict with its own plan.",
+            "Under-specifying the goal: vague success criteria mean the model may reason well and still give you an unusable answer.",
+            "Ignoring output format: reasoning models can produce long, unstructured answers. Always specify the format you need, or you will spend time parsing the result.",
+          ],
+          es: [
+            "Sobre-andamiar: agregar 'Primero, listá todas las opciones. Después, evaluá cada una. Finalmente, elegí la mejor.' — el modelo ya hace esto; tus instrucciones pueden entrar en conflicto con su propio plan.",
+            "Sub-especificar el objetivo: criterios de éxito vagos significan que el modelo puede razonar bien y aun así darte una respuesta inutilizable.",
+            "Ignorar el formato de salida: los modelos de razonamiento pueden producir respuestas largas y desestructuradas. Siempre especificá el formato que necesitás, o vas a perder tiempo parseando el resultado.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Complex multi-step reasoning", es: "Razonamiento complejo de varios pasos" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Goal: [what a correct answer looks like — one sentence]
+Context: [key facts, constraints, definitions]
+Output format: [bulleted recommendation / decision table / ranked list]
+Quality bar:
+- Must include: [specific items]
+- Must avoid: [forbidden claims or assumptions]
+If the answer requires trade-offs, state them explicitly.`,
+          es: `Objetivo: [cómo se ve una respuesta correcta — una frase]
+Contexto: [hechos clave, restricciones, definiciones]
+Formato de salida: [recomendación en bullets / tabla de decisión / lista rankeada]
+Criterio de calidad:
+- Debe incluir: [ítems específicos]
+- Debe evitar: [claims o supuestos prohibidos]
+Si la respuesta requiere trade-offs, mencionálos explícitamente.`,
+        },
+      },
+      {
+        title: { en: "Structured analysis with justification", es: "Análisis estructurado con justificación" },
+        purpose: "data",
+        target: "claude",
+        prompt: {
+          en: `Analyze the following and return:
+1. Final answer (1–2 sentences)
+2. Key reasoning (max 3 bullets — cite the data)
+3. Confidence: High / Medium / Low and why
+
+Data:
+"""[paste]"""
+
+Constraints: [e.g. use only the provided data, no external assumptions]`,
+          es: `Analizá lo siguiente y devolvé:
+1. Respuesta final (1–2 frases)
+2. Razonamiento clave (máx 3 bullets — citá los datos)
+3. Confianza: Alta / Media / Baja y por qué
+
+Datos:
+"""[pegá]"""
+
+Restricciones: [ej. usá solo los datos provistos, sin supuestos externos]`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Should I still write 'think step by step' for reasoning models?", es: "¿Tengo que escribir 'pensá paso a paso' para modelos de razonamiento?" },
+        a: {
+          en: "No. Reasoning models run an internal chain-of-thought automatically. Adding it is at best redundant and at worst disruptive. Focus on specifying the goal and output format clearly instead.",
+          es: "No. Los modelos de razonamiento corren un chain-of-thought interno automáticamente. Agregarlo es, en el mejor caso, redundante y, en el peor, disruptivo. Enfocate en especificar bien el objetivo y el formato de salida.",
+        },
+      },
+      {
+        q: { en: "Are reasoning models more accurate for math and logic?", es: "¿Los modelos de razonamiento son más precisos en matemáticas y lógica?" },
+        a: {
+          en: "Generally yes for multi-step problems, but they still make arithmetic errors and can confabulate facts. Always verify numerical results and require citations for factual claims.",
+          es: "En general sí para problemas de varios pasos, pero igual cometen errores aritméticos y pueden confabular datos. Siempre verificá resultados numéricos y pedí citas para afirmaciones factuales.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-education",
+    title: {
+      en: "AI prompts for teachers and educators",
+      es: "Prompts de IA para docentes y educadores",
+    },
+    description: {
+      en: "Where AI genuinely saves teacher preparation time — lesson plans, rubrics, student feedback, and differentiated content — and what always needs human review.",
+      es: "Dónde la IA realmente ahorra tiempo de preparación docente — clases, rúbricas, feedback estudiantil y contenido diferenciado — y qué siempre requiere revisión humana.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI saves real preparation time", es: "Dónde la IA ahorra tiempo de preparación real" },
+        bullets: {
+          en: [
+            "Lesson plan outlines: structuring a topic into learning objectives, activities, and timing. AI produces a solid scaffold in seconds; you adjust it to your class's actual level and context.",
+            "Assessment rubrics: converting a learning objective into a graded rubric with criteria and performance descriptors. This is tedious to write from scratch; AI handles the structure well.",
+            "Student feedback drafts: turning notes like 'needs to work on argumentation' into full written comments. Always review and personalize — AI cannot know the student.",
+            "Differentiated materials: generating a passage at multiple reading levels from the same source. Useful when a class has a wide skill range.",
+            "Exercise and quiz generation: drafting multiple-choice or short-answer questions for a topic. Verify factual accuracy before use.",
+          ],
+          es: [
+            "Esquemas de clase: estructurar un tema en objetivos de aprendizaje, actividades y tiempos. La IA produce un andamiaje sólido en segundos; vos lo ajustás al nivel y contexto real de tu clase.",
+            "Rúbricas de evaluación: convertir un objetivo de aprendizaje en una rúbrica con criterios y descriptores de desempeño. Esto es tedioso de escribir desde cero; la IA maneja bien la estructura.",
+            "Borradores de feedback estudiantil: convertir notas como 'necesita trabajar la argumentación' en comentarios escritos completos. Siempre revisá y personalizá — la IA no conoce al alumno.",
+            "Materiales diferenciados: generar un pasaje a múltiples niveles de lectura desde la misma fuente. Útil cuando una clase tiene un rango amplio de habilidades.",
+            "Generación de ejercicios y preguntas: redactar preguntas de opción múltiple o respuesta corta para un tema. Verificá precisión factual antes de usar.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What AI cannot do in educational contexts", es: "Qué no puede hacer la IA en contextos educativos" },
+        bullets: {
+          en: [
+            "Know the student: AI has no context about a student's history, challenges, or prior conversations. Generic feedback drafts must be personalized before sending.",
+            "Guarantee factual accuracy: verify any specific claims, dates, or examples AI includes in educational content — especially for history, science, and current events.",
+            "Replace pedagogical judgment: the sequence, pace, and depth of a unit still requires your knowledge of the class. AI produces material; you decide what and when to teach.",
+            "Detect academic integrity issues in student work: AI detection tools have high false positive rates and are not reliable for disciplinary decisions.",
+          ],
+          es: [
+            "Conocer al alumno: la IA no tiene contexto sobre la historia, desafíos o conversaciones previas de un alumno. Los borradores de feedback genérico deben personalizarse antes de enviar.",
+            "Garantizar precisión factual: verificá cualquier afirmación, fecha o ejemplo específico que la IA incluya en contenido educativo — especialmente para historia, ciencias y eventos actuales.",
+            "Reemplazar el juicio pedagógico: la secuencia, ritmo y profundidad de una unidad requieren tu conocimiento de la clase. La IA produce material; vos decidís qué y cuándo enseñar.",
+            "Detectar problemas de integridad académica en trabajos estudiantiles: las herramientas de detección de IA tienen altas tasas de falsos positivos y no son confiables para decisiones disciplinarias.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Lesson plan outline", es: "Esquema de clase" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Create a lesson plan outline for the following:
+Subject: [e.g. 9th-grade biology]
+Topic: [specific topic]
+Duration: [e.g. 60 minutes]
+Learning objectives (what students should be able to do by the end):
+- [objective 1]
+- [objective 2]
+
+Include:
+- Warm-up activity (5–10 min)
+- Main activity with brief description
+- Check for understanding
+- Closing + homework (if applicable)
+
+Format as a numbered outline. Do not invent subject-specific facts.`,
+          es: `Creá un esquema de clase para lo siguiente:
+Materia: [ej. biología de 3er año]
+Tema: [tema específico]
+Duración: [ej. 60 minutos]
+Objetivos de aprendizaje (qué deben poder hacer los alumnos al final):
+- [objetivo 1]
+- [objetivo 2]
+
+Incluí:
+- Actividad de apertura (5–10 min)
+- Actividad principal con breve descripción
+- Verificación de comprensión
+- Cierre + tarea (si aplica)
+
+Formato: esquema numerado. No inventés datos específicos de la materia.`,
+        },
+      },
+      {
+        title: { en: "Assessment rubric", es: "Rúbrica de evaluación" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Create an assessment rubric for the following task:
+Task: [describe what students must produce — e.g. a persuasive essay]
+Learning objective: [what this task measures]
+Grade level: [e.g. 10th grade]
+
+Return a table with:
+- 4 performance levels: Excellent / Proficient / Developing / Beginning
+- 3–5 criteria rows
+- A brief descriptor for each cell (1–2 sentences max)
+
+Keep language clear for both teachers and students.`,
+          es: `Creá una rúbrica de evaluación para la siguiente tarea:
+Tarea: [describí qué deben producir los alumnos — ej. un ensayo persuasivo]
+Objetivo de aprendizaje: [qué mide esta tarea]
+Nivel: [ej. 4to año]
+
+Devolvé una tabla con:
+- 4 niveles de desempeño: Excelente / Satisfactorio / En desarrollo / Inicial
+- 3–5 filas de criterios
+- Un descriptor breve por celda (máx 1–2 frases)
+
+Usá lenguaje claro tanto para docentes como para alumnos.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How do I prevent students from misusing AI on assignments?", es: "¿Cómo prevengo que los alumnos usen mal la IA en las tareas?" },
+        a: {
+          en: "Design tasks that require personal reflection, specific class discussion references, or iterative drafts reviewed in class. AI is harder to misuse when the task requires something it cannot generate: the student's own experience, specific in-class evidence, or a process that is visible to you.",
+          es: "Diseñá tareas que requieran reflexión personal, referencias específicas a discusiones de clase, o borradores iterativos revisados en clase. La IA es más difícil de usar mal cuando la tarea exige algo que no puede generar: la experiencia propia del alumno, evidencia específica de clase, o un proceso visible para vos.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "prompt-rewriting",
+    title: {
+      en: "How to rewrite a prompt for better results",
+      es: "Cómo reescribir un prompt para mejores resultados",
+    },
+    description: {
+      en: "A practical rewriting process: how to identify what is missing, restructure for clarity, and iterate without starting from scratch.",
+      es: "Un proceso práctico de reescritura: cómo identificar qué falta, reestructurar para claridad, e iterar sin empezar de cero.",
+    },
+    sections: [
+      {
+        heading: { en: "The rewriting process", es: "El proceso de reescritura" },
+        bullets: {
+          en: [
+            "Step 1 — Diagnose before rewriting: identify the gap between what you got and what you wanted. Is the format wrong? Is information missing? Is the scope too broad? Rewriting without a diagnosis produces the same problems with different words.",
+            "Step 2 — One change at a time: change one element per iteration (the goal, the constraints, the format, an example). If you change everything at once, you cannot tell which change fixed the problem.",
+            "Step 3 — Make the goal explicit: most weak prompts leave the goal implicit. Write it as a one-sentence success criterion — what does the output look like when it is correct?",
+            "Step 4 — Add a negative constraint: if the model kept doing something wrong, explicitly forbid it. 'Do not include disclaimers' or 'No bullet points, only prose' are more reliable than hoping it will stop.",
+            "Step 5 — Add one example: if format consistency is the problem, show one example of the desired output before the task. This outperforms five paragraphs of instructions.",
+          ],
+          es: [
+            "Paso 1 — Diagnosticá antes de reescribir: identificá la brecha entre lo que obtuviste y lo que querías. ¿Es el formato incorrecto? ¿Falta información? ¿El alcance es demasiado amplio? Reescribir sin diagnóstico produce los mismos problemas con distintas palabras.",
+            "Paso 2 — Un cambio a la vez: cambiá un elemento por iteración (el objetivo, las restricciones, el formato, un ejemplo). Si cambiás todo de una, no podés saber qué cambio resolvió el problema.",
+            "Paso 3 — Hacé el objetivo explícito: la mayoría de los prompts débiles dejan el objetivo implícito. Escribilo como un criterio de éxito en una frase — ¿cómo se ve el output cuando está correcto?",
+            "Paso 4 — Agregá una restricción negativa: si el modelo siguió haciendo algo mal, prohibílo explícitamente. 'No incluyas aclaraciones' o 'Sin bullets, solo prosa' son más confiables que esperar que pare.",
+            "Paso 5 — Agregá un ejemplo: si la consistencia de formato es el problema, mostrá un ejemplo del output deseado antes de la tarea. Esto supera cinco párrafos de instrucciones.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What usually needs fixing", es: "Qué suele necesitar corrección" },
+        bullets: {
+          en: [
+            "Missing output format: the model has no idea what the result should look like and makes a reasonable guess — which often differs from what you wanted.",
+            "Implicit audience: the model defaults to a general tone when you needed something specific to an audience, level, or role.",
+            "Missing context: the model fills gaps with generic content when it lacks the specific facts or constraints of your situation.",
+            "Conflicting instructions: 'be concise' and 'be thorough' in the same prompt produce inconsistent, mediocre results. Pick one or define the trade-off explicitly.",
+          ],
+          es: [
+            "Formato de salida ausente: el modelo no tiene idea de cómo debe verse el resultado y hace una suposición razonable — que suele diferir de lo que querías.",
+            "Audiencia implícita: el modelo adopta un tono general cuando necesitabas algo específico para una audiencia, nivel o rol.",
+            "Contexto faltante: el modelo rellena huecos con contenido genérico cuando le faltan los datos concretos o restricciones de tu situación.",
+            "Instrucciones contradictorias: 'sé conciso' y 'sé exhaustivo' en el mismo prompt producen resultados inconsistentes y mediocres. Elegí uno o definí el trade-off explícitamente.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Prompt self-critique and rewrite", es: "Autocrítica y reescritura de prompt" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `I have a prompt that is not producing the output I want.
+
+Original prompt:
+"""[paste your current prompt]"""
+
+What I got (describe or paste):
+[describe what the model returned]
+
+What I actually wanted:
+[describe the ideal output in 1–3 sentences]
+
+Identify what is missing or unclear in the original prompt and rewrite it to produce the desired output. Only change what is needed. Explain what you changed and why.`,
+          es: `Tengo un prompt que no produce el output que quiero.
+
+Prompt original:
+"""[pegá tu prompt actual]"""
+
+Qué obtuve (describí o pegá):
+[describí lo que devolvió el modelo]
+
+Qué quería realmente:
+[describí el output ideal en 1–3 frases]
+
+Identificá qué falta o es poco claro en el prompt original y reescribílo para producir el output deseado. Solo cambiá lo necesario. Explicá qué cambiaste y por qué.`,
+        },
+      },
+      {
+        title: { en: "Side-by-side output comparison", es: "Comparación lado a lado de outputs" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `I want to understand why one prompt version works better than another.
+
+Version A (original):
+"""[paste version A]"""
+
+Version B (revised):
+"""[paste version B]"""
+
+Analyze the structural differences between the two prompts and predict which will produce more consistent, useful output for the goal below:
+Goal: [what success looks like]
+
+Return:
+- Which version is stronger and why
+- The one thing Version B does better
+- Any remaining gaps in Version B`,
+          es: `Quiero entender por qué una versión del prompt funciona mejor que la otra.
+
+Versión A (original):
+"""[pegá la versión A]"""
+
+Versión B (revisada):
+"""[pegá la versión B]"""
+
+Analizá las diferencias estructurales entre los dos prompts y predecí cuál producirá outputs más consistentes y útiles para el objetivo de abajo:
+Objetivo: [cómo se ve el éxito]
+
+Devolvé:
+- Cuál versión es más sólida y por qué
+- La única cosa que la Versión B hace mejor
+- Brechas restantes en la Versión B`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How many rewrites does it take before a prompt is good?", es: "¿Cuántas reescrituras se necesitan para que un prompt esté bien?" },
+        a: {
+          en: "For most tasks, 2–3 targeted iterations. If you are still getting poor results after 5 rewrites, the problem is usually in the task definition, not the wording — clarify what success looks like before rewriting again.",
+          es: "Para la mayoría de las tareas, 2–3 iteraciones dirigidas. Si seguís obteniendo malos resultados después de 5 reescrituras, el problema suele estar en la definición de la tarea, no en las palabras — clarificá cómo se ve el éxito antes de reescribir de nuevo.",
+        },
+      },
+      {
+        q: { en: "Should I start from scratch or rewrite incrementally?", es: "¿Arranco de cero o reescribo de forma incremental?" },
+        a: {
+          en: "Start incremental: identify the single biggest problem, fix it, and test. Starting from scratch discards what already works and makes it impossible to identify what changed. Only start over when the original prompt has fundamental structural problems (e.g., conflicting goals that cannot be resolved with additions).",
+          es: "Arrancá incremental: identificá el único problema más grande, arreglalo y testeá. Arrancar de cero descarta lo que ya funciona y hace imposible identificar qué cambió. Solo arrancá de cero cuando el prompt original tiene problemas estructurales fundamentales (ej. objetivos contradictorios que no pueden resolverse con agregados).",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

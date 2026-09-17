@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.5.1 (2026-09-14)
+## Latest update — v1.5.2 (2026-09-17)
 
-**Newsletter subscribe bar and homepage marquee.** The newsletter subscription CTA moves from a full card at the bottom of AI Daily to a compact one-line bar right below the filter chips — click "Subscribe" to expand the inline form. The homepage gains a subtle marquee pill linking to Promptea Weekly. See the [changelog](./CHANGELOG.md) for full details.
+**Three new SEO guides + glossary social metadata.** Three new evergreen guides added: prompting reasoning models (o3, Claude thinking, Gemini thinking), AI prompts for teachers and educators, and how to rewrite a prompt for better results. Glossary term pages now emit Open Graph and Twitter Card metadata for better share previews. See the [changelog](./CHANGELOG.md) for full details.
 
-_Previous update: v1.5.0 (2026-09-14) — AI Daily goes twice daily, Promptea Weekly foundation, newsletter subscriptions, expanded editorial categories._
+_Previous update: v1.5.1 (2026-09-14) — Newsletter subscribe bar on AI Daily, homepage marquee, and weekly digest routine._
 
 ## How it works
 
