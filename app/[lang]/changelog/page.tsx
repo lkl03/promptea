@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.5.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.5.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 17-09-2026" : "Released: 2026-09-17"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Cómo hacer prompts para modelos de razonamiento — qué hace diferente a los modelos que piensan paso a paso (o3, Claude thinking, Gemini thinking), qué especificar vs. dejarle al modelo, por qué las instrucciones explícitas de proceso suelen ser contraproducentes, y dos plantillas: razonamiento complejo de varios pasos y análisis estructurado con justificación."
+              : "New guide: How to prompt reasoning models — what makes chain-of-thought models (o3, Claude thinking, Gemini thinking) different, what to specify vs. leave to the model, why explicit step-by-step instructions are often counterproductive, and two templates: a complex multi-step reasoning prompt and a structured analysis prompt with justification."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para docentes y educadores — dónde la IA realmente ahorra tiempo de preparación (clases, rúbricas, feedback estudiantil, materiales diferenciados, generación de ejercicios), qué no puede hacer la IA en contextos educativos y qué siempre requiere revisión humana, y dos plantillas: esquema de clase y rúbrica de evaluación."
+              : "New guide: AI prompts for teachers and educators — where AI genuinely saves teacher preparation time (lesson plans, rubrics, student feedback drafts, differentiated materials, exercise generation), what AI cannot do in educational contexts and what always requires human review, and two templates: a lesson plan outline and an assessment rubric."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Cómo reescribir un prompt para mejores resultados — un proceso de reescritura de cinco pasos (diagnosticá primero, un cambio a la vez, objetivo explícito, restricción negativa, agregá un ejemplo), los cuatro problemas estructurales más comunes en prompts, y dos plantillas: autocrítica y reescritura de prompt, y comparación lado a lado de outputs."
+              : "New guide: How to rewrite a prompt for better results — a five-step rewriting process (diagnose first, one change at a time, explicit goal, negative constraint, add one example), the four most common structural problems in prompts, and two templates: a prompt self-critique and rewrite, and a side-by-side output comparison."}
+          </li>
+          <li>
+            {isEs
+              ? "Las páginas de términos del glosario ahora emiten metadata Open Graph y Twitter Card propia — al compartir un término en redes sociales ahora se muestra el título y descripción del término en lugar de los metadatos genéricos de la app. El mismo ajuste se había hecho para las guías en v1.2.2."
+              : "Glossary term detail pages now emit page-specific Open Graph and Twitter Card metadata — sharing a glossary term on social platforms now shows the term title and description instead of the generic app metadata. The equivalent fix was made for guide pages in v1.2.2."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.5.1 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
