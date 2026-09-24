@@ -4,6 +4,47 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.6.0 — 2026-09-24
+
+**Current model lineup, Claude Opus 5.5 with its official prompting guidance, image prompts that are actually written, and a working Promptea Weekly sender.** Four changes: the model registry was re-verified provider by provider against first-party documentation; optimized prompts now follow each selected model's current prompting guidance (Claude Opus 5.5 first), instead of carrying a cosmetic "For <model>:" tip; image requests return a finished, paste-ready image prompt instead of a checklist of attributes to add; and the Promptea Weekly newsletter — which v1.5.x could render but never send — now has a signed, idempotent generation and delivery endpoint driven by a Monday routine.
+
+### Added
+- **Claude Opus 5.5** (`claude-opus-5.5`, API id `claude-opus-5-5`) — GA on 2026-09-22, 1M context, 128K output, text/image/PDF input, adaptive thinking always on with effort as the control (default `medium`). It is now the default Claude model, following Anthropic's current "start with Claude Opus 5.5 for most workloads" guidance.
+- **Claude Fable 5.1** (`claude-fable-5.1`), **GPT-6 Astra / Sol / Luna** (`gpt-6-astra` is the new GPT default, per OpenAI's "when in doubt, GPT-6 Astra"), **Gemini 3.8 Flash** (new Gemini default) and **3.7 Flash**, **Grok 4.7** (new Grok default), **DeepSeek Flash** (`deepseek-flash`, V4.1, new default), and the **Perplexity Agent API presets** `fast` / `low` / `medium` / `high` (`low` is the default, Perplexity's recommended starting point).
+- **Model prompting profiles** (`lib/engine/modelProfiles.ts`, `PROMPT_PROFILES` in `lib/domain.ts`) — 13 profiles, each citing the first-party guide it comes from. They decide, per model: how a short prompt handles missing details (ask vs. assume vs. "say if the sources don't answer"), how repository/agent work is specified (step list, outcome spec, permissions + autonomy, or focused files), where attached context goes (before the request for Claude and Gemini), deliverable and research lines, a model-directed closing line, and — for Opus 5.5 — concrete frontend anti-patterns. The adaptive refiner receives the same rules, and its quality gate rejects rewrites that add "think step by step" / "double-check" scaffolding to Opus 5.5 or Fable 5.1 prompts.
+- **Image-prompt composer** (`lib/engine/imagePrompt.ts`) — writes the finished image prompt from a sparse request: keeps every explicit detail verbatim and resolves the missing art direction into one coherent direction (subject and pose/gaze, foreground/midground/background, composition, camera and depth of field only for photography, brushwork for illustration and painting, materials and render style for 3D, layout and hierarchy for graphic design, light direction and time of day, palette, textures, mood, aspect ratio, exclusions). Never invents identity attributes, names, brands, logos or text; no placeholders, no "8k, masterpiece" keyword spam, no contradictory directions; follows the user's language; Midjourney/Stable Diffusion syntax only when the user names the generator. JSON format returns an `image_prompt` plus a structured `art_direction`.
+- **Promptea Weekly run endpoint** (`POST /api/internal/newsletter/run`, HMAC-signed with the new `NEWSLETTER_SEND_SECRET`) with `dry_run`, `test` and `live` modes (`lib/newsletter/run.ts`). Live delivery is idempotent per subscriber (Firestore delivery ledger + Resend idempotency keys), resumable within the serverless time budget, gated by `NEWSLETTER_DELIVERY_ENABLED=true`, and preceded by a canary send to `NEWSLETTER_TEST_RECIPIENTS`; every run writes a typed outcome to `newsletter_runs` with counts only, never addresses.
+- **RFC 8058 one-click unsubscribe** — `POST /api/newsletter/unsubscribe` (Gmail/Yahoo call it from `List-Unsubscribe-Post`; before this release that request returned 405). Emails now include a plain-text part.
+- Weekly Claude Code routine **"Promptea Weekly newsletter"**, Mondays 12:00 UTC (09:00 ART; Argentina has no DST), which dry-runs and then calls live — see the setup notes in the README.
+
+### Changed
+- **Legacy / deprecated, ids kept** so old links and telemetry resolve: Claude Opus 5 and Fable 5 (legacy, replaced by Opus 5.5 / Fable 5.1), GPT-5.6 Sol/Terra/Luna (legacy, still served; replaced by GPT-6 Sol/Luna), Gemini 3.5 Flash (Google now labels it "Legacy Flash"), Gemini 3.1 Flash-Lite (deprecated, shutdown 2027-05-07), Grok 4.5 (legacy), `deepseek-v4-flash` (legacy name now served by V4.1-Flash), and Sonar / Sonar Pro / Sonar Reasoning Pro / Sonar Deep Research (deprecated — Sonar Chat Completions is supported until 2026-09-27; mapped to the official Agent API presets). Kimi K3 is the new Kimi default (Moonshot's recommendation for general use).
+- **Image routing needs generation intent.** A default-purpose prompt that merely mentions an image ("describe this photo") is no longer treated as an image-generation request; accented Spanish verbs ("generá", "creá") are now recognized.
+- **"Build a landing page / website / dashboard"** requests route to implementation, not marketing copy.
+- **Newsletter generation fixes** — the covered week is computed from the real weekday (v1.5.0 used the day of the month and picked the wrong Saturday on most dates); quiet weeks are sent as they are instead of being padded with a placeholder story whose link 404ed (`topStories` min 1, `tools` may be empty); tools never repeat a top story; the `/weekly` page shows the newest published or sent edition without needing a composite index.
+- **Unsubscribe** — unknown or malformed tokens now show the invalid-link page (v1.5 reported success for any token); the confirmation page answers in the subscriber's language.
+- Version bumped to `v1.6.0` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Fixed
+- The v1.5.0 `sendNewsletter` loop counted a message as sent even when Resend returned an error (the SDK reports errors as `{ error }` rather than throwing), had no idempotency, and was never called. It was replaced by the run endpoint above.
+
+### Status of the newsletter sender (accurate as of this release)
+The v1.5.1 notes said a weekly generate-and-send routine was live. It was not: no newsletter routine existed, and no code path called the generator or the sender. v1.6.0 adds both. Delivery is **ready, not live**: after this release is deployed, live sends additionally require `NEWSLETTER_TEST_RECIPIENTS` in Vercel (the canary list) and `NEWSLETTER_DELIVERY_ENABLED=true`, followed by a `test` run.
+
+### Environment variables (new)
+| Variable | Scope | Required | Purpose |
+| --- | --- | --- | --- |
+| `NEWSLETTER_SEND_SECRET` | server | for the weekly run | HMAC key shared with the weekly routine (≥32 chars). Without it the run endpoint returns 503. |
+| `NEWSLETTER_TEST_RECIPIENTS` | server | for test and live sends | Comma-separated addresses (max 5) that receive test sends and the canary copy of every live send. |
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean
+- `npm test` — all suites pass (new: `image.prompts`, `model.profiles`, `newsletter.run`, `newsletter.routes`)
+- `npm run build` — see the pull request for the result in this environment
+
+---
+
 ## v1.5.3 — 2026-09-24
 
 **Three new evergreen guides + Open Graph metadata on the models index page.** This week's update adds guides on AI for research workflows, conversational prompting (multi-turn context management), and AI prompts for UX and product design. The product improvement adds Open Graph and Twitter Card metadata to the models index page, which previously inherited only the generic app title and description when shared on social platforms.

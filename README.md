@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.5.3 (2026-09-24)
+## Latest update — v1.6.0 (2026-09-24)
 
-**Three new SEO guides + models index social metadata.** Three new evergreen guides added: AI prompts for research (literature review, synthesis, and gap analysis), conversational prompting (multi-turn context management), and AI prompts for UX and product design. The models index page now emits Open Graph and Twitter Card metadata for better share previews. Full details in the [weekly update PR](./CHANGELOG.md).
+**Current models, model-specific prompts, finished image prompts, and a working Promptea Weekly sender.** The model registry was re-verified against every provider's first-party docs (Claude Opus 5.5 is the new Claude default; GPT-6 Astra/Sol/Luna, Gemini 3.8 Flash, Grok 4.7, DeepSeek Flash, and Perplexity's Agent API presets were added; superseded models stay as legacy). Optimized prompts now follow each selected model's official prompting guidance instead of a cosmetic tip. Image requests return a finished, paste-ready image prompt. Promptea Weekly has a signed, idempotent send endpoint and a Monday routine; live delivery still needs the setup below. Details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.5.2 (2026-09-17) — Three new guides (reasoning models, educators, prompt rewriting) + glossary term Open Graph metadata._
+_Previous update: v1.5.3 (2026-09-24) — Three new guides (research, conversational prompting, UX design) + models index social metadata._
 
 ## How it works
 
@@ -20,10 +20,10 @@ Improve Prompt:   prompt entry → analysis → adaptive refinement → explanat
 Find the Best AI: prompt entry → signal extraction → deterministic scoring → recommendation → handoff to Improve
 ```
 
-1. **Deterministic engine** (`lib/engine/`) — always runs, no network. Normalizes the input, classifies the real task (even when the selected purpose is imperfect), lints for risks (missing context, format, constraints, injection-like content), scores six dimensions, and builds an optimized prompt whose SHAPE matches the request (`lib/engine/shapes.ts`): short asks stay short and natural, repo/agent tasks get objective/steps/validation structure, data prompts get schema+rules, image prompts get visual attributes — no fixed template, no metadata header. Already-strong prompts are returned with minimal or no edits. Re-analysis is idempotent by core extraction, not by a header signature.
-2. **Adaptive refiner** (`lib/refine/`, optional) — when `GROQ_API_KEY` is set, the deterministic baseline is refined by an LLM using a strategy selected from the prompt itself (15 strategies: message polish, long-form writing, summarization, translation, tutoring, coding, debugging/review, agent/repo workflow, data/JSON schema, research, marketing, image generation, brainstorming, planning, general). The response must pass:
+1. **Deterministic engine** (`lib/engine/`) — always runs, no network. Normalizes the input, classifies the real task (even when the selected purpose is imperfect), lints for risks (missing context, format, constraints, injection-like content), scores six dimensions, and builds an optimized prompt whose SHAPE matches the request (`lib/engine/shapes.ts`): short asks stay short and natural, repo/agent tasks get objective/steps/validation structure, data prompts get schema+rules, image requests get a finished, paste-ready image prompt written by `lib/engine/imagePrompt.ts` (explicit details kept verbatim, missing art direction resolved coherently for the medium) — no fixed template, no metadata header. Since v1.6.0 the shape is also **model-specific**: the selected model's prompting profile (`lib/engine/modelProfiles.ts`, one per documented guidance difference, each citing its first-party source) decides how short prompts handle missing details, how agent/repo work is specified, where attached context goes, and model-directed closing lines. Already-strong prompts are returned with minimal or no edits. Re-analysis is idempotent by core extraction, not by a header signature.
+2. **Adaptive refiner** (`lib/refine/`, optional) — when `GROQ_API_KEY` is set, the deterministic baseline is refined by an LLM using a strategy selected from the prompt itself (15 strategies: message polish, long-form writing, summarization, translation, tutoring, coding, debugging/review, agent/repo workflow, data/JSON schema, research, marketing, image generation, brainstorming, planning, general) plus the target model's prompting rules. The response must pass:
    - Zod schema validation (strict JSON contract),
-   - a quality gate (protected literals preserved verbatim — URLs, paths, code spans, versions, amounts; language preserved; requested format retained; not answering the task; no leakage; bounded verbosity),
+   - a quality gate (protected literals preserved verbatim — URLs, paths, code spans, versions, amounts; language preserved; requested format retained; not answering the task; no leakage; bounded verbosity; image prompts free of placeholders, "specify the mood" advice, keyword spam, and contradictions; no reasoning or re-check scaffolding added for Claude Opus 5.5 / Fable 5.1),
    - with one bounded repair attempt. Any failure (timeout, rate limit, invalid key, bad JSON, schema mismatch, unsafe output…) falls back to the deterministic result with a typed reason — the analyzer can never break because an external provider did.
 3. Long inputs are budgeted deliberately: the beginning, requirement-looking lines, and the ending survive; elisions are marked. The most important part of a long prompt is never silently truncated.
 4. **Deterministic matcher** (`lib/matcher/`, powers Find the Best AI) — a versioned rubric of independently testable signals accumulates weighted evidence per category (coding agent, research, long context, multimodal, strict data, creative, translation…); candidates from the verified model registry are scored against that evidence with hard capability gates; confidence and ties are explicit. The ranking is 100% deterministic application code — no LLM chooses or reorders results — and every reason cites a signal actually detected in the submitted prompt. `Claude Code`/`Codex`/`Gemini CLI` are recommended as *interaction environments* when repo signals warrant it, never conflated with chat models.
@@ -64,6 +64,34 @@ A bilingual editorial section — one story per day about what actually happened
 | `VERIFICATION_FAILED` | A candidate was found but its sources or event date did not hold up. | Correct behaviour — inspect the run log. Publish manually only if you can verify the story yourself. |
 | `PUBLICATION_FAILED` | The payload was rejected or the write failed (bad signature, clock skew, oversized payload, Firestore error). | Check that `BLOG_PUBLISH_SECRET` matches on both sides, that the routine host's clock is within ±5 minutes, and that Firestore is reachable; then re-run — retries are safe. |
 
+## Promptea Weekly (newsletter)
+
+A weekly email digest of AI Daily, previewed at `/[lang]/weekly`. It never researches or claims anything new: every story is a published AI Daily article, ranked by importance and date (`lib/newsletter/compose.ts`).
+
+**Week and edition.** An edition is sent on a Monday (editorial timezone) and covers the preceding Sunday→Saturday. Its id is `promptea-weekly_<Monday>` (`lib/newsletter/dates.ts`), so every run in the same week resolves to the same edition; once stored, the edition's content never changes between retries. A week with no eligible story produces no edition and no email.
+
+**Run endpoint.** `POST /api/internal/newsletter/run`, HMAC-SHA256-signed exactly like the AI Daily publish endpoint (`x-promptea-timestamp`, `x-promptea-nonce`, `x-promptea-signature` over `${timestamp}.${nonce}.${rawBody}`, ±5 min window, nonce replay rejected) with `NEWSLETTER_SEND_SECRET`. Body: `{"mode":"dry_run"|"test"|"live"}` (`"date":"YYYY-MM-DD"` previews another week in `dry_run`/`test`). The caller holds only that secret; Firebase and Resend credentials stay on the server.
+
+| Mode | What it does | Needs |
+| --- | --- | --- |
+| `dry_run` | Builds and validates the edition, counts active subscribers per language. Stores nothing, sends nothing. | — |
+| `test` | Sends a `[TEST]` copy (alternating ES/EN) to `NEWSLETTER_TEST_RECIPIENTS` only. Stores nothing. | `RESEND_API_KEY`, valid sender, test recipients |
+| `live` | Stores the edition (visible on `/weekly`), sends a canary copy to the test recipients, then every active subscriber in their language. | all of the above **and** `NEWSLETTER_DELIVERY_ENABLED=true` |
+
+**Idempotency.** Each recipient is claimed in `newsletter_deliveries/{editionId}__{subscriberId}` inside a Firestore transaction before the send, and the Resend call carries the same key as its idempotency key (Resend de-duplicates for 24 h). A retry skips everyone already sent, re-tries transient failures, never retries permanent refusals, and never re-sends a claim older than the idempotency window. Sending is time-budgeted (45 s per call); a large list finishes over several calls (`PARTIAL` → call again).
+
+**Outcomes** (returned and recorded in `newsletter_runs`, counts only — never an address): `DRY_RUN_OK`, `TEST_SENT`, `SENT`, `PARTIAL`, `ALREADY_SENT`, `NO_CONTENT`, `NO_SUBSCRIBERS`, `DELIVERY_DISABLED`, `CONFIG_ERROR`, `CANARY_FAILED`, `INVALID_EDITION`, `STORAGE_ERROR`. Configuration problems are reported before anything is sent — never a partial send.
+
+**Unsubscribe.** Every email carries a per-subscriber link and `List-Unsubscribe` + `List-Unsubscribe-Post: List-Unsubscribe=One-Click` headers. `GET /api/newsletter/unsubscribe?token=…` shows a confirmation page in the subscriber's language; `POST` to the same URL is the RFC 8058 one-click endpoint mail clients call.
+
+**The routine.** Claude Code cloud routine "Promptea Weekly newsletter", cron `0 12 * * 1` (Mondays 12:00 UTC = 09:00 America/Argentina/Buenos_Aires; Argentina has no DST). It signs a `dry_run`, then `live` (repeating while `PARTIAL` makes progress), and reports the outcome. It holds only `NEWSLETTER_SEND_SECRET`; to change the time, edit the cron at https://claude.ai/code/routines.
+
+**Setup, testing, go-live, and kill switch**
+1. Vercel → Production: `NEWSLETTER_SEND_SECRET` (set), `RESEND_API_KEY` (set), `NEWSLETTER_FROM_ADDRESS` (set; must be on the Resend-verified `promptea.me` domain), **`NEWSLETTER_TEST_RECIPIENTS` (add: your own inbox)**, `NEWSLETTER_DELIVERY_ENABLED` (keep `false` until step 3). Redeploy after changing env vars.
+2. Test without mailing subscribers: sign a `{"mode":"dry_run"}` call, then `{"mode":"test"}` — only the test recipients receive a `[TEST]` copy. Check both languages, links, and the unsubscribe footer.
+3. Go live: set `NEWSLETTER_DELIVERY_ENABLED=true` and redeploy. The next Monday run sends; confirm with the routine's report (`STATUS: SENT`), the latest `newsletter_runs` document, and the Resend dashboard.
+4. Kill switch: set `NEWSLETTER_DELIVERY_ENABLED=false` (and redeploy) — live runs return `DELIVERY_DISABLED` before sending anything. To stop the schedule itself, disable the routine at https://claude.ai/code/routines. Removing `NEWSLETTER_SEND_SECRET` makes the endpoint refuse every call (503).
+
 ## Tech
 
 - Next.js (App Router) + React, Tailwind CSS v4
@@ -96,8 +124,10 @@ npm run build      # production build (works offline — fonts are local)
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
-| `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to enable weekly newsletter email sending. Default `false`. Requires `RESEND_API_KEY` and `promptea.me` verified in Resend. |
-| `RESEND_API_KEY` | for newsletter delivery | Resend API key. Not needed until `NEWSLETTER_DELIVERY_ENABLED=true`. |
+| `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to allow LIVE Promptea Weekly sends. Default `false` (live runs return `DELIVERY_DISABLED`). `promptea.me` is verified in Resend. |
+| `NEWSLETTER_SEND_SECRET` | for the weekly run | HMAC key shared with the weekly routine (≥32 random chars). Without it `POST /api/internal/newsletter/run` returns 503. Never commit it. |
+| `NEWSLETTER_TEST_RECIPIENTS` | for test/live sends | Comma-separated addresses (max 5) that receive `test` sends and the canary copy of every live send. Live delivery refuses to start without at least one. |
+| `RESEND_API_KEY` | for newsletter delivery | Resend API key. Needed for `test` and `live` runs. |
 | `NEWSLETTER_FROM_ADDRESS` | optional | Sender address for the newsletter (default `Promptea Weekly <weekly@promptea.me>`). |
 
 AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PROJECT_ID`, and `NEXT_PUBLIC_SITE_URL` for canonical, `hreflang`, sitemap, and feed URLs. `BLOG_PUBLISH_SECRET` is the only required variable for AI Daily publishing. Newsletter subscriptions are stored in Firestore using the same Firebase configuration.
@@ -108,6 +138,9 @@ AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PRO
 - `lib/engine/` — deterministic analyzer (lint, features, scoring, builder, classifier).
 - `lib/refine/` — adaptive pipeline (router, literals, language, budget, quality gate, Groq orchestrator, schema).
 - `lib/models.ts` — verified model registry (see policy below).
+- `lib/engine/modelProfiles.ts` — per-model prompting profiles (deterministic shaping switches + adaptive-refiner rules), each citing its first-party guide.
+- `lib/engine/imagePrompt.ts` — deterministic image-prompt composer and the image quality checks shared with the adaptive gate.
+- `lib/newsletter/` — Promptea Weekly: `dates.ts` (covered week), `compose.ts` (edition from AI Daily), `render.ts` (HTML/text email), `config.ts` (delivery gates), `run.ts` (dry_run/test/live orchestration), `email.ts` (Resend mailer), `server.ts` (Firestore store, ledger, subscribers); `app/api/internal/newsletter/run/` is the signed endpoint.
 - `lib/blog/` — AI Daily module: `types.ts` (Zod schemas for posts, blocks, sources, publish payload), `dates.ts` (editorial timezone, freshness guard, idempotency key and document id), `render.ts` (inline markup parsing, plain-text, word count, reading time, XML escaping), `filters.ts` (pure search/filter/sort/paginate over article cards, plus facet collection), `server.ts` (server-only Firestore access: list, fetch by slug, publish, correct, run log).
 - `app/[lang]/blog/` — AI Daily index and article pages (server-rendered, ISR-cached, degrade to empty when Firestore is unavailable); `app/api/internal/blog/publish/` — the HMAC-signed publish endpoint.
 - `components/analyzer/`, `components/results/` — decomposed feature modules; `PromptBox`/`ResultsPanel` orchestrate.
@@ -124,6 +157,7 @@ Semantic CSS custom properties per theme (`--canvas`, `--surface`, `--line`, `--
 2. Never add a model from a blog post, social post, or memory.
 3. When a model is superseded: set `status` (`legacy`/`deprecated`) + `replacementId` — don't delete (old links/telemetry keep resolving).
 4. Exactly one `defaultForTarget` per target; only `stable`/`preview` entries are selectable. All of this is enforced by `lib/__tests__/models.registry.test.ts`.
+5. Every selectable entry names a `promptProfile`; a new profile is added only when a provider documents a real prompting difference (`lib/__tests__/model.profiles.test.ts` keeps the guidance from drifting).
 
 Promptea optimizes prompts *for* these models; it does not execute them.
 

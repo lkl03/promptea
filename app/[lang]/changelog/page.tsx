@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.6.0 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.6.0</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 24-09-2026" : "Released: 2026-09-24"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Catálogo de modelos verificado de nuevo contra la documentación oficial de cada proveedor: llegan Claude Opus 5.5 (el nuevo Claude por defecto) y Fable 5.1, GPT-6 Astra, Sol y Luna, Gemini 3.8 y 3.7 Flash, Grok 4.7, DeepSeek Flash (V4.1) y los presets de la Agent API de Perplexity. Los modelos reemplazados quedan como legacy, así que los links viejos siguen funcionando."
+              : "Model catalog re-verified against each provider’s official documentation: Claude Opus 5.5 (the new default Claude) and Fable 5.1, GPT-6 Astra, Sol, and Luna, Gemini 3.8 and 3.7 Flash, Grok 4.7, DeepSeek Flash (V4.1), and Perplexity’s Agent API presets. Replaced models are kept as legacy, so old links keep working."}
+          </li>
+          <li>
+            {isEs
+              ? "Los prompts optimizados ahora siguen la guía oficial de prompting de cada modelo, no solo un consejo con su nombre. Para Claude Opus 5.5: la tarea completa de entrada con alcance y criterio de “terminado”, sin “pensá paso a paso” ni “revisá dos veces” (siempre razona y el esfuerzo se regula aparte), avisos claros en tareas de agente y restricciones de diseño concretas en trabajos de frontend."
+              : "Optimized prompts now follow each model’s official prompting guidance, not just a tip with its name. For Claude Opus 5.5: the complete task up front with scope and a clear “done” criterion, no “think step by step” or “double-check” lines (it always reasons and effort is set separately), clear progress updates on agent tasks, and concrete design constraints for frontend work."}
+          </li>
+          <li>
+            {isEs
+              ? "Prompts de imagen terminados: pedí algo tan simple como “una mujer rubia mirando un paisaje” y Promptea escribe el prompt completo, listo para pegar, con composición, luz, paleta, estilo y relación de aspecto resueltos. Conserva todo lo que pediste, no inventa identidad, marcas ni texto, y adapta el vocabulario a foto, ilustración, 3D o diseño gráfico."
+              : "Finished image prompts: ask for something as simple as “a blonde woman looking at a landscape” and Promptea writes the complete, paste-ready prompt with composition, light, palette, style, and aspect ratio resolved. It keeps everything you asked for, never invents identity, brands, or text, and adapts its vocabulary to photography, illustration, 3D, or graphic design."}
+          </li>
+          <li>
+            {isEs
+              ? "Promptea Semanal ya puede enviarse: generación semanal desde AI Daily, envío seguro que nunca repite un mail al mismo suscriptor, copia de prueba antes de cada envío real y desuscripción en un clic desde Gmail y Yahoo. El envío real se activa una vez completada la configuración de entrega."
+              : "Promptea Weekly can now be sent: weekly generation from AI Daily, safe delivery that never mails the same subscriber twice, a test copy before every real send, and one-click unsubscribe from Gmail and Yahoo. Real delivery switches on once the delivery settings are completed."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.5.3 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
