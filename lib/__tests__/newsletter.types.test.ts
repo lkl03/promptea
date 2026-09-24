@@ -186,22 +186,34 @@ describe("NewsletterEditionSchema — full edition document", () => {
     expect(result.success).toBe(false);
   });
 
-  test("topStories with fewer than 4 items fails", () => {
+  // v1.6.0: quiet weeks are sent as they are. The v1.5 minimums (4 stories,
+  // 3 tools) forced padding with a placeholder story whose link 404ed.
+  test("an edition needs at least one story", () => {
     const locale = makeLocaleContent();
-    locale.topStories = locale.topStories.slice(0, 3);
+    locale.topStories = [];
     const result = NewsletterEditionSchema.safeParse(
       makeEdition({ locales: { en: locale, es: makeLocaleContent() } })
     );
     expect(result.success).toBe(false);
   });
 
-  test("tools with fewer than 3 items fails", () => {
+  test("a quiet week with one story and no tools is valid (no padding)", () => {
     const locale = makeLocaleContent();
-    locale.tools = locale.tools.slice(0, 2);
+    locale.topStories = locale.topStories.slice(0, 1);
+    locale.tools = [];
     const result = NewsletterEditionSchema.safeParse(
       makeEdition({ locales: { en: locale, es: makeLocaleContent() } })
     );
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
+  });
+
+  test("more than 6 stories or 5 tools still fails", () => {
+    const locale = makeLocaleContent();
+    locale.topStories = Array.from({ length: 7 }, () => locale.topStories[0]);
+    expect(NewsletterEditionSchema.safeParse(makeEdition({ locales: { en: locale, es: makeLocaleContent() } })).success).toBe(false);
+    const locale2 = makeLocaleContent();
+    locale2.tools = Array.from({ length: 6 }, () => locale2.tools[0]);
+    expect(NewsletterEditionSchema.safeParse(makeEdition({ locales: { en: locale2, es: makeLocaleContent() } })).success).toBe(false);
   });
 });
 

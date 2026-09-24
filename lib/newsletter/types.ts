@@ -64,8 +64,10 @@ export const NewsletterLocaleContentSchema = z.object({
   preheader: trimmed(5, 300),
   heroHeadline: trimmed(5, 200),
   heroDeck: trimmed(10, 400),
-  topStories: z.array(NewsletterStorySchema).min(4).max(6),
-  tools: z.array(NewsletterToolSchema).min(3).max(5),
+  // v1.6.0: a quiet week is sent as it is. The v1.5 minimums (4 stories,
+  // 3 tools) forced padding with a placeholder story whose link 404ed.
+  topStories: z.array(NewsletterStorySchema).min(1).max(6),
+  tools: z.array(NewsletterToolSchema).min(0).max(5),
   editorialTitle: trimmed(5, 200).nullable(),
   editorialBody: trimmed(20, 4_000).nullable(),
 });

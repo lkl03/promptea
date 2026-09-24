@@ -1,7 +1,8 @@
 // app/api/newsletter/unsubscribe/route.ts
 //
-// One-click unsubscribe via GET (linked from every newsletter email).
-// Returns a self-contained HTML page — no external dependencies, no JS.
+// Unsubscribe for Promptea Weekly. GET is the footer link (returns a
+// self-contained HTML page — no external dependencies, no JS); POST is the
+// RFC 8058 one-click endpoint mail clients call from List-Unsubscribe-Post.
 // NEVER logs or surfaces the subscriber's email address.
 
 import { NextRequest, NextResponse } from "next/server";
@@ -62,12 +63,13 @@ function htmlPage(opts: {
   body: string;
   link: string;
   success: boolean;
+  lang: "es" | "en";
 }): string {
   const accentColor = opts.success ? "#22c55e" : "#ef4444";
   const icon = opts.success ? "✓" : "!";
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${opts.lang}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -134,7 +136,7 @@ function htmlPage(opts: {
     <div class="icon">${icon}</div>
     <h1>${opts.heading}</h1>
     <p>${opts.body}</p>
-    <a href="https://promptea.me">${opts.link}</a>
+    <a href="https://www.promptea.me/${opts.lang}">${opts.link}</a>
   </div>
 </body>
 </html>`;
@@ -155,49 +157,53 @@ function htmlResponse(html: string, status: number): NextResponse {
 // Handler
 // ---------------------------------------------------------------------------
 
-export async function GET(req: NextRequest) {
-  const lang = detectLang(req);
+function page(lang: "es" | "en", kind: "success" | "invalid" | "error"): string {
   const copy = COPY[lang];
-
-  // 1. Read token from query string
-  const token = req.nextUrl.searchParams.get("token")?.trim();
-  if (!token) {
-    return htmlResponse(
-      htmlPage({
-        title: copy.invalidTitle,
-        heading: copy.invalidHeading,
-        body: copy.invalidBody,
-        link: copy.invalidLink,
-        success: false,
-      }),
-      400,
-    );
+  if (kind === "success") {
+    return htmlPage({ title: copy.title, heading: copy.heading, body: copy.body, link: copy.link, success: true, lang });
   }
-
-  // 2. Process unsubscription
-  try {
-    await removeSubscriber(token);
-
-    return htmlResponse(
-      htmlPage({
-        title: copy.title,
-        heading: copy.heading,
-        body: copy.body,
-        link: copy.link,
-        success: true,
-      }),
-      200,
-    );
-  } catch {
-    return htmlResponse(
-      htmlPage({
-        title: copy.errorTitle,
-        heading: copy.errorHeading,
-        body: copy.errorBody,
-        link: copy.errorLink,
-        success: false,
-      }),
-      503,
-    );
+  if (kind === "invalid") {
+    return htmlPage({ title: copy.invalidTitle, heading: copy.invalidHeading, body: copy.invalidBody, link: copy.invalidLink, success: false, lang });
   }
+  return htmlPage({ title: copy.errorTitle, heading: copy.errorHeading, body: copy.errorBody, link: copy.errorLink, success: false, lang });
+}
+
+/**
+ * GET — the link in the email footer. Idempotent: an already-unsubscribed
+ * token still shows the confirmation. An unknown or malformed token shows the
+ * invalid-link page (v1.5 reported success for any token).
+ */
+export async function GET(req: NextRequest) {
+  const token = req.nextUrl.searchParams.get("token")?.trim() ?? "";
+  const fallbackLang = detectLang(req);
+
+  if (!token) return htmlResponse(page(fallbackLang, "invalid"), 400);
+
+  const result = await removeSubscriber(token);
+  if (result.ok) return htmlResponse(page(result.lang ?? fallbackLang, "success"), 200);
+  if (result.reason === "unavailable") return htmlResponse(page(fallbackLang, "error"), 503);
+  return htmlResponse(page(fallbackLang, "invalid"), 400);
+}
+
+/**
+ * POST — RFC 8058 one-click unsubscribe. Gmail and Yahoo call this directly
+ * from their UI because every newsletter carries
+ * `List-Unsubscribe-Post: List-Unsubscribe=One-Click`; before v1.6.0 there was
+ * no POST handler, so those requests failed with 405.
+ */
+export async function POST(req: NextRequest) {
+  const token = req.nextUrl.searchParams.get("token")?.trim() ?? "";
+  if (!token) return jsonResponse({ ok: false, error: "invalid_token" }, 400);
+
+  const result = await removeSubscriber(token);
+  if (result.ok) return jsonResponse({ ok: true }, 200);
+  if (result.reason === "unavailable") return jsonResponse({ ok: false, error: "unavailable" }, 503);
+  return jsonResponse({ ok: false, error: "invalid_token" }, 400);
+}
+
+function jsonResponse(body: Record<string, unknown>, status: number): NextResponse {
+  return NextResponse.json(body, {
+    status,
+    headers: { "x-app-version": APP_VERSION, "cache-control": "no-store" },
+  });
 }
