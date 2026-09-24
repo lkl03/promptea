@@ -24,6 +24,7 @@ import type { PromptPurpose, TaskType } from "./types";
 import type { AttachmentContext } from "@/lib/attachments";
 
 import { APP_VERSION } from "@/lib/version";
+import { composeImagePrompt, isDevelopedImagePrompt } from "./imagePrompt";
 const PROMPTEA_JSON_VERSION = `v${APP_VERSION}`;
 
 function t<T>(lang: Lang, es: T, en: T): T {
@@ -145,11 +146,11 @@ function defaultOutputFormat(purpose: PromptPurpose, taskType: TaskType, lang: L
       "Short summary (2-4 lines) + key points + missing items."
     );
   }
-  if (purpose === "image") {
+  if (purpose === "image" || taskType === "image") {
     return t(
       lang,
-      "Sujeto, estilo, composición, iluminación, cámara, fondo, aspect ratio.",
-      "Subject, style, composition, lighting, camera, background, aspect ratio."
+      "Una sola imagen que siga image_prompt y art_direction al pie de la letra.",
+      "A single image that follows image_prompt and art_direction exactly."
     );
   }
   return t(lang, "Respuesta estructurada por secciones, lo más importante primero.", "Structured response by sections, most important first.");
@@ -199,8 +200,49 @@ export function buildJsonOptimizedPrompt(args: {
   lang: Lang;
   purpose: PromptPurpose;
   attachments: AttachmentContext[];
+  /** v1.6.0: routing strategy — image requests get a finished art-direction spec. */
+  strategy?: string;
 }): string {
   const { core, taskType, target, lang, purpose, attachments } = args;
+
+  // v1.6.0: an image request in JSON format is a structured art-direction
+  // spec (the shape the reference "JSON image prompts" use) carrying the
+  // finished prose prompt plus every resolved decision — never a list of
+  // attributes for the user to fill in.
+  if (args.strategy === "image_generation" || purpose === "image") {
+    const text = String(core ?? "").trim();
+    const composed = isDevelopedImagePrompt(text) ? null : composeImagePrompt(text, lang);
+    const direction = composed?.direction;
+    const payload = {
+      promptea_version: PROMPTEA_JSON_VERSION,
+      model: modelLabel(target),
+      purpose,
+      task_type: taskType,
+      prompt_type: "image_generation",
+      image_prompt: composed?.prompt ?? text,
+      art_direction: direction
+        ? {
+            medium: direction.medium,
+            subject: direction.subject,
+            composition: direction.composition,
+            camera: direction.camera,
+            lighting: direction.lighting,
+            palette: direction.palette,
+            treatment: direction.treatment,
+            mood: direction.mood,
+            aspect_ratio: direction.aspectRatio,
+          }
+        : null,
+      avoid: direction?.avoid ?? [],
+      constraints: t(
+        lang,
+        ["Conservá cada detalle pedido por el usuario.", "No agregues texto, logos ni marcas que no se pidieron."],
+        ["Keep every detail the user asked for.", "Do not add text, logos, or brands that were not requested."]
+      ),
+      output_format: defaultOutputFormat(purpose, taskType, lang),
+    };
+    return JSON.stringify(payload, null, 2);
+  }
 
   const payload = {
     promptea_version: PROMPTEA_JSON_VERSION,

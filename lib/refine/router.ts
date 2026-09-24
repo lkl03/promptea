@@ -28,8 +28,38 @@ const REPO_AGENT =
   /\b(repo(sitor(y|io))?|branch|rama|pull request|PR\b|merge|commit|checkout|npm (run|ci|install)|pnpm|yarn|git\s+\w+|CI\b|pipeline|deploy|lint|test suite|migraci[oó]n de repo|claude code|codex|copilot|agente?)\b/i;
 const JSON_SCHEMA =
   /\b(json|schema|campos|fields?|extract|extra[eé]|parse|csv|tabla|table|columns?|columnas?|null)\b/i;
-const IMAGE_GEN =
-  /\b(imagen|image|foto|photo|illustration|ilustraci[oó]n|render|midjourney|dall[- ]?e|stable diffusion|aspect ratio|relaci[oó]n de aspecto|estilo visual)\b/i;
+// v1.6.0: content-based image routing requires GENERATION intent. A prompt
+// that merely mentions an image ("describe this photo", "analizá esta
+// captura") is a vision/analysis task and must never receive an art-directed
+// image prompt. Explicit image purpose still routes directly.
+const IMAGE_MEDIUM_WORDS =
+  "image|images|picture|photo|photograph|illustration|poster|logo|icon|wallpaper|render|artwork|drawing|painting|imagen|im[aá]genes|foto|fotograf[ií]a|ilustraci[oó]n|p[oó]ster|logotipo|[ií]cono|fondo de pantalla|dibujo|pintura";
+const IMAGE_GEN_INTENT = new RegExp(
+  [
+    // Accented verb endings ("generá", "dibujá") are not JS word characters,
+    // so explicit letter lookarounds replace \b around the verb.
+    `(?<![\\wáéíóúñ])(generate|create|make|draw|design|render|paint|illustrate|produce|imagine|gener[aá](r|me)?|gen[eé]rame|cre[aá](r|me)?|cr[eé]ame|hac[eé](r|me)?|h[aá]zme|haz|dibuj[aá](r|me)?|dib[uú]jame|dise[nñ][aá](r|me)?|pint[aá](r|me)?)(?![\\wáéíóúñ])[^.\\n]{0,40}(?<![\\wáéíóúñ])(${IMAGE_MEDIUM_WORDS})(?![\\wáéíóúñ])`,
+    `\\b(midjourney|dall[- ]?e|stable diffusion|sdxl|nano banana|gpt[- ]?image|flux|ideogram|firefly)\\b`,
+    `\\b(aspect ratio|relaci[oó]n de aspecto|--ar\\s)`,
+    `\\b(photorealistic|fotorrealista)\\b`,
+    `^(?:(?:an?|the)\\s+)?(?:[\\w'’-]+\\s+){0,3}(image|picture|photo|photograph|illustration|render|painting|drawing|poster|portrait)\\s+of\\b`,
+    `^(?:(?:una?|la|el)\\s+)?(imagen|foto|fotograf[ií]a|ilustraci[oó]n|render|pintura|dibujo|p[oó]ster|retrato)\\s+(?:[\\wáéíóúñü'’-]+\\s+){0,2}de\\b`,
+  ].join("|"),
+  "i"
+);
+const IMAGE_ANALYSIS =
+  /\b(analy[sz]e|describe|explain|what('?s| is) in|identify|read|transcribe|extract|caption|ocr|analiz[aá]|describ[ií]|explic[aá]|qu[eé] (hay|muestra|aparece)|le[eé]|transcrib[ií]|extra[eé])\b[^.\n]{0,40}\b(image|photo|picture|screenshot|imagen|foto|captura)\b|\b(this|attached|the following|esta|adjunt[ao])\s+(image|photo|picture|screenshot|imagen|foto|captura)\b/i;
+
+/** True when the text asks for an image to be GENERATED (not analyzed). */
+export function isImageGenerationRequest(text: string): boolean {
+  const src = String(text ?? "");
+  return IMAGE_GEN_INTENT.test(src) && !IMAGE_ANALYSIS.test(src);
+}
+
+// Building a website/UI is implementation work even when the classifier saw
+// "landing" and guessed marketing copy.
+const FRONTEND_BUILD =
+  /(?<![\wáéíóúñ])(build|code|develop|implement|create|make|design|program|arm[aá]|armar|cre[aá]|crear|dise[nñ][aá]|dise[nñ]ar|desarroll[aá]|desarrollar|program[aá]|programar|maquet[aá]|maquetar|hac[eé]|hacer)(?![\wáéíóúñ])[^.\n]{0,40}(?<![\wáéíóúñ])(landing page|website|web site|web app|sitio web|p[aá]gina web|homepage|home page|frontend|front-end|user interface|interfaz|dashboard|portfolio|portafolio|react component|componente)(?![\wáéíóúñ])/i;
 const BRAINSTORM = /\b(ideas?|brainstorm|opciones|alternativas?|nombres?|t[ií]tulos?|sugerencias?|suggest)\b/i;
 const PLANNING = /\b(plan|roadmap|cronograma|timeline|milestones?|pasos|steps|checklist|estrategia|strategy)\b/i;
 const LONG_FORM =
@@ -85,8 +115,11 @@ export function selectStrategy(input: RoutingInput): RoutingDecision {
   if (input.purpose === "data" || input.taskType === "data_extraction" || (JSON_SCHEMA.test(text) && /\bjson\b/i.test(text))) {
     return pick("data_schema", "match:json_schema");
   }
-  if (input.purpose === "image" || input.taskType === "image" || IMAGE_GEN.test(text)) {
+  if (input.purpose === "image" || input.taskType === "image" || isImageGenerationRequest(text)) {
     return pick("image_generation", "match:image");
+  }
+  if ((input.purpose === "text" || input.purpose === "code") && FRONTEND_BUILD.test(text)) {
+    return pick("coding_implementation", "match:frontend_build");
   }
   if (input.taskType === "translation") return pick("translation", "task:translation");
   if (input.taskType === "summarization") return pick("summarization", "task:summarization");

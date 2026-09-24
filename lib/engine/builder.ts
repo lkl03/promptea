@@ -22,6 +22,8 @@ export type BuildOptions = {
   complexity?: Complexity;
   /** Router-selected strategy. Falls back to a task/purpose mapping. */
   strategy?: RefinementStrategy;
+  /** v1.6.0: selected model — its prompting profile shapes the result. */
+  modelId?: string | null;
 };
 
 // Matches the v1.2-era metadata header block so prompts optimized by older
@@ -77,5 +79,6 @@ export function buildOptimizedPrompt(
     lang,
     purpose,
     attachments,
+    modelId: opts.modelId ?? null,
   });
 }
