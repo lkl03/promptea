@@ -24,6 +24,24 @@ export async function generateMetadata({
       canonical: `/${l}/models`,
       languages: { es: "/es/models", en: "/en/models" },
     },
+    openGraph: {
+      title: l === "es" ? "Prompts por modelo (GPT, Claude, Gemini, Grok…)" : "Prompts by model (GPT, Claude, Gemini, Grok…)",
+      description:
+        l === "es"
+          ? "Guía por modelo: tips concretos + templates copy-paste para GPT, Claude, Gemini, Grok, Kimi y DeepSeek."
+          : "Per-model guide: practical tips + copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, and DeepSeek.",
+      url: `/${l}/models`,
+      type: "website",
+      locale: l === "en" ? "en_US" : "es_AR",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: l === "es" ? "Prompts por modelo (GPT, Claude, Gemini, Grok…)" : "Prompts by model (GPT, Claude, Gemini, Grok…)",
+      description:
+        l === "es"
+          ? "Guía por modelo: tips concretos + templates copy-paste para GPT, Claude, Gemini, Grok, Kimi y DeepSeek."
+          : "Per-model guide: practical tips + copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, and DeepSeek.",
+    },
   };
 }
 

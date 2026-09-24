@@ -6800,6 +6800,460 @@ Devolvé:
       },
     ],
   },
+  {
+    slug: "ai-prompts-for-research",
+    title: {
+      en: "AI prompts for research: literature review, synthesis, and gap analysis",
+      es: "Prompts de IA para investigación: revisión de literatura, síntesis y análisis de brechas",
+    },
+    description: {
+      en: "How to use AI as a research assistant for evidence synthesis, literature gap analysis, and reading summaries — without hallucinated citations.",
+      es: "Cómo usar la IA como asistente de investigación para síntesis de evidencia, análisis de brechas de literatura y resúmenes de lectura — sin citas inventadas.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI adds genuine value in research", es: "Dónde la IA agrega valor real en investigación" },
+        bullets: {
+          en: [
+            "Summarizing papers you have already read (AI cannot fetch papers — you paste the text).",
+            "Identifying gaps in arguments you provide.",
+            "Generating hypotheses from premises you supply.",
+            "Drafting literature review structure from an outline you define.",
+            "Explaining unfamiliar methodologies in plain language.",
+            "Creating reading notes from full text you paste.",
+          ],
+          es: [
+            "Resumir artículos que ya leíste (la IA no accede a papers — vos pegás el texto).",
+            "Identificar brechas en argumentos que vos le proporcionás.",
+            "Generar hipótesis a partir de premisas que definís.",
+            "Redactar la estructura de una revisión de literatura desde un esquema que armás.",
+            "Explicar metodologías desconocidas en lenguaje claro.",
+            "Crear notas de lectura desde el texto completo que pegás.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What AI cannot do in research", es: "Qué no puede hacer la IA en investigación" },
+        bullets: {
+          en: [
+            "Retrieve or verify sources — it cannot browse databases unless a search tool is attached.",
+            "Guarantee citation accuracy — AI invents plausible-sounding references.",
+            "Replace domain expertise — it cannot tell you if a finding is important.",
+            "Evaluate study quality — methodological critique requires deep domain knowledge.",
+          ],
+          es: [
+            "Recuperar o verificar fuentes — no puede navegar bases de datos a menos que tenga una herramienta de búsqueda conectada.",
+            "Garantizar exactitud de citas — la IA inventa referencias que suenan plausibles.",
+            "Reemplazar el conocimiento de dominio — no puede decirte si un hallazgo es importante.",
+            "Evaluar la calidad de un estudio — la crítica metodológica requiere conocimiento profundo del área.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to get reliable research outputs", es: "Cómo obtener outputs de investigación confiables" },
+        bullets: {
+          en: [
+            "Always supply the source text — never ask 'what does study X say' without pasting it.",
+            "Require inline attribution: 'cite the specific part of the text that supports this.'",
+            "Ask the model to flag uncertainty: 'if you are not sure, say so.'",
+            "Use AI for structure and argument shape, not factual claims.",
+          ],
+          es: [
+            "Siempre proporcioná el texto fuente — nunca preguntes 'qué dice el estudio X' sin pegarlo.",
+            "Pedí atribución inline: 'citá la parte específica del texto que respalda esto.'",
+            "Pedile al modelo que marque la incertidumbre: 'si no estás seguro, decilo.'",
+            "Usá la IA para estructura y forma del argumento, no para afirmaciones de hecho.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Literature gap analysis", es: "Análisis de brechas de literatura" },
+        purpose: "study",
+        target: "claude",
+        prompt: {
+          en: `I am researching: [your research question]
+
+Below is a summary of what the existing literature covers:
+[paste your notes or abstract summaries]
+
+Task:
+1. Identify gaps in the existing coverage — what questions remain unanswered?
+2. Identify contradictions or tensions between the positions described.
+3. Suggest 3 research directions that would address the most significant gaps.
+
+Constraints:
+- Base your response only on the text I provided above. Do not add claims from your training data.
+- If a gap you identify is not supported by the text I provided, say so explicitly.
+- Cite the part of my summary that supports each gap you identify.`,
+          es: `Estoy investigando: [tu pregunta de investigación]
+
+Abajo hay un resumen de lo que cubre la literatura existente:
+[pegá tus notas o resúmenes de abstracts]
+
+Tarea:
+1. Identificá brechas en la cobertura existente — ¿qué preguntas quedan sin responder?
+2. Identificá contradicciones o tensiones entre las posiciones descritas.
+3. Sugerí 3 direcciones de investigación que aborden las brechas más significativas.
+
+Restricciones:
+- Basá tu respuesta solo en el texto que te proporcioné arriba. No agregues afirmaciones de tu entrenamiento.
+- Si una brecha que identificás no está respaldada por el texto que te di, decilo explícitamente.
+- Citá la parte de mi resumen que respalda cada brecha que identificás.`,
+        },
+      },
+      {
+        title: { en: "Reading summary and key claims extractor", es: "Resumen de lectura y extractor de afirmaciones clave" },
+        purpose: "summarization",
+        target: "gpt",
+        prompt: {
+          en: `Below is the full text of a paper/article I am reading:
+
+[paste the full text]
+
+Produce:
+1. A 3-sentence summary of the central argument.
+2. The 5 most important empirical claims (each in one sentence, with a direct quote from the text).
+3. The main methodological approach (2 sentences).
+4. Limitations acknowledged by the authors (bullet list, quoting the text).
+5. One open question this work raises.
+
+Only use what is in the text above. If a section is missing, write "Not stated in the source."`,
+          es: `Abajo está el texto completo de un paper/artículo que estoy leyendo:
+
+[pegá el texto completo]
+
+Producí:
+1. Un resumen de 3 frases del argumento central.
+2. Las 5 afirmaciones empíricas más importantes (cada una en una frase, con una cita directa del texto).
+3. El enfoque metodológico principal (2 frases).
+4. Limitaciones reconocidas por los autores (lista de bullets, citando el texto).
+5. Una pregunta abierta que este trabajo plantea.
+
+Usá solo lo que está en el texto de arriba. Si falta alguna sección, escribí "No se menciona en la fuente."`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Will AI give me real citations?", es: "¿La IA me va a dar citas reales?" },
+        a: {
+          en: "AI language models cannot verify sources in real time unless a search tool is connected. When asked for citations from memory, they produce plausible-sounding references that may not exist or may be incorrect. Always supply the source text yourself and ask the model to cite specific passages from what you provided.",
+          es: "Los modelos de lenguaje no pueden verificar fuentes en tiempo real a menos que tengan una herramienta de búsqueda conectada. Cuando se les piden citas de memoria, producen referencias que suenan plausibles pero pueden no existir o ser incorrectas. Siempre proporcioná el texto fuente vos mismo y pedile al modelo que cite pasajes específicos de lo que le diste.",
+        },
+      },
+      {
+        q: { en: "Can I use AI to write my entire literature review?", es: "¿Puedo usar la IA para escribir toda mi revisión de literatura?" },
+        a: {
+          en: "You can use AI to draft structure, synthesize arguments you supply, and suggest transitions — but the factual content must come from sources you have verified. A literature review written from AI memory alone is likely to contain hallucinated papers or distorted findings. Use AI for shape and draft; use your sources for substance.",
+          es: "Podés usar la IA para redactar la estructura, sintetizar argumentos que vos le proporcionás y sugerir transiciones — pero el contenido factual debe venir de fuentes que vos verificaste. Una revisión de literatura escrita solo desde la memoria de la IA probablemente contenga papers inventados o hallazgos distorsionados. Usá la IA para la forma y el borrador; usá tus fuentes para el contenido.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "conversational-prompting",
+    title: {
+      en: "Conversational prompting: maintaining context in multi-turn AI chats",
+      es: "Prompting conversacional: mantener contexto en conversaciones multi-turno con IA",
+    },
+    description: {
+      en: "How to keep AI responses consistent across a long conversation: when to reset context, how to correct the model mid-chat, and how to hand off state to a new session.",
+      es: "Cómo mantener consistencia en respuestas de IA a través de una conversación larga: cuándo resetear el contexto, cómo corregir al modelo a mitad de charla y cómo transferir el estado a una nueva sesión.",
+    },
+    sections: [
+      {
+        heading: { en: "Why AI responses degrade in long conversations", es: "Por qué las respuestas de IA se degradan en conversaciones largas" },
+        bullets: {
+          en: [
+            "Context window limits: each model has a maximum token limit; very long conversations get truncated from the oldest messages first.",
+            "Instruction drift: a constraint set early (e.g. 'respond only in bullet points') weakens as the conversation grows.",
+            "Role confusion: after many turns, the model can lose track of a persona or role set at the start.",
+            "Cumulative small corrections: fixing one thing at a time without resetting can produce inconsistent outputs as prior instructions conflict.",
+          ],
+          es: [
+            "Límites de ventana de contexto: cada modelo tiene un límite máximo de tokens; en conversaciones muy largas se truncan los mensajes más antiguos primero.",
+            "Desviación de instrucciones: una restricción establecida al inicio (ej. 'respondé solo en bullets') se debilita a medida que crece la conversación.",
+            "Confusión de rol: después de muchos turnos, el modelo puede perder de vista un personaje o rol establecido al principio.",
+            "Correcciones acumulativas: corregir una cosa a la vez sin resetear puede producir outputs inconsistentes cuando instrucciones anteriores entran en conflicto.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Techniques for maintaining context", es: "Técnicas para mantener el contexto" },
+        bullets: {
+          en: [
+            "Open with a complete session header: role, task, format, and constraints in one block.",
+            "Repeat critical constraints every 5–10 turns if consistency matters.",
+            "Use numbered steps or checkpoints so the model can track progress.",
+            "When correcting, be explicit: 'ignore my previous instruction about X; instead do Y.'",
+            "For long research or writing tasks, summarize progress at natural breakpoints and paste the summary into a new session.",
+          ],
+          es: [
+            "Abrí con un encabezado de sesión completo: rol, tarea, formato y restricciones en un solo bloque.",
+            "Repetí las restricciones críticas cada 5–10 turnos si la consistencia importa.",
+            "Usá pasos numerados o puntos de control para que el modelo pueda rastrear el progreso.",
+            "Al corregir, sé explícito: 'ignorá mi instrucción anterior sobre X; en cambio hacé Y.'",
+            "Para tareas largas de investigación o escritura, resumí el progreso en puntos de quiebre naturales y pegá el resumen en una nueva sesión.",
+          ],
+        },
+      },
+      {
+        heading: { en: "When to start a new chat", es: "Cuándo abrir un nuevo chat" },
+        bullets: {
+          en: [
+            "When you have changed the task goal significantly.",
+            "When the model is producing outputs that ignore key constraints you set earlier.",
+            "When you want to test a different approach without influence from prior attempts.",
+            "When the conversation approaches the model's context limit (usually evident from forgotten early instructions).",
+          ],
+          es: [
+            "Cuando cambiaste significativamente el objetivo de la tarea.",
+            "Cuando el modelo produce outputs que ignoran restricciones clave que estableciste antes.",
+            "Cuando querés probar un enfoque diferente sin que el modelo se vea influenciado por intentos anteriores.",
+            "Cuando la conversación se acerca al límite de contexto del modelo (generalmente evidente por instrucciones tempranas olvidadas).",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Session header for consistent multi-turn work", es: "Encabezado de sesión para trabajo multi-turno consistente" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Session setup — read this before responding.
+
+Role: [e.g. senior technical writer, Python expert, Socratic tutor]
+Task: [describe the overall goal of this conversation]
+Format: [e.g. always respond in bullet points / short paragraphs / numbered steps]
+Constraints:
+- [constraint 1, e.g. 'never suggest external tools']
+- [constraint 2, e.g. 'keep each response under 300 words']
+- [constraint 3 if needed]
+
+Confirm you understand these instructions before I begin, then wait for my first message.`,
+          es: `Configuración de sesión — leé esto antes de responder.
+
+Rol: [ej. redactor técnico senior, experto en Python, tutor socrático]
+Tarea: [describí el objetivo general de esta conversación]
+Formato: [ej. respondé siempre en bullets / párrafos cortos / pasos numerados]
+Restricciones:
+- [restricción 1, ej. 'nunca sugieras herramientas externas']
+- [restricción 2, ej. 'mantené cada respuesta en menos de 300 palabras']
+- [restricción 3 si hace falta]
+
+Confirmá que entendés estas instrucciones antes de que empiece, y esperá mi primer mensaje.`,
+        },
+      },
+      {
+        title: { en: "Context handoff to a new session", es: "Transferencia de contexto a una nueva sesión" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `This is a continuation of a prior work session. Here is the state so far:
+
+Task: [original task, unchanged]
+Progress: [what has been decided or completed so far]
+Open items: [what still needs to be done, numbered]
+Decisions made: [key decisions and their rationale, 1 sentence each]
+Active constraints: [any format, tone, or scope constraints still in effect]
+
+Continue from Open item 1. Do not re-explain decisions already made — take them as given.`,
+          es: `Esta es la continuación de una sesión de trabajo anterior. Acá está el estado hasta ahora:
+
+Tarea: [tarea original, sin cambios]
+Progreso: [qué se decidió o completó hasta ahora]
+Ítems abiertos: [qué falta hacer, numerados]
+Decisiones tomadas: [decisiones clave y su justificación, 1 frase cada una]
+Restricciones activas: [restricciones de formato, tono o alcance que siguen vigentes]
+
+Continuá desde el Ítem abierto 1. No re-expliques decisiones ya tomadas — dálas por sentadas.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Should I use a system prompt or a user message for my session header?", es: "¿Uso un system prompt o un mensaje de usuario para el encabezado de sesión?" },
+        a: {
+          en: "If the interface exposes a system prompt field (ChatGPT Custom Instructions, Claude System Prompt in the API), use it — it persists more reliably than a user turn. If not, put the header at the top of your first user message.",
+          es: "Si la interfaz expone un campo de system prompt (ChatGPT Instrucciones personalizadas, Claude System Prompt en la API), usalo — persiste de forma más confiable que un turno de usuario. Si no, poné el encabezado al inicio de tu primer mensaje de usuario.",
+        },
+      },
+      {
+        q: { en: "How many turns before I should reset context?", es: "¿Cuántos turnos antes de que deba resetear el contexto?" },
+        a: {
+          en: "There is no universal number — it depends on the model and task. A practical signal: when the model produces a response that contradicts an instruction you gave fewer than 10 turns ago, start fresh. For structured tasks like coding or writing, resetting every 20–30 turns is a sensible default.",
+          es: "No hay un número universal — depende del modelo y la tarea. Una señal práctica: cuando el modelo produce una respuesta que contradice una instrucción que diste hace menos de 10 turnos, empezá de cero. Para tareas estructuradas como código o escritura, resetear cada 20–30 turnos es un buen punto de partida.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-design",
+    title: {
+      en: "AI prompts for UX and product design: copy, specs, and critique",
+      es: "Prompts de IA para diseño UX y de producto: copy, specs y crítica",
+    },
+    description: {
+      en: "Where AI fits in a design workflow: writing microcopy, reviewing design specifications, generating user story maps, and writing component requirements.",
+      es: "Dónde encaja la IA en un flujo de diseño: escribir microcopy, revisar especificaciones de diseño, generar mapas de historias de usuario y escribir requerimientos de componentes.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI genuinely helps in design", es: "Dónde la IA realmente ayuda en diseño" },
+        bullets: {
+          en: [
+            "Generating multiple variants of button labels, error messages, and empty states.",
+            "Drafting first passes at component documentation.",
+            "Critiquing a written spec for missing edge cases.",
+            "Writing acceptance criteria for user stories.",
+            "Generating alternatives to a design decision you are second-guessing.",
+            "Translating a sketch description into a technical spec.",
+          ],
+          es: [
+            "Generar múltiples variantes de etiquetas de botones, mensajes de error y estados vacíos.",
+            "Redactar primeros borradores de documentación de componentes.",
+            "Criticar una spec escrita en busca de casos borde faltantes.",
+            "Escribir criterios de aceptación para historias de usuario.",
+            "Generar alternativas a una decisión de diseño que estás cuestionando.",
+            "Traducir la descripción de un boceto en una spec técnica.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What AI cannot replace in design", es: "Qué no puede reemplazar la IA en diseño" },
+        bullets: {
+          en: [
+            "Visual judgment — AI cannot look at your mockup and tell you if it is visually clear.",
+            "User research — AI cannot replace talking to actual users.",
+            "Interaction design — AI can describe interactions but cannot feel usability problems.",
+            "Brand alignment — AI does not know your guidelines unless you supply them explicitly.",
+          ],
+          es: [
+            "Criterio visual — la IA no puede mirar tu mockup y decirte si es visualmente claro.",
+            "Investigación de usuarios — la IA no puede reemplazar hablar con usuarios reales.",
+            "Diseño de interacción — la IA puede describir interacciones pero no puede sentir problemas de usabilidad.",
+            "Alineación de marca — la IA no conoce tus guías a menos que las proporcionés explícitamente.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to brief AI effectively for design tasks", es: "Cómo briefear a la IA para tareas de diseño" },
+        bullets: {
+          en: [
+            "Provide context: user, platform, and interaction type.",
+            "Specify the tone: professional / friendly / urgent / neutral.",
+            "Set constraints: character limits for copy, no jargon, no passive voice.",
+            "Ask for variants, not a single answer: 'give me 5 options.'",
+            "Provide brand vocabulary if you have it: 'use workspace, not project.'",
+          ],
+          es: [
+            "Proporcioná contexto: usuario, plataforma y tipo de interacción.",
+            "Especificá el tono: profesional / amigable / urgente / neutral.",
+            "Definí restricciones: límite de caracteres para el copy, sin jerga, sin voz pasiva.",
+            "Pedí variantes, no una sola respuesta: 'dame 5 opciones.'",
+            "Proporcioná vocabulario de marca si lo tenés: 'usá workspace, no project.'",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "UX microcopy variants", es: "Variantes de microcopy UX" },
+        purpose: "marketing",
+        target: "gpt",
+        prompt: {
+          en: `I need copy variants for a UI component.
+
+Component: [e.g. empty state, error message, button label, tooltip, onboarding step]
+Context: [what the user just did or is about to do]
+Platform: [web app / mobile / desktop]
+Audience: [who will see this — e.g. new users, power users, non-technical users]
+Tone: [professional / friendly / playful / neutral / urgent]
+Constraints:
+- Maximum length: [e.g. 60 characters for the headline, 120 for the body]
+- Avoid: [jargon, passive voice, exclamation marks, or anything else]
+- Must include: [any required word, link, or action]
+
+Produce 5 variants. For each, write the copy and one sentence explaining the tone/approach choice.`,
+          es: `Necesito variantes de copy para un componente de UI.
+
+Componente: [ej. estado vacío, mensaje de error, etiqueta de botón, tooltip, paso de onboarding]
+Contexto: [qué acaba de hacer el usuario o qué está por hacer]
+Plataforma: [app web / móvil / escritorio]
+Audiencia: [quién va a ver esto — ej. usuarios nuevos, usuarios avanzados, usuarios no técnicos]
+Tono: [profesional / amigable / juguetón / neutral / urgente]
+Restricciones:
+- Longitud máxima: [ej. 60 caracteres para el título, 120 para el cuerpo]
+- Evitá: [jerga, voz pasiva, signos de exclamación, o lo que corresponda]
+- Debe incluir: [alguna palabra, enlace o acción requerida]
+
+Producí 5 variantes. Para cada una, escribí el copy y una frase explicando la elección de tono/enfoque.`,
+        },
+      },
+      {
+        title: { en: "Design spec critique", es: "Crítica de spec de diseño" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Review the following design specification and identify gaps.
+
+Spec:
+[paste your design spec or user story]
+
+Review for:
+1. Missing states — are empty, loading, error, and success states covered?
+2. Edge cases — what happens with very long text, zero items, or maximum limits?
+3. Accessibility — are focus order, keyboard navigation, and screen reader labels mentioned?
+4. Ambiguous copy — any label or message that could be interpreted more than one way?
+5. Missing interactions — hover, tap, drag, or transition behaviors not described?
+
+For each issue found, write:
+- Location: [which part of the spec]
+- Issue: [what is missing or unclear]
+- Suggested addition: [one sentence fix]
+
+If a category has no issues, write "No gaps found in this category."`,
+          es: `Revisá la siguiente especificación de diseño e identificá brechas.
+
+Spec:
+[pegá tu spec de diseño o historia de usuario]
+
+Revisá en busca de:
+1. Estados faltantes — ¿están cubiertos los estados vacío, cargando, error y éxito?
+2. Casos borde — ¿qué pasa con texto muy largo, cero ítems o límites máximos?
+3. Accesibilidad — ¿se mencionan orden de foco, navegación por teclado y etiquetas para lectores de pantalla?
+4. Copy ambiguo — ¿alguna etiqueta o mensaje que pueda interpretarse de más de una manera?
+5. Interacciones faltantes — ¿comportamientos de hover, tap, arrastre o transición no descritos?
+
+Por cada problema encontrado, escribí:
+- Ubicación: [qué parte de la spec]
+- Problema: [qué falta o es poco claro]
+- Adición sugerida: [corrección en una frase]
+
+Si una categoría no tiene problemas, escribí "No se encontraron brechas en esta categoría."`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI replace a UX writer?", es: "¿La IA puede reemplazar a un UX writer?" },
+        a: {
+          en: "No. AI can generate copy variants and flag obvious issues (passive voice, jargon, ambiguous labels), but UX writing requires understanding user mental models, tone consistency across a product, and context that AI cannot reliably infer. Use AI to accelerate drafting and generate alternatives; keep a human in the loop for final decisions.",
+          es: "No. La IA puede generar variantes de copy y señalar problemas obvios (voz pasiva, jerga, etiquetas ambiguas), pero la redacción UX requiere entender los modelos mentales del usuario, la consistencia de tono en todo el producto y el contexto que la IA no puede inferir de forma confiable. Usá la IA para acelerar borradores y generar alternativas; mantené a un humano en el circuito para las decisiones finales.",
+        },
+      },
+      {
+        q: { en: "Should I paste my design file into the prompt?", es: "¿Debo pegar mi archivo de diseño en el prompt?" },
+        a: {
+          en: "Most AI models cannot read Figma files directly. What you can paste: a written description of the component, your design spec text, acceptance criteria, or a list of states (empty, loading, error, success). For image-capable models, you can attach a screenshot of your design.",
+          es: "La mayoría de los modelos de IA no pueden leer archivos de Figma directamente. Lo que podés pegar: una descripción escrita del componente, el texto de tu spec de diseño, criterios de aceptación, o una lista de estados (vacío, cargando, error, éxito). Para modelos capaces de procesar imágenes, podés adjuntar una captura de pantalla de tu diseño.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

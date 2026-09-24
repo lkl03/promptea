@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.5.3 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.5.3</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 24-09-2026" : "Released: 2026-09-24"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para investigación — dónde la IA agrega valor real en investigación (sintetizá texto que vos proporcionás, identificá brechas en argumentos, generá hipótesis, estructurá revisiones de literatura), qué no puede hacer la IA (recuperar o verificar fuentes, garantizar exactitud de citas), cómo obtener outputs confiables, y dos plantillas: análisis de brechas de literatura y extractor de resumen de lectura y afirmaciones clave."
+              : "New guide: AI prompts for research — where AI adds genuine value in research (synthesize text you provide, identify argument gaps, generate hypotheses, structure literature reviews), what AI cannot do (retrieve or verify sources, guarantee citation accuracy), how to get reliable outputs, and two templates: a literature gap analysis and a reading summary and key claims extractor."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompting conversacional — por qué las respuestas de IA se degradan en conversaciones largas (límites de ventana de contexto, desviación de instrucciones, confusión de rol), técnicas para mantener el contexto (encabezados de sesión, repetir restricciones críticas, puntos de control numerados, correcciones explícitas, transferencias de contexto), cuándo abrir un nuevo chat, y dos plantillas: encabezado de sesión para trabajo multi-turno consistente y transferencia de contexto a una nueva sesión."
+              : "New guide: Conversational prompting — why AI responses degrade in long conversations (context window limits, instruction drift, role confusion), techniques for maintaining context (session headers, repeating critical constraints, numbered checkpoints, explicit corrections, context handoffs), when to start a new chat, and two templates: a session header for consistent multi-turn work and a context handoff to a new session."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: Prompts de IA para diseño UX y de producto — dónde la IA realmente ayuda en diseño (variantes de microcopy, borradores de documentación de componentes, crítica de specs, criterios de aceptación, alternativas de diseño), qué no puede reemplazar (criterio visual, investigación de usuarios, diseño de interacción, alineación de marca), cómo briefear a la IA para tareas de diseño, y dos plantillas: variantes de microcopy UX y crítica de spec de diseño."
+              : "New guide: AI prompts for UX and product design — where AI genuinely helps in design (microcopy variants, component documentation drafts, spec critique, acceptance criteria, design alternatives), what AI cannot replace (visual judgment, user research, interaction design, brand alignment), how to brief AI for design tasks, and two templates: a UX microcopy variants prompt and a design spec critique prompt."}
+          </li>
+          <li>
+            {isEs
+              ? "La página de índice de modelos ahora emite metadata Open Graph y Twitter Card propia — al compartir la página de modelos en redes sociales ahora se muestra el título y descripción específicos en lugar de los metadatos genéricos de la app."
+              : "The models index page now emits page-specific Open Graph and Twitter Card metadata — sharing the models index on social platforms now shows the page title and description instead of the generic app metadata."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.5.2 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

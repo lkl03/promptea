@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.5.2 (2026-09-17)
+## Latest update — v1.5.3 (2026-09-24)
 
-**Three new SEO guides + glossary social metadata.** Three new evergreen guides added: prompting reasoning models (o3, Claude thinking, Gemini thinking), AI prompts for teachers and educators, and how to rewrite a prompt for better results. Glossary term pages now emit Open Graph and Twitter Card metadata for better share previews. See the [changelog](./CHANGELOG.md) for full details.
+**Three new SEO guides + models index social metadata.** Three new evergreen guides added: AI prompts for research (literature review, synthesis, and gap analysis), conversational prompting (multi-turn context management), and AI prompts for UX and product design. The models index page now emits Open Graph and Twitter Card metadata for better share previews. Full details in the [weekly update PR](./CHANGELOG.md).
 
-_Previous update: v1.5.1 (2026-09-14) — Newsletter subscribe bar on AI Daily, homepage marquee, and weekly digest routine._
+_Previous update: v1.5.2 (2026-09-17) — Three new guides (reasoning models, educators, prompt rewriting) + glossary term Open Graph metadata._
 
 ## How it works
 

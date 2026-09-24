@@ -4,6 +4,27 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.5.3 — 2026-09-24
+
+**Three new evergreen guides + Open Graph metadata on the models index page.** This week's update adds guides on AI for research workflows, conversational prompting (multi-turn context management), and AI prompts for UX and product design. The product improvement adds Open Graph and Twitter Card metadata to the models index page, which previously inherited only the generic app title and description when shared on social platforms.
+
+### Added
+- **New guide: AI prompts for research** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-research`) — where AI adds genuine value in research (synthesizing text you provide, identifying argument gaps, hypothesis generation, literature review structure), what AI cannot do (retrieve or verify sources, guarantee citation accuracy), how to get reliable outputs (always supply source text, require inline attribution, ask the model to flag uncertainty), and two templates: a literature gap analysis prompt and a reading summary and key claims extractor.
+- **New guide: Conversational prompting** (`lib/seo/content/guides.ts`, slug `conversational-prompting`) — why AI responses degrade in long conversations (context window limits, instruction drift, role confusion), techniques for maintaining context (session headers, repeating critical constraints, numbered checkpoints, explicit corrections, context handoffs), when to start a new chat, and two templates: a session header for consistent multi-turn work and a context handoff to a new session.
+- **New guide: AI prompts for UX and product design** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-design`) — where AI genuinely helps in design (microcopy variants, component documentation drafts, spec critique, acceptance criteria, design alternatives), what AI cannot replace (visual judgment, user research, interaction design, brand alignment), how to brief AI for design tasks, and two templates: a UX microcopy variants prompt and a design spec critique prompt.
+
+### Changed
+- **Open Graph and Twitter Card metadata added to the models index page** (`app/[lang]/models/page.tsx`) — the models index page now emits page-specific `openGraph` and `twitter` metadata, matching what guide and glossary detail pages already have. Shares of the models index on social platforms now show the page title and description instead of the generic app metadata.
+- Version bumped to `v1.5.3` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean on files changed in this release
+- `npm test` — all suites pass, including version-sync checks
+- `npm run build` — not run locally (requires Firebase env vars); no build-breaking changes introduced
+
+---
+
 ## v1.5.2 — 2026-09-17
 
 **Three new evergreen guides + Open Graph metadata on glossary term pages.** This week's update adds guides on prompting reasoning models, AI prompts for educators, and iterative prompt rewriting to the SEO content library. The product improvement adds Open Graph and Twitter Card metadata to the glossary term detail pages — they previously inherited only the generic app title/description when shared on social platforms, the same gap that was closed for guide pages in v1.2.2.
