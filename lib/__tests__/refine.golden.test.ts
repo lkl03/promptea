@@ -19,6 +19,8 @@ type GoldenCase = {
   lang: Lang;
   target: TargetAI;
   purpose: PromptPurpose;
+  /** v1.6.0: pin a model when the case asserts profile-specific wording. */
+  modelId?: string;
   prompt: string;
   expect: {
     strategy?: string | string[];
@@ -41,6 +43,7 @@ const CASES: GoldenCase[] = [
     id: "en-casual-message",
     lang: "en",
     target: "gpt",
+    modelId: "gpt-6-sol",
     purpose: "text",
     prompt: "Make this message to my landlord sound friendlier",
     expect: {
@@ -55,6 +58,7 @@ const CASES: GoldenCase[] = [
     id: "es-casual-message",
     lang: "es",
     target: "gpt",
+    modelId: "gpt-6-sol",
     purpose: "text",
     prompt: "Hacé más amable este mensaje para mi casero",
     expect: {
@@ -129,8 +133,40 @@ const CASES: GoldenCase[] = [
       strategy: "agent_workflow",
       complexity: ["moderate", "complex"],
       preservesLiterals: true,
-      // v1.3.0 agent-workflow shape headings (lib/engine/shapes.ts).
-      mustContain: ["fix/nav-overflow", "components/Nav.tsx", "npm run lint", "OBJECTIVE:", "STEPS & VALIDATION:"],
+      // v1.6.0: Claude Opus 5.5 (the Claude default) gets an outcome spec —
+      // scope + completion criteria — not step-by-step scaffolding.
+      mustContain: ["fix/nav-overflow", "components/Nav.tsx", "npm run lint", "OBJECTIVE:", "SCOPE:", "DONE WHEN:"],
+      mustNotContain: ["STEPS & VALIDATION:", "double-check", "step by step", "think carefully"],
+    },
+  },
+  {
+    id: "en-claude-code-repo-task-sonnet",
+    lang: "en",
+    target: "claude",
+    modelId: "claude-sonnet-5",
+    purpose: "code",
+    prompt:
+      "In repo acme/site, create branch fix/nav-overflow from main. Fix the mobile nav overflow in components/Nav.tsx (menu clips at 320px). Run npm run lint and npm run build, commit with a conventional message, push, and open a PR against main. Do not touch unrelated files.",
+    expect: {
+      strategy: "agent_workflow",
+      preservesLiterals: true,
+      // Sonnet 5 follows instructions literally: explicit steps + scope line.
+      mustContain: ["OBJECTIVE:", "STEPS & VALIDATION:", "Apply every requirement above to the whole task"],
+    },
+  },
+  {
+    id: "en-astra-casual-message",
+    lang: "en",
+    target: "gpt",
+    purpose: "text",
+    prompt: "Make this message to my landlord sound friendlier",
+    expect: {
+      strategy: "message_polish",
+      complexity: "simple",
+      // GPT-6 Astra (the GPT default) is told to act on sensible assumptions.
+      mustContain: ["If a detail is unclear, make a sensible assumption and mention it in one line"],
+      mustNotContain: ["ask up to 2 questions"],
+      maxGrowth: 14,
     },
   },
   {
@@ -190,14 +226,16 @@ const CASES: GoldenCase[] = [
     prompt: "A cozy reading nook at golden hour, watercolor style, 3:2 aspect ratio, soft warm light, no people.",
     expect: {
       strategy: "image_generation",
-      // v1.3.0 image shape headings (lib/engine/shapes.ts).
-      mustContain: ["DESCRIPTION:", "VISUAL ATTRIBUTES:"],
+      // v1.6.0: the FINISHED image prompt — user details kept, no checklist.
+      mustContain: ["reading nook", "watercolor", "3:2", "soft warm light", "people"],
+      mustNotContain: ["DESCRIPTION:", "VISUAL ATTRIBUTES:", "Subject, style, composition"],
     },
   },
   {
     id: "en-ambiguous",
     lang: "en",
     target: "gpt",
+    modelId: "gpt-6-sol",
     purpose: "text",
     prompt: "make it better",
     expect: {
@@ -264,7 +302,7 @@ const CASES: GoldenCase[] = [
 describe("golden refinement dataset (deterministic invariants)", () => {
   for (const c of CASES) {
     test(c.id, () => {
-      const r = analyzePrompt(c.prompt, c.target, c.lang, c.purpose);
+      const r = analyzePrompt(c.prompt, c.target, c.lang, c.purpose, { modelId: c.modelId ?? null });
       const opt = r.optimizedPrompt;
 
       if (c.expect.strategy) {
@@ -301,7 +339,7 @@ describe("golden refinement dataset (deterministic invariants)", () => {
       // deterministic re-analysis stays byte-stable.
       expect(opt, `${c.id}: metadata header leaked`).not.toMatch(/^PROMPTEA:/i);
       expect(opt, `${c.id}: metadata line leaked`).not.toMatch(/^(MODEL|PURPOSE|TASK_TYPE):\s/m);
-      const r2 = analyzePrompt(opt, c.target, c.lang, c.purpose);
+      const r2 = analyzePrompt(opt, c.target, c.lang, c.purpose, { modelId: c.modelId ?? null });
       expect(r2.optimizedPrompt.trim(), `${c.id}: idempotency`).toBe(opt.trim());
     });
   }

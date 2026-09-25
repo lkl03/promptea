@@ -6,6 +6,14 @@
 // scaffold. Version/model/purpose metadata now travels ONLY in result
 // metadata — never inside the prompt the user copies.
 //
+// v1.6.0: shapes are MODEL-aware. The selected model's prompting profile
+// (lib/engine/modelProfiles.ts, built from each provider's current official
+// guidance) decides the light-path clarifier, how agent/repo work is
+// specified, where attached context goes, the deliverable and research lines,
+// the closing line, and — for Claude Opus 5.5 — the concrete frontend
+// anti-patterns. Image requests no longer get a checklist of attributes to
+// add: lib/engine/imagePrompt.ts writes the finished image prompt.
+//
 // Invariants the rest of the engine depends on:
 // - Every STRUCTURED shape places the user's request under exactly one core
 //   heading registered in CORE_HEADINGS, so the extractor can invert the
@@ -20,6 +28,14 @@ import type { Lang, TargetAI } from "../promptTemplates";
 import type { TaskType, PromptPurpose } from "./types";
 import type { Complexity, RefinementStrategy } from "@/lib/domain";
 import type { AttachmentContext } from "@/lib/attachments";
+import {
+  CLARIFIER_LINES,
+  pickLine,
+  resolvePromptProfile,
+  type Lines,
+  type PromptProfile,
+} from "./modelProfiles";
+import { buildImagePrompt } from "./imagePrompt";
 
 function t<T>(lang: Lang, es: T, en: T): T {
   return lang === "es" ? es : en;
@@ -41,6 +57,8 @@ const CORE_HEADING: Partial<Record<RefinementStrategy, Heading>> = {
   coding_implementation: { es: "OBJETIVO:", en: "GOAL:" },
   debugging_review: { es: "PROBLEMA:", en: "PROBLEM:" },
   data_schema: { es: "TAREA:", en: "TASK:" },
+  // Kept registered so image prompts produced by v1.3–v1.5 (which used this
+  // heading) still re-analyze into the v1.6 composer instead of nesting.
   image_generation: { es: "DESCRIPCIÓN:", en: "DESCRIPTION:" },
   translation: { es: "PEDIDO:", en: "REQUEST:" },
   summarization: { es: "PEDIDO:", en: "REQUEST:" },
@@ -62,6 +80,7 @@ const SECTION_HEADING = {
   expectedAnswer: { es: "RESPUESTA ESPERADA:", en: "EXPECTED ANSWER:" },
   schemaRules: { es: "SCHEMA Y REGLAS:", en: "SCHEMA & RULES:" },
   output: { es: "SALIDA:", en: "OUTPUT:" },
+  // v1.3–v1.5 image headings, still registered for re-analysis of old outputs.
   visualAttributes: { es: "ATRIBUTOS VISUALES:", en: "VISUAL ATTRIBUTES:" },
   exclusions: { es: "EXCLUSIONES:", en: "EXCLUSIONS:" },
   preserve: { es: "PRESERVAR:", en: "PRESERVE:" },
@@ -76,6 +95,13 @@ const SECTION_HEADING = {
   expectedPlan: { es: "PLAN ESPERADO:", en: "EXPECTED PLAN:" },
   responseFormat: { es: "FORMATO DE RESPUESTA:", en: "RESPONSE FORMAT:" },
   attachedContext: { es: "CONTEXTO ADJUNTO:", en: "ATTACHED CONTEXT:" },
+  // v1.6.0 model-profile sections.
+  scope: { es: "ALCANCE:", en: "SCOPE:" },
+  doneWhen: { es: "LISTO CUANDO:", en: "DONE WHEN:" },
+  userUpdates: { es: "AVISOS AL USUARIO:", en: "USER UPDATES:" },
+  permissions: { es: "PERMISOS Y AUTONOMÍA:", en: "PERMISSIONS & AUTONOMY:" },
+  focus: { es: "FOCO:", en: "FOCUS:" },
+  designDirection: { es: "DIRECCIÓN DE DISEÑO:", en: "DESIGN DIRECTION:" },
 } as const;
 
 function allHeadingLiterals(): string[] {
@@ -104,7 +130,7 @@ function coreHeadingLiterals(): string[] {
   return [...out];
 }
 
-/** Every heading a v1.3.0 shape can emit (both languages). */
+/** Every heading a shape can emit (both languages). */
 export const SHAPE_HEADINGS: readonly string[] = allHeadingLiterals();
 
 /** Headings whose block contains the user's request verbatim. */
@@ -114,17 +140,16 @@ export const CORE_HEADINGS: readonly string[] = coreHeadingLiterals();
 // Guarded light-path sentences (simple prompts stay natural)
 // ---------------------------------------------------------------------------
 
-const CLARIFIER = {
-  es: "Si te falta información clave, hacé hasta 2 preguntas antes de asumir.",
-  en: "If key information is missing, ask up to 2 questions before assuming.",
-};
-
 const BRAINSTORM_LINE = {
   es: "Generá ideas variadas entre sí y marcá las 3 más prometedoras con una línea sobre por qué.",
   en: "Generate ideas that differ from each other and flag the 3 most promising with one line on why.",
 };
 
-const GUARDED_LINES = [CLARIFIER.es, CLARIFIER.en, BRAINSTORM_LINE.es, BRAINSTORM_LINE.en];
+const GUARDED_LINES = [
+  ...Object.values(CLARIFIER_LINES).flatMap((l) => [l.es, l.en]),
+  BRAINSTORM_LINE.es,
+  BRAINSTORM_LINE.en,
+];
 
 /**
  * Remove the guarded light-path guidance sentences from a prompt so that
@@ -138,54 +163,45 @@ export function stripGuardedGuidance(text: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Target-specific tip (one line, folded into the last guidance section)
+// Frontend detection (Claude Opus 5.5 guidance: name concrete anti-patterns)
 // ---------------------------------------------------------------------------
 
-function targetTip(target: TargetAI, lang: Lang): string {
-  switch (String(target)) {
-    case "claude":
-      return t(
-        lang,
-        "Para Claude: si el input es largo, delimitá contexto con etiquetas tipo <context> o <source_text>.",
-        "For Claude: if the input is long, delimit context with tags like <context> or <source_text>."
-      );
-    case "gemini":
-      return t(
-        lang,
-        "Para Gemini: mostrá el formato de salida exacto; un mini ejemplo mejora la consistencia.",
-        "For Gemini: show the exact output format; a tiny example improves consistency."
-      );
-    case "grok":
-      return t(
-        lang,
-        "Para Grok: pedí respuesta directa y marcá el tono si importa.",
-        "For Grok: ask for a direct answer and set the tone if it matters."
-      );
-    case "deepseek":
-      return t(
-        lang,
-        "Para DeepSeek: pedí criterios de corrección y una breve auto-verificación.",
-        "For DeepSeek: ask for correctness criteria and a brief self-check."
-      );
-    case "kimi":
-      return t(
-        lang,
-        "Para Kimi: marcá qué parte del input es fuente primaria y qué parte es instrucción.",
-        "For Kimi: mark which part of the input is source material and which is instruction."
-      );
-    case "perplexity":
-      return t(
-        lang,
-        "Para Perplexity: pedí fuentes con URL y acotá el período temporal.",
-        "For Perplexity: ask for sources with URLs and constrain the time range."
-      );
-    default:
-      return t(
-        lang,
-        "Para GPT: mantené objetivo, contexto y formato como bloques cortos y separados.",
-        "For GPT: keep goal, context, and format as short separate blocks."
-      );
+const FRONTEND_RE =
+  /\b(landing page|landing|website|web site|web app|sitio web|p[aá]gina web|homepage|home page|frontend|front-end|user interface|interfaz|dashboard|portfolio|portafolio|html|css|tailwind|react component|componente de react|componente ui|ui component)\b/i;
+// "UI" only as an uppercase token, so the Spanish/English word "ui" in other
+// contexts never triggers design guidance.
+const UI_TOKEN_RE = /\bUI\b/;
+
+export function isFrontendTask(text: string): boolean {
+  const src = String(text ?? "");
+  return FRONTEND_RE.test(src) || UI_TOKEN_RE.test(src);
+}
+
+function frontendApplies(args: ShapeArgs, profile: PromptProfile): boolean {
+  if (!profile.frontendAvoid) return false;
+  if (!isFrontendTask(args.core)) return false;
+  return (
+    args.strategy === "coding_implementation" ||
+    args.strategy === "agent_workflow" ||
+    args.strategy === "general" ||
+    args.strategy === "message_polish" ||
+    args.strategy === "planning_execution"
+  );
+}
+
+function designDirectionLines(core: string, profile: PromptProfile): Lines | null {
+  const avoid = (profile.frontendAvoid ?? []).filter((item) => !item.match.test(core));
+  const es = [
+    "Donde el pedido deja el estilo abierto, elegí valores concretos (paleta, tipografías, espaciado, layout) acordes al brief en vez de caer en defaults.",
+  ];
+  const en = [
+    "Where the brief leaves style open, choose concrete values (palette, typefaces, spacing, layout) that fit it instead of falling back on defaults.",
+  ];
+  if (avoid.length) {
+    es.push(`Salvo que se pidan, evitá: ${avoid.map((a) => a.es).join("; ")}.`);
+    en.push(`Unless requested, avoid: ${avoid.map((a) => a.en).join("; ")}.`);
   }
+  return { es, en };
 }
 
 // ---------------------------------------------------------------------------
@@ -231,6 +247,8 @@ export type ShapeArgs = {
   lang: Lang;
   purpose: PromptPurpose | string;
   attachments: AttachmentContext[];
+  /** v1.6.0: selected model; resolves to the target default when absent. */
+  modelId?: string | null;
 };
 
 type Section = { heading: Heading; lines: { es: string[]; en: string[] } };
@@ -239,33 +257,52 @@ function pick(lang: Lang, h: Heading): string {
   return t(lang, h.es, h.en);
 }
 
-function renderSections(args: ShapeArgs, sections: Section[], tipInLast = true): string {
+function renderSections(args: ShapeArgs, profile: PromptProfile, sections: Section[], closingInLast = true): string {
   const { lang, core, attachments, strategy } = args;
   const coreHeading = CORE_HEADING[strategy] ?? CORE_HEADING.general!;
 
-  const blocks: string[] = [[pick(lang, coreHeading), core].join("\n")];
+  const all = [...sections];
+  if (frontendApplies(args, profile)) {
+    const design = designDirectionLines(core, profile);
+    if (design) all.push({ heading: SECTION_HEADING.designDirection, lines: design });
+  }
 
-  sections.forEach((section, idx) => {
+  const blocks: string[] = [];
+  const attached = attachmentSection(lang, attachments);
+  // Anthropic and Google both document "long context first, question last".
+  if (attached && profile.contextFirst) blocks.push(attached);
+
+  blocks.push([pick(lang, coreHeading), core].join("\n"));
+
+  all.forEach((section, idx) => {
     const lines = [...t(lang, section.lines.es, section.lines.en)];
-    if (tipInLast && idx === sections.length - 1) lines.push(targetTip(args.target, lang));
+    if (closingInLast && idx === all.length - 1 && profile.closing) {
+      const closing = pickLine(lang, profile.closing);
+      if (!lines.includes(closing)) lines.push(closing);
+    }
     blocks.push([pick(lang, section.heading), bullet(lines)].join("\n"));
   });
 
-  const attached = attachmentSection(lang, attachments);
-  if (attached) blocks.push(attached);
+  if (attached && !profile.contextFirst) blocks.push(attached);
 
   return blocks.join("\n\n");
 }
 
 /** Whether this build must use a structured (headed) shape. */
-export function needsStructuredShape(strategy: RefinementStrategy, complexity: Complexity, attachmentsCount: number): boolean {
+export function needsStructuredShape(
+  strategy: RefinementStrategy,
+  complexity: Complexity,
+  attachmentsCount: number,
+  opts: { frontendEscalation?: boolean } = {}
+): boolean {
   if (attachmentsCount > 0) return true;
-  if (strategy === "data_schema" || strategy === "image_generation" || strategy === "agent_workflow") return true;
+  if (strategy === "data_schema" || strategy === "agent_workflow") return true;
+  if (opts.frontendEscalation) return true;
   if (strategy === "message_polish" || strategy === "brainstorming") return false;
   return complexity !== "simple";
 }
 
-function lightPath(args: ShapeArgs): string {
+function lightPath(args: ShapeArgs, profile: PromptProfile): string {
   const { core, lang, strategy } = args;
 
   if (strategy === "brainstorming") {
@@ -279,23 +316,125 @@ function lightPath(args: ShapeArgs): string {
     return core;
   }
 
-  const line = t(lang, CLARIFIER.es, CLARIFIER.en);
+  const line = pickLine(lang, CLARIFIER_LINES[profile.clarifier]);
   return core.includes(line) ? core : `${core}\n\n${line}`;
 }
 
-export function buildShapedPrompt(args: ShapeArgs): string {
-  const core = String(args.core ?? "").trim();
-  const shaped: ShapeArgs = { ...args, core };
-  const { complexity } = shaped;
-
-  if (!needsStructuredShape(shaped.strategy, complexity, shaped.attachments.length)) {
-    return lightPath(shaped);
-  }
-
+function agentSections(profile: PromptProfile, complexity: Complexity): Section[] {
   const S = SECTION_HEADING;
 
-  switch (shaped.strategy) {
-    case "agent_workflow": {
+  switch (profile.agentStyle) {
+    case "outcome": {
+      const fable = profile.id === "fable-autonomous";
+      const sections: Section[] = [
+        {
+          heading: S.scope,
+          lines: {
+            es: [
+              "Leé el código relevante antes de cambiarlo y mantené el cambio dentro de lo pedido.",
+              fable
+                ? "Si notás problemas previos fuera de este pedido, reportalos al final en vez de arreglarlos."
+                : "Resolvé vos las decisiones de rutina; consultá solo si distintas lecturas del pedido llevarían a trabajos muy diferentes.",
+            ],
+            en: [
+              "Read the relevant code before changing it and keep the change within what was asked.",
+              fable
+                ? "If you notice pre-existing issues outside this request, report them at the end instead of fixing them."
+                : "Make routine judgment calls yourself; check in only if different readings of the request would lead to materially different work.",
+            ],
+          },
+        },
+        {
+          heading: S.doneWhen,
+          lines: {
+            es: ["El cambio funciona de punta a punta, sin stubs ni placeholders, y pasan los tests y comandos de validación existentes del proyecto."],
+            en: ["The change works end to end, with no stubs or placeholders, and the project's existing tests and validation commands pass."],
+          },
+        },
+      ];
+      if (complexity === "complex") {
+        sections.push({
+          heading: S.userUpdates,
+          lines: {
+            es: [
+              fable
+                ? "Reportá solo avances que puedas respaldar con un resultado de herramienta; si algo todavía no está verificado, decilo."
+                : "Antes de la primera herramienta, decí en una frase qué vas a hacer; mientras trabajás, avisá solo si encontrás algo importante o cambiás de rumbo.",
+              "Al terminar, empezá por el resultado: qué cambió, qué verificaste y qué necesita una decisión mía.",
+            ],
+            en: [
+              fable
+                ? "Report only progress you can point to a tool result for; if something is not verified yet, say so."
+                : "Before your first tool call, say in one sentence what you're about to do; while working, update only when you find something important or change direction.",
+              "When you finish, lead with the outcome: what changed, what you verified, and anything that needs my decision.",
+            ],
+          },
+        });
+      }
+      return sections;
+    }
+
+    case "autonomous": {
+      const sections: Section[] = [
+        {
+          heading: S.permissions,
+          lines: {
+            es: [
+              "Tenés permiso para revisar el repo, correr los tests y arreglar fallas sin preguntar cada vez.",
+              "Llevá la tarea hasta el final; preguntá solo si estás realmente bloqueado o antes de acciones destructivas o irreversibles.",
+            ],
+            en: [
+              "You have permission to inspect the repo, run the tests, and fix failures without asking each time.",
+              "Carry the task through to completion; ask only when truly blocked or before destructive or irreversible actions.",
+            ],
+          },
+        },
+        {
+          heading: S.doneWhen,
+          lines: {
+            es: ["El cambio funciona de punta a punta y pasan los checks existentes."],
+            en: ["The change works end to end and the existing checks pass."],
+          },
+        },
+      ];
+      if (complexity === "complex") {
+        sections.push({
+          heading: S.delivery,
+          lines: {
+            es: ["Resumí en párrafos cortos qué cambió y cómo lo verificaste."],
+            en: ["Summarize in short paragraphs what changed and how you verified it."],
+          },
+        });
+      }
+      return sections;
+    }
+
+    case "focused":
+      return [
+        {
+          heading: S.focus,
+          lines: {
+            es: [
+              "Trabajá solo en los archivos y secciones que toca esta tarea; pedí cualquier otro archivo que necesites en vez de recorrer todo el repo.",
+              "Definí los criterios de corrección antes de cambiar código e iterá en diffs chicos.",
+            ],
+            en: [
+              "Work only in the files and sections this task touches; ask for any other file you need instead of scanning the whole repo.",
+              "State the correctness criteria before changing code, then iterate in small diffs.",
+            ],
+          },
+        },
+        {
+          heading: S.stepsValidation,
+          lines: {
+            es: ["Ejecutá los tests o comandos de validación existentes antes de dar por terminado."],
+            en: ["Run the existing tests or validation commands before calling it done."],
+          },
+        },
+      ];
+
+    case "stepwise":
+    default: {
       const sections: Section[] = [
         {
           heading: S.stepsValidation,
@@ -328,8 +467,35 @@ export function buildShapedPrompt(args: ShapeArgs): string {
           },
         });
       }
-      return renderSections(shaped, sections);
+      return sections;
     }
+  }
+}
+
+export function buildShapedPrompt(args: ShapeArgs): string {
+  const core = String(args.core ?? "").trim();
+  const shaped: ShapeArgs = { ...args, core };
+  const { complexity } = shaped;
+  const profile = resolvePromptProfile(shaped.target, shaped.modelId);
+
+  // v1.6.0: image requests return the FINISHED image prompt (never a list of
+  // attributes to add). Attached context, if any, is still carried along.
+  if (shaped.strategy === "image_generation") {
+    const image = buildImagePrompt(core, shaped.lang);
+    const attached = attachmentSection(shaped.lang, shaped.attachments);
+    return attached ? `${image}\n\n${attached}` : image;
+  }
+
+  const frontendEscalation = frontendApplies(shaped, profile);
+  if (!needsStructuredShape(shaped.strategy, complexity, shaped.attachments.length, { frontendEscalation })) {
+    return lightPath(shaped, profile);
+  }
+
+  const S = SECTION_HEADING;
+
+  switch (shaped.strategy) {
+    case "agent_workflow":
+      return renderSections(shaped, profile, agentSections(profile, complexity));
 
     case "coding_implementation": {
       const sections: Section[] = [];
@@ -350,16 +516,16 @@ export function buildShapedPrompt(args: ShapeArgs): string {
       }
       sections.push({
         heading: S.deliverable,
-        lines: {
+        lines: profile.codingDeliverable ?? {
           es: ["Explicación breve + código final completo.", "Tests mínimos y cómo ejecutarlo."],
           en: ["Brief explanation + complete final code.", "Minimal tests and how to run it."],
         },
       });
-      return renderSections(shaped, sections);
+      return renderSections(shaped, profile, sections);
     }
 
     case "debugging_review": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.evidence,
           lines: {
@@ -384,7 +550,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
     }
 
     case "data_schema": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.schemaRules,
           lines: {
@@ -408,33 +574,8 @@ export function buildShapedPrompt(args: ShapeArgs): string {
       ]);
     }
 
-    case "image_generation": {
-      return renderSections(shaped, [
-        {
-          heading: S.visualAttributes,
-          lines: {
-            es: [
-              "Sujeto, estilo, composición, iluminación, encuadre, fondo y mood.",
-              "Relación de aspecto y nivel de detalle.",
-            ],
-            en: [
-              "Subject, style, composition, lighting, framing, background, and mood.",
-              "Aspect ratio and level of detail.",
-            ],
-          },
-        },
-        {
-          heading: S.exclusions,
-          lines: {
-            es: ["Indicá qué NO debe aparecer si eso ayuda a controlar el resultado."],
-            en: ["State what must NOT appear if that helps control the result."],
-          },
-        },
-      ], false);
-    }
-
     case "translation": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.preserve,
           lines: {
@@ -454,7 +595,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
     }
 
     case "summarization": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.expectedSummary,
           lines: {
@@ -474,7 +615,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
     }
 
     case "study_tutoring": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.howToTeach,
           lines: {
@@ -497,7 +638,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
       const sections: Section[] = [
         {
           heading: S.approach,
-          lines: {
+          lines: profile.researchApproach ?? {
             es: [
               "Separá hechos verificables de inferencias.",
               "Indicá fuentes y período cuando la actualidad importe.",
@@ -520,11 +661,11 @@ export function buildShapedPrompt(args: ShapeArgs): string {
           },
         });
       }
-      return renderSections(shaped, sections);
+      return renderSections(shaped, profile, sections);
     }
 
     case "marketing_copy": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.brandAudience,
           lines: {
@@ -555,7 +696,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
     }
 
     case "long_form_writing": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.audienceTone,
           lines: {
@@ -586,7 +727,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
     }
 
     case "planning_execution": {
-      return renderSections(shaped, [
+      return renderSections(shaped, profile, [
         {
           heading: S.expectedPlan,
           lines: {
@@ -606,17 +747,26 @@ export function buildShapedPrompt(args: ShapeArgs): string {
     }
 
     default: {
-      return renderSections(shaped, [
+      // Frontend escalation of a short request keeps a minimal frame: the
+      // request plus the design direction, no generic response-format rules.
+      if (frontendEscalation && (shaped.strategy === "message_polish" || complexity === "simple")) {
+        return renderSections(shaped, profile, []);
+      }
+      return renderSections(shaped, profile, [
         {
           heading: S.responseFormat,
           lines: {
             es: [
               "Respondé estructurado, con lo más importante primero.",
-              "Si falta información crítica, hacé hasta 3 preguntas antes de asumir.",
+              profile.clarifier === "assume"
+                ? "Si falta información crítica, asumí lo razonable y aclaralo; preguntá solo si cambia el resultado."
+                : "Si falta información crítica, hacé hasta 3 preguntas antes de asumir.",
             ],
             en: [
               "Answer in a structured way, most important first.",
-              "If critical information is missing, ask up to 3 questions before assuming.",
+              profile.clarifier === "assume"
+                ? "If critical information is missing, make a reasonable assumption and state it; ask only if it changes the result."
+                : "If critical information is missing, ask up to 3 questions before assuming.",
             ],
           },
         },

@@ -5,9 +5,10 @@
 // protected literals, language, and requested format — and must actually be
 // a prompt, not an answer to the user's underlying task.
 
-import type { Lang } from "@/lib/domain";
+import type { Lang, PromptProfileId } from "@/lib/domain";
 import { languageMatches } from "./language";
 import { literalsPreserved, type ProtectedLiteral } from "./literals";
+import { imagePromptIssues } from "@/lib/engine/imagePrompt";
 
 export type QualityGateInput = {
   original: string;
@@ -15,6 +16,10 @@ export type QualityGateInput = {
   candidate: string;
   language: Lang;
   literals: ProtectedLiteral[];
+  /** v1.6.0: routing strategy — enables the image-prompt checks. */
+  strategy?: string;
+  /** v1.6.0: target model's prompting profile — enables model-guidance checks. */
+  profileId?: PromptProfileId;
 };
 
 export type QualityGateResult = {
@@ -38,6 +43,14 @@ const JSON_DEMAND = /\b(only\s+(valid\s+)?json|solo\s+json|devolv[eé]\s+solo\s+
 // v1.3.0: the optimized prompt must NOT carry internal metadata headers —
 // version/model/purpose belong in result metadata, never in prompt content.
 const METADATA_HEADER = /^(PROMPTEA:|MODEL:\s|PURPOSE:\s|TASK_TYPE:\s)/im;
+
+// v1.6.0: Claude Opus 5.5 / Fable 5.1 always think (adaptive thinking; effort
+// is the control) and Anthropic's guide says to drop reasoning-inducing and
+// reasoning-extraction instructions — a rewrite must not ADD them.
+const REASONING_SCAFFOLD =
+  /\b(think (step[- ]by[- ]step|carefully|hard|deeply)|let'?s think|show (me )?your (reasoning|work|thinking)|write out your reasoning|explain your reasoning before|chain[- ]of[- ]thought|pens[aá] paso a paso|pens[aá] (con cuidado|bien)|razon[aá] paso a paso|mostr[aá] (tu|el) razonamiento)\b/i;
+// Opus 5.x self-verifies; explicit re-check instructions cause over-verification.
+const OVER_VERIFICATION = /\b(double[- ]check|re-?verify|verify your (work|answer)|check your work|revis[aá] dos veces|verific[aá] tu (trabajo|respuesta))\b/i;
 
 export function runQualityGate(input: QualityGateInput): QualityGateResult {
   const failures: string[] = [];
@@ -76,6 +89,24 @@ export function runQualityGate(input: QualityGateInput): QualityGateResult {
 
   // 7. No internal/system leakage or refusal noise.
   if (INTERNAL_LEAK.test(candidate)) failures.push("internal_leakage");
+
+  // 7b. v1.6.0 image prompts must be FINISHED prompts: no placeholders, no
+  // "specify the mood" meta-instructions, no quality-keyword spam, and no
+  // contradictory visual direction (unless the user wrote it that way).
+  if (input.strategy === "image_generation") {
+    for (const issue of imagePromptIssues(candidate, input.original)) failures.push(`image_${issue}`);
+  }
+
+  // 7c. v1.6.0 model guidance: never add reasoning scaffolding for always-
+  // thinking Claude models, nor re-check instructions for Opus 5.5.
+  if (input.profileId === "opus-adaptive" || input.profileId === "fable-autonomous") {
+    if (REASONING_SCAFFOLD.test(candidate) && !REASONING_SCAFFOLD.test(input.original)) {
+      failures.push("reasoning_instruction_added");
+    }
+  }
+  if (input.profileId === "opus-adaptive" && OVER_VERIFICATION.test(candidate) && !OVER_VERIFICATION.test(input.original)) {
+    failures.push("verification_instruction_added");
+  }
 
   // 8. Verbosity: reject rewrites that balloon without value.
   const baseLen = Math.max(input.deterministic.length, input.original.length, 200);

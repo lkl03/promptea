@@ -84,14 +84,17 @@ describe("shape-preserving personalization", () => {
     // Natural cases stay heading-free…
     expect(shapes.get("short-message")).toEqual([]);
     expect(shapes.get("email-request")).toEqual([]);
+    // …and so does an image request: since v1.6.0 it returns the FINISHED
+    // image prompt as prose, never a headed checklist of attributes.
+    expect(shapes.get("image-generation")).toEqual([]);
 
     // …structured cases get headings…
-    for (const id of ["repo-implementation", "data-extraction", "image-generation"]) {
+    for (const id of ["repo-implementation", "data-extraction"]) {
       expect((shapes.get(id) ?? []).length, id).toBeGreaterThanOrEqual(2);
     }
 
     // …and the structured heading SETS differ between task families.
-    const structured = ["repo-implementation", "data-extraction", "image-generation", "translation", "summarization"]
+    const structured = ["repo-implementation", "data-extraction", "translation", "summarization"]
       .map((id) => (shapes.get(id) ?? []).join("|"))
       .filter((s) => s.length > 0);
     expect(new Set(structured).size).toBe(structured.length);
@@ -148,20 +151,17 @@ describe("shape-preserving personalization", () => {
   });
 
   test("already-strong prompts get minimal edits: returned untouched + adaptive skipped", () => {
-    const strong = [
-      "OBJETIVO:",
-      "En el repo acme/api creá la rama feat/export, implementá lib/export.ts con tests en tests/export.test.ts, corré npm test y npm run lint, y abrí un PR a main.",
-      "",
-      "PASOS Y VALIDACIÓN:",
-      "- Antes de tocar código, revisá la estructura del repo y confirmá los archivos afectados.",
-      "- Ejecutá los tests o comandos de validación existentes antes de dar por terminado.",
-      "- Si un requisito es ambiguo, preguntá antes de implementar.",
-      "- Para Claude: si el input es largo, delimitá contexto con etiquetas tipo <context> o <source_text>.",
-    ].join("\n");
-
-    const r = analyzePrompt(strong, "claude", "es", "code");
-    expect(r.optimizedPrompt).toBe(strong);
-    expect(r.meta.alreadyOptimized).toBe(true);
+    // v1.6.0: the strong prompt is the engine's own output for the selected
+    // model (its wording is model-specific), so build it first.
+    const request =
+      "En el repo acme/api creá la rama feat/export, implementá lib/export.ts con tests en tests/export.test.ts, corré npm test y npm run lint, y abrí un PR a main.";
+    for (const modelId of ["claude-opus-5.5", "claude-sonnet-5", "gpt-6-astra", "gpt-6-sol"]) {
+      const target = modelId.startsWith("claude") ? "claude" : "gpt";
+      const strong = analyzePrompt(request, target, "es", "code", { modelId }).optimizedPrompt;
+      const r = analyzePrompt(strong, target, "es", "code", { modelId });
+      expect(r.optimizedPrompt, modelId).toBe(strong);
+      expect(r.meta.alreadyOptimized, modelId).toBe(true);
+    }
   });
 
   test("legacy v1.2 headers are migrated into the new shapes, never passed through", () => {

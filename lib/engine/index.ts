@@ -15,7 +15,7 @@ import { stripGuardedGuidance } from "./shapes";
 import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
 import { classifyTask } from "./classifier";
-import { selectStrategy, type RoutingDecision } from "@/lib/refine/router";
+import { selectStrategy, isImageGenerationRequest, type RoutingDecision } from "@/lib/refine/router";
 import { normalizePurpose } from "@/lib/domain";
 
 export type OutputFormatChoice = "checklist" | "json";
@@ -107,6 +107,9 @@ function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
     case "data":
       return "data_extraction";
     case "text":
+      // v1.6.0: an explicit request to GENERATE an image is an image task
+      // even under the default purpose (vision/analysis asks are not).
+      if (isImageGenerationRequest(raw)) return "image";
       // v1.2.0: detect the real task even when the user kept the default
       // "text" purpose — a JSON-extraction or debugging prompt typed under
       // "text" should be scored and structured as what it actually is.
@@ -334,17 +337,21 @@ export function analyzePrompt(
       lang,
       purpose,
       attachments: effectiveAttachments,
+      strategy: routing.strategy,
     });
   } else {
     const built = canonicalize(
       buildOptimizedPrompt(cleanAnalysisInput, taskType, target, lang, purpose, effectiveAttachments, {
         complexity: routing.complexity,
         strategy: routing.strategy,
+        modelId,
       })
     );
     const rawCanonical = canonicalize(raw);
 
-    if (!promptea && built === rawCanonical && detectStructured(raw)) {
+    if (!promptea && built === rawCanonical && (detectStructured(raw) || routing.strategy === "image_generation")) {
+      // v1.6.0: a developed image prompt (prose, no headings) that rebuilds
+      // to itself is already optimized too — the adaptive call is skipped.
       optimizedPrompt = rawCanonical;
       alreadyOptimized = true;
     } else if (!promptea && !detectStructured(raw) && scored.score >= ALREADY_STRONG_SCORE) {

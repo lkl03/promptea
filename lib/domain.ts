@@ -217,6 +217,30 @@ export type InteractionProfile = (typeof INTERACTION_PROFILES)[number];
 export const MATCH_CONFIDENCES = ["high", "medium", "low"] as const;
 export type MatchConfidence = (typeof MATCH_CONFIDENCES)[number];
 
+/**
+ * v1.6.0 prompting profiles: how a model's CURRENT official prompting guidance
+ * shapes the optimized prompt. Several models share one profile when their
+ * guidance does not materially differ; a new profile is added only when a
+ * provider documents a real behavioral difference. Specs live in
+ * lib/engine/modelProfiles.ts; every selectable registry entry names one.
+ */
+export const PROMPT_PROFILES = [
+  "opus-adaptive", // Claude Opus 5.5 — thinking always on, effort-driven, outcome specs
+  "fable-autonomous", // Claude Fable 5.1 — intent + boundaries, long autonomous runs
+  "claude-literal", // Claude Sonnet 5 — literal instruction following, XML structure
+  "claude-compact", // Claude Haiku 4.5 — short, explicit, exact format
+  "gpt-autonomous", // GPT-6 Astra — judgment + permissions, bias to action
+  "gpt-guided", // GPT-6 Sol / Luna — tighter, explicit prompts
+  "gemini-context-first", // Gemini — context first, question last, terse by default
+  "grok-general", // Grok 4.x — stable content first, tone, live search for recency
+  "grok-code", // Grok Build — focused files, correctness criteria, small diffs
+  "deepseek-reasoner", // DeepSeek — acceptance criteria, JSON-mode requirements
+  "kimi-general", // Kimi — source vs instruction separation, JSON objects
+  "kimi-code", // Kimi Code — agent-loop coding
+  "perplexity-search", // Perplexity Agent API — the prompt seeds the search
+] as const;
+export type PromptProfileId = (typeof PROMPT_PROFILES)[number];
+
 // ---------------------------------------------------------------------------
 // Voice transcription
 // ---------------------------------------------------------------------------

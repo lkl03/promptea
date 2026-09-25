@@ -7,13 +7,14 @@ const CLARIFIER_ES = "Si te falta información clave, hacé hasta 2 preguntas an
 
 describe("engine/analyzePrompt", () => {
   test("EN output should be in English", () => {
-    const r = analyzePrompt("hi how are you?", "gpt", "en", "text");
+    // v1.6.0: GPT-6 Sol uses the ask-first clarifier (Astra, the default, is told to assume instead).
+    const r = analyzePrompt("hi how are you?", "gpt", "en", "text", { modelId: "gpt-6-sol" });
     expect(r.optimizedPrompt).toContain(CLARIFIER_EN);
     expect(r.optimizedPrompt).not.toContain(CLARIFIER_ES);
   });
 
   test("ES output should be in Spanish", () => {
-    const r = analyzePrompt("hola, ¿cómo estás?", "gpt", "es", "text");
+    const r = analyzePrompt("hola, ¿cómo estás?", "gpt", "es", "text", { modelId: "gpt-6-sol" });
     expect(r.optimizedPrompt).toContain(CLARIFIER_ES);
     expect(r.optimizedPrompt).not.toContain(CLARIFIER_EN);
   });

@@ -129,7 +129,8 @@ describe("strategy router", () => {
 
 describe("deterministic non-bloat (v1.3.0)", () => {
   test("simple prompt gets light body: natural text + clarifier, no shape headings", () => {
-    const r = analyzePrompt("Haceme más claro este mensaje para mi equipo.", "gpt", "es", "text");
+    // v1.6.0: model-specific — GPT-6 Sol keeps the ask-first clarifier.
+    const r = analyzePrompt("Haceme más claro este mensaje para mi equipo.", "gpt", "es", "text", { modelId: "gpt-6-sol" });
     expect(r.meta.routing?.complexity).toBe("simple");
     expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);
     // Light path: guarded clarifier sentence in the user's language…
@@ -155,7 +156,10 @@ export function ProductList({ products }) { return products.map(p => p.name) }
 \`\`\`
 
 I need root cause, a minimal fix, and how to verify it.`;
-    const r = analyzePrompt(prompt, "gpt", "en", "code");
+    // v1.6.0: the stepwise scaffold is GPT-6 Sol's (tighter prompts); GPT-6
+    // Astra gets permissions + completion criteria instead (see
+    // model.profiles.test.ts).
+    const r = analyzePrompt(prompt, "gpt", "en", "code", { modelId: "gpt-6-sol" });
     expect(r.meta.routing?.complexity).not.toBe("simple");
     // v1.3.0 agent-workflow shape headings replace the old generic scaffold.
     expect(r.optimizedPrompt).toContain("OBJECTIVE:");

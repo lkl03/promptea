@@ -51,8 +51,11 @@ describe("models registry — v1.1.3", () => {
   test("includes Perplexity as a new provider and target", () => {
     const perplexityModels = getModelsForTarget("perplexity");
     expect(perplexityModels.length).toBeGreaterThanOrEqual(2);
-    expect(perplexityModels.map((m) => m.id)).toContain("sonar-pro");
-    expect(perplexityModels.map((m) => m.id)).toContain("sonar-reasoning-pro");
+    // v1.6.0: Sonar Chat Completions is sunset on 2026-09-27 — the Sonar ids
+    // stay in the registry (non-selectable) and resolve to Agent API presets.
+    const ids = MODEL_REGISTRY.map((m) => m.id);
+    expect(ids).toContain("sonar-pro");
+    expect(ids).toContain("sonar-reasoning-pro");
   });
 
   test("Perplexity target group exists with a valid default", () => {
