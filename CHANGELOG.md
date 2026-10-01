@@ -4,6 +4,31 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.6.1 — 2026-10-01
+
+**Perplexity guide refreshed for the Agent API, two new evergreen guides, and Open Graph metadata on model pages.** Perplexity ended support for Sonar Chat Completions on 2026-09-27, so the Perplexity guide — which still taught Sonar and Sonar Pro — was rewritten from Perplexity's first-party Agent API docs. Two new guides cover AI prompts for work email and building a shared prompt library for a team. The product improvement adds Open Graph and Twitter Card metadata to the per-model pages (`/models/[slug]`), the last content detail pages that lacked it.
+
+### Added
+- **New guide: AI prompts for email** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-email`) — where AI saves time on work email (drafts from bullets, thread summaries, rewriting for a different reader, tone changes that keep every fact), what to put in an email prompt (reader, single action, verbatim facts, tone and length, explicit don'ts), risks to check before sending (invented commitments, changed numbers, confidential data, filler), and two templates: a draft-from-bullets prompt and a summarize-thread-and-reply prompt.
+- **New guide: How to build a prompt library for your team** (`lib/seo/content/guides.ts`, slug `team-prompt-library`) — why a shared library beats private prompts, what every entry needs (task name, use/don't-use, placeholders, tested models, example, owner and review date), how to keep quality up (review, real-input testing, versioning, removing sensitive data, retiring stale prompts), and two templates: turn a working prompt into a reusable template, and review a library prompt before sharing.
+
+### Changed
+- **Perplexity guide refreshed** (`lib/seo/content/guides.ts`, slug `perplexity-prompt-guide`) — rewritten from Perplexity's Agent API docs (presets, prompt guide, Sonar migration overview). It now explains that Sonar Chat Completions support ended on 2026-09-27, how to choose between the `fast`, `low`, `medium` and `high` presets (and that `xhigh` exists for open-ended agentic work), Perplexity's own prompting advice (specific search vocabulary, capped lists, an explicit "not found" out, near-miss disclosure, structure instead of example answers), and why hard constraints belong in `web_search` filters rather than prose. Templates were updated to match (no URL requests in prose; a new deep-research brief replaces the competitive comparison template), and a new FAQ covers moving off Sonar. The slug is unchanged, so existing links keep working.
+- **Open Graph and Twitter Card metadata on model pages** (`app/[lang]/models/[slug]/page.tsx`) — model detail pages now emit page-specific `openGraph` and `twitter` metadata, matching guide pages (v1.2.2), glossary term pages (v1.5.2), and the models index (v1.5.3). Shares now show the page title and description instead of the generic app metadata.
+- Version bumped to `v1.6.1` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Known limitations / follow-ups
+- Perplexity's current Sonar migration table recommends `fast` for Sonar Pro and `low` for Sonar Reasoning Pro, while the v1.6.0 registry (`lib/models.ts`) maps them to `low` and `medium`; the registry also has no `xhigh` preset. Not changed in this release (registry changes need their own verification pass); the refreshed guide avoids a per-model mapping.
+- A few older guides and landings still name earlier model generations (e.g. `o3` in the reasoning-models guide, GPT-4.1/GPT-4o/o3 on the ChatGPT prompt generator landing). Candidates for a future refresh.
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean
+- `npm test` — all suites pass, including version-sync checks
+- `npm run build` — succeeds without Firebase/Resend env vars; the three refreshed/new guide pages prerender and model pages emit `og:title`
+
+---
+
 ## v1.6.0 — 2026-09-24
 
 **Current model lineup, Claude Opus 5.5 with its official prompting guidance, image prompts that are actually written, and a working Promptea Weekly sender.** Four changes: the model registry was re-verified provider by provider against first-party documentation; optimized prompts now follow each selected model's current prompting guidance (Claude Opus 5.5 first), instead of carrying a cosmetic "For <model>:" tip; image requests return a finished, paste-ready image prompt instead of a checklist of attributes to add; and the Promptea Weekly newsletter — which v1.5.x could render but never send — now has a signed, idempotent generation and delivery endpoint driven by a Monday routine.

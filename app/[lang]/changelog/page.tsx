@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.6.1 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.6.1</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 01-10-2026" : "Released: 2026-10-01"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Guía de Perplexity actualizada: Sonar dejó de tener soporte el 27-09-2026, así que la guía ahora explica cómo elegir entre los presets fast, low, medium y high de la nueva Agent API, con los consejos de prompting de la propia Perplexity y plantillas renovadas."
+              : "Perplexity guide updated: Sonar support ended on 2026-09-27, so the guide now explains how to pick between the new Agent API presets (fast, low, medium, and high), with Perplexity’s own prompting advice and refreshed templates."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: prompts de IA para email, para redactar desde bullets, resumir hilos largos y responder sin perder fechas, montos ni compromisos."
+              : "New guide: AI prompts for email, to draft from bullet points, summarize long threads, and reply without losing dates, amounts, or commitments."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: cómo armar una biblioteca de prompts para tu equipo, con qué incluir en cada plantilla, cómo revisarla antes de compartirla y cuándo retirarla."
+              : "New guide: how to build a prompt library for your team, covering what each template needs, how to review it before sharing, and when to retire it."}
+          </li>
+          <li>
+            {isEs
+              ? "Las páginas de cada modelo ahora muestran su propio título y descripción al compartirlas en redes sociales."
+              : "Each model page now shows its own title and description when shared on social platforms."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.6.0 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
