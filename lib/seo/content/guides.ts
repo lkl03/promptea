@@ -3930,26 +3930,47 @@ Restricciones:
       es: "Prompts para Perplexity: respuestas respaldadas por la web",
     },
     description: {
-      en: "How to write prompts that get the most out of Perplexity Sonar — real-time web search, cited sources, and accurate current information.",
-      es: "Cómo escribir prompts que aprovechan al máximo Perplexity Sonar: búsqueda web en tiempo real, fuentes citadas e información actualizada.",
+      en: "How to write Perplexity prompts for the Agent API presets (fast, low, medium, high): specific questions that seed better searches, capped lists, honest 'not found' answers, and filters as parameters instead of prose.",
+      es: "Cómo escribir prompts para los presets de la Agent API de Perplexity (fast, low, medium, high): preguntas específicas que siembran mejores búsquedas, listas acotadas, respuestas honestas cuando no hay datos y filtros como parámetros en vez de prosa.",
     },
     sections: [
       {
         heading: { en: "What makes Perplexity different", es: "Qué hace diferente a Perplexity" },
         bullets: {
           en: [
-            "Perplexity searches the web before answering — every response cites real, recent sources you can verify.",
-            "It handles current events, prices, product specs, and rapidly changing facts far better than a model without web access.",
-            "Sonar Pro adds deeper research capability: multi-step reasoning over multiple sources before composing the answer.",
-            "Use Perplexity when freshness matters: today's news, the latest framework version, current regulations, live pricing.",
-            "Avoid it for creative writing, long-form generation, or tasks where web retrieval adds noise rather than grounding.",
+            "Perplexity searches the web before answering and returns the sources it used, so you can check each claim against the page it came from.",
+            "It runs as an agent loop: on each step it can search, read the results, and decide whether to search again or answer. Your prompt shapes the searches, not only the final text.",
+            "It handles current events, prices, product specs, and fast-changing facts far better than a model answering from training data alone.",
+            "Use it when freshness or verifiable sources matter: recent releases, current regulations, live pricing, 'what changed since…' questions.",
+            "Avoid it for creative writing, long-form drafting, or tasks where web retrieval adds noise rather than grounding.",
           ],
           es: [
-            "Perplexity busca en la web antes de responder — cada respuesta cita fuentes reales y recientes que podés verificar.",
-            "Maneja eventos actuales, precios, especificaciones de productos y datos que cambian rápido mucho mejor que un modelo sin acceso web.",
-            "Sonar Pro agrega capacidad de investigación más profunda: razonamiento en múltiples pasos sobre varias fuentes antes de componer la respuesta.",
-            "Usá Perplexity cuando la actualidad importa: noticias de hoy, la última versión de un framework, regulaciones actuales, precios en tiempo real.",
-            "Evitalo para escritura creativa, generación de texto largo o tareas donde la recuperación web agrega ruido en lugar de fundamento.",
+            "Perplexity busca en la web antes de responder y devuelve las fuentes que usó, así podés contrastar cada afirmación con la página de donde salió.",
+            "Funciona como un loop de agente: en cada paso puede buscar, leer los resultados y decidir si busca de nuevo o responde. Tu prompt da forma a las búsquedas, no solo al texto final.",
+            "Maneja eventos actuales, precios, especificaciones de productos y datos que cambian rápido mucho mejor que un modelo que responde solo con su entrenamiento.",
+            "Usalo cuando importan la actualidad o las fuentes verificables: lanzamientos recientes, regulaciones vigentes, precios actuales, preguntas del tipo '¿qué cambió desde…?'.",
+            "Evitalo para escritura creativa, redacción de textos largos o tareas donde la búsqueda web agrega ruido en lugar de fundamento.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Sonar is gone: which preset to pick", es: "Sonar ya no está: qué preset elegir" },
+        bullets: {
+          en: [
+            "Perplexity ended support for Sonar Chat Completions on September 27, 2026 and recommends the Agent API for all new work. In the API you now choose a preset instead of a Sonar model.",
+            "fast — single-fact lookups, definitions, and quick summaries. Write one pointed question.",
+            "low — everyday research with light multi-step lookups. Perplexity's recommended starting point.",
+            "medium — multi-hop browsing that chains evidence across many sources. State the full analytical question.",
+            "high — the broadest coverage and longest reasoning. Write a research brief, not a question.",
+            "Perplexity also documents an xhigh preset, its most capable, for open-ended agentic work (running code, long tool-use loops). Use it when the task is a project, not a question.",
+          ],
+          es: [
+            "Perplexity terminó el soporte de Sonar Chat Completions el 27 de septiembre de 2026 y recomienda la Agent API para todo trabajo nuevo. En la API ahora elegís un preset en lugar de un modelo Sonar.",
+            "fast — búsquedas de un dato, definiciones y resúmenes rápidos. Escribí una sola pregunta puntual.",
+            "low — investigación del día a día con búsquedas livianas de varios pasos. Es el punto de partida que recomienda Perplexity.",
+            "medium — navegación de varios saltos que encadena evidencia de muchas fuentes. Planteá la pregunta analítica completa.",
+            "high — la cobertura más amplia y el razonamiento más largo. Escribí un brief de investigación, no una pregunta.",
+            "Perplexity también documenta un preset xhigh, el más capaz, para trabajo agéntico abierto (ejecutar código, loops largos con herramientas). Usalo cuando la tarea es un proyecto, no una pregunta.",
           ],
         },
       },
@@ -3957,20 +3978,37 @@ Restricciones:
         heading: { en: "Patterns that work well with Perplexity", es: "Patrones que funcionan bien con Perplexity" },
         bullets: {
           en: [
-            "Ask for a specific date range: 'What changed in [topic] between January and June 2026?' — this focuses the search.",
-            "Request source types: 'Only use official announcements, not opinion pieces.' Perplexity respects source-type constraints.",
-            "Use it for comparison: 'Compare the current pricing of [A] vs [B] as of today, with sources.' It aggregates across pages.",
-            "For research: 'Find 3–5 credible sources that [claim]. Summarize each and note any disagreements.' Great for literature review.",
-            "Ask it to flag uncertainty: 'If you can't find a source for a specific claim, say so explicitly.' Reduces confident-sounding gaps.",
-            "Combine with follow-up: paste its sourced summary into a more capable model (Claude, GPT) for deeper synthesis or writing.",
+            "Be specific and use the vocabulary relevant pages would use: 'energy efficiency ratings of heat pumps vs. gas furnaces for homes' beats 'which heating is better?'. Your question seeds the first search.",
+            "Add two or three words of context when a term is ambiguous (a product name, a country, a year).",
+            "Cap list lengths: 'the 5 most relevant…'. Without a cap, the length is arbitrary.",
+            "Give it an explicit out: 'If the sources don't answer this, say so instead of guessing.' This is Perplexity's own advice for reducing hallucinations.",
+            "Ask it to flag near-misses: 'If results are about a different year, a parent company, or a similar product, state the mismatch first.'",
+            "Describe the structure you want instead of pasting example answers; example content pulls the search toward its own topic.",
           ],
           es: [
-            "Pedí un rango de fechas específico: '¿Qué cambió en [tema] entre enero y junio de 2026?' — esto enfoca la búsqueda.",
-            "Solicitá tipos de fuentes: 'Usá solo anuncios oficiales, no artículos de opinión.' Perplexity respeta restricciones de tipo de fuente.",
-            "Usalo para comparaciones: 'Comparé el precio actual de [A] vs [B] a la fecha de hoy, con fuentes.' Agrega datos de múltiples páginas.",
-            "Para investigación: 'Encontrá 3–5 fuentes confiables que [afirmación]. Resumí cada una y anotá los desacuerdos.' Ideal para revisión de literatura.",
-            "Pedile que marque la incertidumbre: 'Si no encontrás una fuente para una afirmación específica, decilo explícitamente.' Reduce los huecos que suenan seguros.",
-            "Combinalo con seguimiento: pegá su resumen con fuentes en un modelo más potente (Claude, GPT) para síntesis o escritura más profunda.",
+            "Sé específico y usá el vocabulario que usarían las páginas relevantes: 'eficiencia energética de bombas de calor vs. calderas a gas en viviendas' rinde más que '¿qué calefacción es mejor?'. Tu pregunta siembra la primera búsqueda.",
+            "Sumá dos o tres palabras de contexto cuando un término es ambiguo (un nombre de producto, un país, un año).",
+            "Limitá el largo de las listas: 'los 5 más relevantes…'. Sin un tope, el largo queda librado al azar.",
+            "Dale una salida explícita: 'Si las fuentes no lo responden, decilo en vez de adivinar.' Es el consejo de la propia Perplexity para reducir alucinaciones.",
+            "Pedile que marque los casi-aciertos: 'Si los resultados son de otro año, de la empresa matriz o de un producto parecido, aclaralo primero.'",
+            "Describí la estructura que querés en lugar de pegar respuestas de ejemplo; el contenido del ejemplo arrastra la búsqueda hacia su propio tema.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Constraints: parameters beat prose", es: "Restricciones: los parámetros le ganan a la prosa" },
+        bullets: {
+          en: [
+            "In the API, put hard limits (allowed domains, date ranges, region) in the web_search filters, not in the prompt. Filters apply on every search; prose may not carry through every step of the loop.",
+            "In the Perplexity app there are no filters, so a short prose constraint ('prefer official announcements') is fine, but treat it as a preference, not a guarantee.",
+            "Don't ask for URLs in the answer text. Sources come back separately; the model can mistype a URL it writes out.",
+            "Keep custom instructions short: they are re-read on every step. In the API, setting instructions replaces the preset's built-in system prompt, so only override it when you need app-specific behavior.",
+          ],
+          es: [
+            "En la API, poné los límites duros (dominios permitidos, rangos de fechas, región) en los filtros de web_search, no en el prompt. Los filtros se aplican en cada búsqueda; la prosa puede perderse en algún paso del loop.",
+            "En la app de Perplexity no hay filtros, así que una restricción breve en prosa ('priorizá anuncios oficiales') está bien, pero tomala como preferencia, no como garantía.",
+            "No pidas URLs en el texto de la respuesta. Las fuentes vuelven por separado; el modelo puede escribir mal una URL que transcribe.",
+            "Mantené cortas las instrucciones personalizadas: se releen en cada paso. En la API, definir instructions reemplaza el system prompt del preset, así que sobrescribilo solo si necesitás un comportamiento propio de tu app.",
           ],
         },
       },
@@ -3981,63 +4019,63 @@ Restricciones:
         purpose: "text",
         target: "perplexity",
         prompt: {
-          en: `Research the current state of [topic] as of [month year].
+          en: `What are the 3 most important developments in [specific topic, with the terms an expert would use] between [start month year] and [end month year]?
 
-I need:
-1. The 3 most important recent developments (last 6 months preferred).
-2. For each: what changed, who it affects, and why it matters.
-3. One credible source per point — official announcements or primary sources preferred.
-4. A brief summary of what is still uncertain or actively debated.
+For each development:
+- What changed, who it affects, and why it matters (3–4 sentences).
+- Cite the sources that support it, preferring official announcements and primary documents.
 
-Constraints:
-- If a claim has no verifiable source, flag it explicitly.
-- Avoid opinion pieces as primary sources.
-- Keep each point to 3–4 sentences.`,
-          es: `Investigá el estado actual de [tema] a partir de [mes año].
+Finish with one short paragraph on what is still uncertain or disputed.
 
-Necesito:
-1. Los 3 desarrollos recientes más importantes (últimos 6 meses preferido).
-2. Por cada uno: qué cambió, a quién afecta y por qué importa.
-3. Una fuente confiable por punto — anuncios oficiales o fuentes primarias preferidas.
-4. Un resumen breve de lo que todavía es incierto o está activamente debatido.
+If the sources don't cover part of this, say so instead of filling the gap. If a result is about a different period, product, or organization than the one I asked about, state the mismatch before using it.`,
+          es: `¿Cuáles son los 3 desarrollos más importantes en [tema específico, con los términos que usaría un experto] entre [mes año de inicio] y [mes año de fin]?
 
-Restricciones:
-- Si una afirmación no tiene fuente verificable, marcala explícitamente.
-- Evitá artículos de opinión como fuentes primarias.
-- Mantené cada punto en 3–4 oraciones.`,
+Por cada desarrollo:
+- Qué cambió, a quién afecta y por qué importa (3–4 oraciones).
+- Citá las fuentes que lo respaldan, priorizando anuncios oficiales y documentos primarios.
+
+Cerrá con un párrafo breve sobre lo que todavía es incierto o está en discusión.
+
+Si las fuentes no cubren alguna parte, decilo en vez de completar el hueco. Si un resultado es de otro período, producto u organización distinto del que pregunté, aclará la diferencia antes de usarlo.`,
         },
       },
       {
-        title: { en: "Competitive comparison with live data", es: "Comparación competitiva con datos actuales" },
+        title: { en: "Deep-research brief (high preset)", es: "Brief de investigación profunda (preset high)" },
         purpose: "text",
         target: "perplexity",
         prompt: {
-          en: `Compare [Option A] and [Option B] as of today.
+          en: `Research brief: [topic]
 
-Comparison dimensions:
-- [dimension 1, e.g., pricing]
-- [dimension 2, e.g., feature set]
-- [dimension 3, e.g., recent changes or updates]
+Scope: [what is in / what is out]
+Period: [start] to [end]
+Geography: [countries or markets]
+Analysis dimensions:
+1. [dimension 1, e.g., current pricing models]
+2. [dimension 2, e.g., regulatory changes]
+3. [dimension 3, e.g., main providers and how they differ]
 
-Format:
-- A short paragraph per dimension, noting differences.
-- A source for each factual claim.
-- A final "best for" sentence: who should choose A vs B based on the data.
+Report structure (at most 5 sections, most relevant first):
+- Executive summary (5 bullets max)
+- One section per dimension, with sources for every factual claim
+- Open questions and conflicting evidence
 
-If the information is outdated or unavailable for a dimension, say so.`,
-          es: `Comparé [Opción A] y [Opción B] a la fecha de hoy.
+Where sources disagree, show both positions. Where no reliable source exists, write "not found" instead of estimating.`,
+          es: `Brief de investigación: [tema]
 
-Dimensiones de comparación:
-- [dimensión 1, ej. precios]
-- [dimensión 2, ej. características]
-- [dimensión 3, ej. cambios o actualizaciones recientes]
+Alcance: [qué entra / qué queda afuera]
+Período: [inicio] a [fin]
+Geografía: [países o mercados]
+Dimensiones de análisis:
+1. [dimensión 1, ej. modelos de precios actuales]
+2. [dimensión 2, ej. cambios regulatorios]
+3. [dimensión 3, ej. principales proveedores y en qué se diferencian]
 
-Formato:
-- Un párrafo corto por dimensión, señalando diferencias.
-- Una fuente por cada afirmación factual.
-- Una frase final de "mejor para": quién debería elegir A vs B basándose en los datos.
+Estructura del informe (máximo 5 secciones, lo más relevante primero):
+- Resumen ejecutivo (máximo 5 bullets)
+- Una sección por dimensión, con fuentes para cada afirmación factual
+- Preguntas abiertas y evidencia contradictoria
 
-Si la información está desactualizada o no está disponible para una dimensión, decilo.`,
+Donde las fuentes no coincidan, mostrá ambas posturas. Donde no haya una fuente confiable, escribí "no encontrado" en lugar de estimar.`,
         },
       },
     ],
@@ -4045,15 +4083,22 @@ Si la información está desactualizada o no está disponible para una dimensió
       {
         q: { en: "When should I use Perplexity instead of ChatGPT or Claude?", es: "¿Cuándo uso Perplexity en vez de ChatGPT o Claude?" },
         a: {
-          en: "Use Perplexity when the answer depends on facts that change — current prices, recent product releases, today's news, updated regulations, or anything from the last few weeks. ChatGPT and Claude have training cutoffs and can confidently give you stale information. Use them for tasks where reasoning, long-form generation, or nuanced judgment matter more than factual freshness.",
-          es: "Usá Perplexity cuando la respuesta depende de hechos que cambian — precios actuales, lanzamientos recientes de productos, noticias de hoy, regulaciones actualizadas o cualquier cosa de las últimas semanas. ChatGPT y Claude tienen fechas de corte de entrenamiento y pueden darte información desactualizada con confianza. Usalos para tareas donde el razonamiento, la generación de texto largo o el criterio matizado importan más que la actualidad factual.",
+          en: "Use Perplexity when the answer depends on facts that change — current prices, recent product releases, today's news, updated regulations — or when you need sources you can check. Models answering from training data have a cutoff and can give stale information with confidence. Use ChatGPT or Claude for tasks where reasoning over material you provide, long-form writing, or nuanced judgment matter more than freshness. A common workflow is to gather sourced facts in Perplexity and paste them into another model for drafting.",
+          es: "Usá Perplexity cuando la respuesta depende de hechos que cambian — precios actuales, lanzamientos recientes, noticias de hoy, regulaciones actualizadas — o cuando necesitás fuentes que puedas verificar. Los modelos que responden desde su entrenamiento tienen una fecha de corte y pueden darte información desactualizada con total seguridad. Usá ChatGPT o Claude cuando importan más el razonamiento sobre material que vos aportás, la redacción larga o el criterio fino. Un flujo habitual es juntar los datos con fuentes en Perplexity y pegarlos en otro modelo para redactar.",
+        },
+      },
+      {
+        q: { en: "I used Sonar or Sonar Pro in the API. What do I switch to?", es: "Usaba Sonar o Sonar Pro en la API. ¿A qué me paso?" },
+        a: {
+          en: "Perplexity's migration docs include a table recommending a preset for each former Sonar model; use it as a starting point and confirm on a sample of your own queries, since Perplexity says presets are tuned over time. Support for Sonar Chat Completions ended on September 27, 2026; Perplexity says synchronous and streaming requests are being reformulated as Agent API requests gradually, while asynchronous Sonar requests are no longer supported. The prompt advice in this guide applies to all presets; what changes most between them is how much research you ask for in one prompt.",
+          es: "La documentación de migración de Perplexity incluye una tabla que recomienda un preset para cada modelo Sonar anterior; tomala como punto de partida y confirmala con una muestra de tus propias consultas, porque Perplexity aclara que los presets se ajustan con el tiempo. El soporte de Sonar Chat Completions terminó el 27 de septiembre de 2026; según Perplexity, las solicitudes sincrónicas y en streaming se están reformulando gradualmente como solicitudes de la Agent API, mientras que las asincrónicas de Sonar ya no tienen soporte. Los consejos de prompting de esta guía aplican a todos los presets; lo que más cambia entre ellos es cuánta investigación pedís en un solo prompt.",
         },
       },
       {
         q: { en: "How do I check if Perplexity's sources are reliable?", es: "¿Cómo verifico si las fuentes de Perplexity son confiables?" },
         a: {
-          en: "Always click through to the cited sources, especially for important decisions. Perplexity surfaces what ranks well and what it can access — that isn't the same as editorial curation. For medical, legal, or financial decisions, treat the output as a starting point for your own source review, not a final answer. Asking explicitly for 'official announcements or primary sources only' shifts the retrieval toward more authoritative pages.",
-          es: "Siempre hacé click en las fuentes citadas, especialmente para decisiones importantes. Perplexity muestra lo que rankea bien y lo que puede acceder — eso no es lo mismo que curaduría editorial. Para decisiones médicas, legales o financieras, tratá el resultado como punto de partida para tu propia revisión de fuentes, no como respuesta final. Pedir explícitamente 'solo anuncios oficiales o fuentes primarias' orienta la recuperación hacia páginas más autorizadas.",
+          en: "Open the cited sources, especially for important decisions. Perplexity surfaces what it can find and access — that isn't the same as editorial curation, and pages behind logins or paywalls may be missing. For medical, legal, or financial decisions, treat the output as a starting point for your own source review, not a final answer. Asking it to say when sources don't answer the question, and to flag near-miss results, makes gaps visible instead of hidden.",
+          es: "Abrí las fuentes citadas, sobre todo para decisiones importantes. Perplexity muestra lo que puede encontrar y acceder — eso no es lo mismo que curaduría editorial, y pueden faltar páginas detrás de un login o un muro de pago. Para decisiones médicas, legales o financieras, tomá el resultado como punto de partida para tu propia revisión de fuentes, no como respuesta final. Pedirle que avise cuando las fuentes no responden la pregunta y que marque los casi-aciertos hace visibles los huecos en vez de esconderlos.",
         },
       },
     ],
@@ -7250,6 +7295,336 @@ Si una categoría no tiene problemas, escribí "No se encontraron brechas en est
         a: {
           en: "Most AI models cannot read Figma files directly. What you can paste: a written description of the component, your design spec text, acceptance criteria, or a list of states (empty, loading, error, success). For image-capable models, you can attach a screenshot of your design.",
           es: "La mayoría de los modelos de IA no pueden leer archivos de Figma directamente. Lo que podés pegar: una descripción escrita del componente, el texto de tu spec de diseño, criterios de aceptación, o una lista de estados (vacío, cargando, error, éxito). Para modelos capaces de procesar imágenes, podés adjuntar una captura de pantalla de tu diseño.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-email",
+    title: {
+      en: "AI prompts for email: drafts, replies, and thread summaries",
+      es: "Prompts de IA para email: borradores, respuestas y resúmenes de hilos",
+    },
+    description: {
+      en: "Copy-paste AI prompts for work email in ChatGPT, Claude, or Gemini: draft from bullet points, reply to a long thread, summarize decisions and owners, and adjust tone without losing facts.",
+      es: "Prompts de IA copy-paste para el email de trabajo en ChatGPT, Claude o Gemini: redactar desde bullets, responder un hilo largo, resumir decisiones y responsables, y ajustar el tono sin perder datos.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI actually saves time on email", es: "Dónde la IA realmente ahorra tiempo con el email" },
+        bullets: {
+          en: [
+            "Turning rough bullet points into a clear first draft you then edit.",
+            "Summarizing a long thread into decisions, open questions, and who owns what.",
+            "Rewriting a message for a different reader: an executive summary for leadership, a plain-language version for a customer.",
+            "Adjusting tone (firmer, warmer, shorter) while keeping every fact, date, and amount intact.",
+            "Drafting replies to recurring requests from a template you control.",
+          ],
+          es: [
+            "Convertir bullets sueltos en un primer borrador claro que después editás.",
+            "Resumir un hilo largo en decisiones, preguntas abiertas y quién se encarga de qué.",
+            "Reescribir un mensaje para otro lector: un resumen ejecutivo para la dirección, una versión en lenguaje simple para un cliente.",
+            "Ajustar el tono (más firme, más cálido, más corto) manteniendo cada dato, fecha y monto intactos.",
+            "Redactar respuestas a pedidos recurrentes desde una plantilla que vos controlás.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What to put in an email prompt", es: "Qué poner en un prompt de email" },
+        bullets: {
+          en: [
+            "Who the reader is and what they already know. 'My manager, who has not seen the vendor quote' changes the whole draft.",
+            "The single action you want from the reader, and by when.",
+            "The facts that must appear verbatim: dates, amounts, names, links. Ask the model not to change them.",
+            "Tone and length limits: 'friendly but direct, under 120 words'.",
+            "What not to do: 'no apologies', 'don't promise a date', 'no exclamation marks'.",
+            "For replies, paste the thread and say which message you are answering. Without it, the model guesses the context.",
+          ],
+          es: [
+            "Quién es el lector y qué sabe ya. 'Mi jefa, que todavía no vio la cotización del proveedor' cambia todo el borrador.",
+            "La única acción que querés del lector, y para cuándo.",
+            "Los datos que tienen que aparecer textuales: fechas, montos, nombres, links. Pedile al modelo que no los cambie.",
+            "Tono y largo: 'cordial pero directo, menos de 120 palabras'.",
+            "Qué no hacer: 'sin disculpas', 'no prometas una fecha', 'sin signos de exclamación'.",
+            "Para respuestas, pegá el hilo y aclará a qué mensaje contestás. Sin eso, el modelo adivina el contexto.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Risks to check before you hit send", es: "Riesgos para revisar antes de enviar" },
+        bullets: {
+          en: [
+            "Invented commitments: models sometimes add 'I'll send it by Friday' when you never said so. Read every promise in the draft.",
+            "Changed numbers or dates when rewriting for tone. Compare them against your original.",
+            "Confidential content: check your company's policy before pasting customer data, contracts, or internal figures into an AI tool.",
+            "Generic filler ('I hope this email finds you well') that makes the message longer without adding anything. Ask for it to be removed.",
+          ],
+          es: [
+            "Compromisos inventados: a veces el modelo agrega 'te lo mando el viernes' cuando vos nunca lo dijiste. Leé cada promesa del borrador.",
+            "Números o fechas cambiados al reescribir el tono. Comparalos con tu original.",
+            "Contenido confidencial: revisá la política de tu empresa antes de pegar datos de clientes, contratos o cifras internas en una herramienta de IA.",
+            "Relleno genérico ('Espero que te encuentres bien') que alarga el mensaje sin aportar nada. Pedí que lo saque.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Draft an email from bullet points", es: "Redactar un email desde bullets" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a work email from the notes below.
+
+Reader: [who they are and what they already know]
+Goal: the reader should [single action] by [date].
+Tone: [e.g., friendly and direct]. Length: under [N] words.
+
+Notes:
+- [point 1]
+- [point 2]
+- [point 3]
+
+Rules:
+- Keep every date, amount, name, and link exactly as written in the notes.
+- Do not add commitments, deadlines, or apologies that are not in the notes.
+- Put the requested action in the first two sentences.
+- Return a subject line, then the email body. No commentary.`,
+          es: `Escribí un email de trabajo a partir de las notas de abajo.
+
+Lector: [quién es y qué sabe ya]
+Objetivo: que el lector [única acción] antes del [fecha].
+Tono: [ej. cordial y directo]. Largo: menos de [N] palabras.
+
+Notas:
+- [punto 1]
+- [punto 2]
+- [punto 3]
+
+Reglas:
+- Mantené cada fecha, monto, nombre y link exactamente como está en las notas.
+- No agregues compromisos, plazos ni disculpas que no estén en las notas.
+- Poné la acción pedida en las dos primeras oraciones.
+- Devolvé un asunto y después el cuerpo del email. Sin comentarios.`,
+        },
+      },
+      {
+        title: { en: "Summarize a thread and draft the reply", es: "Resumir un hilo y redactar la respuesta" },
+        purpose: "summarization",
+        target: "gpt",
+        prompt: {
+          en: `Below is an email thread. I am [your name and role].
+
+<thread>
+[paste the full thread, oldest message first]
+</thread>
+
+Step 1 — Summary (bullets):
+- Decisions already made
+- Open questions, and who asked them
+- Action items with owner and due date (write "no date" if none was given)
+
+Step 2 — Reply:
+Draft my reply to the latest message from [name]. Answer only the open questions addressed to me: [your answers or position]. Under [N] words, same language as the thread.
+
+If something in the thread is ambiguous or contradictory, list it under "Needs clarification" instead of resolving it yourself.`,
+          es: `Abajo hay un hilo de emails. Yo soy [tu nombre y rol].
+
+<hilo>
+[pegá el hilo completo, del mensaje más viejo al más nuevo]
+</hilo>
+
+Paso 1 — Resumen (bullets):
+- Decisiones ya tomadas
+- Preguntas abiertas y quién las hizo
+- Tareas con responsable y fecha (escribí "sin fecha" si no se definió)
+
+Paso 2 — Respuesta:
+Redactá mi respuesta al último mensaje de [nombre]. Contestá solo las preguntas abiertas dirigidas a mí: [tus respuestas o postura]. Menos de [N] palabras, en el mismo idioma del hilo.
+
+Si algo del hilo es ambiguo o contradictorio, listalo en "Necesita aclaración" en vez de resolverlo por tu cuenta.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Which AI is best for writing emails?", es: "¿Qué IA es mejor para escribir emails?" },
+        a: {
+          en: "ChatGPT, Claude, and Gemini all draft solid work email when the prompt states the reader, the goal, and the facts to keep. The prompt matters more than the model. If your company already uses one of them inside its email or office suite, that usually wins on convenience and data policy. Run your prompt through Promptea first to catch missing context like the reader or the call to action.",
+          es: "ChatGPT, Claude y Gemini redactan bien emails de trabajo cuando el prompt dice quién es el lector, cuál es el objetivo y qué datos mantener. Pesa más el prompt que el modelo. Si tu empresa ya usa alguno dentro de su suite de correo u oficina, suele ganar por comodidad y política de datos. Pasá tu prompt por Promptea antes para detectar contexto faltante, como el lector o el llamado a la acción.",
+        },
+      },
+      {
+        q: { en: "How do I stop AI emails from sounding robotic?", es: "¿Cómo evito que los emails con IA suenen robóticos?" },
+        a: {
+          en: "Give it a short sample of your own writing and ask it to match the sentence length and vocabulary, ban stock phrases you never use, and set a word limit. Then edit the draft: change the opening line to something only you would say. Short, specific emails rarely sound generated.",
+          es: "Dale una muestra breve de cómo escribís y pedile que respete el largo de las oraciones y el vocabulario, prohibí las frases hechas que nunca usás y poné un límite de palabras. Después editá el borrador: cambiá la primera línea por algo que solo vos dirías. Los emails cortos y específicos casi nunca suenan generados.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "team-prompt-library",
+    title: {
+      en: "How to build a prompt library for your team",
+      es: "Cómo armar una biblioteca de prompts para tu equipo",
+    },
+    description: {
+      en: "A practical system for shared AI prompt templates at work: what to include in each entry, how to name and version prompts, how to review quality before sharing, and when to retire a template.",
+      es: "Un sistema práctico para compartir plantillas de prompts en el trabajo: qué incluir en cada entrada, cómo nombrar y versionar prompts, cómo revisar la calidad antes de compartirlos y cuándo retirar una plantilla.",
+    },
+    sections: [
+      {
+        heading: { en: "Why a shared library beats everyone's private prompts", es: "Por qué una biblioteca compartida rinde más que los prompts privados de cada uno" },
+        bullets: {
+          en: [
+            "The same recurring task (weekly report, ticket triage, proposal outline) gets consistent output no matter who runs it.",
+            "New team members start from prompts that already work instead of rediscovering the same fixes.",
+            "When a prompt produces a bad result, there is one place to fix it, and everyone gets the fix.",
+            "It makes AI use visible: you can see which workflows depend on AI and review them.",
+          ],
+          es: [
+            "La misma tarea recurrente (reporte semanal, clasificación de tickets, estructura de propuesta) sale consistente sin importar quién la ejecute.",
+            "Las personas que se suman al equipo arrancan desde prompts que ya funcionan, en vez de redescubrir los mismos arreglos.",
+            "Cuando un prompt da un mal resultado, hay un solo lugar para corregirlo y todos reciben la corrección.",
+            "Hace visible el uso de IA: podés ver qué flujos dependen de la IA y revisarlos.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What every library entry needs", es: "Qué necesita cada entrada de la biblioteca" },
+        bullets: {
+          en: [
+            "A name that says the task, not the tool: 'Customer escalation reply' rather than 'ChatGPT prompt 3'.",
+            "When to use it, and when not to (one line each).",
+            "The prompt itself, with placeholders in [brackets] for every part the user must fill in.",
+            "Which model or models it was tested on. Prompts that work well on one model can need changes for another.",
+            "One example input and a short description of what a good output looks like.",
+            "An owner and a last-reviewed date, so stale prompts get noticed.",
+          ],
+          es: [
+            "Un nombre que diga la tarea, no la herramienta: 'Respuesta a escalamiento de cliente' en vez de 'Prompt de ChatGPT 3'.",
+            "Cuándo usarlo y cuándo no (una línea cada uno).",
+            "El prompt en sí, con placeholders entre [corchetes] para cada parte que hay que completar.",
+            "En qué modelo o modelos se probó. Un prompt que funciona bien en un modelo puede necesitar cambios en otro.",
+            "Un ejemplo de entrada y una descripción breve de cómo se ve una buena salida.",
+            "Un responsable y una fecha de última revisión, para que los prompts desactualizados se noten.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Keeping quality up", es: "Cómo mantener la calidad" },
+        bullets: {
+          en: [
+            "Review before publishing: check the prompt states a goal, context, output format, and what to do when information is missing. A prompt scorer such as Promptea makes this check fast and consistent.",
+            "Test with two or three real inputs, including a messy one, before adding a prompt to the library.",
+            "Version changes: keep the previous text and a one-line note on why it changed. If output quality drops, you can roll back.",
+            "Remove sensitive data from examples. A library is shared; customer names and internal numbers in examples travel with it.",
+            "Retire prompts nobody has used in a quarter, or that were written for a model your team no longer uses.",
+          ],
+          es: [
+            "Revisá antes de publicar: que el prompt tenga objetivo, contexto, formato de salida y qué hacer si falta información. Un evaluador de prompts como Promptea hace este chequeo rápido y consistente.",
+            "Probalo con dos o tres entradas reales, incluida una desprolija, antes de sumarlo a la biblioteca.",
+            "Versioná los cambios: guardá el texto anterior y una línea sobre por qué cambió. Si baja la calidad de la salida, podés volver atrás.",
+            "Sacá los datos sensibles de los ejemplos. La biblioteca se comparte; los nombres de clientes y las cifras internas viajan con ella.",
+            "Retirá los prompts que nadie usó en un trimestre o que se escribieron para un modelo que tu equipo ya no usa.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Turn a working prompt into a reusable template", es: "Convertir un prompt que funciona en una plantilla reutilizable" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Below is a prompt I used once that produced a good result. Turn it into a reusable template for my team.
+
+<prompt>
+[paste the prompt you used]
+</prompt>
+
+Return:
+1. A task-based name (max 6 words).
+2. "Use when" and "Don't use when" (one line each).
+3. The template, with every situation-specific detail replaced by a [descriptive placeholder]. Keep the instructions, structure, and constraints unchanged.
+4. A list of the placeholders with a one-line explanation each.
+5. Anything the original prompt leaves unclear that a teammate would need to know (missing context, unstated format, no instruction for missing information).
+
+Do not add new requirements that were not in the original prompt.`,
+          es: `Abajo hay un prompt que usé una vez y dio un buen resultado. Convertilo en una plantilla reutilizable para mi equipo.
+
+<prompt>
+[pegá el prompt que usaste]
+</prompt>
+
+Devolvé:
+1. Un nombre basado en la tarea (máximo 6 palabras).
+2. "Usar cuando" y "No usar cuando" (una línea cada uno).
+3. La plantilla, con cada detalle específico de la situación reemplazado por un [placeholder descriptivo]. Mantené sin cambios las instrucciones, la estructura y las restricciones.
+4. Una lista de los placeholders con una explicación de una línea cada uno.
+5. Todo lo que el prompt original deja poco claro y que un compañero necesitaría saber (contexto faltante, formato no especificado, falta de instrucción ante información incompleta).
+
+No agregues requisitos nuevos que no estén en el prompt original.`,
+        },
+      },
+      {
+        title: { en: "Review a library prompt before sharing", es: "Revisar un prompt de la biblioteca antes de compartirlo" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Review this prompt template before my team adds it to our shared prompt library.
+
+<template>
+[paste the template]
+</template>
+
+Intended use: [the task it is for]
+Tested on: [model names]
+
+Check, and report each as OK or Problem with a one-sentence reason:
+- Goal: is the expected result clear?
+- Context: does it ask for everything the model needs?
+- Output format: is the format specified?
+- Missing information: does it say what to do when input is incomplete?
+- Placeholders: is every [placeholder] understandable without asking the author?
+- Sensitive data: does it contain names, figures, or details that should not be shared?
+
+Then give at most 3 concrete edits, most important first. Do not rewrite the whole template.`,
+          es: `Revisá esta plantilla de prompt antes de que mi equipo la sume a nuestra biblioteca compartida.
+
+<plantilla>
+[pegá la plantilla]
+</plantilla>
+
+Uso previsto: [la tarea para la que sirve]
+Probada en: [nombres de modelos]
+
+Revisá y marcá cada punto como OK o Problema, con una frase de motivo:
+- Objetivo: ¿está claro el resultado esperado?
+- Contexto: ¿pide todo lo que el modelo necesita?
+- Formato de salida: ¿está especificado?
+- Información faltante: ¿dice qué hacer si la entrada está incompleta?
+- Placeholders: ¿cada [placeholder] se entiende sin preguntarle al autor?
+- Datos sensibles: ¿contiene nombres, cifras o detalles que no deberían compartirse?
+
+Después dame como máximo 3 cambios concretos, el más importante primero. No reescribas toda la plantilla.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Where should a team keep its prompt library?", es: "¿Dónde conviene guardar la biblioteca de prompts del equipo?" },
+        a: {
+          en: "Wherever your team already keeps shared documentation: a wiki page, a shared doc, or a folder in your knowledge base. What matters is one agreed location, a consistent entry format, and an owner per prompt. Some AI tools offer saved prompts or project instructions; they are convenient but tie the library to one tool, so keep a tool-neutral copy.",
+          es: "Donde tu equipo ya guarda la documentación compartida: una página de wiki, un documento compartido o una carpeta en la base de conocimiento. Lo importante es un único lugar acordado, un formato de entrada consistente y un responsable por prompt. Algunas herramientas de IA ofrecen prompts guardados o instrucciones de proyecto; son cómodas pero atan la biblioteca a una herramienta, así que mantené una copia independiente.",
+        },
+      },
+      {
+        q: { en: "Do prompt templates need to change for each AI model?", es: "¿Las plantillas de prompts tienen que cambiar para cada modelo de IA?" },
+        a: {
+          en: "The core (goal, context, format, constraints) transfers well between models. Details differ: where long context goes, how much step-by-step instruction helps, and how strictly the model follows format rules. Record which model each template was tested on, and re-test when your team switches models. Promptea can adapt a template to a specific target model and flag what it is missing.",
+          es: "El núcleo (objetivo, contexto, formato, restricciones) se traslada bien entre modelos. Cambian los detalles: dónde va el contexto largo, cuánto ayudan las instrucciones paso a paso y qué tan estrictamente el modelo respeta el formato. Anotá en qué modelo probaste cada plantilla y volvé a probar cuando tu equipo cambie de modelo. Promptea puede adaptar una plantilla a un modelo específico y marcar lo que le falta.",
         },
       },
     ],

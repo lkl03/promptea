@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.6.0 (2026-09-24)
+## Latest update — v1.6.1 (2026-10-01)
 
-**Current models, model-specific prompts, finished image prompts, and a working Promptea Weekly sender.** The model registry was re-verified against every provider's first-party docs (Claude Opus 5.5 is the new Claude default; GPT-6 Astra/Sol/Luna, Gemini 3.8 Flash, Grok 4.7, DeepSeek Flash, and Perplexity's Agent API presets were added; superseded models stay as legacy). Optimized prompts now follow each selected model's official prompting guidance instead of a cosmetic tip. Image requests return a finished, paste-ready image prompt. Promptea Weekly has a signed, idempotent send endpoint and a Monday routine; live delivery still needs the setup below. Details in [CHANGELOG.md](./CHANGELOG.md).
+**Perplexity guide refreshed for the Agent API, two new guides, and social metadata on model pages.** The Perplexity guide now covers the Agent API presets (Sonar support ended on 2026-09-27); new guides cover AI prompts for email and building a team prompt library; model detail pages now emit Open Graph/Twitter metadata. Shipped through the weekly update PR (`chore/weekly-update-v1.6.1`). Details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.5.3 (2026-09-24) — Three new guides (research, conversational prompting, UX design) + models index social metadata._
+_Previous update: v1.6.0 (2026-09-24) — Current model lineup (Claude Opus 5.5 default), model-specific prompting profiles, finished image prompts, and the Promptea Weekly sender._
 
 ## How it works
 

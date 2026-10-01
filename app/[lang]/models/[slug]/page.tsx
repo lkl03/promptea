@@ -40,6 +40,18 @@ export async function generateMetadata({
         en: `/en/models/${slug}`,
       },
     },
+    openGraph: {
+      title: model.title[l],
+      description: model.description[l],
+      url: `/${l}/models/${slug}`,
+      type: "article",
+      locale: l === "en" ? "en_US" : "es_AR",
+    },
+    twitter: {
+      card: "summary",
+      title: model.title[l],
+      description: model.description[l],
+    },
   };
 }
 
