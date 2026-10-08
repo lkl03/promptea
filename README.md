@@ -7,11 +7,11 @@ A two-mode prompt utility:
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.6.1 (2026-10-01)
+## Latest update — v1.6.2 (2026-10-08)
 
-**Perplexity guide refreshed for the Agent API, two new guides, and social metadata on model pages.** The Perplexity guide now covers the Agent API presets (Sonar support ended on 2026-09-27); new guides cover AI prompts for email and building a team prompt library; model detail pages now emit Open Graph/Twitter metadata. Shipped through the weekly update PR (`chore/weekly-update-v1.6.1`). Details in [CHANGELOG.md](./CHANGELOG.md).
+**Two new guides, current models in older pages, and a real heading outline on guides.** New guides cover AI prompts for meetings and for Excel/Google Sheets formulas; the reasoning-models guide and the ChatGPT prompt-generator landing now name current models (GPT-6, Claude Opus 5.5, Gemini, Grok, DeepSeek); guide pages now use `<h2>`/`<h3>` headings for screen readers and SEO. Shipped through the weekly update PR (`chore/weekly-update-v1.6.2`). Details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.6.0 (2026-09-24) — Current model lineup (Claude Opus 5.5 default), model-specific prompting profiles, finished image prompts, and the Promptea Weekly sender._
+_Previous update: v1.6.1 (2026-10-01) — Perplexity guide refreshed for the Agent API, guides for email and team prompt libraries, and Open Graph metadata on model pages._
 
 ## How it works
 

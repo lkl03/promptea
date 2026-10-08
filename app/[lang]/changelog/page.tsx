@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.6.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.6.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 08-10-2026" : "Released: 2026-10-08"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: prompts de IA para reuniones, para armar la agenda, sacar decisiones y tareas con responsable de una transcripción y redactar el seguimiento sin inventar compromisos."
+              : "New guide: AI prompts for meetings, to build the agenda, pull decisions and owned action items from a transcript, and write the follow-up without inventing commitments."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: prompts de IA para fórmulas de Excel y Google Sheets, con qué contarle al modelo sobre tu planilla, cómo verificar el resultado y plantillas para escribir, explicar y arreglar fórmulas."
+              : "New guide: AI prompts for Excel and Google Sheets formulas, covering what to tell the model about your sheet, how to check the result, and templates to write, explain, and fix formulas."}
+          </li>
+          <li>
+            {isEs
+              ? "Guía de modelos de razonamiento actualizada para GPT-6, Claude Opus 5.5, Gemini, Grok 4.7 y DeepSeek, con cómo cada uno regula cuánto piensa. La página del generador de prompts para ChatGPT ahora nombra los modelos GPT-6 actuales."
+              : "Reasoning models guide updated for GPT-6, Claude Opus 5.5, Gemini, Grok 4.7, and DeepSeek, including how each one controls how much it thinks. The ChatGPT prompt generator page now names the current GPT-6 models."}
+          </li>
+          <li>
+            {isEs
+              ? "Las guías ahora usan títulos de sección reales, así que los lectores de pantalla pueden saltar entre secciones, plantillas y preguntas frecuentes."
+              : "Guides now use real section headings, so screen readers can jump between sections, templates, and FAQs."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.6.1 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

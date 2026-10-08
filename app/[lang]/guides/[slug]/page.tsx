@@ -126,7 +126,7 @@ export default async function GuidePage({
       <div className="mt-8 grid gap-3">
         {guide.sections.map((s, idx) => (
           <section key={idx} className="surface p-5">
-            <div className="text-sm font-medium">{s.heading[l]}</div>
+            <h2 className="text-sm font-medium">{s.heading[l]}</h2>
             <ul className="mt-3 list-disc pl-5 text-sm opacity-90 space-y-1">
               {s.bullets[l].map((b, i) => (
                 <li key={i}>{b}</li>
@@ -138,14 +138,14 @@ export default async function GuidePage({
 
       {/* Templates */}
       <section className="mt-10">
-        <div className="text-sm font-medium">{l === "es" ? "Plantillas" : "Templates"}</div>
+        <h2 className="text-sm font-medium">{l === "es" ? "Plantillas" : "Templates"}</h2>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {guide.templates.map((t, idx) => {
             const href = buildOpenLink(l, t.purpose, t.target, t.prompt[l]);
             return (
               <article key={idx} className="surface p-4 space-y-3">
-                <div className="text-sm font-medium">{t.title[l]}</div>
+                <h3 className="text-sm font-medium">{t.title[l]}</h3>
                 <pre className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{t.prompt[l]}</pre>
 
                 <div className="flex items-center justify-between gap-3">
@@ -166,7 +166,7 @@ export default async function GuidePage({
 
       {/* FAQ visible */}
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{l === "es" ? "Preguntas frecuentes" : "FAQ"}</div>
+        <h2 className="text-sm font-medium">{l === "es" ? "Preguntas frecuentes" : "FAQ"}</h2>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">
