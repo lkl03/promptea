@@ -288,8 +288,6 @@
     "editorialLabel": "Algo para pensar",
     "sponsorLabel": "Sponsor",
     "readMore": "Leer la nota completa →",
-    "emptyTitle": "La primera edición se está preparando",
-    "empty": "Promptea Semanal es un resumen curado de las historias de IA más importantes de los últimos siete días. La primera edición está en camino.",
     "bar": {
       "barText": "Recibí las mejores historias de IA de la semana cada lunes.",
       "barCta": "Suscribirme",
@@ -308,24 +306,81 @@
       "text": "Promptea Semanal — lo mejor de la semana en IA, cada lunes",
       "cta": "Suscribirme"
     },
-    "subscribe": {
-      "heading": "Recibí Promptea Semanal en tu email",
-      "description": "Un email cada lunes — las mejores historias de IA de la semana, verificadas y resumidas.",
-      "emailPlaceholder": "tu@email.com",
-      "languageLabel": "Idioma preferido",
-      "consentLabel": "Quiero recibir el newsletter Promptea Semanal.",
-      "submit": "Suscribirme",
-      "submitting": "Suscribiendo…",
-      "success": "¡Ya estás suscripto! Esperá tu primera edición el lunes.",
-      "alreadySubscribed": "Ese email ya está suscripto.",
-      "invalidEmail": "Ingresá una dirección de email válida.",
-      "rateLimit": "Demasiados intentos. Intentá de nuevo más tarde.",
-      "error": "Algo salió mal. Intentá de nuevo."
-    },
     "footer": {
       "unsubscribe": "Desuscribirme",
       "preferences": "Preferencias",
       "privacy": "Privacidad"
     }
+  },
+  "hub": {
+    "tagline": "Prompts mejores, la IA correcta y las noticias que importan.",
+    "marqueeLabel": "Últimas 72 h",
+    "marqueePause": "Pausar titulares",
+    "marqueePlay": "Reanudar titulares",
+    "cardsAria": "Herramientas de Promptea",
+    "cards": {
+      "analyze": {
+        "title": "Analizar prompt",
+        "body": "Puntuá tu prompt, detectá problemas y obtené una versión optimizada para cada modelo."
+      },
+      "bestAi": {
+        "title": "Elegir la mejor IA",
+        "body": "Describí tu tarea y te recomendamos qué IA y qué modelo usar, con el porqué."
+      },
+      "daily": {
+        "title": "IA al día",
+        "body": "Una noticia de IA verificada por día, el resumen semanal y su archivo."
+      },
+      "benchmarks": {
+        "title": "Benchmarks",
+        "body": "Rankings de modelos de frontera por categoría, con fuente, fecha y métrica."
+      }
+    },
+    "secondaryAria": "Más recursos",
+    "secondary": {
+      "prompts": "Prompts",
+      "guides": "Guías",
+      "models": "Modelos",
+      "glossary": "Glosario"
+    },
+    "showcaseTitle": "Un recorrido por Promptea",
+    "showcaseBody": "Un recorrido real por la app: analizar un prompt, copiar la versión optimizada, elegir una IA, leer las noticias y explorar benchmarks.",
+    "showcaseCaption": "Grabación automatizada de la interfaz v1.7.0 con un prompt de demostración.",
+    "showcasePending": "El video de demostración se está generando."
+  },
+  "analyzerPage": {
+    "title": "Analizador de prompts",
+    "subtitle": "Analizá tu prompt, detectá problemas y mejoralo para cada IA.",
+    "metaTitle": "Analizador y optimizador de prompts",
+    "metaDescription": "Puntuá, corregí y reescribí prompts para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi y Perplexity: texto, código, data/JSON, marketing, estudio, imagen, traducción y resúmenes."
+  },
+  "dailyTabs": {
+    "aria": "Secciones de IA al día",
+    "news": "Noticias",
+    "weekly": "Resumen semanal"
+  },
+  "weekly": {
+    "archiveTitle": "Resumen semanal",
+    "archiveIntro": "Cada lunes, las historias de IA más importantes de la semana anterior, elegidas entre las notas verificadas de IA al día. Cada edición tiene su página para compartir.",
+    "archiveLabel": "Ediciones anteriores",
+    "latestLabel": "Última edición",
+    "weekOf": "Semana del {from} al {to}",
+    "storiesCount": "{n} historias",
+    "storyCount": "1 historia",
+    "readEdition": "Leer la edición",
+    "sentBadge": "Enviada por email",
+    "publishedBadge": "Publicada",
+    "backToArchive": "← Todas las ediciones",
+    "emptyTitle": "Todavía no hay ediciones publicadas",
+    "empty": "El resumen semanal se publica los lunes. Mientras tanto, leé las noticias diarias.",
+    "unavailable": "No pudimos cargar el archivo en este momento. Probá de nuevo en unos minutos.",
+    "share": "Compartir esta edición",
+    "copied": "Enlace copiado"
+  },
+  "newsletterDock": {
+    "title": "Promptea Semanal",
+    "body": "Las mejores historias de IA de la semana, cada lunes en tu email.",
+    "open": "Suscribirme al newsletter",
+    "close": "Cerrar"
   }
 }

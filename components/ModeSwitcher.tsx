@@ -19,7 +19,7 @@ export default function ModeSwitcher({
   dict: ModeDict;
 }) {
   const items: Array<{ mode: AppMode; href: string; label: string; hint: string }> = [
-    { mode: "improve", href: `/${lang}`, label: dict.improveLabel, hint: dict.improveHint },
+    { mode: "improve", href: `/${lang}/analyzer`, label: dict.improveLabel, hint: dict.improveHint },
     { mode: "best-ai", href: `/${lang}/best-ai`, label: dict.bestAiLabel, hint: dict.bestAiHint },
   ];
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { weeklyArchivePath } from "@/lib/newsletter/paths";
 
 export type NewsletterMarqueeDict = {
   text: string;
@@ -15,7 +16,7 @@ export default function NewsletterMarquee({
   return (
     <div className="flex justify-center">
       <Link
-        href={`/${lang}/weekly`}
+        href={weeklyArchivePath(lang)}
         className="inline-flex max-w-full items-center gap-2
                    rounded-full border border-line bg-surface-soft px-3 py-1
                    text-[11px] text-ink-muted

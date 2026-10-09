@@ -48,7 +48,8 @@ import type { BlogFilterState } from "@/lib/blog/filters";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 import { getSiteUrl } from "@/lib/seo/site";
-import NewsletterBar from "@/components/newsletter/NewsletterBar";
+import NewsletterDock from "@/components/newsletter/NewsletterDock";
+import DailyTabs from "@/components/blog/DailyTabs";
 
 export const revalidate = 300;
 
@@ -266,158 +267,139 @@ export default async function BlogIndexPage({
   });
 
   return (
-    // max-w-4xl, not 6xl: this is a text-first archive with no photography, so
-    // the container is sized to the measure of the prose rather than leaving a
-    // narrow column stranded in a wide frame.
-    <main className="mx-auto w-full max-w-4xl px-4 pt-8 pb-16 sm:pt-10 3xl:max-w-5xl">
+    // v1.7.0 — two columns from `lg` up: the list keeps a readable measure
+    // (~68ch) and the newsletter dock sticks in the side column; below `lg`
+    // it is one column and the dock becomes a slim bottom bar.
+    <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(indexLd) }} />
 
-      <p className="text-xs">
-        <Link
-          href={`/${l}`}
-          className="text-ink-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
-        >
-          {l === "es" ? "← Volver al inicio" : "← Back to home"}
-        </Link>
-      </p>
+      <DailyTabs lang={l} active="news" dict={dict.dailyTabs} />
 
-      {/* ── Masthead ──────────────────────────────────────────────────────
-          Eyebrow, name, one-line promise, disclosure. Four lines total: the
-          reader should be able to see the first article without scrolling. */}
-      <header className="mt-5 text-center sm:mt-10">
-        <p>
-          <span className="pill h-7 px-3 text-[11px] uppercase tracking-[0.14em]">
-            {t.eyebrow}
-          </span>
-        </p>
+      <div className="mt-8 grid grid-cols-1 gap-10 sm:mt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
+        <div className="min-w-0">
+          {/* ── Masthead ──────────────────────────────────────────────────────
+              Name and one-line promise. The editorial disclosure moved under the
+              list (v1.7.0): it stays on every page without pushing the first
+              headline down. */}
+          <header>
+            <h1 className="font-title text-3xl font-semibold leading-tight sm:text-4xl">
+              {t.indexTitle}
+            </h1>
+            <p className="mt-2 max-w-xl text-base text-ink-muted sm:text-lg">
+              {t.tagline}
+            </p>
+          </header>
 
-        <h1 className="font-title mt-3 text-4xl font-semibold leading-[1.06] sm:mt-4 sm:text-5xl">
-          {t.indexTitle}
-        </h1>
+          {all.length === 0 ? (
+            // Nothing has ever been published (or Firestore is unreachable). This is
+            // a first-run state, not a failed search — no filters, no "clear".
+            <section className="surface mt-10 p-8 text-center sm:p-10">
+              <h2 className="font-title text-xl font-semibold sm:text-2xl">{t.emptyTitle}</h2>
+              <p className="mx-auto mt-2 max-w-xl text-sm text-ink-muted">{t.empty}</p>
 
-        <p className="mx-auto mt-2 max-w-xl text-base text-ink-muted sm:mt-3 sm:text-lg">
-          {t.tagline}
-        </p>
-
-        {/* Transparency note. It has to stay discoverable, but on a phone it
-            wraps to three lines and pushes the first headline off-screen, so it
-            is hidden below `sm` and repeated under the list instead. */}
-        <p className="mx-auto mt-3 hidden max-w-xl text-xs leading-relaxed text-ink-muted sm:block">
-          {t.editorialNote}
-        </p>
-      </header>
-
-      {all.length === 0 ? (
-        // Nothing has ever been published (or Firestore is unreachable). This is
-        // a first-run state, not a failed search — no filters, no "clear".
-        <section className="surface mt-10 p-8 text-center sm:p-10">
-          <h2 className="font-title text-xl font-semibold sm:text-2xl">{t.emptyTitle}</h2>
-          <p className="mx-auto mt-2 max-w-xl text-sm text-ink-muted">{t.empty}</p>
-
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-            <Link className="btn btn-primary h-9 px-4" href={`/${l}/guides`}>
-              {t.relatedGuides}
-            </Link>
-            <Link className="btn btn-secondary h-9 px-4" href={`/${l}/models`}>
-              {t.relatedModels}
-            </Link>
-          </div>
-        </section>
-      ) : (
-        <>
-          <BlogFilters
-            lang={l}
-            filters={filters}
-            companies={collectCompanies(all)}
-            categories={collectCategories(all)}
-            dict={filtersDict}
-          />
-
-          <NewsletterBar lang={l} dict={dict.newsletter.bar} />
-
-          {items.length === 0 ? (
-            // Articles exist, these filters just match none of them.
-            <section className="surface-soft mx-auto mt-10 max-w-xl p-6 text-center">
-              <p className="text-sm font-medium">{t.filters.noResults}</p>
-              <p className="mx-auto mt-1.5 max-w-md text-sm text-ink-muted">
-                {t.filters.noResultsHint}
-              </p>
-
-              <div className="mt-4">
-                <Link className="btn btn-secondary h-9 px-4" href={`/${l}/blog`}>
-                  {t.filters.clear}
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                <Link className="btn btn-primary h-9 px-4" href={`/${l}/guides`}>
+                  {t.relatedGuides}
+                </Link>
+                <Link className="btn btn-secondary h-9 px-4" href={`/${l}/models`}>
+                  {t.relatedModels}
                 </Link>
               </div>
             </section>
           ) : (
             <>
-              {featured ? (
-                <section aria-label={t.featured} className="mt-10 sm:mt-12">
-                  <ArticleCardItem card={featured} lang={l} dict={cardDict} featured />
-                </section>
-              ) : null}
+              <BlogFilters
+                lang={l}
+                filters={filters}
+                companies={collectCompanies(all)}
+                categories={collectCategories(all)}
+                dict={filtersDict}
+              />
 
-              {rest.length > 0 ? (
-                <section
-                  aria-labelledby="blog-latest"
-                  className={featured ? "mt-10" : "mt-10 sm:mt-12"}
-                >
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-line pb-3">
-                    <h2 id="blog-latest" className="font-title text-lg font-semibold sm:text-xl">
-                      {t.latest}
-                    </h2>
-                    <p className="text-xs tabular-nums text-ink-muted">{resultCount}</p>
+              {items.length === 0 ? (
+                // Articles exist, these filters just match none of them.
+                <section className="surface-soft mx-auto mt-10 max-w-xl p-6 text-center">
+                  <p className="text-sm font-medium">{t.filters.noResults}</p>
+                  <p className="mx-auto mt-1.5 max-w-md text-sm text-ink-muted">
+                    {t.filters.noResultsHint}
+                  </p>
+
+                  <div className="mt-4">
+                    <Link className="btn btn-secondary h-9 px-4" href={`/${l}/blog`}>
+                      {t.filters.clear}
+                    </Link>
                   </div>
-
-                  <ul>
-                    {rest.map((card) => (
-                      <li
-                        key={`${card.canonicalSlug}-${card.slug}`}
-                        className="border-b border-line last:border-b-0"
-                      >
-                        <ArticleCardItem card={card} lang={l} dict={cardDict} />
-                      </li>
-                    ))}
-                  </ul>
                 </section>
               ) : (
-                // Exactly one result, already shown as the lead story.
-                <p className="mt-8 text-xs tabular-nums text-ink-muted">{resultCount}</p>
+                <>
+                  {featured ? (
+                    <section aria-label={t.featured} className="mt-10 sm:mt-12">
+                      <ArticleCardItem card={featured} lang={l} dict={cardDict} featured />
+                    </section>
+                  ) : null}
+
+                  {rest.length > 0 ? (
+                    <section
+                      aria-labelledby="blog-latest"
+                      className={featured ? "mt-10" : "mt-10 sm:mt-12"}
+                    >
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-line pb-3">
+                        <h2 id="blog-latest" className="font-title text-lg font-semibold sm:text-xl">
+                          {t.latest}
+                        </h2>
+                        <p className="text-xs tabular-nums text-ink-muted">{resultCount}</p>
+                      </div>
+
+                      <ul>
+                        {rest.map((card) => (
+                          <li
+                            key={`${card.canonicalSlug}-${card.slug}`}
+                            className="border-b border-line last:border-b-0"
+                          >
+                            <ArticleCardItem card={card} lang={l} dict={cardDict} />
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ) : (
+                    // Exactly one result, already shown as the lead story.
+                    <p className="mt-8 text-xs tabular-nums text-ink-muted">{resultCount}</p>
+                  )}
+
+                  {pages > 1 ? (
+                    <nav
+                      aria-label={l === "es" ? "Paginación" : "Pagination"}
+                      className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm"
+                    >
+                      {hasPrev ? (
+                        <Link href={hrefForPage(page - 1)} className="btn btn-secondary h-9 px-4">
+                          {l === "es" ? "← Notas más recientes" : "← Newer articles"}
+                        </Link>
+                      ) : null}
+
+                      <span className="text-xs tabular-nums text-ink-muted">
+                        {l === "es" ? `Página ${page} de ${pages}` : `Page ${page} of ${pages}`}
+                      </span>
+
+                      {hasNext ? (
+                        <Link href={hrefForPage(page + 1)} className="btn btn-primary h-9 px-4">
+                          {t.loadMore}
+                        </Link>
+                      ) : null}
+                    </nav>
+                  ) : null}
+                </>
               )}
-
-              {pages > 1 ? (
-                <nav
-                  aria-label={l === "es" ? "Paginación" : "Pagination"}
-                  className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm"
-                >
-                  {hasPrev ? (
-                    <Link href={hrefForPage(page - 1)} className="btn btn-secondary h-9 px-4">
-                      {l === "es" ? "← Notas más recientes" : "← Newer articles"}
-                    </Link>
-                  ) : null}
-
-                  <span className="text-xs tabular-nums text-ink-muted">
-                    {l === "es" ? `Página ${page} de ${pages}` : `Page ${page} of ${pages}`}
-                  </span>
-
-                  {hasNext ? (
-                    <Link href={hrefForPage(page + 1)} className="btn btn-primary h-9 px-4">
-                      {t.loadMore}
-                    </Link>
-                  ) : null}
-                </nav>
-              ) : null}
             </>
           )}
-        </>
-      )}
 
-      {/* Mobile counterpart of the masthead disclosure. Hidden from `sm` up,
-          where the header already carries it — so it is never duplicated. */}
-      <p className="mt-10 border-t border-line pt-5 text-xs leading-relaxed text-ink-muted sm:hidden">
-        {t.editorialNote}
-      </p>
+          <p className="mt-12 border-t border-line pt-5 text-xs leading-relaxed text-ink-muted">
+            {t.editorialNote}
+          </p>
+        </div>
 
+        <NewsletterDock lang={l} dict={dict.newsletterDock} formDict={dict.newsletter.bar} />
+      </div>
     </main>
   );
 }

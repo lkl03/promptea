@@ -11,6 +11,7 @@ import TopBar from "@/components/TopBar";
 import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import ToastProvider from "@/components/ToastProvider";
+import GlassEnhancer from "@/components/GlassEnhancer";
 
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID; // e.g. "AW-17937226636"
 
@@ -99,12 +100,13 @@ export const viewport: Viewport = {
   ],
 };
 
-// v1.2 → v1.3 persisted-theme migration. Must run BEFORE next-themes' own
-// inline script reads localStorage, so it lives at the top of <head>. Old
-// light-like themes (light/paper) resolve to Aqua, dark-like (dark/night) to
-// Metro; unknown values are dropped so next-themes falls back to system.
-// Keep in sync with LEGACY_THEME_MAP in lib/themes.ts.
-const THEME_MIGRATION_SCRIPT = `(function(){try{var k="theme",v=localStorage.getItem(k);if(!v)return;var m={light:"aqua",paper:"aqua",dark:"metro",night:"metro"};if(m[v]){localStorage.setItem(k,m[v]);}else if(v!=="aqua"&&v!=="metro"&&v!=="classic"&&v!=="system"){localStorage.removeItem(k);}}catch(e){}})();`;
+// Persisted-theme migration. Must run BEFORE next-themes' own inline script
+// reads localStorage, so it lives at the top of <head>. v1.2 light-like themes
+// (light/paper) resolve to Aqua, dark-like (dark/night) to Metro; v1.7.0
+// retires "classic" ("Old version"), which falls back to "system". Unknown
+// values are dropped so next-themes falls back to system. Keep in sync with
+// LEGACY_THEME_MAP in lib/themes.ts (test-enforced).
+const THEME_MIGRATION_SCRIPT = `(function(){try{var k="theme",v=localStorage.getItem(k);if(!v)return;var m={light:"aqua",paper:"aqua",dark:"metro",night:"metro",classic:"system"};if(m[v]){localStorage.setItem(k,m[v]);}else if(v!=="aqua"&&v!=="metro"&&v!=="glass"&&v!=="system"){localStorage.removeItem(k);}}catch(e){}})();`;
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang: rawLang } = await params;
@@ -232,6 +234,7 @@ export default async function RootLayout({
         <Providers>
           <ToastProvider>
             <AnimatedBackground />
+            <GlassEnhancer />
             <TopBar lang={lang} />
             {children}
             <Footer lang={lang} appFeedbackDict={dict.appFeedback} />

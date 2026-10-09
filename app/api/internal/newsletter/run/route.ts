@@ -12,8 +12,11 @@
 // copy to the fixed NEWSLETTER_TEST_RECIPIENTS — it cannot read subscribers,
 // choose recipients, or change content.
 //
-// Body: { "mode": "dry_run" | "test" | "live", "date"?: "YYYY-MM-DD" }
-//   `date` previews another week and is accepted in dry_run/test only.
+// Body: { "mode": "dry_run" | "publish" | "test" | "live", "date"?: "YYYY-MM-DD" }
+//   `date` selects another week and is accepted in dry_run/publish/test only.
+//   v1.7.0 `publish` stores the edition as published on the site and never
+//   sends email — it is how a week is made visible (or backfilled) without a
+//   delivery.
 //
 // Responses are 200 with a typed `outcome` for every business result (see
 // lib/newsletter/run.ts); transport/auth problems use HTTP errors. Nothing in
@@ -66,7 +69,7 @@ const fail = (error: string, status: number) => json({ ok: false, error }, statu
 
 const RunRequestSchema = z
   .object({
-    mode: z.enum(["dry_run", "test", "live"]),
+    mode: z.enum(["dry_run", "publish", "test", "live"]),
     date: z.string().optional(),
   })
   .strict();

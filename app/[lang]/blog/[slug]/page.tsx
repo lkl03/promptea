@@ -13,7 +13,7 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import SubscribeCTA from "@/components/newsletter/SubscribeCTA";
+import NewsletterDock from "@/components/newsletter/NewsletterDock";
 import type { Metadata } from "next";
 
 import { getDictionary, hasLocale } from "../../dictionaries";
@@ -175,191 +175,194 @@ export default async function BlogArticlePage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
-      <div className="mx-auto max-w-3xl">
-        <div className="text-xs opacity-70">
-          <Link href={`/${l}/blog`} className="hover:underline underline-offset-2">
-            {t.backToBlog}
-          </Link>
-        </div>
+      {/* v1.7.0: article column + the newsletter dock (sticky side column on
+          lg+, slim bottom bar below). */}
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
+        <div className="mx-auto w-full min-w-0 max-w-3xl">
+          <div className="text-xs opacity-70">
+            <Link href={`/${l}/blog`} className="hover:underline underline-offset-2">
+              {t.backToBlog}
+            </Link>
+          </div>
 
-        <article className="mt-4">
-          <header className="space-y-3">
-            <div className="flex flex-wrap items-center gap-2">
-              {editionLabel ? <span className="badge badge-info">{editionLabel}</span> : null}
-              <span className="badge badge-neutral">{categoryLabel}</span>
-              <span className="badge badge-accent">{importanceLabel}</span>
-            </div>
-
-            <h1 className="font-title text-3xl sm:text-4xl font-semibold leading-tight">
-              {article.title}
-            </h1>
-
-            <p className="text-base opacity-80">{article.deck}</p>
-
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs opacity-70">
-              <span>{article.author}</span>
-              <span aria-hidden="true">·</span>
-              <time dateTime={article.publishedAt ?? article.eventDate}>
-                {t.publishedOn.replace("{date}", formatEditorialDate(publishedDay, l))}
-              </time>
-              <span aria-hidden="true">·</span>
-              <span>{reading}</span>
-
-              {article.eventDate !== publishedDay ? (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <time dateTime={article.eventDate}>
-                    {t.eventDate.replace("{date}", formatEditorialDate(article.eventDate, l))}
-                  </time>
-                </>
-              ) : null}
-
-              {correctedDay ? (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <time dateTime={article.correction?.correctedAt ?? article.updatedAt ?? correctedDay}>
-                    {t.updatedOn.replace("{date}", formatEditorialDate(correctedDay, l))}
-                  </time>
-                </>
-              ) : null}
-            </div>
-
-            {/* Weekly editions state the window they cover, so the reader knows
-                exactly how much time the story accounts for. */}
-            {coveredRange ? <p className="text-xs opacity-70">{coveredRange}</p> : null}
-          </header>
-
-          {/* A backdated story says so above the fold: event day, publication day
-              and the stated reason. It must never pass as same-day news. */}
-          {article.backdateReason ? (
-            <aside role="note" className="mt-6 surface-soft p-4 border-l-4">
-              <div className="text-sm font-medium">
-                {t.backdateNotice
-                  .replace("{event}", formatEditorialDate(article.eventDate, l))
-                  .replace("{published}", formatEditorialDate(publishedDay, l))}
+          <article className="mt-4">
+            <header className="space-y-3">
+              <div className="flex flex-wrap items-center gap-2">
+                {editionLabel ? <span className="badge badge-info">{editionLabel}</span> : null}
+                <span className="badge badge-neutral">{categoryLabel}</span>
+                <span className="badge badge-accent">{importanceLabel}</span>
               </div>
-              <p className="mt-1 text-sm opacity-85">{article.backdateReason}</p>
-            </aside>
-          ) : null}
 
-          {/* A correction is always visible. History is never rewritten silently. */}
-          {article.correction ? (
-            <aside role="note" className="mt-6 surface-soft p-4 border-l-4">
-              <div className="text-sm font-medium">{t.correctionNotice}</div>
-              <p className="mt-1 text-sm opacity-85">{article.correction.note}</p>
-            </aside>
-          ) : null}
+              <h1 className="font-title text-3xl sm:text-4xl font-semibold leading-tight">
+                {article.title}
+              </h1>
 
-          <div className="mt-8">
-            <ArticleBody blocks={article.body} />
-          </div>
+              <p className="text-base opacity-80">{article.deck}</p>
 
-          {article.whyItMatters.length > 0 ? (
-            <section aria-labelledby="why-it-matters" className="mt-10 surface p-5">
-              <h2 id="why-it-matters" className="text-sm font-medium">
-                {t.whyItMatters}
-              </h2>
-              <ul className="mt-3 list-disc pl-5 space-y-1.5 text-sm opacity-90">
-                {article.whyItMatters.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs opacity-70">
+                <span>{article.author}</span>
+                <span aria-hidden="true">·</span>
+                <time dateTime={article.publishedAt ?? article.eventDate}>
+                  {t.publishedOn.replace("{date}", formatEditorialDate(publishedDay, l))}
+                </time>
+                <span aria-hidden="true">·</span>
+                <span>{reading}</span>
 
-          {article.keyTakeaways.length > 0 ? (
-            <section aria-labelledby="key-takeaways" className="mt-4 surface p-5">
-              <h2 id="key-takeaways" className="text-sm font-medium">
-                {t.keyTakeaways}
-              </h2>
-              <ul className="mt-3 list-disc pl-5 space-y-1.5 text-sm opacity-90">
-                {article.keyTakeaways.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-
-          {/* Thin sourcing is disclosed in the article, not hidden in the payload. */}
-          {article.singleSourceJustification ? (
-            <aside role="note" className="mt-4 surface-soft p-4 border-l-4">
-              <div className="text-sm font-medium">{t.singleSourceNotice}</div>
-              <p className="mt-1 text-sm opacity-85">{article.singleSourceJustification}</p>
-            </aside>
-          ) : null}
-
-          {article.digestItems.length > 0 ? (
-            <section aria-labelledby="digest-items" className="mt-4 surface p-5">
-              <h2 id="digest-items" className="text-sm font-medium">
-                {t.digestItems}
-              </h2>
-              <ul className="mt-3 space-y-2 text-sm opacity-90">
-                {article.digestItems.map((item, i) => (
-                  <li key={i} className="flex flex-wrap items-baseline gap-2">
-                    <span>{l === "es" ? item.titleEs : item.titleEn}</span>
-                    <time dateTime={item.eventDate} className="text-xs opacity-70">
-                      {formatEditorialDate(item.eventDate, l)}
+                {article.eventDate !== publishedDay ? (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <time dateTime={article.eventDate}>
+                      {t.eventDate.replace("{date}", formatEditorialDate(article.eventDate, l))}
                     </time>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
+                  </>
+                ) : null}
 
-          <div className="mt-4">
-            <SourceList
-              sources={article.sources}
-              lang={l}
-              dict={{ sources: t.sources, primarySource: t.primarySource }}
-            />
-          </div>
+                {correctedDay ? (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <time dateTime={article.correction?.correctedAt ?? article.updatedAt ?? correctedDay}>
+                      {t.updatedOn.replace("{date}", formatEditorialDate(correctedDay, l))}
+                    </time>
+                  </>
+                ) : null}
+              </div>
 
-          {article.tags.length > 0 || article.companies.length > 0 || article.models.length > 0 ? (
-            <section aria-label={t.tags} className="mt-4 space-y-2">
-              {[
-                { label: t.tags, values: article.tags },
-                { label: t.companies, values: article.companies },
-                { label: t.mentionedModels, values: article.models },
-              ]
-                .filter((group) => group.values.length > 0)
-                .map((group) => (
-                  <div key={group.label} className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs opacity-70">{group.label}:</span>
-                    <ul className="flex flex-wrap gap-1.5">
-                      {group.values.map((value) => (
-                        <li key={value} className="badge badge-neutral">
-                          {value}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-            </section>
-          ) : null}
-        </article>
+              {/* Weekly editions state the window they cover, so the reader knows
+                  exactly how much time the story accounts for. */}
+              {coveredRange ? <p className="text-xs opacity-70">{coveredRange}</p> : null}
+            </header>
 
-        <section aria-labelledby="blog-related" className="mt-10 surface p-5">
-          <h2 id="blog-related" className="text-sm font-medium">
-            {t.relatedTitle}
-          </h2>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Link className="btn h-9 px-4" href={`/${l}/guides`}>
-              {t.relatedGuides}
-            </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/models`}>
-              {t.relatedModels}
-            </Link>
-            {modelLinks.map((m) => (
-              <Link key={m.slug} className="btn h-9 px-4" href={`/${l}/models/${m.slug}`}>
-                {t.promptsFor.replace("{model}", m.label)}
+            {/* A backdated story says so above the fold: event day, publication day
+                and the stated reason. It must never pass as same-day news. */}
+            {article.backdateReason ? (
+              <aside role="note" className="mt-6 surface-soft p-4 border-l-4">
+                <div className="text-sm font-medium">
+                  {t.backdateNotice
+                    .replace("{event}", formatEditorialDate(article.eventDate, l))
+                    .replace("{published}", formatEditorialDate(publishedDay, l))}
+                </div>
+                <p className="mt-1 text-sm opacity-85">{article.backdateReason}</p>
+              </aside>
+            ) : null}
+
+            {/* A correction is always visible. History is never rewritten silently. */}
+            {article.correction ? (
+              <aside role="note" className="mt-6 surface-soft p-4 border-l-4">
+                <div className="text-sm font-medium">{t.correctionNotice}</div>
+                <p className="mt-1 text-sm opacity-85">{article.correction.note}</p>
+              </aside>
+            ) : null}
+
+            <div className="mt-8">
+              <ArticleBody blocks={article.body} />
+            </div>
+
+            {article.whyItMatters.length > 0 ? (
+              <section aria-labelledby="why-it-matters" className="mt-10 surface p-5">
+                <h2 id="why-it-matters" className="text-sm font-medium">
+                  {t.whyItMatters}
+                </h2>
+                <ul className="mt-3 list-disc pl-5 space-y-1.5 text-sm opacity-90">
+                  {article.whyItMatters.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            {article.keyTakeaways.length > 0 ? (
+              <section aria-labelledby="key-takeaways" className="mt-4 surface p-5">
+                <h2 id="key-takeaways" className="text-sm font-medium">
+                  {t.keyTakeaways}
+                </h2>
+                <ul className="mt-3 list-disc pl-5 space-y-1.5 text-sm opacity-90">
+                  {article.keyTakeaways.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            {/* Thin sourcing is disclosed in the article, not hidden in the payload. */}
+            {article.singleSourceJustification ? (
+              <aside role="note" className="mt-4 surface-soft p-4 border-l-4">
+                <div className="text-sm font-medium">{t.singleSourceNotice}</div>
+                <p className="mt-1 text-sm opacity-85">{article.singleSourceJustification}</p>
+              </aside>
+            ) : null}
+
+            {article.digestItems.length > 0 ? (
+              <section aria-labelledby="digest-items" className="mt-4 surface p-5">
+                <h2 id="digest-items" className="text-sm font-medium">
+                  {t.digestItems}
+                </h2>
+                <ul className="mt-3 space-y-2 text-sm opacity-90">
+                  {article.digestItems.map((item, i) => (
+                    <li key={i} className="flex flex-wrap items-baseline gap-2">
+                      <span>{l === "es" ? item.titleEs : item.titleEn}</span>
+                      <time dateTime={item.eventDate} className="text-xs opacity-70">
+                        {formatEditorialDate(item.eventDate, l)}
+                      </time>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            <div className="mt-4">
+              <SourceList
+                sources={article.sources}
+                lang={l}
+                dict={{ sources: t.sources, primarySource: t.primarySource }}
+              />
+            </div>
+
+            {article.tags.length > 0 || article.companies.length > 0 || article.models.length > 0 ? (
+              <section aria-label={t.tags} className="mt-4 space-y-2">
+                {[
+                  { label: t.tags, values: article.tags },
+                  { label: t.companies, values: article.companies },
+                  { label: t.mentionedModels, values: article.models },
+                ]
+                  .filter((group) => group.values.length > 0)
+                  .map((group) => (
+                    <div key={group.label} className="flex flex-wrap items-center gap-2">
+                      <span className="text-xs opacity-70">{group.label}:</span>
+                      <ul className="flex flex-wrap gap-1.5">
+                        {group.values.map((value) => (
+                          <li key={value} className="badge badge-neutral">
+                            {value}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+              </section>
+            ) : null}
+          </article>
+
+          <section aria-labelledby="blog-related" className="mt-10 surface p-5">
+            <h2 id="blog-related" className="text-sm font-medium">
+              {t.relatedTitle}
+            </h2>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Link className="btn h-9 px-4" href={`/${l}/guides`}>
+                {t.relatedGuides}
               </Link>
-            ))}
-          </div>
-        </section>
+              <Link className="btn h-9 px-4" href={`/${l}/models`}>
+                {t.relatedModels}
+              </Link>
+              {modelLinks.map((m) => (
+                <Link key={m.slug} className="btn h-9 px-4" href={`/${l}/models/${m.slug}`}>
+                  {t.promptsFor.replace("{model}", m.label)}
+                </Link>
+              ))}
+            </div>
+          </section>
 
-        <div className="mt-10">
-          <SubscribeCTA lang={l} dict={dict.newsletter.subscribe} />
         </div>
+
+        <NewsletterDock lang={l} dict={dict.newsletterDock} formDict={dict.newsletter.bar} />
       </div>
     </main>
   );

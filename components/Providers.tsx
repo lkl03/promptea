@@ -14,8 +14,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       // System preference resolves to next-themes' internal "light"/"dark";
       // map those onto the v1.3.0 themes so `system` = Aqua by day, Metro by
-      // night. Explicit picks (aqua/metro/classic) pass through unchanged.
-      value={{ light: "aqua", dark: "metro", aqua: "aqua", metro: "metro", classic: "classic" }}
+      // night. Explicit picks (aqua/metro/glass) pass through unchanged.
+      value={{ light: "aqua", dark: "metro", aqua: "aqua", metro: "metro", glass: "glass" }}
       disableTransitionOnChange
     >
       {children}

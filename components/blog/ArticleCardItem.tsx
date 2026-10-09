@@ -87,22 +87,22 @@ export default function ArticleCardItem({
     card.edition === "daily" ? null : (dict.edition?.[card.edition] ?? card.edition);
 
   if (featured) {
-    const tags = card.tags.slice(0, 4);
+    const tags = card.tags.slice(0, 3);
 
     return (
       <article>
-        <Link href={href} className="blog-lead surface block p-6 sm:p-8 md:p-10">
+        <Link href={href} className="blog-lead surface block p-6 sm:p-8">
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="badge badge-accent">{dict.featured}</span>
             {editionLabel ? <span className="badge badge-info">{editionLabel}</span> : null}
             <span className="badge badge-neutral">{categoryLabel}</span>
           </div>
 
-          <h2 className="blog-row-title font-title mt-4 text-2xl font-semibold leading-tight sm:text-3xl md:text-4xl">
+          <h2 className="blog-row-title font-title mt-4 text-2xl font-semibold leading-tight sm:text-[1.75rem]">
             {card.title}
           </h2>
 
-          <p className="mt-3 max-w-[62ch] text-base leading-relaxed text-ink-muted sm:text-lg">
+          <p className="mt-3 line-clamp-3 max-w-[62ch] text-base leading-relaxed text-ink-muted">
             {card.deck}
           </p>
 

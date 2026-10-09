@@ -1,6 +1,6 @@
 {
   "name": "prompt-evaluator",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,10 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "showcase:record": "node scripts/showcase/record.mjs",
+    "showcase:encode": "node scripts/showcase/encode.mjs",
+    "weekly:backfill": "node --env-file=.env.local scripts/weekly-backfill.mjs"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.7.5",
@@ -34,6 +37,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "puppeteer-core": "^25.4.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.0.17"

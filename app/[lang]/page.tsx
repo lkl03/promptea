@@ -1,147 +1,126 @@
-import { getDictionary, hasLocale } from "./dictionaries";
+// app/[lang]/page.tsx
+//
+// v1.7.0 — the homepage is a hub. Reading order:
+//   1. minimal controls (language + theme; no navigation links here),
+//   2. the news marquee (AI Daily, last 72 h; hidden when nothing qualifies),
+//   3. the logo with the mascot,
+//   4. four primary cards — Analyze | Best AI on the first row,
+//      AI Daily | Benchmarks on the second (stacked in that order on mobile),
+//   5. secondary links: Prompts | Guides | Models | Glossary,
+//   6. the product showcase video.
+//
+// The analyzer that used to live here moved to /{lang}/analyzer, unchanged.
+// Legacy deep links (/{lang}?prompt=…) are forwarded there by proxy.ts, so
+// this page never reads search params and stays statically rendered with a
+// short revalidation window (the 72 h marquee cut-off is at most 5 min late).
+
+import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import PromptBox from "@/components/PromptBox";
-import AdSlot from "@/components/AdSlot";
-import PromptOfTheDay from "@/components/PromptOfTheDay";
-import HowItWorks from "@/components/HowItWorks";
-import ModeSwitcher from "@/components/ModeSwitcher";
-import AiDailyPromo from "@/components/blog/AiDailyPromo";
-import NewsletterMarquee from "@/components/newsletter/NewsletterMarquee";
 
-// v1.2.0: types + normalization come from the shared domain module, so URL
-// prefill supports every purpose (translation/summarization were silently
-// dropped before) and can never drift from PromptBox or the API schema.
-import { isPurpose, isTarget, normalizePurpose as normalizePurposeAlias, type PromptPurpose, type TargetAI } from "@/lib/domain";
+import { getDictionary, hasLocale } from "./dictionaries";
+import BrandLogo from "@/components/BrandLogo";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import ThemeToggle from "@/components/ThemeToggle";
+import NewsMarquee from "@/components/home/NewsMarquee";
+import HubCards from "@/components/home/HubCards";
+import ShowcaseVideo from "@/components/home/ShowcaseVideo";
+import { listAllPublishedArticles } from "@/lib/blog/server";
+import { selectMarqueeItems, type MarqueeItem } from "@/lib/blog/marquee";
 
-function pickFirst(v: string | string[] | undefined): string | null {
-  if (!v) return null;
-  return Array.isArray(v) ? (v[0] ?? null) : v;
-}
+export const revalidate = 300;
 
-function safeDecode(v: string) {
+/** Firestore never breaks the hub: an outage simply hides the news strip. */
+async function loadMarquee(lang: "es" | "en"): Promise<MarqueeItem[]> {
   try {
-    return decodeURIComponent(v);
+    return selectMarqueeItems(await listAllPublishedArticles(lang, 30), new Date());
   } catch {
-    return v;
+    return [];
   }
 }
 
-function normalizeTarget(v: string | null): TargetAI | undefined {
-  const x = (v ?? "").toLowerCase().trim();
-  return isTarget(x) ? x : undefined;
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const l = lang === "en" ? "en" : "es";
+  return {
+    alternates: { canonical: `/${l}`, languages: { es: "/es", en: "/en" } },
+  };
 }
 
-function normalizePurpose(v: string | null): PromptPurpose | undefined {
-  if (!v) return undefined;
-  const normalized = normalizePurposeAlias(v);
-  // normalizePurposeAlias falls back to "text" for unknown values; only
-  // prefill when the URL actually named a valid purpose or alias.
-  const x = v.toLowerCase().trim();
-  const wasAlias = ["data_json", "json", "data/json", "translate", "summary", "summarize"].includes(x);
-  return isPurpose(x) || wasAlias ? normalized : undefined;
-}
-
-export default async function Page({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ lang: string }>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}) {
+export default async function HubPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
+  const l = lang as "es" | "en";
 
-  const dict = await getDictionary(lang as "es" | "en");
+  const dict = await getDictionary(l);
+  const t = dict.hub;
+  const marquee = await loadMarquee(l);
 
-  const sp = (await searchParams) ?? {};
-  const rawPrompt = pickFirst(sp.prompt);
-  const rawPurpose = pickFirst(sp.purpose);
-  const rawTarget = pickFirst(sp.target);
-  const rawModel = pickFirst(sp.model);
-
-  const initialPrompt = rawPrompt ? safeDecode(rawPrompt).slice(0, 6000) : "";
-  const initialPurpose = normalizePurpose(rawPurpose);
-  const initialTarget = normalizeTarget(rawTarget);
-  const initialModelId = rawModel ? safeDecode(rawModel).slice(0, 80) : undefined;
-  // v1.3.0 matcher → optimizer handoff: the payload travels via
-  // sessionStorage (promptea:handoff); the flag just tells PromptBox to read it.
-  const handoff = pickFirst(sp.handoff) === "1";
-
-  const showAds = process.env.NEXT_PUBLIC_ENABLE_ADS === "true";
+  const secondary = [
+    { href: `/${l}/prompts`, label: t.secondary.prompts },
+    { href: `/${l}/guides`, label: t.secondary.guides },
+    { href: `/${l}/models`, label: t.secondary.models },
+    { href: `/${l}/glossary`, label: t.secondary.glossary },
+  ];
 
   return (
-    <main className="px-4 pb-10 pt-8 sm:pt-10">
-      <div
-        className={[
-          "mx-auto grid w-full gap-8 xl:gap-10",
-          showAds
-            ? "grid-cols-1 xl:grid-cols-[320px_minmax(0,1180px)_320px] 2xl:grid-cols-[320px_minmax(0,1320px)_320px] 3xl:grid-cols-[320px_minmax(0,1480px)_320px]"
-            : "grid-cols-1 xl:grid-cols-[minmax(0,1fr)_300px] xl:max-w-6xl 2xl:max-w-7xl",
-        ].join(" ")}
-      >
-        {/* Center */}
-        <section className={showAds ? "xl:col-start-2" : ""}>
-          <header className="text-center">
-            <h1 className="font-title text-4xl font-semibold tracking-tight sm:text-5xl">{dict.app.title}</h1>
-            <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">{dict.app.subtitle}</p>
-            <div className="mt-3 flex justify-center">
-              <HowItWorks lang={lang as "es" | "en"} />
-            </div>
-            {/* v1.4.1: AI Daily promo closes the hero block — visible without
-                scrolling and above the mode switcher, so it never sits between
-                the analyzer input and its actions. */}
-            <div className="mt-3">
-              <AiDailyPromo lang={lang as "es" | "en"} dict={dict.blog.promo} />
-            </div>
-            <div className="mt-2">
-              <NewsletterMarquee lang={lang as "es" | "en"} dict={dict.newsletter.marquee} />
-            </div>
-          </header>
-
-          <div className="mt-6">
-            <ModeSwitcher lang={lang as "es" | "en"} active="improve" dict={dict.mode} />
-          </div>
-
-          {/* Mobile: Prompt of the Day above the analyzer */}
-          <div className="mt-6 xl:hidden">
-            <PromptOfTheDay lang={lang as "es" | "en"} />
-          </div>
-
-          <div className="mt-8">
-            <PromptBox
-              dict={dict}
-              lang={lang as "es" | "en"}
-              initialPrompt={initialPrompt}
-              initialPurpose={initialPurpose}
-              initialTarget={initialTarget}
-              initialModelId={initialModelId}
-              handoff={handoff}
-            />
-          </div>
-        </section>
-
-        {/* Ad: izquierda en XL+ (solo si enabled) */}
-        {showAds && (
-          <aside className="xl:col-start-1 xl:row-start-1 xl:justify-self-end xl:sticky xl:top-24">
-            <div className="mx-auto w-full max-w-[320px] xl:mx-0">
-              <AdSlot label={dict.app.ad} />
-            </div>
-          </aside>
-        )}
-
-        {/* Sticky Prompt of the Day (desktop only when ads disabled) */}
-        {!showAds && (
-          <aside className="hidden xl:block xl:row-start-1 xl:col-start-2">
-            <div className="xl:sticky xl:top-24">
-              <PromptOfTheDay lang={lang as "es" | "en"} />
-            </div>
-          </aside>
-        )}
+    <main className="mx-auto w-full max-w-5xl px-4 pb-10 pt-4">
+      {/* 1. Minimal controls */}
+      <div className="flex items-center justify-end gap-2">
+        <LanguageSwitcher lang={l} />
+        <ThemeToggle lang={l} />
       </div>
+
+      {/* 2. News marquee (renders nothing when no news qualifies) */}
+      {marquee.length > 0 ? (
+        <div className="mt-4">
+          <NewsMarquee items={marquee} lang={l} dict={{ label: t.marqueeLabel, pause: t.marqueePause, play: t.marqueePlay }} />
+        </div>
+      ) : null}
+
+      {/* 3. Logo */}
+      <header className="mt-10 flex flex-col items-center text-center sm:mt-14">
+        <h1 className="m-0">
+          <BrandLogo height={56} smHeight={96} priority />
+        </h1>
+        <p className="mt-4 max-w-xl text-base text-ink-muted sm:text-lg">{t.tagline}</p>
+      </header>
+
+      {/* 4. Primary cards */}
+      <div className="mt-10 sm:mt-12">
+        <HubCards lang={l} dict={t} />
+      </div>
+
+      {/* 5. Secondary links */}
+      <nav aria-label={t.secondaryAria} className="mt-8">
+        <ul className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-sm">
+          {secondary.map((item, i) => (
+            <li key={item.href} className="flex items-center">
+              {i > 0 ? (
+                <span aria-hidden="true" className="px-2 text-ink-faint">
+                  |
+                </span>
+              ) : null}
+              <Link href={item.href} className="rounded-lg px-2 py-1 text-ink-muted transition-colors hover:bg-surface-soft hover:text-ink">
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* 6. Product showcase */}
+      <section aria-labelledby="showcase-title" className="mx-auto mt-14 max-w-4xl sm:mt-16">
+        <div className="text-center">
+          <h2 id="showcase-title" className="font-title text-2xl font-semibold sm:text-3xl">
+            {t.showcaseTitle}
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl text-sm text-ink-muted sm:text-base">{t.showcaseBody}</p>
+        </div>
+        <div className="mt-6">
+          <ShowcaseVideo lang={l} caption={t.showcaseCaption} pending={t.showcasePending} title={t.showcaseTitle} />
+        </div>
+      </section>
     </main>
   );
 }
-
-
-
-

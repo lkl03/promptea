@@ -75,8 +75,8 @@ export default async function ModelsIndexPage({ params }: { params: Promise<{ la
         <div className="mt-2 space-y-2 text-sm opacity-85">
           <p>
             {l === "es"
-              ? "Cada modelo responde distinto. Acá tenés una página por modelo con tips prácticos y templates listos para copiar. Abrí un modelo, elegí un template y se precarga en la home para analizarlo y mejorarlo."
-              : "Each model behaves differently. Here you’ll find one page per model with practical tips and copy-paste templates. Open a model, pick a template, and it will prefill on the homepage so you can analyze and improve it."}
+              ? "Cada modelo responde distinto. Acá tenés una página por modelo con tips prácticos y templates listos para copiar. Abrí un modelo, elegí un template y se precarga en el analizador para analizarlo y mejorarlo."
+              : "Each model behaves differently. Here you’ll find one page per model with practical tips and copy-paste templates. Open a model, pick a template, and it will prefill in the analyzer so you can analyze and improve it."}
           </p>
           <p>
             {l === "es"

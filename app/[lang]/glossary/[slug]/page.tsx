@@ -11,7 +11,7 @@ function buildOpenLink(lang: "es" | "en", purpose: string, target: string, promp
   qp.set("purpose", purpose);
   qp.set("target", target);
   qp.set("prompt", prompt);
-  return `/${lang}?${qp.toString()}`;
+  return `/${lang}/analyzer?${qp.toString()}`;
 }
 
 export function generateStaticParams() {
@@ -155,7 +155,7 @@ export default async function GlossaryTermPage({
 
           <div className="flex items-center justify-between gap-3">
             <div className="text-xs opacity-70">
-              {l === "es" ? "Se abre en la home con el prompt precargado." : "Opens on home with the prompt prefilled."}
+              {l === "es" ? "Se abre en el analizador con el prompt precargado." : "Opens the analyzer with the prompt prefilled."}
             </div>
             <Link href={href} className="btn btn-primary h-9 px-4">
               {l === "es" ? "Abrir en Promptea" : "Open in Promptea"}

@@ -8,10 +8,11 @@
      CSS custom properties per theme. Components use ONLY semantic utilities
      (bg-surface, text-ink-muted, border-line…) — never raw palette values —
      so adding a theme means adding one block here, not touching components.
-   - Themes (v1.3.0): aqua (light, macOS Liquid Glass), metro (dark, Windows 8
-     Metro), classic (the pre-1.3 look; follows system preference between the
-     old Día and Atardecer sets). next-themes stamps class + data-theme on
-     <html>; system preference maps to aqua/metro via the provider's value map.
+   - Themes (v1.7.0): aqua (light, macOS Liquid Glass), metro (dark, Windows 8
+     Metro), glass (Promptea's own glass material; follows system preference
+     between a light and a dark material). next-themes stamps class +
+     data-theme on <html>; system preference maps to aqua/metro via the
+     provider's value map. "classic" was retired in v1.7.0.
    - Faithful ports: Aqua reproduces pro-all-in-one's layered radial wash,
      saturate(200%)+blur glass recipe, Apple accents and SF type metrics;
      Metro reproduces the flat tiles, azure #0078D7, Segoe UI light ramp, and
@@ -105,87 +106,107 @@
   --title-weight: 300;
 }
 
-/* ── Classic ("Old version") — the pre-1.3 Promptea look ─────────────────── */
-/* Light half = the old Día tokens; dark half (via system preference) = the
-   old Atardecer tokens. Keeps the old self-hosted fonts. */
-.classic,
-[data-theme="classic"] {
+/* ── Glass (v1.7.0) — Promptea's own glass material ─────────────────────── */
+/* Translucent surfaces over a mint wash, luminous edges, a soft specular
+   highlight, real depth. The accent is the mascot's green. Follows the system
+   preference between a light and a dark material, like the retired "classic"
+   theme did, and keeps Promptea's self-hosted typefaces. The material recipe
+   (blur, edges, highlight) lives in the "Glass material" section below; this
+   block is tokens only. Text tokens are tuned for AA on the most transparent
+   surface over the brightest part of the wash. */
+.glass,
+[data-theme="glass"] {
   color-scheme: light;
 
-  --canvas: #faf9f7;
-  --canvas-deep: #f3f1ec;
-  --surface: rgba(255, 255, 255, 0.82);
-  --surface-soft: rgba(255, 255, 255, 0.55);
-  --surface-raised: #ffffff;
-  --line: rgba(28, 25, 23, 0.1);
-  --line-strong: rgba(28, 25, 23, 0.18);
-  --ink: #1c1917;
-  --ink-muted: #57534e;
-  --ink-faint: #79716b;
-  --accent: #9a5b1e;
-  --accent-strong: #7c4a15;
-  --accent-soft: rgba(154, 91, 30, 0.1);
+  --canvas: #eef6f2;
+  --canvas-deep: #e1efe8;
+  --surface: rgba(255, 255, 255, 0.5);
+  --surface-soft: rgba(255, 255, 255, 0.42);
+  --surface-raised: rgba(255, 255, 255, 0.86);
+  --line: rgba(16, 64, 46, 0.12);
+  --line-strong: rgba(16, 64, 46, 0.24);
+  --ink: #0e1f18;
+  --ink-muted: #3f5249;
+  --ink-faint: #64776e;
+  --accent: #0b7a53;
+  --accent-strong: #08623f;
+  --accent-soft: rgba(22, 168, 112, 0.14);
   --on-accent: #ffffff;
-  --ring: rgba(154, 91, 30, 0.45);
-  --success: #15803d;
-  --success-soft: rgba(21, 128, 61, 0.1);
-  --warning: #a16207;
-  --warning-soft: rgba(161, 98, 7, 0.12);
-  --danger: #b91c1c;
-  --danger-soft: rgba(185, 28, 28, 0.09);
-  --info: #1d4ed8;
-  --info-soft: rgba(29, 78, 216, 0.09);
-  --shadow-color: 28 25 23;
+  --ring: rgba(11, 122, 83, 0.55);
+  --success: #157a43;
+  --success-soft: rgba(21, 122, 67, 0.12);
+  --warning: #9a5b00;
+  --warning-soft: rgba(154, 91, 0, 0.12);
+  --danger: #b4232c;
+  --danger-soft: rgba(180, 35, 44, 0.1);
+  --info: #1f5fbf;
+  --info-soft: rgba(31, 95, 191, 0.1);
+  --shadow-color: 18 60 44;
 
-  --body-tracking: 0;
+  /* Glass material inputs (consumed by the recipe below). */
+  --glass-fill-top: rgba(255, 255, 255, 0.66);
+  --glass-fill-bottom: rgba(255, 255, 255, 0.4);
+  --glass-edge: rgba(255, 255, 255, 0.78);
+  --glass-edge-inner: rgba(255, 255, 255, 0.95);
+  --glass-shine: rgba(255, 255, 255, 0.55);
+  --glass-dense: rgba(250, 253, 251, 0.9);
+
+  --body-tracking: -0.003em;
   --title-tracking: -0.02em;
   --title-weight: 600;
 }
 
-/* Classic keeps the old self-hosted fonts. The next/font variables
-   (--font-body/--font-title) are declared on <body>, and custom properties
-   compute where they are DECLARED (children inherit computed values) — so
-   classic sets font-family directly at body scope instead of routing through
-   the :root token chain. */
-.classic body,
-[data-theme="classic"] body {
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-}
-.classic :is(h1, h2, h3, h4, h5, h6),
-[data-theme="classic"] :is(h1, h2, h3, h4, h5, h6) {
-  font-family: var(--font-title), var(--font-body), ui-sans-serif, sans-serif;
-}
-
 @media (prefers-color-scheme: dark) {
-  .classic,
-  [data-theme="classic"] {
+  .glass,
+  [data-theme="glass"] {
     color-scheme: dark;
 
-    --canvas: #16130f;
-    --canvas-deep: #0f0d0a;
-    --surface: rgba(255, 251, 245, 0.055);
-    --surface-soft: rgba(255, 251, 245, 0.035);
-    --surface-raised: #221e19;
-    --line: rgba(250, 245, 235, 0.1);
-    --line-strong: rgba(250, 245, 235, 0.2);
-    --ink: #f3efe9;
-    --ink-muted: #b8b0a4;
-    --ink-faint: #8c847a;
-    --accent: #e0a458;
-    --accent-strong: #edbd7d;
-    --accent-soft: rgba(224, 164, 88, 0.13);
-    --on-accent: #1c1408;
-    --ring: rgba(224, 164, 88, 0.5);
-    --success: #4ade80;
-    --success-soft: rgba(74, 222, 128, 0.12);
-    --warning: #fbbf24;
-    --warning-soft: rgba(251, 191, 36, 0.12);
-    --danger: #f87171;
-    --danger-soft: rgba(248, 113, 113, 0.12);
-    --info: #93c5fd;
-    --info-soft: rgba(147, 197, 253, 0.12);
+    --canvas: #08130f;
+    --canvas-deep: #050c09;
+    --surface: rgba(255, 255, 255, 0.06);
+    --surface-soft: rgba(255, 255, 255, 0.05);
+    --surface-raised: rgba(20, 34, 29, 0.88);
+    --line: rgba(220, 255, 240, 0.1);
+    --line-strong: rgba(220, 255, 240, 0.2);
+    --ink: #eef7f2;
+    --ink-muted: #a8bdb3;
+    --ink-faint: #82978d;
+    --accent: #5fe0a8;
+    --accent-strong: #8aecc2;
+    --accent-soft: rgba(95, 224, 168, 0.14);
+    --on-accent: #052419;
+    --ring: rgba(95, 224, 168, 0.6);
+    --success: #6ee7a0;
+    --success-soft: rgba(110, 231, 160, 0.12);
+    --warning: #f5c451;
+    --warning-soft: rgba(245, 196, 81, 0.12);
+    --danger: #ff8a8a;
+    --danger-soft: rgba(255, 138, 138, 0.12);
+    --info: #8cc2ff;
+    --info-soft: rgba(140, 194, 255, 0.12);
     --shadow-color: 0 0 0;
+
+    --glass-fill-top: rgba(255, 255, 255, 0.1);
+    --glass-fill-bottom: rgba(255, 255, 255, 0.035);
+    --glass-edge: rgba(220, 255, 240, 0.16);
+    --glass-edge-inner: rgba(255, 255, 255, 0.18);
+    --glass-shine: rgba(255, 255, 255, 0.08);
+    --glass-dense: rgba(14, 26, 22, 0.92);
   }
+}
+
+/* Glass keeps Promptea's self-hosted fonts. The next/font variables
+   (--font-body/--font-title) are declared on <body>, and custom properties
+   compute where they are DECLARED (children inherit computed values) — so
+   glass sets font-family directly at body scope instead of routing through
+   the :root token chain. */
+.glass body,
+[data-theme="glass"] body {
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+.glass :is(h1, h2, h3, h4, h5, h6),
+[data-theme="glass"] :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-title), var(--font-body), ui-sans-serif, sans-serif;
 }
 
 /* ── Tailwind v4 semantic color + font mapping ───────────────────────────── */
@@ -435,13 +456,14 @@
       color 180ms ease,
       box-shadow 180ms ease;
   }
-  .mode-switch-item[aria-current="true"] {
+  .mode-switch-item[aria-current="true"],
+  .mode-switch-item[aria-current="page"] {
     background: var(--surface-raised);
     color: var(--ink);
     box-shadow: 0 1px 3px rgb(var(--shadow-color) / 0.12);
   }
   @media (hover: hover) and (pointer: fine) {
-    .mode-switch-item:not([aria-current="true"]):hover {
+    .mode-switch-item:not([aria-current="true"]):not([aria-current="page"]):hover {
       color: var(--ink);
     }
   }
@@ -533,7 +555,7 @@
 
 /* ── Ambient background (theme-aware) ────────────────────────────────────── */
 
-/* Classic keeps the calm v1.2 wash; Aqua and Metro override below. */
+/* Base wash; every theme overrides it below. */
 .ambient {
   background:
     radial-gradient(60rem 32rem at 18% -8%, var(--accent-soft), transparent 60%),
@@ -560,7 +582,8 @@
   background: var(--canvas);
 }
 
-/* Fine grain: classic only — Aqua glass and Metro tiles stay clean. */
+/* Fine grain: off in every current theme (Aqua glass, Metro tiles and Glass
+   stay clean); kept as a hook. */
 .grain::before {
   content: "";
   position: fixed;
@@ -569,10 +592,6 @@
   z-index: 0;
   opacity: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.028'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.classic .grain::before,
-[data-theme="classic"] .grain::before {
-  opacity: 0.5;
 }
 
 /* ── Aqua glass recipe (faithful to the reference implementation) ────────── */
@@ -637,6 +656,174 @@
   background: rgba(96, 110, 140, 0.6);
   border: 3px solid transparent;
   background-clip: content-box;
+}
+
+/* ── Glass material (v1.7.0) ───────────────────────────────────────────────
+   One recipe for every glass surface: a vertical translucent fill, a
+   specular highlight in the top-left corner, a luminous 1px edge with a
+   brighter inner top edge, and a soft two-layer shadow for depth. Blur sits
+   behind it. Where backdrop-filter is unavailable, or the user asks for
+   reduced transparency, surfaces become opaque (see the fallbacks at the
+   end of this section) — legibility never depends on the blur. */
+
+[data-theme="glass"] .ambient,
+.glass .ambient {
+  background:
+    radial-gradient(42rem 32rem at 10% 4%, rgba(95, 224, 168, 0.42), transparent 62%),
+    radial-gradient(36rem 30rem at 92% 6%, rgba(140, 200, 255, 0.36), transparent 60%),
+    radial-gradient(40rem 34rem at 80% 92%, rgba(186, 160, 255, 0.28), transparent 62%),
+    radial-gradient(30rem 28rem at 6% 90%, rgba(120, 230, 210, 0.3), transparent 60%),
+    linear-gradient(165deg, #eef6f2 0%, #eaf2f6 50%, #f1f0f8 100%);
+  background-attachment: fixed;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme="glass"] .ambient,
+  .glass .ambient {
+    background:
+      radial-gradient(40rem 30rem at 12% 2%, rgba(46, 190, 130, 0.28), transparent 62%),
+      radial-gradient(34rem 28rem at 92% 10%, rgba(60, 120, 220, 0.22), transparent 60%),
+      radial-gradient(40rem 34rem at 78% 95%, rgba(120, 80, 220, 0.2), transparent 62%),
+      linear-gradient(165deg, #07120e 0%, #08111a 55%, #0d0b16 100%);
+    background-attachment: fixed;
+  }
+}
+
+[data-theme="glass"] .surface,
+.glass .surface,
+[data-theme="glass"] .glass-panel,
+.glass .glass-panel {
+  border-radius: 20px;
+  border: 1px solid var(--glass-edge);
+  background:
+    radial-gradient(120% 70% at 0% 0%, var(--glass-shine), transparent 46%),
+    linear-gradient(180deg, var(--glass-fill-top), var(--glass-fill-bottom));
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-inner),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.06),
+    0 1px 2px rgb(var(--shadow-color) / 0.06),
+    0 22px 48px -18px rgb(var(--shadow-color) / 0.28);
+}
+
+/* Soft surfaces are numerous and nested: translucent fill and edge, no blur
+   (stacked blurs are the most expensive compositing cost). */
+[data-theme="glass"] .surface-soft,
+.glass .surface-soft {
+  border-radius: 14px;
+  background: var(--surface-soft);
+  border-color: var(--glass-edge);
+  box-shadow: inset 0 1px 0 var(--glass-shine);
+}
+
+/* Inputs and anything the user reads closely sit on a near-opaque pane. */
+[data-theme="glass"] .field,
+.glass .field {
+  background: var(--surface-raised);
+  border-color: var(--line-strong);
+  box-shadow: inset 0 1px 2px rgb(var(--shadow-color) / 0.06);
+}
+
+/* Modals: the densest material — content behind must not compete. */
+[data-theme="glass"] [role="dialog"] .surface,
+.glass [role="dialog"] .surface,
+[data-theme="glass"] [role="menu"].surface,
+.glass [role="menu"].surface {
+  background:
+    radial-gradient(120% 60% at 0% 0%, var(--glass-shine), transparent 40%),
+    var(--glass-dense);
+}
+
+/* Controls: pill-shaped glass with the same luminous edge. */
+[data-theme="glass"] .btn-icon,
+.glass .btn-icon,
+[data-theme="glass"] .pill,
+.glass .pill,
+[data-theme="glass"] .mode-switch,
+.glass .mode-switch,
+[data-theme="glass"] .btn-ghost,
+.glass .btn-ghost,
+[data-theme="glass"] .btn-secondary,
+.glass .btn-secondary {
+  background: linear-gradient(180deg, var(--glass-fill-top), var(--glass-fill-bottom));
+  border-color: var(--glass-edge);
+  box-shadow: inset 0 1px 0 var(--glass-edge-inner), 0 4px 14px -8px rgb(var(--shadow-color) / 0.3);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+}
+[data-theme="glass"] .pill[aria-pressed="true"],
+[data-theme="glass"] .pill[aria-checked="true"],
+[data-theme="glass"] .pill[aria-current="page"],
+.glass .pill[aria-pressed="true"],
+.glass .pill[aria-checked="true"],
+.glass .pill[aria-current="page"] {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+}
+[data-theme="glass"] .mode-switch-item[aria-current="true"],
+[data-theme="glass"] .mode-switch-item[aria-current="page"],
+.glass .mode-switch-item[aria-current="true"],
+.glass .mode-switch-item[aria-current="page"] {
+  background: var(--surface-raised);
+  box-shadow: inset 0 1px 0 var(--glass-edge-inner), 0 2px 8px rgb(var(--shadow-color) / 0.12);
+}
+[data-theme="glass"] .btn-primary,
+.glass .btn-primary {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 88%, white), var(--accent));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px -10px var(--accent);
+}
+
+/* The internal-page header becomes a floating glass bar. */
+[data-theme="glass"] .site-header-bar,
+.glass .site-header-bar {
+  padding: 0.5rem 0.75rem;
+  border-radius: 18px;
+  border: 1px solid var(--glass-edge);
+  background: linear-gradient(180deg, var(--glass-fill-top), var(--glass-fill-bottom));
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  backdrop-filter: blur(20px) saturate(170%);
+  box-shadow: inset 0 1px 0 var(--glass-edge-inner), 0 14px 34px -20px rgb(var(--shadow-color) / 0.35);
+}
+
+[data-theme="glass"] ::selection,
+.glass ::selection {
+  background: rgba(22, 168, 112, 0.24);
+  color: var(--ink);
+}
+
+/* Optional refraction (Chromium only). GlassEnhancer sets data-glass-fx when
+   the engine renders SVG-filter backdrops correctly and the user has not asked
+   for reduced transparency or motion; only the few hero surfaces opt in, so
+   the cost stays bounded. Every other browser keeps the blur recipe above. */
+[data-theme="glass"][data-glass-fx="refract"] .glass-refract {
+  -webkit-backdrop-filter: url(#promptea-glass-refract) blur(16px) saturate(170%);
+  backdrop-filter: url(#promptea-glass-refract) blur(16px) saturate(170%);
+}
+
+/* Fallbacks: no backdrop-filter, or reduced transparency requested. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  [data-theme="glass"] .surface,
+  [data-theme="glass"] .glass-panel,
+  [data-theme="glass"] .site-header-bar,
+  .glass .surface,
+  .glass .glass-panel,
+  .glass .site-header-bar {
+    background: var(--glass-dense);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  [data-theme="glass"] .surface,
+  [data-theme="glass"] .glass-panel,
+  [data-theme="glass"] .site-header-bar,
+  [data-theme="glass"] .surface-soft,
+  [data-theme="glass"] .pill,
+  [data-theme="glass"] .btn-icon,
+  [data-theme="glass"] .mode-switch {
+    background: var(--glass-dense);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 /* ── Metro: the five principles, done properly ───────────────────────────── */
@@ -710,7 +897,9 @@
   border-color: #0078d7;
 }
 [data-theme="metro"] .mode-switch-item[aria-current="true"],
-.metro .mode-switch-item[aria-current="true"] {
+[data-theme="metro"] .mode-switch-item[aria-current="page"],
+.metro .mode-switch-item[aria-current="true"],
+.metro .mode-switch-item[aria-current="page"] {
   background: #0078d7;
   color: #ffffff;
 }
@@ -882,5 +1071,153 @@ html {
   .blog-row:hover .blog-row-arrow,
   .blog-lead:hover .blog-row-arrow {
     transform: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.7.0 — brand logo renditions
+
+   components/BrandLogo.tsx renders both renditions; exactly one is shown.
+   Dark backgrounds: Metro always, Glass when the system is dark.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.brand-logo-dark {
+  display: none;
+}
+[data-theme="metro"] .brand-logo-light,
+.metro .brand-logo-light {
+  display: none;
+}
+[data-theme="metro"] .brand-logo-dark,
+.metro .brand-logo-dark {
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  [data-theme="glass"] .brand-logo-light,
+  .glass .brand-logo-light {
+    display: none;
+  }
+  [data-theme="glass"] .brand-logo-dark,
+  .glass .brand-logo-dark {
+    display: block;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.7.0 — homepage hub: news marquee, hub cards, showcase video
+   ═══════════════════════════════════════════════════════════════════════════ */
+@keyframes newsMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.news-marquee-track {
+  animation: newsMarquee var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+.news-marquee:hover .news-marquee-track,
+.news-marquee:focus-within .news-marquee-track {
+  animation-play-state: paused;
+}
+.news-marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+
+@layer components {
+  .hub-card {
+    @apply relative flex h-full flex-col gap-3 rounded-2xl border p-5 sm:p-6;
+    background: var(--surface-raised);
+    border-color: var(--line);
+    box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.05), 0 10px 30px -18px rgb(var(--shadow-color) / 0.25);
+    transition:
+      transform 200ms var(--ease-out-strong),
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+  .hub-card-icon {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-xl;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .hub-card-arrow {
+    transition: transform 200ms var(--ease-out-strong);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .hub-card:hover {
+      border-color: var(--line-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.06), 0 18px 40px -18px rgb(var(--shadow-color) / 0.35);
+    }
+    .hub-card:hover .hub-card-arrow {
+      transform: translateX(3px);
+    }
+  }
+  .hub-card:active {
+    transform: scale(0.99);
+  }
+}
+
+/* Hub cards in Glass use the full material (and refraction where enabled). */
+[data-theme="glass"] .hub-card,
+.glass .hub-card {
+  border-radius: 22px;
+  border: 1px solid var(--glass-edge);
+  background:
+    radial-gradient(120% 70% at 0% 0%, var(--glass-shine), transparent 46%),
+    linear-gradient(180deg, var(--glass-fill-top), var(--glass-fill-bottom));
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  backdrop-filter: blur(20px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-edge-inner),
+    0 22px 48px -20px rgb(var(--shadow-color) / 0.3);
+}
+@media (prefers-reduced-transparency: reduce) {
+  [data-theme="glass"] .hub-card {
+    background: var(--glass-dense);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* Metro: hub cards are flat tiles; the icon tile is solid azure. */
+[data-theme="metro"] .hub-card-icon,
+.metro .hub-card-icon {
+  background: #0078d7;
+  color: #ffffff;
+}
+[data-theme="metro"] .hub-card,
+.metro .hub-card {
+  background: var(--surface);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-theme="metro"] .hub-card:hover,
+  .metro .hub-card:hover {
+    transform: none;
+    border-color: #0078d7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .news-marquee-track {
+    animation: none !important;
+  }
+  .hub-card,
+  .hub-card-arrow {
+    transition: none;
+  }
+  .hub-card:hover,
+  .hub-card:hover .hub-card-arrow {
+    transform: none;
+  }
+}
+
+/* v1.7.0 — mobile newsletter bar slides away for the footer / soft keyboard. */
+.newsletter-dock-bar {
+  transition:
+    transform 240ms var(--ease-out-strong),
+    opacity 180ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .newsletter-dock-bar {
+    transition: opacity 120ms ease;
   }
 }

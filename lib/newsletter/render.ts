@@ -12,6 +12,7 @@
 
 import type { Lang } from "@/lib/domain";
 import type { NewsletterEdition } from "./types";
+import { weeklyEditionPath } from "./paths";
 
 export const DEFAULT_SITE_URL = "https://www.promptea.me";
 
@@ -55,7 +56,7 @@ export function renderNewsletterHtml(edition: NewsletterEdition, lang: Lang, opt
   const topStoriesLabel = es ? "Esta semana en IA" : "This week in AI";
   const toolsLabel = es ? "Herramientas y lanzamientos" : "Tools and launches";
   const editorialLabel = es ? "Algo para pensar" : "One thing worth thinking about";
-  const weeklyUrl = `${site}/${lang}/weekly`;
+  const weeklyUrl = `${site}${weeklyEditionPath(lang, edition.editionId)}`;
   const privacyUrl = `${site}/${lang}/privacy`;
   const unsubUrl = opts.unsubscribeUrl ?? weeklyUrl;
   const readMore = es ? "Leer más →" : "Read more →";
@@ -178,6 +179,6 @@ export function renderNewsletterText(edition: NewsletterEdition, lang: Lang, opt
     lines.push("", es ? "HERRAMIENTAS Y LANZAMIENTOS" : "TOOLS AND LAUNCHES");
     for (const t of content.tools) lines.push(`• ${t.title} — ${t.description}`, `  ${t.url}`);
   }
-  lines.push("", "—", `${es ? "Desuscribirme" : "Unsubscribe"}: ${opts.unsubscribeUrl ?? `${site}/${lang}/weekly`}`);
+  lines.push("", "—", `${es ? "Desuscribirme" : "Unsubscribe"}: ${opts.unsubscribeUrl ?? `${site}${weeklyEditionPath(lang, edition.editionId)}`}`);
   return lines.join("\n");
 }

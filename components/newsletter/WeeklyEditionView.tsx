@@ -2,8 +2,7 @@
 //
 // Server component: renders a single newsletter edition.
 //
-// Used by the preview page (app/[lang]/weekly/page.tsx) and will be reused by
-// the email renderer in the future. The layout is a single-column editorial
+// Used by the edition page (app/[lang]/blog/weekly/[date]/page.tsx). The layout is a single-column editorial
 // read at max-width ~680px, matching the AI Daily's text-first aesthetic.
 //
 // Each top-story card links to its AI Daily article at /[lang]/blog/[slug].
@@ -25,10 +24,13 @@ type Props = {
     readMore: string;
     editionLabel: string;
   };
+  /** v1.7.0: the edition page makes the hero headline its <h1>. */
+  headingLevel?: 1 | 2;
 };
 
-export default function WeeklyEditionView({ edition, lang, dict }: Props) {
+export default function WeeklyEditionView({ edition, lang, dict, headingLevel = 2 }: Props) {
   const content = edition.locales[lang];
+  const Hero = headingLevel === 1 ? "h1" : "h2";
 
   return (
     <div className="space-y-10">
@@ -37,9 +39,9 @@ export default function WeeklyEditionView({ edition, lang, dict }: Props) {
         <p className="text-xs font-medium uppercase tracking-widest text-ink-muted">
           {dict.heroLabel}
         </p>
-        <h2 className="font-title mt-3 text-2xl font-semibold leading-tight sm:text-3xl">
+        <Hero className="font-title mt-3 text-3xl font-semibold leading-tight sm:text-4xl">
           {content.heroHeadline}
-        </h2>
+        </Hero>
         <p className="mt-3 text-base leading-relaxed text-ink-muted sm:text-lg">
           {content.heroDeck}
         </p>

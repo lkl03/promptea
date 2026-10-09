@@ -473,3 +473,82 @@ describe("runWeeklyNewsletter", () => {
     expect([...store.ledger.keys()]).toContain(`promptea-weekly_2026-09-28__${testRecipientKey("owner@example.com")}`);
   });
 });
+
+// ---------------------------------------------------------------------------
+// v1.7.0 — publication is separate from delivery
+// ---------------------------------------------------------------------------
+
+describe("publish mode (v1.7.0)", () => {
+  test("publishes the edition on the site and never touches the mailer or subscribers", async () => {
+    const store = new MemoryStore();
+    let listed = 0;
+    const original = store.listActiveSubscribers.bind(store);
+    store.listActiveSubscribers = async () => {
+      listed++;
+      return original();
+    };
+    const { deps: d, mailer } = deps({ store });
+    const r = await runWeeklyNewsletter("publish", d);
+    expect(r.outcome).toBe("PUBLISHED");
+    expect(r.ok).toBe(true);
+    expect(mailer!.sent).toHaveLength(0);
+    expect(store.ledger.size).toBe(0);
+    expect(listed).toBe(0);
+    const e = store.editions.get("promptea-weekly_2026-09-28")!;
+    expect(e.status).toBe("published");
+    expect(e.publishedAt).toBe(MONDAY.toISOString());
+    expect(e.sentAt).toBeNull();
+  });
+
+  test("works with delivery switched off and no mail provider at all", async () => {
+    const { deps: d } = deps({ env: {}, mailer: null });
+    const r = await runWeeklyNewsletter("publish", d);
+    expect(r.outcome).toBe("PUBLISHED");
+  });
+
+  test("idempotent: publishing twice changes nothing the second time", async () => {
+    const store = new MemoryStore();
+    await runWeeklyNewsletter("publish", deps({ store }).deps);
+    const before = JSON.stringify(store.editions.get("promptea-weekly_2026-09-28"));
+    const again = await runWeeklyNewsletter("publish", deps({ store }).deps);
+    expect(again.outcome).toBe("ALREADY_PUBLISHED");
+    expect(JSON.stringify(store.editions.get("promptea-weekly_2026-09-28"))).toBe(before);
+  });
+
+  test("a sent edition is reported as already public and is not re-sent or altered", async () => {
+    const store = new MemoryStore();
+    const { deps: d, mailer } = deps({ store });
+    await runWeeklyNewsletter("live", d);
+    const sentCount = mailer!.sent.length;
+    const r = await runWeeklyNewsletter("publish", deps({ store, mailer }).deps);
+    expect(r.outcome).toBe("ALREADY_PUBLISHED");
+    expect(mailer!.sent).toHaveLength(sentCount);
+    expect(store.editions.get("promptea-weekly_2026-09-28")?.status).toBe("sent");
+  });
+
+  test("a later live run mails exactly the published content", async () => {
+    const store = new MemoryStore();
+    await runWeeklyNewsletter("publish", deps({ store }).deps);
+    const published = store.editions.get("promptea-weekly_2026-09-28")!;
+    const { deps: d, mailer } = deps({ store, articles: [article({ slug: "late-p0", eventDate: "2026-09-24", importance: "P0" })] });
+    const r = await runWeeklyNewsletter("live", d);
+    expect(r.outcome).toBe("SENT");
+    expect(mailer!.sent[0].subject).toContain(published.locales.es.heroHeadline);
+  });
+
+  test("backfill of a past week by date; a week that has not closed is refused", async () => {
+    const store = new MemoryStore();
+    const past = await runWeeklyNewsletter("publish", deps({ store, clock: () => new Date("2026-10-08T12:00:00Z") }).deps, { date: "2026-09-28" });
+    expect(past.outcome).toBe("PUBLISHED");
+    expect(store.editions.has("promptea-weekly_2026-09-28")).toBe(true);
+    const future = await runWeeklyNewsletter("publish", deps({ store }).deps, { date: "2026-10-12" });
+    expect(future.outcome).toBe("WEEK_NOT_CLOSED");
+    expect(store.editions.has("promptea-weekly_2026-10-12")).toBe(false);
+  });
+
+  test("delivered emails link to the edition's own page in AI Daily", async () => {
+    const { deps: d, mailer } = deps();
+    await runWeeklyNewsletter("live", d);
+    expect(mailer!.sent[0].html).toContain("https://www.promptea.me/es/blog/weekly/2026-09-28");
+  });
+});

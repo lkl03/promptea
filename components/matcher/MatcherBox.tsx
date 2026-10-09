@@ -5,7 +5,7 @@
 // "Find the Best AI" orchestrator. Shares the prompt with the Improve mode
 // through the same sessionStorage form-state (no duplicated prompt state),
 // and hands off to the optimizer via the promptea:handoff contract:
-// sessionStorage payload + /?handoff=1 navigation — no fragile global event.
+// sessionStorage payload + /analyzer?handoff=1 navigation — no fragile global event.
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -126,11 +126,11 @@ export default function MatcherBox({ dict, lang }: { dict: UiDict; lang: "es" | 
         model: payload.modelId,
       });
       trackAppEvent({ event: "matcher_handoff", lang, mode: "best-ai" });
-      router.push(`/${lang}/?${params.toString()}`);
+      router.push(`/${lang}/analyzer?${params.toString()}`);
       return;
     }
     trackAppEvent({ event: "matcher_handoff", lang, mode: "best-ai" });
-    router.push(`/${lang}/?handoff=1`);
+    router.push(`/${lang}/analyzer?handoff=1`);
   }
 
   function editPrompt() {

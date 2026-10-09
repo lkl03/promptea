@@ -28,6 +28,52 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.7.0 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.7.0</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 09-10-2026" : "Released: 2026-10-09"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva página de inicio: las noticias de IA de las últimas 72 horas, el logo con nuestra mascota y cuatro accesos directos — Analizar prompt, Elegir la mejor IA, IA al día y Benchmarks — más un video que muestra la app en uso."
+              : "New homepage: AI news from the last 72 hours, the logo with our mascot and four shortcuts — Analyze a prompt, Find the best AI, AI Daily and Benchmarks — plus a video of the app in use."}
+          </li>
+          <li>
+            {isEs
+              ? "El analizador ahora vive en /analyzer, con todo lo que hacía antes. Los enlaces viejos con un prompt precargado siguen funcionando."
+              : "The analyzer now lives at /analyzer, with everything it did before. Old links with a prefilled prompt still work."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva página de Benchmarks: quién lidera cada benchmark, qué modelos están en la frontera y qué mide cada prueba, con fuente, fecha y métrica. Cada ranking usa su propia métrica: no hay un puntaje universal inventado."
+              : "New Benchmarks page: who leads each benchmark, which models are at the frontier and what each test measures, with source, date and metric. Every ranking keeps its own metric: no invented universal score."}
+          </li>
+          <li>
+            {isEs
+              ? "El Resumen semanal ahora está dentro de IA al día, con el archivo de todas las ediciones y una página para compartir cada una. Arreglamos el error que mostraba “la primera edición se está preparando” aunque ya se habían enviado ediciones."
+              : "The Weekly digest now lives inside AI Daily, with an archive of every edition and a shareable page for each one. We fixed the bug that showed “the first edition is being prepared” even though editions had already been sent."}
+          </li>
+          <li>
+            {isEs
+              ? "IA al día es más fácil de leer, y la suscripción al newsletter queda siempre a mano: al costado en la computadora y como una barra discreta en el celular."
+              : "AI Daily is easier to read, and the newsletter signup is always at hand: in the side column on desktop and as a small bar on mobile."}
+          </li>
+          <li>
+            {isEs
+              ? "Nuevo tema Glass, con superficies translúcidas y el verde de la mascota; reemplaza a “Versión anterior”. Si usabas ese tema, ahora seguís el tema de tu sistema."
+              : "New Glass theme, with translucent surfaces and the mascot’s green; it replaces “Old version”. If you used that theme, you now follow your system theme."}
+          </li>
+          <li>
+            {isEs
+              ? "Modelos actualizados: GPT-6.1 Sol, Claude Sonnet 5.5 y Claude Haiku 5.5, y los prompts para Claude Opus 5.5 siguen su guía oficial más reciente."
+              : "Updated models: GPT-6.1 Sol, Claude Sonnet 5.5 and Claude Haiku 5.5, and prompts for Claude Opus 5.5 follow its latest official guide."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.6.2 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

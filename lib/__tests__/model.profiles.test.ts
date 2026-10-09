@@ -82,8 +82,19 @@ describe("registry — 2026-09-24 provider sweep", () => {
 
   test("current lineups and defaults per provider", () => {
     expect(defaultModelIdForTarget("gpt")).toBe("gpt-6-astra");
-    expect(getModelsForTarget("gpt").map((m) => m.id)).toEqual(["gpt-6-astra", "gpt-6-sol", "gpt-6-luna"]);
-    expect(getModelById("gpt-5.6")?.replacementId).toBe("gpt-6-sol");
+    // 2026-10-09: GPT-6.1 Sol replaced GPT-6 Sol in OpenAI's lineup (gpt-6-sol kept as legacy).
+    expect(getModelsForTarget("gpt").map((m) => m.id)).toEqual(["gpt-6-astra", "gpt-6.1-sol", "gpt-6-luna"]);
+    expect(getModelById("gpt-5.6")?.replacementId).toBe("gpt-6.1-sol");
+    expect(resolveModelId("gpt-6-sol")?.id).toBe("gpt-6.1-sol");
+    // 2026-10-09: Claude Sonnet 5.5 / Haiku 5.5 replaced Sonnet 5 / Haiku 4.5 (ids kept as legacy).
+    expect(getModelsForTarget("claude").map((m) => m.id)).toEqual([
+      "claude-opus-5.5",
+      "claude-fable-5.1",
+      "claude-sonnet-5.5",
+      "claude-haiku-5.5",
+    ]);
+    expect(resolveModelId("claude-sonnet-5")?.id).toBe("claude-sonnet-5.5");
+    expect(resolveModelId("claude-haiku-4.5")?.id).toBe("claude-haiku-5.5");
     expect(defaultModelIdForTarget("gemini")).toBe("gemini-3.8-flash");
     expect(getModelById("gemini-3.5-flash")?.status).toBe("legacy");
     expect(getModelById("gemini-3.1-flash-lite")?.status).toBe("deprecated");
@@ -98,8 +109,9 @@ describe("registry — 2026-09-24 provider sweep", () => {
   test("Sonar Chat Completions (sunset 2026-09-27) maps to the official Agent API presets", () => {
     const mapping: Record<string, string> = {
       sonar: "perplexity-agent-fast",
-      "sonar-pro": "perplexity-agent-low",
-      "sonar-reasoning-pro": "perplexity-agent-medium",
+      // Perplexity's migration table (re-checked 2026-10-09): Sonar Pro → fast, Sonar Reasoning Pro → low.
+      "sonar-pro": "perplexity-agent-fast",
+      "sonar-reasoning-pro": "perplexity-agent-low",
       "sonar-deep-research": "perplexity-agent-high",
     };
     for (const [legacy, preset] of Object.entries(mapping)) {
@@ -319,7 +331,10 @@ describe("adaptive refiner receives and enforces the same guidance", () => {
     expect(block).toContain("Claude Opus 5.5");
     expect(block).toMatch(/adaptive thinking/);
     expect(block).toMatch(/effort/);
-    expect(block).toMatch(/<pasted_content>/);
+    // v1.7.0: the guide's exact pattern: matching short id on both tags, own lines.
+    expect(block).toMatch(/<pasted_content id="…">/);
+    expect(block).toMatch(/same short id on both/);
+    expect(block).toMatch(/short explanation of the answer/);
     expect(block).toMatch(/Short tasks stay short/);
     expect(block).toMatch(/name specific patterns to avoid/);
   });
