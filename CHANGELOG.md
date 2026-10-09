@@ -4,6 +4,33 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.6.2 — 2026-10-08
+
+**Two new evergreen guides (meetings, spreadsheet formulas), the reasoning-models guide and ChatGPT landing moved to current models, and a real heading outline on guide pages.** The new guides target business workflows that come up every day: running meetings with AI and getting Excel/Google Sheets formulas right. The reasoning-models guide still named `o3` and the ChatGPT prompt-generator landing still named GPT-4.1/GPT-4o/o3 (both flagged as follow-ups in v1.6.1); both now use the models `lib/models.ts` marks selectable. The product improvement turns guide section titles into real headings, matching glossary and model pages.
+
+### Added
+- **New guide: AI prompts for meetings** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-meetings`) — where AI helps across the meeting cycle (agenda, notes, follow-up, recurring meetings), what a meeting-notes prompt needs (delimited source, attendees and roles, exact sections, a "not specified" rule for missing owners/dates, audience and length), risks to check before sharing (suggestions turned into decisions, wrong owners, lost dissent, sensitive content), and three templates: agenda from a goal, decisions and action items from a transcript (with a supporting quote per decision), and a follow-up message that adds nothing new.
+- **New guide: AI prompts for Excel and Google Sheets formulas** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-spreadsheets`) — why formula prompts fail (the model can't see the sheet, app and locale differences, messy data, no expected result), what to include (app and locale, layout, sample rows with expected results, placement, edge cases, helper-column preference), how to verify the answer, and two templates: write a formula from sample data, and explain or fix a formula.
+
+### Changed
+- **Reasoning-models guide refreshed** (`lib/seo/content/guides.ts`, slug `reasoning-model-prompts`) — title and intro now name GPT-6, Claude Opus 5.5, Gemini, Grok and DeepSeek instead of `o3`; a new section explains how each current model sets reasoning depth with a request parameter (Opus 5.5 effort, GPT-6 effort with `low` as Astra's floor, Gemini `thinking_level`, Grok 4.7 `reasoning_effort`, DeepSeek thinking mode) instead of prompt wording; a new FAQ covers making a model think more or less. Facts come from the registry entries verified against first-party docs on 2026-09-24; the guide says so and tells readers to confirm in provider docs. Slug unchanged.
+- **ChatGPT prompt-generator landing** (`lib/seo/content/landings.ts`, slug `prompt-generator-for-chatgpt`) — title and intro now name GPT-6 Astra, Sol and Luna instead of GPT-4.1, GPT-4o and o3 (legacy or deprecated in the registry) and summarize how Astra and Sol/Luna differ in prompting, per their registry `promptGuidance`.
+- **Heading outline on guide pages** (`app/[lang]/guides/[slug]/page.tsx`) — section titles, "Templates" and "FAQ" are now `<h2>` and template titles `<h3>` (they were `<div>`s, so each guide had only an `<h1>`). Same classes as before; glossary and model pages already used `<h2>` this way. Screen-reader users can navigate guides by heading, and search engines get a real document outline.
+- Version bumped to `v1.6.2` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Known limitations / follow-ups
+- The multimodal-prompts guide FAQ still lists image-input support by older model generations ("GPT-4o and later", "Claude 3 and later", "Grok 2 Vision"). Not wrong, but dated; a candidate for a future refresh.
+- The v1.6.1 note about the Perplexity Sonar → preset mapping in `lib/models.ts` still stands (no registry changes this week).
+- Headings now inherit the theme's title font (`h1–h6` rule in `app/globals.css`), as on glossary and model pages, so guide section titles look slightly different than before.
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean
+- `npm test` — all suites pass, including version-sync checks
+- `npm run build` — succeeds without Firebase/Resend env vars; the new and refreshed guide pages prerender
+
+---
+
 ## v1.6.1 — 2026-10-01
 
 **Perplexity guide refreshed for the Agent API, two new evergreen guides, and Open Graph metadata on model pages.** Perplexity ended support for Sonar Chat Completions on 2026-09-27, so the Perplexity guide — which still taught Sonar and Sonar Pro — was rewritten from Perplexity's first-party Agent API docs. Two new guides cover AI prompts for work email and building a shared prompt library for a team. The product improvement adds Open Graph and Twitter Card metadata to the per-model pages (`/models/[slug]`), the last content detail pages that lacked it.

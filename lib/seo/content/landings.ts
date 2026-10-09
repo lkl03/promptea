@@ -195,8 +195,8 @@ export const landings: LandingPage[] = [
   {
     slug: "prompt-generator-for-chatgpt",
     title: {
-      en: "Prompt generator for ChatGPT — GPT-4.1, GPT-4o, o3",
-      es: "Generador de prompts para ChatGPT — GPT-4.1, GPT-4o, o3",
+      en: "Prompt generator for ChatGPT — GPT-6 Astra, Sol, Luna",
+      es: "Generador de prompts para ChatGPT — GPT-6 Astra, Sol, Luna",
     },
     description: {
       en: "Generate ChatGPT-ready prompts with role, decomposed task, constraints, examples, and explicit evaluation criteria.",
@@ -205,11 +205,11 @@ export const landings: LandingPage[] = [
     h1: { en: "Prompt generator for ChatGPT", es: "Generador de prompts para ChatGPT" },
     intro: {
       en: [
-        "ChatGPT (GPT-4.1, GPT-4o, o3) benefits from instruction-first prompts with delimiters, decomposed steps, and clear acceptance criteria.",
+        "ChatGPT (GPT-6 Astra, Sol, Luna) benefits from instruction-first prompts with delimiters and clear acceptance criteria. Astra does best with the goal and constraints; Sol and Luna do best with explicit steps and an exact format.",
         "Promptea structures prompts the way GPT expects them and adapts the depth to the use case you pick.",
       ],
       es: [
-        "ChatGPT (GPT-4.1, GPT-4o, o3) rinde mejor con prompts que ponen la instrucción primero, usan delimitadores y tienen criterios de aceptación claros.",
+        "ChatGPT (GPT-6 Astra, Sol, Luna) rinde mejor con prompts que ponen la instrucción primero, usan delimitadores y tienen criterios de aceptación claros. Astra rinde mejor con objetivo y restricciones; Sol y Luna, con pasos explícitos y formato exacto.",
         "Promptea estructura los prompts como GPT los espera y adapta la profundidad al caso de uso que elijas.",
       ],
     },
