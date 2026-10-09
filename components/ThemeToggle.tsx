@@ -35,12 +35,21 @@ function SwatchIcon({ theme, className }: { theme: ThemeName | "system"; classNa
       </svg>
     );
   }
+  if (theme === "glass") {
+    // Glass: a translucent pane with a specular edge over the mint accent.
+    return (
+      <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="#5fd3a0" />
+        <rect x="6" y="6" width="12" height="12" rx="4" fill="#ffffff" fillOpacity="0.55" stroke="#ffffff" strokeOpacity="0.9" />
+        <path d="M8 9.5c1-1.4 2.6-2 4-2" stroke="#ffffff" strokeWidth="1.4" strokeLinecap="round" fill="none" />
+      </svg>
+    );
+  }
   // Round swatches previewing canvas + accent (mirrors globals.css values).
-  const preview: Record<Exclude<ThemeName, "metro">, { bg: string; dot: string }> = {
+  const preview: Record<"aqua", { bg: string; dot: string }> = {
     aqua: { bg: "#eaf1fe", dot: "#007aff" },
-    classic: { bg: "#faf9f7", dot: "#9a5b1e" },
   };
-  const p = preview[theme as Exclude<ThemeName, "metro">];
+  const p = preview[theme as "aqua"];
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
       <circle cx="12" cy="12" r="9" fill={p.bg} stroke="currentColor" strokeOpacity="0.35" />

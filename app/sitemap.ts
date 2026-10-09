@@ -7,6 +7,9 @@ import { glossary } from "@/lib/seo/content/glossary";
 import { landings } from "@/lib/seo/content/landings";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import type { PublicArticle } from "@/lib/blog/types";
+import { listPublicEditions } from "@/lib/newsletter/server";
+import type { NewsletterEdition } from "@/lib/newsletter/types";
+import { weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 
 /**
  * The sitemap now enumerates AI Daily, which gains an article every day. Without
@@ -54,7 +57,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   for (const lang of LOCALES) {
     const corePaths = [
       `/${lang}`,
+      `/${lang}/analyzer`,
       `/${lang}/best-ai`,
+      `/${lang}/benchmarks`,
       `/${lang}/changelog`,
       `/${lang}/privacy`,
       `/${lang}/prompts`,
@@ -68,15 +73,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       `/${lang}/models`,
       `/${lang}/glossary`,
       `/${lang}/blog`,
-      `/${lang}/weekly`,
+      weeklyArchivePath(lang),
     ];
 
     for (const p of corePaths) {
-      const isHome = p === `/${lang}`;
+      const isHome = p === `/${lang}` || p === `/${lang}/analyzer`;
       const isChangelog = p.includes("/changelog");
       const isPrivacy = p.includes("/privacy");
       // AI Daily is a news index: it gains an article every day.
-      const isBlog = p === `/${lang}/blog`;
+      const isBlog = p === `/${lang}/blog` || p === `/${lang}/benchmarks`;
 
       urls.push({
         url: joinUrl(siteUrl, p),
@@ -159,6 +164,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: toDate(article.updatedAt ?? article.publishedAt, now),
         changeFrequency: "daily",
         priority: 0.7,
+      });
+    }
+
+    // --- Weekly digest editions (v1.7.0) -----------------------------------
+    // Published or sent editions only; same degrade-to-empty rule as above.
+    let editions: NewsletterEdition[] = [];
+    try {
+      editions = await listPublicEditions();
+    } catch {
+      editions = [];
+    }
+    for (const e of editions) {
+      urls.push({
+        url: joinUrl(siteUrl, weeklyEditionPath(lang, e.editionId)),
+        lastModified: toDate(e.sentAt ?? e.publishedAt, now),
+        changeFrequency: "monthly",
+        priority: 0.6,
       });
     }
   }

@@ -48,7 +48,11 @@ function query(name: string, filters: Array<(d: Doc) => boolean> = [], order: "a
     where(field: string, _op: string, value: unknown) {
       return query(name, [...filters, (d) => d[field] === value], order, lim, after);
     },
-    orderBy(_f: unknown, dir: "asc" | "desc" = "asc") {
+    orderBy(f: unknown, dir: "asc" | "desc" = "asc") {
+      // Production parity (v1.7.0): a DESCENDING document-id order needs an
+      // explicit index that the project does not have, and Firestore rejects
+      // the query with FAILED_PRECONDITION (code 9) at get() time.
+      if (f === "__name__" && dir === "desc") return failingQuery();
       return query(name, filters, dir, lim, after);
     },
     limit(n: number) {
@@ -68,6 +72,11 @@ function query(name: string, filters: Array<(d: Doc) => boolean> = [], order: "a
       return { docs, empty: docs.length === 0 };
     },
   };
+}
+
+function failingQuery(): ReturnType<typeof query> {
+  const q = query("__never__");
+  return { ...q, async get() { throw Object.assign(new Error("FAILED_PRECONDITION: The query requires an index."), { code: 9 }); } } as ReturnType<typeof query>;
 }
 
 const fakeDb = {
@@ -107,7 +116,34 @@ vi.mock("@/lib/blog/server", () => ({
   listAllPublishedArticles: vi.fn(async () => []),
 }));
 
-const { firestoreNewsletterStore, removeSubscriber, getLatestEdition, listActiveSubscribers } = await import("@/lib/newsletter/server");
+const { firestoreNewsletterStore, removeSubscriber, getLatestEdition, getEditionById, listPublicEditions, listActiveSubscribers } = await import("@/lib/newsletter/server");
+
+function fullEdition(monday: string, status: "draft" | "published" | "sent") {
+  const locale = (h: string) => ({
+    subject: `Promptea Weekly: ${h}`,
+    preheader: "One verified AI story from the week.",
+    heroHeadline: h,
+    heroDeck: "A deck that comfortably clears the schema minimum.",
+    topStories: [
+      { articleSlug: "a-story", headline: "A headline long enough", summary: "A summary longer than twenty characters.", whyItMatters: "Why it matters to builders.", sourceUrl: "https://example.com/a", category: "model-release" },
+    ],
+    tools: [],
+    editorialTitle: null,
+    editorialBody: null,
+  });
+  return {
+    editionId: `promptea-weekly_${monday}`,
+    weekStart: monday,
+    weekEnd: monday,
+    status,
+    locales: { en: locale(`EN ${monday}`), es: locale(`ES ${monday}`) },
+    sponsor: null,
+    generatedAt: null,
+    publishedAt: status === "draft" ? null : `${monday}T12:00:00.000Z`,
+    sentAt: status === "sent" ? `${monday}T12:01:00.000Z` : null,
+    updatedAt: "SERVER_TS",
+  };
+}
 const unsubscribeRoute = await import("@/app/api/newsletter/unsubscribe/route");
 const runRoute = await import("@/app/api/internal/newsletter/run/route");
 
@@ -181,6 +217,17 @@ describe("POST /api/internal/newsletter/run", () => {
     const runs = [...col("newsletter_runs").values()];
     expect(runs).toHaveLength(1);
     expect(runs[0].outcome).toBe("DELIVERY_DISABLED");
+  });
+
+  test("v1.7.0 publish: accepted with a date, never needs mail config, never writes deliveries", async () => {
+    const past = await runRoute.POST(signedRequest({ mode: "publish", date: "2026-09-28" }));
+    expect(past.status).toBe(200);
+    expect((await past.json()).outcome).toBe("NO_CONTENT"); // empty archive in this fake
+    const future = await runRoute.POST(signedRequest({ mode: "publish", date: "2099-01-05" }));
+    expect((await future.json()).outcome).toBe("WEEK_NOT_CLOSED");
+    expect(col("newsletter_deliveries").size).toBe(0);
+    expect(col("newsletter_editions").size).toBe(0);
+    expect([...col("newsletter_runs").values()].map((r) => r.mode)).toEqual(["publish", "publish"]);
   });
 
   test("a signed dry run reports NO_CONTENT for an empty archive", async () => {
@@ -262,9 +309,24 @@ describe("firestoreNewsletterStore", () => {
   });
 
   test("getLatestEdition returns the newest published or sent edition by date-keyed id", async () => {
-    col("newsletter_editions").set("promptea-weekly_2026-09-21", { editionId: "promptea-weekly_2026-09-21", status: "sent" });
-    col("newsletter_editions").set("promptea-weekly_2026-09-28", { editionId: "promptea-weekly_2026-09-28", status: "draft" });
+    col("newsletter_editions").set("promptea-weekly_2026-09-21", fullEdition("2026-09-21", "sent"));
+    col("newsletter_editions").set("promptea-weekly_2026-09-14", fullEdition("2026-09-14", "sent"));
+    col("newsletter_editions").set("promptea-weekly_2026-09-28", fullEdition("2026-09-28", "draft"));
     expect((await getLatestEdition())?.editionId).toBe("promptea-weekly_2026-09-21");
+  });
+
+  test("v1.7.0 regression: the archive works without a descending __name__ index (prod failed with code 9)", async () => {
+    col("newsletter_editions").set("promptea-weekly_2026-09-28", fullEdition("2026-09-28", "sent"));
+    col("newsletter_editions").set("promptea-weekly_2026-10-05", fullEdition("2026-10-05", "sent"));
+    const list = await listPublicEditions();
+    expect(list.map((e) => e.editionId)).toEqual(["promptea-weekly_2026-10-05", "promptea-weekly_2026-09-28"]);
+    expect(list[0]).not.toHaveProperty("updatedAt");
+    expect((await getEditionById("promptea-weekly_2026-09-28"))?.status).toBe("sent");
+  });
+
+  test("a draft edition is never served by id", async () => {
+    col("newsletter_editions").set("promptea-weekly_2026-10-12", fullEdition("2026-10-12", "draft"));
+    expect(await getEditionById("promptea-weekly_2026-10-12")).toBeNull();
   });
 
   test("delivery claims: first claim wins, sent is final, fresh in-flight is left alone, stale retries stay inside the idempotency window", async () => {

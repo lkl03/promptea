@@ -17,5 +17,6 @@ export function buildPrefillHref(opts: {
     purpose,
     target,
   });
-  return `/${lang}?${qs.toString()}`;
+  // v1.7.0: the analyzer lives at /{lang}/analyzer (the homepage is a hub).
+  return `/${lang}/analyzer?${qs.toString()}`;
 }

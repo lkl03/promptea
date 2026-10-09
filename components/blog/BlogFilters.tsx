@@ -126,7 +126,7 @@ export default function BlogFilters({
       {/* ── Search: the only prominent control on the page ─────────────────
           Constrained and centred. A full-width search across the container
           would look like a database console, not a masthead. */}
-      <div className="mx-auto flex w-full max-w-xl items-center gap-2">
+      <div className="flex w-full max-w-xl items-center gap-2">
         <label htmlFor="blog-filter-q" className="sr-only">
           {dict.searchLabel}
         </label>
@@ -176,11 +176,11 @@ export default function BlogFilters({
       {/* ── Facet bar ──────────────────────────────────────────────────────
           Edition first because it is the one facet that is always meaningful:
           four values, one line, each a crawlable URL. */}
-      <div className="mx-auto mt-5 flex w-full max-w-3xl flex-wrap items-center justify-center gap-x-4 gap-y-2">
+      <div className="mt-4 flex w-full flex-wrap items-center gap-x-3 gap-y-2">
         <div
           role="group"
           aria-label={dict.editionLabel}
-          className="flex min-w-0 flex-wrap items-center justify-center gap-1.5"
+          className="flex min-w-0 flex-wrap items-center gap-1.5"
         >
           {editionChips.map((chip) => {
             const active = filters.edition === chip.value;
@@ -212,7 +212,7 @@ export default function BlogFilters({
       {/* ── Everything else, folded away ───────────────────────────────────
           A native <details>: no state, no JavaScript, and its controls are
           submitted with the form whether it is open or closed. */}
-      <details open={disclosureOpen} className="mx-auto mt-2.5 w-full max-w-3xl text-center">
+      <details open={disclosureOpen} className="mt-2.5 w-full">
         <summary className="summary-pill pill h-9 gap-1.5 px-3.5">
           <svg
             aria-hidden="true"

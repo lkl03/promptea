@@ -288,8 +288,6 @@
     "editorialLabel": "One thing worth thinking about",
     "sponsorLabel": "Sponsor",
     "readMore": "Read the full story →",
-    "emptyTitle": "The first edition is being prepared",
-    "empty": "Promptea Weekly is a curated digest of the most important AI stories from the past seven days. The first edition is on its way.",
     "bar": {
       "barText": "Get the week's best AI stories in your inbox every Monday.",
       "barCta": "Subscribe",
@@ -308,24 +306,81 @@
       "text": "Promptea Weekly — the week's best AI stories, every Monday",
       "cta": "Subscribe"
     },
-    "subscribe": {
-      "heading": "Get Promptea Weekly in your inbox",
-      "description": "One email every Monday — the best AI stories of the week, verified and summarized.",
-      "emailPlaceholder": "your@email.com",
-      "languageLabel": "Preferred language",
-      "consentLabel": "I want to receive the Promptea Weekly newsletter.",
-      "submit": "Subscribe",
-      "submitting": "Subscribing…",
-      "success": "You're subscribed! Expect your first edition on Monday.",
-      "alreadySubscribed": "That email is already subscribed.",
-      "invalidEmail": "Please enter a valid email address.",
-      "rateLimit": "Too many attempts. Please try again later.",
-      "error": "Something went wrong. Please try again."
-    },
     "footer": {
       "unsubscribe": "Unsubscribe",
       "preferences": "Preferences",
       "privacy": "Privacy"
     }
+  },
+  "hub": {
+    "tagline": "Better prompts, the right AI, and the news that matters.",
+    "marqueeLabel": "Last 72 h",
+    "marqueePause": "Pause headlines",
+    "marqueePlay": "Resume headlines",
+    "cardsAria": "Promptea tools",
+    "cards": {
+      "analyze": {
+        "title": "Analyze a prompt",
+        "body": "Score your prompt, catch problems, and get an optimized version for each model."
+      },
+      "bestAi": {
+        "title": "Find the best AI",
+        "body": "Describe your task and we recommend which AI and model to use, and why."
+      },
+      "daily": {
+        "title": "AI Daily",
+        "body": "One verified AI story a day, the weekly digest, and the archive."
+      },
+      "benchmarks": {
+        "title": "Benchmarks",
+        "body": "Frontier model rankings by category, with source, date and metric."
+      }
+    },
+    "secondaryAria": "More resources",
+    "secondary": {
+      "prompts": "Prompts",
+      "guides": "Guides",
+      "models": "Models",
+      "glossary": "Glossary"
+    },
+    "showcaseTitle": "A quick tour of Promptea",
+    "showcaseBody": "A real tour of the app: analyze a prompt, copy the optimized version, pick an AI, read the news, and explore benchmarks.",
+    "showcaseCaption": "Automated recording of the v1.7.0 interface with a demo prompt.",
+    "showcasePending": "The demo video is being generated."
+  },
+  "analyzerPage": {
+    "title": "Prompt analyzer",
+    "subtitle": "Analyze your prompt, catch problems, and improve it for each AI.",
+    "metaTitle": "Prompt analyzer and optimizer",
+    "metaDescription": "Score, fix and rewrite prompts for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity: text, code, data/JSON, marketing, study, image, translation and summaries."
+  },
+  "dailyTabs": {
+    "aria": "AI Daily sections",
+    "news": "News",
+    "weekly": "Weekly digest"
+  },
+  "weekly": {
+    "archiveTitle": "Weekly digest",
+    "archiveIntro": "Every Monday, the most important AI stories of the previous week, chosen from AI Daily's verified articles. Every edition has its own shareable page.",
+    "archiveLabel": "Past editions",
+    "latestLabel": "Latest edition",
+    "weekOf": "Week of {from} to {to}",
+    "storiesCount": "{n} stories",
+    "storyCount": "1 story",
+    "readEdition": "Read the edition",
+    "sentBadge": "Sent by email",
+    "publishedBadge": "Published",
+    "backToArchive": "← All editions",
+    "emptyTitle": "No editions published yet",
+    "empty": "The weekly digest is published on Mondays. In the meantime, read the daily news.",
+    "unavailable": "We couldn't load the archive right now. Please try again in a few minutes.",
+    "share": "Share this edition",
+    "copied": "Link copied"
+  },
+  "newsletterDock": {
+    "title": "Promptea Weekly",
+    "body": "The best AI stories of the week, every Monday in your inbox.",
+    "open": "Subscribe to the newsletter",
+    "close": "Close"
   }
 }

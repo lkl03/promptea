@@ -1,7 +1,7 @@
 // lib/matcher/handoff.ts
 //
 // Matcher → optimizer handoff contract. The payload travels through
-// sessionStorage (key below); the /?handoff=1 flag tells PromptBox to read
+// sessionStorage (key below); the /analyzer?handoff=1 flag tells PromptBox to read
 // it. Kept in lib so both modes and tests share one definition.
 
 import type { MatchCategory, PromptPurpose } from "@/lib/domain";

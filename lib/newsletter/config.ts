@@ -6,6 +6,8 @@
 //
 // Gates, in order of strictness:
 //   dry_run — nothing is sent; always allowed.
+//   publish — (v1.7.0) stores the week's edition as published on the site and
+//             never touches the mail provider; always allowed.
 //   test    — sends ONLY to NEWSLETTER_TEST_RECIPIENTS. Needs RESEND_API_KEY
 //             and a valid sender, but NOT NEWSLETTER_DELIVERY_ENABLED, so
 //             delivery can be verified before it is switched on.
@@ -25,7 +27,7 @@ const EMAIL_RE = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/;
 /** `Name <addr@domain>` or a bare address. */
 const FROM_RE = /^(?:[^<>"]{1,80}\s<[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+>|[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+)$/;
 
-export type NewsletterRunMode = "dry_run" | "test" | "live";
+export type NewsletterRunMode = "dry_run" | "publish" | "test" | "live";
 
 export type DeliveryConfig = {
   deliveryEnabled: boolean;
@@ -60,7 +62,7 @@ export function readDeliveryConfig(env: Record<string, string | undefined> = pro
 
 /** Human-readable blockers for a mode (empty = the mode may run). Never includes secrets. */
 export function configBlockers(cfg: DeliveryConfig, mode: NewsletterRunMode): string[] {
-  if (mode === "dry_run") return [];
+  if (mode === "dry_run" || mode === "publish") return [];
   const out: string[] = [];
   if (!cfg.apiKey) out.push("RESEND_API_KEY is not set");
   if (!cfg.fromValid) out.push("NEWSLETTER_FROM_ADDRESS is not a valid sender (expected `Name <address@domain>`)");

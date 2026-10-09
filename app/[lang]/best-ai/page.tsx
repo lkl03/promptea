@@ -57,8 +57,8 @@ export default async function BestAiPage({ params }: { params: Promise<{ lang: s
     <main className="px-4 pb-10 pt-8 sm:pt-10">
       <div className="mx-auto w-full max-w-6xl">
         <header className="text-center">
-          <h1 className="font-title text-4xl font-semibold tracking-tight sm:text-5xl">
-            {dict.app.title}
+          <h1 className="font-title text-3xl font-semibold tracking-tight sm:text-4xl">
+            {dict.mode.bestAiLabel}
           </h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">
             {dict.matcher.subtitle}

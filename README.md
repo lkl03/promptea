@@ -1,17 +1,18 @@
 # Promptea
 
-A two-mode prompt utility:
+A prompt utility with an AI news desk. The homepage (`/[lang]`) is a hub with the latest AI Daily headlines, four entry points (Analyze a prompt · Find the best AI · AI Daily · Benchmarks), secondary resources and a product showcase video.
 
-- **Improve Prompt** (`/`) — analyze your prompt, detect issues, score it, and generate a genuinely personalized improved version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
-- **Find the Best AI** (`/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI, model, or working environment (e.g. Claude Code vs. plain chat) fits it best, with ranked alternatives and concrete adaptation advice.
+- **Improve Prompt** (`/[lang]/analyzer`, the homepage until v1.7.0 — old `/[lang]?prompt=…` links are redirected with their parameters) — analyze your prompt, detect issues, score it, and generate a genuinely personalized improved version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
+- **Find the Best AI** (`/[lang]/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI, model, or working environment (e.g. Claude Code vs. plain chat) fits it best, with ranked alternatives and concrete adaptation advice.
+- **Benchmarks** (`/[lang]/benchmarks`) — leaders per benchmark, frontier models, an explorable ranking table and what each benchmark measures, from OpenRouter's benchmarks API (server-side, cached, honest fallbacks).
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.6.2 (2026-10-08)
+## Latest update — v1.7.0 (2026-10-09)
 
-**Two new guides, current models in older pages, and a real heading outline on guides.** New guides cover AI prompts for meetings and for Excel/Google Sheets formulas; the reasoning-models guide and the ChatGPT prompt-generator landing now name current models (GPT-6, Claude Opus 5.5, Gemini, Grok, DeepSeek); guide pages now use `<h2>`/`<h3>` headings for screen readers and SEO. Shipped through the weekly update PR (`chore/weekly-update-v1.6.2`). Details in [CHANGELOG.md](./CHANGELOG.md).
+**New homepage hub, the analyzer at `/analyzer`, Benchmarks, a working Weekly archive inside AI Daily, the Glass theme and the mascot logo.** The homepage became a hub (news marquee, four cards, showcase video); the analyzer moved to `/[lang]/analyzer` with every legacy deep link preserved. `/[lang]/benchmarks` ranks models per benchmark from OpenRouter. Promptea Weekly showed "the first edition is being prepared" in production although two editions had been emailed (its Firestore query needed an index that never existed); it is now a "Weekly digest" section of AI Daily with an archive and shareable edition pages, and publication is separate from sending. "Old version" was replaced by the Glass theme. Model registry refreshed (GPT-6.1 Sol, Claude Sonnet 5.5 and Haiku 5.5). Details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.6.1 (2026-10-01) — Perplexity guide refreshed for the Agent API, guides for email and team prompt libraries, and Open Graph metadata on model pages._
+_Previous update: v1.6.2 (2026-10-08) — guides for meetings and spreadsheet formulas, current models in older pages, real heading outline on guides._
 
 ## How it works
 
@@ -66,31 +67,33 @@ A bilingual editorial section — one story per day about what actually happened
 
 ## Promptea Weekly (newsletter)
 
-A weekly email digest of AI Daily, previewed at `/[lang]/weekly`. It never researches or claims anything new: every story is a published AI Daily article, ranked by importance and date (`lib/newsletter/compose.ts`).
+A weekly email digest of AI Daily. Since v1.7.0 every published edition lives in AI Daily's "Weekly digest" section: `/[lang]/blog/weekly` (archive) and `/[lang]/blog/weekly/<Monday>` (one shareable page per edition); the old `/[lang]/weekly` permanently redirects there. It never researches or claims anything new: every story is a published AI Daily article, ranked by importance and date (`lib/newsletter/compose.ts`).
 
 **Week and edition.** An edition is sent on a Monday (editorial timezone) and covers the preceding Sunday→Saturday. Its id is `promptea-weekly_<Monday>` (`lib/newsletter/dates.ts`), so every run in the same week resolves to the same edition; once stored, the edition's content never changes between retries. A week with no eligible story produces no edition and no email.
 
-**Run endpoint.** `POST /api/internal/newsletter/run`, HMAC-SHA256-signed exactly like the AI Daily publish endpoint (`x-promptea-timestamp`, `x-promptea-nonce`, `x-promptea-signature` over `${timestamp}.${nonce}.${rawBody}`, ±5 min window, nonce replay rejected) with `NEWSLETTER_SEND_SECRET`. Body: `{"mode":"dry_run"|"test"|"live"}` (`"date":"YYYY-MM-DD"` previews another week in `dry_run`/`test`). The caller holds only that secret; Firebase and Resend credentials stay on the server.
+**Run endpoint.** `POST /api/internal/newsletter/run`, HMAC-SHA256-signed exactly like the AI Daily publish endpoint (`x-promptea-timestamp`, `x-promptea-nonce`, `x-promptea-signature` over `${timestamp}.${nonce}.${rawBody}`, ±5 min window, nonce replay rejected) with `NEWSLETTER_SEND_SECRET`. Body: `{"mode":"dry_run"|"publish"|"test"|"live"}` (`"date":"YYYY-MM-DD"` selects another week in `dry_run`/`publish`/`test`, never in `live`). The caller holds only that secret; Firebase and Resend credentials stay on the server.
 
 | Mode | What it does | Needs |
 | --- | --- | --- |
 | `dry_run` | Builds and validates the edition, counts active subscribers per language. Stores nothing, sends nothing. | — |
+| `publish` | (v1.7.0) Stores the week's edition as **published** so it appears in the Weekly digest. Never reads subscribers, never calls Resend. Idempotent (`ALREADY_PUBLISHED`); refuses weeks that have not closed (`WEEK_NOT_CLOSED`). A later `live` run mails exactly what was published. | — |
 | `test` | Sends a `[TEST]` copy (alternating ES/EN) to `NEWSLETTER_TEST_RECIPIENTS` only. Stores nothing. | `RESEND_API_KEY`, valid sender, test recipients |
-| `live` | Stores the edition (visible on `/weekly`), sends a canary copy to the test recipients, then every active subscriber in their language. | all of the above **and** `NEWSLETTER_DELIVERY_ENABLED=true` |
+| `live` | Stores the edition (visible in the Weekly digest), sends a canary copy to the test recipients, then every active subscriber in their language. | all of the above **and** `NEWSLETTER_DELIVERY_ENABLED=true` |
 
 **Idempotency.** Each recipient is claimed in `newsletter_deliveries/{editionId}__{subscriberId}` inside a Firestore transaction before the send, and the Resend call carries the same key as its idempotency key (Resend de-duplicates for 24 h). A retry skips everyone already sent, re-tries transient failures, never retries permanent refusals, and never re-sends a claim older than the idempotency window. Sending is time-budgeted (45 s per call); a large list finishes over several calls (`PARTIAL` → call again).
 
-**Outcomes** (returned and recorded in `newsletter_runs`, counts only — never an address): `DRY_RUN_OK`, `TEST_SENT`, `SENT`, `PARTIAL`, `ALREADY_SENT`, `NO_CONTENT`, `NO_SUBSCRIBERS`, `DELIVERY_DISABLED`, `CONFIG_ERROR`, `CANARY_FAILED`, `INVALID_EDITION`, `STORAGE_ERROR`. Configuration problems are reported before anything is sent — never a partial send.
+**Outcomes** (returned and recorded in `newsletter_runs`, counts only — never an address): `DRY_RUN_OK`, `PUBLISHED`, `ALREADY_PUBLISHED`, `WEEK_NOT_CLOSED`, `TEST_SENT`, `SENT`, `PARTIAL`, `ALREADY_SENT`, `NO_CONTENT`, `NO_SUBSCRIBERS`, `DELIVERY_DISABLED`, `CONFIG_ERROR`, `CANARY_FAILED`, `INVALID_EDITION`, `STORAGE_ERROR`. Configuration problems are reported before anything is sent — never a partial send.
 
 **Unsubscribe.** Every email carries a per-subscriber link and `List-Unsubscribe` + `List-Unsubscribe-Post: List-Unsubscribe=One-Click` headers. `GET /api/newsletter/unsubscribe?token=…` shows a confirmation page in the subscriber's language; `POST` to the same URL is the RFC 8058 one-click endpoint mail clients call.
 
-**The routine.** Claude Code cloud routine "Promptea Weekly newsletter", cron `0 12 * * 1` (Mondays 12:00 UTC = 09:00 America/Argentina/Buenos_Aires; Argentina has no DST). It signs a `dry_run`, then `live` (repeating while `PARTIAL` makes progress), and reports the outcome. It holds only `NEWSLETTER_SEND_SECRET`; to change the time, edit the cron at https://claude.ai/code/routines.
+**The routine.** Claude Code cloud routine "Promptea Weekly newsletter", cron `0 12 * * 1` (Mondays 12:00 UTC = 09:00 America/Argentina/Buenos_Aires; Argentina has no DST). It signs a `dry_run`, then `publish` (so the edition is visible even if delivery is off or fails), then `live` (repeating while `PARTIAL` makes progress), and reports the outcome. It holds only `NEWSLETTER_SEND_SECRET`; to change the time, edit the cron at https://claude.ai/code/routines.
 
 **Setup, testing, go-live, and kill switch**
 1. Vercel → Production: `NEWSLETTER_SEND_SECRET` (set), `RESEND_API_KEY` (set), `NEWSLETTER_FROM_ADDRESS` (set; must be on the Resend-verified `promptea.me` domain), **`NEWSLETTER_TEST_RECIPIENTS` (add: your own inbox)**, `NEWSLETTER_DELIVERY_ENABLED` (keep `false` until step 3). Redeploy after changing env vars.
 2. Test without mailing subscribers: sign a `{"mode":"dry_run"}` call, then `{"mode":"test"}` — only the test recipients receive a `[TEST]` copy. Check both languages, links, and the unsubscribe footer.
 3. Go live: set `NEWSLETTER_DELIVERY_ENABLED=true` and redeploy. The next Monday run sends; confirm with the routine's report (`STATUS: SENT`), the latest `newsletter_runs` document, and the Resend dashboard.
-4. Kill switch: set `NEWSLETTER_DELIVERY_ENABLED=false` (and redeploy) — live runs return `DELIVERY_DISABLED` before sending anything. To stop the schedule itself, disable the routine at https://claude.ai/code/routines. Removing `NEWSLETTER_SEND_SECRET` makes the endpoint refuse every call (503).
+4. Backfill / audit: `npm run weekly:backfill` reports every edition a live run actually delivered and whether it is public; `npm run weekly:backfill -- --write` repairs a delivered edition whose status is not public. It never regenerates content and never sends.
+5. Kill switch: set `NEWSLETTER_DELIVERY_ENABLED=false` (and redeploy) — live runs return `DELIVERY_DISABLED` before sending anything. To stop the schedule itself, disable the routine at https://claude.ai/code/routines. Removing `NEWSLETTER_SEND_SECRET` makes the endpoint refuse every call (503).
 
 ## Tech
 
@@ -129,6 +132,7 @@ npm run build      # production build (works offline — fonts are local)
 | `NEWSLETTER_TEST_RECIPIENTS` | for test/live sends | Comma-separated addresses (max 5) that receive `test` sends and the canary copy of every live send. Live delivery refuses to start without at least one. |
 | `RESEND_API_KEY` | for newsletter delivery | Resend API key. Needed for `test` and `live` runs. |
 | `NEWSLETTER_FROM_ADDRESS` | optional | Sender address for the newsletter (default `Promptea Weekly <weekly@promptea.me>`). |
+| `OPENROUTER_API_KEY` | for live benchmarks | Server-only key for `GET https://openrouter.ai/api/v1/benchmarks` (any valid OpenRouter key; 30 req/min, 500 req/day). Without it `/benchmarks` serves the last valid snapshot (Firestore `benchmark_snapshots/latest`) or an honest empty state. |
 
 AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PROJECT_ID`, and `NEXT_PUBLIC_SITE_URL` for canonical, `hreflang`, sitemap, and feed URLs. `BLOG_PUBLISH_SECRET` is the only required variable for AI Daily publishing. Newsletter subscriptions are stored in Firestore using the same Firebase configuration.
 
@@ -140,16 +144,19 @@ AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PRO
 - `lib/models.ts` — verified model registry (see policy below).
 - `lib/engine/modelProfiles.ts` — per-model prompting profiles (deterministic shaping switches + adaptive-refiner rules), each citing its first-party guide.
 - `lib/engine/imagePrompt.ts` — deterministic image-prompt composer and the image quality checks shared with the adaptive gate.
-- `lib/newsletter/` — Promptea Weekly: `dates.ts` (covered week), `compose.ts` (edition from AI Daily), `render.ts` (HTML/text email), `config.ts` (delivery gates), `run.ts` (dry_run/test/live orchestration), `email.ts` (Resend mailer), `server.ts` (Firestore store, ledger, subscribers); `app/api/internal/newsletter/run/` is the signed endpoint.
+- `lib/newsletter/` — Promptea Weekly: `dates.ts` (covered week), `compose.ts` (edition from AI Daily), `render.ts` (HTML/text email), `config.ts` (delivery gates), `run.ts` (dry_run/publish/test/live orchestration), `archive.ts` + `paths.ts` (public archive rules and URLs), `email.ts` (Resend mailer), `server.ts` (Firestore store, ledger, subscribers); `app/api/internal/newsletter/run/` is the signed endpoint.
 - `lib/blog/` — AI Daily module: `types.ts` (Zod schemas for posts, blocks, sources, publish payload), `dates.ts` (editorial timezone, freshness guard, idempotency key and document id), `render.ts` (inline markup parsing, plain-text, word count, reading time, XML escaping), `filters.ts` (pure search/filter/sort/paginate over article cards, plus facet collection), `server.ts` (server-only Firestore access: list, fetch by slug, publish, correct, run log).
 - `app/[lang]/blog/` — AI Daily index and article pages (server-rendered, ISR-cached, degrade to empty when Firestore is unavailable); `app/api/internal/blog/publish/` — the HMAC-signed publish endpoint.
+- `lib/benchmarks/` — v1.7.0 benchmarks: `schema.ts` (per-row Zod validation of the OpenRouter contract), `catalog.ts` (what each benchmark measures, metric, limitations), `normalize.ts` (one ranking per benchmark, prices per 1M tokens, frontier definition), `load.ts` (fetch → validate → live / last snapshot / unavailable), `server.ts` (key + Firestore snapshot); `app/api/benchmarks/` is a public status endpoint.
+- `lib/blog/marquee.ts` — homepage news marquee eligibility (published in the last 72 h by `publishedAt`, never rejuvenated by edits).
+- `scripts/showcase/` — records and encodes the hub's showcase video from the real app (see its README).
 - `components/analyzer/`, `components/results/` — decomposed feature modules; `PromptBox`/`ResultsPanel` orchestrate.
-- `app/globals.css` + `lib/themes.ts` — theme tokens (Day / Dusk / Night / Paper) and registry.
+- `app/globals.css` + `lib/themes.ts` — theme tokens (Aqua / Metro / Glass) and registry.
 - `app/[lang]/dictionaries/` — EN/ES copy (key parity is test-enforced).
 
 ## Theme architecture
 
-Semantic CSS custom properties per theme (`--canvas`, `--surface`, `--line`, `--ink`, `--accent`, state colors) mapped into Tailwind utilities (`bg-canvas`, `text-ink-muted`, `border-line`…). Components never reference theme names or raw palette values — adding a theme is one token block in `globals.css` plus one entry in `lib/themes.ts`. `next-themes` stamps both a class and `data-theme` on `<html>`; `dark` and `night` are dark-based (Tailwind's `dark:` variant matches both). System preference is respected and the choice persists.
+Semantic CSS custom properties per theme (`--canvas`, `--surface`, `--line`, `--ink`, `--accent`, state colors) mapped into Tailwind utilities (`bg-canvas`, `text-ink-muted`, `border-line`…). Components never reference theme names or raw palette values — adding a theme is one token block in `globals.css` plus one entry in `lib/themes.ts`. `next-themes` stamps both a class and `data-theme` on `<html>`; System maps to Aqua (light) / Metro (dark). Glass (v1.7.0) follows the system light/dark preference with its own material (translucent fill, luminous edges, blur) and falls back to opaque surfaces without `backdrop-filter` or with `prefers-reduced-transparency`; an optional SVG refraction runs only in Chromium (`components/GlassEnhancer.tsx`). A stored preference for the retired "Old version" (`classic`) migrates to System before first paint. The choice persists.
 
 ## Model registry maintenance policy
 

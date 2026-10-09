@@ -13,8 +13,8 @@
 // v1.6.0: adds the NewsletterStore used by lib/newsletter/run.ts — edition
 // storage (create-once per week), paginated active-subscriber reads, the
 // per-recipient delivery ledger that makes retries safe, and run records.
-// getLatestEdition no longer needs a composite index (it orders by the
-// date-keyed document id) and also returns editions that have been sent.
+// v1.7.0: edition reads go through listPublicEditions (ascending id order —
+// see the note there for the production failure it fixes).
 
 import "server-only";
 
@@ -23,6 +23,7 @@ import { FieldPath, FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
 import type { Lang } from "@/lib/domain";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
+import { sortEditionsNewestFirst, stripEditionMeta, toPublicEdition } from "@/lib/newsletter/archive";
 import type { ClaimResult, NewsletterRunRecord, NewsletterStore, SubscriberRecord } from "@/lib/newsletter/run";
 
 const EDITIONS_COLLECTION = "newsletter_editions";
@@ -217,42 +218,45 @@ export async function saveEdition(edition: NewsletterEdition): Promise<{ ok: tru
 }
 
 /**
- * The newest edition readers may see (published or already sent). Edition ids
- * are `promptea-weekly_YYYY-MM-DD`, so document-id order is date order — no
- * composite index required.
+ * Every edition readers may see (published or already sent), newest first.
+ *
+ * v1.7.0 fix: v1.6.0 ordered by document id DESCENDING, which Firestore only
+ * serves with an explicit descending `__name__` index that was never created.
+ * In production every call failed with FAILED_PRECONDITION (code 9), the
+ * error was swallowed, and /weekly showed "the first edition is being
+ * prepared" while two editions had already been emailed. Ascending document-id
+ * order is served by the automatic index; the collection holds one document
+ * per week, so reading it whole and sorting in memory is cheap.
+ *
+ * Throws on storage errors so callers can tell "no editions" from "outage".
  */
-export async function getLatestEdition(): Promise<NewsletterEdition | null> {
+export async function listPublicEditions(max = 520): Promise<NewsletterEdition[]> {
   const db = getAdminFirestore();
+  const snap = await db.collection(EDITIONS_COLLECTION).orderBy(FieldPath.documentId()).limit(max).get();
+  const out: NewsletterEdition[] = [];
+  for (const doc of snap.docs) {
+    const edition = toPublicEdition(doc.data());
+    if (edition) out.push(edition);
+  }
+  return sortEditionsNewestFirst(out);
+}
 
+/** The newest public edition, or null when none exists or storage is unavailable. */
+export async function getLatestEdition(): Promise<NewsletterEdition | null> {
   try {
-    const snap = await db
-      .collection(EDITIONS_COLLECTION)
-      .orderBy(FieldPath.documentId(), "desc")
-      .limit(8)
-      .get();
-
-    for (const doc of snap.docs) {
-      const data = doc.data() as NewsletterEdition;
-      if (data.status === "published" || data.status === "sent") return data;
-    }
-    return null;
+    return (await listPublicEditions())[0] ?? null;
   } catch (err) {
     console.error("[newsletter] getLatestEdition failed:", (err as { code?: unknown })?.code ?? "unknown");
     return null;
   }
 }
 
+/** One edition by id — public editions only (drafts read as not found). */
 export async function getEditionById(editionId: string): Promise<NewsletterEdition | null> {
   const db = getAdminFirestore();
-
-  try {
-    const snap = await db.collection(EDITIONS_COLLECTION).doc(editionId).get();
-    if (!snap.exists) return null;
-    return snap.data() as NewsletterEdition;
-  } catch (err) {
-    console.error("[newsletter] getEditionById failed:", (err as { code?: unknown })?.code ?? "unknown");
-    return null;
-  }
+  const snap = await db.collection(EDITIONS_COLLECTION).doc(editionId).get();
+  if (!snap.exists) return null;
+  return toPublicEdition(snap.data() ?? {});
 }
 
 // ---------------------------------------------------------------------------
@@ -261,10 +265,7 @@ export async function getEditionById(editionId: string): Promise<NewsletterEditi
 
 function stripMeta(data: Record<string, unknown>): NewsletterEdition {
   // Firestore bookkeeping fields are not part of the edition contract.
-  const { updatedAt: _u, createdAt: _c, ...rest } = data;
-  void _u;
-  void _c;
-  return rest as unknown as NewsletterEdition;
+  return stripEditionMeta(data) as unknown as NewsletterEdition;
 }
 
 export function firestoreNewsletterStore(): NewsletterStore {

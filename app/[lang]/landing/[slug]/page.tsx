@@ -63,7 +63,7 @@ export default async function LandingPage({
         purpose: page.prefill.purpose,
         target: page.prefill.target,
       })
-    : `/${l}`;
+    : `/${l}/analyzer`;
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 pt-12 pb-16 space-y-8">
@@ -81,7 +81,7 @@ export default async function LandingPage({
           <Link href={ctaHref} className="btn btn-primary h-10 px-5">
             {page.ctaLabel[l]}
           </Link>
-          <Link href={`/${l}`} className="btn btn-secondary h-10 px-4">
+          <Link href={`/${l}/analyzer`} className="btn btn-secondary h-10 px-4">
             {l === "es" ? "Ver el analizador" : "Open the analyzer"}
           </Link>
         </div>

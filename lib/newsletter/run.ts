@@ -22,6 +22,11 @@
 //   requirement stops the run before anything is sent.
 // - Privacy: results, logs, and run records carry counts and ids — never a
 //   subscriber address.
+// - v1.7.0 — publication is separate from delivery. `publish` stores the
+//   edition as published (visible in AI Daily → Weekly digest) and never
+//   reads subscribers or calls the mailer, so publishing or backfilling an
+//   edition can never send an email. A later `live` run reuses the stored
+//   edition, so the email always matches what the site shows.
 
 import { createHash } from "node:crypto";
 import type { Lang } from "@/lib/domain";
@@ -34,9 +39,13 @@ import { configBlockers, configSummary, type DeliveryConfig, type NewsletterRunM
 import { renderNewsletterHtml, renderNewsletterText, unsubscribeHeaders, unsubscribeUrlFor } from "./render";
 import { NewsletterEditionSchema, type NewsletterEdition } from "./types";
 import type { Mailer } from "./email";
+import { weeklyEditionPath } from "./paths";
 
 export const NEWSLETTER_RUN_OUTCOMES = [
   "DRY_RUN_OK", // edition built/validated; nothing sent
+  "PUBLISHED", // (v1.7.0 publish) edition stored as published; nothing sent
+  "ALREADY_PUBLISHED", // (v1.7.0 publish) the edition was already public; nothing changed or sent
+  "WEEK_NOT_CLOSED", // (v1.7.0 publish) the requested week has not ended yet; nothing stored
   "TEST_SENT", // sent to NEWSLETTER_TEST_RECIPIENTS only
   "SENT", // every active subscriber has received this edition
   "PARTIAL", // time budget reached or some sends failed/in flight — safe to re-run
@@ -212,9 +221,13 @@ export async function runWeeklyNewsletter(
   if (mode === "live" && !cfg.deliveryEnabled) {
     return finish("DELIVERY_DISABLED", "Live delivery is switched off (NEWSLETTER_DELIVERY_ENABLED is not true). Nothing was sent.");
   }
-  if (mode !== "dry_run" && (blockers.length > 0 || !deps.mailer)) {
+  if (mode !== "dry_run" && mode !== "publish" && (blockers.length > 0 || !deps.mailer)) {
     if (!deps.mailer && !blockers.includes("RESEND_API_KEY is not set")) blockers = [...blockers, "mail provider unavailable"];
     return finish("CONFIG_ERROR", "Delivery configuration is incomplete. Nothing was sent.");
+  }
+
+  if (mode === "publish" && window.monday > editorialDate(started)) {
+    return finish("WEEK_NOT_CLOSED", "That week has not ended yet; nothing was stored or sent.");
   }
 
   // 3. The edition: reuse this week's stored edition, otherwise build it.
@@ -236,6 +249,21 @@ export async function runWeeklyNewsletter(
     return finish("INVALID_EDITION", "The generated edition failed validation; nothing was sent.");
   }
   edition = valid.data;
+
+  // 3b. PUBLISH (v1.7.0): make the edition public without sending anything.
+  if (mode === "publish") {
+    if (edition.status === "published" || edition.status === "sent") {
+      return finish("ALREADY_PUBLISHED", "This edition is already public. Nothing was changed or sent.");
+    }
+    try {
+      const stored = await deps.store.createEditionIfAbsent({ ...edition, status: "published", publishedAt: edition.publishedAt ?? started.toISOString() });
+      if (stored.status === "draft") await deps.store.updateEdition(stored.editionId, { status: "published", publishedAt: started.toISOString() });
+      edition = stored.status === "draft" ? { ...stored, status: "published", publishedAt: started.toISOString() } : stored;
+    } catch {
+      return finish("STORAGE_ERROR", "Could not store the edition; nothing was published or sent.");
+    }
+    return finish("PUBLISHED", "Edition published on the site. No email was sent.");
+  }
 
   if (edition.status === "sent" && mode === "live") {
     return finish("ALREADY_SENT", "This week's edition was already delivered to every active subscriber.");
@@ -277,7 +305,7 @@ export async function runWeeklyNewsletter(
   if (mode === "test") {
     for (const [i, address] of cfg.testRecipients.entries()) {
       const lang: Lang = i % 2 === 0 ? "es" : "en";
-      const r = await sendTo(address, lang, `${cfg.siteUrl}/${lang}/weekly`, { subjectPrefix: "[TEST] " });
+      const r = await sendTo(address, lang, `${cfg.siteUrl}${weeklyEditionPath(lang, edition!.editionId)}`, { subjectPrefix: "[TEST] " });
       if (r.ok) counts.testSent++;
       else counts.failed++;
       if (i < cfg.testRecipients.length - 1) await sleep(throttleMs);
@@ -317,7 +345,7 @@ export async function runWeeklyNewsletter(
   try {
     for (const [i, address] of cfg.testRecipients.entries()) {
       const lang: Lang = i % 2 === 0 ? "es" : "en";
-      const r = await deliver(testRecipientKey(address), address, lang, `${cfg.siteUrl}/${lang}/weekly`);
+      const r = await deliver(testRecipientKey(address), address, lang, `${cfg.siteUrl}${weeklyEditionPath(lang, edition!.editionId)}`);
       if (r === "failed" || r === "rejected") return finish("CANARY_FAILED", "The canary send to the test recipients failed; no subscriber was contacted.");
       if (r === "sent" || r === "already_sent") counts.canarySent++;
       await sleep(throttleMs);
@@ -327,7 +355,7 @@ export async function runWeeklyNewsletter(
   }
 
   if (subscribers.length === 0) {
-    return finish("NO_SUBSCRIBERS", "The edition is published on /weekly; there are no active subscribers to send it to.");
+    return finish("NO_SUBSCRIBERS", "The edition is published in AI Daily → Weekly digest; there are no active subscribers to send it to.");
   }
 
   for (const [i, sub] of subscribers.entries()) {
