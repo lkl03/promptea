@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.7.1 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.7.1</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 22-10-2026" : "Released: 2026-10-22"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: ¿qué tan largo tiene que ser un prompt? Cómo darte cuenta si el tuyo es demasiado corto o demasiado largo, qué recortar y cómo ordenar un prompt largo, con plantillas para ampliarlo o achicarlo."
+              : "New guide: how long should a prompt be? How to tell whether yours is too short or too long, what to cut and how to organize a long prompt, with templates to expand or trim it."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: prompts de IA para presentaciones, para armar la estructura slide por slide, convertir un documento en slides sin inventar datos y ensayar con las preguntas que probablemente te hagan."
+              : "New guide: AI prompts for presentations, to build a slide-by-slide outline, turn a document into slides without invented data, and rehearse with the questions you’re likely to get."}
+          </li>
+          <li>
+            {isEs
+              ? "La guía de prompts multimodales ahora dice qué modelos actuales aceptan imágenes, PDF, audio o video."
+              : "The multimodal prompts guide now lists which current models accept images, PDFs, audio or video."}
+          </li>
+          <li>
+            {isEs
+              ? "Las guías muestran mejor su ubicación dentro del sitio en los resultados de búsqueda."
+              : "Guides now show their place in the site more reliably in search results."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.7.0 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

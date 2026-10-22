@@ -4,6 +4,32 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.7.1 — 2026-10-22
+
+**Two new evergreen guides (prompt length, presentations), the multimodal guide's model list brought up to date, and absolute URLs in guide breadcrumbs.** The new guides answer two long-tail questions that come up constantly: how long a prompt should be, and how to use AI to plan a presentation without invented numbers. The multimodal-prompts FAQ still named GPT-4o, Claude 3, Gemini 1.5 and Grok 2 Vision (flagged as a follow-up in v1.6.2); it now lists the selectable models from `lib/models.ts` and their input modalities. The product fix makes the BreadcrumbList on guide pages use absolute URLs, as AI Daily articles already do.
+
+### Added
+- **New guide: how long should a prompt be?** (`lib/seo/content/guides.ts`, slug `how-long-should-a-prompt-be`) — why length is a result and not a goal, signs a prompt is too short (generic answers, repeated corrections, unstable structure) or too long (ignored rules, repeated or contradictory instructions, irrelevant background), how to keep long prompts readable (task first, delimited material, grouped rules, explicit priorities), and what changes across ChatGPT, Claude and Gemini. Two templates: expand a one-line prompt, and trim a long prompt while listing what was removed. The FAQ states plainly that there is no ideal word count and describes how Promptea's score treats length (clarity rewards a few dozen words, nothing beyond), matching `lib/engine/scoring.ts`.
+- **New guide: AI prompts for presentations** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-presentations`) — where AI helps (structure, condensing, sentence titles, rehearsal), what to tell the model first (audience, outcome, time and slide budget, source material, constraints), common problems (invented figures, too much text, topic lists instead of an argument, generic visuals, confidential content), and three templates: an outline from a goal, slides from a document with every number traced to its sentence, and rehearsal questions plus a 3-slide version.
+- `lib/__tests__/seo.breadcrumbs.test.ts` — breadcrumb items are absolute URLs on the configured origin.
+
+### Changed
+- **Multimodal-prompts guide FAQ refreshed** (`lib/seo/content/guides.ts`, slug `multimodal-prompts`) — "Which AI models support image inputs?" now lists the selectable models and their input modalities from the registry (verified against first-party docs on 2026-09-24 / 2026-10-09) instead of GPT-4o, Claude 3, Gemini 1.5 and Grok 2 Vision, and notes which ones are text-only. Slug unchanged.
+- **Absolute breadcrumb URLs on guide pages** (`app/[lang]/guides/[slug]/page.tsx`) — the BreadcrumbList JSON-LD used bare paths (`/en/guides`) as `item`; it now uses the shared `breadcrumbJsonLd` helper with `absUrl`, so each crumb is `https://…/en/guides`, like the AI Daily article breadcrumbs. No visible change.
+- Version bumped to `v1.7.1` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Known limitations / follow-ups
+- **Gemini 4 Argon is missing from the registry.** It appears in the benchmarks frontier list (`google/gemini-4-argon-20261013`), and Google's models page (`https://ai.google.dev/gemini-api/docs/models`) lists `gemini-4-argon` as stable. Not added this week: a selectable entry needs capabilities, a prompting profile and a decision on the Gemini default, which deserve their own reviewed change. On the same page `gemini-3.7-flash` was not listed in the summary we fetched; worth re-checking its status in that pass.
+- Breadcrumb URLs use `NEXT_PUBLIC_SITE_URL` (or `SITE_URL`), as the blog does; without it they fall back to `http://localhost:3000`.
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean
+- `npm test` — all suites pass, including version-sync checks
+- `npm run build` — succeeds without Firebase/Resend/OpenRouter env vars; the new guide pages prerender
+
+---
+
 ## v1.7.0 — 2026-10-09
 
 **A homepage hub, the analyzer at `/analyzer`, Benchmarks, a Weekly digest that actually shows the editions we sent, the Glass theme, and the mascot logo.** The homepage stops being the analyzer and becomes a compact hub: AI Daily headlines from the last 72 hours, the logo with the mascot, four entry points, secondary resources and a showcase video recorded from the real app. The analyzer moves to `/[lang]/analyzer` unchanged, and every old deep link keeps working. A new Benchmarks page ranks models per benchmark from OpenRouter's API without inventing a universal score. Promptea Weekly had a production bug — the page said "the first edition is being prepared" while two editions had already been emailed — whose root cause is fixed; Weekly is now a section of AI Daily with an archive and a shareable page per edition, and publishing is separate from sending. "Old version" is replaced by Glass.

@@ -8,11 +8,11 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) is a hub with th
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.7.0 (2026-10-09)
+## Latest update — v1.7.1 (2026-10-22)
 
-**New homepage hub, the analyzer at `/analyzer`, Benchmarks, a working Weekly archive inside AI Daily, the Glass theme and the mascot logo.** The homepage became a hub (news marquee, four cards, showcase video); the analyzer moved to `/[lang]/analyzer` with every legacy deep link preserved. `/[lang]/benchmarks` ranks models per benchmark from OpenRouter. Promptea Weekly showed "the first edition is being prepared" in production although two editions had been emailed (its Firestore query needed an index that never existed); it is now a "Weekly digest" section of AI Daily with an archive and shareable edition pages, and publication is separate from sending. "Old version" was replaced by the Glass theme. Model registry refreshed (GPT-6.1 Sol, Claude Sonnet 5.5 and Haiku 5.5). Details in [CHANGELOG.md](./CHANGELOG.md).
+**Two new guides — how long a prompt should be, and AI prompts for presentations — an up-to-date model list in the multimodal guide, and absolute breadcrumb URLs on guide pages.** The multimodal FAQ now lists the selectable models from `lib/models.ts` instead of GPT-4o/Claude 3-era names. Shipped in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.6.2 (2026-10-08) — guides for meetings and spreadsheet formulas, current models in older pages, real heading outline on guides._
+_Previous update: v1.7.0 (2026-10-09) — homepage hub, the analyzer at `/analyzer`, Benchmarks, the Weekly archive inside AI Daily, the Glass theme and the mascot logo._
 
 ## How it works
 

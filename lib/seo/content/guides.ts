@@ -2972,8 +2972,8 @@ Formato:
       {
         q: { en: "Which AI models support image inputs?", es: "¿Qué modelos de IA soportan entradas de imagen?" },
         a: {
-          en: "As of mid-2026, image inputs are supported by GPT-4o and later OpenAI models, Claude 3 and later Anthropic models, Gemini 1.5 and later Google models, and Grok 2 Vision. DeepSeek and Kimi also have multimodal variants. Always verify image support in the model's current documentation, as capabilities vary by API tier and may change.",
-          es: "A mediados de 2026, las entradas de imagen son soportadas por GPT-4o y modelos OpenAI posteriores, Claude 3 y modelos Anthropic posteriores, Gemini 1.5 y modelos Google posteriores, y Grok 2 Vision. DeepSeek y Kimi también tienen variantes multimodales. Siempre verificá el soporte de imágenes en la documentación actual del modelo, ya que las capacidades varían por nivel de API y pueden cambiar.",
+          en: "Most current models do. In Promptea's model registry (checked against provider docs in September and October 2026), image input is listed for GPT-6 Astra, GPT-6.1 Sol and GPT-6 Luna; Claude Opus 5.5, Fable 5.1, Sonnet 5.5 and Haiku 5.5 (which also read PDFs); the Gemini 3.x Flash models (which also take audio, video and PDF); Grok 4.7 and Grok 4.3; DeepSeek Flash; and Kimi K3 (also video). DeepSeek V4 Pro and Perplexity's Agent API presets are text-only there. Support can differ between the chat app and the API and changes over time, so confirm in the provider's current documentation.",
+          es: "La mayoría de los modelos actuales. En el registro de modelos de Promptea (verificado contra la documentación de cada proveedor en septiembre y octubre de 2026), figuran con entrada de imagen GPT-6 Astra, GPT-6.1 Sol y GPT-6 Luna; Claude Opus 5.5, Fable 5.1, Sonnet 5.5 y Haiku 5.5 (que además leen PDF); los modelos Gemini 3.x Flash (que además aceptan audio, video y PDF); Grok 4.7 y Grok 4.3; DeepSeek Flash; y Kimi K3 (también video). DeepSeek V4 Pro y los presets de la Agent API de Perplexity figuran solo con texto. El soporte puede variar entre la app de chat y la API y cambia con el tiempo, así que confirmalo en la documentación actual del proveedor.",
         },
       },
       {
@@ -8012,6 +8012,367 @@ Columnas relevantes: [qué contiene cada columna referenciada]
         a: {
           en: "If other people will maintain the sheet, ask for helper columns or named steps. A single nested formula is compact but hard to debug. Tell the model which you prefer; otherwise it will choose for you.",
           es: "Si otras personas van a mantener la planilla, pedí columnas auxiliares o pasos con nombre. Una sola fórmula anidada es compacta pero difícil de depurar. Decile al modelo qué preferís; si no, elige por vos.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "how-long-should-a-prompt-be",
+    title: {
+      en: "How long should a prompt be? Prompt length for ChatGPT, Claude and Gemini",
+      es: "¿Qué tan largo tiene que ser un prompt? Longitud de prompt para ChatGPT, Claude y Gemini",
+    },
+    description: {
+      en: "There is no ideal word count. A prompt should be as long as the information the model needs to do the task the way you want, and no longer. How to tell when a prompt is too short or too long, what to cut, what to keep, and how to structure long prompts.",
+      es: "No hay una cantidad ideal de palabras. Un prompt tiene que ser tan largo como la información que el modelo necesita para hacer la tarea como vos querés, y no más. Cómo darte cuenta si un prompt es demasiado corto o demasiado largo, qué recortar, qué conservar y cómo estructurar prompts largos.",
+    },
+    sections: [
+      {
+        heading: { en: "Length is a result, not a goal", es: "La longitud es un resultado, no un objetivo" },
+        bullets: {
+          en: [
+            "A prompt is long enough when someone new to the task could do it from the prompt alone: goal, audience, inputs, constraints and the output format.",
+            "A one-line prompt is fine when the task is common and any reasonable answer works ('Translate this sentence into French').",
+            "A long prompt is fine when the task really depends on details: a style guide, a data schema, edge cases, a document to work from.",
+            "What hurts is not length itself but content that doesn't change the answer: repeated instructions, vague praise ('be amazing'), or rules that contradict each other.",
+          ],
+          es: [
+            "Un prompt es lo bastante largo cuando alguien nuevo en la tarea podría hacerla solo con el prompt: objetivo, audiencia, insumos, restricciones y formato de salida.",
+            "Un prompt de una línea está bien cuando la tarea es común y cualquier respuesta razonable sirve ('Traducí esta oración al francés').",
+            "Un prompt largo está bien cuando la tarea depende de detalles: una guía de estilo, un esquema de datos, casos límite, un documento sobre el que trabajar.",
+            "Lo que perjudica no es la longitud en sí sino el contenido que no cambia la respuesta: instrucciones repetidas, elogios vagos ('sé increíble') o reglas que se contradicen.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Signs your prompt is too short", es: "Señales de que tu prompt es demasiado corto" },
+        bullets: {
+          en: [
+            "The answer is generic: it could have been written for anyone, not for your situation.",
+            "The model asks clarifying questions, or answers a different question than the one you meant.",
+            "You keep fixing the same things in follow-ups: tone, length, format, who it's for.",
+            "Each run gives a very different structure, because nothing in the prompt fixes it.",
+          ],
+          es: [
+            "La respuesta es genérica: podría haberse escrito para cualquiera, no para tu situación.",
+            "El modelo hace preguntas para aclarar, o responde otra pregunta distinta de la que querías hacer.",
+            "Corregís siempre lo mismo en los mensajes siguientes: tono, longitud, formato, para quién es.",
+            "Cada vez sale una estructura muy distinta, porque nada en el prompt la fija.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Signs your prompt is too long", es: "Señales de que tu prompt es demasiado largo" },
+        bullets: {
+          en: [
+            "The model follows some rules and ignores others: there are too many competing instructions with no priority.",
+            "The same instruction appears several times in different words, or two rules conflict ('be brief' and 'cover everything').",
+            "Large blocks of background that don't affect the answer: company history, the story of how the task came up.",
+            "You can't say in one sentence what the prompt asks for. If you can't, the model can't either.",
+          ],
+          es: [
+            "El modelo cumple algunas reglas e ignora otras: hay demasiadas instrucciones compitiendo y ninguna prioridad.",
+            "La misma instrucción aparece varias veces con otras palabras, o dos reglas chocan ('sé breve' y 'cubrí todo').",
+            "Bloques grandes de contexto que no afectan la respuesta: la historia de la empresa, cómo surgió la tarea.",
+            "No podés decir en una oración qué pide el prompt. Si vos no podés, el modelo tampoco.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to keep a long prompt readable", es: "Cómo mantener legible un prompt largo" },
+        bullets: {
+          en: [
+            "Put the task first in one sentence, then the details. The model and any human reviewer both read the goal before the rules.",
+            "Separate instructions from material: put documents, data or examples inside clear delimiters (tags such as <document> or a fenced block).",
+            "Group rules under short labels (Audience, Format, Constraints) instead of one long paragraph.",
+            "Say which rules matter most when they might conflict ('If you must choose, accuracy over brevity').",
+            "Long source material is not the same as long instructions: a 20-page document with three clear instructions is easier to follow than one page of tangled rules.",
+          ],
+          es: [
+            "Poné primero la tarea en una oración y después los detalles. Tanto el modelo como una persona que revise leen el objetivo antes que las reglas.",
+            "Separá las instrucciones del material: poné documentos, datos o ejemplos entre delimitadores claros (etiquetas como <documento> o un bloque de código).",
+            "Agrupá las reglas bajo etiquetas cortas (Audiencia, Formato, Restricciones) en lugar de un párrafo largo.",
+            "Decí qué reglas importan más cuando puedan chocar ('Si tenés que elegir, precisión antes que brevedad').",
+            "Material largo no es lo mismo que instrucciones largas: un documento de 20 páginas con tres instrucciones claras se sigue mejor que una página de reglas enredadas.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Different models, same principle", es: "Distintos modelos, mismo principio" },
+        bullets: {
+          en: [
+            "Current ChatGPT, Claude and Gemini models accept very long inputs, so the limit is rarely the context window; it is how clearly the prompt says what matters.",
+            "Providers' own prompting guides (OpenAI, Anthropic, Google) recommend being explicit and specific rather than short, and putting long documents in clearly marked sections.",
+            "Some models default to terse answers and others to thorough ones. Ask for the length you want instead of making the prompt longer to compensate.",
+            "If you reuse a prompt across models, keep it structured and plain; Promptea's analyzer adapts the same prompt to each target model.",
+          ],
+          es: [
+            "Los modelos actuales de ChatGPT, Claude y Gemini aceptan entradas muy largas, así que el límite casi nunca es la ventana de contexto; es qué tan claro dice el prompt qué importa.",
+            "Las guías de prompting de los propios proveedores (OpenAI, Anthropic, Google) recomiendan ser explícito y específico antes que corto, y poner los documentos largos en secciones bien marcadas.",
+            "Algunos modelos tienden a respuestas cortas y otros a respuestas exhaustivas. Pedí la longitud que querés en lugar de alargar el prompt para compensar.",
+            "Si reutilizás un prompt en varios modelos, mantenelo estructurado y simple; el analizador de Promptea adapta el mismo prompt a cada modelo.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Expand a one-line prompt", es: "Ampliar un prompt de una línea" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Task: [your one-line request]
+
+Goal: [what a good answer lets you do, in one sentence]
+Audience: [who will read or use the result]
+Inputs: [paste or describe the material the model should use]
+Constraints: [length, tone, things to avoid]
+Output format: [bullets / table / short email / JSON]
+
+If any of the above is missing and it changes the answer, ask me one question before starting.`,
+          es: `Tarea: [tu pedido de una línea]
+
+Objetivo: [qué te permite hacer una buena respuesta, en una oración]
+Audiencia: [quién va a leer o usar el resultado]
+Insumos: [pegá o describí el material que el modelo tiene que usar]
+Restricciones: [longitud, tono, cosas a evitar]
+Formato de salida: [bullets / tabla / email corto / JSON]
+
+Si falta algo de lo anterior y cambia la respuesta, haceme una sola pregunta antes de empezar.`,
+        },
+      },
+      {
+        title: { en: "Trim a long prompt without losing what matters", es: "Recortar un prompt largo sin perder lo importante" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Below is a prompt I use. Make it shorter and clearer without changing what it asks for.
+
+<prompt>
+[paste your prompt]
+</prompt>
+
+1. State the task in one sentence.
+2. List every instruction that is repeated, vague or contradicts another, and say what you would do with each (merge, cut, make specific).
+3. Return the rewritten prompt: task first, then grouped rules (Audience, Format, Constraints), then any material in delimiters.
+4. List anything you removed that might still matter, so I can decide.`,
+          es: `Abajo hay un prompt que uso. Hacelo más corto y claro sin cambiar lo que pide.
+
+<prompt>
+[pegá tu prompt]
+</prompt>
+
+1. Decí la tarea en una oración.
+2. Listá cada instrucción repetida, vaga o que contradice a otra, y decí qué harías con cada una (unir, cortar, hacerla específica).
+3. Devolvé el prompt reescrito: primero la tarea, después las reglas agrupadas (Audiencia, Formato, Restricciones) y por último el material entre delimitadores.
+4. Listá lo que sacaste y que podría seguir importando, para que yo decida.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Is there an ideal number of words for a prompt?", es: "¿Hay una cantidad ideal de palabras para un prompt?" },
+        a: {
+          en: "No. Any fixed number would be made up: the right length depends on the task. A good test is whether a capable person who knows nothing about your situation could do the task from the prompt alone. If they would need to ask questions, add those answers; if parts would not change what they do, cut them.",
+          es: "No. Cualquier número fijo sería inventado: la longitud correcta depende de la tarea. Una buena prueba es si una persona capaz que no sabe nada de tu situación podría hacer la tarea solo con el prompt. Si necesitaría hacer preguntas, sumá esas respuestas; si hay partes que no cambiarían lo que hace, sacalas.",
+        },
+      },
+      {
+        q: { en: "Do longer prompts cost more?", es: "¿Los prompts más largos cuestan más?" },
+        a: {
+          en: "In the API, yes: input is billed per token, so every word of a prompt you send thousands of times adds up. In chat apps you don't pay per token, but very long conversations can still hit usage limits sooner. Cutting repeated or irrelevant text saves cost without hurting quality.",
+          es: "En la API, sí: la entrada se cobra por token, así que cada palabra de un prompt que mandás miles de veces suma. En las apps de chat no pagás por token, pero las conversaciones muy largas pueden llegar antes a los límites de uso. Recortar texto repetido o irrelevante ahorra costo sin bajar la calidad.",
+        },
+      },
+      {
+        q: { en: "Does Promptea's score reward longer prompts?", es: "¿El puntaje de Promptea premia los prompts más largos?" },
+        a: {
+          en: "Only up to a point. Prompts of just a few words score lower on clarity because they rarely say enough, but past a few dozen words extra length adds nothing. Most of the score comes from whether the prompt states a goal, context, constraints and an output format, so a long prompt that misses those still scores poorly.",
+          es: "Solo hasta cierto punto. Los prompts de pocas palabras puntúan más bajo en claridad porque casi nunca dicen lo suficiente, pero pasadas unas decenas de palabras, más longitud no suma nada. La mayor parte del puntaje depende de si el prompt dice el objetivo, el contexto, las restricciones y el formato de salida, así que un prompt largo que no cubre eso igual puntúa bajo.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-presentations",
+    title: {
+      en: "AI prompts for presentations: slide outlines, speaker notes and decks from documents",
+      es: "Prompts de IA para presentaciones: estructura de slides, notas del orador y presentaciones a partir de documentos",
+    },
+    description: {
+      en: "How to use ChatGPT, Claude or Gemini to plan a presentation: start from the audience and the one decision or idea you need, get a slide-by-slide outline, turn a long document into slides without inventing data, and write speaker notes. Includes copy-paste templates.",
+      es: "Cómo usar ChatGPT, Claude o Gemini para planificar una presentación: empezá por la audiencia y la decisión o idea que necesitás, conseguí una estructura slide por slide, convertí un documento largo en slides sin inventar datos y escribí las notas del orador. Incluye plantillas para copiar y pegar.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI helps with a presentation", es: "Dónde ayuda la IA en una presentación" },
+        bullets: {
+          en: [
+            "Structure: turning a goal and an audience into a slide-by-slide outline with one message per slide.",
+            "Condensing: pulling the key points out of a report, a spec or meeting notes you already have.",
+            "Wording: short slide titles that state the point ('Churn fell after the onboarding change') instead of topics ('Churn').",
+            "Rehearsal: speaker notes, likely questions from the audience and a shorter version for when time gets cut.",
+          ],
+          es: [
+            "Estructura: convertir un objetivo y una audiencia en una secuencia de slides con un mensaje por slide.",
+            "Síntesis: sacar los puntos clave de un informe, una especificación o notas de reunión que ya tenés.",
+            "Redacción: títulos de slide cortos que dicen la idea ('El churn bajó después del cambio de onboarding') en lugar de temas ('Churn').",
+            "Ensayo: notas del orador, preguntas probables de la audiencia y una versión más corta por si te recortan el tiempo.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What to tell the model first", es: "Qué contarle primero al modelo" },
+        bullets: {
+          en: [
+            "The audience and what they already know: executives, a client, your team, a conference room.",
+            "The outcome you need: a decision, approval, budget, or simply that people understand one idea.",
+            "Time and slide budget: '10 minutes, at most 8 slides'.",
+            "The source material, pasted inside delimiters, and a rule that every number must come from it.",
+            "Constraints: your template's sections, words per slide, whether charts are allowed, language and tone.",
+          ],
+          es: [
+            "La audiencia y qué sabe de antemano: directivos, un cliente, tu equipo, una sala de conferencia.",
+            "El resultado que necesitás: una decisión, una aprobación, presupuesto, o simplemente que entiendan una idea.",
+            "Tiempo y cantidad de slides: '10 minutos, como máximo 8 slides'.",
+            "El material de origen, pegado entre delimitadores, y la regla de que cada número tiene que salir de ahí.",
+            "Restricciones: las secciones de tu plantilla, palabras por slide, si se permiten gráficos, idioma y tono.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Common problems and how to prevent them", es: "Problemas comunes y cómo evitarlos" },
+        bullets: {
+          en: [
+            "Invented figures: models fill gaps with plausible numbers. Ask for '[data needed]' placeholders instead and a list of every figure with where it came from.",
+            "Too much text: ask for at most a title plus three short lines per slide, with the detail moved to speaker notes.",
+            "A list of topics instead of an argument: ask for titles that are full sentences, and check that reading only the titles tells the story.",
+            "Generic visuals: ask what each chart should show (which data, which comparison), not for 'a nice image'.",
+            "Confidential content: remove client names, financials or personal data before pasting, or use a tool your company has approved.",
+          ],
+          es: [
+            "Cifras inventadas: los modelos completan huecos con números creíbles. Pedí marcadores '[dato necesario]' y una lista de cada cifra con de dónde salió.",
+            "Demasiado texto: pedí como máximo un título y tres líneas cortas por slide, y que el detalle pase a las notas del orador.",
+            "Una lista de temas en vez de un argumento: pedí títulos que sean oraciones completas y verificá que leyendo solo los títulos se entienda la historia.",
+            "Visuales genéricos: preguntá qué tiene que mostrar cada gráfico (qué datos, qué comparación), no 'una imagen linda'.",
+            "Contenido confidencial: sacá nombres de clientes, datos financieros o personales antes de pegar, o usá una herramienta aprobada por tu empresa.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Slide-by-slide outline from a goal", es: "Estructura slide por slide a partir de un objetivo" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `I need to present [topic] to [audience: role, what they already know].
+Outcome I need: [decision / approval / understanding of one idea]
+Time: [minutes]. Maximum slides: [number].
+
+Create an outline. For each slide give:
+- Title: one full sentence that states the point
+- 2–3 short supporting lines (max 12 words each)
+- Speaker note: what I say, 2–3 sentences
+- Visual: what a chart or image should show, or "none"
+
+Rules:
+- Reading only the titles in order must tell the whole argument.
+- Don't invent numbers, names or dates. Where data is needed, write [data needed: what].
+- End with a slide that states the ask or the takeaway explicitly.`,
+          es: `Tengo que presentar [tema] a [audiencia: rol, qué sabe de antemano].
+Resultado que necesito: [decisión / aprobación / que entiendan una idea]
+Tiempo: [minutos]. Máximo de slides: [número].
+
+Armá una estructura. Para cada slide dame:
+- Título: una oración completa que dice la idea
+- 2–3 líneas de apoyo cortas (máximo 12 palabras cada una)
+- Nota del orador: qué digo, 2–3 oraciones
+- Visual: qué tiene que mostrar un gráfico o imagen, o "ninguno"
+
+Reglas:
+- Leyendo solo los títulos en orden se tiene que entender todo el argumento.
+- No inventes números, nombres ni fechas. Donde haga falta un dato, escribí [dato necesario: cuál].
+- Terminá con una slide que diga explícitamente el pedido o la conclusión.`,
+        },
+      },
+      {
+        title: { en: "Turn a document into slides", es: "Convertir un documento en slides" },
+        purpose: "summarization",
+        target: "gemini",
+        prompt: {
+          en: `Turn the document below into a [number]-slide presentation for [audience].
+
+<document>
+[paste the report, spec or notes]
+</document>
+
+For each slide: a sentence title, up to 3 short lines, and a speaker note.
+
+Rules:
+- Use only information from the document. If something the audience will need is missing, add it to a "Gaps" list at the end instead of filling it in.
+- Every number on a slide must appear in the document; after the slides, list each number with the sentence it came from.
+- Keep the document's terminology; don't rename products, teams or metrics.`,
+          es: `Convertí el documento de abajo en una presentación de [número] slides para [audiencia].
+
+<documento>
+[pegá el informe, la especificación o las notas]
+</documento>
+
+Para cada slide: un título en forma de oración, hasta 3 líneas cortas y una nota del orador.
+
+Reglas:
+- Usá solo información del documento. Si falta algo que la audiencia va a necesitar, agregalo a una lista de "Huecos" al final en lugar de completarlo.
+- Cada número que aparezca en una slide tiene que estar en el documento; después de las slides, listá cada número con la oración de la que salió.
+- Respetá la terminología del documento; no les cambies el nombre a productos, equipos ni métricas.`,
+        },
+      },
+      {
+        title: { en: "Rehearse: likely questions and a short version", es: "Ensayo: preguntas probables y una versión corta" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Here is my presentation outline for [audience]:
+
+<outline>
+[paste slide titles and notes]
+</outline>
+
+1. List the 5 questions this audience is most likely to ask, from hardest to easiest, and a 2-sentence answer for each based only on the outline. If the outline can't answer one, say so.
+2. Point out the weakest slide and why.
+3. Give a 3-slide version for when I only get [minutes] minutes, keeping the ask.`,
+          es: `Esta es la estructura de mi presentación para [audiencia]:
+
+<estructura>
+[pegá los títulos y las notas de las slides]
+</estructura>
+
+1. Listá las 5 preguntas que más probablemente haga esta audiencia, de la más difícil a la más fácil, con una respuesta de 2 oraciones para cada una basada solo en la estructura. Si la estructura no permite responder alguna, decilo.
+2. Señalá la slide más débil y por qué.
+3. Dame una versión de 3 slides para cuando solo tenga [minutos] minutos, manteniendo el pedido.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can ChatGPT, Claude or Gemini make the slides themselves?", es: "¿ChatGPT, Claude o Gemini pueden hacer las slides directamente?" },
+        a: {
+          en: "Some of their apps and integrations can create slide files, and the features change often, so check what your plan offers. Either way, the outline is where the quality comes from: get the argument, titles and notes right first, then build or generate the slides from that.",
+          es: "Algunas de sus apps e integraciones pueden crear archivos de slides, y esas funciones cambian seguido, así que fijate qué ofrece tu plan. En cualquier caso, la calidad sale de la estructura: primero dejá bien el argumento, los títulos y las notas, y después armá o generá las slides a partir de eso.",
+        },
+      },
+      {
+        q: { en: "How many slides should I ask for?", es: "¿Cuántas slides le pido?" },
+        a: {
+          en: "Give the model your time limit and a maximum slide count rather than leaving it open; otherwise it tends to produce more slides than you can present. The right number depends on your audience and how much you speak per slide.",
+          es: "Pasale al modelo tu límite de tiempo y una cantidad máxima de slides en lugar de dejarlo abierto; si no, tiende a generar más slides de las que podés presentar. El número correcto depende de tu audiencia y de cuánto hablás por slide.",
+        },
+      },
+      {
+        q: { en: "How do I stop the AI from inventing data on slides?", es: "¿Cómo evito que la IA invente datos en las slides?" },
+        a: {
+          en: "Paste the source material, tell the model to use only that, ask for placeholders where data is missing, and ask for a list of every number with the sentence it came from. Then check that list against the source before you present.",
+          es: "Pegá el material de origen, decile al modelo que use solo eso, pedí marcadores donde falten datos y pedí una lista de cada número con la oración de la que salió. Después compará esa lista con la fuente antes de presentar.",
         },
       },
     ],
