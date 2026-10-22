@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { getGuide, guides } from "@/lib/seo/content/guides";
+import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { absUrl } from "@/lib/seo/site";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -79,37 +81,20 @@ export default async function GuidePage({
     })),
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: l === "es" ? "Inicio" : "Home",
-        item: `/${l}`,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: l === "es" ? "Guías" : "Guides",
-        item: `/${l}/guides`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: guide.title[l],
-        item: `/${l}/guides/${slug}`,
-      },
-    ],
-  };
+  // Absolute `item` URLs, like the AI Daily breadcrumbs (lib/blog/jsonld.ts):
+  // relative paths leave the trail ambiguous for crawlers.
+  const breadcrumb = breadcrumbJsonLd([
+    { name: l === "es" ? "Inicio" : "Home", url: absUrl(`/${l}`) },
+    { name: l === "es" ? "Guías" : "Guides", url: absUrl(`/${l}/guides`) },
+    { name: guide.title[l], url: absUrl(`/${l}/guides/${slug}`) },
+  ]);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
       {/* JSON-LD FAQ */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       {/* JSON-LD BreadcrumbList */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
 
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{guide.title[l]}</h1>
