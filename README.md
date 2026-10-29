@@ -8,11 +8,11 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) is a hub with th
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.7.1 (2026-10-22)
+## Latest update — v1.7.2 (2026-10-29)
 
-**Two new guides — how long a prompt should be, and AI prompts for presentations — an up-to-date model list in the multimodal guide, and absolute breadcrumb URLs on guide pages.** The multimodal FAQ now lists the selectable models from `lib/models.ts` instead of GPT-4o/Claude 3-era names. Shipped in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+**Two new guides — how to test one prompt across models, and AI prompts for status reports — current model names in the translation and structured-output FAQs, and template buttons on guide pages that screen readers can tell apart.** Shipped in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.7.0 (2026-10-09) — homepage hub, the analyzer at `/analyzer`, Benchmarks, the Weekly archive inside AI Daily, the Glass theme and the mascot logo._
+_Previous update: v1.7.1 (2026-10-22) — guides on prompt length and presentations, an up-to-date multimodal model list, absolute breadcrumb URLs on guide pages._
 
 ## How it works
 

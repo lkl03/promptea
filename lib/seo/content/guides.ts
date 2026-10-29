@@ -2298,8 +2298,8 @@ Strings a traducir:
       {
         q: { en: "Which model is best for translation tasks?", es: "¿Qué modelo es mejor para tareas de traducción?" },
         a: {
-          en: "Claude and GPT-4 class models both produce strong translation results. Claude tends to follow nuanced register and glossary instructions reliably. GPT handles batch and structured-output translation well. For languages with less training data (non-Latin scripts, regional variants), test both and compare the result on a sample before committing.",
-          es: "Los modelos de la clase Claude y GPT-4 producen resultados de traducción sólidos. Claude tiende a seguir instrucciones de registro y glosario con matices de manera confiable. GPT maneja bien la traducción en lote y con salida estructurada. Para idiomas con menos datos de entrenamiento (escrituras no latinas, variantes regionales), probá ambos y compará el resultado en una muestra antes de comprometerte.",
+          en: "There is no single winner: the current GPT, Claude and Gemini models (for example GPT-6 Astra, Claude Opus 5.5 or Sonnet 5.5, Gemini 3.8 Flash) all handle common language pairs well, and results vary by language pair, domain and how strict your glossary is. Claude tends to respect register and glossary rules when they are spelled out; models with a native structured-output mode make batch translation of UI strings easier to parse. Pick two candidates, translate the same sample (including your hardest terms and a regional variant if you need one), and have a fluent reviewer compare them before committing.",
+          es: "No hay un ganador único: los modelos actuales de GPT, Claude y Gemini (por ejemplo GPT-6 Astra, Claude Opus 5.5 o Sonnet 5.5, Gemini 3.8 Flash) manejan bien los pares de idiomas comunes, y el resultado cambia según el par de idiomas, el dominio y qué tan estricto es tu glosario. Claude tiende a respetar reglas de registro y glosario cuando están explícitas; los modelos con modo nativo de salida estructurada facilitan procesar traducciones en lote de strings de UI. Elegí dos candidatos, traducí la misma muestra (con tus términos más difíciles y una variante regional si la necesitás) y que una persona con dominio del idioma compare antes de decidir.",
         },
       },
     ],
@@ -5283,8 +5283,8 @@ Reglas:
       {
         q: { en: "Which model is best for structured output?", es: "¿Qué modelo es mejor para output estructurado?" },
         a: {
-          en: "GPT models (especially GPT-4 class and above) have reliable JSON mode and tool-use that produces schema-constrained output with near-zero format failures. Claude is also strong for structured tasks when the schema is explicit in the prompt — its instruction-following is precise. For critical production pipelines, use the model's native JSON mode or function-calling API rather than relying on the prompt alone: it enforces the schema at the generation level, not just as a request.",
-          es: "Los modelos GPT (especialmente clase GPT-4 y superior) tienen modo JSON confiable y uso de herramientas que produce output restringido a schema con casi cero fallos de formato. Claude también es fuerte para tareas estructuradas cuando el schema está explícito en el prompt — su seguimiento de instrucciones es preciso. Para pipelines de producción críticos, usá el modo JSON nativo del modelo o la API de function-calling en lugar de depender solo del prompt: aplica el schema a nivel de generación, no solo como un pedido.",
+          en: "Most current models offer a native structured-output (JSON schema) mode and tool use: the selectable GPT, Claude, Gemini, Grok, DeepSeek and Kimi models in Promptea's registry all do, while Perplexity's Agent API presets are built for cited web answers rather than schema-constrained output. Prompt quality still matters: an explicit schema, field descriptions and rules for missing values reduce wrong or empty fields even when the format itself is enforced. For critical production pipelines, use the model's native JSON mode or function-calling API rather than relying on the prompt alone: it enforces the schema at the generation level, not just as a request.",
+          es: "La mayoría de los modelos actuales ofrece un modo nativo de salida estructurada (JSON schema) y uso de herramientas: todos los modelos seleccionables de GPT, Claude, Gemini, Grok, DeepSeek y Kimi del registro de Promptea lo tienen, mientras que los presets de la Agent API de Perplexity están pensados para respuestas web con citas y no para output restringido a schema. La calidad del prompt sigue importando: un schema explícito, descripciones de campos y reglas para valores faltantes reducen campos incorrectos o vacíos aunque el formato esté garantizado. Para pipelines de producción críticos, usá el modo JSON nativo del modelo o la API de function-calling en lugar de depender solo del prompt: aplica el schema a nivel de generación, no solo como un pedido.",
         },
       },
       {
@@ -8373,6 +8373,450 @@ Reglas:
         a: {
           en: "Paste the source material, tell the model to use only that, ask for placeholders where data is missing, and ask for a list of every number with the sentence it came from. Then check that list against the source before you present.",
           es: "Pegá el material de origen, decile al modelo que use solo eso, pedí marcadores donde falten datos y pedí una lista de cada número con la oración de la que salió. Después compará esa lista con la fuente antes de presentar.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "test-prompt-across-models",
+    title: {
+      en: "How to test one prompt across ChatGPT, Claude, Gemini, Grok and DeepSeek",
+      es: "Cómo probar un mismo prompt en ChatGPT, Claude, Gemini, Grok y DeepSeek",
+    },
+    description: {
+      en: "A practical method to compare AI models on your own task: fix the prompt and the inputs, write pass/fail criteria before you look at answers, run a small sample, and decide on evidence instead of impressions. Includes templates for test cases, a scoring rubric and a side-by-side review.",
+      es: "Un método práctico para comparar modelos de IA en tu propia tarea: fijá el prompt y los datos de entrada, escribí criterios de aprobado/desaprobado antes de mirar respuestas, corré una muestra chica y decidí con evidencia en lugar de impresiones. Incluye plantillas para casos de prueba, una rúbrica de puntaje y una revisión lado a lado.",
+    },
+    sections: [
+      {
+        heading: { en: "Why public rankings aren't enough", es: "Por qué los rankings públicos no alcanzan" },
+        bullets: {
+          en: [
+            "Benchmarks measure specific tasks under specific conditions. Your task — your documents, your format, your language — may behave differently.",
+            "Models change: new versions ship and older ones are retired, so a comparison you ran months ago may no longer apply.",
+            "Cost and speed matter as much as quality for repeated work: a slightly weaker answer that is much faster may be the right choice.",
+            "Use rankings to pick 2–3 candidates, then test those candidates on your own examples.",
+          ],
+          es: [
+            "Los benchmarks miden tareas puntuales bajo condiciones puntuales. Tu tarea — tus documentos, tu formato, tu idioma — puede comportarse distinto.",
+            "Los modelos cambian: salen versiones nuevas y se retiran las viejas, así que una comparación que hiciste hace meses puede ya no valer.",
+            "En trabajo repetido, el costo y la velocidad importan tanto como la calidad: una respuesta apenas peor pero mucho más rápida puede ser la elección correcta.",
+            "Usá los rankings para elegir 2–3 candidatos y después probalos con tus propios ejemplos.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Set up a fair test", es: "Armá una prueba justa" },
+        bullets: {
+          en: [
+            "Write the criteria before running anything: what a correct answer must contain, what it must not contain, and the required format.",
+            "Collect 5–10 real inputs, including at least two hard ones (ambiguous request, missing data, very long input, the edge case that broke things before).",
+            "Keep the task and the inputs identical across models. If you adapt the wording per model, adapt only phrasing and structure — never the requirements.",
+            "Start each run in a fresh chat so earlier messages or memory don't leak into the result.",
+            "Remove confidential data from test inputs, or use a tool your organization has approved.",
+          ],
+          es: [
+            "Escribí los criterios antes de correr nada: qué tiene que contener una respuesta correcta, qué no puede contener y el formato obligatorio.",
+            "Juntá 5–10 entradas reales, con al menos dos difíciles (pedido ambiguo, datos faltantes, entrada muy larga, el caso borde que ya rompió algo antes).",
+            "Mantené la tarea y las entradas idénticas entre modelos. Si adaptás el texto a cada modelo, adaptá solo la redacción y la estructura, nunca los requisitos.",
+            "Empezá cada corrida en un chat nuevo para que mensajes anteriores o la memoria no contaminen el resultado.",
+            "Sacá los datos confidenciales de las entradas de prueba, o usá una herramienta aprobada por tu organización.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Score the answers, not your impression", es: "Puntuá las respuestas, no tu impresión" },
+        bullets: {
+          en: [
+            "Grade each answer against the criteria with pass/fail per item, and note the reason for every fail.",
+            "Hide which model wrote which answer while you grade, when you can; it reduces brand bias.",
+            "Run each input more than once if consistency matters: the same prompt can produce different answers.",
+            "Track failures by type (wrong fact, missing field, broken format, ignored rule). A pattern tells you whether to change the model or the prompt.",
+            "If every model fails the same item, the prompt is usually the problem: clarify it and re-run before blaming the models.",
+          ],
+          es: [
+            "Evaluá cada respuesta contra los criterios con aprobado/desaprobado por ítem, y anotá el motivo de cada desaprobado.",
+            "Cuando puedas, ocultá qué modelo escribió cada respuesta mientras evaluás; reduce el sesgo por marca.",
+            "Si te importa la consistencia, corré cada entrada más de una vez: el mismo prompt puede dar respuestas distintas.",
+            "Registrá los fallos por tipo (dato incorrecto, campo faltante, formato roto, regla ignorada). Un patrón te dice si cambiar el modelo o el prompt.",
+            "Si todos los modelos fallan el mismo ítem, el problema suele ser el prompt: aclaralo y volvé a correr antes de culpar a los modelos.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Adapting the prompt per model without changing the test", es: "Adaptar el prompt a cada modelo sin cambiar la prueba" },
+        bullets: {
+          en: [
+            "Claude responds well to clearly delimited material (for example XML-style tags) and explicit priorities.",
+            "GPT and Gemini models follow numbered steps and an explicit output format reliably; state the format once, near the end.",
+            "Grok and DeepSeek benefit from the same basics: task first, constraints listed, an example of the expected output.",
+            "Promptea's analyzer applies these per-model adjustments for you: pick the target AI and compare the optimized versions while keeping your requirements fixed.",
+          ],
+          es: [
+            "Claude responde bien a material claramente delimitado (por ejemplo, etiquetas tipo XML) y a prioridades explícitas.",
+            "Los modelos de GPT y Gemini siguen bien pasos numerados y un formato de salida explícito; indicá el formato una vez, cerca del final.",
+            "Grok y DeepSeek aprovechan lo mismo: la tarea primero, las restricciones en lista y un ejemplo del resultado esperado.",
+            "El analizador de Promptea aplica estos ajustes por modelo por vos: elegí la IA destino y compará las versiones optimizadas manteniendo fijos tus requisitos.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Turn a task into test cases", es: "Convertir una tarea en casos de prueba" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `I want to compare AI models on this task:
+
+<task>
+[describe the task and paste the prompt you use today]
+</task>
+
+Help me build a small test set:
+1. List 6 test inputs: 3 typical, 3 hard (ambiguous, missing information, unusually long or an edge case). Describe each in one line; I will supply the real content.
+2. For each input, write 3–5 pass/fail criteria that a correct answer must meet.
+3. List 2 things that should count as an automatic fail (for example an invented figure or a broken format).
+
+Don't solve the task itself. Ask me if something about the task is unclear.`,
+          es: `Quiero comparar modelos de IA en esta tarea:
+
+<tarea>
+[describí la tarea y pegá el prompt que usás hoy]
+</tarea>
+
+Ayudame a armar un set de prueba chico:
+1. Listá 6 entradas de prueba: 3 típicas y 3 difíciles (ambigua, con información faltante, muy larga o un caso borde). Describí cada una en una línea; el contenido real lo pongo yo.
+2. Para cada entrada, escribí 3–5 criterios de aprobado/desaprobado que tiene que cumplir una respuesta correcta.
+3. Listá 2 cosas que cuenten como desaprobado automático (por ejemplo, una cifra inventada o un formato roto).
+
+No resuelvas la tarea. Preguntame si algo de la tarea no está claro.`,
+        },
+      },
+      {
+        title: { en: "Grade one answer against a rubric", es: "Evaluar una respuesta con una rúbrica" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `Grade the answer below against the criteria. You are a strict reviewer.
+
+<criteria>
+[paste the pass/fail criteria]
+</criteria>
+
+<answer>
+[paste one model's answer, without saying which model wrote it]
+</answer>
+
+Return JSON only:
+{"results": [{"criterion": "...", "pass": true, "reason": "one sentence quoting the answer"}], "auto_fail": false, "summary": "one sentence"}
+
+Rules:
+- Judge only what is in the answer; don't give credit for what it might have meant.
+- If a criterion can't be checked from the answer, mark pass as false and say why.`,
+          es: `Evaluá la respuesta de abajo contra los criterios. Sos un revisor estricto.
+
+<criterios>
+[pegá los criterios de aprobado/desaprobado]
+</criterios>
+
+<respuesta>
+[pegá la respuesta de un modelo, sin decir qué modelo la escribió]
+</respuesta>
+
+Devolvé solo JSON:
+{"results": [{"criterion": "...", "pass": true, "reason": "una oración citando la respuesta"}], "auto_fail": false, "summary": "una oración"}
+
+Reglas:
+- Juzgá solo lo que está en la respuesta; no des crédito por lo que podría haber querido decir.
+- Si un criterio no se puede verificar con la respuesta, marcá pass como false y explicá por qué.`,
+        },
+      },
+      {
+        title: { en: "Side-by-side review of two answers", es: "Revisión lado a lado de dos respuestas" },
+        purpose: "text",
+        target: "gemini",
+        prompt: {
+          en: `Compare two answers to the same request. They are labeled A and B; don't guess which model wrote them.
+
+<request>
+[paste the original prompt and input]
+</request>
+
+<answer_a>
+[paste]
+</answer_a>
+
+<answer_b>
+[paste]
+</answer_b>
+
+1. List factual differences between A and B and say which one is supported by the input. If neither is, say so.
+2. List any requirement from the request that either answer missed.
+3. Say which answer you would ship as is, which one needs fewer edits, and why, in at most 4 sentences.`,
+          es: `Compará dos respuestas al mismo pedido. Están etiquetadas A y B; no adivines qué modelo las escribió.
+
+<pedido>
+[pegá el prompt original y la entrada]
+</pedido>
+
+<respuesta_a>
+[pegá]
+</respuesta_a>
+
+<respuesta_b>
+[pegá]
+</respuesta_b>
+
+1. Listá las diferencias de contenido entre A y B y decí cuál está respaldada por la entrada. Si ninguna lo está, decilo.
+2. Listá cualquier requisito del pedido que alguna de las dos no haya cumplido.
+3. Decí cuál respuesta publicarías tal como está, cuál necesita menos cambios y por qué, en 4 oraciones como máximo.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "How many test cases do I need to compare models?", es: "¿Cuántos casos de prueba necesito para comparar modelos?" },
+        a: {
+          en: "For a personal or team decision, 5–10 real inputs with written criteria usually reveal clear differences, as long as a few of them are hard cases. If the decision is expensive or the task runs at scale, grow the set over time with every failure you find in real use.",
+          es: "Para una decisión personal o de equipo, 5–10 entradas reales con criterios escritos suelen mostrar diferencias claras, siempre que algunas sean casos difíciles. Si la decisión es cara o la tarea corre a escala, agrandá el set con el tiempo sumando cada fallo que encuentres en el uso real.",
+        },
+      },
+      {
+        q: { en: "Can I use an AI model to grade the answers?", es: "¿Puedo usar un modelo de IA para evaluar las respuestas?" },
+        a: {
+          en: "Yes, as a first pass, if the criteria are concrete (contains X, follows format Y, doesn't invent figures). Hide which model wrote each answer, ask the grader to quote the answer for every verdict, and spot-check its grades yourself, since a model grader can also make mistakes.",
+          es: "Sí, como primera pasada, si los criterios son concretos (contiene X, respeta el formato Y, no inventa cifras). Ocultá qué modelo escribió cada respuesta, pedile al evaluador que cite la respuesta en cada veredicto y revisá vos una parte de sus notas, porque un modelo evaluador también puede equivocarse.",
+        },
+      },
+      {
+        q: { en: "Should I use the exact same prompt for every model?", es: "¿Tengo que usar exactamente el mismo prompt en todos los modelos?" },
+        a: {
+          en: "Keep the task, the inputs and the requirements identical. Small per-model adjustments to structure (delimiters, where the format goes) are fine and often fair, because each provider documents its own prompting recommendations. What you must not do is give one model extra information or looser rules.",
+          es: "Mantené idénticos la tarea, las entradas y los requisitos. Los ajustes chicos de estructura por modelo (delimitadores, dónde va el formato) están bien y suelen ser justos, porque cada proveedor documenta sus propias recomendaciones de prompting. Lo que no podés hacer es darle a un modelo información extra o reglas más laxas.",
+        },
+      },
+      {
+        q: { en: "Where do Promptea's Benchmarks fit in?", es: "¿Dónde entran los Benchmarks de Promptea?" },
+        a: {
+          en: "The Benchmarks page shows how models rank on public benchmarks, one ranking per benchmark. Use it to shortlist candidates, then run the test in this guide on your own task to make the final choice.",
+          es: "La página de Benchmarks muestra cómo se ubican los modelos en benchmarks públicos, con un ranking por benchmark. Usala para armar la lista corta de candidatos y después corré la prueba de esta guía con tu propia tarea para decidir.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-status-reports",
+    title: {
+      en: "AI prompts for status reports: weekly updates, project reports and executive summaries",
+      es: "Prompts de IA para reportes de estado: actualizaciones semanales, informes de proyecto y resúmenes ejecutivos",
+    },
+    description: {
+      en: "How to use ChatGPT, Claude or Gemini to turn notes, tickets and meeting minutes into clear status reports: what to paste, how to separate progress from risks, how to avoid invented progress, and how to adapt one update for your team and for leadership. Copy-paste templates included.",
+      es: "Cómo usar ChatGPT, Claude o Gemini para convertir notas, tickets y minutas en reportes de estado claros: qué pegar, cómo separar avances de riesgos, cómo evitar avances inventados y cómo adaptar una misma actualización para tu equipo y para la dirección. Incluye plantillas para copiar y pegar.",
+    },
+    sections: [
+      {
+        heading: { en: "What a good status report answers", es: "Qué responde un buen reporte de estado" },
+        bullets: {
+          en: [
+            "Where are we against the plan: on track, at risk or off track, with one sentence on why.",
+            "What changed since the last update — finished work, not activity ('shipped X', not 'worked on X').",
+            "Risks and blockers, each with an owner and what is needed to unblock it.",
+            "Decisions or help needed from the reader, stated as explicit asks with a date.",
+            "What comes next, limited to the few items that matter for the next period.",
+          ],
+          es: [
+            "Dónde estamos respecto del plan: en camino, en riesgo o atrasados, con una oración que explique por qué.",
+            "Qué cambió desde la última actualización — trabajo terminado, no actividad ('salió X', no 'trabajamos en X').",
+            "Riesgos y bloqueos, cada uno con responsable y qué hace falta para destrabarlo.",
+            "Decisiones o ayuda que necesitás del lector, como pedidos explícitos con fecha.",
+            "Qué sigue, limitado a los pocos ítems que importan para el próximo período.",
+          ],
+        },
+      },
+      {
+        heading: { en: "What to give the model", es: "Qué darle al modelo" },
+        bullets: {
+          en: [
+            "Your raw material inside delimiters: notes, ticket titles and states, meeting minutes, the previous report.",
+            "The reader: your team, a client, leadership. Each needs a different level of detail.",
+            "The plan or milestones you report against, so 'on track' means something.",
+            "Your format: the headings your organization already uses, length limit, and whether to use bullets.",
+            "A rule that the model may only report what appears in the material, and must flag anything unclear instead of guessing.",
+          ],
+          es: [
+            "Tu material crudo entre delimitadores: notas, títulos y estados de tickets, minutas, el reporte anterior.",
+            "El lector: tu equipo, un cliente, la dirección. Cada uno necesita un nivel de detalle distinto.",
+            "El plan o los hitos contra los que reportás, para que 'en camino' signifique algo.",
+            "Tu formato: los títulos que ya usa tu organización, el límite de extensión y si van viñetas.",
+            "Una regla de que el modelo solo puede reportar lo que aparece en el material, y tiene que marcar lo que no esté claro en lugar de suponer.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Mistakes to watch for", es: "Errores a vigilar" },
+        bullets: {
+          en: [
+            "Invented progress: models tend to smooth over gaps. Ask for '[unclear: …]' markers and check every 'done' against the source.",
+            "Optimistic tone: ask for plain wording and an explicit status label instead of adjectives.",
+            "Hidden risks: a blocker mentioned once in the notes can disappear in a summary. Ask the model to list every risk it found before writing.",
+            "Too long: set a word or bullet limit per section, and move detail to an appendix or links.",
+            "Sensitive information: remove personal data, HR matters or confidential client details before pasting, or use an approved tool.",
+          ],
+          es: [
+            "Avances inventados: los modelos tienden a disimular huecos. Pedí marcadores '[no está claro: …]' y verificá cada 'terminado' contra la fuente.",
+            "Tono optimista: pedí redacción simple y una etiqueta de estado explícita en lugar de adjetivos.",
+            "Riesgos escondidos: un bloqueo mencionado una vez en las notas puede desaparecer en un resumen. Pedile al modelo que liste todos los riesgos que encontró antes de redactar.",
+            "Demasiado largo: poné un límite de palabras o viñetas por sección y mandá el detalle a un anexo o a links.",
+            "Información sensible: sacá datos personales, temas de RR. HH. o detalles confidenciales de clientes antes de pegar, o usá una herramienta aprobada.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Weekly status update from raw notes", es: "Actualización semanal a partir de notas sueltas" },
+        purpose: "summarization",
+        target: "claude",
+        prompt: {
+          en: `Write this week's status update for [project] for [audience].
+
+<plan>
+[milestones and dates]
+</plan>
+
+<notes>
+[paste notes, ticket titles with their status, meeting minutes]
+</notes>
+
+Format:
+- Status: On track / At risk / Off track — one sentence why
+- Done this week (max 5 bullets, finished work only)
+- Risks and blockers (owner, what's needed)
+- Asks (who, what, by when)
+- Next week (max 3 bullets)
+
+Rules:
+- Use only information from the notes. If something is unclear, write [unclear: …] instead of guessing.
+- Before the update, list every risk or blocker you found in the notes, so I can check none was dropped.
+- Plain language, no adjectives like "great" or "significant".`,
+          es: `Escribí la actualización de estado de esta semana de [proyecto] para [audiencia].
+
+<plan>
+[hitos y fechas]
+</plan>
+
+<notas>
+[pegá notas, títulos de tickets con su estado, minutas]
+</notas>
+
+Formato:
+- Estado: En camino / En riesgo / Atrasado — una oración explicando por qué
+- Terminado esta semana (máximo 5 viñetas, solo trabajo terminado)
+- Riesgos y bloqueos (responsable, qué hace falta)
+- Pedidos (a quién, qué, para cuándo)
+- Próxima semana (máximo 3 viñetas)
+
+Reglas:
+- Usá solo información de las notas. Si algo no está claro, escribí [no está claro: …] en lugar de suponer.
+- Antes de la actualización, listá todos los riesgos o bloqueos que encontraste en las notas, para que pueda verificar que no se perdió ninguno.
+- Lenguaje simple, sin adjetivos como "excelente" o "significativo".`,
+        },
+      },
+      {
+        title: { en: "Executive summary of a longer report", es: "Resumen ejecutivo de un reporte más largo" },
+        purpose: "summarization",
+        target: "gpt",
+        prompt: {
+          en: `Turn the team report below into an executive summary for [leadership audience].
+
+<report>
+[paste the detailed status report]
+</report>
+
+Output:
+1. One-line status with the reason.
+2. Up to 3 points leadership needs to know, each one sentence.
+3. Decisions needed from leadership, with the deadline and the consequence of not deciding.
+4. Nothing else — no background, no list of activities.
+
+Every number and date must appear in the report. If the report doesn't say what decision is needed, write "No decision needed this period".`,
+          es: `Convertí el reporte del equipo de abajo en un resumen ejecutivo para [audiencia de dirección].
+
+<reporte>
+[pegá el reporte de estado detallado]
+</reporte>
+
+Salida:
+1. Estado en una línea con el motivo.
+2. Hasta 3 puntos que la dirección tiene que saber, de una oración cada uno.
+3. Decisiones que necesitás de la dirección, con fecha límite y qué pasa si no se decide.
+4. Nada más — sin contexto ni lista de actividades.
+
+Cada número y fecha tiene que aparecer en el reporte. Si el reporte no dice qué decisión hace falta, escribí "No hace falta ninguna decisión en este período".`,
+        },
+      },
+      {
+        title: { en: "Check a draft report before sending", es: "Revisar un borrador de reporte antes de enviarlo" },
+        purpose: "text",
+        target: "gemini",
+        prompt: {
+          en: `Review my status report draft before I send it to [audience].
+
+<draft>
+[paste your draft]
+</draft>
+
+<source>
+[paste the notes or tickets it is based on]
+</source>
+
+List, in this order:
+1. Claims in the draft that the source doesn't support.
+2. Risks or blockers in the source that the draft leaves out.
+3. Sentences that describe activity instead of results, with a rewrite.
+4. Any ask that has no owner or date.
+Don't rewrite the whole report.`,
+          es: `Revisá el borrador de mi reporte de estado antes de enviárselo a [audiencia].
+
+<borrador>
+[pegá tu borrador]
+</borrador>
+
+<fuente>
+[pegá las notas o tickets en los que se basa]
+</fuente>
+
+Listá, en este orden:
+1. Afirmaciones del borrador que la fuente no respalda.
+2. Riesgos o bloqueos de la fuente que el borrador deja afuera.
+3. Oraciones que describen actividad en lugar de resultados, con una reescritura.
+4. Cualquier pedido que no tenga responsable o fecha.
+No reescribas el reporte completo.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI write my status report from Jira or other ticket data?", es: "¿La IA puede escribir mi reporte de estado a partir de Jira u otros tickets?" },
+        a: {
+          en: "Yes, if you give it the ticket titles, statuses and any comments that explain changes. Ticket data alone rarely explains why something slipped, so add a few lines of your own context, and check the result before sending. Some tools connect to ticket systems directly; check what your plan and your company allow.",
+          es: "Sí, si le das los títulos, estados y los comentarios que explican cambios. Los tickets solos casi nunca explican por qué algo se atrasó, así que sumá unas líneas de contexto propio y revisá el resultado antes de enviarlo. Algunas herramientas se conectan directo a sistemas de tickets; fijate qué permiten tu plan y tu empresa.",
+        },
+      },
+      {
+        q: { en: "How do I keep the same format every week?", es: "¿Cómo mantengo el mismo formato todas las semanas?" },
+        a: {
+          en: "Save the template with your headings and rules, paste last week's report as an example of the format, and tell the model to keep the same sections and order. A saved prompt in your team's library makes the reports comparable from week to week.",
+          es: "Guardá la plantilla con tus títulos y reglas, pegá el reporte de la semana anterior como ejemplo del formato y pedile al modelo que mantenga las mismas secciones y el mismo orden. Un prompt guardado en la biblioteca de tu equipo hace que los reportes se puedan comparar semana a semana.",
+        },
+      },
+      {
+        q: { en: "Should I tell readers the report was drafted with AI?", es: "¿Tengo que avisar que el reporte se redactó con IA?" },
+        a: {
+          en: "Follow your organization's policy. Either way, you are responsible for the content: verify every status, date and number against the source before you send it.",
+          es: "Seguí la política de tu organización. En cualquier caso, el responsable del contenido sos vos: verificá cada estado, fecha y número contra la fuente antes de enviarlo.",
         },
       },
     ],
