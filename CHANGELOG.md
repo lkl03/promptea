@@ -4,6 +4,32 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.7.2 — 2026-10-29
+
+**Two new evergreen guides (testing one prompt across models, AI status reports), two guide FAQs that still said "GPT-4 class" brought up to date, and template buttons on guide pages that screen readers can tell apart.** The new guides cover a question Promptea's per-model optimization raises constantly — how to compare ChatGPT, Claude, Gemini, Grok and DeepSeek on your own task without trusting impressions — and a recurring business workflow: turning notes and tickets into status reports without invented progress. The product fix gives every "Open in Promptea" button on a guide page an accessible name that includes its template title; the visible label is unchanged.
+
+### Added
+- **New guide: how to test one prompt across models** (`lib/seo/content/guides.ts`, slug `test-prompt-across-models`) — why public rankings only shortlist candidates, how to set up a fair test (criteria written first, 5–10 real inputs including hard ones, identical requirements, fresh chats), how to grade (pass/fail per criterion, blind review, repeated runs, failure types, "every model fails" means fix the prompt), and how to adapt structure per model without changing the test. Three templates: turn a task into test cases, grade one answer against a rubric (JSON), and a blind side-by-side review. The FAQ links the method to the Benchmarks page as a shortlisting step. No benchmark figures or model rankings are quoted.
+- **New guide: AI prompts for status reports** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-status-reports`) — what a status report has to answer (status vs. plan, finished work, risks with owners, explicit asks, next steps), what to give the model, and mistakes to watch for (invented progress, optimistic tone, dropped risks, length, sensitive data). Three templates: a weekly update from raw notes that lists every risk it found first, an executive summary with decisions and deadlines, and a pre-send check of a draft against its source.
+- `lib/__tests__/seo.guides.test.ts` — every guide has a unique URL-safe slug, both languages filled in for titles, sections, templates and FAQ, the same number of bullets per section in each language, a valid purpose/target per template, and template links that open `/{lang}/analyzer` with the prompt, purpose and target prefilled.
+
+### Changed
+- **Guide FAQs refreshed** (`lib/seo/content/guides.ts`) — "Which model is best for translation tasks?" (`translation-prompts`) and "Which model is best for structured output?" (`structured-output-prompting`) still recommended "GPT-4 class" models. They now name current selectable models from `lib/models.ts` (GPT-6 Astra, Claude Opus 5.5 / Sonnet 5.5, Gemini 3.8 Flash) and, for structured output, state which providers' selectable models have a native structured-output mode per the registry's `capabilities` (Perplexity's Agent API presets do not). The unsupported "near-zero format failures" claim is gone. Slugs unchanged.
+- **Distinct accessible names for guide template buttons** (`app/[lang]/guides/[slug]/page.tsx`) — each guide page has two to three "Open in Promptea" links with identical text, which screen-reader link lists announced as indistinguishable. Each link now has `aria-label="Open in Promptea: <template title>"` (Spanish: "Abrir en Promptea: …"), starting with the visible text so voice control still matches it. The page's local link builder is replaced by the shared `buildPrefillHref`, which builds the same `/{lang}/analyzer` link with the same `prompt`, `purpose` and `target` parameters (only their order in the query string changes).
+- Version bumped to `v1.7.2` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Known limitations / follow-ups
+- The same identical-label pattern exists on the model, glossary and prompt-library pages ("Open in Promptea"); left for a follow-up to keep this change small.
+- **Registry gaps seen in the benchmarks frontier list (not changed this week):** `google/gemini-4-argon` (already flagged in v1.7.1), `x-ai/grok-4.6` (the registry knows Grok 4.5 and 4.7 but not 4.6) and `openai/gpt-6-astra-pro`. Each needs a check against the provider's first-party docs before any registry change.
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean
+- `npm test` — all suites pass, including version-sync checks and the new guide-content suite
+- `npm run build` — succeeds without Firebase/Resend/OpenRouter env vars; the new guide pages prerender
+
+---
+
 ## v1.7.1 — 2026-10-22
 
 **Two new evergreen guides (prompt length, presentations), the multimodal guide's model list brought up to date, and absolute URLs in guide breadcrumbs.** The new guides answer two long-tail questions that come up constantly: how long a prompt should be, and how to use AI to plan a presentation without invented numbers. The multimodal-prompts FAQ still named GPT-4o, Claude 3, Gemini 1.5 and Grok 2 Vision (flagged as a follow-up in v1.6.2); it now lists the selectable models from `lib/models.ts` and their input modalities. The product fix makes the BreadcrumbList on guide pages use absolute URLs, as AI Daily articles already do.

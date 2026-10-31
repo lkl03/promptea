@@ -6,15 +6,8 @@ import type { Metadata } from "next";
 
 import { getGuide, guides } from "@/lib/seo/content/guides";
 import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { buildPrefillHref } from "@/lib/seo/prefill";
 import { absUrl } from "@/lib/seo/site";
-
-function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
-  const qp = new URLSearchParams();
-  qp.set("purpose", purpose);
-  qp.set("target", target);
-  qp.set("prompt", prompt);
-  return `/${lang}/analyzer?${qp.toString()}`;
-}
 
 export function generateStaticParams() {
   const LOCALES = ["es", "en"] as const;
@@ -127,7 +120,8 @@ export default async function GuidePage({
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {guide.templates.map((t, idx) => {
-            const href = buildOpenLink(l, t.purpose, t.target, t.prompt[l]);
+            const href = buildPrefillHref({ lang: l, prompt: t.prompt[l], purpose: t.purpose, target: t.target });
+            const openLabel = l === "es" ? "Abrir en Promptea" : "Open in Promptea";
             return (
               <article key={idx} className="surface p-4 space-y-3">
                 <h3 className="text-sm font-medium">{t.title[l]}</h3>
@@ -139,8 +133,11 @@ export default async function GuidePage({
                       ? "Se abre en el analizador con el prompt precargado."
                       : "Opens the analyzer with the prompt prefilled."}
                   </div>
-                  <Link href={href} className="btn btn-primary h-9 px-4">
-                    {l === "es" ? "Abrir en Promptea" : "Open in Promptea"}
+                  {/* Every card has the same visible label; the accessible name
+                      starts with it and adds the template title, so screen-reader
+                      link lists can tell the buttons apart (WCAG 2.4.4 / 2.5.3). */}
+                  <Link href={href} className="btn btn-primary h-9 px-4" aria-label={`${openLabel}: ${t.title[l]}`}>
+                    {openLabel}
                   </Link>
                 </div>
               </article>

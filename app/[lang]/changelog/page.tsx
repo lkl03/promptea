@@ -28,6 +28,37 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.7.2 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.7.2</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 29-10-2026" : "Released: 2026-10-29"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: cómo probar un mismo prompt en ChatGPT, Claude, Gemini, Grok y DeepSeek, con criterios escritos de antemano, casos difíciles y plantillas para evaluar las respuestas sin saber qué modelo las escribió."
+              : "New guide: how to test one prompt across ChatGPT, Claude, Gemini, Grok and DeepSeek, with criteria written up front, hard test cases and templates to grade answers without knowing which model wrote them."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: prompts de IA para reportes de estado, para convertir notas y tickets en una actualización semanal o un resumen ejecutivo sin avances inventados ni riesgos perdidos."
+              : "New guide: AI prompts for status reports, to turn notes and tickets into a weekly update or an executive summary without invented progress or dropped risks."}
+          </li>
+          <li>
+            {isEs
+              ? "Las guías de traducción y de salida estructurada ahora recomiendan modelos actuales en lugar de “modelos clase GPT-4”."
+              : "The translation and structured-output guides now recommend current models instead of “GPT-4 class” models."}
+          </li>
+          <li>
+            {isEs
+              ? "Con lector de pantalla, cada botón “Abrir en Promptea” de las guías ahora dice qué plantilla abre."
+              : "With a screen reader, each “Open in Promptea” button in the guides now says which template it opens."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.7.1 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
