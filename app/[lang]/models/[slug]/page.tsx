@@ -5,14 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { getModelPage, modelPages } from "@/lib/seo/content/models";
-
-function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
-  const qp = new URLSearchParams();
-  qp.set("purpose", purpose);
-  qp.set("target", target);
-  qp.set("prompt", prompt);
-  return `/${lang}/analyzer?${qp.toString()}`;
-}
+import { buildPrefillHref } from "@/lib/seo/prefill";
 
 export function generateStaticParams() {
   const LOCALES = ["es", "en"] as const;
@@ -137,7 +130,10 @@ export default async function ModelPage({
           {model.templates.map((t, idx) => {
             // Nota: target lo forzamos al slug del modelo (como sugería tu archivo original)
             // y purpose viene del template (consistente con tus packs).
-            const href = buildOpenLink(l, t.purpose, model.slug, t.prompt[l]);
+            const href = buildPrefillHref({ lang: l, prompt: t.prompt[l], purpose: t.purpose, target: model.slug });
+            // v1.7.3: every card has the same visible "Open in Promptea" text, so the
+            // accessible name adds the template title (visible text first, for voice control).
+            const openLabel = l === "es" ? "Abrir en Promptea" : "Open in Promptea";
 
             return (
               <article key={idx} className="surface p-4 space-y-3">
@@ -150,8 +146,8 @@ export default async function ModelPage({
                       ? "Se abre en el analizador con el prompt precargado."
                       : "Opens the analyzer with the prompt prefilled."}
                   </div>
-                  <Link href={href} className="btn btn-primary h-9 px-4">
-                    {l === "es" ? "Abrir en Promptea" : "Open in Promptea"}
+                  <Link href={href} className="btn btn-primary h-9 px-4" aria-label={`${openLabel}: ${t.title[l]}`}>
+                    {openLabel}
                   </Link>
                 </div>
               </article>
