@@ -8,11 +8,11 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) is a hub with th
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.7.2 (2026-10-29)
+## Latest update — v1.7.3 (2026-11-05)
 
-**Two new guides — how to test one prompt across models, and AI prompts for status reports — current model names in the translation and structured-output FAQs, and template buttons on guide pages that screen readers can tell apart.** Shipped in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+**Two new guides — AI prompts for competitor analysis and AI prompts for SOPs — and template buttons on model pages that screen readers can tell apart.** Shipped in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.7.1 (2026-10-22) — guides on prompt length and presentations, an up-to-date multimodal model list, absolute breadcrumb URLs on guide pages._
+_Previous update: v1.7.2 (2026-10-29) — guides on testing one prompt across models and on status reports, current model names in two guide FAQs, distinct accessible names for guide template buttons._
 
 ## How it works
 

@@ -28,6 +28,32 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.7.3 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.7.3</div>
+          <div className="text-xs opacity-70">{isEs ? "Lanzado: 05-11-2026" : "Released: 2026-11-05"}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          <li>
+            {isEs
+              ? "Nueva guía: prompts de IA para analizar a la competencia, con perfiles armados solo a partir de fuentes públicas, una tabla comparativa justa y opciones de posicionamiento que citan la evidencia que las respalda."
+              : "New guide: AI prompts for competitor analysis, with profiles built only from public sources, a fair comparison table and positioning options that quote the evidence behind them."}
+          </li>
+          <li>
+            {isEs
+              ? "Nueva guía: prompts de IA para procedimientos (SOP), para convertir cómo trabaja tu equipo en pasos claros, encontrar los huecos antes de publicarlos y pasarlos a un checklist."
+              : "New guide: AI prompts for SOPs, to turn how your team works into clear steps, find the gaps before you publish them and turn them into a checklist."}
+          </li>
+          <li>
+            {isEs
+              ? "Con lector de pantalla, cada botón “Abrir en Promptea” de las páginas de modelos ahora dice qué plantilla abre."
+              : "With a screen reader, each “Open in Promptea” button on the model pages now says which template it opens."}
+          </li>
+        </ul>
+      </div>
+
       {/* v1.7.2 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

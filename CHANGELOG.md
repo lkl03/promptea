@@ -4,6 +4,30 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.7.3 — 2026-11-05
+
+**Two new evergreen guides (competitor analysis, SOPs) and template buttons on model pages that screen readers can tell apart.** The new guides cover two recurring business AI workflows where models are prone to filling gaps with plausible inventions: comparing competitors from public sources, and turning how a team actually works into written procedures. The product fix extends last week's accessible-name change from guide pages to the per-model pages (`/{lang}/models/<model>`); the visible label is unchanged.
+
+### Added
+- **New guide: AI prompts for competitor analysis** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-competitor-analysis`) — where AI helps (reading and structuring public material, spotting patterns in reviews) and where it doesn't (no sources means answers from training data; strategy stays a human decision), how to keep every claim traceable (one delimited block per source with URL and date, a source id after every fact, "not in sources" instead of gaps filled from memory, public information only), and how to build a fair comparison (criteria chosen first, same criteria and source type for every product including yours, facts vs. judgments, "not found" instead of "no"). Three templates: a competitor profile from pasted sources, a feature comparison table as JSON, and positioning options that quote the comparison rows they rely on. No market figures or product claims are quoted.
+- **New guide: AI prompts for SOPs** (`lib/seo/content/guides.ts`, slug `ai-prompts-for-sops`) — what a usable standard operating procedure contains (scope, prerequisites, one action per step, a "done when" check, what to do when something fails), why to start from a real walkthrough and list decision points before writing, `[missing: …]` markers instead of plausible-sounding steps, and how to test an SOP before publishing it. Three templates: draft an SOP from a walkthrough transcript, a "new hire" gap test, and an SOP-to-checklist conversion.
+
+### Changed
+- **Distinct accessible names for model-page template buttons** (`app/[lang]/models/[slug]/page.tsx`) — each model page has several "Open in Promptea" links with identical text (flagged as a follow-up in v1.7.2). Each link now has `aria-label="Open in Promptea: <template title>"` (Spanish: "Abrir en Promptea: …"), starting with the visible text so voice control still matches it. The page's local link builder is replaced by the shared `buildPrefillHref`, which builds the same `/{lang}/analyzer` link with the same `prompt`, `purpose` and `target` parameters (only their order in the query string changes).
+- Version bumped to `v1.7.3` (`package.json`, `package-lock.json`, `lib/version.ts`).
+
+### Known limitations / follow-ups
+- The prompt-library pages (`/{lang}/prompts/*`) still use identical "Open in Promptea" labels; left for a follow-up to keep this change small. The glossary page has a single such link per page, so it is unaffected.
+- **Registry gaps seen in the benchmarks frontier list (unchanged, not edited this week):** `google/gemini-4-argon`, `x-ai/grok-4.6` and `openai/gpt-6-astra-pro`, as reported in v1.7.1/v1.7.2. Each still needs a check against the provider's first-party docs before any registry change.
+
+### Validated
+- `npm run typecheck` — clean
+- `npm run lint` — clean
+- `npm test` — all suites pass, including version-sync checks and the guide-content suite (which now covers the two new guides)
+- `npm run build` — succeeds without Firebase/Resend/OpenRouter env vars; the new guide pages prerender
+
+---
+
 ## v1.7.2 — 2026-10-29
 
 **Two new evergreen guides (testing one prompt across models, AI status reports), two guide FAQs that still said "GPT-4 class" brought up to date, and template buttons on guide pages that screen readers can tell apart.** The new guides cover a question Promptea's per-model optimization raises constantly — how to compare ChatGPT, Claude, Gemini, Grok and DeepSeek on your own task without trusting impressions — and a recurring business workflow: turning notes and tickets into status reports without invented progress. The product fix gives every "Open in Promptea" button on a guide page an accessible name that includes its template title; the visible label is unchanged.

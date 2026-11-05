@@ -8821,6 +8821,434 @@ No reescribas el reporte completo.`,
       },
     ],
   },
+  {
+    slug: "ai-prompts-for-competitor-analysis",
+    title: {
+      en: "AI prompts for competitor analysis: profiles, comparison tables and positioning",
+      es: "Prompts de IA para análisis de competencia: perfiles, tablas comparativas y posicionamiento",
+    },
+    description: {
+      en: "How to use ChatGPT, Claude, Gemini or Perplexity for competitor analysis without invented facts: what sources to give the model, how to keep every claim traceable, how to build a fair comparison table, and how to turn findings into positioning. Copy-paste templates included.",
+      es: "Cómo usar ChatGPT, Claude, Gemini o Perplexity para analizar a la competencia sin datos inventados: qué fuentes darle al modelo, cómo hacer que cada afirmación se pueda rastrear, cómo armar una tabla comparativa justa y cómo convertir lo que encontraste en posicionamiento. Incluye plantillas para copiar y pegar.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI helps and where it doesn't", es: "Dónde ayuda la IA y dónde no" },
+        bullets: {
+          en: [
+            "Helps: reading a lot of public material quickly (pricing pages, docs, release notes, reviews you collected) and organizing it into the same structure for every competitor.",
+            "Helps: spotting patterns across sources, such as repeated complaints in reviews or features every competitor now offers.",
+            "Doesn't replace sources: without web access or pasted material, a model answers from training data that may be outdated or wrong, and it can invent prices, features or customer names.",
+            "Doesn't decide strategy: it can list options and trade-offs, but which market to fight for is a business decision you make with the evidence.",
+          ],
+          es: [
+            "Ayuda: leer rápido mucho material público (páginas de precios, documentación, notas de versión, reseñas que juntaste) y ordenarlo con la misma estructura para cada competidor.",
+            "Ayuda: detectar patrones entre fuentes, como quejas que se repiten en reseñas o funciones que ya ofrecen todos los competidores.",
+            "No reemplaza las fuentes: sin acceso a la web ni material pegado, un modelo responde con datos de entrenamiento que pueden estar desactualizados o ser incorrectos, y puede inventar precios, funciones o nombres de clientes.",
+            "No decide la estrategia: puede listar opciones y sus costos, pero en qué mercado competir es una decisión de negocio que tomás vos con la evidencia.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Make every claim traceable", es: "Que cada afirmación se pueda rastrear" },
+        bullets: {
+          en: [
+            "Paste the source material inside delimiters, one block per source, with the URL and the date you collected it.",
+            "Ask for a source next to every fact ('[source 3]'), and a separate list of anything the model could not find in the material.",
+            "If you use a tool with web search, ask it to link the page it read and check those links yourself; search results can be stale or mismatched.",
+            "Date the analysis. Prices and features change, so a table without a date becomes misleading quickly.",
+            "Keep it to public information. Don't paste material obtained under NDA or from a competitor's private systems.",
+          ],
+          es: [
+            "Pegá el material de origen entre delimitadores, un bloque por fuente, con la URL y la fecha en que lo juntaste.",
+            "Pedí la fuente al lado de cada dato ('[fuente 3]') y una lista aparte con lo que el modelo no encontró en el material.",
+            "Si usás una herramienta con búsqueda web, pedile que enlace la página que leyó y revisá esos enlaces vos; los resultados de búsqueda pueden estar viejos o no corresponder.",
+            "Poné fecha al análisis. Los precios y las funciones cambian, así que una tabla sin fecha se vuelve engañosa enseguida.",
+            "Limitate a información pública. No pegues material obtenido bajo acuerdo de confidencialidad ni de sistemas privados de un competidor.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Build a comparison that is actually fair", es: "Armá una comparación que sea justa de verdad" },
+        bullets: {
+          en: [
+            "Choose the comparison criteria before you look at the results, based on what your customers weigh when they decide.",
+            "Use the same criteria and the same type of source for every competitor, including your own product.",
+            "Separate facts (has SSO: yes/no, according to the docs) from judgments (onboarding feels easier); label judgments as such.",
+            "Mark 'not found' instead of 'no' when the material doesn't mention a feature; absence of evidence isn't evidence of absence.",
+          ],
+          es: [
+            "Elegí los criterios de comparación antes de mirar los resultados, según lo que tus clientes pesan cuando deciden.",
+            "Usá los mismos criterios y el mismo tipo de fuente para todos los competidores, incluido tu propio producto.",
+            "Separá hechos (tiene SSO: sí/no, según la documentación) de juicios (el onboarding parece más fácil) y marcá los juicios como tales.",
+            "Poné 'no encontrado' en lugar de 'no' cuando el material no menciona una función: que no aparezca no prueba que no exista.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Competitor profile from pasted sources", es: "Perfil de un competidor a partir de fuentes pegadas" },
+        purpose: "summarization",
+        target: "claude",
+        prompt: {
+          en: `Build a profile of [competitor] using only the sources below. Collected on [date].
+
+<source id="1" url="[url]">
+[paste pricing page, docs, release notes or reviews]
+</source>
+<source id="2" url="[url]">
+[paste]
+</source>
+
+Sections:
+1. What they sell and to whom (2–3 sentences).
+2. Pricing and plans as stated.
+3. Key features relevant to [our category].
+4. Recent changes (with dates, if the sources give them).
+5. Strengths and complaints that appear in reviews, with how often each appears.
+
+Rules:
+- Put the source id after every fact, like [1].
+- If a section has no information in the sources, write "Not in sources". Don't fill gaps from memory.
+- End with a list of questions the sources leave open.`,
+          es: `Armá un perfil de [competidor] usando solo las fuentes de abajo. Recolectadas el [fecha].
+
+<fuente id="1" url="[url]">
+[pegá página de precios, documentación, notas de versión o reseñas]
+</fuente>
+<fuente id="2" url="[url]">
+[pegá]
+</fuente>
+
+Secciones:
+1. Qué venden y a quién (2–3 oraciones).
+2. Precios y planes, tal como figuran.
+3. Funciones clave para [nuestra categoría].
+4. Cambios recientes (con fechas, si las fuentes las dan).
+5. Fortalezas y quejas que aparecen en las reseñas, con cuántas veces aparece cada una.
+
+Reglas:
+- Poné el id de la fuente después de cada dato, como [1].
+- Si una sección no tiene información en las fuentes, escribí "No está en las fuentes". No completes huecos de memoria.
+- Terminá con una lista de preguntas que las fuentes dejan abiertas.`,
+        },
+      },
+      {
+        title: { en: "Feature comparison table (JSON)", es: "Tabla comparativa de funciones (JSON)" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `Compare the products below on the criteria I give you, using only the profiles provided.
+
+<criteria>
+[list 6–10 criteria your customers care about, e.g. SSO, API access, price of the entry plan]
+</criteria>
+
+<profiles>
+[paste one profile per product, including ours, each with its sources]
+</profiles>
+
+Return JSON only:
+{"as_of": "[date]", "rows": [{"criterion": "...", "values": [{"product": "...", "value": "yes | no | not found | <short text>", "source": "...", "type": "fact | judgment"}]}]}
+
+Rules:
+- Use "not found" when a profile doesn't mention the criterion; never assume "no".
+- Mark anything that is an opinion or impression as "judgment".
+- Same criteria for every product, in the same order.`,
+          es: `Compará los productos de abajo según los criterios que te doy, usando solo los perfiles provistos.
+
+<criterios>
+[listá 6–10 criterios que les importan a tus clientes, por ejemplo SSO, acceso a API, precio del plan inicial]
+</criterios>
+
+<perfiles>
+[pegá un perfil por producto, incluido el nuestro, cada uno con sus fuentes]
+</perfiles>
+
+Devolvé solo JSON:
+{"as_of": "[fecha]", "rows": [{"criterion": "...", "values": [{"product": "...", "value": "sí | no | no encontrado | <texto corto>", "source": "...", "type": "hecho | juicio"}]}]}
+
+Reglas:
+- Usá "no encontrado" cuando un perfil no menciona el criterio; nunca asumas "no".
+- Marcá como "juicio" todo lo que sea opinión o impresión.
+- Los mismos criterios para cada producto, en el mismo orden.`,
+        },
+      },
+      {
+        title: { en: "Positioning options from the comparison", es: "Opciones de posicionamiento a partir de la comparación" },
+        purpose: "marketing",
+        target: "gemini",
+        prompt: {
+          en: `Using the comparison below, suggest positioning options for [our product] aimed at [target customer].
+
+<comparison>
+[paste the comparison table or summary]
+</comparison>
+
+Give me 3 options. For each:
+- The one-sentence positioning statement.
+- Which rows of the comparison support it (quote them).
+- The main risk: what a competitor could say back, or what we would have to prove.
+
+Rules:
+- Base every option on differences that appear in the comparison; don't invent advantages.
+- No superlatives ("best", "only") unless the comparison shows it and you can name the evidence.
+- Don't pick a winner; I'll decide.`,
+          es: `Con la comparación de abajo, sugerí opciones de posicionamiento para [nuestro producto] dirigidas a [cliente objetivo].
+
+<comparacion>
+[pegá la tabla comparativa o el resumen]
+</comparacion>
+
+Dame 3 opciones. Para cada una:
+- La declaración de posicionamiento en una oración.
+- Qué filas de la comparación la respaldan (citalas).
+- El riesgo principal: qué podría responder un competidor o qué tendríamos que demostrar.
+
+Reglas:
+- Basá cada opción en diferencias que aparecen en la comparación; no inventes ventajas.
+- Sin superlativos ("el mejor", "el único") salvo que la comparación lo muestre y puedas nombrar la evidencia.
+- No elijas una ganadora; decido yo.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can ChatGPT or Claude research competitors on their own?", es: "¿ChatGPT o Claude pueden investigar a la competencia por su cuenta?" },
+        a: {
+          en: "Only when web search or browsing is enabled in the tool you use, and even then you should open the cited pages yourself. Without it, the model answers from training data with a cutoff date, which can miss recent pricing or product changes. For decisions, collect the sources first and ask the model to work only from them.",
+          es: "Solo cuando la herramienta que usás tiene búsqueda o navegación web activada, y aun así conviene que abras vos las páginas citadas. Sin eso, el modelo responde con datos de entrenamiento que tienen fecha de corte y pueden no incluir cambios recientes de precios o de producto. Para tomar decisiones, juntá primero las fuentes y pedile al modelo que trabaje solo con ellas.",
+        },
+      },
+      {
+        q: { en: "How often should I update a competitor analysis?", es: "¿Cada cuánto conviene actualizar un análisis de competencia?" },
+        a: {
+          en: "It depends on how fast your market moves. A practical approach is to keep the profiles and table as a living document with an 'as of' date, and refresh a competitor whenever they publish pricing changes or major release notes. Re-running the same saved prompts on the new sources keeps the format comparable.",
+          es: "Depende de qué tan rápido se mueve tu mercado. Una forma práctica es mantener los perfiles y la tabla como un documento vivo con fecha de actualización, y renovar un competidor cada vez que publica cambios de precios o notas de versión importantes. Volver a correr los mismos prompts guardados sobre las fuentes nuevas mantiene el formato comparable.",
+        },
+      },
+      {
+        q: { en: "Is it OK to paste competitor content into an AI tool?", es: "¿Está bien pegar contenido de la competencia en una herramienta de IA?" },
+        a: {
+          en: "Public pages such as pricing, documentation and published reviews are generally what competitor analysis is built on. Avoid confidential material, and check your organization's policy on which AI tools may process company work. This is not legal advice; ask your legal team if you're unsure.",
+          es: "Las páginas públicas como precios, documentación y reseñas publicadas son, en general, la base de un análisis de competencia. Evitá el material confidencial y revisá la política de tu organización sobre qué herramientas de IA pueden procesar trabajo de la empresa. Esto no es asesoramiento legal; si tenés dudas, consultá con tu equipo legal.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-sops",
+    title: {
+      en: "AI prompts for SOPs: turn how-you-work into clear, testable procedures",
+      es: "Prompts de IA para procedimientos (SOP): convertí cómo trabajás en pasos claros y verificables",
+    },
+    description: {
+      en: "How to use ChatGPT, Claude or Gemini to write standard operating procedures from walkthroughs, notes or call transcripts: what the model needs, how to keep steps concrete, how to find gaps before someone follows the SOP, and how to turn it into a checklist. Copy-paste templates included.",
+      es: "Cómo usar ChatGPT, Claude o Gemini para escribir procedimientos operativos estándar (SOP) a partir de recorridos, notas o transcripciones: qué necesita el modelo, cómo mantener los pasos concretos, cómo encontrar huecos antes de que alguien siga el SOP y cómo convertirlo en un checklist. Incluye plantillas para copiar y pegar.",
+    },
+    sections: [
+      {
+        heading: { en: "What a usable SOP contains", es: "Qué tiene un SOP que se pueda usar" },
+        bullets: {
+          en: [
+            "Purpose and scope: what the procedure achieves, when to use it and when not to.",
+            "Who does it, and what they need before starting (access, tools, inputs).",
+            "Numbered steps, one action each, written as instructions ('Export the report as CSV', not 'The report is exported').",
+            "What 'done' looks like, and how to check it.",
+            "What to do when something goes wrong, and who to contact.",
+          ],
+          es: [
+            "Propósito y alcance: qué logra el procedimiento, cuándo usarlo y cuándo no.",
+            "Quién lo hace y qué necesita antes de empezar (accesos, herramientas, insumos).",
+            "Pasos numerados, una acción por paso, escritos como instrucciones ('Exportá el reporte como CSV', no 'El reporte se exporta').",
+            "Cómo se ve 'terminado' y cómo verificarlo.",
+            "Qué hacer si algo sale mal y a quién contactar.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Start from how the work is really done", es: "Partí de cómo se hace el trabajo de verdad" },
+        bullets: {
+          en: [
+            "The best raw material is a walkthrough: a transcript of someone doing the task and explaining it, or their step-by-step notes.",
+            "Paste existing documents too, but tell the model which source wins when they disagree (usually the most recent walkthrough).",
+            "Ask the model to list every decision point it found ('if the client is new…') so branches don't get flattened into one path.",
+            "Ask for '[missing: …]' markers instead of plausible-sounding steps the source doesn't contain.",
+            "Remove passwords, access tokens and personal data from transcripts before pasting.",
+          ],
+          es: [
+            "El mejor material crudo es un recorrido: la transcripción de alguien haciendo la tarea y explicándola, o sus notas paso a paso.",
+            "Pegá también los documentos que ya existen, pero decile al modelo qué fuente manda cuando no coinciden (normalmente, el recorrido más reciente).",
+            "Pedile al modelo que liste cada punto de decisión que encontró ('si el cliente es nuevo…') para que las ramas no se aplanen en un solo camino.",
+            "Pedí marcadores '[falta: …]' en lugar de pasos que suenan razonables pero no están en la fuente.",
+            "Sacá contraseñas, tokens de acceso y datos personales de las transcripciones antes de pegarlas.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Test the SOP before you publish it", es: "Probá el SOP antes de publicarlo" },
+        bullets: {
+          en: [
+            "Ask a model to act as a new hire and list every step it couldn't perform with only the SOP in hand.",
+            "Have someone who didn't write it follow it once, and fix every place they had to ask a question.",
+            "Check that every tool, field and button name matches the current system; renamed screens are the most common reason SOPs fail.",
+            "Add an owner and a review date so the procedure doesn't silently go stale.",
+          ],
+          es: [
+            "Pedile a un modelo que actúe como alguien recién ingresado y liste cada paso que no podría hacer solo con el SOP en la mano.",
+            "Hacé que alguien que no lo escribió lo siga una vez y corregí cada lugar donde tuvo que preguntar.",
+            "Verificá que cada nombre de herramienta, campo y botón coincida con el sistema actual; las pantallas renombradas son el motivo más común por el que fallan los SOP.",
+            "Agregá un responsable y una fecha de revisión para que el procedimiento no quede viejo sin que nadie lo note.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Draft an SOP from a walkthrough transcript", es: "Redactar un SOP a partir de la transcripción de un recorrido" },
+        purpose: "text",
+        target: "claude",
+        prompt: {
+          en: `Write a standard operating procedure for [process] from the walkthrough below. The reader is [role], who has [level of experience].
+
+<walkthrough>
+[paste the transcript or step-by-step notes]
+</walkthrough>
+
+<existing_docs>
+[optional: paste older documentation; the walkthrough wins if they disagree]
+</existing_docs>
+
+First, list every decision point you found (if/then situations) and every tool or system mentioned.
+
+Then write the SOP:
+1. Purpose and scope (when to use it, when not to).
+2. Before you start: access, tools and inputs needed.
+3. Steps: numbered, one action per step, imperative voice. Put branches as sub-steps ("If X: … / Otherwise: …").
+4. Done when: how to check the result.
+5. If something goes wrong: what to do and who to contact.
+
+Rules:
+- Only include steps that appear in the sources. Where something is missing, write [missing: …].
+- Keep exact names of tools, fields and buttons as they appear in the sources.`,
+          es: `Escribí un procedimiento operativo estándar para [proceso] a partir del recorrido de abajo. El lector es [rol], con [nivel de experiencia].
+
+<recorrido>
+[pegá la transcripción o las notas paso a paso]
+</recorrido>
+
+<documentos_existentes>
+[opcional: pegá documentación anterior; si no coincide, manda el recorrido]
+</documentos_existentes>
+
+Primero, listá cada punto de decisión que encontraste (situaciones si/entonces) y cada herramienta o sistema mencionado.
+
+Después escribí el SOP:
+1. Propósito y alcance (cuándo usarlo y cuándo no).
+2. Antes de empezar: accesos, herramientas e insumos necesarios.
+3. Pasos: numerados, una acción por paso, en imperativo. Poné las ramas como subpasos ("Si X: … / Si no: …").
+4. Terminado cuando: cómo verificar el resultado.
+5. Si algo sale mal: qué hacer y a quién contactar.
+
+Reglas:
+- Incluí solo pasos que aparecen en las fuentes. Donde falte algo, escribí [falta: …].
+- Mantené los nombres exactos de herramientas, campos y botones tal como aparecen en las fuentes.`,
+        },
+      },
+      {
+        title: { en: "Find the gaps in an SOP (new-hire test)", es: "Encontrar los huecos de un SOP (prueba de recién ingresado)" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Act as a new [role] on your first week. You have only the SOP below and no one to ask.
+
+<sop>
+[paste the SOP]
+</sop>
+
+Go through it step by step and list, in a table (step number | problem | question you would ask):
+- Steps you couldn't perform because information is missing (access, location, values).
+- Steps that combine more than one action.
+- Terms or abbreviations that aren't explained.
+- Decisions the SOP expects you to make without criteria.
+- Places where you can't tell whether the step worked.
+
+Don't rewrite the SOP. Only list problems.`,
+          es: `Actuá como [rol] en tu primera semana. Tenés solo el SOP de abajo y nadie a quien preguntarle.
+
+<sop>
+[pegá el SOP]
+</sop>
+
+Recorrelo paso a paso y listá, en una tabla (número de paso | problema | pregunta que harías):
+- Pasos que no podrías hacer porque falta información (accesos, ubicación, valores).
+- Pasos que combinan más de una acción.
+- Términos o siglas que no se explican.
+- Decisiones que el SOP espera que tomes sin criterios.
+- Lugares donde no podés saber si el paso funcionó.
+
+No reescribas el SOP. Solo listá problemas.`,
+        },
+      },
+      {
+        title: { en: "Turn an SOP into a run checklist", es: "Convertir un SOP en un checklist de ejecución" },
+        purpose: "summarization",
+        target: "gemini",
+        prompt: {
+          en: `Turn the SOP below into a checklist someone can tick off while doing the work.
+
+<sop>
+[paste the SOP]
+</sop>
+
+Rules:
+- One checkbox per action, in the same order as the SOP, as "- [ ] …".
+- Keep decision points as short "If … → go to item N" lines.
+- Keep exact tool, field and button names.
+- Add a final "Done when" check copied from the SOP.
+- Leave out explanations and background; link back to the SOP section number instead.
+- Don't add steps that aren't in the SOP.`,
+          es: `Convertí el SOP de abajo en un checklist que alguien pueda ir tildando mientras hace el trabajo.
+
+<sop>
+[pegá el SOP]
+</sop>
+
+Reglas:
+- Una casilla por acción, en el mismo orden que el SOP, como "- [ ] …".
+- Mantené los puntos de decisión como líneas cortas "Si … → ir al ítem N".
+- Mantené los nombres exactos de herramientas, campos y botones.
+- Agregá un control final "Terminado cuando" copiado del SOP.
+- Dejá afuera explicaciones y contexto; en su lugar, remití al número de sección del SOP.
+- No agregues pasos que no estén en el SOP.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI write an SOP without a walkthrough?", es: "¿La IA puede escribir un SOP sin un recorrido?" },
+        a: {
+          en: "It can write a generic outline, but the steps that matter — your tools, your field names, your exceptions — only come from someone who does the work. Use a model-written outline as a starting structure, then fill it from a real walkthrough and mark anything unverified.",
+          es: "Puede escribir un esquema genérico, pero los pasos que importan — tus herramientas, tus nombres de campos, tus excepciones — solo salen de alguien que hace el trabajo. Usá el esquema del modelo como estructura inicial, completalo con un recorrido real y marcá todo lo que no esté verificado.",
+        },
+      },
+      {
+        q: { en: "Should SOPs be long and detailed or short?", es: "¿Los SOP tienen que ser largos y detallados o cortos?" },
+        a: {
+          en: "As short as the reader can follow without asking. Experienced staff usually need a checklist; new hires need the full procedure with context. Many teams keep both: the full SOP and a checklist generated from it, updated together.",
+          es: "Tan cortos como para que el lector los pueda seguir sin preguntar. El personal con experiencia suele necesitar un checklist; quien recién entra necesita el procedimiento completo con contexto. Muchos equipos mantienen las dos cosas: el SOP completo y un checklist generado a partir de él, actualizados juntos.",
+        },
+      },
+      {
+        q: { en: "How do I keep SOPs consistent across a team?", es: "¿Cómo mantengo los SOP consistentes en todo el equipo?" },
+        a: {
+          en: "Save the drafting prompt with your section headings and rules in your team's prompt library, so every SOP comes out with the same structure. Running the prompt through Promptea's analyzer first helps catch missing format or constraint instructions before you share it.",
+          es: "Guardá el prompt de redacción con tus secciones y reglas en la biblioteca de prompts de tu equipo, así cada SOP sale con la misma estructura. Pasar el prompt primero por el analizador de Promptea ayuda a detectar instrucciones de formato o restricciones que faltan antes de compartirlo.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
