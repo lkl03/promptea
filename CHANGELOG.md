@@ -4,6 +4,40 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.0 (unreleased)
+
+### Prompt engine (engine 2.3.0)
+
+**Audit + fixes of how every prompt type is analyzed and optimized, a before → after score, a calibrated dataset for all purposes, provider failover for the refiner (with an optional Claude model), and an optional LLM second opinion.** Full write-up with real runs: `docs/engine-audit.md`.
+
+#### Added
+- **`docs/engine-audit.md`** — how each purpose and each of the 15 router strategies is analyzed and optimized today, 48 real runs (ES/EN), contract-invariant status, 16 reproducible bugs, honest limitations and a value/risk ranking.
+- **Before → after score** — new payload fields `meta.optimizedScore` (0–100) and `meta.optimizedBreakdown` (same shape as `meta.scoreBreakdown`): the same rubric applied to the final optimized prompt (deterministic or LLM). Scaffold boilerplate and Promptea's guidance sentence are never credited; an unchanged prompt keeps its score. `/api/analyze` re-scores the LLM rewrite when it replaces the deterministic one and adds `score_regression` to `meta.refinement.quality.warnings` when the rewrite scores far lower (diagnostic only). `ScoreCard` shows a discreet "optimized: N (+d)" badge (ES/EN strings).
+- **Refiner provider chain** (`lib/llm/providers.ts`) — Groq → Anthropic failover on timeout/429/5xx/529/auth/empty responses, configurable order (`REFINER_PROVIDERS`), optional Claude Haiku 5.5 (`ANTHROPIC_API_KEY`, `ANTHROPIC_REFINER_MODEL`) through the official SDK with the static system prompt prompt-cached and JSON-schema output. Groq receives exactly the same prompt as before. No keys → deterministic, `fallbackReason: "disabled"`, as before.
+- **Optional LLM judge** (`PROMPT_JUDGE_ENABLED=1`, low confidence only) — `meta.judge` with the judge's score, a blend bounded to ±10 around the heuristic score, and a localized rationale. `score` itself never changes.
+- **Calibrated dataset** — 48 new cases (8 purposes × ES/EN × good/bad/ambiguous) with exact task type, strategy, findings and ±6 score ranges; the calibration test now enforces findings and optimized-prompt checks (previously ignored), runs each case under its purpose and requires good > ambiguous > bad.
+
+#### Fixed
+- Prompt-injection sentences were repeated in the optimized prompt (contract G was documented but not implemented); they are now removed from the build, and the refiner's quality gate rejects rewrites that carry them.
+- User-written `Constraints:` / `Output format:` lines were dropped from the optimized prompt when the prompt had no `TASK:` block.
+- `missing_goal` fired on plain imperative requests ("Write…", "Dame…", "Escribí…"): the linter and the scorer now share one goal detector with Unicode-aware word boundaries.
+- `missing_output_format` fired on implicit specs ("3 headlines, max 30 characters", "5 practice questions", "max 120 words"), on image prompts and on coding specs that ask for tests.
+- Routing: a bug report mentioning JSON no longer becomes `data_schema`; a debug report with `npm run` + code is `debugging_review` unless it names a repo/branch/PR; a detected planning task now reaches `planning_execution`.
+- Classification: "traducime"/"traduci", "manejo de errores" in implementation specs, roadmap vs. research ties, and single-keyword marketing/support guesses under the `text` purpose.
+- Image prompts: no text-task findings, "no X / sin X" count as constraints, no duplicated exclusions in the composed prompt.
+- Data: typed field lists count as a schema and labeled data blocks (`Invoice:\n…`) as input; translation: "professional/friendly" is a register and quoted text is source text.
+- Rubric calibration: coding specs credit pinned stack, tests and expected status codes; translation/summarization constraints no longer flatten to the same 55.
+
+#### Changed
+- `ENGINE_VERSION` 2.2.0 → **2.3.0** (minor: no finding IDs renamed). `docs/engine-contract.md` documents the new meta fields, the injection rule as implemented, the image-prompt exception to the ±10 stability rule, and the judge.
+- New dependency: `@anthropic-ai/sdk` (server-only).
+
+#### Known limitations / follow-ups
+- The quality of the LLM paths (Groq, Claude, judge) was not measured: there were no API keys in this work; everything is tested with injected `fetch` mocks. A real eval of refiner and judge is the top follow-up.
+- Proposed, not done: a dedicated image rubric, Spanish gender agreement in the image composer, a stricter target-language detector for translation, and integrating or retiring the orphan `/api/analyze-llm` endpoint.
+
+---
+
 ## v1.7.3 — 2026-11-05
 
 **Two new evergreen guides (competitor analysis, SOPs) and template buttons on model pages that screen readers can tell apart.** The new guides cover two recurring business AI workflows where models are prone to filling gaps with plausible inventions: comparing competitors from public sources, and turning how a team actually works into written procedures. The product fix extends last week's accessible-name change from guide pages to the per-model pages (`/{lang}/models/<model>`); the visible label is unchanged.
