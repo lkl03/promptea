@@ -192,7 +192,7 @@ export async function POST(req: NextRequest) {
       })),
       refinement: refinement ?? undefined,
       // Back-compat flags consumed by the existing client:
-      adaptiveEngine: refinement?.execution.engine === "adaptive" ? "groq" : null,
+      adaptiveEngine: refinement?.execution.engine === "adaptive" ? (refinement.execution.provider ?? "groq") : null,
       adaptiveFallback: refinement ? refinement.execution.engine !== "adaptive" : true,
       adaptiveReason:
         refinement?.execution.fallbackReason ?? (isAdaptiveEnabled() ? undefined : "disabled"),
