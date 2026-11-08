@@ -12,9 +12,10 @@ import { buildFeedbackBlock } from "./feedback";
 import { normalizeText, wordCount, approxTokensFromWords } from "./normalize";
 import { detectStructured, extractCorePrompt } from "./extractor";
 import { stripGuardedGuidance } from "./shapes";
+import { neutralizeInjection } from "./sanitize";
 import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
-import { classifyTask } from "./classifier";
+import { classifyTaskDetailed } from "./classifier";
 import { selectStrategy, isImageGenerationRequest, type RoutingDecision } from "@/lib/refine/router";
 import { normalizePurpose } from "@/lib/domain";
 
@@ -98,7 +99,8 @@ function parseEmbeddedAttachments(raw: string): AttachmentContext[] {
 
 function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
   const fallback = TASK_FROM_PURPOSE[purpose] ?? "text";
-  const classified = classifyTask(raw);
+  const detailed = classifyTaskDetailed(raw);
+  const classified = detailed.best;
 
   switch (purpose) {
     case "code":
@@ -113,10 +115,15 @@ function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
       // v1.2.0: detect the real task even when the user kept the default
       // "text" purpose — a JSON-extraction or debugging prompt typed under
       // "text" should be scored and structured as what it actually is.
+      // v1.8.0: support and marketing words are common in everyday text
+      // ("clientes", "marca"), so they only win under "text" with 2+
+      // independent signals (e.g. "copy" + "CTA", "queja" + "disculpas").
+      if ((classified === "customer_support" || classified === "marketing") && detailed.score >= 2) {
+        return classified;
+      }
       if (
         classified === "research" ||
         classified === "planning" ||
-        classified === "customer_support" ||
         classified === "writing" ||
         classified === "summarization" ||
         classified === "translation" ||
@@ -329,9 +336,16 @@ export function analyzePrompt(
   let optimizedPrompt: string;
   let alreadyOptimized = false;
 
+  // v1.8.0 contract G: the optimized prompt is built from the core with
+  // override/exfiltration sentences removed — the engine never repeats them.
+  // (Lint/features/score above still saw them: finding + safety penalty.)
+  const neutralized = neutralizeInjection(cleanAnalysisInput);
+  const buildCore = neutralized.clean;
+  const injectionRemoved = neutralized.removed > 0;
+
   if (formatChoice === "json") {
     optimizedPrompt = buildJsonOptimizedPrompt({
-      core: cleanAnalysisInput,
+      core: buildCore,
       taskType,
       target,
       lang,
@@ -341,7 +355,7 @@ export function analyzePrompt(
     });
   } else {
     const built = canonicalize(
-      buildOptimizedPrompt(cleanAnalysisInput, taskType, target, lang, purpose, effectiveAttachments, {
+      buildOptimizedPrompt(buildCore, taskType, target, lang, purpose, effectiveAttachments, {
         complexity: routing.complexity,
         strategy: routing.strategy,
         modelId,
@@ -349,7 +363,9 @@ export function analyzePrompt(
     );
     const rawCanonical = canonicalize(raw);
 
-    if (!promptea && built === rawCanonical && (detectStructured(raw) || routing.strategy === "image_generation")) {
+    if (injectionRemoved) {
+      optimizedPrompt = built;
+    } else if (!promptea && built === rawCanonical && (detectStructured(raw) || routing.strategy === "image_generation")) {
       // v1.6.0: a developed image prompt (prose, no headings) that rebuilds
       // to itself is already optimized too — the adaptive call is skipped.
       optimizedPrompt = rawCanonical;

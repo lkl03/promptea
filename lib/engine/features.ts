@@ -1,6 +1,7 @@
 import type { Lang } from "../promptTemplates";
 import type { Features, TaskType } from "./types";
 import { normalizeText, wordCount } from "./normalize";
+import { hasGoalSignal, hasImageOutputSpec, hasImplicitOutputSpec, IMAGE_NEGATIVE_RE, words } from "./signals";
 
 function hasAny(text: string, patterns: RegExp[]) {
   return patterns.some((re) => re.test(text));
@@ -85,12 +86,20 @@ function detectGoal(text: string, task: TaskType) {
   }
 }
 
+// v1.8.0: people-facing roles are audience even without the word "audience".
+const AUDIENCE_ROLES = words(
+  "students?|estudiantes?|alumnos?|recruiters?|reclutadores?|hiring managers?|executives?|ejecutivos?|directorio|board|" +
+    "freelancers?|beginners?|principiantes?|engineering managers?|managers?|ni[nñ]os|kids|children|padres|parents|" +
+    "j[oó]venes|teenagers|adolescentes|investors?|inversores|stakeholders|peers|colegas"
+);
+
 export function extractFeatures(core: string, task: TaskType, lang: Lang): Features {
   const clean = normalizeText(core);
   const t = clean.toLowerCase();
   const words = wordCount(clean);
 
-  const hasGoal = detectGoal(t, task);
+  // v1.8.0: shared with the linter so score and findings agree.
+  const hasGoal = hasGoalSignal(clean, task) || detectGoal(t, task);
 
   const hasInputs =
     hasAny(t, [
@@ -108,7 +117,7 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
     /\b(audience|for beginners|for executives|for developers|stakeholders|customer)\b/,
     /\b(audiencia|para principiantes|para ejecutivos|para developers|para desarrolladores|cliente|usuarios?)\b/,
     /\b(nivel secundario|nivel universitario|básico|basico|intermedio|avanzado)\b/,
-  ]);
+  ]) || AUDIENCE_ROLES.test(clean);
 
   const hasExamples =
     hasAny(t, [/\b(example|examples|for example|e\.g\.)\b/, /\b(ejemplo|ejemplos|por ejemplo)\b/]) ||
@@ -129,14 +138,21 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
       hasAny(t, [
         /\b(bullets?|paragraph|sections?|length|brief|short|long|focus)\b/,
         /\b(viñetas|vinyetas|párrafo|parrafo|secciones|largo|breve|corto|extenso|foco)\b/,
-      ]));
+      ])) ||
+    // v1.8.0: "no people, no text" / "sin texto" are an image prompt's constraints.
+    (task === "image" && IMAGE_NEGATIVE_RE.test(clean));
 
-  const hasOutputFormat = hasAny(t, [
-    /\b(output format|format|json|table|steps|bullets?|paragraph|sections?)\b/,
-    /\b(formato de salida|json|tabla|pasos|viñetas|vinyetas|párrafo|parrafo|secciones)\b/,
-    // Colon-style spec lines: "Output: subject + body", "Formato: ..."
-    /\b(output:|salida:|formato:)/,
-  ]);
+  const hasOutputFormat =
+    hasAny(t, [
+      /\b(output format|format|json|table|steps|bullets?|paragraph|sections?)\b/,
+      /\b(formato de salida|json|tabla|pasos|viñetas|vinyetas|párrafo|parrafo|secciones)\b/,
+      // Colon-style spec lines: "Output: subject + body", "Formato: ..."
+      /\b(output:|salida:|formato:)/,
+    ]) ||
+    // v1.8.0: "3 headlines", "max 120 words", "5 practice questions".
+    hasImplicitOutputSpec(clean) ||
+    // v1.8.0: an image prompt's output is its medium/style or aspect ratio.
+    (task === "image" && hasImageOutputSpec(clean));
 
   const hasSuccessCriteria = hasAny(t, [
     /\b(success criteri(?:a|on)|acceptance criteri(?:a|on)|must include|verify|validation)\b/,

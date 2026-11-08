@@ -9,6 +9,7 @@ import type { Lang, PromptProfileId } from "@/lib/domain";
 import { languageMatches } from "./language";
 import { literalsPreserved, type ProtectedLiteral } from "./literals";
 import { imagePromptIssues } from "@/lib/engine/imagePrompt";
+import { containsInjection } from "@/lib/engine/sanitize";
 
 export type QualityGateInput = {
   original: string;
@@ -89,6 +90,10 @@ export function runQualityGate(input: QualityGateInput): QualityGateResult {
 
   // 7. No internal/system leakage or refusal noise.
   if (INTERNAL_LEAK.test(candidate)) failures.push("internal_leakage");
+
+  // 7a. v1.8.0 contract G: the rewrite must never carry an override or
+  // exfiltration instruction (whether copied from the input or invented).
+  if (containsInjection(candidate)) failures.push("injection_echo");
 
   // 7b. v1.6.0 image prompts must be FINISHED prompts: no placeholders, no
   // "specify the mood" meta-instructions, no quality-keyword spam, and no

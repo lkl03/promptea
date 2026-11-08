@@ -15,6 +15,7 @@ import { applyDataExtractionRules } from "./rules/dataExtraction";
 import { applyContradictions } from "./rules/contradictions";
 import { applyInjectionRules } from "./rules/injections";
 import { includesAny } from "./rules/utils";
+import { hasGoalSignal, hasImplicitOutputSpec, IMAGE_NEGATIVE_RE } from "../signals";
 
 function wordsCount(s: string) {
   return (s ?? "").trim().split(/\s+/).filter(Boolean).length;
@@ -31,6 +32,13 @@ function pushReco(recos: LintRecommendation[], id: LintRecommendation["id"], imp
   const t = recoText(id, lang);
   recos.push({ id, impact, ...t });
 }
+
+// v1.8.0: quoted source text ("…") and inline "esto: …" / "this: …" payloads
+// are source material even when short.
+const QUOTED_SOURCE = /["“«][^"”»]{8,}["”»]/;
+const INLINE_SOURCE = /(?:^|\s)(esto|this|lo siguiente|the following|siguiente texto|following text)\s*:\s*\S/i;
+const STUDY_LEVEL_EXTRA =
+  /\b(first|second|third|fourth|final)[- ]year\b|\b(primer|segundo|tercer|cuarto|[uú]ltimo) a[nñ]o\b|\bgrade \d+|\b\d+(st|nd|rd|th) grade\b|\bundergrad|\bgraduate\b|\bposgrado\b|\bmaestr[ií]a\b|\bphd\b/i;
 
 function detectGoal(low: string, taskType?: string) {
   const generic =
@@ -90,7 +98,9 @@ export function lintPrompt(
     pushFinding(findings, "too_short", "medium", lang);
   }
 
-  const hasGoal = detectGoal(low, task);
+  // v1.8.0: the same detector the scorer uses (they used to disagree).
+  const hasGoal = hasGoalSignal(p, task) || detectGoal(low, task);
+  const isImage = task === "image";
 
   if (!hasGoal) {
     pushFinding(findings, "missing_goal", "high", lang);
@@ -99,7 +109,9 @@ export function lintPrompt(
 
   const outputFormat: OutputFormat | null | undefined = detectOutputFormat(p);
 
-  if (!outputFormat) {
+  // v1.8.0: "3 headlines, max 30 characters" IS an output spec, and an
+  // image's output is the image itself (medium/aspect are scored instead).
+  if (!outputFormat && !isImage && !hasImplicitOutputSpec(p)) {
     pushFinding(findings, "missing_output_format", "high", lang);
     pushReco(recommendations, "define_output_format", "high", lang);
   }
@@ -150,7 +162,7 @@ export function lintPrompt(
       "document:",
     ]);
 
-  const looksContextPoor = !attachmentsPresent && !hasContextCues && !hasWorkMaterial && w >= 4 && w <= 120;
+  const looksContextPoor = !isImage && !attachmentsPresent && !hasContextCues && !hasWorkMaterial && w >= 4 && w <= 120;
   if (looksContextPoor && task !== "summarization" && task !== "translation") {
     pushFinding(findings, "missing_context", "high", lang);
     pushReco(recommendations, "add_context", "high", lang);
@@ -162,6 +174,8 @@ export function lintPrompt(
   if (task === "summarization") {
     const hasSourceMaterial =
       attachmentsPresent ||
+      QUOTED_SOURCE.test(p) ||
+      INLINE_SOURCE.test(p) ||
       includesAny(low, ["texto:", "text:", "article:", "artículo:", "articulo:", "document:", "documento:", "archivo", "file"]) ||
       /```/.test(p) ||
       w > 40;
@@ -216,6 +230,8 @@ export function lintPrompt(
   } else if (task === "translation") {
     const hasSourceText =
       attachmentsPresent ||
+      QUOTED_SOURCE.test(p) ||
+      INLINE_SOURCE.test(p) ||
       includesAny(low, ["texto:", "text:", "source text", "original text", "archivo", "file"]) ||
       /```/.test(p) ||
       w > 30;
@@ -245,6 +261,16 @@ export function lintPrompt(
       "natural",
       "literal",
       "casual",
+      "professional",
+      "friendly",
+      "colloquial",
+      "polite",
+      "profesional",
+      "amigable",
+      "cercano",
+      "informal",
+      "coloquial",
+      "respetuoso",
       "formal",
       "neutro",
       "natural",
@@ -280,7 +306,7 @@ export function lintPrompt(
       "basico",
       "intermedio",
       "avanzado",
-    ]);
+    ]) || STUDY_LEVEL_EXTRA.test(p);
 
     if (!hasStudyLevel) {
       addFinding("missing_study_level", "medium");
@@ -322,7 +348,7 @@ export function lintPrompt(
       addReco("define_marketing_cta", "medium");
     }
   } else {
-    if (!hasGenericConstraints) {
+    if (!hasGenericConstraints && !(isImage && IMAGE_NEGATIVE_RE.test(p))) {
       addFinding("missing_constraints", "medium");
       addReco("add_constraints", "medium");
     }

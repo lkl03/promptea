@@ -131,7 +131,14 @@ export function extractCorePrompt(input: string): { core: string; extracted: boo
   const taskCandidate = normalizeText(taskLines.join("\n"));
   if (taskCandidate) return { core: taskCandidate, extracted: true };
 
-  // 4) Fallback: eliminar scaffolds conocidos
+  // 4) Fallback: eliminar scaffolds conocidos.
+  //
+  // v1.8.0: only Promptea-generated scaffold lines are dropped here. A user's
+  // own "Constraints: no clichés, max 200 words" or "Output format: …" line
+  // (or its bare header followed by their bullets) is part of THEIR request
+  // when no TASK block exists; dropping it made the optimized prompt silently
+  // lose requirements. Blank lines are kept so the user's layout survives.
+  const userSection = /^(output format|formato de salida|constraints|restricciones|límites|limites|success criteria|criterios de (éxito|exito))\s*:/i;
   const blacklist = [
     /^prompt-evaluator\s*:/i,
     /^prompt evaluator\s*:/i,
@@ -158,8 +165,11 @@ export function extractCorePrompt(input: string): { core: string; extracted: boo
   const kept: string[] = [];
   for (const line of lines) {
     const t = line.trim();
-    if (!t) continue;
-    if (blacklist.some((re) => re.test(t))) continue;
+    if (!t) {
+      kept.push("");
+      continue;
+    }
+    if (!userSection.test(t) && blacklist.some((re) => re.test(t))) continue;
     kept.push(line);
   }
 

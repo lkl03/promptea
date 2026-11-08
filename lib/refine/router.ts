@@ -26,6 +26,11 @@ export type RoutingDecision = {
 const CODE_FENCE = /```|~~~/;
 const REPO_AGENT =
   /\b(repo(sitor(y|io))?|branch|rama|pull request|PR\b|merge|commit|checkout|npm (run|ci|install)|pnpm|yarn|git\s+\w+|CI\b|pipeline|deploy|lint|test suite|migraci[oó]n de repo|claude code|codex|copilot|agente?)\b/i;
+// v1.8.0: a debugging request needs an explicit agent/repo signal to be an
+// agent task — "npm run dev" in reproduction steps is not one.
+const REPO_AGENT_STRONG =
+  /\b(repo(sitor(y|io))?|branch|rama|pull request|PR\b|merge|commit|checkout|claude code|codex|copilot|agente?)\b/i;
+const CODE_TASKS = new Set<TaskType>(["coding", "debugging", "refactor"]);
 const JSON_SCHEMA =
   /\b(json|schema|campos|fields?|extract|extra[eé]|parse|csv|tabla|table|columns?|columnas?|null)\b/i;
 // v1.6.0: content-based image routing requires GENERATION intent. A prompt
@@ -109,10 +114,17 @@ export function selectStrategy(input: RoutingInput): RoutingDecision {
   };
 
   // Content-driven overrides first: the prompt knows better than the dropdown.
-  if (REPO_AGENT.test(text) && (input.taskType === "coding" || input.taskType === "refactor" || input.taskType === "planning" || CODE_FENCE.test(text))) {
+  const agentEligible =
+    input.taskType === "debugging"
+      ? REPO_AGENT_STRONG.test(text)
+      : input.taskType === "coding" || input.taskType === "refactor" || input.taskType === "planning" || CODE_FENCE.test(text);
+  if (REPO_AGENT.test(text) && agentEligible) {
     return pick("agent_workflow", "match:repo_agent");
   }
-  if (input.purpose === "data" || input.taskType === "data_extraction" || (JSON_SCHEMA.test(text) && /\bjson\b/i.test(text))) {
+  // v1.8.0: "returns 500 when I POST JSON" is a bug report, not an extraction
+  // task — content-based JSON routing skips code tasks.
+  const jsonByContent = !CODE_TASKS.has(input.taskType) && JSON_SCHEMA.test(text) && /\bjson\b/i.test(text);
+  if (input.purpose === "data" || input.taskType === "data_extraction" || jsonByContent) {
     return pick("data_schema", "match:json_schema");
   }
   if (input.purpose === "image" || input.taskType === "image" || isImageGenerationRequest(text)) {
@@ -130,10 +142,11 @@ export function selectStrategy(input: RoutingInput): RoutingDecision {
   if (input.taskType === "study") return pick("study_tutoring", "task:study");
   if (input.taskType === "marketing") return pick("marketing_copy", "task:marketing");
   if (input.taskType === "research") return pick("analysis_research", "task:research");
-  if (input.taskType === "planning" || PLANNING.test(text)) {
-    // Only treat as planning when there is real multi-step intent.
-    if (complexity !== "simple") return pick("planning_execution", "match:planning");
-  }
+  // v1.8.0: a detected planning task is planning at any complexity (the
+  // simple light path keeps it natural anyway); the bare keyword still needs
+  // real multi-step intent.
+  if (input.taskType === "planning") return pick("planning_execution", "task:planning");
+  if (PLANNING.test(text) && complexity !== "simple") return pick("planning_execution", "match:planning");
   if (BRAINSTORM.test(text) && complexity === "simple") return pick("brainstorming", "match:brainstorm");
   if (LONG_FORM.test(text) || (input.taskType === "writing" && complexity !== "simple")) {
     return pick("long_form_writing", "match:long_form");

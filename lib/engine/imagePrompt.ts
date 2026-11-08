@@ -1041,7 +1041,14 @@ function avoidFor(ctx: Ctx): string[] {
     default:
       break;
   }
-  for (const n of b.negatives) if (n) out.push(n);
+  // v1.8.0: skip a user exclusion the default item already names ("no text"
+  // next to "text, watermarks, and logos" used to print "text" twice).
+  const defaults = out.map((x) => x.toLowerCase());
+  const covered = (n: string) => {
+    const k = n.toLowerCase().trim();
+    return defaults.some((d) => d === k || d.split(/,\s*|\s+(?:and|y|e|or|o)\s+|;\s*/).some((part) => part.trim() === k));
+  };
+  for (const n of b.negatives) if (n && !covered(n)) out.push(n);
   // de-duplicate case-insensitively
   const seen = new Set<string>();
   return out.filter((x) => {

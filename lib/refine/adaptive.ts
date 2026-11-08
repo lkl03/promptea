@@ -414,7 +414,9 @@ export async function refinePromptAdaptive(args: AdaptiveArgs): Promise<Refineme
     if (!gate.passed) {
       lastReason = gate.failures.includes("protected_literal_loss")
         ? "protected_literal_loss"
-        : gate.failures.includes("internal_leakage") || gate.failures.includes("answers_instead_of_prompting")
+        : gate.failures.includes("internal_leakage") ||
+          gate.failures.includes("answers_instead_of_prompting") ||
+          gate.failures.includes("injection_echo")
         ? "unsafe_response"
         : "quality_gate_failed";
       lastWarnings = [...gate.failures, ...gate.warnings];
