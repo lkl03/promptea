@@ -1340,3 +1340,39 @@ html {
     animation: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.8.0 — newsletter pill (components/newsletter/NewsletterNudges.tsx)
+   Slides/fades in at 5 s, steps aside for the footer and the keyboard.
+   Fixed + out of flow: it can never shift layout. Reduced motion: fade only.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.newsletter-pill-wrap {
+  transition:
+    transform 260ms var(--ease-out-strong),
+    opacity 200ms ease;
+}
+.newsletter-pill-wrap.is-hidden {
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+}
+.newsletter-pill-wrap.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .newsletter-pill-wrap,
+  .newsletter-pill-wrap.is-hidden {
+    transform: none;
+    transition: opacity 120ms ease;
+  }
+}
+.newsletter-pill-wrap .newsletter-pill {
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .newsletter-pill:hover {
+    border-color: var(--accent);
+  }
+}

@@ -419,5 +419,14 @@
     "body": "The best AI stories of the week, every Monday in your inbox.",
     "open": "Subscribe to the newsletter",
     "close": "Close"
+  },
+  "newsletterNudge": {
+    "pill": "Join the newsletter",
+    "panelTitle": "The week in AI, in your inbox",
+    "panelBody": "Every Monday, the AI stories that mattered. No spam.",
+    "close": "Close",
+    "modalTitle": "Before you go: want the best of the week in your inbox?",
+    "modalBody": "A summary every Monday with the AI stories that mattered, verified and with their sources. It is free and you can unsubscribe any time.",
+    "modalDismiss": "Not now"
   }
 }

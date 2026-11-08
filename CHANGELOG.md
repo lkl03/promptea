@@ -52,6 +52,13 @@ All notable changes to Promptea are documented here.
 - **X feed** (`components/home/XFeed.tsx`): official timeline embed behind a click-to-load facade — nothing from X is requested until the visitor asks; the box reserves its final height (no layout shift); light/dark follows the theme; blocked/failed/timeout → link to the profile + "Follow us". Handle from the new `NEXT_PUBLIC_X_HANDLE` (or derived from `NEXT_PUBLIC_X_URL`; `lib/social.ts`, tested); no handle → section hidden. `/{lang}/privacy` now declares the third-party embed and the browser storage.
 - Local-only: `BENCHMARKS_DEV_FIXTURE=1` (development builds only) renders a clearly fictitious dataset so the charts can be reviewed without an OpenRouter key.
 
+#### Phase 3 — newsletter growth
+- **Pill** (`components/newsletter/NewsletterNudges.tsx`): a `position: fixed` pill bottom-right (safe-area aware) that appears **5 s** after entering any public page except AI Daily and opens a mini form in place (`SubscribeForm` → `/api/newsletter/subscribe`). On phones, on the analyzer / Best AI pages it collapses to an icon (accessible name intact) and hides while a text field is focused, so it never covers the text box or the results.
+- **AI Daily modal**: once per session and once a week — desktop exit intent (mouse leaves through the top, after ≥ 8 s), touch devices after scrolling 60 % or ~25 s of reading and only once the page has been still for ~1 s. Accessible dialog (focus trap, Esc, backdrop, focus returned), never opens over typing or another dialog.
+- **One controller, no stacking.** Pure rules in `lib/newsletter/prompts.ts` (tested), shared state in `lib/newsletter/promptStore.ts` (localStorage with try/catch; session flag for the modal): nothing before 5 s; subscribed from *any* form → never again, on any surface; closing the pill or the dock bar is remembered 7 days (the dock used to remember one session); the modal never coexists with the pill or the dock bar; all steps aside for the footer, soft keyboard and other dialogs. Reduced motion: fade only. Fixed + out of flow: no layout shift. `NewsletterDock` now reads the same store.
+- **Telemetry** (`lib/telemetry/appEvents.client.ts` + `/api/telemetry/app` whitelist): `newsletter_prompt_{impression,open,dismissed,subscribed}` with an enum `surface` (`pill|modal|dock|inline`) — no email, no PII.
+- The pill and the modal mount from `app/[lang]/layout.tsx` (one line).
+
 ---
 
 ## v1.7.3 — 2026-11-05

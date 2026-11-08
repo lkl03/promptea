@@ -12,29 +12,23 @@
 //     - the page reserves the bar's height at its end (spacer below), so the
 //       last lines of content can always be scrolled above it;
 //     - it slides away while the footer is on screen (footer controls stay
-//       reachable) and while a text field is focused (soft keyboard);
-//     - it can be dismissed for the session, and disappears after a
-//       successful subscription.
+//       reachable), while a text field is focused (soft keyboard) and while
+//       the AI Daily modal is open (v1.8.0: surfaces never stack);
+//     - v1.8.0: closing it is remembered for 7 days (it used to be one
+//       session) and a subscription — from ANY form — removes it for good.
+//   State is shared with the pill and the modal through
+//   lib/newsletter/promptStore.ts; the rules live in lib/newsletter/prompts.ts.
 //   The sheet is a modal dialog: focus moves into it, Tab is trapped, Escape
 //   and the backdrop close it, and focus returns to the bar.
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { getServerSnapshot, getSnapshot, nudgeActions, subscribeStore } from "@/lib/newsletter/promptStore";
+import { dockBarEligible } from "@/lib/newsletter/prompts";
+import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
 import SubscribeForm, { type SubscribeFormDict } from "./SubscribeForm";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
 type DockDict = { title: string; body: string; open: string; close: string };
-
-const DISMISS_KEY = "promptea:newsletter-dock-dismissed";
-
-function readDismissed(): boolean {
-  try {
-    return sessionStorage.getItem(DISMISS_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-const noopSubscribe = () => () => {};
 
 function MailIcon() {
   return (
@@ -47,17 +41,21 @@ function MailIcon() {
 
 export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | "en"; dict: DockDict; formDict: SubscribeFormDict }) {
   const [sheetOpen, setSheetOpen] = useState(false);
-  // Session dismissal: read from storage after hydration (server: not dismissed).
-  const storedDismissal = useSyncExternalStore(noopSubscribe, readDismissed, () => false);
-  const [dismissedNow, setDismissedNow] = useState(false);
-  const dismissed = storedDismissal || dismissedNow;
-  const [subscribed, setSubscribed] = useState(false);
+  // Shared with the pill and the modal (persisted: dismissal for 7 days, subscribed for good).
+  const snap = useSyncExternalStore(subscribeStore, getSnapshot, getServerSnapshot);
+  const [mountedAt, setMountedAt] = useState<number | null>(null);
   const [footerVisible, setFooterVisible] = useState(false);
   const [typing, setTyping] = useState(false);
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const openerRef = useRef<HTMLButtonElement | null>(null);
 
   useFocusTrap(sheetRef, sheetOpen);
+
+  // Eligibility needs "now"; take it once, after mount (never during render).
+  useEffect(() => {
+    const t = window.setTimeout(() => setMountedAt(Date.now()), 0);
+    return () => window.clearTimeout(t);
+  }, []);
 
   // Step aside for the footer.
   useEffect(() => {
@@ -99,15 +97,30 @@ export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | 
   }, [sheetOpen, closeSheet]);
 
   function dismiss() {
-    setDismissedNow(true);
-    try {
-      sessionStorage.setItem(DISMISS_KEY, "1");
-    } catch {
-      /* storage unavailable: dismissal lasts until navigation */
-    }
+    nudgeActions.dismissDock();
+    trackAppEvent({ event: "newsletter_prompt_dismissed", lang, surface: "dock" });
   }
 
-  const barHidden = dismissed || subscribed || footerVisible || typing;
+  function openSheet() {
+    setSheetOpen(true);
+    trackAppEvent({ event: "newsletter_prompt_open", lang, surface: "dock" });
+  }
+
+  const eligible = mountedAt !== null && dockBarEligible(snap, mountedAt);
+  // Hidden (not unmounted) while the footer / keyboard / modal need the space, so it slides back in.
+  const barHidden = !eligible || footerVisible || typing || snap.modalOpen;
+
+  // One impression per page view, the first time the bar is actually shown.
+  const impressed = useRef(false);
+  useEffect(() => {
+    if (!barHidden && !impressed.current) {
+      impressed.current = true;
+      trackAppEvent({ event: "newsletter_prompt_impression", lang, surface: "dock" });
+    }
+  }, [barHidden, lang]);
+
+  // Already subscribed (on this or another page): the dock is gone for good.
+  if (snap.subscribed && !sheetOpen) return null;
 
   return (
     <>
@@ -122,7 +135,7 @@ export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | 
           </p>
           <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{dict.body}</p>
           <div className="mt-4">
-            <SubscribeForm lang={lang} dict={formDict} />
+            <SubscribeForm lang={lang} dict={formDict} surface="dock" />
           </div>
         </div>
       </aside>
@@ -148,7 +161,7 @@ export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | 
             <span className="font-medium">{dict.title}</span>
             <span className="text-ink-muted"> · {dict.body}</span>
           </p>
-          <button ref={openerRef} type="button" onClick={() => setSheetOpen(true)} className="btn btn-primary h-8 shrink-0 px-3 text-xs" aria-haspopup="dialog">
+          <button ref={openerRef} type="button" onClick={openSheet} className="btn btn-primary h-8 shrink-0 px-3 text-xs" aria-haspopup="dialog">
             {formDict.submit}
           </button>
           <button type="button" onClick={dismiss} className="btn-icon h-8 w-8 shrink-0" aria-label={dict.close} title={dict.close}>
@@ -185,7 +198,7 @@ export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | 
                 </button>
               </div>
               <div className="mt-4">
-                <SubscribeForm lang={lang} dict={formDict} autoFocus onDone={() => setSubscribed(true)} />
+                <SubscribeForm lang={lang} dict={formDict} autoFocus surface="dock" />
               </div>
             </div>
           </div>

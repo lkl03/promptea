@@ -419,5 +419,14 @@
     "body": "Las mejores historias de IA de la semana, cada lunes en tu email.",
     "open": "Suscribirme al newsletter",
     "close": "Cerrar"
+  },
+  "newsletterNudge": {
+    "pill": "Sumate al newsletter",
+    "panelTitle": "La semana en IA, en tu correo",
+    "panelBody": "Cada lunes, las historias de IA que importaron. Sin spam.",
+    "close": "Cerrar",
+    "modalTitle": "Antes de irte: ¿te mandamos lo mejor de la semana?",
+    "modalBody": "Un resumen cada lunes con las historias de IA que importaron, verificadas y con sus fuentes. Es gratis y te das de baja cuando quieras.",
+    "modalDismiss": "Ahora no"
   }
 }

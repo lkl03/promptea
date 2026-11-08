@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import ToastProvider from "@/components/ToastProvider";
 import GlassEnhancer from "@/components/GlassEnhancer";
+import NewsletterNudges from "@/components/newsletter/NewsletterNudges";
 
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID; // e.g. "AW-17937226636"
 
@@ -239,6 +240,8 @@ export default async function RootLayout({
             <TopBar lang={lang} />
             {children}
             <Footer lang={lang} appFeedbackDict={dict.appFeedback} />
+            {/* v1.8.0: the one controller of newsletter prompts (pill + AI Daily modal; coordinates the dock) */}
+            <NewsletterNudges lang={lang} dict={dict.newsletterNudge} formDict={dict.newsletter.bar} />
           </ToastProvider>
         </Providers>
         <Analytics />
