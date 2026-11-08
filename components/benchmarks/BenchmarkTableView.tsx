@@ -1,23 +1,23 @@
 "use client";
 
-// components/benchmarks/BenchmarkExplorer.tsx
+// components/benchmarks/BenchmarkTableView.tsx
 //
-// v1.7.0 — the interactive ranking table. One benchmark at a time: scores
-// from different benchmarks use different metrics and are never shown in the
-// same column. Search (model or provider), provider filter and sorting work
-// on the selected benchmark only. The URL hash keeps the selected benchmark
-// so a view can be shared (#b=aa:coding).
+// The accessible table behind the charts (v1.7.0 explorer; v1.8.0: the
+// benchmark is chosen by the dashboard, not here). It keeps every row of the
+// selected benchmark in the HTML — for crawlers and screen readers too — with
+// search (model or provider), provider filter and sorting. Scores from
+// different benchmarks are never mixed: one table, one benchmark, one metric.
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { BenchmarkTable } from "@/lib/benchmarks/normalize";
 import { formatPrice, formatScore } from "@/lib/benchmarks/normalize";
-import { CATEGORY_LABELS, CATEGORY_ORDER, PROVIDER_TO_PROMPTEA, SOURCE_INFO } from "@/lib/benchmarks/catalog";
+import { PROVIDER_TO_PROMPTEA, SOURCE_INFO } from "@/lib/benchmarks/catalog";
+import { providerColor } from "@/lib/benchmarks/chart";
 
 type Sort = "score" | "score-asc" | "price" | "name";
 
-type Copy = {
-  benchmark: string;
+export type TableCopy = {
   search: string;
   searchPlaceholder: string;
   provider: string;
@@ -40,35 +40,37 @@ type Copy = {
   stddev: string;
 };
 
-export default function BenchmarkExplorer({ tables, lang, copy }: { tables: BenchmarkTable[]; lang: "es" | "en"; copy: Copy }) {
-  const [key, setKey] = useState(tables[0]?.def.key ?? "");
+export default function BenchmarkTableView({
+  table,
+  lang,
+  copy,
+  highlightId,
+  onHighlight,
+}: {
+  table: BenchmarkTable;
+  lang: "es" | "en";
+  copy: TableCopy;
+  highlightId?: string | null;
+  onHighlight?: (id: string | null) => void;
+}) {
   const [query, setQuery] = useState("");
   const [provider, setProvider] = useState("");
   const [sort, setSort] = useState<Sort>("score");
 
-  // Restore a shared view from the hash once, after hydration.
-  useEffect(() => {
-    const m = /(?:^|[#&])b=([^&]+)/.exec(window.location.hash);
-    const wanted = m ? decodeURIComponent(m[1]) : null;
-    if (wanted && tables.some((t) => t.def.key === wanted)) {
-      queueMicrotask(() => setKey(wanted));
-    }
-  }, [tables]);
-
-  const table = tables.find((t) => t.def.key === key) ?? tables[0];
-
   const providers = useMemo(() => {
     const seen = new Map<string, string>();
-    for (const r of table?.rows ?? []) seen.set(r.provider, r.providerLabel);
+    for (const r of table.rows) seen.set(r.provider, r.providerLabel);
     return [...seen.entries()].sort((a, b) => a[1].localeCompare(b[1]));
   }, [table]);
 
-  const rows = useMemo(() => {
-    if (!table) return [];
+  // A provider missing from the newly selected benchmark must not keep filtering it.
+  const effectiveProvider = providers.some(([id]) => id === provider) ? provider : "";
+
+  const shown = useMemo(() => {
     const q = query.trim().toLowerCase();
     const filtered = table.rows.filter(
       (r) =>
-        (!provider || r.provider === provider) &&
+        (!effectiveProvider || r.provider === effectiveProvider) &&
         (!q || r.name.toLowerCase().includes(q) || r.providerLabel.toLowerCase().includes(q) || r.modelId.toLowerCase().includes(q))
     );
     const priceOf = (r: (typeof filtered)[number]) => r.price?.inputPerM ?? Number.POSITIVE_INFINITY;
@@ -78,52 +80,18 @@ export default function BenchmarkExplorer({ tables, lang, copy }: { tables: Benc
       if (sort === "name") return a.name.localeCompare(b.name);
       return b.value - a.value;
     });
-  }, [table, query, provider, sort]);
-
-  if (!table) return null;
-
-  const byCategory = CATEGORY_ORDER.map((c) => ({ c, items: tables.filter((t) => t.def.category === c) })).filter((g) => g.items.length);
-
-  function choose(next: string) {
-    setKey(next);
-    setProvider("");
-    try {
-      history.replaceState(null, "", `#b=${encodeURIComponent(next)}`);
-    } catch {
-      /* non-essential */
-    }
-  }
+  }, [table, query, effectiveProvider, sort]);
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <label className="flex flex-col gap-1 text-xs text-ink-muted lg:col-span-1">
-          {copy.benchmark}
-          <select value={table.def.key} onChange={(e) => choose(e.target.value)} className="field h-10 px-3 text-sm">
-            {byCategory.map(({ c, items }) => (
-              <optgroup key={c} label={CATEGORY_LABELS[c][lang]}>
-                {items.map((t) => (
-                  <option key={t.def.key} value={t.def.key}>
-                    {t.def.label[lang]}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </select>
-        </label>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <label className="flex flex-col gap-1 text-xs text-ink-muted">
           {copy.search}
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={copy.searchPlaceholder}
-            className="field h-10 px-3 text-sm"
-          />
+          <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder={copy.searchPlaceholder} className="field h-10 px-3 text-sm" />
         </label>
         <label className="flex flex-col gap-1 text-xs text-ink-muted">
           {copy.provider}
-          <select value={provider} onChange={(e) => setProvider(e.target.value)} className="field h-10 px-3 text-sm">
+          <select value={effectiveProvider} onChange={(e) => setProvider(e.target.value)} className="field h-10 px-3 text-sm">
             <option value="">{copy.allProviders}</option>
             {providers.map(([id, label]) => (
               <option key={id} value={id}>
@@ -144,18 +112,18 @@ export default function BenchmarkExplorer({ tables, lang, copy }: { tables: Benc
       </div>
 
       <p className="mt-4 text-xs text-ink-muted" aria-live="polite">
-        {copy.results.replace("{n}", String(rows.length))} · {table.def.metricLabel[lang]} ·{" "}
+        {copy.results.replace("{n}", String(shown.length))} · {table.def.metricLabel[lang]} ·{" "}
         <a href={SOURCE_INFO[table.def.source].url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-ink">
           {SOURCE_INFO[table.def.source].name}
         </a>
       </p>
 
-      <div className="surface-soft mt-3 overflow-x-auto">
+      <div className="surface-soft mt-3 max-h-[34rem] overflow-auto">
         <table className="w-full min-w-[720px] text-left text-sm">
           <caption className="sr-only">
             {table.def.label[lang]} — {table.def.metricLabel[lang]}
           </caption>
-          <thead>
+          <thead className="sticky top-0 z-10 bg-[var(--overlay-fill)]">
             <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-muted">
               <th scope="col" className="w-12 px-3 py-3 font-medium">{copy.colRank}</th>
               <th scope="col" className="px-3 py-3 font-medium">{copy.colModel}</th>
@@ -168,19 +136,26 @@ export default function BenchmarkExplorer({ tables, lang, copy }: { tables: Benc
             </tr>
           </thead>
           <tbody>
-            {rows.length === 0 ? (
+            {shown.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-3 py-8 text-center text-ink-muted">
                   {copy.noMatch}
                 </td>
               </tr>
             ) : (
-              rows.map((r) => {
+              shown.map((r) => {
                 const promptea = PROVIDER_TO_PROMPTEA[r.provider];
+                const active = highlightId === r.modelId;
                 return (
-                  <tr key={r.modelId} className="border-b border-line last:border-b-0">
+                  <tr
+                    key={r.modelId}
+                    className={["border-b border-line last:border-b-0", active ? "bg-accent-soft" : ""].join(" ")}
+                    onMouseEnter={onHighlight ? () => onHighlight(r.modelId) : undefined}
+                    onMouseLeave={onHighlight ? () => onHighlight(null) : undefined}
+                  >
                     <td className="px-3 py-3 tabular-nums text-ink-muted">{r.rank}</td>
                     <td className="px-3 py-3">
+                      <span aria-hidden="true" className="mr-2 inline-block h-2 w-2 rounded-full align-middle" style={{ background: providerColor(r.provider) }} />
                       <a href={`https://openrouter.ai/${r.modelId}`} target="_blank" rel="noopener noreferrer" className="font-medium text-ink hover:text-accent">
                         {r.name}
                       </a>

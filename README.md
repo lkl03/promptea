@@ -133,6 +133,8 @@ npm run build      # production build (works offline — fonts are local)
 | `PROMPT_JUDGE_CONFIDENCE_MAX` | optional | The judge runs only when `meta.confidence` is below this value (default `60`). |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
+| `NEXT_PUBLIC_X_HANDLE` | optional | Promptea's X account (`promptea` or `@promptea`). Enables the homepage X feed (official timeline, click-to-load) and the footer link `https://x.com/<handle>`. If unset it is derived from `NEXT_PUBLIC_X_URL`; with neither, the feed section is hidden. |
+| `NEXT_PUBLIC_X_URL` | optional | Profile URL for the footer link (default `https://x.com`). Also the fallback source of the handle. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
 | `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to allow LIVE Promptea Weekly sends. Default `false` (live runs return `DELIVERY_DISABLED`). `promptea.me` is verified in Resend. |
 | `NEWSLETTER_SEND_SECRET` | for the weekly run | HMAC key shared with the weekly routine (≥32 random chars). Without it `POST /api/internal/newsletter/run` returns 503. Never commit it. |

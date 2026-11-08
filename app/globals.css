@@ -1323,3 +1323,20 @@ html {
     radial-gradient(120% 60% at 0% 0%, var(--glass-shine), transparent 40%),
     var(--overlay-fill);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.8.0 — benchmark charts
+   ═══════════════════════════════════════════════════════════════════════════ */
+@keyframes barGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+.bm-bar-fill {
+  transform-origin: left center;
+  animation: barGrow 520ms var(--ease-out-strong) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bm-bar-fill {
+    animation: none;
+  }
+}

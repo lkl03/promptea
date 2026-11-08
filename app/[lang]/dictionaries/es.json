@@ -348,7 +348,42 @@
     "showcaseTitle": "Un recorrido por Promptea",
     "showcaseBody": "Un recorrido real por la app: analizar un prompt, copiar la versión optimizada, elegir una IA, leer las noticias y explorar benchmarks.",
     "showcaseCaption": "Grabación automatizada de la interfaz con un prompt de demostración.",
-    "showcasePending": "El video de demostración se está generando."
+    "showcasePending": "El video de demostración se está generando.",
+    "toolsTitle": "Herramientas",
+    "promptBox": {
+      "title": "Pegá tu prompt y analizalo",
+      "label": "Tu prompt",
+      "placeholder": "Pegá acá el prompt que querés mejorar…",
+      "submit": "Analizar prompt",
+      "hint": "Se abre el analizador con tu prompt cargado. Gratis y sin cuenta.",
+      "tooLong": "Se enviarán los primeros {n} caracteres."
+    },
+    "latest": {
+      "title": "Lo último en IA al día",
+      "subtitle": "Una nota verificada por día, con sus fuentes.",
+      "all": "Ver todas las notas",
+      "weekly": "Resumen semanal"
+    },
+    "teaser": {
+      "title": "Benchmarks de un vistazo",
+      "subtitle": "Los modelos que lideran el {benchmark}",
+      "cta": "Ver ranking, costo y gráficos",
+      "source": "Fuente: {source} · {date}"
+    },
+    "xFeed": {
+      "title": "Seguinos en X",
+      "subtitle": "Novedades de Promptea y de la IA, en vivo.",
+      "load": "Cargar el feed de @{handle}",
+      "loading": "Cargando el feed…",
+      "privacyNote": "El feed lo muestra X, un tercero: al cargarlo, X puede recibir datos de tu navegador y usar cookies. No se carga hasta que lo pedís.",
+      "fallback": "No pudimos cargar el feed. Puede estar bloqueado por tu navegador o una extensión.",
+      "open": "Abrir @{handle} en X",
+      "follow": "Seguinos en X"
+    },
+    "newsletter": {
+      "title": "La semana en IA, en tu correo",
+      "body": "Cada lunes, las historias de IA que importaron. Sin spam: te das de baja cuando quieras."
+    }
   },
   "analyzerPage": {
     "title": "Analizador de prompts",

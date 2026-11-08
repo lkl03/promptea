@@ -4,6 +4,7 @@ import AppFeedbackButton from "@/components/AppFeedbackButton";
 import { APP_VERSION } from "@/lib/version";
 import type { AppFeedbackDict } from "@/lib/uiDict";
 import { weeklyArchivePath } from "@/lib/newsletter/paths";
+import { getXLinks } from "@/lib/social";
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -35,7 +36,7 @@ export default function Footer({
   const resourcesLabel = lang === "es" ? "Recursos útiles" : "Useful resources";
   const eterlabMessage = lang === "es" ? "diseñado y desarrollado por" : "designed and developed by";
   const followLabel = lang === "es" ? "Seguinos en X" : "Follow us on X";
-  const xUrl = (process.env.NEXT_PUBLIC_X_URL || "https://x.com") as string;
+  const xUrl = getXLinks().url;
 
   return (
     <footer className="mx-auto w-full max-w-6xl px-4 pb-8 pt-10 3xl:max-w-7xl">

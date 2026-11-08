@@ -1,18 +1,26 @@
 // app/[lang]/page.tsx
 //
-// v1.7.0 — the homepage is a hub. Reading order:
+// v1.7.0 — the homepage is a hub; v1.8.0 — it also shows content. Reading order:
 //   1. minimal controls (language + theme; no navigation links here),
 //   2. the news marquee (AI Daily, last 72 h; hidden when nothing qualifies),
-//   3. the logo with the mascot,
-//   4. four primary cards — Analyze | Best AI on the first row,
-//      AI Daily | Benchmarks on the second (stacked in that order on mobile),
-//   5. secondary links: Prompts | Guides | Models | Glossary,
-//   6. the product showcase video.
+//   3. the logo with the mascot + tagline,
+//   4. the main action: paste a prompt -> /{lang}/analyzer with it preloaded,
+//   5. "Latest in AI Daily": the newest 3-4 stories (title, deck, category,
+//      reading time, direct link),
+//   6. tools: Analyze | Best AI cards, then the secondary links
+//      (Prompts | Guides | Models | Glossary),
+//   7. Benchmarks teaser: the top of one real ranking, with source and date,
+//   8. X feed (only when NEXT_PUBLIC_X_HANDLE / NEXT_PUBLIC_X_URL name an
+//      account): official timeline behind a click-to-load facade,
+//   9. newsletter sign-up,
+//  10. the product showcase video,
+//  11. (slot) crawlable text content: see the marker at the end of <main>.
 //
-// The analyzer that used to live here moved to /{lang}/analyzer, unchanged.
-// Legacy deep links (/{lang}?prompt=…) are forwarded there by proxy.ts, so
-// this page never reads search params and stays statically rendered with a
-// short revalidation window (the 72 h marquee cut-off is at most 5 min late).
+// Everything that needs Firestore or a third party degrades to nothing (or to
+// the plain card) when it is unavailable, and the page stays statically
+// rendered with a short revalidation window. This page never reads search
+// params; legacy deep links (/{lang}?prompt=...) are forwarded to /{lang}/analyzer
+// by proxy.ts.
 
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -24,19 +32,61 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import ThemeToggle from "@/components/ThemeToggle";
 import NewsMarquee from "@/components/home/NewsMarquee";
 import HubCards from "@/components/home/HubCards";
+import HomePromptBox from "@/components/home/HomePromptBox";
+import LatestDaily, { type LatestArticle } from "@/components/home/LatestDaily";
+import BenchmarksTeaser from "@/components/home/BenchmarksTeaser";
+import XFeed from "@/components/home/XFeed";
+import SubscribeForm from "@/components/newsletter/SubscribeForm";
 import ShowcaseVideo from "@/components/home/ShowcaseVideo";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import { selectMarqueeItems, type MarqueeItem } from "@/lib/blog/marquee";
+import { getBenchmarks } from "@/lib/benchmarks/server";
+import { buildTeaser, type Teaser } from "@/lib/benchmarks/teaser";
+import { getXLinks } from "@/lib/social";
 
 export const revalidate = 300;
 
-/** Firestore never breaks the hub: an outage simply hides the news strip. */
-async function loadMarquee(lang: "es" | "en"): Promise<MarqueeItem[]> {
+/** How many stories the "Latest in AI Daily" block shows. */
+const LATEST_COUNT = 4;
+
+/**
+ * Firestore never breaks the hub: an outage hides the news strip and the
+ * latest-stories block (which falls back to the plain AI Daily card). One
+ * query feeds both.
+ */
+async function loadNews(lang: "es" | "en"): Promise<{ marquee: MarqueeItem[]; latest: LatestArticle[] }> {
   try {
-    return selectMarqueeItems(await listAllPublishedArticles(lang, 30), new Date());
+    const articles = await listAllPublishedArticles(lang, 30);
+    const latest = articles.slice(0, LATEST_COUNT).map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      deck: a.deck,
+      category: a.category,
+      readingMinutes: a.readingMinutes,
+      eventDate: a.eventDate,
+      publishedAt: a.publishedAt,
+    }));
+    return { marquee: selectMarqueeItems(articles, new Date()), latest };
   } catch {
-    return [];
+    return { marquee: [], latest: [] };
   }
+}
+
+/** The benchmarks teaser degrades to the plain card: no snapshot, no numbers. */
+async function loadTeaser(): Promise<Teaser | null> {
+  try {
+    const result = await getBenchmarks();
+    return result.status === "unavailable" ? null : buildTeaser(result.snapshot, 5);
+  } catch {
+    return null;
+  }
+}
+
+function fmtDate(iso: string | null, lang: "es" | "en"): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return new Intl.DateTimeFormat(lang === "es" ? "es-AR" : "en-US", { dateStyle: "long", timeZone: "America/Argentina/Buenos_Aires" }).format(d);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -54,7 +104,8 @@ export default async function HubPage({ params }: { params: Promise<{ lang: stri
 
   const dict = await getDictionary(l);
   const t = dict.hub;
-  const marquee = await loadMarquee(l);
+  const [{ marquee, latest }, teaser] = await Promise.all([loadNews(l), loadTeaser()]);
+  const x = getXLinks();
 
   const secondary = [
     { href: `/${l}/prompts`, label: t.secondary.prompts },
@@ -86,30 +137,78 @@ export default async function HubPage({ params }: { params: Promise<{ lang: stri
         <p className="mt-4 max-w-xl text-base text-ink-muted sm:text-lg">{t.tagline}</p>
       </header>
 
-      {/* 4. Primary cards */}
-      <div className="mt-10 sm:mt-12">
-        <HubCards lang={l} dict={t} />
+      {/* 4. Main action: paste a prompt, land in the analyzer with it loaded */}
+      <div className="mt-8 sm:mt-10">
+        <HomePromptBox lang={l} dict={t.promptBox} />
       </div>
 
-      {/* 5. Secondary links */}
-      <nav aria-label={t.secondaryAria} className="mt-8">
-        <ul className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-sm">
-          {secondary.map((item, i) => (
-            <li key={item.href} className="flex items-center">
-              {i > 0 ? (
-                <span aria-hidden="true" className="px-2 text-ink-faint">
-                  |
-                </span>
-              ) : null}
-              <Link href={item.href} className="rounded-lg px-2 py-1 text-ink-muted transition-colors hover:bg-surface-soft hover:text-ink">
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {/* 5. Latest in AI Daily */}
+      <div className="mt-12 sm:mt-14">
+        <LatestDaily
+          articles={latest}
+          lang={l}
+          dict={t.latest}
+          categories={dict.blog.category}
+          readingTime={dict.blog.readingTime}
+          fallback={t.cards.daily}
+        />
+      </div>
 
-      {/* 6. Product showcase */}
+      {/* 6. Tools + secondary links */}
+      <section aria-labelledby="tools-title" className="mt-12 sm:mt-14">
+        <h2 id="tools-title" className="sr-only">
+          {t.toolsTitle}
+        </h2>
+        <HubCards lang={l} dict={t} only={["analyze", "bestAi"]} />
+
+        <nav aria-label={t.secondaryAria} className="mt-6">
+          <ul className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-sm">
+            {secondary.map((item, i) => (
+              <li key={item.href} className="flex items-center">
+                {i > 0 ? (
+                  <span aria-hidden="true" className="px-2 text-ink-faint">
+                    |
+                  </span>
+                ) : null}
+                <Link href={item.href} className="rounded-lg px-2 py-1 text-ink-muted transition-colors hover:bg-surface-soft hover:text-ink">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </section>
+
+      {/* 7. Benchmarks teaser */}
+      <div className="mt-12 sm:mt-14">
+        <BenchmarksTeaser
+          teaser={teaser}
+          lang={l}
+          dict={t.teaser}
+          dateLabel={teaser ? (fmtDate(teaser.asOf, l) ?? fmtDate(teaser.fetchedAt, l)) : null}
+          fallback={t.cards.benchmarks}
+        />
+      </div>
+
+      {/* 8. X feed: only when an account is configured */}
+      {x.handle ? (
+        <div className="mt-12 sm:mt-14">
+          <XFeed handle={x.handle} profileUrl={x.url} dict={t.xFeed} />
+        </div>
+      ) : null}
+
+      {/* 9. Newsletter */}
+      <section aria-labelledby="home-newsletter-title" className="surface mt-12 grid gap-5 p-5 sm:mt-14 sm:p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-center md:gap-8">
+        <div>
+          <h2 id="home-newsletter-title" className="font-title text-xl font-semibold sm:text-2xl">
+            {t.newsletter.title}
+          </h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{t.newsletter.body}</p>
+        </div>
+        <SubscribeForm lang={l} dict={dict.newsletter.bar} />
+      </section>
+
+      {/* 10. Product showcase */}
       <section aria-labelledby="showcase-title" className="mx-auto mt-14 max-w-4xl sm:mt-16">
         <div className="text-center">
           <h2 id="showcase-title" className="font-title text-2xl font-semibold sm:text-3xl">
@@ -121,6 +220,8 @@ export default async function HubPage({ params }: { params: Promise<{ lang: stri
           <ShowcaseVideo lang={l} caption={t.showcaseCaption} pending={t.showcasePending} title={t.showcaseTitle} />
         </div>
       </section>
+
+      {/* 11. SLOT: crawlable text content (SEO/GEO). Add ONE component here, e.g. <HomeCrawlableContent lang={l} dict={dict} />. */}
     </main>
   );
 }

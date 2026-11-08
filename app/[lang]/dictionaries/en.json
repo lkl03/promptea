@@ -348,7 +348,42 @@
     "showcaseTitle": "A quick tour of Promptea",
     "showcaseBody": "A real tour of the app: analyze a prompt, copy the optimized version, pick an AI, read the news, and explore benchmarks.",
     "showcaseCaption": "Automated recording of the interface with a demo prompt.",
-    "showcasePending": "The demo video is being generated."
+    "showcasePending": "The demo video is being generated.",
+    "toolsTitle": "Tools",
+    "promptBox": {
+      "title": "Paste your prompt and analyze it",
+      "label": "Your prompt",
+      "placeholder": "Paste the prompt you want to improve here…",
+      "submit": "Analyze prompt",
+      "hint": "Opens the analyzer with your prompt loaded. Free, no account.",
+      "tooLong": "Only the first {n} characters will be sent."
+    },
+    "latest": {
+      "title": "Latest in AI Daily",
+      "subtitle": "One verified story a day, with its sources.",
+      "all": "See all stories",
+      "weekly": "Weekly digest"
+    },
+    "teaser": {
+      "title": "Benchmarks at a glance",
+      "subtitle": "The models leading the {benchmark}",
+      "cta": "See rankings, cost and charts",
+      "source": "Source: {source} · {date}"
+    },
+    "xFeed": {
+      "title": "Follow us on X",
+      "subtitle": "Promptea and AI news, live.",
+      "load": "Load the @{handle} feed",
+      "loading": "Loading the feed…",
+      "privacyNote": "The feed is shown by X, a third party: when loaded, X may receive data from your browser and set cookies. It is not loaded until you ask for it.",
+      "fallback": "We couldn't load the feed. It may be blocked by your browser or an extension.",
+      "open": "Open @{handle} on X",
+      "follow": "Follow us on X"
+    },
+    "newsletter": {
+      "title": "The week in AI, in your inbox",
+      "body": "Every Monday, the AI stories that mattered. No spam: unsubscribe any time."
+    }
   },
   "analyzerPage": {
     "title": "Prompt analyzer",
