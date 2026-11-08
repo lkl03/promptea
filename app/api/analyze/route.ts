@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { AnalyzeSchema } from "@/lib/validators";
-import { analyzePrompt } from "@/lib/analyzePrompt";
+import { analyzePrompt, scoreOptimizedPrompt } from "@/lib/analyzePrompt";
 import { upsertAnalysisEvent } from "@/lib/telemetry/server";
 import { normalizeAnalyzeAttachments, type AttachmentContext } from "@/lib/attachments";
 import { isLang, normalizePurpose, type Lang } from "@/lib/domain";
@@ -151,16 +151,39 @@ export async function POST(req: NextRequest) {
     }
   });
 
-  const finalOptimizedPrompt =
-    refinement && refinement.execution.engine === "adaptive"
-      ? refinement.optimizedPrompt
-      : result.optimizedPrompt;
+  const adaptiveUsed = Boolean(refinement && refinement.execution.engine === "adaptive");
+  const finalOptimizedPrompt = adaptiveUsed && refinement ? refinement.optimizedPrompt : result.optimizedPrompt;
+
+  // v1.8.0: before → after. The engine already scored its deterministic
+  // prompt; re-score only when the adaptive rewrite replaced it.
+  let optimizedScore = result.meta.optimizedScore ?? result.score;
+  let optimizedBreakdown = result.meta.optimizedBreakdown ?? result.meta.scoreBreakdown;
+  if (adaptiveUsed && refinement) {
+    const after = scoreOptimizedPrompt({
+      optimizedPrompt: finalOptimizedPrompt,
+      originalPrompt: prompt,
+      taskType: result.meta.taskType,
+      target,
+      lang,
+      attachments,
+      baseline: { score: result.score, breakdown: result.meta.scoreBreakdown },
+    });
+    // Diagnostics only: the heuristic rubric can under-rate natural prose,
+    // so a lower score never rejects the rewrite — it is surfaced instead.
+    if (after.score + 15 < optimizedScore && !refinement.quality.warnings.includes("score_regression")) {
+      refinement.quality.warnings.push("score_regression");
+    }
+    optimizedScore = after.score;
+    optimizedBreakdown = after.breakdown;
+  }
 
   const payload = {
     ...result,
     optimizedPrompt: finalOptimizedPrompt,
     meta: {
       ...result.meta,
+      optimizedScore,
+      optimizedBreakdown,
       analysisId,
       attachmentFormats: attachments.map((file) => ({
         kind: file.kind ?? null,

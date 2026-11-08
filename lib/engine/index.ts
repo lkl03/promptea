@@ -1,11 +1,11 @@
 import type { Lang, TargetAI } from "../promptTemplates";
-import type { AnalyzeResult, PromptPurpose, TaskType, Features } from "./types";
+import type { AnalyzeResult, PromptPurpose, TaskType, Features, ScoreBreakdown } from "./types";
 import type { AttachmentContext, AttachmentKind } from "@/lib/attachments";
 
 import { lintPrompt } from "./lint";
 import { extractFeatures } from "./features";
 import { scorePrompt } from "./scoring";
-import { buildOptimizedPrompt } from "./builder";
+import { buildOptimizedPrompt, stripLegacyHeader } from "./builder";
 import { buildJsonOptimizedPrompt } from "./jsonOutput";
 import { buildFeedbackBlock } from "./feedback";
 
@@ -381,6 +381,17 @@ export function analyzePrompt(
   const words = wordCount(raw);
   const approxTokens = approxTokensFromWords(words);
 
+  // v1.8.0: before → after. Unchanged prompt → same score by definition.
+  const after = scoreOptimizedPrompt({
+    optimizedPrompt,
+    originalPrompt: raw,
+    taskType,
+    target,
+    lang,
+    attachments: effectiveAttachments,
+    baseline: { score: scored.score, breakdown: scored.breakdown },
+  });
+
   const feedback = buildFeedbackBlock({
     taskType,
     purpose,
@@ -409,6 +420,8 @@ export function analyzePrompt(
       confidence: scored.confidence,
       scoreExplain: scored.explain,
       scoreBreakdown: scored.breakdown,
+      optimizedScore: after.score,
+      optimizedBreakdown: after.breakdown,
       outputFormat: lint.outputFormat ?? null,
       attachmentsCount: effectiveAttachments.length,
       attachmentsUsed: effectiveAttachments.map((file) => ({
@@ -429,6 +442,82 @@ export function analyzePrompt(
       modelNotes: feedback.modelNotes,
     },
   };
+}
+
+export type OptimizedScoreArgs = {
+  optimizedPrompt: string;
+  originalPrompt: string;
+  taskType: TaskType;
+  target: TargetAI;
+  lang: Lang;
+  attachments?: AttachmentContext[];
+  /** The original's score: returned as-is when the prompt is unchanged. */
+  baseline?: { score: number; breakdown: ScoreBreakdown };
+};
+
+/**
+ * v1.8.0 (engine 2.3.0): score the FINAL optimized prompt — deterministic or
+ * adaptive — with the same rubric, for the "before → after" view.
+ *
+ * Why not `analyzePrompt(optimized).score`? Re-analysis extracts the user's
+ * core back out of the scaffold (contract C: stability), so it returns the
+ * ORIGINAL score by design. Here the prompt is scored as it will be sent:
+ *
+ * - structure the optimized prompt adds (output format, constraints, success
+ *   criteria, tone, audience…) is credited from the WHOLE text;
+ * - length-driven clarity, the goal, and the evidence features (inputs, error details,
+ *   repro steps) come only from CONTENT — the request block of a structured
+ *   shape, or the whole text for prose (adaptive rewrites, image prompts) —
+ *   so generic scaffold sentences never inflate the score on their own;
+ * - Promptea's guarded guidance sentences and legacy headers are ignored;
+ * - task type is pinned to the original analysis (no re-classification);
+ * - safety is measured on the whole text (an injection the rewrite removed
+ *   stops costing points; one it added starts costing them).
+ *
+ * Pure, synchronous, no network.
+ */
+export function scoreOptimizedPrompt(args: OptimizedScoreArgs): { score: number; breakdown: ScoreBreakdown } {
+  const optimized = canonicalize(normalizeText(args.optimizedPrompt));
+  const original = canonicalize(normalizeText(args.originalPrompt));
+  if (args.baseline && optimized === original) {
+    return { score: args.baseline.score, breakdown: { ...args.baseline.breakdown } };
+  }
+
+  const attachments = Array.isArray(args.attachments) ? args.attachments : [];
+  const text = canonicalize(normalizeText(stripGuardedGuidance(stripLegacyHeader(optimized))));
+  const content = detectStructured(text) ? extractCorePrompt(text).core : text;
+
+  const contentF = extractFeatures(content, args.taskType, args.lang);
+  const fullF = extractFeatures(text, args.taskType, args.lang);
+
+  const merged: Features = enhanceFeaturesWithAttachments(
+    {
+      words: contentF.words,
+      hasGoal: contentF.hasGoal,
+      hasInputs: contentF.hasInputs,
+      hasAudience: contentF.hasAudience || fullF.hasAudience,
+      hasExamples: contentF.hasExamples || fullF.hasExamples,
+      hasConstraints: contentF.hasConstraints || fullF.hasConstraints,
+      hasOutputFormat: contentF.hasOutputFormat || fullF.hasOutputFormat,
+      hasSuccessCriteria: contentF.hasSuccessCriteria || fullF.hasSuccessCriteria,
+      hasTone: contentF.hasTone || fullF.hasTone,
+      hasLengthHint: contentF.hasLengthHint || fullF.hasLengthHint,
+      hasTimeframe: contentF.hasTimeframe || fullF.hasTimeframe,
+      hasRegion: contentF.hasRegion || fullF.hasRegion,
+      hasErrorDetails: contentF.hasErrorDetails,
+      hasReproSteps: contentF.hasReproSteps,
+      injectionLike: fullF.injectionLike,
+      contradictions: fullF.contradictions,
+      languageMismatch: fullF.languageMismatch,
+    },
+    attachments,
+    args.taskType
+  );
+
+  const scored = scorePrompt(args.taskType, args.target, merged, args.lang, {
+    attachmentsCount: attachments.length,
+  });
+  return { score: scored.score, breakdown: scored.breakdown };
 }
 
 export { ENGINE_VERSION };
