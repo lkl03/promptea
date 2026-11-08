@@ -62,6 +62,8 @@
     "confidenceHigh": "confianza: alta",
     "confidenceMedium": "confianza: media",
     "confidenceLow": "confianza: baja",
+    "optimizedScore": "optimizado: {score} ({delta})",
+    "optimizedScoreHint": "Mismo criterio aplicado al prompt optimizado final.",
     "filesUsed_one": "{n} archivo usado",
     "filesUsed_other": "{n} archivos usados",
     "risksTitle": "Riesgos detectados",

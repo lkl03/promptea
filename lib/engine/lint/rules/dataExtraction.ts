@@ -1,5 +1,5 @@
 import type { Lang, Impact, Severity, FindingId, RecommendationId, OutputFormat } from "../types";
-import { hasInputDataForExtraction, hasStrongSchema, isExtractionLike, wantsJson } from "./utils";
+import { hasInputDataForExtraction, hasStrongSchema, hasTypedFieldList, isExtractionLike, wantsJson } from "./utils";
 
 type AddFinding = (id: FindingId, severity: Severity) => void;
 type AddReco = (id: RecommendationId, impact: Impact) => void;
@@ -24,7 +24,12 @@ export function applyDataExtractionRules(opts: {
 
   // Si pide JSON pero no hay schema fuerte -> add_schema (dataset definition)
   if (wantsJson(outputFormat ?? null, prompt) && !hasStrongSchema(prompt)) {
-    addFinding("missing_schema", "high");
-    addReco("add_schema", "high");
+    if (hasTypedFieldList(prompt)) {
+      // v1.8.0: typed fields are a schema; an example object still helps.
+      addReco("add_schema", "low");
+    } else {
+      addFinding("missing_schema", "high");
+      addReco("add_schema", "high");
+    }
   }
 }

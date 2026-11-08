@@ -126,7 +126,9 @@ function constraintsScore(taskType: TaskType, f: Features) {
   let score = hits * 18;
 
   if ((taskType === "summarization" || taskType === "translation") && (f.hasLengthHint || f.hasTone || f.hasConstraints)) {
-    score = Math.max(score, 55);
+    // v1.8.0: the floor used to flatten every specified request to 55, so a
+    // translation with register + preservation rules tied a bare "to Spanish".
+    score = Math.max(score, 55 + Math.max(0, hits - 1) * 15);
   }
 
   return clamp(score);

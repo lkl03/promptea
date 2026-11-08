@@ -161,10 +161,14 @@ I need root cause, a minimal fix, and how to verify it.`;
     // model.profiles.test.ts).
     const r = analyzePrompt(prompt, "gpt", "en", "code", { modelId: "gpt-6-sol" });
     expect(r.meta.routing?.complexity).not.toBe("simple");
-    // v1.3.0 agent-workflow shape headings replace the old generic scaffold.
-    expect(r.optimizedPrompt).toContain("OBJECTIVE:");
-    expect(r.optimizedPrompt).toContain("STEPS & VALIDATION:");
-    expect(r.optimizedPrompt).toContain("DELIVERY:");
+    // v1.8.0: a bug report whose only repo signal is "npm run dev" in its
+    // reproduction steps is a debugging request, not an agent task — it gets
+    // the debugging shape (evidence + root cause/fix/validation), not
+    // "you have permission to inspect the repo".
+    expect(r.meta.routing?.strategy).toBe("debugging_review");
+    expect(r.optimizedPrompt).toContain("PROBLEM:");
+    expect(r.optimizedPrompt).toContain("EVIDENCE:");
+    expect(r.optimizedPrompt).toContain("EXPECTED ANSWER:");
     expect(r.optimizedPrompt).not.toContain("OUTPUT FORMAT:");
     expect(r.optimizedPrompt).not.toContain("CONSTRAINTS:");
     expect(r.optimizedPrompt).not.toMatch(/^PROMPTEA:/i);

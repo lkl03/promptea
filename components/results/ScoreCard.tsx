@@ -123,6 +123,16 @@ export default function ScoreCard({
     ? { label: dict.confidenceMedium, cls: "badge-warning" }
     : { label: dict.confidenceLow, cls: "badge-neutral" };
 
+  // v1.8.0: before → after, shown only when the optimized prompt scores
+  // differently (an unchanged prompt keeps the same score by definition).
+  const afterRaw = Number(result.meta.optimizedScore);
+  const after = Number.isFinite(afterRaw) ? Math.round(afterRaw) : null;
+  const delta = after === null ? 0 : after - (result.score ?? 0);
+  const afterBadge =
+    after !== null && delta !== 0 && dict.optimizedScore
+      ? tpl(dict.optimizedScore, { score: after, delta: delta > 0 ? `+${delta}` : String(delta) })
+      : null;
+
   const attachmentsCount = Number(result.meta.attachmentsCount ?? 0);
   const words = Number(result.stats?.words ?? 0);
   const tokens = Number(result.stats?.approxTokens ?? 0);
@@ -155,6 +165,14 @@ export default function ScoreCard({
         <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 text-xs text-ink-faint">
           <span className="tabular-nums">{`${words} ${wordsLabel} · ~${tokens} tokens`}</span>
           {confBadge && <span className={["badge", confBadge.cls].join(" ")}>{confBadge.label}</span>}
+          {afterBadge && (
+            <span
+              className={["badge tabular-nums", delta > 0 ? "badge-success" : "badge-neutral"].join(" ")}
+              title={dict.optimizedScoreHint}
+            >
+              {afterBadge}
+            </span>
+          )}
           {attachmentsCount > 0 && (
             <span className="badge badge-info">
               {tpl(attachmentsCount === 1 ? dict.filesUsed_one : dict.filesUsed_other, { n: attachmentsCount })}

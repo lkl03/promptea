@@ -59,7 +59,10 @@ export function hasInputDataForExtraction(p: string) {
     low.includes("input:") ||
     low.includes("entrada:") ||
     /```[\s\S]*?```/.test(p) ||
-    /"[^"]{10,}"/.test(p)
+    /"[^"]{10,}"/.test(p) ||
+    // v1.8.0: a labeled data block ("Invoice:\n…", "csv: name,age") is input.
+    /^[^\n:]{2,40}:[ \t]*\n[ \t]*\S/m.test(p) ||
+    /\b(invoice|factura|csv|data|datos|records?|registros?|log|transcript|transcripci[oó]n|mensaje|message|email|correo)\s*:\s*\S/i.test(p)
   );
 }
 
@@ -91,6 +94,19 @@ export function hasStrongSchema(p: string) {
   return false;
 }
 
+/**
+ * v1.8.0: a typed field list ("sku (string), qty (integer)" or
+ * "name: string, age: number"). Not a full schema (no example object), but
+ * the prompt is NOT missing one — only an example is still recommended.
+ */
+export function hasTypedFieldList(p: string) {
+  const parenTyped =
+    p.match(/[\w.-]+\s*\(\s*(?:string|number|integer|int|float|decimal|boolean|bool|date|datetime|array|object|texto|n[uú]mero|entero|fecha|booleano|lista)\b/gi) ?? [];
+  const colonTyped =
+    p.match(/\b[\w.-]+\s*:\s*(?:string|number|integer|int|float|decimal|boolean|bool|date|datetime|array|object|texto|n[uú]mero|entero|fecha|booleano|lista)\b/gi) ?? [];
+  return parenTyped.length + colonTyped.length >= 2;
+}
+
 export function wantsJson(outputFormat: OutputFormat | null | undefined, prompt: string) {
   const low = (prompt ?? "").toLowerCase();
   return (
@@ -115,7 +131,11 @@ export function isExtractionLike(taskType: string | undefined, prompt: string, l
 }
 
 export function isDebugLike(taskType: string | undefined, prompt: string, lang: Lang) {
-  const low = (prompt ?? "").toLowerCase();
+  // v1.8.0: "include error handling" / "manejo de errores" is an
+  // implementation requirement, not a bug report.
+  const low = (prompt ?? "")
+    .toLowerCase()
+    .replace(/\b(error handling|handle errors?|handling errors?)\b|manej(o|ar|á) (de |los )?errores?|control de errores/g, " ");
   const byTask = String(taskType ?? "").toLowerCase() === "debugging";
 
   const byWords =

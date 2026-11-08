@@ -62,6 +62,8 @@
     "confidenceHigh": "confidence: high",
     "confidenceMedium": "confidence: medium",
     "confidenceLow": "confidence: low",
+    "optimizedScore": "optimized: {score} ({delta})",
+    "optimizedScoreHint": "Same rubric applied to the final optimized prompt.",
     "filesUsed_one": "{n} file used",
     "filesUsed_other": "{n} files used",
     "risksTitle": "Detected risks",

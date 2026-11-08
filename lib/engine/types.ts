@@ -44,6 +44,15 @@ export type Features = {
   languageMismatch: boolean;
 };
 
+export type ScoreBreakdown = {
+  clarity: number;
+  context: number;
+  constraints: number;
+  output: number;
+  verifiability: number;
+  safety: number;
+};
+
 export type AnalyzeResult = {
   score: number;
   findings: Finding[];
@@ -60,14 +69,15 @@ export type AnalyzeResult = {
     coreExtracted: boolean;
     confidence: number;
     scoreExplain: string[];
-    scoreBreakdown: {
-      clarity: number;
-      context: number;
-      constraints: number;
-      output: number;
-      verifiability: number;
-      safety: number;
-    };
+    scoreBreakdown: ScoreBreakdown;
+    /**
+     * v1.8.0 (engine 2.3.0): the same rubric applied to the FINAL optimized
+     * prompt (the "after" of before → after). Equals `score` when the prompt
+     * was left unchanged. See scoreOptimizedPrompt() for what is credited.
+     */
+    optimizedScore?: number;
+    /** v1.8.0: breakdown of `optimizedScore` (same shape as scoreBreakdown). */
+    optimizedBreakdown?: ScoreBreakdown;
     outputFormat?: OutputFormat | null;
     attachmentsCount?: number;
     attachmentsUsed?: Array<Pick<AttachmentContext, "name" | "kind" | "truncated">>;

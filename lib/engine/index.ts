@@ -1,20 +1,21 @@
 import type { Lang, TargetAI } from "../promptTemplates";
-import type { AnalyzeResult, PromptPurpose, TaskType, Features } from "./types";
+import type { AnalyzeResult, PromptPurpose, TaskType, Features, ScoreBreakdown } from "./types";
 import type { AttachmentContext, AttachmentKind } from "@/lib/attachments";
 
 import { lintPrompt } from "./lint";
 import { extractFeatures } from "./features";
 import { scorePrompt } from "./scoring";
-import { buildOptimizedPrompt } from "./builder";
+import { buildOptimizedPrompt, stripLegacyHeader } from "./builder";
 import { buildJsonOptimizedPrompt } from "./jsonOutput";
 import { buildFeedbackBlock } from "./feedback";
 
 import { normalizeText, wordCount, approxTokensFromWords } from "./normalize";
 import { detectStructured, extractCorePrompt } from "./extractor";
 import { stripGuardedGuidance } from "./shapes";
+import { neutralizeInjection } from "./sanitize";
 import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
-import { classifyTask } from "./classifier";
+import { classifyTaskDetailed } from "./classifier";
 import { selectStrategy, isImageGenerationRequest, type RoutingDecision } from "@/lib/refine/router";
 import { normalizePurpose } from "@/lib/domain";
 
@@ -98,7 +99,8 @@ function parseEmbeddedAttachments(raw: string): AttachmentContext[] {
 
 function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
   const fallback = TASK_FROM_PURPOSE[purpose] ?? "text";
-  const classified = classifyTask(raw);
+  const detailed = classifyTaskDetailed(raw);
+  const classified = detailed.best;
 
   switch (purpose) {
     case "code":
@@ -113,10 +115,15 @@ function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
       // v1.2.0: detect the real task even when the user kept the default
       // "text" purpose — a JSON-extraction or debugging prompt typed under
       // "text" should be scored and structured as what it actually is.
+      // v1.8.0: support and marketing words are common in everyday text
+      // ("clientes", "marca"), so they only win under "text" with 2+
+      // independent signals (e.g. "copy" + "CTA", "queja" + "disculpas").
+      if ((classified === "customer_support" || classified === "marketing") && detailed.score >= 2) {
+        return classified;
+      }
       if (
         classified === "research" ||
         classified === "planning" ||
-        classified === "customer_support" ||
         classified === "writing" ||
         classified === "summarization" ||
         classified === "translation" ||
@@ -329,9 +336,16 @@ export function analyzePrompt(
   let optimizedPrompt: string;
   let alreadyOptimized = false;
 
+  // v1.8.0 contract G: the optimized prompt is built from the core with
+  // override/exfiltration sentences removed — the engine never repeats them.
+  // (Lint/features/score above still saw them: finding + safety penalty.)
+  const neutralized = neutralizeInjection(cleanAnalysisInput);
+  const buildCore = neutralized.clean;
+  const injectionRemoved = neutralized.removed > 0;
+
   if (formatChoice === "json") {
     optimizedPrompt = buildJsonOptimizedPrompt({
-      core: cleanAnalysisInput,
+      core: buildCore,
       taskType,
       target,
       lang,
@@ -341,7 +355,7 @@ export function analyzePrompt(
     });
   } else {
     const built = canonicalize(
-      buildOptimizedPrompt(cleanAnalysisInput, taskType, target, lang, purpose, effectiveAttachments, {
+      buildOptimizedPrompt(buildCore, taskType, target, lang, purpose, effectiveAttachments, {
         complexity: routing.complexity,
         strategy: routing.strategy,
         modelId,
@@ -349,7 +363,9 @@ export function analyzePrompt(
     );
     const rawCanonical = canonicalize(raw);
 
-    if (!promptea && built === rawCanonical && (detectStructured(raw) || routing.strategy === "image_generation")) {
+    if (injectionRemoved) {
+      optimizedPrompt = built;
+    } else if (!promptea && built === rawCanonical && (detectStructured(raw) || routing.strategy === "image_generation")) {
       // v1.6.0: a developed image prompt (prose, no headings) that rebuilds
       // to itself is already optimized too — the adaptive call is skipped.
       optimizedPrompt = rawCanonical;
@@ -364,6 +380,17 @@ export function analyzePrompt(
 
   const words = wordCount(raw);
   const approxTokens = approxTokensFromWords(words);
+
+  // v1.8.0: before → after. Unchanged prompt → same score by definition.
+  const after = scoreOptimizedPrompt({
+    optimizedPrompt,
+    originalPrompt: raw,
+    taskType,
+    target,
+    lang,
+    attachments: effectiveAttachments,
+    baseline: { score: scored.score, breakdown: scored.breakdown },
+  });
 
   const feedback = buildFeedbackBlock({
     taskType,
@@ -393,6 +420,8 @@ export function analyzePrompt(
       confidence: scored.confidence,
       scoreExplain: scored.explain,
       scoreBreakdown: scored.breakdown,
+      optimizedScore: after.score,
+      optimizedBreakdown: after.breakdown,
       outputFormat: lint.outputFormat ?? null,
       attachmentsCount: effectiveAttachments.length,
       attachmentsUsed: effectiveAttachments.map((file) => ({
@@ -413,6 +442,82 @@ export function analyzePrompt(
       modelNotes: feedback.modelNotes,
     },
   };
+}
+
+export type OptimizedScoreArgs = {
+  optimizedPrompt: string;
+  originalPrompt: string;
+  taskType: TaskType;
+  target: TargetAI;
+  lang: Lang;
+  attachments?: AttachmentContext[];
+  /** The original's score: returned as-is when the prompt is unchanged. */
+  baseline?: { score: number; breakdown: ScoreBreakdown };
+};
+
+/**
+ * v1.8.0 (engine 2.3.0): score the FINAL optimized prompt — deterministic or
+ * adaptive — with the same rubric, for the "before → after" view.
+ *
+ * Why not `analyzePrompt(optimized).score`? Re-analysis extracts the user's
+ * core back out of the scaffold (contract C: stability), so it returns the
+ * ORIGINAL score by design. Here the prompt is scored as it will be sent:
+ *
+ * - structure the optimized prompt adds (output format, constraints, success
+ *   criteria, tone, audience…) is credited from the WHOLE text;
+ * - length-driven clarity, the goal, and the evidence features (inputs, error details,
+ *   repro steps) come only from CONTENT — the request block of a structured
+ *   shape, or the whole text for prose (adaptive rewrites, image prompts) —
+ *   so generic scaffold sentences never inflate the score on their own;
+ * - Promptea's guarded guidance sentences and legacy headers are ignored;
+ * - task type is pinned to the original analysis (no re-classification);
+ * - safety is measured on the whole text (an injection the rewrite removed
+ *   stops costing points; one it added starts costing them).
+ *
+ * Pure, synchronous, no network.
+ */
+export function scoreOptimizedPrompt(args: OptimizedScoreArgs): { score: number; breakdown: ScoreBreakdown } {
+  const optimized = canonicalize(normalizeText(args.optimizedPrompt));
+  const original = canonicalize(normalizeText(args.originalPrompt));
+  if (args.baseline && optimized === original) {
+    return { score: args.baseline.score, breakdown: { ...args.baseline.breakdown } };
+  }
+
+  const attachments = Array.isArray(args.attachments) ? args.attachments : [];
+  const text = canonicalize(normalizeText(stripGuardedGuidance(stripLegacyHeader(optimized))));
+  const content = detectStructured(text) ? extractCorePrompt(text).core : text;
+
+  const contentF = extractFeatures(content, args.taskType, args.lang);
+  const fullF = extractFeatures(text, args.taskType, args.lang);
+
+  const merged: Features = enhanceFeaturesWithAttachments(
+    {
+      words: contentF.words,
+      hasGoal: contentF.hasGoal,
+      hasInputs: contentF.hasInputs,
+      hasAudience: contentF.hasAudience || fullF.hasAudience,
+      hasExamples: contentF.hasExamples || fullF.hasExamples,
+      hasConstraints: contentF.hasConstraints || fullF.hasConstraints,
+      hasOutputFormat: contentF.hasOutputFormat || fullF.hasOutputFormat,
+      hasSuccessCriteria: contentF.hasSuccessCriteria || fullF.hasSuccessCriteria,
+      hasTone: contentF.hasTone || fullF.hasTone,
+      hasLengthHint: contentF.hasLengthHint || fullF.hasLengthHint,
+      hasTimeframe: contentF.hasTimeframe || fullF.hasTimeframe,
+      hasRegion: contentF.hasRegion || fullF.hasRegion,
+      hasErrorDetails: contentF.hasErrorDetails,
+      hasReproSteps: contentF.hasReproSteps,
+      injectionLike: fullF.injectionLike,
+      contradictions: fullF.contradictions,
+      languageMismatch: fullF.languageMismatch,
+    },
+    attachments,
+    args.taskType
+  );
+
+  const scored = scorePrompt(args.taskType, args.target, merged, args.lang, {
+    attachmentsCount: attachments.length,
+  });
+  return { score: scored.score, breakdown: scored.breakdown };
 }
 
 export { ENGINE_VERSION };
