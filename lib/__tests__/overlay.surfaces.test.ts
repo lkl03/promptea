@@ -53,6 +53,17 @@ describe("overlay surfaces (v1.8.0)", () => {
     expect(offenders).toEqual([]);
   });
 
+  test("every modal dialog is rendered through <Portal> (the in-place render let page content paint over the panel)", () => {
+    const offenders: string[] = [];
+    for (const file of [...walk(join(ROOT, "app")), ...walk(join(ROOT, "components"))]) {
+      const src = readFileSync(file, "utf-8");
+      if (!src.includes('aria-modal="true"')) continue;
+      if (file.endsWith("Portal.tsx")) continue;
+      if (!/<Portal>/.test(src)) offenders.push(relative(ROOT, file));
+    }
+    expect(offenders).toEqual([]);
+  });
+
   test("a role=dialog element never carries a bare translucent utility fill instead of the shared surface", () => {
     for (const file of [...walk(join(ROOT, "app")), ...walk(join(ROOT, "components"))]) {
       const src = readFileSync(file, "utf-8");

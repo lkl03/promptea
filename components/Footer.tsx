@@ -74,7 +74,7 @@ export default function Footer({
         >
           <XIcon className="h-4 w-4 opacity-90" />
           <span
-            className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap
+            className="pointer-events-none absolute -top-9 hidden sm:block left-1/2 -translate-x-1/2 whitespace-nowrap
                        rounded-full border px-2.5 py-1 text-[11px] leading-none
                        bg-surface-raised text-ink border-line
                        opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0

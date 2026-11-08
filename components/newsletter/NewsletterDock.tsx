@@ -26,6 +26,7 @@ import { getServerSnapshot, getSnapshot, nudgeActions, subscribeStore } from "@/
 import { dockBarEligible } from "@/lib/newsletter/prompts";
 import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
 import SubscribeForm, { type SubscribeFormDict } from "./SubscribeForm";
+import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
 type DockDict = { title: string; body: string; open: string; close: string };
@@ -174,35 +175,37 @@ export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | 
 
       {/* Mobile: bottom sheet */}
       {sheetOpen ? (
-        <div className="fixed inset-0 z-50 flex items-end lg:hidden" role="presentation">
-          <div className="absolute inset-0 bg-black/45 backdrop-blur-[2px]" onClick={closeSheet} aria-hidden="true" />
-          <div
-            ref={sheetRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="newsletter-sheet-title"
-            className="relative w-full animate-toast-in px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-          >
-            <div className="surface p-5">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h2 id="newsletter-sheet-title" className="font-title text-lg font-semibold">
-                    {dict.title}
-                  </h2>
-                  <p className="mt-1 text-sm text-ink-muted">{dict.body}</p>
+        <Portal>
+          <div className="fixed inset-0 z-50 flex items-end lg:hidden" role="presentation">
+            <div className="absolute inset-0 bg-black/45 backdrop-blur-[2px]" onClick={closeSheet} aria-hidden="true" />
+            <div
+              ref={sheetRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="newsletter-sheet-title"
+              className="relative w-full animate-toast-in px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+            >
+              <div className="surface p-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h2 id="newsletter-sheet-title" className="font-title text-lg font-semibold">
+                      {dict.title}
+                    </h2>
+                    <p className="mt-1 text-sm text-ink-muted">{dict.body}</p>
+                  </div>
+                  <button type="button" onClick={closeSheet} className="btn-icon h-8 w-8 shrink-0" aria-label={dict.close}>
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                      <path d="M6 6l12 12M18 6 6 18" />
+                    </svg>
+                  </button>
                 </div>
-                <button type="button" onClick={closeSheet} className="btn-icon h-8 w-8 shrink-0" aria-label={dict.close}>
-                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                    <path d="M6 6l12 12M18 6 6 18" />
-                  </svg>
-                </button>
-              </div>
-              <div className="mt-4">
-                <SubscribeForm lang={lang} dict={formDict} autoFocus surface="dock" />
+                <div className="mt-4">
+                  <SubscribeForm lang={lang} dict={formDict} autoFocus surface="dock" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </Portal>
       ) : null}
     </>
   );

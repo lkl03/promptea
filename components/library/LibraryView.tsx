@@ -147,14 +147,16 @@ export default function LibraryView({ lang, t, shareDict }: { lang: "es" | "en";
 
   if (!lib.hydrated) {
     return (
-      <p className="surface-soft p-6 text-sm text-ink-muted" role="status">
-        {t.loading}
-      </p>
+      <div className="min-h-[30rem]">
+        <p className="surface-soft p-6 text-sm text-ink-muted" role="status">
+          {t.loading}
+        </p>
+      </div>
     );
   }
 
   return (
-    <div>
+    <div className="min-h-[30rem]">
       <p role="note" className="surface-soft border-l-4 p-4 text-sm leading-relaxed text-ink" style={{ borderLeftColor: "var(--accent)" }}>
         {t.privacy}
       </p>

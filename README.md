@@ -114,6 +114,12 @@ npm test           # vitest
 npm run build      # production build (works offline — fonts are local)
 ```
 
+## Brand & release tooling (v1.8.0)
+
+- `node scripts/brand/build-brand-assets.mjs` — regenerates every brand raster (wordmark light/dark, mascot, favicons, apple-touch, manifest and OG artwork) from `public/brand/promptea-logo-mascot-source.png`.
+- `node scripts/release/audit.mjs --base=http://localhost:3070 [--shots] [--quick]` — real-Chrome audit of the public pages across themes × colour schemes × desktop/mobile: console/hydration errors, horizontal overflow, CLS, and the feedback-modal fill; `--shots` saves screenshots to `docs/release/v1.8.0/`.
+- `BENCHMARKS_DEV_FIXTURE=1 npm run dev` (development only) renders a clearly fictitious benchmark dataset so the charts can be reviewed without an OpenRouter key.
+
 ## Environment variables
 
 | Variable | Required | Purpose |

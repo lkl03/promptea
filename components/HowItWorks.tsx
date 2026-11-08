@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 
 type HowItWorksMode = "improve" | "best-ai";
@@ -211,66 +212,68 @@ export default function HowItWorks({ lang, mode = "improve" }: { lang: "es" | "e
       </button>
 
       {open && (
-        <div
-          ref={dialogRef}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby={titleId}
-          aria-describedby={descId}
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-3 py-4"
-        >
+        <Portal>
           <div
-            className="absolute inset-0 bg-black/55 backdrop-blur-sm"
-            onClick={handleClose}
-            aria-hidden
-          />
-          <div
-            className={[
-              "relative z-10 w-full max-w-xl",
-              "surface p-5 sm:p-6 shadow-xl",
-              "max-h-[88dvh] overflow-y-auto",
-            ].join(" ")}
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            aria-describedby={descId}
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-3 py-4"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 id={titleId} className="font-title text-xl sm:text-2xl font-semibold">
-                  {copy.title}
-                </h2>
-                <p id={descId} className="mt-1 text-sm opacity-80">
-                  {copy.intro}
-                </p>
+            <div
+              className="absolute inset-0 bg-black/55 backdrop-blur-sm"
+              onClick={handleClose}
+              aria-hidden
+            />
+            <div
+              className={[
+                "relative z-10 w-full max-w-xl",
+                "surface p-5 sm:p-6 shadow-xl",
+                "max-h-[88dvh] overflow-y-auto",
+              ].join(" ")}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h2 id={titleId} className="font-title text-xl sm:text-2xl font-semibold">
+                    {copy.title}
+                  </h2>
+                  <p id={descId} className="mt-1 text-sm opacity-80">
+                    {copy.intro}
+                  </p>
+                </div>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  onClick={handleClose}
+                  aria-label={copy.close}
+                  className="btn-icon h-9 w-9 shrink-0"
+                >
+                  ×
+                </button>
               </div>
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={handleClose}
-                aria-label={copy.close}
-                className="btn-icon h-9 w-9 shrink-0"
-              >
-                ×
-              </button>
-            </div>
 
-            <ol className="mt-5 space-y-3">
-              {copy.steps.map((step) => (
-                <li key={step.title} className="surface-soft p-3">
-                  <div className="text-sm font-medium">{step.title}</div>
-                  <div className="mt-1 text-sm opacity-85 leading-relaxed">{step.body}</div>
-                </li>
-              ))}
-            </ol>
+              <ol className="mt-5 space-y-3">
+                {copy.steps.map((step) => (
+                  <li key={step.title} className="surface-soft p-3">
+                    <div className="text-sm font-medium">{step.title}</div>
+                    <div className="mt-1 text-sm opacity-85 leading-relaxed">{step.body}</div>
+                  </li>
+                ))}
+              </ol>
 
-            <div className="mt-5 flex justify-end">
-              <button
-                type="button"
-                className="btn btn-primary h-10 px-5"
-                onClick={handleClose}
-              >
-                {copy.close}
-              </button>
+              <div className="mt-5 flex justify-end">
+                <button
+                  type="button"
+                  className="btn btn-primary h-10 px-5"
+                  onClick={handleClose}
+                >
+                  {copy.close}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </Portal>
       )}
     </>
   );

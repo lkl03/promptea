@@ -27,6 +27,7 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import SubscribeForm, { type SubscribeFormDict } from "./SubscribeForm";
+import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import { trackAppEvent, type NewsletterSurface } from "@/lib/telemetry/appEvents.client";
 import { getServerSnapshot, getSnapshot, nudgeActions, subscribeStore, wasModalShownThisSession } from "@/lib/newsletter/promptStore";
@@ -327,30 +328,32 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: "es" 
       ) : null}
 
       {snap.modalOpen && kind === "daily" ? (
-        <div className="fixed inset-0 z-50 flex items-end justify-center px-3 pb-3 sm:items-center sm:pb-0" role="presentation" data-nudge-root>
-          <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" onClick={() => closeModal(true)} aria-hidden="true" />
-          <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="nl-modal-title" aria-describedby="nl-modal-body" className="surface relative w-full max-w-md animate-toast-in p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-3">
-              <h2 id="nl-modal-title" className="font-title text-xl font-semibold leading-snug">
-                {dict.modalTitle}
-              </h2>
-              <button type="button" onClick={() => closeModal(true)} className="btn-icon h-8 w-8 shrink-0" aria-label={dict.close} title={dict.close}>
-                <CloseIcon />
-              </button>
+        <Portal>
+          <div className="fixed inset-0 z-50 flex items-end justify-center px-3 pb-3 sm:items-center sm:pb-0" role="presentation" data-nudge-root>
+            <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" onClick={() => closeModal(true)} aria-hidden="true" />
+            <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="nl-modal-title" aria-describedby="nl-modal-body" className="surface relative w-full max-w-md animate-toast-in p-5 sm:p-6">
+              <div className="flex items-start justify-between gap-3">
+                <h2 id="nl-modal-title" className="font-title text-xl font-semibold leading-snug">
+                  {dict.modalTitle}
+                </h2>
+                <button type="button" onClick={() => closeModal(true)} className="btn-icon h-8 w-8 shrink-0" aria-label={dict.close} title={dict.close}>
+                  <CloseIcon />
+                </button>
+              </div>
+              <p id="nl-modal-body" className="mt-2 text-sm leading-relaxed text-ink-muted">
+                {dict.modalBody}
+              </p>
+              <div className="mt-4">
+                <SubscribeForm lang={lang} dict={formDict} autoFocus surface="modal" onDone={onModalDone} />
+              </div>
+              {!celebrate ? (
+                <button type="button" onClick={() => closeModal(true)} className="mt-3 w-full text-center text-sm text-ink-muted underline-offset-2 hover:text-ink hover:underline">
+                  {dict.modalDismiss}
+                </button>
+              ) : null}
             </div>
-            <p id="nl-modal-body" className="mt-2 text-sm leading-relaxed text-ink-muted">
-              {dict.modalBody}
-            </p>
-            <div className="mt-4">
-              <SubscribeForm lang={lang} dict={formDict} autoFocus surface="modal" onDone={onModalDone} />
-            </div>
-            {!celebrate ? (
-              <button type="button" onClick={() => closeModal(true)} className="mt-3 w-full text-center text-sm text-ink-muted underline-offset-2 hover:text-ink hover:underline">
-                {dict.modalDismiss}
-              </button>
-            ) : null}
           </div>
-        </div>
+        </Portal>
       ) : null}
     </>
   );
