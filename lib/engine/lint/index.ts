@@ -15,7 +15,7 @@ import { applyDataExtractionRules } from "./rules/dataExtraction";
 import { applyContradictions } from "./rules/contradictions";
 import { applyInjectionRules } from "./rules/injections";
 import { includesAny } from "./rules/utils";
-import { hasGoalSignal, hasImplicitOutputSpec, IMAGE_NEGATIVE_RE } from "../signals";
+import { CODE_CONSTRAINT_RE, CODE_DELIVERABLE_RE, hasGoalSignal, hasImplicitOutputSpec, IMAGE_NEGATIVE_RE } from "../signals";
 
 function wordsCount(s: string) {
   return (s ?? "").trim().split(/\s+/).filter(Boolean).length;
@@ -111,7 +111,8 @@ export function lintPrompt(
 
   // v1.8.0: "3 headlines, max 30 characters" IS an output spec, and an
   // image's output is the image itself (medium/aspect are scored instead).
-  if (!outputFormat && !isImage && !hasImplicitOutputSpec(p)) {
+  const codeDeliverable = (task === "coding" || task === "refactor") && CODE_DELIVERABLE_RE.test(p);
+  if (!outputFormat && !isImage && !codeDeliverable && !hasImplicitOutputSpec(p)) {
     pushFinding(findings, "missing_output_format", "high", lang);
     pushReco(recommendations, "define_output_format", "high", lang);
   }
@@ -162,7 +163,9 @@ export function lintPrompt(
       "document:",
     ]);
 
-  const looksContextPoor = !isImage && !attachmentsPresent && !hasContextCues && !hasWorkMaterial && w >= 4 && w <= 120;
+  // v1.8.0: a pinned stack ("Python 3.12 … con SQLAlchemy") IS technical context.
+  const codeSpec = (task === "coding" || task === "refactor") && CODE_CONSTRAINT_RE.test(p);
+  const looksContextPoor = !isImage && !codeSpec && !attachmentsPresent && !hasContextCues && !hasWorkMaterial && w >= 4 && w <= 120;
   if (looksContextPoor && task !== "summarization" && task !== "translation") {
     pushFinding(findings, "missing_context", "high", lang);
     pushReco(recommendations, "add_context", "high", lang);
@@ -348,7 +351,7 @@ export function lintPrompt(
       addReco("define_marketing_cta", "medium");
     }
   } else {
-    if (!hasGenericConstraints && !(isImage && IMAGE_NEGATIVE_RE.test(p))) {
+    if (!hasGenericConstraints && !codeSpec && !(isImage && IMAGE_NEGATIVE_RE.test(p))) {
       addFinding("missing_constraints", "medium");
       addReco("add_constraints", "medium");
     }

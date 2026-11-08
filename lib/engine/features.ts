@@ -1,7 +1,17 @@
 import type { Lang } from "../promptTemplates";
 import type { Features, TaskType } from "./types";
 import { normalizeText, wordCount } from "./normalize";
-import { hasGoalSignal, hasImageOutputSpec, hasImplicitOutputSpec, IMAGE_NEGATIVE_RE, words } from "./signals";
+import {
+  CODE_CONSTRAINT_RE,
+  CODE_DELIVERABLE_RE,
+  CODE_SUCCESS_RE,
+  DEBUG_EXPECTED_RE,
+  hasGoalSignal,
+  hasImageOutputSpec,
+  hasImplicitOutputSpec,
+  IMAGE_NEGATIVE_RE,
+  words,
+} from "./signals";
 
 function hasAny(text: string, patterns: RegExp[]) {
   return patterns.some((re) => re.test(text));
@@ -208,15 +218,25 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
 
   const languageMismatch = detectDominantLanguageMismatch(clean, lang);
 
+  // v1.8.0: an implementation spec states its constraints and deliverable in
+  // engineering terms — pinned versions/stack, "include tests", "returns 201".
+  const isCode = task === "coding" || task === "refactor";
+  const codeConstraints = isCode && CODE_CONSTRAINT_RE.test(clean);
+  const codeDeliverable = isCode && CODE_DELIVERABLE_RE.test(clean);
+  // In a bug report "returns 500" is the failure, not the goal: only an
+  // explicit expectation counts there.
+  const codeSuccess =
+    (isCode && CODE_SUCCESS_RE.test(clean)) || (task === "debugging" && DEBUG_EXPECTED_RE.test(clean));
+
   return {
     words,
     hasGoal,
     hasInputs,
     hasAudience,
     hasExamples,
-    hasConstraints,
-    hasOutputFormat,
-    hasSuccessCriteria,
+    hasConstraints: hasConstraints || codeConstraints,
+    hasOutputFormat: hasOutputFormat || codeDeliverable,
+    hasSuccessCriteria: hasSuccessCriteria || codeSuccess,
     hasTone,
     hasLengthHint,
     hasTimeframe,

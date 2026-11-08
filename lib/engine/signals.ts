@@ -114,3 +114,19 @@ const IMAGE_SPEC_RE = words(
 export function hasImageOutputSpec(text: string): boolean {
   return IMAGE_SPEC_RE.test(String(text ?? ""));
 }
+
+// ---------------------------------------------------------------------------
+// Coding specs
+// ---------------------------------------------------------------------------
+
+// v1.8.0: engineering-spec signals for coding tasks.
+export const CODE_CONSTRAINT_RE =
+  /\b(python|node|typescript|java|go|php|ruby|react|next\.?js|django|fastapi|express|spring)\s*v?\d+(\.\d+)*\b|\bv\d+(\.\d+)+\b|\b(with|using|con|usando)\s+(pydantic|zod|sqlalchemy|prisma|postgres(ql)?|mysql|sqlite|redis|tailwind|typescript|jest|vitest|pytest)\b/i;
+export const CODE_DELIVERABLE_RE = words(
+  "include tests|with tests|unit tests|pytest|jest|vitest|inclu[ií] tests|con tests|tests unitarios|incluí pruebas|con pruebas|docstrings?|readme|type hints|tipado"
+);
+export const CODE_SUCCESS_RE =
+  /\b(devuelva|devolver|retorne|return(s)?|responds?( with)?|responda)\s+(un\s+|an?\s+|with\s+)?(status\s+)?[1-5]\d\d\b|\btests?\s+(pass|pasen)\b|\bexpected:\s/i;
+/** A bug report's explicit expectation ("Expected: ...", "expected 200", "debería devolver"). */
+export const DEBUG_EXPECTED_RE =
+  /\bexpected(:|\s+(result|behaviou?r|output|status|response|\d{3}))|\b(resultado )?esperado:|\bdeber[i\u00ed]a (devolver|responder|mostrar)\b/i;

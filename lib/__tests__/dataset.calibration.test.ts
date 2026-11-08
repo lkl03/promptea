@@ -1,6 +1,11 @@
 import { describe, expect, test } from "vitest";
 import { analyzePrompt } from "@/lib/analyzePrompt";
 import { loadDatasetCases } from "@/lib/engine/dataset/load";
+import { PURPOSES } from "@/lib/domain";
+
+// v1.8.0: every expectation in the dataset is now enforced (findings and
+// optimized-prompt checks used to be silently ignored), cases run under
+// their declared purpose, and good/ambiguous/bad buckets must stay ordered.
 
 describe("Dataset calibration", () => {
   const cases = loadDatasetCases();
@@ -9,22 +14,54 @@ describe("Dataset calibration", () => {
     expect(cases.length).toBeGreaterThan(0);
   });
 
+  test("ids are unique", () => {
+    const ids = cases.map((c) => c.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  test("every purpose has good, bad and ambiguous cases in both languages", () => {
+    for (const lang of ["es", "en"] as const) {
+      for (const purpose of PURPOSES) {
+        const kinds = new Set(cases.filter((c) => c.lang === lang && c.purpose === purpose).map((c) => c.kind));
+        expect([...kinds].sort(), `${lang}/${purpose}`).toEqual(["ambiguous", "bad", "good"]);
+      }
+    }
+  });
+
   for (const c of cases) {
     test(`${c.id}`, () => {
-      const r = analyzePrompt(c.prompt, c.target, c.lang);
+      const r = analyzePrompt(c.prompt, c.target, c.lang, c.purpose ?? "text");
+      const ctx = `${c.id}: score=${r.score} task=${r.meta.taskType} strategy=${r.meta.routing?.strategy} findings=${r.findings
+        .map((f) => f.id)
+        .join(",")}`;
 
       // score range
       if (c.expect.scoreRange) {
-        expect(r.score).toBeGreaterThanOrEqual(c.expect.scoreRange[0]);
-        expect(r.score).toBeLessThanOrEqual(c.expect.scoreRange[1]);
+        expect(r.score, ctx).toBeGreaterThanOrEqual(c.expect.scoreRange[0]);
+        expect(r.score, ctx).toBeLessThanOrEqual(c.expect.scoreRange[1]);
       }
 
       // confidence
       if (typeof c.expect.confidenceMin === "number") {
-        expect(Number(r.meta?.confidence ?? 0)).toBeGreaterThanOrEqual(c.expect.confidenceMin);
+        expect(Number(r.meta?.confidence ?? 0), ctx).toBeGreaterThanOrEqual(c.expect.confidenceMin);
       }
 
+      if (c.expect.taskType) expect(r.meta.taskType, ctx).toBe(c.expect.taskType);
+      if (c.expect.strategy) expect(r.meta.routing?.strategy, ctx).toBe(c.expect.strategy);
+
       const findingIds = (r.findings ?? []).map((f) => f.id);
+      for (const id of c.expect.mustHaveFindings ?? []) expect(findingIds, ctx).toContain(id);
+      for (const id of c.expect.mustNotHaveFindings ?? []) expect(findingIds, ctx).not.toContain(id);
+
+      for (const needle of c.expect.optimizedPromptMustContain ?? []) expect(r.optimizedPrompt, ctx).toContain(needle);
+      for (const needle of c.expect.optimizedPromptMustNotContain ?? []) {
+        expect(r.optimizedPrompt, ctx).not.toContain(needle);
+      }
+
+      if (typeof c.expect.optimizedScoreMin === "number") {
+        expect(Number(r.meta.optimizedScore), ctx).toBeGreaterThanOrEqual(c.expect.optimizedScoreMin);
+      }
+
       const recIds = (r.recommendations ?? []).map((x) => x.id).filter((id): id is string => Boolean(id));
       const recBlob = (r.recommendations ?? [])
         .map((x) => `${x.title ?? ""}\n${x.detail ?? ""}`)
@@ -69,5 +106,18 @@ describe("Dataset calibration", () => {
       }
     });
   }
-});
 
+  test("within each (lang, purpose) group: good > ambiguous > bad", () => {
+    const groups = new Map<string, Record<string, number>>();
+    for (const c of cases) {
+      if (!c.kind || !c.purpose) continue;
+      const key = `${c.lang}/${c.purpose}`;
+      const score = analyzePrompt(c.prompt, c.target, c.lang, c.purpose).score;
+      groups.set(key, { ...(groups.get(key) ?? {}), [c.kind]: score });
+    }
+    for (const [key, s] of groups) {
+      expect(s.good, `${key} good vs ambiguous`).toBeGreaterThan(s.ambiguous);
+      expect(s.ambiguous, `${key} ambiguous vs bad`).toBeGreaterThan(s.bad);
+    }
+  });
+});
