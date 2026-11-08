@@ -50,6 +50,9 @@
   --info: #007aff;
   --info-soft: rgba(0, 122, 255, 0.1);
   --shadow-color: 45 65 120;
+  /* Fill for overlays (dialogs, menus): what is behind must not show through.
+     Every theme defines it; see the "Overlay surfaces" rule below. */
+  --overlay-fill: rgba(250, 252, 255, 0.95);
 
   /* Per-theme typography (mapped to Tailwind fonts in @theme inline). */
   --app-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
@@ -96,6 +99,7 @@
   --info: #1ba1e2;
   --info-soft: rgba(27, 161, 226, 0.14);
   --shadow-color: 0 0 0;
+  --overlay-fill: #252526;
 
   --app-font-sans: "Segoe UI", "Segoe UI Web (West European)", Segoe, "Helvetica Neue",
     Arial, sans-serif;
@@ -150,6 +154,7 @@
   --glass-edge-inner: rgba(255, 255, 255, 0.95);
   --glass-shine: rgba(255, 255, 255, 0.55);
   --glass-dense: rgba(250, 253, 251, 0.9);
+  --overlay-fill: rgba(250, 253, 251, 0.96);
 
   --body-tracking: -0.003em;
   --title-tracking: -0.02em;
@@ -192,6 +197,7 @@
     --glass-edge-inner: rgba(255, 255, 255, 0.18);
     --glass-shine: rgba(255, 255, 255, 0.08);
     --glass-dense: rgba(14, 26, 22, 0.92);
+    --overlay-fill: rgba(14, 26, 22, 0.97);
   }
 }
 
@@ -563,23 +569,79 @@
     var(--canvas);
 }
 
-/* Aqua: the reference's five-layer radial wash over a soft linear base. */
+/* Aqua: the reference's five-layer radial wash over a soft linear base.
+   v1.8.0: the base stays here (static); the five radial washes are now
+   separate .ambient-blob layers (see "Ambient motion" below) so they can
+   drift with transform/opacity only. At rest they sit exactly where the old
+   radial-gradient() layers did, which is also the reduced-motion rendering. */
 .aqua .ambient,
 [data-theme="aqua"] .ambient {
-  background:
-    radial-gradient(38rem 30rem at 12% 8%, rgba(120, 170, 255, 0.55), transparent 60%),
-    radial-gradient(34rem 28rem at 88% 2%, rgba(196, 150, 255, 0.5), transparent 60%),
-    radial-gradient(40rem 34rem at 78% 88%, rgba(120, 225, 205, 0.45), transparent 62%),
-    radial-gradient(32rem 30rem at 8% 92%, rgba(255, 175, 205, 0.42), transparent 60%),
-    radial-gradient(30rem 26rem at 50% 50%, rgba(150, 200, 255, 0.28), transparent 70%),
-    linear-gradient(160deg, #eaf1fe 0%, #ece9f8 45%, #eaf3fb 100%);
-  background-attachment: fixed;
+  background: linear-gradient(160deg, #eaf1fe 0%, #ece9f8 45%, #eaf3fb 100%);
+  --blob-1: rgba(120, 170, 255, 0.55);
+  --blob-2: rgba(196, 150, 255, 0.5);
+  --blob-3: rgba(120, 225, 205, 0.45);
+  --blob-4: rgba(255, 175, 205, 0.42);
+  --blob-5: rgba(150, 200, 255, 0.28);
 }
 
 /* Metro: authentically flat. */
 .metro .ambient,
 [data-theme="metro"] .ambient {
   background: var(--canvas);
+}
+
+/* ── Ambient motion (v1.8.0) ─────────────────────────────────────────────────
+   Five soft washes drift very slowly (34–59 s per leg, alternating) behind
+   everything. Cost model: each blob is one composited layer rasterised ONCE
+   (a radial gradient); the animation only changes transform + opacity, which
+   the compositor handles without layout or paint, so there is no main-thread
+   work per frame. will-change is set on these five elements only, the
+   container is paint-contained, and the two extra blobs are dropped on small
+   screens. Metro stays flat (blobs not displayed); under reduced motion the
+   blobs stay put, i.e. the old static wash. */
+.ambient-blob {
+  display: none;
+  position: absolute;
+  left: var(--bx);
+  top: var(--by);
+  width: var(--bw);
+  height: var(--bh);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--blob-c, transparent), transparent);
+  transform: translate3d(-50%, -50%, 0);
+  pointer-events: none;
+}
+.aqua .ambient-blob,
+[data-theme="aqua"] .ambient-blob,
+.glass .ambient-blob,
+[data-theme="glass"] .ambient-blob {
+  display: block;
+}
+.ambient-blob-1 { --bx: 12%; --by: 8%;  --bw: 46rem; --bh: 36rem; --blob-c: var(--blob-1); --dur: 41s; --dx: 16vw;  --dy: 10vh;  --delay: 0s; }
+.ambient-blob-2 { --bx: 88%; --by: 2%;  --bw: 41rem; --bh: 34rem; --blob-c: var(--blob-2); --dur: 53s; --dx: -14vw; --dy: 16vh;  --delay: -9s; }
+.ambient-blob-3 { --bx: 78%; --by: 88%; --bw: 50rem; --bh: 42rem; --blob-c: var(--blob-3); --dur: 47s; --dx: -12vw; --dy: -14vh; --delay: -17s; }
+.ambient-blob-4 { --bx: 8%;  --by: 92%; --bw: 38rem; --bh: 36rem; --blob-c: var(--blob-4); --dur: 59s; --dx: 15vw;  --dy: -10vh; --delay: -25s; }
+.ambient-blob-5 { --bx: 50%; --by: 50%; --bw: 42rem; --bh: 36rem; --blob-c: var(--blob-5); --dur: 34s; --dx: 10vw;  --dy: 9vh;   --delay: -5s; }
+
+@keyframes ambientDrift {
+  0%   { transform: translate3d(-50%, -50%, 0) scale(1); opacity: 1; }
+  50%  { transform: translate3d(calc(-50% + var(--dx)), calc(-50% + var(--dy)), 0) scale(1.1); opacity: 0.82; }
+  100% { transform: translate3d(calc(-50% + var(--dx) * -0.45), calc(-50% + var(--dy) * 0.55), 0) scale(0.96); opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .aqua .ambient-blob,
+  [data-theme="aqua"] .ambient-blob,
+  .glass .ambient-blob,
+  [data-theme="glass"] .ambient-blob {
+    will-change: transform, opacity;
+    animation: ambientDrift var(--dur) ease-in-out var(--delay) infinite alternate;
+  }
+}
+@media (max-width: 639px) {
+  .ambient-blob-4,
+  .ambient-blob-5 {
+    display: none !important;
+  }
 }
 
 /* Fine grain: off in every current theme (Aqua glass, Metro tiles and Glass
@@ -668,23 +730,22 @@
 
 [data-theme="glass"] .ambient,
 .glass .ambient {
-  background:
-    radial-gradient(42rem 32rem at 10% 4%, rgba(95, 224, 168, 0.42), transparent 62%),
-    radial-gradient(36rem 30rem at 92% 6%, rgba(140, 200, 255, 0.36), transparent 60%),
-    radial-gradient(40rem 34rem at 80% 92%, rgba(186, 160, 255, 0.28), transparent 62%),
-    radial-gradient(30rem 28rem at 6% 90%, rgba(120, 230, 210, 0.3), transparent 60%),
-    linear-gradient(165deg, #eef6f2 0%, #eaf2f6 50%, #f1f0f8 100%);
-  background-attachment: fixed;
+  background: linear-gradient(165deg, #eef6f2 0%, #eaf2f6 50%, #f1f0f8 100%);
+  --blob-1: rgba(95, 224, 168, 0.42);
+  --blob-2: rgba(140, 200, 255, 0.36);
+  --blob-3: rgba(186, 160, 255, 0.28);
+  --blob-4: rgba(120, 230, 210, 0.3);
+  --blob-5: transparent;
 }
 @media (prefers-color-scheme: dark) {
   [data-theme="glass"] .ambient,
   .glass .ambient {
-    background:
-      radial-gradient(40rem 30rem at 12% 2%, rgba(46, 190, 130, 0.28), transparent 62%),
-      radial-gradient(34rem 28rem at 92% 10%, rgba(60, 120, 220, 0.22), transparent 60%),
-      radial-gradient(40rem 34rem at 78% 95%, rgba(120, 80, 220, 0.2), transparent 62%),
-      linear-gradient(165deg, #07120e 0%, #08111a 55%, #0d0b16 100%);
-    background-attachment: fixed;
+    background: linear-gradient(165deg, #07120e 0%, #08111a 55%, #0d0b16 100%);
+    --blob-1: rgba(46, 190, 130, 0.28);
+    --blob-2: rgba(60, 120, 220, 0.22);
+    --blob-3: rgba(120, 80, 220, 0.2);
+    --blob-4: transparent;
+    --blob-5: transparent;
   }
 }
 
@@ -724,15 +785,7 @@
   box-shadow: inset 0 1px 2px rgb(var(--shadow-color) / 0.06);
 }
 
-/* Modals: the densest material — content behind must not compete. */
-[data-theme="glass"] [role="dialog"] .surface,
-.glass [role="dialog"] .surface,
-[data-theme="glass"] [role="menu"].surface,
-.glass [role="menu"].surface {
-  background:
-    radial-gradient(120% 60% at 0% 0%, var(--glass-shine), transparent 40%),
-    var(--glass-dense);
-}
+/* Overlay surfaces (dialogs, sheets, menus): see "Overlay surfaces" at the end. */
 
 /* Controls: pill-shaped glass with the same luminous edge. */
 [data-theme="glass"] .btn-icon,
@@ -1083,6 +1136,32 @@ html {
 .brand-logo-dark {
   display: none;
 }
+
+/* v1.8.0 — the mascot hops (squash & stretch, pivoting on its feet) when the
+   lock-up is hovered with a mouse, or tapped on touch (BrandMascotHop adds
+   .is-hopping once). Never under reduced motion. */
+.brand-mascot {
+  transform-origin: 50% 96%;
+}
+@keyframes mascotHop {
+  0%   { transform: translate3d(0, 0, 0) scale(1, 1); }
+  14%  { transform: translate3d(0, 0, 0) scale(1.1, 0.86); }
+  36%  { transform: translate3d(0, -34%, 0) scale(0.92, 1.12); }
+  52%  { transform: translate3d(0, -40%, 0) scale(0.96, 1.05); }
+  74%  { transform: translate3d(0, 0, 0) scale(1.12, 0.88); }
+  88%  { transform: translate3d(0, -6%, 0) scale(0.97, 1.04); }
+  100% { transform: translate3d(0, 0, 0) scale(1, 1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .brand-mascot.is-hopping {
+    animation: mascotHop 720ms cubic-bezier(0.3, 0.7, 0.4, 1) both;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .brand-logo:hover .brand-mascot {
+      animation: mascotHop 720ms cubic-bezier(0.3, 0.7, 0.4, 1) both;
+    }
+  }
+}
 [data-theme="metro"] .brand-logo-light,
 .metro .brand-logo-light {
   display: none;
@@ -1220,4 +1299,27 @@ html {
   .newsletter-dock-bar {
     transition: opacity 120ms ease;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.8.0 — Overlay surfaces (dialogs, sheets, menus)
+
+   Bug fixed: the feedback modal put role="dialog" ON the .surface element, and
+   the old Glass rule only matched a .surface *inside* a dialog, so the panel
+   kept the translucent fill (Aqua: 8% white; Glass: ~50%) and the page showed
+   through. Both shapes are covered now — the surface IS the dialog, or the
+   surface is a descendant of the dialog wrapper — in every theme, through one
+   token (--overlay-fill, defined by each theme block above). Test-enforced by
+   lib/__tests__/overlay.surfaces.test.ts. New overlay? Put role="dialog" /
+   "menu" on, or around, a .surface and it is covered; no per-theme code.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root :is([role="dialog"], [role="alertdialog"], [role="menu"], [role="listbox"]).surface,
+:root :is([role="dialog"], [role="alertdialog"]) .surface {
+  background: var(--overlay-fill);
+}
+:root[data-theme="glass"] :is([role="dialog"], [role="alertdialog"], [role="menu"], [role="listbox"]).surface,
+:root[data-theme="glass"] :is([role="dialog"], [role="alertdialog"]) .surface {
+  background:
+    radial-gradient(120% 60% at 0% 0%, var(--glass-shine), transparent 40%),
+    var(--overlay-fill);
 }

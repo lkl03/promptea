@@ -36,6 +36,16 @@ All notable changes to Promptea are documented here.
 - The quality of the LLM paths (Groq, Claude, judge) was not measured: there were no API keys in this work; everything is tested with injected `fetch` mocks. A real eval of refiner and judge is the top follow-up.
 - Proposed, not done: a dedicated image rubric, Spanish gender agreement in the image composer, a stricter target-language detector for translation, and integrating or retiring the orphan `/api/analyze-llm` endpoint.
 
+
+### UI, brand and growth
+
+#### Phase 1 — visual bugs and brand
+- **Fixed — translucent feedback modal.** `AppFeedbackButton` put `role="dialog"` on the `.surface` element itself; the Glass rule only matched a `.surface` *inside* a dialog, so the panel kept its translucent fill and the page showed through (Aqua had the same, milder, problem). One shared rule now covers both shapes (`:is([role=dialog],[role=alertdialog],[role=menu],[role=listbox]).surface` and the descendant form) through a new per-theme `--overlay-fill` token. All dialogs/sheets/menus audited (feedback, format explainer, how-it-works, newsletter sheet, theme menu); toasts now use semantic tokens over an opaque fill (the old `*-200` text was unreadable on light themes). Anti-regression test: `lib/__tests__/overlay.surfaces.test.ts`.
+- **Animated background.** The static wash is now five separate blobs that drift 34–59 s (transform + opacity only, `will-change` limited to those five layers, paint-contained, two blobs dropped under 640 px). Aqua and Glass (light/dark); Metro stays flat; `prefers-reduced-motion` freezes them in the previous static composition. `background-attachment: fixed` is gone.
+- **Mascot with hover.** The lock-up is rebuilt from separate assets (`promptea-wordmark.webp`, `-dark.webp`, `promptea-mascot.webp`, derived from the source PNG by `scripts/brand/build-brand-assets.mjs`); the mascot hops (CSS squash & stretch) on hover and on tap, never under reduced motion; fixed aspect ratio, no layout shift. The accessible name stays "Promptea".
+- **Favicon = mascot.** `app/favicon.ico` (16/32/48), `app/icon.png`, `app/apple-icon.png`, `app/manifest.ts` (+ maskable icon), default `opengraph-image`/`twitter-image` with the mascot (per locale). Old `app/favicon (4).ico` and `public/favicon.ico` removed; the `icons` metadata entry replaced by the file conventions.
+- **Showcase caption** no longer names a version (the video still shows "v1.7.0" in its burned-in captions: re-record in the release step).
+
 ---
 
 ## v1.7.3 — 2026-11-05

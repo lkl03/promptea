@@ -150,7 +150,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       title: seo.title,
       description: seo.description,
     },
-    icons: { icon: "/favicon.ico" },
+    // v1.8.0: icons come from the file conventions (app/favicon.ico, app/icon.png,
+    // app/apple-icon.png — all derived from the mascot) and app/manifest.ts.
   };
 }
 
