@@ -129,6 +129,8 @@ npm run build      # production build (works offline — fonts are local)
 | `REFINER_PROVIDERS` | optional | Comma-separated provider order, e.g. `anthropic,groq` (default `groq,anthropic`). Providers without a key are skipped; with no key at all the analyzer stays 100% deterministic (`fallbackReason: "disabled"`). |
 | `REFINER_TIMEOUT_MS` | optional | Per-call timeout for a refiner provider (default `10000`). |
 | `REFINER_TOTAL_TIMEOUT_MS` | optional | Total budget for the refiner chain incl. failover and repair (default `15000`). |
+| `PROMPT_JUDGE_ENABLED` | optional | `1` enables the LLM second opinion (`meta.judge`) on low-confidence analyses. Needs a refiner provider key. Advisory only: `score` is never changed; `meta.judge.blendedScore` = score ± at most 10. Default off. |
+| `PROMPT_JUDGE_CONFIDENCE_MAX` | optional | The judge runs only when `meta.confidence` is below this value (default `60`). |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |

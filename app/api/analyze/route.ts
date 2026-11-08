@@ -6,6 +6,7 @@ import { upsertAnalysisEvent } from "@/lib/telemetry/server";
 import { normalizeAnalyzeAttachments, type AttachmentContext } from "@/lib/attachments";
 import { isLang, normalizePurpose, type Lang } from "@/lib/domain";
 import { refinePromptAdaptive, isAdaptiveEnabled } from "@/lib/refine/adaptive";
+import { judgePrompt, type JudgeResult } from "@/lib/refine/judge";
 import { modelNoteForTarget } from "@/lib/models";
 import type { RefinementResult } from "@/lib/refine/schema";
 import { APP_VERSION } from "@/lib/version";
@@ -78,6 +79,17 @@ export async function POST(req: NextRequest) {
 
   // Adaptive refinement layer: strategy-routed, schema-validated, quality-gated.
   // Always resolves — falls back to the deterministic result with a typed reason.
+  // v1.8.0: optional LLM second opinion (PROMPT_JUDGE_ENABLED=1, low
+  // confidence only). Runs in parallel with the refiner; never touches score.
+  const judgePromise: Promise<JudgeResult | null> = judgePrompt({
+    prompt,
+    taskType: result.meta.taskType ?? "text",
+    lang,
+    heuristicScore: result.score,
+    confidence: Number(result.meta.confidence ?? 100),
+    signal: req.signal,
+  }).catch(() => null);
+
   let refinement: RefinementResult | null = null;
   if (result.optimizedPrompt && result.meta.routing) {
     refinement = await refinePromptAdaptive({
@@ -98,6 +110,7 @@ export async function POST(req: NextRequest) {
       alreadyOptimized: result.meta.alreadyOptimized === true,
     }).catch(() => null);
   }
+  const judge = await judgePromise;
 
   const attachmentKinds = [...new Set(attachments.map((file) => String(file.kind)).filter(Boolean))];
   const attachmentExts = [...new Set(attachments.map((file) => String(file.ext)).filter(Boolean))];
@@ -191,6 +204,7 @@ export async function POST(req: NextRequest) {
         mime: file.mime ?? null,
       })),
       refinement: refinement ?? undefined,
+      judge: judge ?? undefined,
       // Back-compat flags consumed by the existing client:
       adaptiveEngine: refinement?.execution.engine === "adaptive" ? (refinement.execution.provider ?? "groq") : null,
       adaptiveFallback: refinement ? refinement.execution.engine !== "adaptive" : true,
