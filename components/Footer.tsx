@@ -120,6 +120,10 @@ export default function Footer({
         <Link href={`/${lang}/analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {lang === "es" ? "Analizador" : "Analyzer"}
         </Link>
+
+        <Link href={`/${lang}/library`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {lang === "es" ? "Biblioteca" : "Library"}
+        </Link>
       </div>
 
       {/* Copyright */}

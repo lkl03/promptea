@@ -101,7 +101,10 @@
     "feedbackSentNotHelpful": "Feedback sent: not helpful",
     "feedbackThanks": "Thanks!",
     "feedbackError": "Error sending feedback",
-    "analysisReady": "Analysis ready"
+    "analysisReady": "Analysis ready",
+    "savedToLibrary": "Saved to your library (this browser only).",
+    "openLibrary": "Open library",
+    "shareResult": "Share result"
   },
   "mode": {
     "improveLabel": "Improve Prompt",
@@ -343,7 +346,8 @@
       "prompts": "Prompts",
       "guides": "Guides",
       "models": "Models",
-      "glossary": "Glossary"
+      "glossary": "Glossary",
+      "library": "Library"
     },
     "showcaseTitle": "A quick tour of Promptea",
     "showcaseBody": "A real tour of the app: analyze a prompt, copy the optimized version, pick an AI, read the news, and explore benchmarks.",
@@ -428,5 +432,64 @@
     "modalTitle": "Before you go: want the best of the week in your inbox?",
     "modalBody": "A summary every Monday with the AI stories that mattered, verified and with their sources. It is free and you can unsubscribe any time.",
     "modalDismiss": "Not now"
+  },
+  "library": {
+    "metaTitle": "Prompt library",
+    "metaDescription": "Your recent prompt analyses, saved only in your browser.",
+    "title": "Prompt library",
+    "subtitle": "Your recent analyses, with the original prompt, the optimized one and the score.",
+    "privacy": "Private: these prompts never leave your browser. They are saved on this device, with no account and no sync, and we have no access to them. If you clear the site data, they are gone.",
+    "autoSave": "Save my analyses automatically",
+    "search": "Search",
+    "searchPlaceholder": "Search your prompts…",
+    "favoritesOnly": "Favorites only",
+    "count": "{n} saved",
+    "emptyTitle": "Nothing saved yet",
+    "empty": "Analyze a prompt and it will show up here, with its optimized version and score.",
+    "emptySearch": "No results for that search.",
+    "goAnalyze": "Go to the analyzer",
+    "original": "Original prompt",
+    "optimized": "Optimized version",
+    "showTexts": "Show the texts",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyOptimized": "Copy optimized",
+    "favorite": "Mark as favorite",
+    "unfavorite": "Remove from favorites",
+    "delete": "Delete",
+    "deleteAll": "Delete all",
+    "deleteAllConfirm": "Delete all {n} saved prompts? This cannot be undone.",
+    "deleteAllYes": "Yes, delete everything",
+    "cancel": "Cancel",
+    "reanalyze": "Analyze again",
+    "share": "Share",
+    "score": "Score",
+    "noAfter": "no optimized score",
+    "saveFailed": "Could not save: the browser blocked storage.",
+    "loading": "Loading your library…"
+  },
+  "share": {
+    "button": "Share",
+    "copied": "Link copied",
+    "shareText": "My prompt went from {before} to {after} points on Promptea.",
+    "shareTextSingle": "My prompt scored {score} points on Promptea.",
+    "pageTitle": "A prompt analysis result on Promptea",
+    "pageDescription": "Score and breakdown of a prompt analyzed with Promptea. The card does not include the prompt text.",
+    "score": "Score",
+    "optimized": "Optimized",
+    "before": "Original",
+    "breakdown": "Breakdown",
+    "criteria": {
+      "clarity": "Clarity",
+      "context": "Context",
+      "constraints": "Constraints",
+      "output": "Output format",
+      "verifiability": "Verifiability",
+      "safety": "Safety"
+    },
+    "noPrompt": "This card only contains scores: the prompt text is never shared.",
+    "cta": "Analyze your prompt, free",
+    "invalidTitle": "This card is not valid",
+    "invalidBody": "The link does not carry a valid score."
   }
 }

@@ -10,6 +10,8 @@
 //   #value    price vs. score scatter for the SAME benchmark, with the
 //             cost/performance frontier, tooltip, keyboard and a note about
 //             models left out for lack of a price.
+//   #calculator  token volumes → cost per model for the same benchmark, ranked by
+//             value (US$ per score point); linked to the scatter by hover.
 //
 // State shared by both: the selected benchmark and the model under the cursor,
 // so hovering a bar lights the same model in the scatter and in the table.
@@ -25,6 +27,7 @@ import { buildBarChart, pricePoints } from "@/lib/benchmarks/chart";
 import BenchmarkBars, { type BarsCopy } from "./BenchmarkBars";
 import PriceScoreScatter, { type ScatterCopy } from "./PriceScoreScatter";
 import BenchmarkTableView, { type TableCopy } from "./BenchmarkTableView";
+import CostCalculator, { type CalcCopy } from "./CostCalculator";
 
 export type DashboardCopy = {
   rankingTitle: string;
@@ -42,6 +45,7 @@ export type DashboardCopy = {
   bars: BarsCopy;
   scatter: ScatterCopy;
   table: TableCopy;
+  calc: CalcCopy;
 };
 
 const TOP_OPTIONS = [5, 10, 15, 25] as const;
@@ -190,6 +194,11 @@ export default function BenchmarkDashboard({
             onActive={setHighlightId}
           />
         </div>
+      </section>
+
+      {/* ── Cost calculator ─────────────────────────────────────── */}
+      <section id="calculator" aria-labelledby="bm-calc-title" className="scroll-mt-24">
+        <CostCalculator table={table} lang={lang} copy={copy.calc} highlightId={highlightId} onHighlight={setHighlightId} />
       </section>
     </div>
   );

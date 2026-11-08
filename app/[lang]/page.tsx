@@ -112,6 +112,7 @@ export default async function HubPage({ params }: { params: Promise<{ lang: stri
     { href: `/${l}/guides`, label: t.secondary.guides },
     { href: `/${l}/models`, label: t.secondary.models },
     { href: `/${l}/glossary`, label: t.secondary.glossary },
+    { href: `/${l}/library`, label: t.secondary.library },
   ];
 
   return (

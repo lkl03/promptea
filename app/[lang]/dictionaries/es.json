@@ -101,7 +101,10 @@
     "feedbackSentNotHelpful": "Feedback enviado: no útil",
     "feedbackThanks": "¡Gracias!",
     "feedbackError": "Error enviando feedback",
-    "analysisReady": "Análisis listo"
+    "analysisReady": "Análisis listo",
+    "savedToLibrary": "Guardado en tu biblioteca (solo en este navegador).",
+    "openLibrary": "Ver biblioteca",
+    "shareResult": "Compartir resultado"
   },
   "mode": {
     "improveLabel": "Mejorar prompt",
@@ -343,7 +346,8 @@
       "prompts": "Prompts",
       "guides": "Guías",
       "models": "Modelos",
-      "glossary": "Glosario"
+      "glossary": "Glosario",
+      "library": "Biblioteca"
     },
     "showcaseTitle": "Un recorrido por Promptea",
     "showcaseBody": "Un recorrido real por la app: analizar un prompt, copiar la versión optimizada, elegir una IA, leer las noticias y explorar benchmarks.",
@@ -428,5 +432,64 @@
     "modalTitle": "Antes de irte: ¿te mandamos lo mejor de la semana?",
     "modalBody": "Un resumen cada lunes con las historias de IA que importaron, verificadas y con sus fuentes. Es gratis y te das de baja cuando quieras.",
     "modalDismiss": "Ahora no"
+  },
+  "library": {
+    "metaTitle": "Biblioteca de prompts",
+    "metaDescription": "Tus análisis recientes de prompts, guardados solo en tu navegador.",
+    "title": "Biblioteca de prompts",
+    "subtitle": "Tus análisis recientes, con la versión original, la optimizada y el puntaje.",
+    "privacy": "Privado: estos prompts no salen de tu navegador. Se guardan en este dispositivo, sin cuenta y sin sincronizar, y no tenemos acceso a ellos. Si borrás los datos del sitio, desaparecen.",
+    "autoSave": "Guardar mis análisis automáticamente",
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar en tus prompts…",
+    "favoritesOnly": "Solo favoritos",
+    "count": "{n} guardados",
+    "emptyTitle": "Todavía no hay nada guardado",
+    "empty": "Analizá un prompt y aparecerá acá, con su versión optimizada y su puntaje.",
+    "emptySearch": "Ningún resultado para esa búsqueda.",
+    "goAnalyze": "Ir al analizador",
+    "original": "Prompt original",
+    "optimized": "Versión optimizada",
+    "showTexts": "Ver los textos",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "copyOptimized": "Copiar optimizado",
+    "favorite": "Marcar como favorito",
+    "unfavorite": "Quitar de favoritos",
+    "delete": "Borrar",
+    "deleteAll": "Borrar todo",
+    "deleteAllConfirm": "¿Borrar los {n} prompts guardados? No se puede deshacer.",
+    "deleteAllYes": "Sí, borrar todo",
+    "cancel": "Cancelar",
+    "reanalyze": "Analizar de nuevo",
+    "share": "Compartir",
+    "score": "Puntaje",
+    "noAfter": "sin puntaje optimizado",
+    "saveFailed": "No se pudo guardar: el navegador bloqueó el almacenamiento.",
+    "loading": "Cargando tu biblioteca…"
+  },
+  "share": {
+    "button": "Compartir",
+    "copied": "Enlace copiado",
+    "shareText": "Mi prompt pasó de {before} a {after} puntos en Promptea.",
+    "shareTextSingle": "Mi prompt sacó {score} puntos en Promptea.",
+    "pageTitle": "Resultado de un análisis en Promptea",
+    "pageDescription": "Puntaje y desglose de un prompt analizado con Promptea. La tarjeta no incluye el texto del prompt.",
+    "score": "Puntaje",
+    "optimized": "Optimizado",
+    "before": "Original",
+    "breakdown": "Desglose",
+    "criteria": {
+      "clarity": "Claridad",
+      "context": "Contexto",
+      "constraints": "Restricciones",
+      "output": "Formato de salida",
+      "verifiability": "Verificabilidad",
+      "safety": "Seguridad"
+    },
+    "noPrompt": "Esta tarjeta solo contiene puntajes: el texto del prompt no se comparte.",
+    "cta": "Analizá tu prompt, gratis",
+    "invalidTitle": "Esta tarjeta no es válida",
+    "invalidBody": "El enlace no tiene un puntaje válido."
   }
 }

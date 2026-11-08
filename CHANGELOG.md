@@ -59,6 +59,12 @@ All notable changes to Promptea are documented here.
 - **Telemetry** (`lib/telemetry/appEvents.client.ts` + `/api/telemetry/app` whitelist): `newsletter_prompt_{impression,open,dismissed,subscribed}` with an enum `surface` (`pill|modal|dock|inline`) — no email, no PII.
 - The pill and the modal mount from `app/[lang]/layout.tsx` (one line).
 
+#### Phase 4 — new features
+- **Local-first prompt library** (`/{lang}/library`, `lib/library/*`, `components/library/*`): every completed analysis is saved in the visitor's own `localStorage` (original + optimized prompt, score, `meta.optimizedScore` / `meta.optimizedBreakdown` when the engine returns them — never computed client-side), with search (accent-insensitive), favourites (never pruned), copy, delete one / delete all (two-step, inline), "analyze again", auto-save toggle and an explicit privacy notice. No accounts, no sync, no server; not indexed. Linked from the results panel, the footer and the home. Limits: 60 entries, 12 000 characters per prompt; blocked storage degrades to an empty library.
+- **Shareable result card** (`/{lang}/share?s=…&o=…&b=…`, `/api/share/card`): `next/og` image with the score (before → after when available) and the six-criteria breakdown. The URL carries numbers and enums only (`lib/share/card.ts`, strict decoding, tested) — the prompt text never enters the URL, the image or the page. "Share result" in the results panel and the library uses the native share sheet or copies the link, plus a button that opens X's composer. `noindex`.
+- **Cost calculator** in Benchmarks (`components/benchmarks/CostCalculator.tsx`): input/output tokens and number of requests (+ presets) → cost per model of the selected benchmark, ranked by value (US$ per score point), cost or score; models without both prices are counted and left out, never priced at 0; hover-linked to the scatter; links to Best AI and the model guides.
+- Strings (ES/EN) in `dictionaries/*.json` (`library`, `share`, `results.*`, `hub.secondary.library`); `privacy` page describes the local storage.
+
 ---
 
 ## v1.7.3 — 2026-11-05
