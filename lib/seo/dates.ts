@@ -46,7 +46,10 @@ export const CONTENT_UPDATED = {
 } as const satisfies Record<string, IsoDay>;
 
 export function isIsoDay(s: string): boolean {
-  return /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(new Date(`${s}T00:00:00Z`).getTime());
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d = new Date(`${s}T00:00:00Z`);
+  // Round-trip: V8 happily turns 2026-02-30 into March 2, which is not a real day.
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
 }
 
 /** The newest of several dates/instants (ISO strings); undefined entries are ignored. */

@@ -1,0 +1,208 @@
+import { describe, expect, it } from "vitest";
+
+import { makeArticle, makeEdition, makeSnapshot } from "./seo.fixtures";
+import { LLMS_FULL_MAX_ARTICLES, LLMS_MAX_ARTICLES, LLMS_MAX_EDITIONS, buildLlmsFullTxt, buildLlmsTxt, demote, type LlmsInput } from "@/lib/seo/llms";
+import {
+  MARKDOWN_CONTENT_TYPE,
+  articleMarkdown,
+  benchmarksMarkdown,
+  docMarkdown,
+  glossaryMarkdown,
+  guideMarkdown,
+  landingMarkdown,
+  modelMarkdown,
+} from "@/lib/seo/markdown";
+import { aboutDoc, homeAboutDoc, methodologyDoc } from "@/lib/seo/content/sitePages";
+import { guides } from "@/lib/seo/content/guides";
+import { glossary } from "@/lib/seo/content/glossary";
+import { modelPages } from "@/lib/seo/content/models";
+import { landings } from "@/lib/seo/content/landings";
+import { staticSeoUrls } from "@/lib/seo/registry";
+import { LOCALES, absUrl, type Locale } from "@/lib/seo/site";
+
+const empty = (lang: Locale): LlmsInput => ({ lang, articles: [], editions: [], benchmarks: null });
+
+/** "null/undefined" is real prose in the code guides (plain or URL-encoded inside prefilled links). */
+const withoutKnownProse = (s: string) => s.replace(/null(\/|%2F)undefined/g, "");
+
+const links = (md: string) => [...md.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)].map((m) => m[1]);
+
+describe("llms.txt", () => {
+  for (const lang of LOCALES) {
+    describe(lang, () => {
+      const txt = buildLlmsTxt(empty(lang));
+
+      it("follows the llms.txt shape: H1, blockquote summary, H2 sections of links", () => {
+        const lines = txt.split("\n");
+        expect(lines[0]).toBe("# Promptea");
+        expect(lines.find((l) => l.startsWith(">"))).toMatch(/Promptea/);
+        expect(txt).toMatch(/^## /m);
+        expect(txt.endsWith("\n")).toBe(true);
+      });
+
+      it("has the expected sections", () => {
+        for (const h of ["## Optional"]) expect(txt).toContain(h);
+        expect(txt).toMatch(lang === "es" ? /## Herramientas/ : /## Tools/);
+        expect(txt).toMatch(lang === "es" ? /## Guías de prompting/ : /## Prompting guides/);
+        expect(txt).toMatch(lang === "es" ? /## Glosario/ : /## Glossary/);
+        expect(txt).toMatch(lang === "es" ? /## Prompts por modelo/ : /## Prompts by model/);
+        expect(txt).toMatch(lang === "es" ? /### Cómo citar/ : /### How to cite/);
+      });
+
+      it("links every page of the registry exactly once (markdown twin when there is one)", () => {
+        const all = links(txt);
+        for (const u of staticSeoUrls(lang)) {
+          const target = absUrl(u.markdown ? `${u.path}.md` : u.path);
+          expect(all.filter((x) => x === target), target).toHaveLength(1);
+        }
+      });
+
+      it("only contains absolute links, with no placeholders", () => {
+        expect(txt).not.toMatch(/\]\((?!https?:\/\/)/);
+        expect(txt).not.toMatch(/undefined|\[object Object\]|NaN/);
+        for (const l of links(txt)) expect(() => new URL(l)).not.toThrow();
+      });
+
+      it("points at llms-full.txt, sitemap.xml and robots.txt", () => {
+        expect(txt).toContain(absUrl(`/${lang}/llms-full.txt`));
+        expect(txt).toContain(absUrl("/sitemap.xml"));
+        expect(txt).toContain(absUrl("/robots.txt"));
+      });
+    });
+  }
+
+  it("says honestly when there is no benchmark snapshot, and summarises one when there is", () => {
+    expect(buildLlmsTxt(empty("en"))).toMatch(/No benchmark snapshot was available/);
+    const withBench = buildLlmsTxt({ ...empty("en"), benchmarks: makeSnapshot() });
+    expect(withBench).not.toMatch(/No benchmark snapshot/);
+    expect(withBench).toMatch(/Alpha 1/);
+  });
+
+  it("lists AI Daily stories newest first, capped, grouped by edition with a generic heading for an unknown one", () => {
+    const many = Array.from({ length: LLMS_MAX_ARTICLES + 10 }, (_, i) =>
+      makeArticle({ slug: `a-${String(i).padStart(2, "0")}`, eventDate: `2026-10-${String((i % 28) + 1).padStart(2, "0")}` }),
+    );
+    const tech = makeArticle({ slug: "tech-one", eventDate: "2026-11-01", edition: "tech" as never });
+    const txt = buildLlmsTxt({ ...empty("en"), articles: [...many, tech] });
+    const articleLinks = links(txt).filter((l) => l.includes("/blog/") && !l.includes("/blog/weekly") && !l.endsWith("feed.xml"));
+    expect(articleLinks.length).toBeLessThanOrEqual(LLMS_MAX_ARTICLES);
+    expect(txt).toContain("/blog/tech-one"); // listed under whatever heading, without a code change
+  });
+
+  it("caps weekly editions and lists them with their Monday", () => {
+    const eds = Array.from({ length: LLMS_MAX_EDITIONS + 4 }, (_, i) => makeEdition(`2026-${i < 6 ? "09" : "10"}-${String(1 + ((i * 7) % 28)).padStart(2, "0")}`));
+    const txt = buildLlmsTxt({ ...empty("en"), editions: eds });
+    expect(links(txt).filter((l) => /\/blog\/weekly\/\d{4}-\d{2}-\d{2}$/.test(l)).length).toBeLessThanOrEqual(LLMS_MAX_EDITIONS);
+  });
+});
+
+describe("llms-full.txt", () => {
+  for (const lang of LOCALES) {
+    it(`${lang}: contains the title of every guide, glossary term, model page and landing`, () => {
+      const txt = buildLlmsFullTxt(empty(lang));
+      for (const g of guides) expect(txt, g.slug).toContain(g.title[lang]);
+      for (const g of glossary) expect(txt, g.slug).toContain(g.title[lang]);
+      for (const m of modelPages) expect(txt, m.slug).toContain(m.title[lang]);
+      for (const p of landings) expect(txt, p.slug).toContain(p.h1[lang]);
+      // "null/undefined" is legitimate prose in the code guides; a bare "undefined" is a template bug.
+      expect(withoutKnownProse(txt)).not.toMatch(/undefined|\[object Object\]/);
+    });
+  }
+
+  it("includes at most LLMS_FULL_MAX_ARTICLES stories, the most recently updated ones", () => {
+    const arts = Array.from({ length: LLMS_FULL_MAX_ARTICLES + 5 }, (_, i) =>
+      makeArticle({ slug: `story-${String(i).padStart(2, "0")}`, eventDate: `2026-10-${String(i + 1).padStart(2, "0")}`, title: `Unique story title number ${String(i).padStart(2, "0")}` }),
+    );
+    const txt = buildLlmsFullTxt({ ...empty("en"), articles: arts });
+    const included = arts.filter((a) => txt.includes(a.title));
+    expect(included).toHaveLength(LLMS_FULL_MAX_ARTICLES);
+    expect(txt).toContain(arts[arts.length - 1].title);
+    expect(txt).not.toContain(arts[0].title);
+  });
+
+  it("embeds the benchmark snapshot only when it exists", () => {
+    expect(buildLlmsFullTxt({ ...empty("en"), benchmarks: makeSnapshot() })).toMatch(/Alpha 1/);
+    expect(buildLlmsFullTxt(empty("en"))).not.toMatch(/Alpha 1/);
+  });
+
+  it("has a single top-level heading per section and starts with the product summary", () => {
+    const txt = buildLlmsFullTxt(empty("en"));
+    expect(txt.startsWith("# Promptea — full text")).toBe(true);
+    expect(txt.match(/^# (?!#)/gm)!.length).toBeLessThan(15); // sections, not one H1 per document
+  });
+});
+
+describe("demote", () => {
+  it("pushes headings down one level but leaves fenced code alone", () => {
+    const md = ["# A", "text", "```", "# not a heading", "```", "## B"].join("\n");
+    expect(demote(md).split("\n")).toEqual(["## A", "text", "```", "# not a heading", "```", "### B"]);
+  });
+
+  it("never exceeds h6 and keeps longer fences open until their own close", () => {
+    const md = ["###### Deep", "````", "```", "# inside", "```", "````", "# After"].join("\n");
+    expect(demote(md).split("\n")).toEqual(["###### Deep", "````", "```", "# inside", "```", "````", "## After"]);
+  });
+});
+
+describe("markdown twins", () => {
+  it("declare their media type", () => {
+    expect(MARKDOWN_CONTENT_TYPE).toMatch(/^text\/markdown/);
+  });
+
+  for (const lang of LOCALES) {
+    it(`${lang}: guides, glossary, models and landings carry title, source URL, language and no HTML`, () => {
+      const url = absUrl(`/${lang}/x`);
+      const docs = [
+        guideMarkdown(guides[0], lang, url, "2026-11-08"),
+        glossaryMarkdown(glossary[0], lang, url, "2026-11-08"),
+        modelMarkdown(modelPages[0], lang, url, "2026-11-08"),
+        landingMarkdown(landings[0], lang, url, "2026-11-08"),
+        docMarkdown(aboutDoc(lang), lang, url),
+        docMarkdown(methodologyDoc(lang), lang, url),
+        docMarkdown(homeAboutDoc(lang), lang, url, { title: "Promptea" }),
+      ];
+      for (const md of docs) {
+        expect(md.startsWith("# ")).toBe(true);
+        expect(md).toContain(url);
+        expect(md).toContain(lang === "es" ? "Español" : "English");
+        expect(md).not.toMatch(/<\/?(div|span|p|ul|li|script|style)\b/i);
+        expect(withoutKnownProse(md)).not.toMatch(/undefined|\[object Object\]/);
+        for (const l of links(md)) expect(() => new URL(l)).not.toThrow();
+      }
+    });
+  }
+
+  it("a guide twin contains its steps' text and its FAQ", () => {
+    const g = guides.find((x) => x.faq.length > 0)!;
+    const md = guideMarkdown(g, "en", absUrl("/en/guides/x"), "2026-11-08");
+    expect(md).toContain(g.faq[0].q.en);
+    expect(md).toContain(g.faq[0].a.en);
+  });
+
+  it("the home twin renders the how-to steps with their names", () => {
+    const md = docMarkdown(homeAboutDoc("en"), "en", absUrl("/en"), { title: "Promptea" });
+    expect(md).toMatch(/1\. \*\*Paste your prompt\.\*\*/);
+  });
+
+  it("article twin: summary, sources with the primary marked, date and correction", () => {
+    const a = makeArticle({ slug: "x", eventDate: "2026-11-05" });
+    const md = articleMarkdown({ ...a, correction: { note: "Fixed a number.", correctedAt: "2026-11-06T00:00:00.000Z" } as never }, absUrl("/en/blog/x"), "2026-11-06T00:00:00.000Z");
+    expect(md).toContain("Summary of x.");
+    expect(md).toContain("[Primary](https://example.com/x)");
+    expect(md).toContain("primary source");
+    expect(md).toContain("Last updated: 2026-11-06");
+    expect(md).toContain("Correction");
+  });
+
+  it("benchmarks twin states source and date of the snapshot", () => {
+    const md = benchmarksMarkdown(makeSnapshot(), "en", absUrl("/en/benchmarks"), "2026-11-08");
+    expect(md).toMatch(/2026-11-03/);
+    expect(md).toContain("Alpha 1");
+  });
+
+  it("a prompt containing backticks cannot break out of its code fence", () => {
+    const g = { ...guides[0], templates: [{ title: { en: "T", es: "T" }, prompt: { en: "```\n# injected heading\n```", es: "x" } }] } as never;
+    const md = guideMarkdown(g, "en", absUrl("/en/guides/x"), "2026-11-08");
+    expect(md).toMatch(/````text\n```\n# injected heading\n```\n````/);
+  });
+});

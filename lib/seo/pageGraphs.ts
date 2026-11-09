@@ -223,7 +223,7 @@ export function weeklyEditionGraph(e: NewsletterEdition, lang: Locale): JsonLdNo
   const path = weeklyEditionPath(lang, e.editionId);
   const url = absUrl(path);
   const es = lang === "es";
-  const published = newest(e.publishedAt, e.sentAt) ?? e.weekEnd;
+  const published = e.publishedAt ?? e.sentAt ?? e.weekEnd;
   const modified = newest(e.sentAt, e.publishedAt, e.weekEnd) ?? e.weekEnd;
   return graph(
     webPageNode({

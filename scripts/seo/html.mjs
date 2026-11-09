@@ -43,6 +43,8 @@ export function visibleText(html) {
 }
 
 export function headings(html, level) {
+  // Script bodies (Next's flight payload, JSON-LD) can contain "<h1>" as text.
+  html = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<!--[\s\S]*?-->/gi, " ");
   return [...html.matchAll(new RegExp(`<h${level}\\b[^>]*>([\\s\\S]*?)</h${level}>`, "gi"))].map((m) =>
     normalizeText(m[1].replace(/<[^>]+>/g, " ")),
   );

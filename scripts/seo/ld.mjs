@@ -35,7 +35,10 @@ const ISO_INSTANT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}
 
 export function isIsoDate(v) {
   if (typeof v !== "string" || !(ISO_DAY.test(v) || ISO_INSTANT.test(v))) return false;
-  return !Number.isNaN(new Date(v.length === 10 ? `${v}T00:00:00Z` : v).getTime());
+  const d = new Date(v.length === 10 ? `${v}T00:00:00Z` : v);
+  if (Number.isNaN(d.getTime())) return false;
+  // Round-trip the calendar day: 2026-02-30 must not pass as March 2.
+  return v.length !== 10 || d.toISOString().slice(0, 10) === v;
 }
 
 function ms(v) {
