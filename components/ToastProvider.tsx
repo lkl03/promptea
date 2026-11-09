@@ -18,16 +18,21 @@ export function useToast() {
 }
 
 function ToastView({ toast }: { toast: Toast }) {
+  // v1.8.0: semantic tokens (the old emerald/red/sky-200 text was unreadable
+  // on the light themes) over an opaque overlay fill, so page content never
+  // shows through a toast in any theme.
   const style =
     toast.type === "success"
-      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-200"
+      ? "border-success/40 bg-success-soft text-success"
       : toast.type === "error"
-        ? "border-red-500/30 bg-red-500/10 text-red-200"
-        : "border-sky-500/30 bg-sky-500/10 text-sky-200";
+        ? "border-danger/40 bg-danger-soft text-danger"
+        : "border-info/40 bg-info-soft text-info";
 
   return (
-    <div className={["surface-soft px-3 py-2 text-sm", style].join(" ")}>
-      {toast.message}
+    <div className="rounded-xl bg-[var(--overlay-fill)] shadow-lg">
+      <div role={toast.type === "error" ? "alert" : "status"} className={["rounded-xl border px-3 py-2 text-sm font-medium", style].join(" ")}>
+        {toast.message}
+      </div>
     </div>
   );
 }

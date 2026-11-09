@@ -141,4 +141,6 @@ export type UiDict = {
   matcher: MatcherDict;
   voice: VoiceDict;
   appFeedback: AppFeedbackDict;
+  /** v1.8.0: share button strings (the share page has its own, richer, copy). */
+  share: { button: string; copied: string; shareText: string; shareTextSingle: string };
 };

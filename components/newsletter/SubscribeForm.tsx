@@ -12,8 +12,14 @@
 //   - preferred language (defaults to the page language);
 //   - states: idle, submitting, success, already subscribed (informational,
 //     not an error), invalid email, rate limited (429), generic error.
+//
+// v1.8.0: a successful (or already-subscribed) submit marks this browser as
+// subscribed in the newsletter prompt store, so no pill, dock or modal is shown
+// again, and records one telemetry event with the surface (no email, no PII).
 
 import { FormEvent, useId, useState } from "react";
+import { nudgeActions } from "@/lib/newsletter/promptStore";
+import { trackAppEvent, type NewsletterSurface } from "@/lib/telemetry/appEvents.client";
 
 export type SubscribeFormDict = {
   emailPlaceholder: string;
@@ -37,11 +43,14 @@ export default function SubscribeForm({
   dict,
   autoFocus = false,
   onDone,
+  surface = "inline",
 }: {
   lang: "es" | "en";
   dict: SubscribeFormDict;
   autoFocus?: boolean;
   onDone?: () => void;
+  /** Where this form lives, for telemetry only. */
+  surface?: NewsletterSurface;
 }) {
   const id = useId();
   const [email, setEmail] = useState("");
@@ -75,11 +84,15 @@ export default function SubscribeForm({
       if (data.ok && data.outcome === "already_subscribed") {
         setStatus("already_subscribed");
         setMessage(dict.alreadySubscribed);
+        nudgeActions.markSubscribed();
+        onDone?.();
         return;
       }
       if (data.ok) {
         setStatus("success");
         setMessage(dict.success);
+        nudgeActions.markSubscribed();
+        trackAppEvent({ event: "newsletter_prompt_subscribed", lang, surface });
         onDone?.();
         return;
       }

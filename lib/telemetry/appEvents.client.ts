@@ -13,13 +13,22 @@ export type AppEventName =
   | "matcher_handoff"
   | "voice_recording_started"
   | "voice_transcribed"
-  | "voice_failed";
+  | "voice_failed"
+  // v1.8.0 newsletter prompts (no PII: surface + counters only)
+  | "newsletter_prompt_impression"
+  | "newsletter_prompt_open"
+  | "newsletter_prompt_subscribed"
+  | "newsletter_prompt_dismissed";
+
+/** Which newsletter surface an event refers to. "inline" = the forms embedded in pages. */
+export type NewsletterSurface = "pill" | "modal" | "dock" | "inline";
 
 export function trackAppEvent(args: {
   event: AppEventName;
   lang: Lang;
   mode?: AppMode;
   reason?: TranscribeErrorReason;
+  surface?: NewsletterSurface;
 }): void {
   try {
     const sessionId = getSessionId();

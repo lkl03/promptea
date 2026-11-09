@@ -11,6 +11,7 @@ import FindingsSection from "./results/FindingsSection";
 import InsightsSection from "./results/InsightsSection";
 import OptimizedPromptPanel from "./results/OptimizedPromptPanel";
 import FeedbackBar from "./results/FeedbackBar";
+import SaveToLibrary from "./library/SaveToLibrary";
 
 import type { UiDict } from "@/lib/uiDict";
 
@@ -155,6 +156,9 @@ export default function ResultsPanel({
       </div>
 
       <FeedbackBar dict={r} analysisId={analysisId} />
+
+      {/* v1.8.0: local-first library + shareable result card */}
+      <SaveToLibrary result={data} originalPrompt={originalPrompt} lang={lang} dict={r} shareDict={dict.share} />
 
       <div className="flex justify-center sm:hidden">
         <button type="button" className="btn btn-primary h-11 w-full" onClick={handleResetClick}>

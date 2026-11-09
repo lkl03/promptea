@@ -62,13 +62,16 @@ function Icon({ name }: { name: "analyze" | "bestAi" | "daily" | "benchmarks" })
   }
 }
 
-export default function HubCards({ lang, dict }: { lang: "es" | "en"; dict: Dict }) {
-  const cards = [
+export default function HubCards({ lang, dict, only }: { lang: "es" | "en"; dict: Dict; only?: Array<"analyze" | "bestAi" | "daily" | "benchmarks"> }) {
+  const all = [
     { key: "analyze" as const, href: `/${lang}/analyzer`, ...dict.cards.analyze },
     { key: "bestAi" as const, href: `/${lang}/best-ai`, ...dict.cards.bestAi },
     { key: "daily" as const, href: `/${lang}/blog`, ...dict.cards.daily },
     { key: "benchmarks" as const, href: `/${lang}/benchmarks`, ...dict.cards.benchmarks },
   ];
+  // v1.8.0: the homepage shows AI Daily and Benchmarks as richer sections
+  // (headlines / chart teaser); the cards below are the remaining tools.
+  const cards = only ? all.filter((c) => only.includes(c.key)) : all;
 
   return (
     <ul aria-label={dict.cardsAria} className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5">

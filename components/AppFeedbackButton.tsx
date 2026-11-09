@@ -6,6 +6,7 @@
 // The old mailto workflow is gone. Never sends the user's prompt content.
 
 import { useEffect, useRef, useState } from "react";
+import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import { APP_FEEDBACK_CATEGORIES, type AppFeedbackCategory, type AppMode } from "@/lib/domain";
 import type { AppFeedbackDict } from "@/lib/uiDict";
@@ -176,91 +177,93 @@ export default function AppFeedbackButton({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50">
-          <div
-            className="absolute inset-0 bg-black/45 backdrop-blur-[2px]"
-            onClick={() => {
-              setOpen(false);
-              triggerRef.current?.focus();
-            }}
-            aria-hidden="true"
-          />
-          <div
-            ref={dialogRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="app-feedback-title"
-            className="surface relative mx-auto mt-24 w-[min(560px,calc(100%-24px))] p-5 animate-toast-in"
-          >
-            <h2 id="app-feedback-title" className="text-base font-semibold text-ink">
-              {dict.title}
-            </h2>
-            <p className="mt-1 text-sm text-ink-muted">{dict.subtitle}</p>
-
-            <fieldset className="mt-4">
-              <legend className="text-xs font-medium text-ink-muted">{dict.categoryLabel}</legend>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {APP_FEEDBACK_CATEGORIES.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    className="pill"
-                    aria-pressed={category === c}
-                    onClick={() => setCategory((prev) => (prev === c ? null : c))}
-                  >
-                    {categoryLabel(dict, c)}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-
-            <label htmlFor="app-feedback-message" className="mt-4 block text-xs font-medium text-ink-muted">
-              {dict.messageLabel}
-            </label>
-            <textarea
-              id="app-feedback-message"
-              value={message}
-              onChange={(e) => {
-                setMessage(e.target.value);
-                if (status === "error") setStatus("idle");
+        <Portal>
+          <div className="fixed inset-0 z-50">
+            <div
+              className="absolute inset-0 bg-black/45 backdrop-blur-[2px]"
+              onClick={() => {
+                setOpen(false);
+                triggerRef.current?.focus();
               }}
-              maxLength={2000}
-              rows={5}
-              placeholder={dict.messagePlaceholder}
-              className="field mt-1.5 w-full resize-y p-3"
-              disabled={status === "submitting" || status === "success"}
+              aria-hidden="true"
             />
-            <div className="mt-1 text-right text-[11px] tabular-nums text-ink-faint">
-              {message.trim().length}/2000
-            </div>
+            <div
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="app-feedback-title"
+              className="surface relative mx-auto mt-24 w-[min(560px,calc(100%-24px))] p-5 animate-toast-in"
+            >
+              <h2 id="app-feedback-title" className="text-base font-semibold text-ink">
+                {dict.title}
+              </h2>
+              <p className="mt-1 text-sm text-ink-muted">{dict.subtitle}</p>
 
-            <div aria-live="polite" className="min-h-5 text-sm">
-              {status === "success" && <span className="text-success">{dict.success}</span>}
-              {status === "error" && <span className="text-danger">{errorMessage(dict, errorKey)}</span>}
-            </div>
+              <fieldset className="mt-4">
+                <legend className="text-xs font-medium text-ink-muted">{dict.categoryLabel}</legend>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {APP_FEEDBACK_CATEGORIES.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      className="pill"
+                      aria-pressed={category === c}
+                      onClick={() => setCategory((prev) => (prev === c ? null : c))}
+                    >
+                      {categoryLabel(dict, c)}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
 
-            <div className="mt-3 flex items-center justify-end gap-2">
-              <button
-                type="button"
-                className="btn btn-ghost"
-                onClick={() => {
-                  setOpen(false);
-                  triggerRef.current?.focus();
+              <label htmlFor="app-feedback-message" className="mt-4 block text-xs font-medium text-ink-muted">
+                {dict.messageLabel}
+              </label>
+              <textarea
+                id="app-feedback-message"
+                value={message}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                  if (status === "error") setStatus("idle");
                 }}
-              >
-                {dict.cancel}
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={submit}
-                disabled={status === "submitting" || status === "success" || message.trim().length === 0}
-              >
-                {status === "submitting" ? dict.submitting : dict.submit}
-              </button>
+                maxLength={2000}
+                rows={5}
+                placeholder={dict.messagePlaceholder}
+                className="field mt-1.5 w-full resize-y p-3"
+                disabled={status === "submitting" || status === "success"}
+              />
+              <div className="mt-1 text-right text-[11px] tabular-nums text-ink-faint">
+                {message.trim().length}/2000
+              </div>
+
+              <div aria-live="polite" className="min-h-5 text-sm">
+                {status === "success" && <span className="text-success">{dict.success}</span>}
+                {status === "error" && <span className="text-danger">{errorMessage(dict, errorKey)}</span>}
+              </div>
+
+              <div className="mt-3 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={() => {
+                    setOpen(false);
+                    triggerRef.current?.focus();
+                  }}
+                >
+                  {dict.cancel}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={submit}
+                  disabled={status === "submitting" || status === "success" || message.trim().length === 0}
+                >
+                  {status === "submitting" ? dict.submitting : dict.submit}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </Portal>
       )}
     </>
   );

@@ -20,7 +20,14 @@ const APP_EVENTS = [
   "voice_recording_started",
   "voice_transcribed",
   "voice_failed",
+  // v1.8.0 newsletter prompts
+  "newsletter_prompt_impression",
+  "newsletter_prompt_open",
+  "newsletter_prompt_subscribed",
+  "newsletter_prompt_dismissed",
 ] as const;
+
+const NEWSLETTER_SURFACES = ["pill", "modal", "dock", "inline"] as const;
 
 const AppEventSchema = z.object({
   sessionId: z.string().min(10).max(100),
@@ -29,6 +36,8 @@ const AppEventSchema = z.object({
   mode: z.enum(APP_MODES).optional(),
   /** Typed failure reason only — never free text. */
   reason: z.enum(TRANSCRIBE_ERROR_REASONS).optional(),
+  /** Newsletter prompt surface (enum only: no free text, no email). */
+  surface: z.enum(NEWSLETTER_SURFACES).optional(),
 });
 
 function ttlDays() {
@@ -70,6 +79,7 @@ export async function POST(req: NextRequest) {
         lang: parsed.data.lang,
         mode: parsed.data.mode ?? null,
         reason: parsed.data.reason ?? null,
+        surface: parsed.data.surface ?? null,
         ts: Timestamp.fromDate(now),
         createdAt: FieldValue.serverTimestamp(),
         expiresAt: Timestamp.fromDate(expires),

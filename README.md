@@ -114,6 +114,12 @@ npm test           # vitest
 npm run build      # production build (works offline — fonts are local)
 ```
 
+## Brand & release tooling (v1.8.0)
+
+- `node scripts/brand/build-brand-assets.mjs` — regenerates every brand raster (wordmark light/dark, mascot, favicons, apple-touch, manifest and OG artwork) from `public/brand/promptea-logo-mascot-source.png`.
+- `node scripts/release/audit.mjs --base=http://localhost:3070 [--shots] [--quick]` — real-Chrome audit of the public pages across themes × colour schemes × desktop/mobile: console/hydration errors, horizontal overflow, CLS, and the feedback-modal fill; `--shots` saves screenshots to `docs/release/v1.8.0/`.
+- `BENCHMARKS_DEV_FIXTURE=1 npm run dev` (development only) renders a clearly fictitious benchmark dataset so the charts can be reviewed without an OpenRouter key.
+
 ## Environment variables
 
 | Variable | Required | Purpose |
@@ -133,6 +139,8 @@ npm run build      # production build (works offline — fonts are local)
 | `PROMPT_JUDGE_CONFIDENCE_MAX` | optional | The judge runs only when `meta.confidence` is below this value (default `60`). |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
+| `NEXT_PUBLIC_X_HANDLE` | optional | Promptea's X account (`promptea` or `@promptea`). Enables the homepage X feed (official timeline, click-to-load) and the footer link `https://x.com/<handle>`. If unset it is derived from `NEXT_PUBLIC_X_URL`; with neither, the feed section is hidden. |
+| `NEXT_PUBLIC_X_URL` | optional | Profile URL for the footer link (default `https://x.com`). Also the fallback source of the handle. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
 | `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to allow LIVE Promptea Weekly sends. Default `false` (live runs return `DELIVERY_DISABLED`). `promptea.me` is verified in Resend. |
 | `NEWSLETTER_SEND_SECRET` | for the weekly run | HMAC key shared with the weekly routine (≥32 random chars). Without it `POST /api/internal/newsletter/run` returns 503. Never commit it. |

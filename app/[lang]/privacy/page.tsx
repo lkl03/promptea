@@ -112,6 +112,44 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
           </li>
         </ul>
 
+        <h2 className="text-lg font-medium mt-6">{isEs ? "Feed de X (contenido de terceros)" : "X feed (third-party content)"}</h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            {isEs
+              ? "La página de inicio puede mostrar el timeline oficial de X (Twitter). Es contenido de un tercero: lo carga y lo sirve X Corp. desde platform.twitter.com y x.com."
+              : "The home page can show the official X (Twitter) timeline. It is third-party content, loaded and served by X Corp. from platform.twitter.com and x.com."}
+          </li>
+          <li>
+            {isEs
+              ? "No se carga automáticamente: solo después de que presionás “Cargar el feed”. Hasta ese momento no se hace ningún pedido a X desde la página."
+              : "It is not loaded automatically: only after you press “Load the feed”. Until then the page makes no request to X."}
+          </li>
+          <li>
+            {isEs
+              ? "Al cargarlo, X puede recibir tu dirección IP y datos de tu navegador, y puede usar cookies o almacenamiento propio, según su política de privacidad (x.com/privacy). Pedimos a X que no use el widget para personalizar (dnt). Promptea no recibe esos datos."
+              : "When loaded, X may receive your IP address and browser data and may use its own cookies or storage, as described in its privacy policy (x.com/privacy). We ask X not to use the widget for personalization (dnt). Promptea does not receive that data."}
+          </li>
+        </ul>
+
+        <h2 className="text-lg font-medium mt-6">{isEs ? "Almacenamiento en tu navegador" : "Storage in your browser"}</h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            {isEs
+              ? "Guardamos en tu navegador (localStorage), sin enviarlo a ningún servidor: el tema visual elegido, si cerraste los avisos del newsletter (para no volver a mostrártelos por unos días) y si ya te suscribiste."
+              : "We keep in your browser (localStorage), without sending it to any server: your chosen visual theme, whether you dismissed the newsletter prompts (so they are not shown again for a few days) and whether you already subscribed."}
+          </li>
+          <li>
+            {isEs
+              ? "La Biblioteca de prompts guarda tus análisis recientes (el prompt original y el optimizado, el puntaje y la fecha) únicamente en tu navegador. Esos prompts no salen de tu dispositivo por el hecho de estar en la Biblioteca, no tenemos acceso a ellos y no se sincronizan. Podés borrarlos uno por uno o todos juntos desde la Biblioteca, o limpiando los datos del sitio en tu navegador."
+              : "The Prompt Library keeps your recent analyses (the original and optimized prompt, the score and the date) only in your browser. Those prompts do not leave your device because they are in the Library, we have no access to them and they are not synced. You can delete them one by one or all at once from the Library, or by clearing the site data in your browser."}
+          </li>
+          <li>
+            {isEs
+              ? "Las tarjetas compartibles del resultado codifican en la URL solo el puntaje y su desglose, nunca el texto del prompt."
+              : "Shareable result cards encode only the score and its breakdown in the URL, never the prompt text."}
+          </li>
+        </ul>
+
         <h2 className="text-lg font-medium mt-6">{isEs ? "Retención" : "Retention"}</h2>
         <p>
           {isEs

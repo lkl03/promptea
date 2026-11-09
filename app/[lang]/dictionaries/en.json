@@ -101,7 +101,10 @@
     "feedbackSentNotHelpful": "Feedback sent: not helpful",
     "feedbackThanks": "Thanks!",
     "feedbackError": "Error sending feedback",
-    "analysisReady": "Analysis ready"
+    "analysisReady": "Analysis ready",
+    "savedToLibrary": "Saved to your library (this browser only).",
+    "openLibrary": "Open library",
+    "shareResult": "Share result"
   },
   "mode": {
     "improveLabel": "Improve Prompt",
@@ -343,12 +346,48 @@
       "prompts": "Prompts",
       "guides": "Guides",
       "models": "Models",
-      "glossary": "Glossary"
+      "glossary": "Glossary",
+      "library": "Library"
     },
     "showcaseTitle": "A quick tour of Promptea",
     "showcaseBody": "A real tour of the app: analyze a prompt, copy the optimized version, pick an AI, read the news, and explore benchmarks.",
-    "showcaseCaption": "Automated recording of the v1.7.0 interface with a demo prompt.",
-    "showcasePending": "The demo video is being generated."
+    "showcaseCaption": "Automated recording of the interface with a demo prompt.",
+    "showcasePending": "The demo video is being generated.",
+    "toolsTitle": "Tools",
+    "promptBox": {
+      "title": "Paste your prompt and analyze it",
+      "label": "Your prompt",
+      "placeholder": "Paste the prompt you want to improve here…",
+      "submit": "Analyze prompt",
+      "hint": "Opens the analyzer with your prompt loaded. Free, no account.",
+      "tooLong": "Only the first {n} characters will be sent."
+    },
+    "latest": {
+      "title": "Latest in AI Daily",
+      "subtitle": "One verified story a day, with its sources.",
+      "all": "See all stories",
+      "weekly": "Weekly digest"
+    },
+    "teaser": {
+      "title": "Benchmarks at a glance",
+      "subtitle": "The models leading the {benchmark}",
+      "cta": "See rankings, cost and charts",
+      "source": "Source: {source} · {date}"
+    },
+    "xFeed": {
+      "title": "Follow us on X",
+      "subtitle": "Promptea and AI news, live.",
+      "load": "Load the @{handle} feed",
+      "loading": "Loading the feed…",
+      "privacyNote": "The feed is shown by X, a third party: when loaded, X may receive data from your browser and set cookies. It is not loaded until you ask for it.",
+      "fallback": "We couldn't load the feed. It may be blocked by your browser or an extension.",
+      "open": "Open @{handle} on X",
+      "follow": "Follow us on X"
+    },
+    "newsletter": {
+      "title": "The week in AI, in your inbox",
+      "body": "Every Monday, the AI stories that mattered. No spam: unsubscribe any time."
+    }
   },
   "analyzerPage": {
     "title": "Prompt analyzer",
@@ -384,5 +423,73 @@
     "body": "The best AI stories of the week, every Monday in your inbox.",
     "open": "Subscribe to the newsletter",
     "close": "Close"
+  },
+  "newsletterNudge": {
+    "pill": "Join the newsletter",
+    "panelTitle": "The week in AI, in your inbox",
+    "panelBody": "Every Monday, the AI stories that mattered. No spam.",
+    "close": "Close",
+    "modalTitle": "Before you go: want the best of the week in your inbox?",
+    "modalBody": "A summary every Monday with the AI stories that mattered, verified and with their sources. It is free and you can unsubscribe any time.",
+    "modalDismiss": "Not now"
+  },
+  "library": {
+    "metaTitle": "Prompt library",
+    "metaDescription": "Your recent prompt analyses, saved only in your browser.",
+    "title": "Prompt library",
+    "subtitle": "Your recent analyses, with the original prompt, the optimized one and the score.",
+    "privacy": "Private: these prompts never leave your browser. They are saved on this device, with no account and no sync, and we have no access to them. If you clear the site data, they are gone.",
+    "autoSave": "Save my analyses automatically",
+    "search": "Search",
+    "searchPlaceholder": "Search your prompts…",
+    "favoritesOnly": "Favorites only",
+    "count": "{n} saved",
+    "emptyTitle": "Nothing saved yet",
+    "empty": "Analyze a prompt and it will show up here, with its optimized version and score.",
+    "emptySearch": "No results for that search.",
+    "goAnalyze": "Go to the analyzer",
+    "original": "Original prompt",
+    "optimized": "Optimized version",
+    "showTexts": "Show the texts",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyOptimized": "Copy optimized",
+    "favorite": "Mark as favorite",
+    "unfavorite": "Remove from favorites",
+    "delete": "Delete",
+    "deleteAll": "Delete all",
+    "deleteAllConfirm": "Delete all {n} saved prompts? This cannot be undone.",
+    "deleteAllYes": "Yes, delete everything",
+    "cancel": "Cancel",
+    "reanalyze": "Analyze again",
+    "share": "Share",
+    "score": "Score",
+    "noAfter": "no optimized score",
+    "saveFailed": "Could not save: the browser blocked storage.",
+    "loading": "Loading your library…"
+  },
+  "share": {
+    "button": "Share",
+    "copied": "Link copied",
+    "shareText": "My prompt went from {before} to {after} points on Promptea.",
+    "shareTextSingle": "My prompt scored {score} points on Promptea.",
+    "pageTitle": "A prompt analysis result on Promptea",
+    "pageDescription": "Score and breakdown of a prompt analyzed with Promptea. The card does not include the prompt text.",
+    "score": "Score",
+    "optimized": "Optimized",
+    "before": "Original",
+    "breakdown": "Breakdown",
+    "criteria": {
+      "clarity": "Clarity",
+      "context": "Context",
+      "constraints": "Constraints",
+      "output": "Output format",
+      "verifiability": "Verifiability",
+      "safety": "Safety"
+    },
+    "noPrompt": "This card only contains scores: the prompt text is never shared.",
+    "cta": "Analyze your prompt, free",
+    "invalidTitle": "This card is not valid",
+    "invalidBody": "The link does not carry a valid score."
   }
 }

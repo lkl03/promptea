@@ -4,6 +4,7 @@ import AppFeedbackButton from "@/components/AppFeedbackButton";
 import { APP_VERSION } from "@/lib/version";
 import type { AppFeedbackDict } from "@/lib/uiDict";
 import { weeklyArchivePath } from "@/lib/newsletter/paths";
+import { getXLinks } from "@/lib/social";
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -35,7 +36,7 @@ export default function Footer({
   const resourcesLabel = lang === "es" ? "Recursos útiles" : "Useful resources";
   const eterlabMessage = lang === "es" ? "diseñado y desarrollado por" : "designed and developed by";
   const followLabel = lang === "es" ? "Seguinos en X" : "Follow us on X";
-  const xUrl = (process.env.NEXT_PUBLIC_X_URL || "https://x.com") as string;
+  const xUrl = getXLinks().url;
 
   return (
     <footer className="mx-auto w-full max-w-6xl px-4 pb-8 pt-10 3xl:max-w-7xl">
@@ -73,7 +74,7 @@ export default function Footer({
         >
           <XIcon className="h-4 w-4 opacity-90" />
           <span
-            className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap
+            className="pointer-events-none absolute -top-9 hidden sm:block left-1/2 -translate-x-1/2 whitespace-nowrap
                        rounded-full border px-2.5 py-1 text-[11px] leading-none
                        bg-surface-raised text-ink border-line
                        opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0
@@ -118,6 +119,10 @@ export default function Footer({
 
         <Link href={`/${lang}/analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {lang === "es" ? "Analizador" : "Analyzer"}
+        </Link>
+
+        <Link href={`/${lang}/library`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {lang === "es" ? "Biblioteca" : "Library"}
         </Link>
       </div>
 

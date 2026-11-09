@@ -11,6 +11,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
 import { loadBenchmarks, type BenchmarksResult, type SnapshotStore } from "./load";
 import type { BenchmarksSnapshot } from "./normalize";
+import { devFixtureSnapshot } from "./dev-fixture";
 
 const SNAPSHOT_DOC = ["benchmark_snapshots", "latest"] as const;
 /** Re-persist an unchanged snapshot at most this often (keeps writes rare). */
@@ -50,6 +51,11 @@ function firestoreSnapshotStore(): SnapshotStore | null {
 }
 
 export const getBenchmarks = cache(async (): Promise<BenchmarksResult> => {
+  // Local development only: a clearly fictitious dataset to review the charts
+  // without an API key. Never reachable in production builds.
+  if (process.env.NODE_ENV === "development" && process.env.BENCHMARKS_DEV_FIXTURE === "1") {
+    return { status: "live", snapshot: devFixtureSnapshot() };
+  }
   return loadBenchmarks({
     apiKey: process.env.OPENROUTER_API_KEY,
     store: firestoreSnapshotStore(),
