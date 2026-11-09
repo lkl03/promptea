@@ -20,6 +20,8 @@ import { summarizeEdition, type EditionSummary } from "@/lib/newsletter/archive"
 import { weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import { pageMetadata } from "@/lib/seo/metadata";
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 
 export const revalidate = 300;
 
@@ -62,6 +64,7 @@ export default async function WeeklyArchivePage({ params }: { params: Promise<{ 
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/blog/weekly`, { collection: true })} />
       <DailyTabs lang={l} active="weekly" dict={dict.dailyTabs} />
 
       <div className="mt-8 grid grid-cols-1 gap-10 sm:mt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">

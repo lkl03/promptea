@@ -1,4 +1,6 @@
 // app/[lang]/landing/[slug]/page.tsx
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -63,6 +65,7 @@ export default async function LandingPage({
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 pt-12 pb-16 space-y-8">
+      <JsonLd data={registryPageGraph(l, `/${l}/landing/${slug}`, { aboutSoftware: true })} />
       <header className="space-y-3 text-center">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold tracking-tight">
           {page.h1[l]}

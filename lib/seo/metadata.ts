@@ -34,7 +34,12 @@ export type PageMetadataInput = {
   publishedTime?: string;
   modifiedTime?: string;
   authors?: string[];
-  /** Explicit image URLs; omit to inherit the segment's opengraph-image. */
+  /**
+   * Explicit image URLs. Omitted: the locale's default card
+   * (`/{lang}/opengraph-image`, `/{lang}/twitter-image`). A page that defines its
+   * own `openGraph` does NOT inherit the layout's file-convention image, so the
+   * default has to be stated here.
+   */
   images?: Array<{ url: string; width?: number; height?: number; alt?: string }>;
   /** Path of the markdown version (`/en/guides/x.md`). */
   markdownPath?: string;
@@ -63,6 +68,8 @@ export function pageMetadata(i: PageMetadataInput): Metadata {
   // A title that already names the brand is used as is (no " · Promptea" suffix).
   const absolute = i.absoluteTitle || i.title.includes(SITE_NAME);
   const ogTitle = absolute ? i.title : `${i.title} · ${SITE_NAME}`;
+  const ogImages = i.images ?? [{ url: `/${i.lang}/opengraph-image`, width: 1200, height: 630, alt: SITE_NAME }];
+  const twitterImages = i.images ? i.images.map((im) => im.url) : [`/${i.lang}/twitter-image`];
   const other = LOCALES.filter((l) => l !== i.lang).map((l) => OG_LOCALE[l]);
 
   return {
@@ -90,13 +97,13 @@ export function pageMetadata(i: PageMetadataInput): Metadata {
             ...(i.authors ? { authors: i.authors } : {}),
           }
         : {}),
-      ...(i.images ? { images: i.images } : {}),
+      images: ogImages,
     },
     twitter: {
       card: "summary_large_image",
       title: ogTitle,
       description: i.description,
-      ...(i.images ? { images: i.images.map((im) => im.url) } : {}),
+      images: twitterImages,
     },
   };
 }

@@ -13,7 +13,7 @@ import type { PageDoc } from "./content/sitePages";
 import { entityIds, articleNode, datasetNode, breadcrumbNode, definedTermNode, faqNode, graph, howToNode, pageId, ref, webPageNode, type JsonLdNode } from "./jsonld";
 import { SOURCE_INFO, CATEGORY_LABELS } from "@/lib/benchmarks/catalog";
 import type { BenchmarksSnapshot } from "@/lib/benchmarks/normalize";
-import { markdownPathOf } from "./registry";
+import { markdownPathOf, staticSeoUrls } from "./registry";
 import { absUrl, type Locale } from "./site";
 
 const home = (lang: Locale) => (lang === "es" ? "Inicio" : "Home");
@@ -179,5 +179,32 @@ export function benchmarksGraph(i: { lang: Locale; title: string; description: s
     }),
     dataset,
     breadcrumbNode(url, crumbs(i.lang, [{ name: label, path }])),
+  );
+}
+
+/**
+ * Pages whose copy lives in the content registry (tools, hubs, landings, legal):
+ * a WebPage (a CollectionPage for the hubs that list other pages) with its
+ * breadcrumb, built from the very same title/description/date that llms.txt and
+ * the sitemap use. Returns null for a path the registry does not know, so a page
+ * can never emit a graph for something that is not in the public index.
+ */
+export function registryPageGraph(lang: Locale, path: string, opts: { collection?: boolean; aboutSoftware?: boolean; parent?: Crumb } = {}): JsonLdNode | null {
+  const entry = staticSeoUrls(lang).find((u) => u.path === path);
+  if (!entry) return null;
+  const url = absUrl(path);
+  return graph(
+    webPageNode({
+      lang,
+      url,
+      name: entry.title,
+      description: entry.description,
+      type: opts.collection ? "CollectionPage" : "WebPage",
+      dateModified: entry.updated,
+      hasBreadcrumb: true,
+      about: opts.aboutSoftware ? ref(entityIds().software) : undefined,
+      markdownUrl: entry.markdown ? absUrl(markdownPathOf(path)) : undefined,
+    }),
+    breadcrumbNode(url, crumbs(lang, [...(opts.parent ? [opts.parent] : []), { name: entry.title, path }])),
   );
 }

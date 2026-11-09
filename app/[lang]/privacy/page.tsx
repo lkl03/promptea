@@ -1,4 +1,6 @@
 import { hasLocale } from "../dictionaries";
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -25,6 +27,7 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/privacy`, {})} />
       <h1 className="text-2xl font-semibold">{isEs ? "Política de Privacidad" : "Privacy Policy"}</h1>
 
       <section className="space-y-3 text-sm opacity-90 leading-relaxed">

@@ -3,6 +3,8 @@
 // Mode 2 — Find the Best AI (v1.3.0). Route-addressable so refresh, deep
 // links, back/forward, and locale switches all preserve the mode.
 
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
@@ -37,6 +39,7 @@ export default async function BestAiPage({ params }: { params: Promise<{ lang: s
 
   return (
     <main className="px-4 pb-10 pt-8 sm:pt-10">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/best-ai`, { aboutSoftware: true })} />
       <div className="mx-auto w-full max-w-6xl">
         <header className="text-center">
           <h1 className="font-title text-3xl font-semibold tracking-tight sm:text-4xl">

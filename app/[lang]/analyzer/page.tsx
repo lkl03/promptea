@@ -7,6 +7,8 @@
 // Legacy homepage deep links (/{lang}?prompt=…) are redirected here with
 // their query string intact by proxy.ts.
 
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import type { Metadata } from "next";
 import { getDictionary, hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
@@ -90,6 +92,7 @@ export default async function AnalyzerPage({
 
   return (
     <main className="px-4 pb-10 pt-8 sm:pt-10">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/analyzer`, { aboutSoftware: true })} />
       <div
         className={[
           "mx-auto grid w-full gap-8 xl:gap-10",

@@ -1,4 +1,6 @@
 // app/[lang]/glossary/page.tsx
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import Link from "next/link";
 import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
@@ -39,6 +41,7 @@ export default async function GlossaryIndexPage({ params }: { params: Promise<{ 
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
+      <JsonLd data={registryPageGraph(l, `/${l}/glossary`, { collection: true })} />
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{title}</h1>
         <p className="opacity-80 text-sm sm:text-base">{subtitle}</p>
