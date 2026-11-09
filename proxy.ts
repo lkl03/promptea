@@ -2,8 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
+import { DEFAULT_LOCALE } from "./lib/seo/site";
+
 const locales = ["es", "en"] as const;
-const defaultLocale = "es";
+/**
+ * The language a visitor gets when nothing in Accept-Language matches (an
+ * unsupported language, no header at all — which is what most crawlers send).
+ * v1.8.0: this is lib/seo/site.ts's DEFAULT_LOCALE, the same locale that
+ * hreflang="x-default" advertises, so what a search engine is told and what the
+ * server does are one decision. English is the broader fallback; anyone whose
+ * browser asks for Spanish still gets /es.
+ */
+const defaultLocale = DEFAULT_LOCALE;
 
 type Locale = (typeof locales)[number];
 
@@ -28,9 +38,16 @@ function getLocale(request: NextRequest): Locale {
 
   // Negotiator espera headers como objeto plano
   const headers = { "accept-language": acceptLanguage };
-  const languages = new Negotiator({ headers }).languages();
+  // "*" (what some crawlers send) and malformed tags make Intl throw a
+  // RangeError inside match(): that used to turn the request into a 500. Neither
+  // says anything about the visitor's language, so they fall back to the default.
+  const languages = new Negotiator({ headers }).languages().filter((l) => l !== "*");
 
-  return match(languages, locales as unknown as string[], defaultLocale) as Locale;
+  try {
+    return match(languages, locales as unknown as string[], defaultLocale) as Locale;
+  } catch {
+    return defaultLocale;
+  }
 }
 
 export function proxy(request: NextRequest) {

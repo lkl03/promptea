@@ -56,7 +56,18 @@ export const LLMS_MAX_EDITIONS = 8;
 const BENCH_RANKINGS = 3;
 const BENCH_ROWS = 5;
 /** AI Daily stories included in full in llms-full.txt. */
-export const LLMS_FULL_MAX_ARTICLES = 12;
+export const LLMS_FULL_MAX_ARTICLES = 7;
+/**
+ * Budget for the AI Daily part of llms-full.txt (bytes of UTF-8). Everything
+ * explanatory (product, method, models, glossary, guides) is always included and
+ * only changes when someone edits it; AI Daily is the one part that grows every
+ * day, so its stories are added newest first only while they fit this budget,
+ * and the rest is linked from llms.txt. v1.8.0 measured the static part at about
+ * 285 KB (en) / 315 KB (es), down from 405 / 455 KB: guides keep their sections
+ * and FAQ but list their templates by title (the prompts live in each page's
+ * .md twin), and no document repeats a prompt inside a prefilled link.
+ */
+export const LLMS_FULL_ARTICLES_BYTES = 60 * 1024;
 
 function link(u: SeoUrl): string {
   const target = u.markdown ? markdownPathOf(u.path) : u.path;
@@ -276,30 +287,43 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   out.push(sectionTitle(t("Benchmarks", "Benchmarks")));
   out.push(demote(benchmarksMarkdown(i.benchmarks, lang, absUrl(`/${lang}/benchmarks`), CONTENT_UPDATED.benchmarks)));
 
-  // AI Daily
-  const recent = [...i.articles].sort((a, b) => (articleUpdated(b) > articleUpdated(a) ? 1 : -1)).slice(0, LLMS_FULL_MAX_ARTICLES);
-  if (recent.length > 0) {
-    out.push(sectionTitle(t("AI Daily — latest stories", "IA al Día — últimas notas")));
-    for (const a of recent) {
-      const u = articleUrl(a);
-      out.push(demote(articleMarkdown(a, absUrl(u.path), u.updated)), "---", "");
-    }
-  }
+  // AI Daily goes between Benchmarks and Models, but it is the only part that grows
+  // with time, so it is inserted last and only while it fits the budget (below).
+  const aiDailyAt = out.length;
 
-  // Models, glossary, guides, landings
+  // Models, glossary, guides, landings. Compact: prompts without the prefilled
+  // links (each repeats its whole prompt URL-encoded) and, for guides, template
+  // titles only; the per-page .md twin carries the full prompts.
   out.push(sectionTitle(t("Prompts by model", "Prompts por modelo")));
-  for (const m of modelPages) out.push(demote(modelMarkdown(m, lang, absUrl(`/${lang}/models/${m.slug}`), modelPageUpdated(m.slug))), "---", "");
+  for (const m of modelPages) out.push(demote(modelMarkdown(m, lang, absUrl(`/${lang}/models/${m.slug}`), modelPageUpdated(m.slug), "prompts")), "---", "");
 
   out.push(sectionTitle(t("Glossary", "Glosario")));
-  for (const g of glossary) out.push(demote(glossaryMarkdown(g, lang, absUrl(`/${lang}/glossary/${g.slug}`), g.updated ?? CONTENT_UPDATED.glossary)), "---", "");
+  for (const g of glossary) out.push(demote(glossaryMarkdown(g, lang, absUrl(`/${lang}/glossary/${g.slug}`), g.updated ?? CONTENT_UPDATED.glossary, "prompts")), "---", "");
 
   out.push(sectionTitle(t("Prompting guides", "Guías de prompting")));
-  for (const g of guides) out.push(demote(guideMarkdown(g, lang, absUrl(`/${lang}/guides/${g.slug}`), g.updated ?? CONTENT_UPDATED.guides)), "---", "");
+  for (const g of guides) out.push(demote(guideMarkdown(g, lang, absUrl(`/${lang}/guides/${g.slug}`), g.updated ?? CONTENT_UPDATED.guides, "titles")), "---", "");
 
   out.push(sectionTitle(t("Landing pages", "Páginas de producto")));
   for (const p of landings) out.push(demote(landingMarkdown(p, lang, absUrl(`/${lang}/landing/${p.slug}`), CONTENT_UPDATED.landings)), "---", "");
 
   out.push(`\n# ${t("How to cite", "Cómo citar")}\n`, ...citeBlock(lang), "");
+
+  // AI Daily: newest first, at most LLMS_FULL_MAX_ARTICLES, and only while they stay
+  // inside LLMS_FULL_ARTICLES_BYTES. The rest is linked from llms.txt.
+  const recent = [...i.articles].sort((x, y) => (articleUpdated(y) > articleUpdated(x) ? 1 : -1)).slice(0, LLMS_FULL_MAX_ARTICLES);
+  if (recent.length > 0) {
+    const heading = sectionTitle(t("AI Daily — latest stories", "IA al Día — últimas notas"));
+    let used = Buffer.byteLength(heading);
+    const stories: string[] = [];
+    for (const a of recent) {
+      const u = articleUrl(a);
+      const chunk = `${demote(articleMarkdown(a, absUrl(u.path), u.updated))}\n---\n`;
+      used += Buffer.byteLength(chunk);
+      if (used > LLMS_FULL_ARTICLES_BYTES) break;
+      stories.push(chunk);
+    }
+    if (stories.length > 0) out.splice(aiDailyAt, 0, heading, ...stories);
+  }
 
   return out.join("\n").replace(/\n{4,}/g, "\n\n\n").trimEnd() + "\n";
 }

@@ -88,18 +88,35 @@ export function docMarkdown(doc: PageDoc, lang: Locale, url: string, opts: { tit
   return out.join("\n").trimEnd() + "\n";
 }
 
+/**
+ * How much of a page's copy-paste templates a document carries.
+ *   full    — the prompts and a prefilled "Open in Promptea" link (the page's own .md twin)
+ *   prompts — the prompts, no prefilled link (the link repeats the whole prompt, URL-encoded)
+ *   titles  — only the titles, pointing at the twin that has them (llms-full.txt guides)
+ */
+export type TemplateMode = "full" | "prompts" | "titles";
+
 function templatesMarkdown(
   lang: Locale,
   templates: Array<{ title: Record<Locale, string>; prompt: Record<Locale, string>; purpose: Parameters<typeof buildPrefillHref>[0]["purpose"]; target?: Parameters<typeof buildPrefillHref>[0]["target"] }>,
   defaultTarget: Parameters<typeof buildPrefillHref>[0]["target"],
+  mode: TemplateMode = "full",
+  twinUrl?: string,
 ): string[] {
   const t = tr(lang);
   if (templates.length === 0) return [];
   const out = [`## ${t("Templates", "Plantillas")}`, ""];
+  if (mode === "titles") {
+    out.push(...templates.map((tpl) => `- ${oneLine(tpl.title[lang])}`), "");
+    if (twinUrl) out.push(t(`The prompts themselves: ${twinUrl}`, `Los prompts completos: ${twinUrl}`), "");
+    return out;
+  }
   for (const tpl of templates) {
     out.push(`### ${oneLine(tpl.title[lang])}`, "", fence(tpl.prompt[lang]), "");
-    const open = absUrl(buildPrefillHref({ lang, prompt: tpl.prompt[lang], purpose: tpl.purpose, target: tpl.target ?? defaultTarget }));
-    out.push(`[${t("Open in Promptea", "Abrir en Promptea")}](${open})`, "");
+    if (mode === "full") {
+      const open = absUrl(buildPrefillHref({ lang, prompt: tpl.prompt[lang], purpose: tpl.purpose, target: tpl.target ?? defaultTarget }));
+      out.push(`[${t("Open in Promptea", "Abrir en Promptea")}](${open})`, "");
+    }
   }
   return out;
 }
@@ -112,25 +129,27 @@ function faqMarkdown(lang: Locale, faq: Array<{ q: Record<Locale, string>; a: Re
   return out;
 }
 
-export function guideMarkdown(g: Guide, lang: Locale, url: string, updated: string): string {
+export function guideMarkdown(g: Guide, lang: Locale, url: string, updated: string, templates: TemplateMode = "full"): string {
   const out = [header({ title: g.title[lang], description: g.description[lang], url, lang, updated })];
   for (const s of g.sections) {
     out.push(`## ${oneLine(s.heading[lang])}`, "", ...s.bullets[lang].map((b) => `- ${oneLine(b)}`), "");
   }
-  out.push(...templatesMarkdown(lang, g.templates, "gpt"));
+  out.push(...templatesMarkdown(lang, g.templates, "gpt", templates, `${url}.md`));
   out.push(...faqMarkdown(lang, g.faq));
   return out.join("\n").trimEnd() + "\n";
 }
 
-export function glossaryMarkdown(term: GlossaryTerm, lang: Locale, url: string, updated: string): string {
+export function glossaryMarkdown(term: GlossaryTerm, lang: Locale, url: string, updated: string, templates: TemplateMode = "full"): string {
   const t = tr(lang);
   const out = [header({ title: term.title[lang], description: term.description[lang], url, lang, updated })];
   out.push(`## ${t("What it means", "Qué significa")}`, "", ...term.body[lang].map((b) => `- ${oneLine(b)}`), "");
   out.push(`## ${t("Example", "Ejemplo")}`, "", fence(term.example.prompt[lang]), "");
-  out.push(
-    `[${t("Open in Promptea", "Abrir en Promptea")}](${absUrl(buildPrefillHref({ lang, prompt: term.example.prompt[lang], purpose: term.example.purpose, target: term.example.target }))})`,
-    "",
-  );
+  if (templates === "full") {
+    out.push(
+      `[${t("Open in Promptea", "Abrir en Promptea")}](${absUrl(buildPrefillHref({ lang, prompt: term.example.prompt[lang], purpose: term.example.purpose, target: term.example.target }))})`,
+      "",
+    );
+  }
   out.push(...faqMarkdown(lang, term.faq));
   const guideLinks = (term.relatedGuides ?? []).flatMap((slug) =>
     guides.filter((g) => g.slug === slug).map((g) => `- [${oneLine(g.title[lang])}](${absUrl(`/${lang}/guides/${g.slug}`)})`),
@@ -151,7 +170,7 @@ export function landingMarkdown(p: LandingPage, lang: Locale, url: string, updat
   return out.join("\n").trimEnd() + "\n";
 }
 
-export function modelMarkdown(m: ModelPage, lang: Locale, url: string, updated: string): string {
+export function modelMarkdown(m: ModelPage, lang: Locale, url: string, updated: string, templates: TemplateMode = "full"): string {
   const t = tr(lang);
   const out = [header({ title: m.title[lang], description: m.description[lang], url, lang, updated })];
   out.push(`## ${t("Quick tips", "Tips rápidos")}`, "", ...m.bullets[lang].map((b) => `- ${oneLine(b)}`), "");
@@ -180,7 +199,7 @@ export function modelMarkdown(m: ModelPage, lang: Locale, url: string, updated: 
     }
   }
 
-  out.push(...templatesMarkdown(lang, m.templates, m.slug));
+  out.push(...templatesMarkdown(lang, m.templates, m.slug, templates === "titles" ? "prompts" : templates));
   out.push(...faqMarkdown(lang, m.faq));
   return out.join("\n").trimEnd() + "\n";
 }

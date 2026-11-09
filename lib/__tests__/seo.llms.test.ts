@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { makeArticle, makeEdition, makeSnapshot } from "./seo.fixtures";
-import { LLMS_FULL_MAX_ARTICLES, LLMS_MAX_ARTICLES, LLMS_MAX_EDITIONS, buildLlmsFullTxt, buildLlmsTxt, demote, type LlmsInput } from "@/lib/seo/llms";
+import { LLMS_FULL_ARTICLES_BYTES, LLMS_FULL_MAX_ARTICLES, LLMS_MAX_ARTICLES, LLMS_MAX_EDITIONS, buildLlmsFullTxt, buildLlmsTxt, demote, type LlmsInput } from "@/lib/seo/llms";
 import {
   MARKDOWN_CONTENT_TYPE,
   articleMarkdown,
@@ -118,6 +118,43 @@ describe("llms-full.txt", () => {
     expect(included).toHaveLength(LLMS_FULL_MAX_ARTICLES);
     expect(txt).toContain(arts[arts.length - 1].title);
     expect(txt).not.toContain(arts[0].title);
+  });
+
+  it("stays within the size budget: static part under 330 KB, AI Daily under its own budget", () => {
+    for (const lang of LOCALES) {
+      const base = buildLlmsFullTxt(empty(lang));
+      expect(Buffer.byteLength(base) / 1024, `${lang} static part`).toBeLessThan(330);
+
+      const big = Array.from({ length: 12 }, (_, i) =>
+        makeArticle({
+          slug: `big-${i}`,
+          eventDate: `2026-10-${String(10 + i)}`,
+          lang,
+          title: `Big story number ${i} headline`,
+          body: Array.from({ length: 40 }, (_, k) => ({ type: "paragraph", text: `Paragraph ${k}. ` + "Lorem ipsum dolor sit amet. ".repeat(25) })) as never,
+        }),
+      );
+      const full = buildLlmsFullTxt({ ...empty(lang), articles: big });
+      const included = big.filter((a) => full.includes(a.title)).length;
+      expect(included).toBeGreaterThan(0);
+      expect(included).toBeLessThan(big.length);
+      // the AI Daily part never exceeds its budget, however many stories exist
+      expect(Buffer.byteLength(full) - Buffer.byteLength(base)).toBeLessThanOrEqual(LLMS_FULL_ARTICLES_BYTES + 2048);
+    }
+  });
+
+  it("is compact: guides list template titles and point at the twin; no prompt is repeated inside a prefilled link", () => {
+    const txt = buildLlmsFullTxt(empty("en"));
+    const g = guides.find((x) => x.templates.length > 0)!;
+    expect(txt).toContain(g.templates[0].title.en);
+    expect(txt).toContain(`The prompts themselves: ${absUrl(`/en/guides/${g.slug}`)}.md`);
+    const promptLines = g.templates[0].prompt.en.trim().split("\n");
+    expect(txt).not.toContain(`${promptLines[0]}\n${promptLines[1]}`);
+    expect(txt).not.toMatch(/\]\(https?:\/\/[^)]*\/analyzer\?/);
+    // the page's own twin keeps the full prompt and the prefilled link
+    const twin = guideMarkdown(g, "en", absUrl(`/en/guides/${g.slug}`), "2026-11-09");
+    expect(twin).toContain(promptLines[0]);
+    expect(twin).toMatch(/\]\(https?:\/\/[^)]*\/analyzer\?/);
   });
 
   it("embeds the benchmark snapshot only when it exists", () => {

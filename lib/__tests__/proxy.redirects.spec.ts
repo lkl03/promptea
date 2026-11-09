@@ -47,3 +47,43 @@ describe("proxy: legacy analyzer links", () => {
     expect(location(run("https://www.promptea.me/benchmarks", "en"))!.pathname).toBe("/en/benchmarks");
   });
 });
+
+// v1.8.0 — the language a locale-less URL resolves to is the one hreflang
+// "x-default" advertises (lib/seo/site.ts): one decision, not two.
+describe("proxy: language fallback matches hreflang x-default", () => {
+  const go = (lang: string | null, url = "https://www.promptea.me/guides/json-output") =>
+    proxy(new NextRequest(url, { headers: lang === null ? {} : { "accept-language": lang } }));
+
+  test("an unsupported language falls back to the x-default locale", async () => {
+    const { X_DEFAULT_LOCALE } = await import("@/lib/seo/site");
+    expect(location(go("de-DE,de;q=0.9"))!.pathname).toBe(`/${X_DEFAULT_LOCALE}/guides/json-output`);
+    expect(X_DEFAULT_LOCALE).toBe("en");
+  });
+
+  test("no Accept-Language at all (most crawlers) gets the same fallback", async () => {
+    const { X_DEFAULT_LOCALE } = await import("@/lib/seo/site");
+    expect(location(go(null))!.pathname).toBe(`/${X_DEFAULT_LOCALE}/guides/json-output`);
+    expect(location(go("*"))!.pathname).toBe(`/${X_DEFAULT_LOCALE}/guides/json-output`);
+  });
+
+  test("a malformed Accept-Language is not a 500", () => {
+    for (const bad of ["not a language!!", "en_US;q=abc", ";;;", "*;q=0"]) {
+      const res = go(bad);
+      expect(res.status, bad).toBeGreaterThanOrEqual(300);
+      expect(res.status, bad).toBeLessThan(400);
+    }
+  });
+
+  test("people who ask for Spanish or English still get theirs", () => {
+    expect(location(go("es-AR,es;q=0.9,en;q=0.5"))!.pathname).toBe("/es/guides/json-output");
+    expect(location(go("es"))!.pathname).toBe("/es/guides/json-output");
+    expect(location(go("en-GB,en;q=0.8"))!.pathname).toBe("/en/guides/json-output");
+    // first supported language wins over an unsupported one with a higher weight
+    expect(location(go("fr-FR,fr;q=0.9,es;q=0.6"))!.pathname).toBe("/es/guides/json-output");
+  });
+
+  test("the bare root resolves the same way", () => {
+    expect(location(go("de", "https://www.promptea.me/"))!.pathname).toBe("/en");
+    expect(location(go("es-AR", "https://www.promptea.me/"))!.pathname).toBe("/es");
+  });
+});

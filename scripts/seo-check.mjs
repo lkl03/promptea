@@ -262,7 +262,7 @@ async function checkLlms(origin) {
       for (const l of links) linkSet.add(l);
     } else {
       const kb = Math.round(Buffer.byteLength(r.body) / 1024);
-      if (kb > 300) warn(`${path} is ${kb} KB`, "very large for a single context window");
+      if (kb > 350) warn(`${path} is ${kb} KB`, "very large for a single context window");
       else record(`${path} size is reasonable (${kb} KB)`, true);
     }
   }
