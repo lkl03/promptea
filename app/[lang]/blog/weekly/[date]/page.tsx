@@ -19,6 +19,8 @@ import { editionIdForMonday, weeklyArchivePath, weeklyEditionPath } from "@/lib/
 import { formatEditorialDate } from "@/lib/blog/dates";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
 import { pageMetadata } from "@/lib/seo/metadata";
+import JsonLd from "@/components/seo/JsonLd";
+import { weeklyEditionGraph } from "@/lib/seo/pageGraphs";
 
 export const revalidate = 300;
 
@@ -80,6 +82,7 @@ export default async function WeeklyEditionPage({ params }: { params: Params }) 
             </section>
           ) : (
             <article className="mt-5">
+              <JsonLd data={weeklyEditionGraph(edition, l)} />
               <header>
                 <p className="text-xs font-medium uppercase tracking-[0.14em] text-accent">{dict.newsletter.title}</p>
                 <p className="mt-2 text-sm tabular-nums text-ink-muted">

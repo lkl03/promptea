@@ -35,6 +35,16 @@ function Block({ b }: { b: DocBlock }) {
           ))}
         </ol>
       );
+    case "steps":
+      return (
+        <ol className="list-decimal space-y-1.5 pl-5 text-sm leading-relaxed text-ink-muted sm:text-base">
+          {b.items.map((x) => (
+            <li key={x.name}>
+              <strong className="font-medium text-ink">{x.name}.</strong> {x.text}
+            </li>
+          ))}
+        </ol>
+      );
     case "dl":
       return (
         <dl className="grid gap-2 sm:grid-cols-2">

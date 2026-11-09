@@ -22,7 +22,7 @@ import SourceList from "@/components/blog/SourceList";
 import { editorialDate, formatEditorialDate } from "@/lib/blog/dates";
 import { blogArticlePath, blogBreadcrumbNode, newsArticleNode } from "@/lib/blog/jsonld";
 import JsonLd from "@/components/seo/JsonLd";
-import { graph, webPageNode } from "@/lib/seo/jsonld";
+import { editorialNode, graph, webPageNode } from "@/lib/seo/jsonld";
 import { getArticleBySlug } from "@/lib/blog/server";
 import type { PublicArticle } from "@/lib/blog/types";
 import { getModelPage } from "@/lib/seo/content/models";
@@ -175,6 +175,7 @@ export default async function BlogArticlePage({
             markdownUrl: absUrl(`${blogArticlePath(l, article.slug)}.md`),
           }),
           newsLd,
+          editorialNode(getSiteUrl()),
           breadcrumbLd,
         )}
       />

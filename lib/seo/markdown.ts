@@ -63,6 +63,8 @@ function blockToMarkdown(b: DocBlock): string {
       return b.items.map((x) => `- ${oneLine(x)}`).join("\n");
     case "ol":
       return b.items.map((x, i) => `${i + 1}. ${oneLine(x)}`).join("\n");
+    case "steps":
+      return b.items.map((x, i) => `${i + 1}. **${oneLine(x.name)}.** ${oneLine(x.text)}`).join("\n");
     case "dl":
       return b.items.map((x) => `- **${oneLine(x.term)}**: ${oneLine(x.text)}`).join("\n");
     case "links":

@@ -21,26 +21,17 @@
 // <script type="application/ld+json"> tag — the one sanctioned use of
 // dangerouslySetInnerHTML in this codebase. Article prose never goes near it.
 
-import { BLOG_AUTHOR } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
 import { getSiteUrl } from "@/lib/seo/site";
-import { entityIds, pageId } from "@/lib/seo/jsonld";
+import { breadcrumbNode, entityIds, graph, pageId, ref, webPageNode } from "@/lib/seo/jsonld";
+import { newest } from "@/lib/seo/dates";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
-
-/** The publishing organization, as shown in the site header and footer. */
-export const PUBLISHER_NAME = "Promptea";
 
 /** Human label for the section, used in breadcrumbs. Same string in both locales. */
 export const BLOG_SECTION_LABEL: Record<Lang, string> = {
   es: "AI Daily",
   en: "AI Daily",
 };
-
-/**
- * Publisher logo: the 512×512 brand icon (Google asks for a PNG of at least
- * 112×112 for article publishers). Callers can pass `logoUrl` to override it.
- */
-export const DEFAULT_PUBLISHER_LOGO_PATH = "/brand/icon-512.png";
 
 /** JSON-LD is untyped by nature; this alias keeps the intent readable. */
 type JsonLd = Record<string, unknown>;
@@ -102,8 +93,6 @@ export type ArticleJsonLdOptions = {
   siteUrl: string;
   /** Absolute URL of the generated cover (the opengraph-image route). */
   imageUrl: string;
-  /** Optional override for the publisher logo. */
-  logoUrl?: string;
 };
 
 /**
@@ -126,7 +115,8 @@ export function newsArticleNode(
   const jsonLd: JsonLd = {
     "@type": "NewsArticle",
     "@id": pageId(opts.url, "article"),
-    mainEntityOfPage: { "@type": "WebPage", "@id": pageId(opts.url, "webpage") },
+    mainEntityOfPage: ref(pageId(opts.url, "webpage")),
+    isPartOf: ref(pageId(opts.url, "webpage")),
     url: opts.url,
     headline: truncateHeadline(article.title),
     description: article.summary || article.metaDescription,
@@ -137,24 +127,11 @@ export function newsArticleNode(
     articleSection: article.category,
     // Truthful: there is no paywall and no registration wall on AI Daily.
     isAccessibleForFree: true,
-    // The byline is an organization (never an invented person) and the same
-    // node as the site-wide editorial entity; the publisher is Promptea itself.
-    author: {
-      "@type": "Organization",
-      "@id": ids.editorial,
-      name: BLOG_AUTHOR,
-      url: site,
-    },
-    publisher: {
-      "@type": "Organization",
-      "@id": ids.organization,
-      name: PUBLISHER_NAME,
-      url: site,
-      logo: {
-        "@type": "ImageObject",
-        url: opts.logoUrl ?? `${site}${DEFAULT_PUBLISHER_LOGO_PATH}`,
-      },
-    },
+    // The byline is an organization (never an invented person): the editorial
+    // entity, a node of the same graph (see editorialNode); the publisher is
+    // Promptea itself. Both are references, so each entity is described once.
+    author: ref(ids.editorial),
+    publisher: ref(ids.organization),
   };
 
   // Everything below is conditional: an absent value is omitted rather than
@@ -277,33 +254,50 @@ export type BlogIndexJsonLdInput = {
  */
 export function blogIndexJsonLd(input: BlogIndexJsonLdInput): JsonLd {
   const url = abs(input.siteUrl, blogIndexPath(input.lang));
-  const site = origin(input.siteUrl);
+  const ids = entityIds(input.siteUrl);
+  const items = input.items ?? [];
+  const home = input.lang === "es" ? "Inicio" : "Home";
 
-  const jsonLd: JsonLd = {
-    "@context": "https://schema.org",
+  const blog: JsonLd = {
     "@type": "Blog",
-    "@id": url,
+    "@id": pageId(url, "blog"),
     url,
     name: input.title,
     description: input.description,
     inLanguage: input.lang,
-    mainEntityOfPage: { "@type": "CollectionPage", "@id": url },
-    publisher: {
-      "@type": "Organization",
-      name: PUBLISHER_NAME,
-      url: site,
-    },
+    mainEntityOfPage: ref(pageId(url, "webpage")),
+    publisher: ref(ids.organization),
+    ...(items.length > 0
+      ? {
+          blogPost: items.map((item) => ({
+            "@type": "BlogPosting",
+            headline: truncateHeadline(item.title),
+            url: abs(input.siteUrl, blogArticlePath(input.lang, item.slug)),
+            datePublished: item.publishedAt ?? item.eventDate,
+          })),
+        }
+      : {}),
   };
 
-  const items = input.items ?? [];
-  if (items.length > 0) {
-    jsonLd.blogPost = items.map((item) => ({
-      "@type": "BlogPosting",
-      headline: truncateHeadline(item.title),
-      url: abs(input.siteUrl, blogArticlePath(input.lang, item.slug)),
-      datePublished: item.publishedAt ?? item.eventDate,
-    }));
-  }
-
-  return jsonLd;
+  // One graph: the index page (a CollectionPage), the Blog it is the main entity
+  // of, and the breadcrumb. The Blog has its own @id: the page URL names the
+  // page, not the publication.
+  return graph(
+    webPageNode({
+      lang: input.lang,
+      url,
+      name: input.title,
+      description: input.description,
+      type: "CollectionPage",
+      dateModified: newest(...items.map((i) => i.publishedAt ?? i.eventDate)),
+      hasBreadcrumb: true,
+      mainEntity: ref(pageId(url, "blog")),
+      siteUrl: input.siteUrl,
+    }),
+    blog,
+    breadcrumbNode(url, [
+      { name: home, url: abs(input.siteUrl, `/${input.lang}`) },
+      { name: BLOG_SECTION_LABEL[input.lang], url },
+    ]),
+  );
 }

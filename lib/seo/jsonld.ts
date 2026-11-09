@@ -72,7 +72,7 @@ export function entityIds(siteUrl?: string) {
   } as const;
 }
 
-export type PageFragment = "webpage" | "breadcrumb" | "faq" | "howto" | "dataset" | "article" | "term";
+export type PageFragment = "webpage" | "breadcrumb" | "faq" | "howto" | "dataset" | "article" | "term" | "blog";
 
 /** `{page URL}#fragment` for the nodes that belong to one page. */
 export function pageId(url: string, fragment: PageFragment): string {

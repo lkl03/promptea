@@ -33,6 +33,7 @@ import { getDictionary, hasLocale } from "../dictionaries";
 import ArticleCardItem from "@/components/blog/ArticleCardItem";
 import BlogFilters from "@/components/blog/BlogFilters";
 import type { BlogFiltersDict } from "@/components/blog/BlogFilters";
+import JsonLd from "@/components/seo/JsonLd";
 import { blogFeedPath, blogIndexJsonLd } from "@/lib/blog/jsonld";
 import {
   FILTER_WINDOW,
@@ -263,7 +264,7 @@ export default async function BlogIndexPage({
     // (~68ch) and the newsletter dock sticks in the side column; below `lg`
     // it is one column and the dock becomes a slim bottom bar.
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(indexLd) }} />
+      <JsonLd data={indexLd} />
 
       <DailyTabs lang={l} active="news" dict={dict.dailyTabs} />
 

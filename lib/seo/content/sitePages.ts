@@ -22,6 +22,8 @@ export type DocBlock =
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "ol"; items: string[] }
+  /** Numbered procedure with a short name per step; the same data feeds the HowTo JSON-LD. */
+  | { type: "steps"; items: DocStep[] }
   | { type: "dl"; items: Array<{ term: string; text: string }> }
   | { type: "links"; items: Array<{ href: string; label: string }> };
 
@@ -61,6 +63,20 @@ export function homeAboutDoc(lang: Locale): PageDoc {
   const purposes = purposeList(lang);
   const models = currentModels();
   const verified = formatDay(modelsVerifiedAt(), lang);
+  const howToSteps: DocStep[] = [
+    {
+      name: t("Paste your prompt", "Pegá tu prompt"),
+      text: t("Paste the prompt you want to improve in the box on this page or in the analyzer.", "Pegá el prompt que querés mejorar en el cuadro de esta página o en el analizador."),
+    },
+    {
+      name: t("Choose purpose and AI", "Elegí propósito e IA"),
+      text: t("Select what the prompt is for and the AI model you will use it with.", "Seleccioná para qué es el prompt y con qué modelo de IA lo vas a usar."),
+    },
+    {
+      name: t("Read the score and copy the result", "Leé el puntaje y copiá el resultado"),
+      text: t("Review the 0–100 score, the findings and the recommendations, then copy the optimized prompt or save it to your library.", "Revisá el puntaje de 0 a 100, los hallazgos y las recomendaciones, y copiá el prompt optimizado o guardalo en tu biblioteca."),
+    },
+  ];
 
   const modelDl = TARGETS.map((target) => {
     const names = currentModels(target).map((m) => m.label);
@@ -128,17 +144,7 @@ export function homeAboutDoc(lang: Locale): PageDoc {
         id: "how-to",
         heading: t("How to analyze a prompt with Promptea", "Cómo analizar un prompt con Promptea"),
         blocks: [
-          {
-            type: "ol",
-            items: [
-              t("Paste your prompt in the box on this page (or open the analyzer).", "Pegá tu prompt en el cuadro de esta página (o abrí el analizador)."),
-              t("Pick what the prompt is for and which AI you will use it with.", "Elegí para qué es el prompt y con qué IA lo vas a usar."),
-              t(
-                "Read the score and the findings, then copy the optimized prompt, or save it to your library.",
-                "Leé el puntaje y los hallazgos, y copiá el prompt optimizado o guardalo en tu biblioteca.",
-              ),
-            ],
-          },
+          { type: "steps", items: howToSteps },
         ],
       },
       {
@@ -168,23 +174,7 @@ export function homeAboutDoc(lang: Locale): PageDoc {
         ],
       },
     ],
-    steps: {
-      name: t("How to analyze and improve a prompt with Promptea", "Cómo analizar y mejorar un prompt con Promptea"),
-      steps: [
-        {
-          name: t("Paste your prompt", "Pegá tu prompt"),
-          text: t("Paste the prompt you want to improve in the box on the home page or in the analyzer.", "Pegá el prompt que querés mejorar en el cuadro de la página principal o en el analizador."),
-        },
-        {
-          name: t("Choose purpose and AI", "Elegí propósito e IA"),
-          text: t("Select what the prompt is for and the AI model you will use it with.", "Seleccioná para qué es el prompt y con qué modelo de IA lo vas a usar."),
-        },
-        {
-          name: t("Read the score and copy the result", "Leé el puntaje y copiá el resultado"),
-          text: t("Review the 0–100 score, the findings and recommendations, then copy the optimized prompt.", "Revisá el puntaje de 0 a 100, los hallazgos y las recomendaciones, y copiá el prompt optimizado."),
-        },
-      ],
-    },
+    steps: { name: t("How to analyze and improve a prompt with Promptea", "Cómo analizar y mejorar un prompt con Promptea"), steps: howToSteps },
     faq: [
       {
         q: t("What is Promptea?", "¿Qué es Promptea?"),

@@ -14,6 +14,9 @@ import { entityIds, articleNode, datasetNode, breadcrumbNode, definedTermNode, f
 import { SOURCE_INFO, CATEGORY_LABELS } from "@/lib/benchmarks/catalog";
 import type { BenchmarksSnapshot } from "@/lib/benchmarks/normalize";
 import { markdownPathOf, staticSeoUrls } from "./registry";
+import { newest } from "./dates";
+import type { NewsletterEdition } from "@/lib/newsletter/types";
+import { weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 import { absUrl, type Locale } from "./site";
 
 const home = (lang: Locale) => (lang === "es" ? "Inicio" : "Home");
@@ -206,5 +209,40 @@ export function registryPageGraph(lang: Locale, path: string, opts: { collection
       markdownUrl: entry.markdown ? absUrl(markdownPathOf(path)) : undefined,
     }),
     breadcrumbNode(url, crumbs(lang, [...(opts.parent ? [opts.parent] : []), { name: entry.title, path }])),
+  );
+}
+
+/**
+ * One Promptea Weekly edition page: the page, an Article whose headline is the
+ * edition's hero headline (the page's <h1>), and the breadcrumb
+ * Home › AI Daily › Weekly › edition. Dates are the edition's own: published
+ * (else sent, else the week's last day) and last sent/published.
+ */
+export function weeklyEditionGraph(e: NewsletterEdition, lang: Locale): JsonLdNode {
+  const c = e.locales[lang];
+  const path = weeklyEditionPath(lang, e.editionId);
+  const url = absUrl(path);
+  const es = lang === "es";
+  const published = newest(e.publishedAt, e.sentAt) ?? e.weekEnd;
+  const modified = newest(e.sentAt, e.publishedAt, e.weekEnd) ?? e.weekEnd;
+  return graph(
+    webPageNode({
+      lang,
+      url,
+      name: c.heroHeadline,
+      description: c.preheader,
+      datePublished: published,
+      dateModified: modified,
+      hasBreadcrumb: true,
+    }),
+    articleNode({ lang, url, headline: c.heroHeadline, description: c.preheader, datePublished: published, dateModified: modified, articleSection: es ? "Semanal" : "Weekly" }),
+    breadcrumbNode(
+      url,
+      crumbs(lang, [
+        { name: "AI Daily", path: `/${lang}/blog` },
+        { name: es ? "Semanal" : "Weekly", path: weeklyArchivePath(lang) },
+        { name: c.heroHeadline, path },
+      ]),
+    ),
   );
 }
