@@ -3,6 +3,7 @@ import Link from "next/link";
 import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -12,20 +13,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/prompts`,
     title: l === "es" ? "Packs de prompts (plantillas)" : "Prompt packs (templates)",
     description:
       l === "es"
         ? "Packs de prompts listos para copiar: Study, Code, Marketing, Image, Text y Data. Abrilos en Promptea y optimizalos por IA."
         : "Copy-ready prompt packs: Study, Code, Marketing, Image, Text and Data. Open in Promptea and optimize per AI.",
-    alternates: {
-      canonical: `/${l}/prompts`,
-      languages: {
-        es: "/es/prompts",
-        en: "/en/prompts",
-      },
-    },
-  };
+  });
 }
 
 export default async function PromptsIndexPage({

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { modelPages } from "@/lib/seo/content/models";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -14,35 +15,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/models`,
     title: l === "es" ? "Prompts por modelo (GPT, Claude, Gemini, Grok…)" : "Prompts by model (GPT, Claude, Gemini, Grok…)",
     description:
       l === "es"
-        ? "Guía por modelo: tips concretos + templates copy-paste para GPT, Claude, Gemini, Grok, Kimi y DeepSeek."
-        : "Per-model guide: practical tips + copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, and DeepSeek.",
-    alternates: {
-      canonical: `/${l}/models`,
-      languages: { es: "/es/models", en: "/en/models" },
-    },
-    openGraph: {
-      title: l === "es" ? "Prompts por modelo (GPT, Claude, Gemini, Grok…)" : "Prompts by model (GPT, Claude, Gemini, Grok…)",
-      description:
-        l === "es"
-          ? "Guía por modelo: tips concretos + templates copy-paste para GPT, Claude, Gemini, Grok, Kimi y DeepSeek."
-          : "Per-model guide: practical tips + copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, and DeepSeek.",
-      url: `/${l}/models`,
-      type: "website",
-      locale: l === "en" ? "en_US" : "es_AR",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: l === "es" ? "Prompts por modelo (GPT, Claude, Gemini, Grok…)" : "Prompts by model (GPT, Claude, Gemini, Grok…)",
-      description:
-        l === "es"
-          ? "Guía por modelo: tips concretos + templates copy-paste para GPT, Claude, Gemini, Grok, Kimi y DeepSeek."
-          : "Per-model guide: practical tips + copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, and DeepSeek.",
-    },
-  };
+        ? "Guía por modelo: tips concretos, modelos vigentes con sus capacidades verificadas y plantillas para copiar, para GPT, Claude, Gemini, Grok, Kimi, DeepSeek y Perplexity."
+        : "Per-model guide: practical tips, current models with their verified capabilities and copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, DeepSeek and Perplexity.",
+  });
 }
 
 export default async function ModelsIndexPage({ params }: { params: Promise<{ lang: string }> }) {

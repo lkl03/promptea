@@ -13,6 +13,9 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 import ToastProvider from "@/components/ToastProvider";
 import GlassEnhancer from "@/components/GlassEnhancer";
 import NewsletterNudges from "@/components/newsletter/NewsletterNudges";
+import JsonLd from "@/components/seo/JsonLd";
+import { siteGraph } from "@/lib/seo/jsonld";
+import { getSiteUrl } from "@/lib/seo/site";
 
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID; // e.g. "AW-17937226636"
 
@@ -47,14 +50,6 @@ const monoFont = localFont({
   variable: "--font-mono",
   display: "swap",
 });
-
-function getSiteUrl(): string {
-  const env = process.env.NEXT_PUBLIC_SITE_URL;
-  if (env && env.trim().length > 0) return env.startsWith("http") ? env : `https://${env}`;
-  const vercel = process.env.VERCEL_URL;
-  if (vercel && vercel.trim().length > 0) return `https://${vercel}`;
-  return "http://localhost:3000";
-}
 
 function seoForLang(lang: "es" | "en") {
   if (lang === "en") {
@@ -115,17 +110,15 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
   const siteUrl = getSiteUrl();
   const seo = seoForLang(lang);
-  const canonical = `${siteUrl}/${lang}`;
 
   return {
     metadataBase: new URL(siteUrl),
     title: { default: seo.title, template: `%s · Promptea` },
     description: seo.description,
     keywords: seo.keywords,
-    alternates: {
-      canonical,
-      languages: { es: `${siteUrl}/es`, en: `${siteUrl}/en` },
-    },
+    // No canonical / hreflang here: every page states its own (lib/seo/metadata.ts).
+    // A canonical set at the layout is inherited by any page that does not
+    // override `alternates`, which would point it at the home page.
     robots: {
       index: true,
       follow: true,
@@ -139,7 +132,6 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     },
     openGraph: {
       type: "website",
-      url: canonical,
       siteName: "Promptea",
       title: seo.title,
       description: seo.description,
@@ -156,29 +148,6 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   };
 }
 
-function softwareApplicationJsonLd(lang: "es" | "en") {
-  const siteUrl = getSiteUrl();
-  const seo = seoForLang(lang);
-  const url = `${siteUrl}/${lang}`;
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Promptea",
-    description: seo.description,
-    url,
-    applicationCategory: "ProductivityApplication",
-    operatingSystem: "Web",
-    creator: { "@type": "Organization", name: "Eterlab", url: siteUrl },
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-    },
-  };
-}
-
 export default async function RootLayout({
   children,
   params,
@@ -192,7 +161,8 @@ export default async function RootLayout({
   const dict = await getDictionary(rawLang as "es" | "en");
 
   const lang = (rawLang === "en" ? "en" : "es") as "es" | "en";
-  const jsonLd = softwareApplicationJsonLd(lang);
+  // One connected graph (Organization, studio, logo, WebSite, SoftwareApplication) with stable @ids.
+  const jsonLd = siteGraph(lang, seoForLang(lang).description);
 
   return (
     <html lang={lang} suppressHydrationWarning>
@@ -217,11 +187,8 @@ export default async function RootLayout({
           </>
         )}
 
-        {/* ✅ JSON-LD: SoftwareApplication */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        {/* JSON-LD: site-wide entity graph */}
+        <JsonLd data={jsonLd} />
       </head>
 
       <body

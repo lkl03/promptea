@@ -3,6 +3,7 @@ import Link from "next/link";
 import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -20,20 +21,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/prompts/text`,
     title: l === "es" ? "Prompts de texto (plantillas)" : "Text prompts (templates)",
     description:
       l === "es"
         ? "Plantillas para escribir, reescribir y resumir: emails, posts, tono, ideas y estructuras. Abrilas en Promptea y optimizalas por IA."
         : "Templates to write, rewrite and summarize: emails, posts, tone, ideas and structures. Open in Promptea and optimize with AI.",
-    alternates: {
-      canonical: `/${l}/prompts/text`,
-      languages: {
-        es: "/es/prompts/text",
-        en: "/en/prompts/text",
-      },
-    },
-  };
+  });
 }
 
 export default async function TextPromptPackPage({

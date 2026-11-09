@@ -50,6 +50,7 @@ import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 import { getSiteUrl } from "@/lib/seo/site";
 import NewsletterDock from "@/components/newsletter/NewsletterDock";
 import DailyTabs from "@/components/blog/DailyTabs";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 300;
 
@@ -155,32 +156,23 @@ export async function generateMetadata({
   const canonical = narrowed || page === 1 ? `/${l}/blog` : `/${l}/blog?page=${page}`;
   const title = `${t.indexTitle} — ${t.tagline}`;
 
+  // Same head as every page (canonical, hreflang + x-default, OG/Twitter); the
+  // canonical and robots rules above stay specific to this index.
+  const base = pageMetadata({ lang: l, path: `/${l}/blog`, title, description: t.indexDescription });
   return {
-    title,
-    description: t.indexDescription,
+    ...base,
     // Filter permutations are search results, not content: keeping them out of
     // the index avoids thin near-duplicates, while `follow` keeps every article
     // behind them discoverable.
     ...(narrowed ? { robots: { index: false, follow: true } } : {}),
     alternates: {
+      ...base.alternates,
       canonical,
-      languages: { es: "/es/blog", en: "/en/blog" },
       // Emits <link rel="alternate" type="application/rss+xml"> so feed readers
       // and crawlers can discover the locale feed from the index.
       types: { "application/rss+xml": blogFeedPath(l) },
     },
-    openGraph: {
-      title,
-      description: t.indexDescription,
-      url: canonical,
-      type: "website",
-      locale: l === "en" ? "en_US" : "es_AR",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description: t.indexDescription,
-    },
+    openGraph: { ...base.openGraph, url: canonical },
   };
 }
 

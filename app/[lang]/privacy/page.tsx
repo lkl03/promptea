@@ -1,5 +1,21 @@
 import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const l = lang === "en" ? "en" : "es";
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/privacy`,
+    title: l === "es" ? "Política de privacidad" : "Privacy policy",
+    description:
+      l === "es"
+        ? "Qué recolecta Promptea (metadatos del análisis, no el texto de tus prompts), qué no recolecta, cómo funciona el dictado por voz y el feedback."
+        : "What Promptea collects (analysis metadata, not your prompt text), what it does not, and how voice dictation and feedback are handled.",
+  });
+}
 
 export default async function PrivacyPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;

@@ -6,6 +6,9 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "../../dictionaries";
 import { getLanding, landings } from "@/lib/seo/content/landings";
 import { buildPrefillHref } from "@/lib/seo/prefill";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { markdownPathOf } from "@/lib/seo/registry";
+import { CONTENT_UPDATED } from "@/lib/seo/dates";
 
 type Params = { lang: string; slug: string };
 
@@ -25,22 +28,15 @@ export async function generateMetadata({
   const page = getLanding(slug);
   if (!page) return {};
 
-  return {
+  const path = `/${l}/landing/${slug}`;
+  return pageMetadata({
+    lang: l,
+    path,
     title: page.title[l],
     description: page.description[l],
-    alternates: {
-      canonical: `/${l}/landing/${slug}`,
-      languages: {
-        es: `/es/landing/${slug}`,
-        en: `/en/landing/${slug}`,
-      },
-    },
-    openGraph: {
-      title: page.title[l],
-      description: page.description[l],
-      type: "website",
-    },
-  };
+    markdownPath: markdownPathOf(path),
+    modifiedTime: CONTENT_UPDATED.landings,
+  });
 }
 
 export default async function LandingPage({

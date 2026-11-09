@@ -24,6 +24,7 @@
 import { BLOG_AUTHOR } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
 import { getSiteUrl } from "@/lib/seo/site";
+import { entityIds, pageId } from "@/lib/seo/jsonld";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 
 /** The publishing organization, as shown in the site header and footer. */
@@ -36,11 +37,10 @@ export const BLOG_SECTION_LABEL: Record<Lang, string> = {
 };
 
 /**
- * Fallback publisher logo. `/favicon.ico` is the only brand asset currently in
- * `public/`; callers should pass an explicit `logoUrl` once a raster logo
- * (Google prefers PNG, min 112x112) is added.
+ * Publisher logo: the 512×512 brand icon (Google asks for a PNG of at least
+ * 112×112 for article publishers). Callers can pass `logoUrl` to override it.
  */
-export const DEFAULT_PUBLISHER_LOGO_PATH = "/favicon.ico";
+export const DEFAULT_PUBLISHER_LOGO_PATH = "/brand/icon-512.png";
 
 /** JSON-LD is untyped by nature; this alias keeps the intent readable. */
 type JsonLd = Record<string, unknown>;
@@ -114,7 +114,7 @@ export type ArticleJsonLdOptions = {
  * ISO-8601 date on its own, so it is the fallback rather than emitting null —
  * a NewsArticle without datePublished is invalid.
  */
-export function newsArticleJsonLd(
+export function newsArticleNode(
   article: PublicArticle,
   opts: ArticleJsonLdOptions
 ): JsonLd {
@@ -122,10 +122,11 @@ export function newsArticleJsonLd(
   const datePublished = article.publishedAt ?? article.eventDate;
   const dateModified = article.updatedAt ?? datePublished;
 
+  const ids = entityIds(site);
   const jsonLd: JsonLd = {
-    "@context": "https://schema.org",
     "@type": "NewsArticle",
-    mainEntityOfPage: { "@type": "WebPage", "@id": opts.url },
+    "@id": pageId(opts.url, "article"),
+    mainEntityOfPage: { "@type": "WebPage", "@id": pageId(opts.url, "webpage") },
     url: opts.url,
     headline: truncateHeadline(article.title),
     description: article.summary || article.metaDescription,
@@ -136,13 +137,17 @@ export function newsArticleJsonLd(
     articleSection: article.category,
     // Truthful: there is no paywall and no registration wall on AI Daily.
     isAccessibleForFree: true,
+    // The byline is an organization (never an invented person) and the same
+    // node as the site-wide editorial entity; the publisher is Promptea itself.
     author: {
       "@type": "Organization",
+      "@id": ids.editorial,
       name: BLOG_AUTHOR,
       url: site,
     },
     publisher: {
       "@type": "Organization",
+      "@id": ids.organization,
       name: PUBLISHER_NAME,
       url: site,
       logo: {
@@ -162,6 +167,12 @@ export function newsArticleJsonLd(
     jsonLd.timeRequired = `PT${article.readingMinutes}M`;
   }
 
+  // The companies are listed on the page ("Companies"), so naming them is a
+  // description of visible content.
+  if (article.companies.length > 0) {
+    jsonLd.mentions = article.companies.map((name) => ({ "@type": "Organization", name }));
+  }
+
   // The sources block is rendered on the page, so citing it is a description of
   // what a reader can see rather than an SEO-only claim.
   if (article.sources.length > 0) {
@@ -178,6 +189,11 @@ export function newsArticleJsonLd(
   }
 
   return jsonLd;
+}
+
+/** Standalone document form of {@link newsArticleNode}. */
+export function newsArticleJsonLd(article: PublicArticle, opts: ArticleJsonLdOptions): JsonLd {
+  return { "@context": "https://schema.org", ...newsArticleNode(article, opts) };
 }
 
 // ---------------------------------------------------------------------------
@@ -199,12 +215,12 @@ export type BlogBreadcrumbInput = {
  * app/[lang]/guides/[slug]/page.tsx, with absolute `item` URLs so the graph is
  * unambiguous regardless of where the crawler resolved the page.
  */
-export function blogBreadcrumbJsonLd(input: BlogBreadcrumbInput): JsonLd {
+export function blogBreadcrumbNode(input: BlogBreadcrumbInput): JsonLd {
   const { lang, title, slug, siteUrl } = input;
 
   return {
-    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": pageId(abs(siteUrl, blogArticlePath(lang, slug)), "breadcrumb"),
     itemListElement: [
       {
         "@type": "ListItem",
@@ -226,6 +242,11 @@ export function blogBreadcrumbJsonLd(input: BlogBreadcrumbInput): JsonLd {
       },
     ],
   };
+}
+
+/** Standalone document form of {@link blogBreadcrumbNode}. */
+export function blogBreadcrumbJsonLd(input: BlogBreadcrumbInput): JsonLd {
+  return { "@context": "https://schema.org", ...blogBreadcrumbNode(input) };
 }
 
 // ---------------------------------------------------------------------------

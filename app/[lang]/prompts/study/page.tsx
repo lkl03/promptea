@@ -3,6 +3,7 @@ import Link from "next/link";
 import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -20,20 +21,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/prompts/study`,
     title: l === "es" ? "Prompts para estudiar (plantillas)" : "Study prompts (templates)",
     description:
       l === "es"
         ? "Plantillas para estudiar: explicación, ejemplos, ejercicios y planes. Abrilas en Promptea y optimizalas por IA."
         : "Study prompt templates: explanations, examples, exercises and plans. Open in Promptea and optimize per AI.",
-    alternates: {
-      canonical: `/${l}/prompts/study`,
-      languages: {
-        es: "/es/prompts/study",
-        en: "/en/prompts/study",
-      },
-    },
-  };
+  });
 }
 
 export default async function StudyPromptPackPage({
