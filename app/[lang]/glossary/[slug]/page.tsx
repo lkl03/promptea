@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { glossary, getTerm } from "@/lib/seo/content/glossary";
+import { guides } from "@/lib/seo/content/guides";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
@@ -66,6 +67,9 @@ export default async function GlossaryTermPage({
 
   const updated = term.updated ?? CONTENT_UPDATED.glossary;
 
+  const relatedGuides = (term.relatedGuides ?? []).flatMap((s) => guides.filter((g) => g.slug === s));
+  const relatedTerms = (term.relatedTerms ?? []).flatMap((s) => glossary.filter((g) => g.slug === s));
+
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
       {/* JSON-LD: one graph (WebPage + DefinedTerm + BreadcrumbList + FAQPage) */}
@@ -92,6 +96,30 @@ export default async function GlossaryTermPage({
               ? "Usá este concepto para reducir ambigüedad y mejorar consistencia. Si tu output necesita formato estricto, combiná esto con una guía de JSON y un template por modelo."
               : "Use this concept to reduce ambiguity and improve consistency. If you need strict formatting, combine it with a JSON guide and a per-model template."}
           </p>
+          {relatedGuides.length > 0 || relatedTerms.length > 0 ? (
+            <div className="space-y-2 pt-2">
+              {relatedGuides.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs opacity-70">{l === "es" ? "Guías relacionadas:" : "Related guides:"}</span>
+                  {relatedGuides.map((g) => (
+                    <Link key={g.slug} className="btn h-9 px-4" href={`/${l}/guides/${g.slug}`}>
+                      {g.title[l]}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+              {relatedTerms.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs opacity-70">{l === "es" ? "Términos relacionados:" : "Related terms:"}</span>
+                  {relatedTerms.map((t) => (
+                    <Link key={t.slug} className="btn h-9 px-4" href={`/${l}/glossary/${t.slug}`}>
+                      {t.title[l]}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           <div className="flex flex-wrap gap-2 pt-2">
             <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>
               {l === "es" ? "JSON estricto" : "Strict JSON"}

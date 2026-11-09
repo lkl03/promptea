@@ -10,8 +10,8 @@
 // Served at `<page URL>.md` (see app/md/[lang]/[[...path]]/route.ts and the
 // rewrites in next.config.ts) and linked from llms.txt.
 
-import type { Guide } from "@/lib/seo/content/guides";
-import type { GlossaryTerm } from "@/lib/seo/content/glossary";
+import { glossary, type GlossaryTerm } from "@/lib/seo/content/glossary";
+import { guides, type Guide } from "@/lib/seo/content/guides";
 import type { ModelPage } from "@/lib/seo/content/models";
 import type { LandingPage } from "@/lib/seo/content/landings";
 import type { PublicArticle } from "@/lib/blog/types";
@@ -132,6 +132,13 @@ export function glossaryMarkdown(term: GlossaryTerm, lang: Locale, url: string, 
     "",
   );
   out.push(...faqMarkdown(lang, term.faq));
+  const guideLinks = (term.relatedGuides ?? []).flatMap((slug) =>
+    guides.filter((g) => g.slug === slug).map((g) => `- [${oneLine(g.title[lang])}](${absUrl(`/${lang}/guides/${g.slug}`)})`),
+  );
+  const termLinks = (term.relatedTerms ?? []).flatMap((slug) =>
+    glossary.filter((g) => g.slug === slug).map((g) => `- [${oneLine(g.title[lang])}](${absUrl(`/${lang}/glossary/${g.slug}`)})`),
+  );
+  if (guideLinks.length + termLinks.length > 0) out.push(`## ${t("Related", "Relacionado")}`, "", ...guideLinks, ...termLinks, "");
   return out.join("\n").trimEnd() + "\n";
 }
 

@@ -393,6 +393,85 @@ Devolvé:
       },
     ],
   },
+  {
+    slug: "perplexity",
+    title: { en: "Prompts for Perplexity: specific questions, sourced answers", es: "Prompts para Perplexity: preguntas específicas, respuestas con fuentes" },
+    description: {
+      en: "Templates for Perplexity's Agent API presets (fast, low, medium, high, xhigh): questions that seed a good web search, capped lists and honest 'the sources don't say' answers.",
+      es: "Plantillas para los presets de la Agent API de Perplexity (fast, low, medium, high, xhigh): preguntas que siembran una buena búsqueda web, listas acotadas y respuestas honestas de 'las fuentes no lo dicen'.",
+    },
+    bullets: {
+      en: [
+        "Perplexity searches the web and reads pages before it answers, so your prompt seeds the search: make the question specific and use the vocabulary the relevant pages would use.",
+        "Keep instructions short and give it permission to say the sources do not answer the question, and to flag results that only nearly match (a different year, a related company, a similar name).",
+        "Cap list lengths and use at most five sections. Do not paste example answers: a search latches onto their topic, so describe the structure you want instead.",
+        "Domain and recency limits are API parameters, and citations come back separately: do not ask for URLs or 'only site X' in the prose, and read the sources from the response's search results.",
+        "Pick the preset by the size of the job: fast for a single fact, low for everyday research, medium for multi-hop questions across sources, high for an exhaustive report, xhigh for open-ended agentic work.",
+      ],
+      es: [
+        "Perplexity busca en la web y lee páginas antes de responder, así que tu prompt siembra la búsqueda: hacé la pregunta específica y usá el vocabulario que usarían las páginas relevantes.",
+        "Mantené las instrucciones cortas y dale permiso para decir que las fuentes no responden la pregunta y para marcar los resultados que solo coinciden parcialmente (otro año, una empresa relacionada, un nombre parecido).",
+        "Limitá el largo de las listas y usá como máximo cinco secciones. No pegues respuestas de ejemplo: la búsqueda se engancha con su tema; describí en cambio la estructura que querés.",
+        "Los límites de dominio y de fecha son parámetros de la API y las citas vuelven por separado: no pidas URLs ni 'solo del sitio X' en la prosa, y leé las fuentes desde los resultados de búsqueda de la respuesta.",
+        "Elegí el preset según el tamaño del trabajo: fast para un dato puntual, low para investigación del día a día, medium para preguntas de varios saltos entre fuentes, high para un informe exhaustivo, xhigh para trabajo agéntico abierto.",
+      ],
+    },
+    templates: [
+      {
+        title: { en: "Sourced research question", es: "Pregunta de investigación con fuentes" },
+        purpose: "text",
+        prompt: {
+          en: `What changed in [topic, with country/product and year] since [month year]?
+Answer in at most 5 bullets, most relevant first, one sentence each.
+If the sources do not cover something, say so instead of guessing.
+If a result is about a different year, company or product, state the mismatch first.`,
+          es: `¿Qué cambió en [tema, con país/producto y año] desde [mes año]?
+Respondé en 5 bullets como máximo, lo más relevante primero, una oración cada uno.
+Si las fuentes no cubren algo, decilo en vez de adivinar.
+Si un resultado es de otro año, empresa o producto, marcá primero la diferencia.`,
+        },
+      },
+      {
+        title: { en: "Research brief (high / xhigh)", es: "Brief de investigación (high / xhigh)" },
+        purpose: "text",
+        prompt: {
+          en: `Research brief: [question].
+Scope: [what is in and out of scope]. Period: [dates].
+Report format: a short summary, then at most 5 sections, each with the key finding and the evidence behind it.
+Compare [A] and [B] on [criteria]. If sources disagree, show both positions.
+If the sources do not answer part of the brief, say which part.`,
+          es: `Brief de investigación: [pregunta].
+Alcance: [qué entra y qué no]. Período: [fechas].
+Formato del informe: un resumen corto y después como máximo 5 secciones, cada una con el hallazgo clave y la evidencia que lo respalda.
+Compará [A] y [B] según [criterios]. Si las fuentes discrepan, mostrá ambas posturas.
+Si las fuentes no responden una parte del brief, decí cuál.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Which Perplexity preset should I use?", es: "¿Qué preset de Perplexity conviene usar?" },
+        a: {
+          en: "Match the preset to the job: fast for single-fact lookups, low for everyday research (the preset Perplexity's own examples use), medium for multi-hop questions, high for exhaustive coverage, xhigh for open-ended agentic work. The models list on this page shows each one with its verification date.",
+          es: "Elegí el preset según el trabajo: fast para datos puntuales, low para investigación del día a día (el preset que usan los ejemplos de Perplexity), medium para preguntas de varios saltos, high para cobertura exhaustiva, xhigh para trabajo agéntico abierto. La lista de modelos de esta página muestra cada uno con su fecha de verificación.",
+        },
+      },
+      {
+        q: { en: "Should I paste URLs or examples into a Perplexity prompt?", es: "¿Conviene pegar URLs o ejemplos en un prompt de Perplexity?" },
+        a: {
+          en: "Not in the prose. Citations come back as separate results, domain and date limits are API filters, and example answers pull the search toward their own topic. Describe the structure you want and let the search find the sources.",
+          es: "No en la prosa. Las citas vuelven como resultados aparte, los límites de dominio y fecha son filtros de la API y las respuestas de ejemplo desvían la búsqueda hacia su propio tema. Describí la estructura que querés y dejá que la búsqueda encuentre las fuentes.",
+        },
+      },
+      {
+        q: { en: "What happened to Sonar?", es: "¿Qué pasó con Sonar?" },
+        a: {
+          en: "Perplexity ended support for Sonar Chat Completions on September 27, 2026 and points new work to the Agent API, where you choose a preset. Promptea's registry follows that change.",
+          es: "Perplexity terminó el soporte de Sonar Chat Completions el 27 de septiembre de 2026 y dirige el trabajo nuevo a la Agent API, donde se elige un preset. El registro de Promptea sigue ese cambio.",
+        },
+      },
+    ],
+  },
 ];
 
 export function getModelPage(slug: string): ModelPage | undefined {

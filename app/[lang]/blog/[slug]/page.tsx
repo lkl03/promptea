@@ -59,6 +59,7 @@ const MODEL_MATCHERS: ReadonlyArray<{ slug: string; label: string; keywords: str
   { slug: "grok", label: "Grok", keywords: ["grok", "xai", "x.ai"] },
   { slug: "kimi", label: "Kimi", keywords: ["kimi", "moonshot"] },
   { slug: "deepseek", label: "DeepSeek", keywords: ["deepseek"] },
+  { slug: "perplexity", label: "Perplexity", keywords: ["perplexity"] },
 ];
 
 function relatedModelLinks(article: PublicArticle): Array<{ slug: string; label: string }> {
