@@ -38,11 +38,15 @@ import BenchmarksTeaser from "@/components/home/BenchmarksTeaser";
 import XFeed from "@/components/home/XFeed";
 import SubscribeForm from "@/components/newsletter/SubscribeForm";
 import ShowcaseVideo from "@/components/home/ShowcaseVideo";
+import HomeAbout from "@/components/home/HomeAbout";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import { selectMarqueeItems, type MarqueeItem } from "@/lib/blog/marquee";
 import { getBenchmarks } from "@/lib/benchmarks/server";
 import { buildTeaser, type Teaser } from "@/lib/benchmarks/teaser";
 import { getXLinks } from "@/lib/social";
+import { homeAboutDoc } from "@/lib/seo/content/sitePages";
+import { markdownPathOf } from "@/lib/seo/registry";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export const revalidate = 300;
 
@@ -92,9 +96,18 @@ function fmtDate(iso: string | null, lang: "es" | "en"): string | null {
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
-  return {
-    alternates: { canonical: `/${l}`, languages: { es: "/es", en: "/en" } },
-  };
+  const doc = homeAboutDoc(l);
+  // Search-intent title + description, canonical, hreflang (+ x-default), OG/Twitter
+  // and the markdown twin: lib/seo/metadata.ts.
+  return pageMetadata({
+    lang: l,
+    path: `/${l}`,
+    title: doc.title,
+    absoluteTitle: doc.absoluteTitle,
+    description: doc.description,
+    markdownPath: markdownPathOf(`/${l}`),
+    modifiedTime: doc.updated,
+  });
 }
 
 export default async function HubPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -132,8 +145,11 @@ export default async function HubPage({ params }: { params: Promise<{ lang: stri
 
       {/* 3. Logo */}
       <header className="mt-10 flex flex-col items-center text-center sm:mt-14">
+        {/* The logo stays the visual element; BrandLogo contributes the text "Promptea" and the
+            hidden span completes the heading ("Promptea — analyze, score and optimize your AI prompts"). */}
         <h1 className="m-0">
           <BrandLogo height={56} smHeight={96} priority />
+          <span className="sr-only"> {homeAboutDoc(l).h1.replace(/^Prompteas*/, "")}</span>
         </h1>
         <p className="mt-4 max-w-xl text-base text-ink-muted sm:text-lg">{t.tagline}</p>
       </header>
@@ -222,7 +238,8 @@ export default async function HubPage({ params }: { params: Promise<{ lang: stri
         </div>
       </section>
 
-      {/* 11. SLOT: crawlable text content (SEO/GEO). Add ONE component here, e.g. <HomeCrawlableContent lang={l} dict={dict} />. */}
+      {/* 11. Crawlable text content (SEO/GEO): what it is, how it scores, FAQ, last updated. */}
+      <HomeAbout lang={l} dict={t.about} />
     </main>
   );
 }
