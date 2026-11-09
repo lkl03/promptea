@@ -17,22 +17,46 @@ import { listPublicEditions } from "@/lib/newsletter/server";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
 import type { Locale } from "./site";
 
+/**
+ * Short-lived per-instance memo. sitemap.xml, llms.txt, llms-full.txt (three
+ * variants) and the markdown index all need the same Firestore listings; without
+ * this each of them issues its own query on every revalidation. A failed load is
+ * memoised for far less time than a good one, so an outage neither hammers the
+ * database nor hides the content for long.
+ */
+export const SEO_MEMO_TTL_MS = 10 * 60 * 1000;
+export const SEO_MEMO_FAILURE_TTL_MS = 30 * 1000;
+
+type MemoEntry = { at: number; ttl: number; value: Promise<unknown> };
+const memo = new Map<string, MemoEntry>();
+
+/** Test helper: forget everything memoised. */
+export function clearSeoMemo(): void {
+  memo.clear();
+}
+
+async function memoised<T>(key: string, fallback: T, load: () => Promise<T>): Promise<T> {
+  const now = Date.now();
+  const hit = memo.get(key);
+  if (hit && now - hit.at < hit.ttl) return hit.value as Promise<T>;
+
+  const entry: MemoEntry = { at: now, ttl: SEO_MEMO_TTL_MS, value: Promise.resolve(fallback) };
+  entry.value = Promise.resolve().then(load).catch(() => {
+    entry.ttl = SEO_MEMO_FAILURE_TTL_MS;
+    return fallback;
+  });
+  memo.set(key, entry);
+  return entry.value as Promise<T>;
+}
+
 /** Most recent published articles of one locale (newest first). */
-export async function loadArticles(lang: Locale, max = 500): Promise<PublicArticle[]> {
-  try {
-    return await listAllPublishedArticles(lang, max);
-  } catch {
-    return [];
-  }
+export function loadArticles(lang: Locale, max = 500): Promise<PublicArticle[]> {
+  return memoised(`articles:${lang}:${max}`, [] as PublicArticle[], () => listAllPublishedArticles(lang, max));
 }
 
 /** Published/sent weekly editions, newest first. */
-export async function loadEditions(): Promise<NewsletterEdition[]> {
-  try {
-    return await listPublicEditions();
-  } catch {
-    return [];
-  }
+export function loadEditions(): Promise<NewsletterEdition[]> {
+  return memoised("editions", [] as NewsletterEdition[], () => listPublicEditions());
 }
 
 /**
@@ -54,13 +78,11 @@ export async function loadBenchmarksSnapshot(): Promise<BenchmarksSnapshot | nul
  * (`asOf`, else when it was fetched). One tiny Firestore read, no upstream
  * call and no write — cheap enough for the sitemap.
  */
-export async function loadBenchmarksAsOf(): Promise<string | null> {
-  try {
+export function loadBenchmarksAsOf(): Promise<string | null> {
+  return memoised<string | null>("benchmarks-asof", null, async () => {
     const snap = await getAdminFirestore().collection("benchmark_snapshots").doc("latest").get();
     const d = snap.exists ? snap.data() : null;
     const v = (typeof d?.asOf === "string" && d.asOf) || (typeof d?.fetchedAt === "string" && d.fetchedAt) || null;
     return v && !Number.isNaN(new Date(v).getTime()) ? v : null;
-  } catch {
-    return null;
-  }
+  });
 }

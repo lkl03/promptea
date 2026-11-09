@@ -22,10 +22,10 @@ import { staticSeoUrls, type SeoUrl } from "@/lib/seo/registry";
 import { LOCALES, X_DEFAULT_LOCALE, absUrl, type Locale } from "@/lib/seo/site";
 
 /**
- * Re-generated every five minutes so articles published after a deploy reach
+ * Re-generated every thirty minutes so articles published after a deploy reach
  * crawlers without a rebuild. The static entries are recomputed identically.
  */
-export const revalidate = 300;
+export const revalidate = 1800;
 
 /** Path of the same page in `lang`: its own `alternates` entry, else the locale swapped. */
 function pathIn(u: SeoUrl, lang: Locale): string {
