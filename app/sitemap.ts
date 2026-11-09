@@ -1,191 +1,80 @@
 // app/sitemap.ts
+//
+// sitemap.xml for both locales, built from the shared content index
+// (lib/seo/registry.ts) so it always agrees with llms.txt.
+//
+//   - <lastmod> is the real date of the content (hand-written copy: the
+//     editorial date in lib/seo/dates.ts; model pages: the registry's
+//     `verifiedAt`; AI Daily: the article's update/publication time; weekly
+//     editions: when they were sent; benchmarks: the snapshot's `asOf`). Never
+//     "now": a sitemap that claims everything changed today trains crawlers to
+//     ignore <lastmod>.
+//   - Every URL lists its alternates: `es`, `en` and `x-default` (hreflang).
+//   - AI Daily gains an article every day, so the sitemap revalidates; the
+//     database-backed parts degrade to "none yet" without Firestore.
+
 import type { MetadataRoute } from "next";
 
-import { guides } from "@/lib/seo/content/guides";
-import { modelPages } from "@/lib/seo/content/models";
-import { glossary } from "@/lib/seo/content/glossary";
-import { landings } from "@/lib/seo/content/landings";
-import { listAllPublishedArticles } from "@/lib/blog/server";
-import type { PublicArticle } from "@/lib/blog/types";
-import { listPublicEditions } from "@/lib/newsletter/server";
-import type { NewsletterEdition } from "@/lib/newsletter/types";
-import { weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
+import { loadArticles, loadBenchmarksAsOf, loadEditions } from "@/lib/seo/dynamic";
+import { articleUrl, editionUrl, latestUpdated } from "@/lib/seo/dynamicUrls";
+import { newest, toDate } from "@/lib/seo/dates";
+import { staticSeoUrls, type SeoUrl } from "@/lib/seo/registry";
+import { LOCALES, X_DEFAULT_LOCALE, absUrl, type Locale } from "@/lib/seo/site";
 
 /**
- * The sitemap now enumerates AI Daily, which gains an article every day. Without
- * this it would be prerendered once at build time and every article published
- * after the deploy would stay invisible to crawlers until the next one. The
- * static entries below are unaffected — they are recomputed identically.
+ * Re-generated every five minutes so articles published after a deploy reach
+ * crawlers without a rebuild. The static entries are recomputed identically.
  */
 export const revalidate = 300;
 
-function getSiteUrl(): string {
-  const env = process.env.NEXT_PUBLIC_SITE_URL;
-  if (env && env.trim().length > 0) {
-    const v = env.trim();
-    return v.startsWith("http") ? v : `https://${v}`;
-  }
-  const vercel = process.env.VERCEL_URL;
-  if (vercel && vercel.trim().length > 0) return `https://${vercel.trim()}`;
-  return "http://localhost:3000";
+/** Path of the same page in `lang`: its own `alternates` entry, else the locale swapped. */
+function pathIn(u: SeoUrl, lang: Locale): string {
+  return u.alternates?.[lang] ?? u.path.replace(/^\/(es|en)(?=\/|$)/, `/${lang}`);
 }
 
-function joinUrl(siteUrl: string, path: string) {
-  const base = siteUrl.replace(/\/+$/, "");
-  const p = path.startsWith("/") ? path : `/${path}`;
-  return `${base}${p}`;
-}
+function toEntry(u: SeoUrl, fallbackDate: Date): MetadataRoute.Sitemap[number] {
+  const languages: Record<string, string> = {};
+  for (const l of LOCALES) languages[l] = absUrl(pathIn(u, l));
+  languages["x-default"] = absUrl(pathIn(u, X_DEFAULT_LOCALE));
 
-/**
- * Parse an ISO instant, tolerating null and garbage. Firestore server
- * timestamps read back as null until they resolve, so the caller supplies a
- * fallback rather than emitting an Invalid Date into the XML.
- */
-function toDate(iso: string | null | undefined, fallback: Date): Date {
-  if (!iso) return fallback;
-  const d = new Date(iso);
-  return Number.isNaN(d.getTime()) ? fallback : d;
+  return {
+    url: absUrl(u.path),
+    lastModified: toDate(u.updated, fallbackDate),
+    changeFrequency: u.changeFrequency,
+    priority: u.priority,
+    alternates: { languages },
+  };
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = getSiteUrl().replace(/\/+$/, "");
-  const now = new Date();
+  // Only used if a date is somehow unparseable; never the source of a real value.
+  const fallbackDate = new Date(0);
 
-  const LOCALES = ["es", "en"] as const;
-  const urls: MetadataRoute.Sitemap = [];
+  const [articlesByLang, editions, benchmarksAsOf] = await Promise.all([
+    Promise.all(LOCALES.map(async (l) => [l, await loadArticles(l)] as const)),
+    loadEditions(),
+    loadBenchmarksAsOf(),
+  ]);
 
-  for (const lang of LOCALES) {
-    const corePaths = [
-      `/${lang}`,
-      `/${lang}/analyzer`,
-      `/${lang}/best-ai`,
-      `/${lang}/benchmarks`,
-      `/${lang}/changelog`,
-      `/${lang}/privacy`,
-      `/${lang}/prompts`,
-      `/${lang}/prompts/study`,
-      `/${lang}/prompts/text`,
-      `/${lang}/prompts/data`,
-      `/${lang}/prompts/code`,
-      `/${lang}/prompts/image`,
-      `/${lang}/prompts/marketing`,
-      `/${lang}/guides`,
-      `/${lang}/models`,
-      `/${lang}/glossary`,
-      `/${lang}/blog`,
-      weeklyArchivePath(lang),
-    ];
+  const entries: MetadataRoute.Sitemap = [];
 
-    for (const p of corePaths) {
-      const isHome = p === `/${lang}` || p === `/${lang}/analyzer`;
-      const isChangelog = p.includes("/changelog");
-      const isPrivacy = p.includes("/privacy");
-      // AI Daily is a news index: it gains an article every day.
-      const isBlog = p === `/${lang}/blog` || p === `/${lang}/benchmarks`;
+  for (const [lang, articles] of articlesByLang) {
+    const articleUrls = articles.map(articleUrl);
+    const editionUrls = editions.map((e) => editionUrl(e, lang));
+    const newestArticle = latestUpdated(articleUrls);
+    const newestEdition = latestUpdated(editionUrls);
 
-      urls.push({
-        url: joinUrl(siteUrl, p),
-        lastModified: now,
-        changeFrequency: isHome
-          ? "daily"
-          : isBlog
-            ? "daily"
-            : isChangelog
-              ? "weekly"
-              : isPrivacy
-                ? "yearly"
-                : "weekly",
-        priority: isHome
-          ? 1
-          : isBlog
-            ? 0.8
-            : isPrivacy
-              ? 0.2
-              : isChangelog
-                ? 0.6
-                : p.includes("/prompts")
-                  ? 0.8
-                  : 0.7,
-      });
-    }
+    const urls = staticSeoUrls(lang).map((u): SeoUrl => {
+      // Pages whose content is driven by data take the data's date.
+      if (u.path === `/${lang}`) return { ...u, updated: newest(u.updated, newestArticle) ?? u.updated };
+      if (u.path === `/${lang}/blog`) return { ...u, updated: newest(u.updated, newestArticle) ?? u.updated };
+      if (u.path === `/${lang}/blog/weekly`) return { ...u, updated: newest(u.updated, newestEdition) ?? u.updated };
+      if (u.path === `/${lang}/benchmarks` && benchmarksAsOf) return { ...u, updated: benchmarksAsOf };
+      return u;
+    });
 
-    for (const g of guides) {
-      urls.push({
-        url: joinUrl(siteUrl, `/${lang}/guides/${g.slug}`),
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.7,
-      });
-    }
-
-    for (const m of modelPages) {
-      urls.push({
-        url: joinUrl(siteUrl, `/${lang}/models/${m.slug}`),
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.6,
-      });
-    }
-
-    for (const t of glossary) {
-      urls.push({
-        url: joinUrl(siteUrl, `/${lang}/glossary/${t.slug}`),
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.6,
-      });
-    }
-
-    for (const page of landings) {
-      urls.push({
-        url: joinUrl(siteUrl, `/${lang}/landing/${page.slug}`),
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.7,
-      });
-    }
-
-    // --- AI Daily articles -------------------------------------------------
-    // Firestore is optional here: a build with no service-account credentials
-    // (or an outage) degrades to "no articles yet" instead of failing the whole
-    // sitemap and taking every static URL above down with it.
-    // listAllPublishedArticles already filters to published/corrected, so
-    // drafts and archived posts can never reach this list.
-    let articles: PublicArticle[] = [];
-    try {
-      articles = await listAllPublishedArticles(lang);
-    } catch {
-      articles = [];
-    }
-
-    for (const article of articles) {
-      urls.push({
-        url: joinUrl(siteUrl, `/${lang}/blog/${article.slug}`),
-        lastModified: toDate(article.updatedAt ?? article.publishedAt, now),
-        changeFrequency: "daily",
-        priority: 0.7,
-      });
-    }
-
-    // --- Weekly digest editions (v1.7.0) -----------------------------------
-    // Published or sent editions only; same degrade-to-empty rule as above.
-    let editions: NewsletterEdition[] = [];
-    try {
-      editions = await listPublicEditions();
-    } catch {
-      editions = [];
-    }
-    for (const e of editions) {
-      urls.push({
-        url: joinUrl(siteUrl, weeklyEditionPath(lang, e.editionId)),
-        lastModified: toDate(e.sentAt ?? e.publishedAt, now),
-        changeFrequency: "monthly",
-        priority: 0.6,
-      });
-    }
+    for (const u of [...urls, ...articleUrls, ...editionUrls]) entries.push(toEntry(u, fallbackDate));
   }
 
-  return urls;
+  return entries;
 }
-
-
