@@ -6,6 +6,34 @@ All notable changes to Promptea are documented here.
 
 ## v1.8.0 (unreleased)
 
+### SEO and GEO
+
+**Make Promptea easy to find, read and cite for search engines and AI assistants (ChatGPT, Claude, Perplexity, Gemini), and prove it works.** Verified on a production build (`npm run build && npm start`) with `npm run seo:check`: 545 checks, 0 failures. Pending for the owner (cannot be done from the repo): Google's Rich Results Test / Schema Markup Validator, Search Console and Bing Webmaster Tools, the training-bot policy, and `NEXT_PUBLIC_X_HANDLE`.
+
+#### Added
+- **robots.txt** with one explicit rule per AI crawler (policy constants in `lib/seo/crawlers.ts`, default: allow all; each rule repeats the shared `Disallow` because a crawler with its own group ignores `*`).
+- **/llms.txt, /llms-full.txt** (+ `/{es,en}/llms*.txt`) and **markdown twins** (`<page URL>.md`) for guides, glossary, models, landing, about, methodology, benchmarks (also an honest "not available" twin when there is no snapshot) and AI Daily articles. `llms-full.txt` is ~285 KB (en) / ~315 KB (es): guides list their templates by title and link the twin for the prompts, and AI Daily is capped at 7 stories / 60 KB, newest first.
+- **/{lang}/about** and **/{lang}/methodology** pages, and a crawlable answer-first block (summary, scoring, how-to, supported AIs, FAQ) on the home.
+- Connected **JSON-LD graph** with stable @ids (Organization, WebSite, SoftwareApplication, WebPage, CollectionPage, FAQPage, HowTo, DefinedTerm, Article, NewsArticle, Blog, Dataset, BreadcrumbList) on **every** page type, including the tools, hubs, landings, legal pages, the weekly digest archive and each weekly edition.
+- `lib/seo/metadata.ts`: canonical, hreflang with `x-default`, OG/Twitter (with the default card image) on every page.
+- **`npm run seo:check`** (`scripts/seo-check.mjs`, `BASE_URL` configurable, `--quick`): audits a running server like a crawler — robots, sitemap (200, no redirects, no duplicates, real lastmod, reciprocal es/en/x-default), llms files and every link in them, markdown twins, every page's head tags and JSON-LD, and the proxy's language entry. Exit code 1 on any failure. The JSON-LD validator (`scripts/seo/ld.mjs`) checks @id resolution, conflicting duplicates, real dates and that FAQ/HowTo/DefinedTerm/Article/Breadcrumb/Dataset claims are visible on the page.
+- **Content depth**: glossary 12 → 20 terms, all rewritten (definition, why it matters, how to apply, usual mistake, 2 FAQs, related guides/terms): new chain-of-thought, prompt chaining, structured output, tokens, top-p, RAG, negative prompting and context engineering. Six thin guides (prompt checklist, JSON output, code prompts, marketing without hype, chain-of-thought, summarization) gained before → after examples, steps, a template and FAQs. New **/models/perplexity** page grounded in the registry's Agent API presets. Each landing got a how-it-works paragraph.
+- `docs/seo-proposals.md`: design, risks and order for a public analysis API (rate limit, optional keys, OpenAPI) and IndexNow. **Not implemented** (`/api/analyze` has no rate limit and can trigger paid LLM calls).
+- ~300 new unit tests, 1302 in total (llms, markdown, routes, crawlers, dates, sitemap, JSON-LD and its validator, content minimums, proxy fallback).
+
+#### Changed
+- sitemap `lastModified` uses real content dates instead of `now`; includes new routes and alternates; revalidates every 30 min. The Firestore listings behind sitemap, llms and the markdown routes now share a short per-instance memo that degrades to empty.
+- **`hreflang="x-default"` and the proxy now agree on `/en`**: the proxy used to send an unsupported or missing `Accept-Language` (most crawlers send none) to `/es`; it now uses `DEFAULT_LOCALE` from `lib/seo/site.ts`. Visitors whose browser asks for Spanish or English are unaffected.
+- The home HowTo now comes from the same steps list the page shows; `/blog` emits one connected graph (CollectionPage + Blog + breadcrumb) and `NewsArticle` references the graph's publisher/editorial nodes instead of repeating them.
+
+#### Fixed
+- The layout no longer sets a canonical (pages without their own inherited the home page's).
+- Pages with their own Open Graph lost the default card: no `og:image`/`twitter:image` on guides, models, glossary, landings, about… (they now state `/{lang}/opengraph-image`).
+- `/benchmarks.md` was linked from llms.txt but returned 404 without a benchmarks snapshot.
+- Weekly edition `datePublished` used the later of published/sent; `isIsoDay` accepted `2026-02-30`.
+- A `*` or malformed `Accept-Language` made the proxy throw (HTTP 500).
+- Glossary meta descriptions under 50 characters and over-long guide titles/descriptions.
+
 ### Prompt engine (engine 2.3.0)
 
 **Audit + fixes of how every prompt type is analyzed and optimized, a before → after score, a calibrated dataset for all purposes, provider failover for the refiner (with an optional Claude model), and an optional LLM second opinion.** Full write-up with real runs: `docs/engine-audit.md`.

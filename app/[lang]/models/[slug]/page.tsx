@@ -6,6 +6,12 @@ import type { Metadata } from "next";
 
 import { getModelPage, modelPages } from "@/lib/seo/content/models";
 import { buildPrefillHref } from "@/lib/seo/prefill";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { markdownPathOf, modelPageUpdated } from "@/lib/seo/registry";
+import JsonLd from "@/components/seo/JsonLd";
+import PageMeta from "@/components/seo/PageMeta";
+import ModelRegistryList from "@/components/seo/ModelRegistryList";
+import { modelGraph } from "@/lib/seo/pageGraphs";
 
 export function generateStaticParams() {
   const LOCALES = ["es", "en"] as const;
@@ -23,29 +29,16 @@ export async function generateMetadata({
   const model = getModelPage(slug);
   if (!model) return {};
 
-  return {
+  const path = `/${l}/models/${slug}`;
+  return pageMetadata({
+    lang: l,
+    path,
     title: model.title[l],
     description: model.description[l],
-    alternates: {
-      canonical: `/${l}/models/${slug}`,
-      languages: {
-        es: `/es/models/${slug}`,
-        en: `/en/models/${slug}`,
-      },
-    },
-    openGraph: {
-      title: model.title[l],
-      description: model.description[l],
-      url: `/${l}/models/${slug}`,
-      type: "article",
-      locale: l === "en" ? "en_US" : "es_AR",
-    },
-    twitter: {
-      card: "summary",
-      title: model.title[l],
-      description: model.description[l],
-    },
-  };
+    type: "article",
+    markdownPath: markdownPathOf(path),
+    modifiedTime: modelPageUpdated(slug),
+  });
 }
 
 export default async function ModelPage({
@@ -62,24 +55,17 @@ export default async function ModelPage({
 
   const faq = model.faq.map((x) => ({ q: x.q[l], a: x.a[l] }));
 
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map((x) => ({
-      "@type": "Question",
-      name: x.q,
-      acceptedAnswer: { "@type": "Answer", text: x.a },
-    })),
-  };
+  const updated = modelPageUpdated(slug);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
-      {/* JSON-LD FAQ */}
-      {faq.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
+      {/* JSON-LD: one graph (WebPage + Article + BreadcrumbList + FAQPage) */}
+      <JsonLd data={modelGraph(model, l, updated)} />
 
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{model.title[l]}</h1>
         <p className="opacity-80 text-sm sm:text-base">{model.description[l]}</p>
+        <PageMeta lang={l} updated={updated} markdownPath={markdownPathOf(`/${l}/models/${slug}`)} />
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/models`} className="hover:underline underline-offset-2">
@@ -111,6 +97,9 @@ export default async function ModelPage({
         </div>
       </section>
 
+
+      {/* Current models of this family, from the verified registry */}
+      <ModelRegistryList target={model.slug} lang={l} />
 
       {/* Tips */}
       <section className="mt-8 surface p-5">

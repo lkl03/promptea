@@ -7,6 +7,8 @@
 // Legacy homepage deep links (/{lang}?prompt=…) are redirected here with
 // their query string intact by proxy.ts.
 
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import type { Metadata } from "next";
 import { getDictionary, hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
@@ -22,6 +24,7 @@ import NewsletterMarquee from "@/components/newsletter/NewsletterMarquee";
 // prefill supports every purpose (translation/summarization were silently
 // dropped before) and can never drift from PromptBox or the API schema.
 import { isPurpose, isTarget, normalizePurpose as normalizePurposeAlias, type PromptPurpose, type TargetAI } from "@/lib/domain";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 function pickFirst(v: string | string[] | undefined): string | null {
   if (!v) return null;
@@ -56,14 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const l = lang === "en" ? "en" : "es";
   const dict = await getDictionary(l);
   const t = dict.analyzerPage;
-  const canonical = `/${l}/analyzer`;
-  return {
-    title: t.metaTitle,
-    description: t.metaDescription,
-    alternates: { canonical, languages: { es: "/es/analyzer", en: "/en/analyzer" } },
-    openGraph: { title: `${t.metaTitle} · Promptea`, description: t.metaDescription, url: canonical, type: "website", locale: l === "en" ? "en_US" : "es_AR" },
-    twitter: { card: "summary_large_image", title: `${t.metaTitle} · Promptea`, description: t.metaDescription },
-  };
+  return pageMetadata({ lang: l, path: `/${l}/analyzer`, title: t.metaTitle, description: t.metaDescription });
 }
 
 export default async function AnalyzerPage({
@@ -96,6 +92,7 @@ export default async function AnalyzerPage({
 
   return (
     <main className="px-4 pb-10 pt-8 sm:pt-10">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/analyzer`, { aboutSoftware: true })} />
       <div
         className={[
           "mx-auto grid w-full gap-8 xl:gap-10",

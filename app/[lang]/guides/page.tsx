@@ -1,10 +1,13 @@
 // app/[lang]/guides/page.tsx
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import Link from "next/link";
 import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { guides } from "@/lib/seo/content/guides";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -14,17 +17,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/guides`,
     title: l === "es" ? "Guías de prompting (sin humo)" : "Prompting guides (no fluff)",
     description:
       l === "es"
-        ? "Guías accionables para escribir prompts mejores: checklist, JSON estricto, código, rol, ChatGPT, GPT, Claude, Gemini, Grok, Kimi, DeepSeek, few-shot, zero-shot, scoring, análisis de datos, flujos de trabajo empresariales, brainstorming, system prompts, traducción, imágenes, encadenamiento de prompts, redacción con IA, prompts multimodales y aprendizaje con IA."
-        : "Actionable guides to write better prompts: checklist, strict JSON, code, role prompting, ChatGPT, GPT, Claude, Gemini, Grok, Kimi, DeepSeek, few-shot prompting, zero-shot prompting, prompt scoring, data analysis, business workflows, AI brainstorming, system prompts, translation, image generation, prompt chaining, AI writing prompts, multimodal prompts, and AI learning prompts.",
-    alternates: {
-      canonical: `/${l}/guides`,
-      languages: { es: "/es/guides", en: "/en/guides" },
-    },
-  };
+        ? "Guías prácticas para escribir mejores prompts: estructura, salida JSON, código, roles, few-shot, consejos por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) y casos de uso por área."
+        : "Practical guides to write better prompts: structure, JSON output, code, roles, few-shot, per-model advice (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and use cases by job.",
+  });
 }
 
 export default async function GuidesIndexPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -40,6 +41,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
+      <JsonLd data={registryPageGraph(l, `/${l}/guides`, { collection: true })} />
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{title}</h1>
         <p className="opacity-80 text-sm sm:text-base">{subtitle}</p>

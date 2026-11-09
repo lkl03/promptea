@@ -56,10 +56,12 @@ export const landings: LandingPage[] = [
       en: [
         "Promptea reviews your prompt against criteria that matter for the task you pick — coding, data, marketing, study, image, translation, or summary.",
         "You get a score, the missing pieces, what to fix first, and an optimized version ready to copy.",
+        "How it works: paste the prompt, choose its purpose and the AI you will use, and the analyzer applies fixed rules — the same prompt always gets the same score. It lists the findings in order of impact, writes an optimized version and scores that version again, so you see a before → after score. Promptea optimizes prompts; it does not run them on a model.",
       ],
       es: [
         "Promptea revisa tu prompt con los criterios que importan para la tarea que elegís: código, datos, marketing, estudio, imagen, traducción o resumen.",
         "Obtenés un puntaje, lo que falta, por dónde empezar y una versión optimizada lista para copiar.",
+        "Cómo funciona: pegás el prompt, elegís su propósito y la IA que vas a usar, y el analizador aplica reglas fijas: el mismo prompt siempre obtiene el mismo puntaje. Lista los hallazgos por orden de impacto, escribe una versión optimizada y la vuelve a puntuar, así ves un puntaje antes → después. Promptea optimiza prompts; no los ejecuta en un modelo.",
       ],
     },
     bullets: {
@@ -84,28 +86,30 @@ export const landings: LandingPage[] = [
       es: "Optimizador de prompts de IA — mejorá cualquier prompt",
     },
     description: {
-      en: "Optimize prompts for GPT, Claude, Gemini, Grok, DeepSeek, and Kimi. Reduce ambiguity, define formats, and tailor structure per model.",
-      es: "Optimizá prompts para GPT, Claude, Gemini, Grok, DeepSeek y Kimi. Reducí ambigüedad, definí formato y ajustá la estructura por modelo.",
+      en: "Optimize prompts for GPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity. Reduce ambiguity, define formats, and tailor structure per model.",
+      es: "Optimizá prompts para GPT, Claude, Gemini, Grok, DeepSeek, Kimi y Perplexity. Reducí ambigüedad, definí formato y ajustá la estructura por modelo.",
     },
     h1: { en: "AI prompt optimizer", es: "Optimizador de prompts de IA" },
     intro: {
       en: [
         "The optimizer rewrites your prompt with clear sections, explicit constraints, and a model-aware structure.",
         "Every model has different strengths — Promptea picks the right hints automatically when you select a target.",
+        "Start from a rough idea or from a prompt you already use. The optimizer keeps your intent, adds what is missing (context, constraints, output format) and writes the result for the AI you select. You stay in control: copy it, edit it or save it to your library.",
       ],
       es: [
         "El optimizador reescribe tu prompt con secciones claras, restricciones explícitas y estructura adaptada al modelo.",
         "Cada modelo tiene fortalezas distintas: Promptea elige los hints adecuados según el target que seleccionás.",
+        "Partí de una idea suelta o de un prompt que ya usás. El optimizador conserva tu intención, agrega lo que falta (contexto, restricciones, formato de salida) y escribe el resultado para la IA que elijas. Vos tenés el control: copialo, editalo o guardalo en tu biblioteca.",
       ],
     },
     bullets: {
       en: [
-        "Per-model hints (GPT, Claude, Gemini, Grok, DeepSeek, Kimi).",
+        "Per-model hints (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Perplexity).",
         "Choose checklist or pure JSON output, depending on your workflow.",
         "Attachments treated as context, not as instructions.",
       ],
       es: [
-        "Hints por modelo (GPT, Claude, Gemini, Grok, DeepSeek, Kimi).",
+        "Hints por modelo (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Perplexity).",
         "Elegí salida tipo checklist o JSON puro, según tu flujo de trabajo.",
         "Los adjuntos se tratan como contexto, no como instrucciones.",
       ],
@@ -128,10 +132,12 @@ export const landings: LandingPage[] = [
       en: [
         "Promptea scores your prompt with a transparent breakdown so you know what to fix first.",
         "It also tells you what's already working, so you don't break a good prompt by over-editing.",
+        "The score combines six dimensions: clarity, context, constraints, output format, verifiability and safety. Their weights depend on the type of task the analyzer detects (verifiability counts for more in debugging than in a casual text request), and a cap applies when essential material is missing, such as a translation request with no text to translate. The full method is on the methodology page.",
       ],
       es: [
         "Promptea puntúa tu prompt con un desglose transparente para saber qué arreglar primero.",
         "También marca qué ya funciona, para no romper un buen prompt por sobre-editar.",
+        "El puntaje combina seis dimensiones: claridad, contexto, restricciones, formato de salida, verificabilidad y seguridad. Sus pesos dependen del tipo de tarea que detecta el analizador (la verificabilidad pesa más en depuración que en un pedido de texto cotidiano) y se aplica un tope cuando falta material esencial, como un pedido de traducción sin el texto a traducir. El método completo está en la página de metodología.",
       ],
     },
     bullets: {
@@ -164,10 +170,12 @@ export const landings: LandingPage[] = [
       en: [
         "Claude responds best with explicit sections, XML-style delimiters for long input, and well-defined success criteria.",
         "Promptea applies these conventions automatically when you target Claude (Sonnet, Opus, or Haiku).",
+        "Open the analyzer with Claude selected, paste your draft and pick the model. The result follows Anthropic's own prompting guidance for the Claude models in Promptea's registry; the Claude page lists the current ones and the date each was last verified against the provider's documentation.",
       ],
       es: [
         "Claude rinde mejor con secciones explícitas, delimitadores tipo XML para input largo y criterios de éxito definidos.",
         "Promptea aplica esas convenciones automáticamente cuando elegís Claude (Sonnet, Opus o Haiku).",
+        "Abrí el analizador con Claude seleccionado, pegá tu borrador y elegí el modelo. El resultado sigue la guía de prompting de Anthropic para los modelos Claude del registro de Promptea; la página de Claude lista los vigentes y la fecha en que se verificó cada uno contra la documentación del proveedor.",
       ],
     },
     bullets: {
@@ -207,10 +215,12 @@ export const landings: LandingPage[] = [
       en: [
         "ChatGPT (GPT-6 Astra, Sol, Luna) benefits from instruction-first prompts with delimiters and clear acceptance criteria. Astra does best with the goal and constraints; Sol and Luna do best with explicit steps and an exact format.",
         "Promptea structures prompts the way GPT expects them and adapts the depth to the use case you pick.",
+        "Open the analyzer with GPT selected, paste your draft and choose the GPT model you will use. Promptea optimizes the prompt for it; it does not run it. The GPT page lists the current models with their verified capabilities and the date of that verification.",
       ],
       es: [
         "ChatGPT (GPT-6 Astra, Sol, Luna) rinde mejor con prompts que ponen la instrucción primero, usan delimitadores y tienen criterios de aceptación claros. Astra rinde mejor con objetivo y restricciones; Sol y Luna, con pasos explícitos y formato exacto.",
         "Promptea estructura los prompts como GPT los espera y adapta la profundidad al caso de uso que elijas.",
+        "Abrí el analizador con GPT seleccionado, pegá tu borrador y elegí el modelo GPT que vas a usar. Promptea optimiza el prompt para ese modelo; no lo ejecuta. La página de GPT lista los modelos vigentes con sus capacidades verificadas y la fecha de esa verificación.",
       ],
     },
     bullets: {
@@ -250,10 +260,12 @@ export const landings: LandingPage[] = [
       en: [
         "Gemini benefits from a visible, exact output format and from being told what to do under uncertainty.",
         "Promptea includes a short structural example when consistency matters.",
+        "Open the analyzer with Gemini selected, paste your draft and choose the Gemini model. If you need a strict format, the output-format and unknowns rules above are added for you. The Gemini page lists the current models and when their capabilities were last verified.",
       ],
       es: [
         "Gemini rinde mejor con un formato exacto y visible y con instrucciones claras sobre qué hacer ante incertidumbre.",
         "Promptea incluye un ejemplo estructural corto cuando hace falta consistencia.",
+        "Abrí el analizador con Gemini seleccionado, pegá tu borrador y elegí el modelo Gemini. Si necesitás un formato estricto, se agregan por vos las reglas de formato de salida y de incertidumbre de arriba. La página de Gemini lista los modelos vigentes y cuándo se verificaron sus capacidades por última vez.",
       ],
     },
     bullets: {
@@ -293,10 +305,12 @@ export const landings: LandingPage[] = [
       en: [
         "When you need machine-readable output, ambiguity is the enemy. Promptea's JSON mode produces a strict, parseable optimized prompt.",
         "It also exposes a JSON output mode for the optimized prompt itself, so you can pipe it into automations and APIs.",
+        "A good prompt makes valid JSON likely, not certain. Parse and validate the response in your code and retry on failure; the guide on forcing valid JSON output shows the schema, validation and retry pattern, and the glossary explains JSON schema and structured output.",
       ],
       es: [
         "Cuando necesitás output procesable por máquina, la ambigüedad es el enemigo. El modo JSON produce un prompt estricto y parseable.",
         "Además podés exportar el prompt optimizado en JSON puro para automatizaciones y APIs.",
+        "Un buen prompt hace probable el JSON válido, no seguro. Parseá y validá la respuesta en tu código y reintentá si falla; la guía para forzar salida JSON válida muestra el patrón de esquema, validación y reintento, y el glosario explica JSON schema y salida estructurada.",
       ],
     },
     bullets: {
@@ -336,10 +350,12 @@ export const landings: LandingPage[] = [
       en: [
         "Coding tasks fail when the model has to guess: stack, scope, edge cases, or how to verify the change.",
         "Promptea forces those decisions to be explicit before the model writes a line of code.",
+        "Give it the smallest snippet that reproduces the problem, the environment and what you expected versus what happened. Ask for a diff and a test, then run both before trusting the change. The code prompts guide has a debugging template you can start from.",
       ],
       es: [
         "Las tareas de código fallan cuando la IA tiene que adivinar: stack, alcance, edge cases o cómo verificar el cambio.",
         "Promptea obliga a explicitar esas decisiones antes de que la IA escriba una sola línea.",
+        "Dale el fragmento más chico que reproduce el problema, el entorno y qué esperabas versus qué pasó. Pedí un diff y un test, y corré ambos antes de confiar en el cambio. La guía de prompts de código tiene una plantilla de depuración para arrancar.",
       ],
     },
     bullets: {

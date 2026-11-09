@@ -387,6 +387,11 @@
     "newsletter": {
       "title": "The week in AI, in your inbox",
       "body": "Every Monday, the AI stories that mattered. No spam: unsubscribe any time."
+    },
+    "about": {
+      "title": "What Promptea is and how it works",
+      "aboutLink": "About Promptea",
+      "methodologyLink": "Methodology"
     }
   },
   "analyzerPage": {

@@ -1,4 +1,6 @@
 // app/[lang]/landing/[slug]/page.tsx
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -6,6 +8,9 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "../../dictionaries";
 import { getLanding, landings } from "@/lib/seo/content/landings";
 import { buildPrefillHref } from "@/lib/seo/prefill";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { markdownPathOf } from "@/lib/seo/registry";
+import { CONTENT_UPDATED } from "@/lib/seo/dates";
 
 type Params = { lang: string; slug: string };
 
@@ -25,22 +30,15 @@ export async function generateMetadata({
   const page = getLanding(slug);
   if (!page) return {};
 
-  return {
+  const path = `/${l}/landing/${slug}`;
+  return pageMetadata({
+    lang: l,
+    path,
     title: page.title[l],
     description: page.description[l],
-    alternates: {
-      canonical: `/${l}/landing/${slug}`,
-      languages: {
-        es: `/es/landing/${slug}`,
-        en: `/en/landing/${slug}`,
-      },
-    },
-    openGraph: {
-      title: page.title[l],
-      description: page.description[l],
-      type: "website",
-    },
-  };
+    markdownPath: markdownPathOf(path),
+    modifiedTime: CONTENT_UPDATED.landings,
+  });
 }
 
 export default async function LandingPage({
@@ -67,6 +65,7 @@ export default async function LandingPage({
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 pt-12 pb-16 space-y-8">
+      <JsonLd data={registryPageGraph(l, `/${l}/landing/${slug}`, { aboutSoftware: true })} />
       <header className="space-y-3 text-center">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold tracking-tight">
           {page.h1[l]}

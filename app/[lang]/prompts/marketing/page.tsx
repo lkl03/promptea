@@ -3,6 +3,7 @@ import Link from "next/link";
 import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -20,20 +21,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/prompts/marketing`,
     title: l === "es" ? "Prompts para marketing (ads + landing + emails)" : "Marketing prompts (ads + landing + emails)",
     description:
       l === "es"
         ? "Plantillas para copy, ads, landings y emails. Abrilas en Promptea y optimizalas por IA."
         : "Templates for copy, ads, landing pages and emails. Open in Promptea and optimize per AI.",
-    alternates: {
-      canonical: `/${l}/prompts/marketing`,
-      languages: {
-        es: "/es/prompts/marketing",
-        en: "/en/prompts/marketing",
-      },
-    },
-  };
+  });
 }
 
 export default async function MarketingPromptPackPage({

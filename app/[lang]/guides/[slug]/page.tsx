@@ -5,9 +5,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { getGuide, guides } from "@/lib/seo/content/guides";
-import { breadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { buildPrefillHref } from "@/lib/seo/prefill";
-import { absUrl } from "@/lib/seo/site";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { markdownPathOf } from "@/lib/seo/registry";
+import { CONTENT_UPDATED } from "@/lib/seo/dates";
+import JsonLd from "@/components/seo/JsonLd";
+import PageMeta from "@/components/seo/PageMeta";
+import { guideGraph } from "@/lib/seo/pageGraphs";
 
 export function generateStaticParams() {
   const LOCALES = ["es", "en"] as const;
@@ -25,29 +29,16 @@ export async function generateMetadata({
   const guide = getGuide(slug);
   if (!guide) return {};
 
-  return {
+  const path = `/${l}/guides/${slug}`;
+  return pageMetadata({
+    lang: l,
+    path,
     title: guide.title[l],
     description: guide.description[l],
-    alternates: {
-      canonical: `/${l}/guides/${slug}`,
-      languages: {
-        es: `/es/guides/${slug}`,
-        en: `/en/guides/${slug}`,
-      },
-    },
-    openGraph: {
-      title: guide.title[l],
-      description: guide.description[l],
-      url: `/${l}/guides/${slug}`,
-      type: "article",
-      locale: l === "en" ? "en_US" : "es_AR",
-    },
-    twitter: {
-      card: "summary",
-      title: guide.title[l],
-      description: guide.description[l],
-    },
-  };
+    type: "article",
+    markdownPath: markdownPathOf(path),
+    modifiedTime: guide.updated ?? CONTENT_UPDATED.guides,
+  });
 }
 
 export default async function GuidePage({
@@ -62,36 +53,18 @@ export default async function GuidePage({
   const guide = getGuide(slug);
   if (!guide) notFound();
 
+  const updated = guide.updated ?? CONTENT_UPDATED.guides;
   const faq = guide.faq.map((x) => ({ q: x.q[l], a: x.a[l] }));
-
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faq.map((x) => ({
-      "@type": "Question",
-      name: x.q,
-      acceptedAnswer: { "@type": "Answer", text: x.a },
-    })),
-  };
-
-  // Absolute `item` URLs, like the AI Daily breadcrumbs (lib/blog/jsonld.ts):
-  // relative paths leave the trail ambiguous for crawlers.
-  const breadcrumb = breadcrumbJsonLd([
-    { name: l === "es" ? "Inicio" : "Home", url: absUrl(`/${l}`) },
-    { name: l === "es" ? "Guías" : "Guides", url: absUrl(`/${l}/guides`) },
-    { name: guide.title[l], url: absUrl(`/${l}/guides/${slug}`) },
-  ]);
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
-      {/* JSON-LD FAQ */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      {/* JSON-LD BreadcrumbList */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {/* JSON-LD: one graph (WebPage + Article + BreadcrumbList + FAQPage), same text as below */}
+      <JsonLd data={guideGraph(guide, l, updated)} />
 
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{guide.title[l]}</h1>
         <p className="opacity-80 text-sm sm:text-base">{guide.description[l]}</p>
+        <PageMeta lang={l} updated={updated} markdownPath={markdownPathOf(`/${l}/guides/${slug}`)} />
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/guides`} className="hover:underline underline-offset-2">

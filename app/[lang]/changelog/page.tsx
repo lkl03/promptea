@@ -1,21 +1,22 @@
 import { hasLocale } from "../dictionaries";
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/changelog`,
     title: l === "es" ? "Historial de versiones" : "Changelog",
     description:
       l === "es"
         ? "Historial completo de versiones de Promptea: nuevas guías SEO, mejoras del analizador de prompts y correcciones de producto."
         : "Full version history for Promptea: new SEO guides, prompt analyzer improvements, and product fixes.",
-    alternates: {
-      canonical: `/${l}/changelog`,
-      languages: { es: "/es/changelog", en: "/en/changelog" },
-    },
-  };
+  });
 }
 
 export default async function ChangelogPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -26,6 +27,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/changelog`, {})} />
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
       {/* v1.7.3 */}

@@ -3,20 +3,15 @@
 // Mode 2 — Find the Best AI (v1.3.0). Route-addressable so refresh, deep
 // links, back/forward, and locale switches all preserve the mode.
 
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import ModeSwitcher from "@/components/ModeSwitcher";
 import MatcherBox from "@/components/matcher/MatcherBox";
 import HowItWorks from "@/components/HowItWorks";
-
-function getSiteUrl(): string {
-  const env = process.env.NEXT_PUBLIC_SITE_URL;
-  if (env && env.trim().length > 0) return env.startsWith("http") ? env : `https://${env}`;
-  const vercel = process.env.VERCEL_URL;
-  if (vercel && vercel.trim().length > 0) return `https://${vercel}`;
-  return "http://localhost:3000";
-}
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -25,8 +20,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang: rawLang } = await params;
   const lang = (rawLang === "en" ? "en" : "es") as "es" | "en";
-  const siteUrl = getSiteUrl();
-  const canonical = `${siteUrl}/${lang}/best-ai`;
 
   const title =
     lang === "es" ? "Elegir la mejor IA para tu prompt" : "Find the Best AI for your prompt";
@@ -35,16 +28,7 @@ export async function generateMetadata({
       ? "Pegá tu prompt y descubrí qué IA le queda mejor: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi o Perplexity — con razones, alternativas y consejos concretos."
       : "Paste your prompt and find out which AI fits it best: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, or Perplexity — with reasons, alternatives, and concrete advice.";
 
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: { es: `${siteUrl}/es/best-ai`, en: `${siteUrl}/en/best-ai` },
-    },
-    openGraph: { type: "website", url: canonical, siteName: "Promptea", title, description },
-    twitter: { card: "summary_large_image", title, description },
-  };
+  return pageMetadata({ lang, path: `/${lang}/best-ai`, title, description });
 }
 
 export default async function BestAiPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -55,6 +39,7 @@ export default async function BestAiPage({ params }: { params: Promise<{ lang: s
 
   return (
     <main className="px-4 pb-10 pt-8 sm:pt-10">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/best-ai`, { aboutSoftware: true })} />
       <div className="mx-auto w-full max-w-6xl">
         <header className="text-center">
           <h1 className="font-title text-3xl font-semibold tracking-tight sm:text-4xl">

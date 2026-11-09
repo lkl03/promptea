@@ -19,6 +19,9 @@ import { listPublicEditions } from "@/lib/newsletter/server";
 import { summarizeEdition, type EditionSummary } from "@/lib/newsletter/archive";
 import { weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 import { formatEditorialDate } from "@/lib/blog/dates";
+import { pageMetadata } from "@/lib/seo/metadata";
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 
 export const revalidate = 300;
 
@@ -35,15 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const l = lang === "en" ? "en" : "es";
   const dict = await getDictionary(l);
   const t = dict.weekly;
-  const canonical = weeklyArchivePath(l);
-  const title = `${t.archiveTitle} — ${dict.blog.indexTitle}`;
-  return {
-    title,
-    description: t.archiveIntro,
-    alternates: { canonical, languages: { es: weeklyArchivePath("es"), en: weeklyArchivePath("en") } },
-    openGraph: { title, description: t.archiveIntro, url: canonical, type: "website", locale: l === "en" ? "en_US" : "es_AR" },
-    twitter: { card: "summary_large_image", title, description: t.archiveIntro },
-  };
+  return pageMetadata({ lang: l, path: weeklyArchivePath(l), title: `${t.archiveTitle} — ${dict.blog.indexTitle}`, description: t.archiveIntro });
 }
 
 function weekRange(e: EditionSummary, l: "es" | "en", template: string) {
@@ -69,6 +64,7 @@ export default async function WeeklyArchivePage({ params }: { params: Promise<{ 
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/blog/weekly`, { collection: true })} />
       <DailyTabs lang={l} active="weekly" dict={dict.dailyTabs} />
 
       <div className="mt-8 grid grid-cols-1 gap-10 sm:mt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">

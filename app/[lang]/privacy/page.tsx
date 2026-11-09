@@ -1,5 +1,23 @@
 import { hasLocale } from "../dictionaries";
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const l = lang === "en" ? "en" : "es";
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/privacy`,
+    title: l === "es" ? "Política de privacidad" : "Privacy policy",
+    description:
+      l === "es"
+        ? "Qué recolecta Promptea (metadatos del análisis, no el texto de tus prompts), qué no recolecta, cómo funciona el dictado por voz y el feedback."
+        : "What Promptea collects (analysis metadata, not your prompt text), what it does not, and how voice dictation and feedback are handled.",
+  });
+}
 
 export default async function PrivacyPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -9,6 +27,7 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
+      <JsonLd data={registryPageGraph(lang, `/${lang}/privacy`, {})} />
       <h1 className="text-2xl font-semibold">{isEs ? "Política de Privacidad" : "Privacy Policy"}</h1>
 
       <section className="space-y-3 text-sm opacity-90 leading-relaxed">

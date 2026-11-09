@@ -387,6 +387,11 @@
     "newsletter": {
       "title": "La semana en IA, en tu correo",
       "body": "Cada lunes, las historias de IA que importaron. Sin spam: te das de baja cuando quieras."
+    },
+    "about": {
+      "title": "Qué es Promptea y cómo funciona",
+      "aboutLink": "Acerca de Promptea",
+      "methodologyLink": "Metodología"
     }
   },
   "analyzerPage": {

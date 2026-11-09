@@ -20,11 +20,15 @@ import { getDictionary, hasLocale } from "../../dictionaries";
 import ArticleBody from "@/components/blog/ArticleBody";
 import SourceList from "@/components/blog/SourceList";
 import { editorialDate, formatEditorialDate } from "@/lib/blog/dates";
-import { blogArticlePath, blogBreadcrumbJsonLd, newsArticleJsonLd } from "@/lib/blog/jsonld";
+import { blogArticlePath, blogBreadcrumbNode, newsArticleNode } from "@/lib/blog/jsonld";
+import JsonLd from "@/components/seo/JsonLd";
+import { editorialNode, graph, webPageNode } from "@/lib/seo/jsonld";
 import { getArticleBySlug } from "@/lib/blog/server";
 import type { PublicArticle } from "@/lib/blog/types";
 import { getModelPage } from "@/lib/seo/content/models";
 import { absUrl, getSiteUrl } from "@/lib/seo/site";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { markdownPathOf } from "@/lib/seo/registry";
 
 export const revalidate = 300;
 
@@ -55,6 +59,7 @@ const MODEL_MATCHERS: ReadonlyArray<{ slug: string; label: string; keywords: str
   { slug: "grok", label: "Grok", keywords: ["grok", "xai", "x.ai"] },
   { slug: "kimi", label: "Kimi", keywords: ["kimi", "moonshot"] },
   { slug: "deepseek", label: "DeepSeek", keywords: ["deepseek"] },
+  { slug: "perplexity", label: "Perplexity", keywords: ["perplexity"] },
 ];
 
 function relatedModelLinks(article: PublicArticle): Array<{ slug: string; label: string }> {
@@ -82,35 +87,24 @@ export async function generateMetadata({
   const article = await loadArticle(l, slug);
   if (!article) return {};
 
-  const canonical = `/${l}/blog/${article.slug}`;
-
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/blog/${article.slug}`,
+    alternatePaths: {
+      es: `/es/blog/${article.alternateSlugs.es}`,
+      en: `/en/blog/${article.alternateSlugs.en}`,
+    },
     title: article.seoTitle,
     description: article.metaDescription,
-    alternates: {
-      canonical,
-      languages: {
-        es: `/es/blog/${article.alternateSlugs.es}`,
-        en: `/en/blog/${article.alternateSlugs.en}`,
-      },
-    },
-    openGraph: {
-      title: article.seoTitle,
-      description: article.metaDescription,
-      url: canonical,
-      type: "article",
-      locale: l === "en" ? "en_US" : "es_AR",
-      publishedTime: article.publishedAt ?? undefined,
-      modifiedTime: article.updatedAt ?? article.publishedAt ?? undefined,
-      authors: [article.author],
-      ...(article.image ? { images: [{ url: article.image.url }] } : {}),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: article.seoTitle,
-      description: article.metaDescription,
-    },
-  };
+    type: "article",
+    publishedTime: article.publishedAt ?? article.eventDate,
+    modifiedTime: article.updatedAt ?? article.publishedAt ?? article.eventDate,
+    authors: [article.author],
+    markdownPath: markdownPathOf(`/${l}/blog/${article.slug}`),
+    // Without an explicit image the article's own generated cover
+    // (opengraph-image.tsx next to this page) is used.
+    ...(article.image ? { images: [{ url: article.image.url }] } : {}),
+  });
 }
 
 export default async function BlogArticlePage({
@@ -151,14 +145,14 @@ export default async function BlogArticlePage({
       : null;
 
   const articleUrl = absUrl(blogArticlePath(l, article.slug));
-  const newsLd = newsArticleJsonLd(article, {
+  const newsLd = newsArticleNode(article, {
     url: articleUrl,
     siteUrl: getSiteUrl(),
     // The generated cover from opengraph-image.tsx — an original Promptea
     // illustration, so structured data never points at third-party imagery.
     imageUrl: `${articleUrl}/opengraph-image`,
   });
-  const breadcrumbLd = blogBreadcrumbJsonLd({
+  const breadcrumbLd = blogBreadcrumbNode({
     lang: l,
     title: article.title,
     slug: article.slug,
@@ -167,12 +161,24 @@ export default async function BlogArticlePage({
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
-      {/* JSON-LD: NewsArticle + BreadcrumbList. Both describe only content that
-          is actually rendered below. */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(newsLd) }} />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      {/* JSON-LD: one graph (WebPage + NewsArticle + BreadcrumbList). It describes only
+          content that is actually rendered below. */}
+      <JsonLd
+        data={graph(
+          webPageNode({
+            lang: l,
+            url: articleUrl,
+            name: article.title,
+            description: article.metaDescription,
+            datePublished: article.publishedAt ?? article.eventDate,
+            dateModified: article.updatedAt ?? article.publishedAt ?? article.eventDate,
+            hasBreadcrumb: true,
+            markdownUrl: absUrl(`${blogArticlePath(l, article.slug)}.md`),
+          }),
+          newsLd,
+          editorialNode(getSiteUrl()),
+          breadcrumbLd,
+        )}
       />
 
       {/* v1.7.0: article column + the newsletter dock (sticky side column on

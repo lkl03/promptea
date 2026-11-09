@@ -3,6 +3,7 @@ import Link from "next/link";
 import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -20,20 +21,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/prompts/code`,
     title: l === "es" ? "Prompts para programar (debug + review)" : "Coding prompts (debug + review)",
     description:
       l === "es"
         ? "Plantillas para debugging, code review, refactors y tests. Abrilas en Promptea y optimizalas por IA."
         : "Templates for debugging, code reviews, refactors and tests. Open in Promptea and optimize per AI.",
-    alternates: {
-      canonical: `/${l}/prompts/code`,
-      languages: {
-        es: "/es/prompts/code",
-        en: "/en/prompts/code",
-      },
-    },
-  };
+  });
 }
 
 export default async function CodePromptPackPage({

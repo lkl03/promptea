@@ -3,6 +3,8 @@ import type { Purpose, TargetModel } from "../prefill";
 
 export type Guide = {
   slug: string;
+  /** YYYY-MM-DD of the last content edit; falls back to CONTENT_UPDATED.guides (lib/seo/dates.ts). */
+  updated?: string;
   title: Record<Locale, string>;
   description: Record<Locale, string>;
   sections: Array<{
@@ -24,6 +26,7 @@ export type Guide = {
 export const guides: Guide[] = [
   {
     slug: "prompt-checklist",
+    updated: "2026-11-09",
     title: {
       en: "Prompt checklist (copy-paste) to get better outputs",
       es: "Checklist de prompt (copy-paste) para mejores respuestas",
@@ -64,6 +67,38 @@ export const guides: Guide[] = [
             "Pedir 'lo mejor' sin criterios (la IA adivina).",
             "No mostrar formato esperado (sale todo inconsistente).",
             "Mezclar objetivos (ej: 'sé breve' + 'sé exhaustivo').",
+          ],
+        },
+      },
+      {
+        heading: { en: "Before → after: the same request, rewritten", es: "Antes → después: el mismo pedido, reescrito" },
+        bullets: {
+          en: [
+            "Before: \"Write something about our new feature.\"",
+            "After: \"Write a 120-word announcement of [feature] for existing customers. Goal: get them to try it this week. Include one concrete benefit and a link placeholder. Tone: plain, no hype. Output: a subject line and the body.\"",
+            "What changed: the goal, the audience, the length, the tone and the output are now stated, so the model has nothing important left to guess.",
+          ],
+          es: [
+            "Antes: \"Escribí algo sobre nuestra nueva función.\"",
+            "Después: \"Escribí un anuncio de 120 palabras de [función] para clientes actuales. Objetivo: que la prueben esta semana. Incluí un beneficio concreto y un marcador de enlace. Tono: simple, sin hype. Salida: asunto y cuerpo.\"",
+            "Qué cambió: ahora están dichos el objetivo, la audiencia, el largo, el tono y la salida, así que el modelo no tiene que adivinar nada importante.",
+          ],
+        },
+      },
+      {
+        heading: { en: "How to use it in three steps", es: "Cómo usarlo en tres pasos" },
+        bullets: {
+          en: [
+            "Write the goal first, in one sentence. If you cannot, the prompt is not ready to send.",
+            "Fill in only the context lines that would change the answer, and delete the rest of the skeleton.",
+            "Run it and compare the answer with your quality bar. Fix the line that caused each miss (vague answer: goal or context; wrong shape: output format; too generic: constraints) and run again.",
+            "Promptea can score the prompt from 0 to 100 on six criteria and list what to fix, so you do not have to find the weak line by trial and error.",
+          ],
+          es: [
+            "Escribí primero el objetivo, en una frase. Si no podés, el prompt todavía no está listo para enviarse.",
+            "Completá solo las líneas de contexto que cambiarían la respuesta y borrá el resto del esqueleto.",
+            "Corrélo y comparalo con tu criterio de calidad. Arreglá la línea que causó cada falla (respuesta vaga: objetivo o contexto; forma equivocada: formato de salida; demasiado genérica: restricciones) y volvé a correr.",
+            "Promptea puede puntuar el prompt de 0 a 100 en seis criterios y listar qué corregir, para que no tengas que encontrar la línea débil a prueba y error.",
           ],
         },
       },
@@ -128,10 +163,25 @@ Si falta info, haceme hasta 3 preguntas antes de responder.`,
           es: "Definí el formato exacto y, si hace falta, poné un mini ejemplo.",
         },
       },
+      {
+        q: { en: "Which line should I fix when the answer is off?", es: "¿Qué línea corrijo cuando la respuesta no sirve?" },
+        a: {
+          en: "Match the symptom to the line: vague or off-topic means the goal or context is weak; the wrong shape means the output format is missing; generic or too long means the constraints are loose; invented details mean you should add 'use only the data I provide'.",
+          es: "Relacioná el síntoma con la línea: vaga o fuera de tema significa objetivo o contexto débiles; forma equivocada, que falta el formato de salida; genérica o demasiado larga, restricciones flojas; detalles inventados, que conviene agregar 'usá solo los datos que te doy'.",
+        },
+      },
+      {
+        q: { en: "Is the same checklist right for every model?", es: "¿El mismo checklist sirve para todos los modelos?" },
+        a: {
+          en: "The structure is model-independent: goal, context, format, edge cases, quality bar. What changes between models is how strict to be about format and how to handle examples or search; see the per-model pages.",
+          es: "La estructura es independiente del modelo: objetivo, contexto, formato, casos límite, criterio de calidad. Lo que cambia entre modelos es cuán estricto ser con el formato y cómo tratar ejemplos o búsqueda; mirá las páginas por modelo.",
+        },
+      },
     ],
   },
   {
     slug: "json-output",
+    updated: "2026-11-09",
     title: { en: "How to force valid JSON output (no markdown)", es: "Cómo forzar salida JSON válida (sin markdown)" },
     description: {
       en: "Templates to extract and transform data into strict JSON, with validation rules.",
@@ -152,6 +202,38 @@ Si falta info, haceme hasta 3 preguntas antes de responder.`,
             "Definí un esquema (claves, tipos, valores permitidos).",
             "Aclarás qué hacer si falta un campo (null vs omitir).",
             "Pedí una segunda pasada: validar + corregir JSON.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Before → after: from 'give me JSON' to a contract", es: "Antes → después: de 'dame JSON' a un contrato" },
+        bullets: {
+          en: [
+            "Before: \"Give me the contact data from this email as JSON.\" Typical result: a sentence of introduction, a markdown code fence, and keys that change from run to run.",
+            "After: \"Extract the contact data. Return ONLY valid JSON, no markdown. Schema: {name: string, email: string|null, phone: string|null}. Use null for anything missing; do not guess.\"",
+            "What changed: the output is a defined schema with a rule for missing values and a ban on extra text, so the same prompt gives the same shape every time.",
+          ],
+          es: [
+            "Antes: \"Dame los datos de contacto de este email en JSON.\" Resultado típico: una frase de introducción, un bloque de código markdown y claves que cambian en cada corrida.",
+            "Después: \"Extraé los datos de contacto. Devolvé SOLO JSON válido, sin markdown. Esquema: {name: string, email: string|null, phone: string|null}. Usá null para lo que falte; no adivines.\"",
+            "Qué cambió: la salida es un esquema definido, con una regla para valores faltantes y la prohibición de texto extra, así que el mismo prompt da la misma forma cada vez.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Validate in code, not by hope", es: "Validá en el código, no por fe" },
+        bullets: {
+          en: [
+            "Parse the response with a real JSON parser and check it against the schema (required keys, types, allowed values) before using it.",
+            "On failure, retry once with the error attached: 'Your previous output failed validation: [error]. Return corrected JSON only.'",
+            "Where the model or API offers a native structured-output mode, use it: the format is then enforced at generation time instead of requested in prose. Promptea's model pages show which current models list it.",
+            "Valid JSON is not necessarily correct content. Spot-check values against the source text, especially numbers and dates.",
+          ],
+          es: [
+            "Parseá la respuesta con un parser JSON de verdad y controlala contra el esquema (claves obligatorias, tipos, valores permitidos) antes de usarla.",
+            "Si falla, reintentá una vez con el error adjunto: 'Tu salida anterior falló la validación: [error]. Devolvé solo el JSON corregido.'",
+            "Donde el modelo o la API ofrece un modo nativo de salida estructurada, usalo: el formato se impone al generar en vez de pedirse en prosa. Las páginas de modelos de Promptea muestran cuáles modelos vigentes lo listan.",
+            "Un JSON válido no es necesariamente un contenido correcto. Contrastá valores con el texto fuente, sobre todo números y fechas.",
           ],
         },
       },
@@ -271,10 +353,25 @@ Validá el JSON antes de devolverlo.`,
           es: "Sí si vas a integrar. Aunque sea un esquema simplificado (claves + tipos) mejora mucho.",
         },
       },
+      {
+        q: { en: "What should the model return when a value is missing?", es: "¿Qué debe devolver el modelo cuando falta un valor?" },
+        a: {
+          en: "Pick one rule and state it: null for a missing value or omit the key. Mixing the two forces your code to handle both. Also tell it not to guess.",
+          es: "Elegí una regla y decila: null para un valor faltante u omitir la clave. Mezclar ambas obliga a tu código a manejar las dos. Aclarale también que no adivine.",
+        },
+      },
+      {
+        q: { en: "Can I ask for JSON and an explanation in the same answer?", es: "¿Puedo pedir JSON y una explicación en la misma respuesta?" },
+        a: {
+          en: "Keep them apart: put the explanation in a dedicated key such as \"notes\", or make a second request. Text outside the JSON breaks parsing.",
+          es: "Mantenelos separados: poné la explicación en una clave dedicada como \"notes\" o hacé una segunda solicitud. El texto fuera del JSON rompe el parseo.",
+        },
+      },
     ],
   },
   {
     slug: "code-prompts-that-work",
+    updated: "2026-11-09",
     title: { en: "Code prompts that actually work (debug, refactor, tests)", es: "Prompts de código que funcionan (debug, refactor, tests)" },
     description: {
       en: "How to stop getting generic answers: force diffs, constraints, and test checklists.",
@@ -295,6 +392,38 @@ Validá el JSON antes de devolverlo.`,
             "Exigí estructura de salida (pasos, diff, checklist).",
             "Incluí restricciones (stack/versiones).",
             "Pedí casos límite + tests.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Before → after: a debugging request", es: "Antes → después: un pedido de depuración" },
+        bullets: {
+          en: [
+            "Before: \"My function doesn't work, fix it.\" The model has to guess the language, the symptom and what 'works' means, so it rewrites the function in general terms.",
+            "After: \"Bug: the total is off by one when the list has one item. Environment: Node 20, TypeScript 5. Expected: 10. Actual: 9. Minimal reproduction below. Return the cause, the fix as a diff, and a test that fails before and passes after.\"",
+            "What changed: symptom, environment, expected versus actual, a minimal reproduction and the exact deliverable are all stated.",
+          ],
+          es: [
+            "Antes: \"Mi función no anda, arreglala.\" El modelo tiene que adivinar el lenguaje, el síntoma y qué significa 'anda', así que reescribe la función en términos generales.",
+            "Después: \"Bug: el total da uno de menos cuando la lista tiene un solo elemento. Entorno: Node 20, TypeScript 5. Esperado: 10. Actual: 9. Reproducción mínima abajo. Devolvé la causa, el arreglo como diff y un test que falle antes y pase después.\"",
+            "Qué cambió: están dichos el síntoma, el entorno, esperado versus actual, una reproducción mínima y el entregable exacto.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Check the answer before you trust it", es: "Revisá la respuesta antes de confiar en ella" },
+        bullets: {
+          en: [
+            "Run the code and the tests it proposes. A confident explanation is not proof that the fix works.",
+            "Ask for a diff or only the changed parts, so you can review a small change instead of a rewritten file.",
+            "Change one thing per request. If you ask for a refactor, a new feature and a bug fix together, you cannot tell which change broke what.",
+            "Ask what it is unsure about ('list assumptions you made'): the assumptions are where wrong fixes come from.",
+          ],
+          es: [
+            "Corré el código y los tests que propone. Una explicación segura de sí misma no prueba que el arreglo funcione.",
+            "Pedí un diff o solo las partes cambiadas, para revisar un cambio chico en vez de un archivo reescrito.",
+            "Cambiá una cosa por pedido. Si pedís un refactor, una función nueva y un arreglo juntos, no podés saber qué cambio rompió qué.",
+            "Preguntale de qué no está seguro ('listá los supuestos que hiciste'): de los supuestos salen los arreglos equivocados.",
           ],
         },
       },
@@ -335,6 +464,39 @@ Devolvé:
 3) checklist de tests (qué cubrir)`,
         },
       },
+      {
+        title: { en: "Debug with expected vs actual", es: "Depurar con esperado vs actual" },
+        purpose: "code",
+        target: "claude",
+        prompt: {
+          en: `Bug: [one-line description]
+Environment: [language, runtime, framework versions]
+Expected: [what should happen]
+Actual: [what happens; paste the error or stack trace]
+
+Minimal reproduction:
+"""[code]"""
+
+Return:
+1) the most likely cause, in two sentences
+2) the minimal fix as a diff (changed lines only)
+3) one test that fails before the fix and passes after
+4) the assumptions you made, so I can check them`,
+          es: `Bug: [descripción en una línea]
+Entorno: [lenguaje, runtime, versiones del framework]
+Esperado: [qué debería pasar]
+Actual: [qué pasa; pegá el error o el stack trace]
+
+Reproducción mínima:
+"""[código]"""
+
+Devolvé:
+1) la causa más probable, en dos oraciones
+2) el arreglo mínimo como diff (solo líneas cambiadas)
+3) un test que falle antes del arreglo y pase después
+4) los supuestos que hiciste, para que yo los revise`,
+        },
+      },
     ],
     faq: [
       {
@@ -344,10 +506,25 @@ Devolvé:
           es: "Pedí 'solo partes cambiadas' y especificá contexto de archivo. Si podés, incluí nombres de archivos.",
         },
       },
+      {
+        q: { en: "Should I paste the whole file?", es: "¿Conviene pegar el archivo completo?" },
+        a: {
+          en: "Paste the smallest snippet that reproduces the problem plus the signatures it depends on. A whole file adds noise and can push the relevant lines out of focus.",
+          es: "Pegá el fragmento más chico que reproduce el problema más las firmas de las que depende. Un archivo entero agrega ruido y puede sacar de foco las líneas relevantes.",
+        },
+      },
+      {
+        q: { en: "How do I stop it from rewriting everything?", es: "¿Cómo evito que reescriba todo?" },
+        a: {
+          en: "State the invariants ('do not change the public API') and ask for the minimal diff. Telling it what must stay the same works better than asking it to 'be careful'.",
+          es: "Declará los invariantes ('no cambies la API pública') y pedí el diff mínimo. Decirle qué debe quedar igual funciona mejor que pedirle que 'tenga cuidado'.",
+        },
+      },
     ],
   },
   {
     slug: "marketing-prompts-without-hype",
+    updated: "2026-11-09",
     title: { en: "Marketing prompts without hype (safe claims)", es: "Prompts de marketing sin humo (claims seguros)" },
     description: {
       en: "Templates for landing copy and ads that avoid exaggeration and keep claims realistic.",
@@ -366,6 +543,36 @@ Devolvé:
             "Dale una lista de claims permitidos y prohibidos.",
             "Aclará compliance: sin garantías, sin promesas médicas/financieras.",
             "Pedí 3 variantes con distintos ángulos, mismos hechos.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Before → after: copy you can defend", es: "Antes → después: un copy que podés defender" },
+        bullets: {
+          en: [
+            "Before: \"Write an amazing headline for our app, make people love it.\" The model reaches for superlatives and promises.",
+            "After: \"Write 5 headlines for [app], audience [who], benefit we can show: [benefit]. Max 40 characters. Allowed claims: [list]. Forbidden: guarantees, 'best', 'revolutionary', results we cannot prove.\"",
+            "What changed: there is a provable benefit, a length, a list of allowed and forbidden claims, so the model has room to be persuasive without overpromising.",
+          ],
+          es: [
+            "Antes: \"Escribí un título increíble para nuestra app, que a la gente le encante.\" El modelo recurre a superlativos y promesas.",
+            "Después: \"Escribí 5 títulos para [app], audiencia [quién], beneficio que podemos demostrar: [beneficio]. Máx. 40 caracteres. Claims permitidos: [lista]. Prohibido: garantías, 'el mejor', 'revolucionario', resultados que no podamos probar.\"",
+            "Qué cambió: hay un beneficio demostrable, un largo y una lista de claims permitidos y prohibidos, así que el modelo tiene espacio para persuadir sin prometer de más.",
+          ],
+        },
+      },
+      {
+        heading: { en: "A review pass before publishing", es: "Una pasada de revisión antes de publicar" },
+        bullets: {
+          en: [
+            "Run a second prompt as a reviewer: 'List every claim in this copy and mark each as proven, unproven or risky, given only the facts below.'",
+            "Replace any 'unproven' claim with a softer, accurate phrase or with the evidence itself (a number, a date, a customer count you can show).",
+            "Keep the final decision with a person: legal and platform advertising rules vary by country and industry, and a model cannot certify compliance.",
+          ],
+          es: [
+            "Corré un segundo prompt como revisor: 'Listá cada afirmación de este copy y marcá cada una como probada, no probada o riesgosa, usando solo los hechos de abajo.'",
+            "Reemplazá cada afirmación 'no probada' por una frase más suave y exacta o por la evidencia misma (un número, una fecha, una cantidad de clientes que puedas mostrar).",
+            "Dejá la decisión final en una persona: las reglas legales y de publicidad de cada plataforma varían según país y rubro, y un modelo no puede certificar el cumplimiento.",
           ],
         },
       },
@@ -402,6 +609,33 @@ Reglas:
 - Salida: 5 headlines, 5 subheads, 6 bullets, 3 CTAs.`,
         },
       },
+      {
+        title: { en: "Claim audit (reviewer pass)", es: "Auditoría de claims (pasada de revisión)" },
+        purpose: "marketing",
+        target: "claude",
+        prompt: {
+          en: `Act as a careful reviewer of marketing copy.
+
+Facts we can prove:
+"""[list of verified facts]"""
+
+Copy to review:
+"""[paste copy]"""
+
+Return a table: Claim | Proven / Unproven / Risky | Why | Safer rewrite.
+Do not add facts that are not in the list above.`,
+          es: `Actuá como revisor cuidadoso de copy de marketing.
+
+Hechos que podemos probar:
+"""[lista de hechos verificados]"""
+
+Copy a revisar:
+"""[pegá el copy]"""
+
+Devolvé una tabla: Afirmación | Probada / No probada / Riesgosa | Por qué | Reescritura más segura.
+No agregues hechos que no estén en la lista de arriba.`,
+        },
+      },
     ],
     faq: [
       {
@@ -411,10 +645,18 @@ Reglas:
           es: "Porque marketing tiende a la persuasión. Tenés que prohibir garantías y exigir lenguaje basado en evidencia.",
         },
       },
+      {
+        q: { en: "How do I keep the tone persuasive without hype?", es: "¿Cómo mantengo el tono persuasivo sin hype?" },
+        a: {
+          en: "Persuade with specifics: a concrete benefit, a number you can show, a clear next step. Ask for plain language and say which words to avoid.",
+          es: "Persuadí con datos concretos: un beneficio puntual, un número que puedas mostrar, un próximo paso claro. Pedí lenguaje simple y decí qué palabras evitar.",
+        },
+      },
     ],
   },
   {
     slug: "chain-of-thought",
+    updated: "2026-11-09",
     title: {
       en: "Chain-of-thought prompting: make the model show its reasoning",
       es: "Chain-of-thought: hacé que el modelo muestre su razonamiento",
@@ -453,6 +695,36 @@ Reglas:
             "O pedí un scratchpad: 'Primero razoná. Luego dá la respuesta final.'",
             "Para salida estructurada, separás el bloque de razonamiento del bloque de respuesta con tags.",
             "Pedile que revise su propio razonamiento antes de confirmar la respuesta.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Before → after: a multi-step problem", es: "Antes → después: un problema de varios pasos" },
+        bullets: {
+          en: [
+            "Before: \"A subscription costs 12 per month with a 25% discount on annual billing. Is annual cheaper over 18 months?\" The model may answer in one hop and slip on the arithmetic.",
+            "After: \"...Work through it step by step inside <reasoning>: price per month, annual price after discount, cost of each option over 18 months. Then give only the comparison inside <answer>. Re-check the arithmetic before answering.\"",
+            "What changed: the intermediate quantities are computed explicitly and the answer is kept apart from the working, so errors are visible and the answer is easy to read.",
+          ],
+          es: [
+            "Antes: \"Una suscripción cuesta 12 por mes con un 25% de descuento en facturación anual. ¿Conviene la anual en 18 meses?\" El modelo puede responder de un salto y fallar la aritmética.",
+            "Después: \"...Resolvelo paso a paso dentro de <razonamiento>: precio por mes, precio anual con el descuento, costo de cada opción en 18 meses. Después dá solo la comparación dentro de <respuesta>. Revisá la aritmética antes de responder.\"",
+            "Qué cambió: las cantidades intermedias se calculan de forma explícita y la respuesta queda separada del desarrollo, así los errores se ven y la respuesta es fácil de leer.",
+          ],
+        },
+      },
+      {
+        heading: { en: "When not to use it", es: "Cuándo no usarlo" },
+        bullets: {
+          en: [
+            "Simple lookups, classification and rewriting rarely benefit: the steps add length and cost without improving the answer.",
+            "Models that reason internally often need no 'think step by step' instruction, and heavy process instructions can interfere. Check the provider's guidance and the guide on reasoning models.",
+            "Do not treat the written reasoning as a faithful trace of what the model computed. It is useful for spotting mistakes, not a guarantee of correctness: verify the final answer independently when it matters.",
+          ],
+          es: [
+            "Las consultas simples, la clasificación y la reescritura rara vez se benefician: los pasos suman largo y costo sin mejorar la respuesta.",
+            "Los modelos que razonan internamente suelen no necesitar un 'pensá paso a paso', y las instrucciones de proceso pesadas pueden interferir. Revisá la guía del proveedor y la guía de modelos de razonamiento.",
+            "No tomes el razonamiento escrito como un registro fiel de lo que el modelo calculó. Sirve para detectar errores, no es una garantía de corrección: verificá la respuesta final por tu cuenta cuando importe.",
           ],
         },
       },
@@ -536,10 +808,25 @@ Hacé esto:
           es: "Separás razonamiento y respuesta con tags o secciones. Pedís el razonamiento primero, luego conclusión en una frase.",
         },
       },
+      {
+        q: { en: "Should I show the reasoning to my users?", es: "¿Debería mostrarle el razonamiento a mis usuarios?" },
+        a: {
+          en: "Usually not. Keep reasoning and answer in separate blocks, show only the answer, and use the reasoning for debugging and review.",
+          es: "Por lo general no. Mantené razonamiento y respuesta en bloques separados, mostrá solo la respuesta y usá el razonamiento para depurar y revisar.",
+        },
+      },
+      {
+        q: { en: "Is chain-of-thought the same as prompt chaining?", es: "¿Chain-of-thought es lo mismo que encadenar prompts?" },
+        a: {
+          en: "No. Chain-of-thought happens inside one response; prompt chaining splits a task across several requests that you control. See the prompt chaining guide.",
+          es: "No. Chain-of-thought ocurre dentro de una sola respuesta; el encadenado de prompts reparte una tarea en varias solicitudes que controlás vos. Mirá la guía de prompt chaining.",
+        },
+      },
     ],
   },
   {
     slug: "summarization-prompts",
+    updated: "2026-11-09",
     title: {
       en: "Summarization prompts that preserve meaning (not just reduce length)",
       es: "Prompts de resumen que preservan el significado (no solo reducen longitud)",
@@ -580,6 +867,38 @@ Hacé esto:
             "Nombrá la audiencia y su objetivo ('un PM que necesita decidir rápido').",
             "Listá qué preservar ('todos los números, fechas límite, decisiones abiertas').",
             "Pedí salida estructurada: TL;DR + puntos clave + acciones.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Before → after: a summary you can act on", es: "Antes → después: un resumen sobre el que se puede actuar" },
+        bullets: {
+          en: [
+            "Before: \"Summarize this meeting transcript.\" Result: a generic paragraph that mixes small talk with decisions and drops the deadlines.",
+            "After: \"Summarize this transcript for a project manager who missed the meeting. Max 150 words. Preserve all decisions, owners and deadlines. Format: TL;DR (one sentence), Decisions, Action items (owner, due date), Open questions.\"",
+            "What changed: audience, length, what must be preserved and the structure are stated, so the summary is shorter and also more useful.",
+          ],
+          es: [
+            "Antes: \"Resumí la transcripción de esta reunión.\" Resultado: un párrafo genérico que mezcla charla informal con decisiones y pierde las fechas límite.",
+            "Después: \"Resumí esta transcripción para una persona que lidera el proyecto y se perdió la reunión. Máx. 150 palabras. Conservá todas las decisiones, responsables y plazos. Formato: TL;DR (una frase), Decisiones, Acciones (responsable, fecha), Preguntas abiertas.\"",
+            "Qué cambió: están dichos la audiencia, el largo, qué conservar y la estructura, así que el resumen es más corto y además más útil.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Check that the summary is faithful", es: "Controlá que el resumen sea fiel" },
+        bullets: {
+          en: [
+            "Tell the model to use only the supplied text and not to add facts or interpretations that are not in it.",
+            "Ask for the supporting quote for each number, name and date, then spot-check a few against the source.",
+            "For very long inputs, summarize in parts (one section at a time) and then summarize the summaries; the full text may not fit, or the middle may get less attention.",
+            "State what to do with uncertainty: 'if something is unclear in the text, list it under Open questions instead of resolving it'.",
+          ],
+          es: [
+            "Decile al modelo que use solo el texto provisto y que no agregue hechos ni interpretaciones que no estén en él.",
+            "Pedí la cita de respaldo para cada número, nombre y fecha, y contrastá algunas contra la fuente.",
+            "Para entradas muy largas, resumí por partes (una sección a la vez) y después resumí los resúmenes; puede que el texto completo no entre, o que el medio reciba menos atención.",
+            "Decí qué hacer ante la duda: 'si algo no está claro en el texto, listalo en Preguntas abiertas en vez de resolverlo'.",
           ],
         },
       },
@@ -653,6 +972,20 @@ Notas:
         a: {
           en: "Split it into sections and summarize each one. Then summarize the summaries. Specify the priority order if sections differ in importance.",
           es: "Dividilo en secciones y resumí cada una. Luego resumís los resúmenes. Especificá el orden de prioridad si las secciones difieren en importancia.",
+        },
+      },
+      {
+        q: { en: "How long should a summary be?", es: "¿Qué tan largo debe ser un resumen?" },
+        a: {
+          en: "Set the limit from the use: a one-sentence TL;DR for a glance, 100–150 words for a briefing, longer only if the reader will act on the details. Make the limit a hard constraint.",
+          es: "Fijá el límite según el uso: un TL;DR de una frase para un vistazo, 100–150 palabras para un briefing, más largo solo si quien lee va a actuar sobre los detalles. Hacé del límite una restricción dura.",
+        },
+      },
+      {
+        q: { en: "How do I summarize a document that does not fit in one prompt?", es: "¿Cómo resumo un documento que no entra en un solo prompt?" },
+        a: {
+          en: "Split it into sections, summarize each with the same instructions, then ask for a summary of those summaries. Keep the same preserve-list in every step so nothing important is dropped.",
+          es: "Dividilo en secciones, resumí cada una con las mismas instrucciones y después pedí un resumen de esos resúmenes. Mantené la misma lista de qué conservar en cada paso para no perder nada importante.",
         },
       },
     ],
@@ -5829,13 +6162,14 @@ Reglas:
   },
   {
     slug: "context-engineering",
+    updated: "2026-11-09",
     title: {
       en: "Context engineering: how to structure what you give an AI for better outputs",
       es: "Ingeniería de contexto: cómo estructurar lo que le das a una IA para mejores resultados",
     },
     description: {
-      en: "Context engineering is about deciding what information goes into an AI's input window, in what order, and at what level of detail. This guide explains why context quality often matters more than prompt phrasing, and gives you practical patterns for structuring inputs that get reliable outputs.",
-      es: "La ingeniería de contexto consiste en decidir qué información entra en la ventana de input de una IA, en qué orden y con qué nivel de detalle. Esta guía explica por qué la calidad del contexto suele importar más que la redacción del prompt, y te da patrones prácticos para estructurar inputs que obtienen outputs confiables.",
+      en: "Context engineering means deciding what goes into an AI's input, in what order and at what level of detail. Why context quality often matters more than prompt phrasing, with practical patterns for reliable outputs.",
+      es: "La ingeniería de contexto consiste en decidir qué entra en el input de una IA, en qué orden y con qué nivel de detalle. Por qué la calidad del contexto suele importar más que la redacción del prompt, con patrones prácticos para outputs confiables.",
     },
     sections: [
       {
@@ -6616,6 +6950,7 @@ Restricciones: [ej. usá solo los datos provistos, sin supuestos externos]`,
   },
   {
     slug: "ai-prompts-for-education",
+    updated: "2026-11-09",
     title: {
       en: "AI prompts for teachers and educators",
       es: "Prompts de IA para docentes y educadores",
@@ -6736,6 +7071,13 @@ Usá lenguaje claro tanto para docentes como para alumnos.`,
         a: {
           en: "Design tasks that require personal reflection, specific class discussion references, or iterative drafts reviewed in class. AI is harder to misuse when the task requires something it cannot generate: the student's own experience, specific in-class evidence, or a process that is visible to you.",
           es: "Diseñá tareas que requieran reflexión personal, referencias específicas a discusiones de clase, o borradores iterativos revisados en clase. La IA es más difícil de usar mal cuando la tarea exige algo que no puede generar: la experiencia propia del alumno, evidencia específica de clase, o un proceso visible para vos.",
+        },
+      },
+      {
+        q: { en: "How do I check an AI-written lesson plan or rubric before using it?", es: "¿Cómo reviso un plan de clase o una rúbrica escritos con IA antes de usarlos?" },
+        a: {
+          en: "Read it as you would a colleague's draft: check every fact and example against your sources, confirm the activities fit your time and group, and make sure each assessment criterion matches a stated learning objective. Treat the output as a first draft, not as the final material.",
+          es: "Leelo como el borrador de un colega: contrastá cada dato y ejemplo con tus fuentes, confirmá que las actividades entran en tu tiempo y tu grupo, y verificá que cada criterio de evaluación responda a un objetivo de aprendizaje declarado. Tomá la salida como un primer borrador, no como el material final.",
         },
       },
     ],
@@ -8195,9 +8537,10 @@ Si falta algo de lo anterior y cambia la respuesta, haceme una sola pregunta ant
   },
   {
     slug: "ai-prompts-for-presentations",
+    updated: "2026-11-09",
     title: {
       en: "AI prompts for presentations: slide outlines, speaker notes and decks from documents",
-      es: "Prompts de IA para presentaciones: estructura de slides, notas del orador y presentaciones a partir de documentos",
+      es: "Prompts de IA para presentaciones: slides, notas del orador y decks desde documentos",
     },
     description: {
       en: "How to use ChatGPT, Claude or Gemini to plan a presentation: start from the audience and the one decision or idea you need, get a slide-by-slide outline, turn a long document into slides without inventing data, and write speaker notes. Includes copy-paste templates.",
@@ -8379,13 +8722,14 @@ Reglas:
   },
   {
     slug: "test-prompt-across-models",
+    updated: "2026-11-09",
     title: {
       en: "How to test one prompt across ChatGPT, Claude, Gemini, Grok and DeepSeek",
       es: "Cómo probar un mismo prompt en ChatGPT, Claude, Gemini, Grok y DeepSeek",
     },
     description: {
-      en: "A practical method to compare AI models on your own task: fix the prompt and the inputs, write pass/fail criteria before you look at answers, run a small sample, and decide on evidence instead of impressions. Includes templates for test cases, a scoring rubric and a side-by-side review.",
-      es: "Un método práctico para comparar modelos de IA en tu propia tarea: fijá el prompt y los datos de entrada, escribí criterios de aprobado/desaprobado antes de mirar respuestas, corré una muestra chica y decidí con evidencia en lugar de impresiones. Incluye plantillas para casos de prueba, una rúbrica de puntaje y una revisión lado a lado.",
+      en: "A practical method to compare AI models on your own task: fix the prompt and the inputs, write pass/fail criteria before reading answers, run a small sample and decide on evidence. Includes test-case and rubric templates.",
+      es: "Un método práctico para comparar modelos de IA en tu propia tarea: fijá el prompt y los inputs, escribí criterios de aprobado/desaprobado antes de leer respuestas, corré una muestra chica y decidí con evidencia. Incluye plantillas de casos de prueba y rúbrica.",
     },
     sections: [
       {
@@ -9039,13 +9383,14 @@ Reglas:
   },
   {
     slug: "ai-prompts-for-sops",
+    updated: "2026-11-09",
     title: {
       en: "AI prompts for SOPs: turn how-you-work into clear, testable procedures",
       es: "Prompts de IA para procedimientos (SOP): convertí cómo trabajás en pasos claros y verificables",
     },
     description: {
-      en: "How to use ChatGPT, Claude or Gemini to write standard operating procedures from walkthroughs, notes or call transcripts: what the model needs, how to keep steps concrete, how to find gaps before someone follows the SOP, and how to turn it into a checklist. Copy-paste templates included.",
-      es: "Cómo usar ChatGPT, Claude o Gemini para escribir procedimientos operativos estándar (SOP) a partir de recorridos, notas o transcripciones: qué necesita el modelo, cómo mantener los pasos concretos, cómo encontrar huecos antes de que alguien siga el SOP y cómo convertirlo en un checklist. Incluye plantillas para copiar y pegar.",
+      en: "How to use ChatGPT, Claude or Gemini to write SOPs from walkthroughs, notes or transcripts: what the model needs, concrete steps, finding gaps before someone follows it, and turning it into a checklist. Templates included.",
+      es: "Cómo usar ChatGPT, Claude o Gemini para escribir SOP a partir de recorridos, notas o transcripciones: qué necesita el modelo, pasos concretos, cómo encontrar huecos antes de que alguien lo siga y cómo convertirlo en checklist. Incluye plantillas.",
     },
     sections: [
       {

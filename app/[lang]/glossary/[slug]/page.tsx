@@ -5,6 +5,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { glossary, getTerm } from "@/lib/seo/content/glossary";
+import { guides } from "@/lib/seo/content/guides";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { markdownPathOf } from "@/lib/seo/registry";
+import { CONTENT_UPDATED } from "@/lib/seo/dates";
+import JsonLd from "@/components/seo/JsonLd";
+import PageMeta from "@/components/seo/PageMeta";
+import { glossaryGraph } from "@/lib/seo/pageGraphs";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -30,29 +37,16 @@ export async function generateMetadata({
   const term = getTerm(slug);
   if (!term) return {};
 
-  return {
+  const path = `/${l}/glossary/${slug}`;
+  return pageMetadata({
+    lang: l,
+    path,
     title: term.title[l],
     description: term.description[l],
-    alternates: {
-      canonical: `/${l}/glossary/${slug}`,
-      languages: {
-        es: `/es/glossary/${slug}`,
-        en: `/en/glossary/${slug}`,
-      },
-    },
-    openGraph: {
-      title: term.title[l],
-      description: term.description[l],
-      url: `/${l}/glossary/${slug}`,
-      type: "article",
-      locale: l === "en" ? "en_US" : "es_AR",
-    },
-    twitter: {
-      card: "summary",
-      title: term.title[l],
-      description: term.description[l],
-    },
-  };
+    type: "article",
+    markdownPath: markdownPathOf(path),
+    modifiedTime: term.updated ?? CONTENT_UPDATED.glossary,
+  });
 }
 
 export default async function GlossaryTermPage({
@@ -71,40 +65,20 @@ export default async function GlossaryTermPage({
 
   const faq = term.faq.map((x) => ({ q: x.q[l], a: x.a[l] }));
 
-  const faqJsonLd =
-    faq.length > 0
-      ? {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: faq.map((x) => ({
-            "@type": "Question",
-            name: x.q,
-            acceptedAnswer: { "@type": "Answer", text: x.a },
-          })),
-        }
-      : null;
+  const updated = term.updated ?? CONTENT_UPDATED.glossary;
 
-  const definedTermJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "DefinedTerm",
-    name: term.title[l],
-    description: term.description[l],
-    inDefinedTermSet: {
-      "@type": "DefinedTermSet",
-      name: l === "es" ? "Glosario de prompt engineering" : "Prompt engineering glossary",
-      url: `/${l}/glossary`,
-    },
-  };
+  const relatedGuides = (term.relatedGuides ?? []).flatMap((s) => guides.filter((g) => g.slug === s));
+  const relatedTerms = (term.relatedTerms ?? []).flatMap((s) => glossary.filter((g) => g.slug === s));
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
-      {/* JSON-LD */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(definedTermJsonLd) }} />
-      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
+      {/* JSON-LD: one graph (WebPage + DefinedTerm + BreadcrumbList + FAQPage) */}
+      <JsonLd data={glossaryGraph(term, l, updated)} />
 
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{term.title[l]}</h1>
         <p className="opacity-80 text-sm sm:text-base">{term.description[l]}</p>
+        <PageMeta lang={l} updated={updated} markdownPath={markdownPathOf(`/${l}/glossary/${slug}`)} />
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/glossary`} className="hover:underline underline-offset-2">
@@ -122,6 +96,30 @@ export default async function GlossaryTermPage({
               ? "Usá este concepto para reducir ambigüedad y mejorar consistencia. Si tu output necesita formato estricto, combiná esto con una guía de JSON y un template por modelo."
               : "Use this concept to reduce ambiguity and improve consistency. If you need strict formatting, combine it with a JSON guide and a per-model template."}
           </p>
+          {relatedGuides.length > 0 || relatedTerms.length > 0 ? (
+            <div className="space-y-2 pt-2">
+              {relatedGuides.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs opacity-70">{l === "es" ? "Guías relacionadas:" : "Related guides:"}</span>
+                  {relatedGuides.map((g) => (
+                    <Link key={g.slug} className="btn h-9 px-4" href={`/${l}/guides/${g.slug}`}>
+                      {g.title[l]}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+              {relatedTerms.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs opacity-70">{l === "es" ? "Términos relacionados:" : "Related terms:"}</span>
+                  {relatedTerms.map((t) => (
+                    <Link key={t.slug} className="btn h-9 px-4" href={`/${l}/glossary/${t.slug}`}>
+                      {t.title[l]}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           <div className="flex flex-wrap gap-2 pt-2">
             <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>
               {l === "es" ? "JSON estricto" : "Strict JSON"}

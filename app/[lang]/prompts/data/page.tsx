@@ -3,6 +3,7 @@ import Link from "next/link";
 import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -20,20 +21,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/prompts/data`,
     title: l === "es" ? "Prompts de datos (plantillas)" : "Data prompts (templates)",
     description:
       l === "es"
         ? "Plantillas para extraer datos, devolver JSON, validar esquemas y transformar textos/CSV. Abrilas en Promptea y optimizalas por IA."
         : "Templates to extract data, return JSON, validate schemas and transform text/CSV. Open in Promptea and optimize with AI.",
-    alternates: {
-      canonical: `/${l}/prompts/data`,
-      languages: {
-        es: "/es/prompts/data",
-        en: "/en/prompts/data",
-      },
-    },
-  };
+  });
 }
 
 export default async function DataPromptPackPage({

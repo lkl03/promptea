@@ -21,26 +21,17 @@
 // <script type="application/ld+json"> tag — the one sanctioned use of
 // dangerouslySetInnerHTML in this codebase. Article prose never goes near it.
 
-import { BLOG_AUTHOR } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
 import { getSiteUrl } from "@/lib/seo/site";
+import { breadcrumbNode, entityIds, graph, pageId, ref, webPageNode } from "@/lib/seo/jsonld";
+import { newest } from "@/lib/seo/dates";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
-
-/** The publishing organization, as shown in the site header and footer. */
-export const PUBLISHER_NAME = "Promptea";
 
 /** Human label for the section, used in breadcrumbs. Same string in both locales. */
 export const BLOG_SECTION_LABEL: Record<Lang, string> = {
   es: "AI Daily",
   en: "AI Daily",
 };
-
-/**
- * Fallback publisher logo. `/favicon.ico` is the only brand asset currently in
- * `public/`; callers should pass an explicit `logoUrl` once a raster logo
- * (Google prefers PNG, min 112x112) is added.
- */
-export const DEFAULT_PUBLISHER_LOGO_PATH = "/favicon.ico";
 
 /** JSON-LD is untyped by nature; this alias keeps the intent readable. */
 type JsonLd = Record<string, unknown>;
@@ -102,8 +93,6 @@ export type ArticleJsonLdOptions = {
   siteUrl: string;
   /** Absolute URL of the generated cover (the opengraph-image route). */
   imageUrl: string;
-  /** Optional override for the publisher logo. */
-  logoUrl?: string;
 };
 
 /**
@@ -114,7 +103,7 @@ export type ArticleJsonLdOptions = {
  * ISO-8601 date on its own, so it is the fallback rather than emitting null —
  * a NewsArticle without datePublished is invalid.
  */
-export function newsArticleJsonLd(
+export function newsArticleNode(
   article: PublicArticle,
   opts: ArticleJsonLdOptions
 ): JsonLd {
@@ -122,10 +111,12 @@ export function newsArticleJsonLd(
   const datePublished = article.publishedAt ?? article.eventDate;
   const dateModified = article.updatedAt ?? datePublished;
 
+  const ids = entityIds(site);
   const jsonLd: JsonLd = {
-    "@context": "https://schema.org",
     "@type": "NewsArticle",
-    mainEntityOfPage: { "@type": "WebPage", "@id": opts.url },
+    "@id": pageId(opts.url, "article"),
+    mainEntityOfPage: ref(pageId(opts.url, "webpage")),
+    isPartOf: ref(pageId(opts.url, "webpage")),
     url: opts.url,
     headline: truncateHeadline(article.title),
     description: article.summary || article.metaDescription,
@@ -136,20 +127,11 @@ export function newsArticleJsonLd(
     articleSection: article.category,
     // Truthful: there is no paywall and no registration wall on AI Daily.
     isAccessibleForFree: true,
-    author: {
-      "@type": "Organization",
-      name: BLOG_AUTHOR,
-      url: site,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: PUBLISHER_NAME,
-      url: site,
-      logo: {
-        "@type": "ImageObject",
-        url: opts.logoUrl ?? `${site}${DEFAULT_PUBLISHER_LOGO_PATH}`,
-      },
-    },
+    // The byline is an organization (never an invented person): the editorial
+    // entity, a node of the same graph (see editorialNode); the publisher is
+    // Promptea itself. Both are references, so each entity is described once.
+    author: ref(ids.editorial),
+    publisher: ref(ids.organization),
   };
 
   // Everything below is conditional: an absent value is omitted rather than
@@ -160,6 +142,12 @@ export function newsArticleJsonLd(
 
   if (article.readingMinutes > 0) {
     jsonLd.timeRequired = `PT${article.readingMinutes}M`;
+  }
+
+  // The companies are listed on the page ("Companies"), so naming them is a
+  // description of visible content.
+  if (article.companies.length > 0) {
+    jsonLd.mentions = article.companies.map((name) => ({ "@type": "Organization", name }));
   }
 
   // The sources block is rendered on the page, so citing it is a description of
@@ -178,6 +166,11 @@ export function newsArticleJsonLd(
   }
 
   return jsonLd;
+}
+
+/** Standalone document form of {@link newsArticleNode}. */
+export function newsArticleJsonLd(article: PublicArticle, opts: ArticleJsonLdOptions): JsonLd {
+  return { "@context": "https://schema.org", ...newsArticleNode(article, opts) };
 }
 
 // ---------------------------------------------------------------------------
@@ -199,12 +192,12 @@ export type BlogBreadcrumbInput = {
  * app/[lang]/guides/[slug]/page.tsx, with absolute `item` URLs so the graph is
  * unambiguous regardless of where the crawler resolved the page.
  */
-export function blogBreadcrumbJsonLd(input: BlogBreadcrumbInput): JsonLd {
+export function blogBreadcrumbNode(input: BlogBreadcrumbInput): JsonLd {
   const { lang, title, slug, siteUrl } = input;
 
   return {
-    "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": pageId(abs(siteUrl, blogArticlePath(lang, slug)), "breadcrumb"),
     itemListElement: [
       {
         "@type": "ListItem",
@@ -226,6 +219,11 @@ export function blogBreadcrumbJsonLd(input: BlogBreadcrumbInput): JsonLd {
       },
     ],
   };
+}
+
+/** Standalone document form of {@link blogBreadcrumbNode}. */
+export function blogBreadcrumbJsonLd(input: BlogBreadcrumbInput): JsonLd {
+  return { "@context": "https://schema.org", ...blogBreadcrumbNode(input) };
 }
 
 // ---------------------------------------------------------------------------
@@ -256,33 +254,50 @@ export type BlogIndexJsonLdInput = {
  */
 export function blogIndexJsonLd(input: BlogIndexJsonLdInput): JsonLd {
   const url = abs(input.siteUrl, blogIndexPath(input.lang));
-  const site = origin(input.siteUrl);
+  const ids = entityIds(input.siteUrl);
+  const items = input.items ?? [];
+  const home = input.lang === "es" ? "Inicio" : "Home";
 
-  const jsonLd: JsonLd = {
-    "@context": "https://schema.org",
+  const blog: JsonLd = {
     "@type": "Blog",
-    "@id": url,
+    "@id": pageId(url, "blog"),
     url,
     name: input.title,
     description: input.description,
     inLanguage: input.lang,
-    mainEntityOfPage: { "@type": "CollectionPage", "@id": url },
-    publisher: {
-      "@type": "Organization",
-      name: PUBLISHER_NAME,
-      url: site,
-    },
+    mainEntityOfPage: ref(pageId(url, "webpage")),
+    publisher: ref(ids.organization),
+    ...(items.length > 0
+      ? {
+          blogPost: items.map((item) => ({
+            "@type": "BlogPosting",
+            headline: truncateHeadline(item.title),
+            url: abs(input.siteUrl, blogArticlePath(input.lang, item.slug)),
+            datePublished: item.publishedAt ?? item.eventDate,
+          })),
+        }
+      : {}),
   };
 
-  const items = input.items ?? [];
-  if (items.length > 0) {
-    jsonLd.blogPost = items.map((item) => ({
-      "@type": "BlogPosting",
-      headline: truncateHeadline(item.title),
-      url: abs(input.siteUrl, blogArticlePath(input.lang, item.slug)),
-      datePublished: item.publishedAt ?? item.eventDate,
-    }));
-  }
-
-  return jsonLd;
+  // One graph: the index page (a CollectionPage), the Blog it is the main entity
+  // of, and the breadcrumb. The Blog has its own @id: the page URL names the
+  // page, not the publication.
+  return graph(
+    webPageNode({
+      lang: input.lang,
+      url,
+      name: input.title,
+      description: input.description,
+      type: "CollectionPage",
+      dateModified: newest(...items.map((i) => i.publishedAt ?? i.eventDate)),
+      hasBreadcrumb: true,
+      mainEntity: ref(pageId(url, "blog")),
+      siteUrl: input.siteUrl,
+    }),
+    blog,
+    breadcrumbNode(url, [
+      { name: home, url: abs(input.siteUrl, `/${input.lang}`) },
+      { name: BLOG_SECTION_LABEL[input.lang], url },
+    ]),
+  );
 }

@@ -1,10 +1,13 @@
 // app/[lang]/glossary/page.tsx
+import JsonLd from "@/components/seo/JsonLd";
+import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import Link from "next/link";
 import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { glossary } from "@/lib/seo/content/glossary";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 export async function generateMetadata({
   params,
@@ -14,20 +17,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/glossary`,
     title: l === "es" ? "Glosario de prompt engineering" : "Prompt engineering glossary",
     description:
       l === "es"
         ? "Definiciones cortas y ejemplos: system prompt, few-shot, delimitadores, JSON schema, prompt injection y más."
         : "Short definitions + examples: system prompt, few-shot, delimiters, JSON schema, prompt injection, and more.",
-    alternates: {
-      canonical: `/${l}/glossary`,
-      languages: {
-        es: "/es/glossary",
-        en: "/en/glossary",
-      },
-    },
-  };
+  });
 }
 
 export default async function GlossaryIndexPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -43,6 +41,7 @@ export default async function GlossaryIndexPage({ params }: { params: Promise<{ 
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
+      <JsonLd data={registryPageGraph(l, `/${l}/glossary`, { collection: true })} />
       <div className="mx-auto max-w-3xl text-center space-y-2">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold">{title}</h1>
         <p className="opacity-80 text-sm sm:text-base">{subtitle}</p>

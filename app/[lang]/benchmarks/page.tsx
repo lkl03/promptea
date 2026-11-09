@@ -20,6 +20,10 @@ import { frontierModels, FRONTIER_TOP_N } from "@/lib/benchmarks/normalize";
 import { snapshotAgeHours, type FetchFailure } from "@/lib/benchmarks/load";
 import { CATEGORY_LABELS, SOURCE_INFO } from "@/lib/benchmarks/catalog";
 import { frontierMatrix } from "@/lib/benchmarks/chart";
+import JsonLd from "@/components/seo/JsonLd";
+import { benchmarksGraph } from "@/lib/seo/pageGraphs";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { markdownPathOf } from "@/lib/seo/registry";
 
 export const revalidate = 3600;
 
@@ -294,14 +298,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
   const c = COPY[l];
-  const canonical = `/${l}/benchmarks`;
-  return {
-    title: c.metaTitle,
-    description: c.metaDescription,
-    alternates: { canonical, languages: { es: "/es/benchmarks", en: "/en/benchmarks" } },
-    openGraph: { title: `${c.metaTitle} · Promptea`, description: c.metaDescription, url: canonical, type: "website", locale: l === "en" ? "en_US" : "es_AR" },
-    twitter: { card: "summary_large_image", title: `${c.metaTitle} · Promptea`, description: c.metaDescription },
-  };
+  const path = `/${l}/benchmarks`;
+  return pageMetadata({ lang: l, path, title: c.metaTitle, description: c.metaDescription, markdownPath: markdownPathOf(path) });
 }
 
 export default async function BenchmarksPage({ params }: { params: Promise<{ lang: string }> }) {
@@ -316,6 +314,8 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
   const matrix = snapshot ? frontierMatrix(snapshot.tables, frontier.slice(0, MATRIX_MAX_MODELS).map((m) => m.modelId)) : null;
   const now = new Date();
   const dateLabel = snapshot ? (fmtDate(snapshot.asOf, l) ?? fmtDate(snapshot.fetchedAt, l)) : null;
+  // Dataset JSON-LD only when a snapshot is on the page: it describes the data shown, nothing else.
+  const jsonLd = benchmarksGraph({ lang: l, title: c.title, description: c.intro, snapshot });
 
   const navItems = [
     { id: "ranking", label: c.nav.ranking },
@@ -327,6 +327,7 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
+      <JsonLd data={jsonLd} />
       <header className="max-w-3xl">
         <h1 className="font-title text-3xl font-semibold leading-tight sm:text-4xl">{c.title}</h1>
         <p className="mt-3 text-base leading-relaxed text-ink-muted sm:text-lg">{c.intro}</p>

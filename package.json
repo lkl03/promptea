@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
+    "seo:check": "node scripts/seo-check.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "showcase:record": "node scripts/showcase/record.mjs",

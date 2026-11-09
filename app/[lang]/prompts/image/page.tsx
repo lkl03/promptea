@@ -3,6 +3,7 @@ import Link from "next/link";
 import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo/metadata";
 
 function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -20,20 +21,15 @@ export async function generateMetadata({
   const { lang } = await params;
   const l = lang === "en" ? "en" : "es";
 
-  return {
+  return pageMetadata({
+    lang: l,
+    path: `/${l}/prompts/image`,
     title: l === "es" ? "Prompts para imágenes (plantillas)" : "Image prompts (templates)",
     description:
       l === "es"
         ? "Plantillas para generar imágenes: estilo, composición, iluminación y variantes. Abrilas en Promptea y optimizalas por IA."
         : "Templates for image generation: style, composition, lighting and variations. Open in Promptea and optimize per AI.",
-    alternates: {
-      canonical: `/${l}/prompts/image`,
-      languages: {
-        es: "/es/prompts/image",
-        en: "/en/prompts/image",
-      },
-    },
-  };
+  });
 }
 
 export default async function ImagePromptPackPage({

@@ -18,6 +18,9 @@ import { getEditionById } from "@/lib/newsletter/server";
 import { editionIdForMonday, weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
+import { pageMetadata } from "@/lib/seo/metadata";
+import JsonLd from "@/components/seo/JsonLd";
+import { weeklyEditionGraph } from "@/lib/seo/pageGraphs";
 
 export const revalidate = 300;
 
@@ -39,14 +42,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const edition = await load(date);
   if (!edition || edition === "unavailable") return { robots: { index: false, follow: true } };
   const c = edition.locales[l];
-  const canonical = weeklyEditionPath(l, edition.editionId);
-  return {
+  return pageMetadata({
+    lang: l,
+    path: weeklyEditionPath(l, edition.editionId),
+    alternatePaths: { es: weeklyEditionPath("es", edition.editionId), en: weeklyEditionPath("en", edition.editionId) },
     title: c.heroHeadline,
     description: c.preheader,
-    alternates: { canonical, languages: { es: weeklyEditionPath("es", edition.editionId), en: weeklyEditionPath("en", edition.editionId) } },
-    openGraph: { title: c.subject, description: c.preheader, url: canonical, type: "article", locale: l === "en" ? "en_US" : "es_AR" },
-    twitter: { card: "summary_large_image", title: c.subject, description: c.preheader },
-  };
+    type: "article",
+    publishedTime: edition.publishedAt ?? edition.sentAt ?? undefined,
+    modifiedTime: edition.sentAt ?? edition.publishedAt ?? undefined,
+  });
 }
 
 export default async function WeeklyEditionPage({ params }: { params: Params }) {
@@ -77,6 +82,7 @@ export default async function WeeklyEditionPage({ params }: { params: Params }) 
             </section>
           ) : (
             <article className="mt-5">
+              <JsonLd data={weeklyEditionGraph(edition, l)} />
               <header>
                 <p className="text-xs font-medium uppercase tracking-[0.14em] text-accent">{dict.newsletter.title}</p>
                 <p className="mt-2 text-sm tabular-nums text-ink-muted">
