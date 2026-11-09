@@ -3,6 +3,8 @@ import type { Purpose, TargetModel } from "../prefill";
 
 export type Guide = {
   slug: string;
+  /** YYYY-MM-DD of the last content edit; falls back to CONTENT_UPDATED.guides (lib/seo/dates.ts). */
+  updated?: string;
   title: Record<Locale, string>;
   description: Record<Locale, string>;
   sections: Array<{

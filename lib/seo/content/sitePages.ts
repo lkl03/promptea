@@ -1,0 +1,631 @@
+// lib/seo/content/sitePages.ts
+//
+// The public "who we are / how it works" copy: the crawlable block on the home
+// page, /{lang}/about and /{lang}/methodology.
+//
+// One typed document per page feeds BOTH the HTML (components/seo/DocSections)
+// and the markdown twin (lib/seo/markdown.ts, linked from llms.txt), so the two
+// can never drift. Every claim is something the code does today; where a number
+// or a list exists in code (scoring dimensions, purposes, model registry,
+// engine version, frontier cut-off) it is read from there, not typed here.
+// Sources for the method: docs/engine-contract.md, docs/matcher-methodology.md,
+// lib/blog/types.ts (publication rules), lib/benchmarks/* (benchmark pipeline).
+
+import { TARGETS, TASK_TYPES } from "@/lib/domain";
+import { FRONTIER_TOP_N } from "@/lib/benchmarks/normalize";
+import { getXLinks } from "@/lib/social";
+import { CONTENT_UPDATED, formatDay, modelsVerifiedAt } from "../dates";
+import { ENGINE, SCORE_DIMENSIONS, TARGET_SHORT, currentModels, purposeList } from "../facts";
+import { STUDIO_NAME, STUDIO_URL, type Locale } from "../site";
+
+export type DocBlock =
+  | { type: "p"; text: string }
+  | { type: "ul"; items: string[] }
+  | { type: "ol"; items: string[] }
+  | { type: "dl"; items: Array<{ term: string; text: string }> }
+  | { type: "links"; items: Array<{ href: string; label: string }> };
+
+export type DocSection = { id: string; heading: string; blocks: DocBlock[] };
+
+export type DocFaq = { q: string; a: string };
+
+export type DocStep = { name: string; text: string };
+
+export type PageDoc = {
+  /** <title> (the layout template appends " · Promptea" unless `absoluteTitle`). */
+  title: string;
+  absoluteTitle?: boolean;
+  description: string;
+  h1: string;
+  /** Answer-first summary shown right under the heading. */
+  tldr: string;
+  sections: DocSection[];
+  faq: DocFaq[];
+  /** Ordered how-to steps, when the page teaches a procedure (becomes HowTo JSON-LD). */
+  steps?: { name: string; steps: DocStep[] };
+  updated: string;
+};
+
+const tr = (lang: Locale) => <T,>(en: T, es: T): T => (lang === "es" ? es : en);
+
+function modelFamilyList(): string {
+  return TARGETS.map((t) => TARGET_SHORT[t]).join(", ");
+}
+
+// ---------------------------------------------------------------------------
+// Home: the crawlable block under the hub
+// ---------------------------------------------------------------------------
+
+export function homeAboutDoc(lang: Locale): PageDoc {
+  const t = tr(lang);
+  const purposes = purposeList(lang);
+  const models = currentModels();
+  const verified = formatDay(modelsVerifiedAt(), lang);
+
+  const modelDl = TARGETS.map((target) => {
+    const names = currentModels(target).map((m) => m.label);
+    return { term: TARGET_SHORT[target], text: names.join(" · ") };
+  }).filter((x) => x.text);
+
+  return {
+    title: t(
+      "Promptea — Free prompt analyzer & optimizer for ChatGPT, Claude, Gemini",
+      "Promptea — Analizador de prompts gratis para ChatGPT, Claude, Gemini",
+    ),
+    absoluteTitle: true,
+    description: t(
+      "Score any prompt 0–100 on six criteria, see what to fix and get a rewrite tuned for GPT, Claude, Gemini, Grok, Kimi, DeepSeek or Perplexity. Free, no account.",
+      "Puntuá tu prompt de 0 a 100 en seis criterios, mirá qué corregir y obtené una versión mejorada para GPT, Claude, Gemini, Grok, Kimi, DeepSeek o Perplexity. Gratis, sin cuenta.",
+    ),
+    h1: t(
+      "Promptea — analyze, score and optimize your AI prompts",
+      "Promptea — analizá, puntuá y optimizá tus prompts de IA",
+    ),
+    tldr: t(
+      `Promptea is a free web tool that reads your prompt, scores it from 0 to 100 on six criteria (${SCORE_DIMENSIONS.map((d) => d.label.en.toLowerCase()).join(", ")}), tells you what to fix and writes an improved version for the AI you pick: ${modelFamilyList()}. Works in English and Spanish, no account needed.`,
+      `Promptea es una herramienta web gratuita que lee tu prompt, le pone un puntaje de 0 a 100 en seis criterios (${SCORE_DIMENSIONS.map((d) => d.label.es.toLowerCase()).join(", ")}), te dice qué corregir y escribe una versión mejorada para la IA que elijas: ${modelFamilyList()}. Funciona en español e inglés y no pide cuenta.`,
+    ),
+    sections: [
+      {
+        id: "what-is-promptea",
+        heading: t("What is Promptea?", "¿Qué es Promptea?"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              "Promptea is a prompt analyzer and optimizer. You paste a prompt, choose what it is for and which AI you will use, and Promptea returns a score, the specific problems it found, concrete recommendations and an optimized prompt you can copy.",
+              "Promptea es un analizador y optimizador de prompts. Pegás un prompt, elegís para qué es y con qué IA lo vas a usar, y Promptea devuelve un puntaje, los problemas concretos que encontró, recomendaciones y un prompt optimizado que podés copiar.",
+            ),
+          },
+          {
+            type: "p",
+            text: t(
+              "Around the analyzer there are four more tools: Find the best AI for a task, AI Daily (one verified AI story every morning, with its sources), model benchmarks with source and date, and a library of guides, a glossary and per-model prompt templates.",
+              "Alrededor del analizador hay cuatro herramientas más: elegir la mejor IA para una tarea, IA al Día (una noticia de IA verificada cada mañana, con sus fuentes), benchmarks de modelos con fuente y fecha, y una biblioteca de guías, glosario y plantillas de prompts por modelo.",
+            ),
+          },
+        ],
+      },
+      {
+        id: "score",
+        heading: t("How a prompt is scored", "Cómo se puntúa un prompt"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              "The score runs from 0 to 100 and combines six dimensions. It measures how well specified the prompt is, using fixed rules, so the same prompt always gets the same score.",
+              "El puntaje va de 0 a 100 y combina seis dimensiones. Mide qué tan bien especificado está el prompt con reglas fijas, así que el mismo prompt siempre obtiene el mismo puntaje.",
+            ),
+          },
+          { type: "dl", items: SCORE_DIMENSIONS.map((d) => ({ term: d.label[lang], text: d.measures[lang] })) },
+          {
+            type: "links",
+            items: [{ href: `/${lang}/methodology`, label: t("Read the full methodology", "Leer la metodología completa") }],
+          },
+        ],
+      },
+      {
+        id: "how-to",
+        heading: t("How to analyze a prompt with Promptea", "Cómo analizar un prompt con Promptea"),
+        blocks: [
+          {
+            type: "ol",
+            items: [
+              t("Paste your prompt in the box on this page (or open the analyzer).", "Pegá tu prompt en el cuadro de esta página (o abrí el analizador)."),
+              t("Pick what the prompt is for and which AI you will use it with.", "Elegí para qué es el prompt y con qué IA lo vas a usar."),
+              t(
+                "Read the score and the findings, then copy the optimized prompt, or save it to your library.",
+                "Leé el puntaje y los hallazgos, y copiá el prompt optimizado o guardalo en tu biblioteca.",
+              ),
+            ],
+          },
+        ],
+      },
+      {
+        id: "supported",
+        heading: t("Supported AIs and prompt types", "IAs y tipos de prompt compatibles"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              `Promptea optimizes prompts for ${TARGETS.length} AI families and ${models.length} current models. It does not run the models: it writes prompts that follow each provider's own prompting guidance. The model list was last verified against the providers' documentation on ${verified}.`,
+              `Promptea optimiza prompts para ${TARGETS.length} familias de IA y ${models.length} modelos vigentes. No ejecuta los modelos: escribe prompts que siguen la guía de prompting de cada proveedor. La lista de modelos se verificó por última vez contra la documentación de los proveedores el ${verified}.`,
+            ),
+          },
+          { type: "dl", items: modelDl },
+          {
+            type: "p",
+            text: t(`Prompt types: ${purposes.join(", ")}.`, `Tipos de prompt: ${purposes.join(", ")}.`),
+          },
+          {
+            type: "links",
+            items: [
+              { href: `/${lang}/models`, label: t("Prompts by model", "Prompts por modelo") },
+              { href: `/${lang}/guides`, label: t("Prompting guides", "Guías de prompting") },
+              { href: `/${lang}/glossary`, label: t("Glossary", "Glosario") },
+            ],
+          },
+        ],
+      },
+    ],
+    steps: {
+      name: t("How to analyze and improve a prompt with Promptea", "Cómo analizar y mejorar un prompt con Promptea"),
+      steps: [
+        {
+          name: t("Paste your prompt", "Pegá tu prompt"),
+          text: t("Paste the prompt you want to improve in the box on the home page or in the analyzer.", "Pegá el prompt que querés mejorar en el cuadro de la página principal o en el analizador."),
+        },
+        {
+          name: t("Choose purpose and AI", "Elegí propósito e IA"),
+          text: t("Select what the prompt is for and the AI model you will use it with.", "Seleccioná para qué es el prompt y con qué modelo de IA lo vas a usar."),
+        },
+        {
+          name: t("Read the score and copy the result", "Leé el puntaje y copiá el resultado"),
+          text: t("Review the 0–100 score, the findings and recommendations, then copy the optimized prompt.", "Revisá el puntaje de 0 a 100, los hallazgos y las recomendaciones, y copiá el prompt optimizado."),
+        },
+      ],
+    },
+    faq: [
+      {
+        q: t("What is Promptea?", "¿Qué es Promptea?"),
+        a: t(
+          "Promptea is a free web tool that analyzes a prompt, scores it from 0 to 100 on six criteria, lists what to fix and writes an optimized version for the AI model you choose. It also recommends which AI fits a task, publishes a verified AI news story every morning (AI Daily) and shows model benchmarks with their source and date.",
+          "Promptea es una herramienta web gratuita que analiza un prompt, lo puntúa de 0 a 100 en seis criterios, lista qué corregir y escribe una versión optimizada para el modelo de IA que elijas. También recomienda qué IA conviene para una tarea, publica cada mañana una noticia de IA verificada (IA al Día) y muestra benchmarks de modelos con su fuente y fecha.",
+        ),
+      },
+      {
+        q: t("Is Promptea free? Do I need an account?", "¿Promptea es gratis? ¿Necesito una cuenta?"),
+        a: t(
+          "Analyzing a prompt is free and does not require an account. The weekly newsletter is optional and only asks for an email address if you choose to subscribe.",
+          "Analizar un prompt es gratis y no requiere cuenta. El newsletter semanal es opcional y solo pide un email si decidís suscribirte.",
+        ),
+      },
+      {
+        q: t("How does Promptea score a prompt?", "¿Cómo puntúa Promptea un prompt?"),
+        a: t(
+          `It applies fixed, deterministic rules to the text and combines six dimensions: ${SCORE_DIMENSIONS.map((d) => d.label.en.toLowerCase()).join(", ")}. The weight of each dimension depends on the kind of task it detects, and the same prompt always gets the same score. No language model decides the score. The method is public on the methodology page.`,
+          `Aplica reglas fijas y determinísticas al texto y combina seis dimensiones: ${SCORE_DIMENSIONS.map((d) => d.label.es.toLowerCase()).join(", ")}. El peso de cada dimensión depende del tipo de tarea que detecta, y el mismo prompt siempre da el mismo puntaje. Ningún modelo de lenguaje decide el puntaje. El método es público en la página de metodología.`,
+        ),
+      },
+      {
+        q: t("Which AI models does Promptea support?", "¿Qué modelos de IA soporta Promptea?"),
+        a: t(
+          `It writes prompts for ${modelFamilyList()}, with ${models.length} current models in its registry (verified against the providers' own documentation, last on ${verified}). Promptea optimizes prompts for these models; it does not run them.`,
+          `Escribe prompts para ${modelFamilyList()}, con ${models.length} modelos vigentes en su registro (verificados contra la documentación oficial de cada proveedor, por última vez el ${verified}). Promptea optimiza prompts para esos modelos; no los ejecuta.`,
+        ),
+      },
+      {
+        q: t("What kinds of prompts can I analyze?", "¿Qué tipos de prompts puedo analizar?"),
+        a: t(
+          `${purposes.length} purposes: ${purposes.join(", ")}. Beyond the purpose you pick, the engine detects ${TASK_TYPES.length} task types (for example debugging, data extraction or customer support) and adapts the rules to them.`,
+          `${purposes.length} propósitos: ${purposes.join(", ")}. Además del propósito que elegís, el motor detecta ${TASK_TYPES.length} tipos de tarea (por ejemplo depuración, extracción de datos o atención al cliente) y adapta las reglas a cada uno.`,
+        ),
+      },
+      {
+        q: t("Does Promptea store my prompts?", "¿Promptea guarda mis prompts?"),
+        a: t(
+          "By default, telemetry stores only metadata (score, task type, target model, language, finding IDs), not the text of your prompt. Your prompt library lives in your own browser. Share cards carry numbers only, never the prompt. Details are in the privacy policy.",
+          "Por defecto, la telemetría guarda solo metadatos (puntaje, tipo de tarea, modelo destino, idioma, IDs de hallazgos), no el texto de tu prompt. Tu biblioteca de prompts vive en tu propio navegador. Las tarjetas para compartir llevan solo números, nunca el prompt. Los detalles están en la política de privacidad.",
+        ),
+      },
+      {
+        q: t("Does a high score guarantee a better answer?", "¿Un puntaje alto garantiza una mejor respuesta?"),
+        a: t(
+          "No. The score measures how completely a prompt is specified (goal, context, limits, output format, checkability, safety). It does not run the prompt and it cannot predict the quality of a model's answer. Use it to find gaps, then test the prompt with your model.",
+          "No. El puntaje mide qué tan completo está un prompt (objetivo, contexto, límites, formato de salida, verificabilidad, seguridad). No ejecuta el prompt y no puede predecir la calidad de la respuesta de un modelo. Usalo para encontrar huecos y después probá el prompt con tu modelo.",
+        ),
+      },
+    ],
+    updated: CONTENT_UPDATED.home,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// About
+// ---------------------------------------------------------------------------
+
+export function aboutDoc(lang: Locale): PageDoc {
+  const t = tr(lang);
+  const x = getXLinks();
+
+  const contactItems: Array<{ href: string; label: string }> = [
+    { href: STUDIO_URL, label: `${STUDIO_NAME} (${STUDIO_URL.replace("https://", "")})` },
+  ];
+  if (x.handle) contactItems.push({ href: x.url, label: `X: @${x.handle}` });
+
+  return {
+    title: t("About Promptea — who builds it and why you can trust it", "Acerca de Promptea — quién la desarrolla y por qué podés confiar"),
+    description: t(
+      "Promptea is designed and developed by eterlab. What the product does, how it handles sources, privacy and corrections, and how to cite it.",
+      "Promptea está diseñada y desarrollada por eterlab. Qué hace el producto, cómo maneja fuentes, privacidad y correcciones, y cómo citarlo.",
+    ),
+    h1: t("About Promptea", "Acerca de Promptea"),
+    tldr: t(
+      "Promptea is a free prompt analyzer and AI toolkit, designed and developed by eterlab. It scores prompts with public, deterministic rules, publishes one verified AI story a day with its sources, and states the source and date of every dataset it shows.",
+      "Promptea es un analizador de prompts gratuito y un conjunto de herramientas de IA, diseñado y desarrollado por eterlab. Puntúa prompts con reglas públicas y determinísticas, publica una noticia de IA verificada por día con sus fuentes y declara la fuente y la fecha de cada conjunto de datos que muestra.",
+    ),
+    sections: [
+      {
+        id: "who",
+        heading: t("Who is behind Promptea", "Quién está detrás de Promptea"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              `Promptea is designed and developed by ${STUDIO_NAME}. Every release is documented in the public changelog.`,
+              `Promptea está diseñada y desarrollada por ${STUDIO_NAME}. Cada versión queda documentada en el changelog público.`,
+            ),
+          },
+          { type: "links", items: contactItems },
+        ],
+      },
+      {
+        id: "what",
+        heading: t("What Promptea does", "Qué hace Promptea"),
+        blocks: [
+          {
+            type: "ul",
+            items: [
+              t("Prompt analyzer: a 0–100 score on six criteria, findings, recommendations and an optimized prompt per AI model.", "Analizador de prompts: puntaje de 0 a 100 en seis criterios, hallazgos, recomendaciones y un prompt optimizado por modelo de IA."),
+              t("Best AI: describe a task and get a ranked recommendation of which AI and model fits, with the reasons.", "Mejor IA: describí una tarea y recibí una recomendación ordenada de qué IA y modelo conviene, con las razones."),
+              t("AI Daily and the weekly digest: one verified AI story every morning, a weekly recap and a look ahead.", "IA al Día y resumen semanal: una noticia de IA verificada cada mañana, un repaso semanal y un vistazo a la semana que viene."),
+              t("Benchmarks: rankings of AI models by category, with source, date and metric.", "Benchmarks: rankings de modelos de IA por categoría, con fuente, fecha y métrica."),
+              t("Guides, glossary and per-model templates for prompt engineering.", "Guías, glosario y plantillas por modelo para prompt engineering."),
+            ],
+          },
+          {
+            type: "links",
+            items: [
+              { href: `/${lang}/analyzer`, label: t("Prompt analyzer", "Analizador de prompts") },
+              { href: `/${lang}/best-ai`, label: t("Find the best AI", "Elegir la mejor IA") },
+              { href: `/${lang}/blog`, label: "AI Daily" },
+              { href: `/${lang}/benchmarks`, label: "Benchmarks" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "principles",
+        heading: t("Principles", "Principios"),
+        blocks: [
+          {
+            type: "ul",
+            items: [
+              t("Public method. How the score and the AI recommendation are computed is documented on the methodology page.", "Método público. Cómo se calcula el puntaje y la recomendación de IA está documentado en la página de metodología."),
+              t("Sources and dates on everything. News links its sources, model data carries the date it was verified, and benchmarks show their source and update date.", "Fuentes y fechas en todo. Las noticias enlazan sus fuentes, los datos de modelos llevan la fecha en que se verificaron y los benchmarks muestran su fuente y fecha de actualización."),
+              t("No invented authorship. AI Daily is signed “Promptea Editorial”, not a made-up person, and says it is researched with AI assistance.", "Sin autoría inventada. IA al Día se firma “Promptea Editorial”, no una persona inventada, y aclara que se investiga con asistencia de IA."),
+              t("Corrections are visible. A corrected article keeps its URL and shows a correction notice.", "Las correcciones se ven. Un artículo corregido conserva su URL y muestra un aviso de corrección."),
+              t("Privacy by default. Telemetry keeps metadata, not your prompt text.", "Privacidad por defecto. La telemetría guarda metadatos, no el texto de tus prompts."),
+              t("Honest limits. Promptea says what it does not do (see the methodology).", "Límites honestos. Promptea dice qué no hace (ver la metodología)."),
+            ],
+          },
+        ],
+      },
+      {
+        id: "cite",
+        heading: t("How to cite Promptea", "Cómo citar Promptea"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              "Cite the page you used, with its title and the date you accessed it, for example: “Promptea. Prompt analyzer methodology. promptea.me/en/methodology (accessed 8 November 2026).” For news, cite the AI Daily article and, wherever possible, the primary sources it links. For benchmark figures, name the original source shown on the page (Artificial Analysis, OpenRouter or Design Arena) and its “as of” date.",
+              "Citá la página que usaste, con su título y la fecha de acceso, por ejemplo: “Promptea. Metodología del analizador de prompts. promptea.me/es/methodology (consultado el 8 de noviembre de 2026).” Para noticias, citá el artículo de IA al Día y, siempre que se pueda, las fuentes primarias que enlaza. Para cifras de benchmarks, nombrá la fuente original que muestra la página (Artificial Analysis, OpenRouter o Design Arena) y su fecha de actualización.",
+            ),
+          },
+        ],
+      },
+      {
+        id: "machine-readable",
+        heading: t("For search engines and AI assistants", "Para buscadores y asistentes de IA"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              "Promptea publishes a machine-readable map of its content: an llms.txt index, a full-text llms-full.txt, a markdown version of every guide, glossary term, model page and AI Daily story (add .md to the page URL), an XML sitemap and an RSS feed per language. Public pages are open to search and AI crawlers (see robots.txt).",
+              "Promptea publica un mapa legible por máquinas de su contenido: un índice llms.txt, un llms-full.txt con el texto completo, una versión en markdown de cada guía, término del glosario, página de modelo y nota de IA al Día (agregá .md a la URL de la página), un sitemap XML y un feed RSS por idioma. Las páginas públicas están abiertas a rastreadores de búsqueda y de IA (ver robots.txt).",
+            ),
+          },
+          {
+            type: "links",
+            items: [
+              { href: "/llms.txt", label: "llms.txt" },
+              { href: "/llms-full.txt", label: "llms-full.txt" },
+              { href: "/sitemap.xml", label: "sitemap.xml" },
+              { href: `/${lang}/blog/feed.xml`, label: t("AI Daily RSS feed", "Feed RSS de IA al Día") },
+            ],
+          },
+        ],
+      },
+      {
+        id: "feedback",
+        heading: t("Feedback and corrections", "Feedback y correcciones"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              "Found a mistake in an article, a guide or a model entry? Use the “Feedback” button in the footer of any page. Verified corrections are published with a visible note.",
+              "¿Encontraste un error en un artículo, una guía o una ficha de modelo? Usá el botón “Feedback” del pie de cualquier página. Las correcciones verificadas se publican con una nota visible.",
+            ),
+          },
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: t("Who makes Promptea?", "¿Quién hace Promptea?"),
+        a: t(`Promptea is designed and developed by ${STUDIO_NAME} (${STUDIO_URL.replace("https://", "")}).`, `Promptea está diseñada y desarrollada por ${STUDIO_NAME} (${STUDIO_URL.replace("https://", "")}).`),
+      },
+      {
+        q: t("Who writes AI Daily?", "¿Quién escribe IA al Día?"),
+        a: t(
+          "AI Daily is signed “Promptea Editorial”. Each story is researched with AI assistance and verified against primary sources before publishing, and every claim links to its source. There is no individual byline because no individual writes it.",
+          "IA al Día se firma “Promptea Editorial”. Cada nota se investiga con asistencia de IA y se verifica contra fuentes primarias antes de publicarse, y cada afirmación enlaza a su fuente. No hay firma personal porque no la escribe una persona en particular.",
+        ),
+      },
+      {
+        q: t("Can I reuse or cite Promptea's content?", "¿Puedo reutilizar o citar el contenido de Promptea?"),
+        a: t(
+          "You can cite and link to any public page. Please name Promptea and link to the page you used. For benchmark figures, also name the original source and date shown on the page.",
+          "Podés citar y enlazar cualquier página pública. Nombrá a Promptea y enlazá la página que usaste. Para cifras de benchmarks, nombrá también la fuente original y la fecha que muestra la página.",
+        ),
+      },
+    ],
+    updated: CONTENT_UPDATED.about,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Methodology
+// ---------------------------------------------------------------------------
+
+export function methodologyDoc(lang: Locale): PageDoc {
+  const t = tr(lang);
+  const models = currentModels();
+
+  return {
+    title: t("Methodology: how Promptea scores prompts, picks AIs and builds AI Daily", "Metodología: cómo Promptea puntúa prompts, elige IAs y arma IA al Día"),
+    description: t(
+      "How the 0–100 prompt score works, what is deterministic and what uses an LLM, how the best-AI match is made, the editorial policy of AI Daily and how benchmarks are collected.",
+      "Cómo funciona el puntaje de 0 a 100, qué es determinístico y qué usa un LLM, cómo se hace la recomendación de IA, la política editorial de IA al Día y cómo se obtienen los benchmarks.",
+    ),
+    h1: t("Methodology", "Metodología"),
+    tldr: t(
+      `Promptea scores prompts with deterministic rules (engine ${ENGINE.version}): the same input always gives the same score, and no language model decides it. An optional LLM step can rewrite the optimized prompt, but it never changes the score. AI recommendations come from a rule-based matcher over a model registry checked against official provider docs. AI Daily stories need sources, and benchmarks are shown per source with their date and never merged into one number.`,
+      `Promptea puntúa prompts con reglas determinísticas (motor ${ENGINE.version}): la misma entrada da siempre el mismo puntaje y ningún modelo de lenguaje lo decide. Un paso opcional con LLM puede reescribir el prompt optimizado, pero nunca cambia el puntaje. Las recomendaciones de IA salen de un matcher por reglas sobre un registro de modelos verificado contra la documentación oficial. Las notas de IA al Día exigen fuentes y los benchmarks se muestran por fuente, con su fecha, y nunca se fusionan en un solo número.`,
+    ),
+    sections: [
+      {
+        id: "pipeline",
+        heading: t("How a prompt is analyzed", "Cómo se analiza un prompt"),
+        blocks: [
+          {
+            type: "ol",
+            items: [
+              t("Normalize the text and separate what you asked for (the core) from any scaffold Promptea generated earlier, so re-analyzing an optimized prompt does not grow it or stack headers.", "Se normaliza el texto y se separa lo que pediste (el núcleo) de cualquier estructura que Promptea haya generado antes, para que re-analizar un prompt optimizado no lo haga crecer ni apile encabezados."),
+              t(`Classify the task into one of ${TASK_TYPES.length} types (for example coding, debugging, data extraction, translation, marketing) using your chosen purpose and the wording of the prompt.`, `Se clasifica la tarea en uno de ${TASK_TYPES.length} tipos (por ejemplo código, depuración, extracción de datos, traducción, marketing) según el propósito elegido y la redacción del prompt.`),
+              t("Detect features: goal, inputs, audience, examples, constraints, tone, length, timeframe, output format, success criteria, error details, reproduction steps, injection-like text and contradictions.", "Se detectan rasgos: objetivo, inputs, audiencia, ejemplos, restricciones, tono, largo, plazo, formato de salida, criterios de éxito, detalle del error, pasos de reproducción, texto con forma de inyección y contradicciones."),
+              t("Score the six dimensions and combine them with weights that depend on the task type (verifiability weighs more for debugging than for a casual text request).", "Se puntúan las seis dimensiones y se combinan con pesos que dependen del tipo de tarea (la verificabilidad pesa más en depuración que en un pedido de texto cotidiano)."),
+              t("Apply a cap when essential material is missing (for example a translation request with no text to translate cannot score as complete).", "Se aplica un tope cuando falta material esencial (por ejemplo, un pedido de traducción sin el texto a traducir no puede puntuar como completo)."),
+              t("Build the optimized prompt for the chosen AI from the findings, and score it again with the same rubric to show a before → after score.", "Se arma el prompt optimizado para la IA elegida a partir de los hallazgos y se vuelve a puntuar con el mismo criterio para mostrar un puntaje antes → después."),
+            ],
+          },
+          {
+            type: "p",
+            text: t(
+              "This core runs on the server with no network calls and accepts up to 12,000 characters. Its guarantees (idempotence, stable finding IDs, strict language localization, no amplification of prompt injection, inputs that never crash it) are written down in the engine contract and enforced by automated tests.",
+              "Este núcleo corre en el servidor sin llamadas de red y acepta hasta 12.000 caracteres. Sus garantías (idempotencia, IDs de hallazgos estables, localización estricta por idioma, sin amplificar inyecciones de prompt, entradas que nunca lo hacen fallar) están escritas en el contrato del motor y verificadas con tests automáticos.",
+            ),
+          },
+        ],
+      },
+      {
+        id: "dimensions",
+        heading: t("The six dimensions", "Las seis dimensiones"),
+        blocks: [
+          { type: "dl", items: SCORE_DIMENSIONS.map((d) => ({ term: d.label[lang], text: d.measures[lang] })) },
+          {
+            type: "p",
+            text: t(
+              "Each dimension is scored 0–100 and the weighted total is the prompt's score. Alongside it, Promptea reports a confidence value (0–100) that says how much signal the engine found in the text. It is not a probability of the prompt being good.",
+              "Cada dimensión se puntúa de 0 a 100 y el total ponderado es el puntaje del prompt. Junto a él, Promptea informa un valor de confianza (0–100) que indica cuánta señal encontró el motor en el texto. No es la probabilidad de que el prompt sea bueno.",
+            ),
+          },
+        ],
+      },
+      {
+        id: "llm-layer",
+        heading: t("Where an LLM is used (and where it is not)", "Dónde se usa un LLM (y dónde no)"),
+        blocks: [
+          {
+            type: "ul",
+            items: [
+              t("The score, findings and recommendations are never produced by an LLM.", "El puntaje, los hallazgos y las recomendaciones nunca los produce un LLM."),
+              t("Optional refinement: when a provider is configured, an LLM can rewrite the optimized prompt following a strategy chosen by the engine. Providers are tried in order (by default Groq, then Anthropic’s Claude as failover). The rewrite must pass a quality gate; if it does not, or no provider is available, the deterministic prompt is returned.", "Refinado opcional: cuando hay un proveedor configurado, un LLM puede reescribir el prompt optimizado siguiendo una estrategia elegida por el motor. Los proveedores se prueban en orden (por defecto Groq y, como respaldo, Claude de Anthropic). La reescritura debe pasar un control de calidad; si no lo pasa, o no hay proveedor disponible, se devuelve el prompt determinístico."),
+              t("In that step your prompt is treated as data, not as instructions; text that tries to override the instructions is removed before the rewrite and a rewrite that repeats it is rejected.", "En ese paso tu prompt se trata como dato, no como instrucciones; el texto que intenta anular las instrucciones se elimina antes de la reescritura y una reescritura que lo repite se rechaza."),
+              t("Optional second opinion: an LLM judge can be enabled for low-confidence cases. It can only shift a separately shown blended value by at most ±10 points; the engine’s score itself is never modified.", "Segunda opinión opcional: se puede activar un juez LLM para casos de baja confianza. Solo puede mover un valor combinado que se muestra aparte, como máximo ±10 puntos; el puntaje del motor nunca se modifica."),
+              t("Voice dictation, when you use it, sends audio to a transcription provider only to turn it into text; the audio is not stored.", "El dictado por voz, cuando lo usás, envía el audio a un proveedor de transcripción solo para convertirlo en texto; el audio no se guarda."),
+            ],
+          },
+        ],
+      },
+      {
+        id: "best-ai",
+        heading: t("How “Find the best AI” decides", "Cómo decide “Elegir la mejor IA”"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              "The matcher is fully deterministic and uses no LLM. It extracts weighted signals from the prompt across 15 task categories (chat, coding, coding agent, research, long context, multimodal, data extraction, creative writing, marketing, translation, summarization, tutoring, image prompts, complex reasoning, fast/lightweight), then scores each candidate model by how well its verified capabilities fit those categories.",
+              "El matcher es completamente determinístico y no usa LLM. Extrae señales ponderadas del prompt en 15 categorías de tarea (chat, código, agente de código, investigación, contexto largo, multimodal, extracción de datos, escritura creativa, marketing, traducción, resumen, tutoría, prompts de imagen, razonamiento complejo, rápido/liviano) y puntúa a cada modelo candidato según cuánto encajan sus capacidades verificadas con esas categorías.",
+            ),
+          },
+          {
+            type: "ul",
+            items: [
+              t("Hard capability gates: a model without image input cannot win a multimodal task, one without native search is capped for research, one without structured output is capped for data extraction.", "Compuertas de capacidad: un modelo sin entrada de imagen no puede ganar una tarea multimodal, uno sin búsqueda nativa queda limitado en investigación, uno sin salida estructurada queda limitado en extracción de datos."),
+              t("Only current models can be recommended; retired models never are.", "Solo se pueden recomendar modelos vigentes; los retirados nunca."),
+              t("Confidence is low, medium or high, and a near-tie says so and names the deciding factor instead of faking certainty.", "La confianza es baja, media o alta, y un casi-empate lo dice y nombra el factor decisivo en lugar de aparentar certeza."),
+              t("Tools such as Claude Code or Codex are treated as environments, not models.", "Herramientas como Claude Code o Codex se tratan como entornos, no como modelos."),
+            ],
+          },
+        ],
+      },
+      {
+        id: "registry",
+        heading: t("The model registry", "El registro de modelos"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              `Promptea’s registry lists ${models.length} current models across ${TARGETS.length} AI families. Model IDs, context windows and capabilities are taken only from each provider’s official documentation; every entry stores the source URL and the date it was verified (latest: ${formatDay(modelsVerifiedAt(), lang)}). Superseded models stay in the registry as legacy, with a pointer to their replacement, so old links keep working but they are no longer offered or recommended.`,
+              `El registro de Promptea lista ${models.length} modelos vigentes en ${TARGETS.length} familias de IA. Los IDs de modelo, ventanas de contexto y capacidades se toman solo de la documentación oficial de cada proveedor; cada entrada guarda la URL de la fuente y la fecha de verificación (última: ${formatDay(modelsVerifiedAt(), lang)}). Los modelos reemplazados quedan en el registro como legados, con un puntero a su reemplazo, para que los enlaces viejos sigan funcionando, pero ya no se ofrecen ni se recomiendan.`,
+            ),
+          },
+          { type: "links", items: [{ href: `/${lang}/models`, label: t("Models and their capabilities", "Modelos y sus capacidades") }] },
+        ],
+      },
+      {
+        id: "ai-daily",
+        heading: t("AI Daily: editorial and sourcing policy", "IA al Día: política editorial y de fuentes"),
+        blocks: [
+          {
+            type: "ul",
+            items: [
+              t("One main story each morning, plus a weekly recap and a look at the week ahead. Weekly editions say which dates they cover.", "Una nota principal cada mañana, más un repaso semanal y un vistazo a la semana que viene. Las ediciones semanales indican qué fechas cubren."),
+              t("Freshness: a daily story must be about an event of the same editorial day (Buenos Aires time). A story about an earlier event can only be published with a disclosed reason, shown on the article.", "Frescura: una nota diaria debe tratar un hecho del mismo día editorial (hora de Buenos Aires). Una nota sobre un hecho anterior solo puede publicarse con un motivo declarado, visible en el artículo."),
+              t("Sources: every article lists its sources with publisher, type and the date each was accessed. A published article needs at least one primary source (an official announcement, documentation, a model card, a paper). It also needs a second independent source, or an explicit justification shown to readers as a “single-source story” notice.", "Fuentes: cada artículo lista sus fuentes con editor, tipo y fecha de acceso. Un artículo publicado necesita al menos una fuente primaria (un anuncio oficial, documentación, una model card, un paper). Además necesita una segunda fuente independiente o una justificación explícita, que se muestra al lector como aviso de “nota de una sola fuente”."),
+              t("Method disclosure: stories are researched with AI assistance and verified against primary sources before publishing. They are signed “Promptea Editorial”.", "Transparencia de método: las notas se investigan con asistencia de IA y se verifican contra fuentes primarias antes de publicarse. Se firman “Promptea Editorial”."),
+              t("Safety of the format: article bodies are plain typed blocks (paragraphs, headings, lists, quotes) and source links must be https. There is no raw HTML.", "Seguridad del formato: los cuerpos de los artículos son bloques tipados simples (párrafos, títulos, listas, citas) y los enlaces a fuentes deben ser https. No hay HTML crudo."),
+              t("Corrections keep the article’s URL and add a visible correction notice.", "Las correcciones conservan la URL del artículo y agregan un aviso de corrección visible."),
+              t("Images: Promptea generates its own cover illustration; it does not hotlink third-party imagery.", "Imágenes: Promptea genera su propia ilustración de portada; no enlaza imágenes de terceros."),
+            ],
+          },
+          { type: "links", items: [{ href: `/${lang}/blog`, label: "AI Daily" }] },
+        ],
+      },
+      {
+        id: "benchmarks",
+        heading: t("Benchmarks: where the numbers come from", "Benchmarks: de dónde salen los números"),
+        blocks: [
+          {
+            type: "ul",
+            items: [
+              t("Source: OpenRouter’s benchmarks API, which republishes results from Artificial Analysis, Design Arena and OpenRouter’s own evaluations. Promptea reads it on the server and shows the source and the “as of” date next to every ranking.", "Fuente: la API de benchmarks de OpenRouter, que republica resultados de Artificial Analysis, Design Arena y evaluaciones propias de OpenRouter. Promptea la lee en el servidor y muestra la fuente y la fecha de actualización junto a cada ranking."),
+              t("One benchmark, one ranking. Scores from different benchmarks use different metrics (indices, accuracy, F1, Elo) and are never added, averaged or compared with each other.", "Un benchmark, un ranking. Los puntajes de distintos benchmarks usan métricas diferentes (índices, precisión, F1, Elo) y nunca se suman, promedian ni comparan entre sí."),
+              t("A missing score means “not measured”: the model is left out of that ranking, never counted as zero. A missing price is shown as “—”, never as free.", "Un puntaje ausente significa “sin medición”: el modelo queda fuera de ese ranking, nunca se cuenta como cero. Un precio ausente se muestra como “—”, nunca como gratis."),
+              t("Ranks are by score, best first; ties share a rank. Prices are list prices per million tokens as reported by the source.", "Los puestos se ordenan por puntaje, de mejor a peor; los empates comparten puesto. Los precios son de lista por millón de tokens, según informa la fuente."),
+              t(`A “frontier model” is one placed in the top ${FRONTIER_TOP_N} of at least one general-capability benchmark in the current snapshot. The list changes when the data changes.`, `Un “modelo de frontera” es uno ubicado entre los ${FRONTIER_TOP_N} primeros de al menos un benchmark de capacidad general del snapshot vigente. La lista cambia cuando cambian los datos.`),
+              t("Rows that fail validation are dropped and counted. If the source is unreachable, the last valid snapshot is shown with its age, or an empty state; nothing is invented.", "Las filas que no pasan la validación se descartan y se cuentan. Si la fuente no responde, se muestra el último snapshot válido con su antigüedad, o un estado vacío; nada se inventa."),
+              t("Limits: benchmarks measure specific tests, often composite indices that change between versions. They do not predict how a model will do on your task.", "Límites: los benchmarks miden pruebas específicas, a menudo índices compuestos que cambian entre versiones. No predicen cómo le irá a un modelo en tu tarea."),
+            ],
+          },
+          { type: "links", items: [{ href: `/${lang}/benchmarks`, label: "Benchmarks" }] },
+        ],
+      },
+      {
+        id: "limits",
+        heading: t("What Promptea does not do", "Qué no hace Promptea"),
+        blocks: [
+          {
+            type: "ul",
+            items: [
+              t("It does not run your prompt on the target model, so it cannot tell how good that model’s answer will be.", "No ejecuta tu prompt en el modelo destino, así que no puede saber qué tan buena será su respuesta."),
+              t("The score is a measure of specification quality, not a proven predictor of output quality. Its rules are heuristics, calibrated against a labeled set of example prompts for each purpose, in both languages.", "El puntaje mide la calidad de la especificación, no es un predictor probado de la calidad del resultado. Sus reglas son heurísticas, calibradas contra un conjunto de prompts de ejemplo etiquetados para cada propósito, en ambos idiomas."),
+              t("The quality of the optional LLM rewrite is not part of the score and depends on the provider.", "La calidad de la reescritura opcional con LLM no forma parte del puntaje y depende del proveedor."),
+              t("It does not give financial, legal or medical advice; guides on those topics are about how to write prompts, not about the subject.", "No da asesoramiento financiero, legal ni médico; las guías sobre esos temas tratan de cómo escribir prompts, no del tema en sí."),
+            ],
+          },
+        ],
+      },
+      {
+        id: "privacy",
+        heading: t("Privacy in short", "Privacidad en breve"),
+        blocks: [
+          {
+            type: "ul",
+            items: [
+              t("Telemetry stores a pseudonymous session ID and analysis metadata (score, confidence, target, language, task type, finding IDs), not the prompt text.", "La telemetría guarda un ID de sesión seudónimo y metadatos del análisis (puntaje, confianza, destino, idioma, tipo de tarea, IDs de hallazgos), no el texto del prompt."),
+              t("Your prompt library is stored in your browser, on your device.", "Tu biblioteca de prompts se guarda en tu navegador, en tu dispositivo."),
+              t("Share cards encode only numbers and enum values in the URL; the prompt text is never part of them.", "Las tarjetas para compartir codifican solo números y valores de una lista cerrada en la URL; el texto del prompt nunca forma parte de ellas."),
+              t("The full policy is on the privacy page.", "La política completa está en la página de privacidad."),
+            ],
+          },
+          { type: "links", items: [{ href: `/${lang}/privacy`, label: t("Privacy policy", "Política de privacidad") }] },
+        ],
+      },
+      {
+        id: "versioning",
+        heading: t("Versioning and changes", "Versionado y cambios"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              `The analysis engine is versioned (currently ${ENGINE.version}). A change to a finding ID or a contract rule is a major version; new heuristics are minor; internal fixes are patches. Every release, including changes to scoring, is listed in the public changelog.`,
+              `El motor de análisis está versionado (hoy ${ENGINE.version}). Un cambio en el ID de un hallazgo o en una regla del contrato es una versión mayor; las heurísticas nuevas son menores; los arreglos internos son parches. Cada versión, incluidos los cambios en el puntaje, figura en el changelog público.`,
+            ),
+          },
+          { type: "links", items: [{ href: `/${lang}/changelog`, label: "Changelog" }] },
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: t("Is the Promptea score the same every time?", "¿El puntaje de Promptea es siempre el mismo?"),
+        a: t(
+          "Yes. The score comes from deterministic rules applied to the text of the prompt, the chosen purpose and the target, so the same input always produces the same score and breakdown.",
+          "Sí. El puntaje sale de reglas determinísticas aplicadas al texto del prompt, el propósito elegido y el destino, así que la misma entrada produce siempre el mismo puntaje y desglose.",
+        ),
+      },
+      {
+        q: t("Does Promptea use AI to score prompts?", "¿Promptea usa IA para puntuar prompts?"),
+        a: t(
+          "No. An optional LLM step may rewrite the optimized prompt, and an optional judge can offer a bounded second opinion, but neither changes the engine’s score.",
+          "No. Un paso opcional con LLM puede reescribir el prompt optimizado y un juez opcional puede dar una segunda opinión acotada, pero ninguno cambia el puntaje del motor.",
+        ),
+      },
+      {
+        q: t("How are the benchmark rankings built?", "¿Cómo se arman los rankings de benchmarks?"),
+        a: t(
+          "Each benchmark is its own ranking with its own metric, read from OpenRouter’s benchmarks API with the source and “as of” date shown. Promptea never merges different benchmarks into a single score.",
+          "Cada benchmark es su propio ranking con su propia métrica, leído de la API de benchmarks de OpenRouter, con la fuente y la fecha de actualización a la vista. Promptea nunca fusiona benchmarks distintos en un único puntaje.",
+        ),
+      },
+      {
+        q: t("What sources does AI Daily require?", "¿Qué fuentes exige IA al Día?"),
+        a: t(
+          "At least one primary source (official announcement, documentation, model card or paper) and either a second independent source or a stated justification that readers see as a single-source notice.",
+          "Al menos una fuente primaria (anuncio oficial, documentación, model card o paper) y, o una segunda fuente independiente, o una justificación declarada que los lectores ven como aviso de nota de una sola fuente.",
+        ),
+      },
+    ],
+    updated: CONTENT_UPDATED.methodology,
+  };
+}
+
+/** Kept in one place so the registry, the md router and the pages agree on ids. */
+export const SITE_PAGE_IDS = ["about", "methodology"] as const;
+export type SitePageId = (typeof SITE_PAGE_IDS)[number];
+
+export function sitePageDoc(id: SitePageId, lang: Locale): PageDoc {
+  return id === "about" ? aboutDoc(lang) : methodologyDoc(lang);
+}

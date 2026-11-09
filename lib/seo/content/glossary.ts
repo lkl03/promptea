@@ -3,6 +3,8 @@ import type { Purpose, TargetModel } from "../prefill";
 
 export type GlossaryTerm = {
   slug: string;
+  /** YYYY-MM-DD of the last content edit; falls back to CONTENT_UPDATED.glossary (lib/seo/dates.ts). */
+  updated?: string;
   title: Record<Locale, string>;
   description: Record<Locale, string>;
   body: Record<Locale, string[]>;
