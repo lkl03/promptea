@@ -6,6 +6,19 @@ All notable changes to Promptea are documented here.
 
 ## v1.8.0 (unreleased)
 
+### SEO and GEO (partial: see PR notes for what is pending)
+
+#### Added
+- **robots.txt** with one explicit rule per AI crawler (policy constants in `lib/seo/crawlers.ts`, default: allow all).
+- **/llms.txt, /llms-full.txt** (+ `/{es,en}/llms*.txt`) and **markdown twins** (`<page URL>.md`) for guides, glossary, models, landing, about, methodology, benchmarks and AI Daily articles.
+- **/{lang}/about** and **/{lang}/methodology** pages, and a crawlable answer-first block (summary, scoring, how-to, supported AIs, FAQ) on the home.
+- Connected **JSON-LD graph** with stable @ids (Organization, WebSite, SoftwareApplication, WebPage, FAQPage, HowTo, DefinedTerm, Article, NewsArticle, Dataset, BreadcrumbList).
+- `lib/seo/metadata.ts`: canonical, hreflang with `x-default`, OG/Twitter on every page.
+
+#### Changed
+- sitemap `lastModified` uses real content dates instead of `now`; includes new routes and alternates.
+- The layout no longer sets a canonical (pages without their own inherited the home page's).
+
 ### Prompt engine (engine 2.3.0)
 
 **Audit + fixes of how every prompt type is analyzed and optimized, a before → after score, a calibrated dataset for all purposes, provider failover for the refiner (with an optional Claude model), and an optional LLM second opinion.** Full write-up with real runs: `docs/engine-audit.md`.
