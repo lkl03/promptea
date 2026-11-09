@@ -52,10 +52,8 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
     if (kind === "about") return { htmlPath, body: docMarkdown(aboutDoc(lang), lang, url) };
     if (kind === "methodology") return { htmlPath, body: docMarkdown(methodologyDoc(lang), lang, url) };
     if (kind === "benchmarks") {
-      const snapshot = await loadBenchmarksSnapshot();
-      return snapshot && snapshot.tables.length > 0
-        ? { htmlPath, body: benchmarksMarkdown(snapshot, lang, url, CONTENT_UPDATED.benchmarks) }
-        : null;
+      // Always exists (llms.txt and the sitemap link to it); without data it says so.
+      return { htmlPath, body: benchmarksMarkdown(await loadBenchmarksSnapshot(), lang, url, CONTENT_UPDATED.benchmarks) };
     }
     return null;
   }

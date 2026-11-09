@@ -138,8 +138,10 @@ describe("markdown twin route", () => {
     }
   });
 
-  it("benchmarks twin exists only when a snapshot does", async () => {
-    expect((await mdGet(req, mdCtx("en", ["benchmarks"]))).status).toBe(404);
+  it("benchmarks twin always exists (llms.txt links it): honest note without data, rankings with it", async () => {
+    const none = await mdGet(req, mdCtx("en", ["benchmarks"]));
+    expect(none.status).toBe(200);
+    expect(await none.text()).toMatch(/not available right now/);
     db.snapshot.mockResolvedValue(makeSnapshot());
     const res = await mdGet(req, mdCtx("en", ["benchmarks"]));
     expect(res.status).toBe(200);
@@ -165,7 +167,7 @@ describe("markdown twin route", () => {
     for (const m of modelPages) expect(paths).toContainEqual(["models", m.slug]);
     for (const l of landings) expect(paths).toContainEqual(["landing", l.slug]);
     for (const lang of ["es", "en"] as const) {
-      for (const p of paths.filter((x) => x[0] !== "benchmarks")) {
+      for (const p of paths) {
         const r = await resolveMarkdown(lang, p);
         expect(r, `${lang}/${p.join("/")}`).not.toBeNull();
         expect(r!.htmlPath).toBe(`/${[lang, ...p].join("/")}`);

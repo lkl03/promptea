@@ -274,11 +274,7 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
 
   // Benchmarks
   out.push(sectionTitle(t("Benchmarks", "Benchmarks")));
-  if (i.benchmarks && i.benchmarks.tables.length > 0) {
-    out.push(demote(benchmarksMarkdown(i.benchmarks, lang, absUrl(`/${lang}/benchmarks`), CONTENT_UPDATED.benchmarks)));
-  } else {
-    out.push(...benchmarkSummary(null, lang), "");
-  }
+  out.push(demote(benchmarksMarkdown(i.benchmarks, lang, absUrl(`/${lang}/benchmarks`), CONTENT_UPDATED.benchmarks)));
 
   // AI Daily
   const recent = [...i.articles].sort((a, b) => (articleUpdated(b) > articleUpdated(a) ? 1 : -1)).slice(0, LLMS_FULL_MAX_ARTICLES);

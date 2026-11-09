@@ -253,16 +253,34 @@ export function benchmarkSections(snapshot: BenchmarksSnapshot, lang: Locale, n:
   return out;
 }
 
-export function benchmarksMarkdown(snapshot: BenchmarksSnapshot, lang: Locale, url: string, fallbackUpdated: string): string {
+/**
+ * The benchmarks twin. Without a snapshot (no upstream key, an outage) it still
+ * exists — llms.txt and the sitemap link to it — and says so plainly, exactly
+ * like the page's own empty state, instead of 404ing or inventing rankings.
+ */
+export function benchmarksMarkdown(snapshot: BenchmarksSnapshot | null, lang: Locale, url: string, fallbackUpdated: string): string {
   const t = tr(lang);
+  const description = t(
+    "Rankings of AI models by benchmark, with the source, date and metric of each. Each benchmark is its own ranking: scores from different benchmarks are never combined.",
+    "Rankings de modelos de IA por benchmark, con la fuente, fecha y métrica de cada uno. Cada benchmark es su propio ranking: los puntajes de benchmarks distintos nunca se combinan.",
+  );
+  if (!snapshot || snapshot.tables.length === 0) {
+    return [
+      header({ title: t("AI model benchmarks", "Benchmarks de modelos de IA"), description, url, lang, updated: fallbackUpdated }),
+      t(
+        "The rankings are not available right now. Promptea prefers showing nothing to showing invented or silently outdated rankings; the live page shows them, with their source and date, as soon as the data source answers.",
+        "Los rankings no están disponibles ahora. Promptea prefiere no mostrar nada antes que mostrar rankings inventados o desactualizados sin aviso; la página en vivo los muestra, con su fuente y fecha, apenas la fuente de datos responda.",
+      ),
+      "",
+      `[${t("Methodology", "Metodología")}](${absUrl(`/${lang}/methodology`)})`,
+      "",
+    ].join("\n");
+  }
   const asOf = snapshot.asOf ?? snapshot.fetchedAt;
   const out = [
     header({
       title: t("AI model benchmarks", "Benchmarks de modelos de IA"),
-      description: t(
-        "Rankings of AI models by benchmark, with the source, date and metric of each. Each benchmark is its own ranking: scores from different benchmarks are never combined.",
-        "Rankings de modelos de IA por benchmark, con la fuente, fecha y métrica de cada uno. Cada benchmark es su propio ranking: los puntajes de benchmarks distintos nunca se combinan.",
-      ),
+      description,
       url,
       lang,
       updated: asOf || fallbackUpdated,
