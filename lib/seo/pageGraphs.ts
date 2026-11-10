@@ -31,7 +31,11 @@ function faqItems(faq: Array<{ q: string; a: string }>) {
   return faq.map((f) => ({ question: f.q, answer: f.a }));
 }
 
-/** The home page: WebPage about the SoftwareApplication, FAQ and HowTo. */
+/**
+ * The home page: a WebPage about the SoftwareApplication. v1.8.1: the HowTo and
+ * the FAQPage moved with their visible text to /how-it-works (JSON-LD must
+ * describe what the page shows, and the home no longer prints that text).
+ */
 export function homeGraph(doc: PageDoc, lang: Locale): JsonLdNode {
   const url = absUrl(`/${lang}`);
   return graph(
@@ -44,13 +48,13 @@ export function homeGraph(doc: PageDoc, lang: Locale): JsonLdNode {
       about: ref(entityIds().software),
       markdownUrl: absUrl(markdownPathOf(`/${lang}`)),
     }),
-    doc.steps ? howToNode(url, lang, { name: doc.steps.name, description: doc.description, steps: doc.steps.steps }) : null,
-    faqNode(url, lang, faqItems(doc.faq)),
   );
 }
 
-/** /about and /methodology. */
-export function docPageGraph(i: { doc: PageDoc; lang: Locale; path: string; kind: "about" | "methodology"; label: string }): JsonLdNode {
+export type DocPageKind = "about" | "methodology" | "how-it-works";
+
+/** /about, /methodology and /how-it-works (the last one carries the HowTo of its steps). */
+export function docPageGraph(i: { doc: PageDoc; lang: Locale; path: string; kind: DocPageKind; label: string }): JsonLdNode {
   const url = absUrl(i.path);
   return graph(
     webPageNode({
@@ -68,6 +72,7 @@ export function docPageGraph(i: { doc: PageDoc; lang: Locale; path: string; kind
       ? articleNode({ lang: i.lang, url, headline: i.doc.h1, description: i.doc.description, dateModified: i.doc.updated, type: "TechArticle" })
       : null,
     breadcrumbNode(url, crumbs(i.lang, [{ name: i.label, path: i.path }])),
+    i.kind === "how-it-works" && i.doc.steps ? howToNode(url, i.lang, { name: i.doc.steps.name, description: i.doc.description, steps: i.doc.steps.steps }) : null,
     faqNode(url, i.lang, faqItems(i.doc.faq)),
   );
 }

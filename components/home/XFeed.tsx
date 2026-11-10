@@ -3,6 +3,8 @@
 // components/home/XFeed.tsx
 //
 // v1.8.0 — the official X timeline embed, behind a facade.
+// v1.8.1 — it is now a compact card for a side column (home, AI Daily): sticky
+// on desktop next to the main content, stacked after it on phones.
 //
 // Third-party scripts are the usual cause of slow first renders, layout shift
 // and privacy surprises, so nothing from X is requested until the visitor asks
@@ -16,21 +18,34 @@
 //      timeline is created into the reserved box, themed light/dark from the
 //      active Promptea theme.
 //   3. If the script is blocked, errors, or nothing appears within a timeout,
-//      the box shows a graceful fallback: the profile link + "Follow us".
+//      the box shows a graceful fallback: the profile link.
 //
-// The handle comes from NEXT_PUBLIC_X_HANDLE / NEXT_PUBLIC_X_URL (lib/social.ts);
-// the page does not render this section without one.
+// ── Changing what the card shows (no change to this file's structure) ────────
+// The card renders whatever `source` it is given (lib/social.ts → getXFeedSource()):
+//   - another account:  set NEXT_PUBLIC_X_HANDLE (with or without "@");
+//   - a curated X list: set NEXT_PUBLIC_X_LIST_ID to the list's numeric id
+//     (the handle is still used for the "Follow" link);
+//   - no handle at all: pages do not render the card.
+// No tweet is ever written into the page by us: the content is X's own embed,
+// loaded on request. There is nothing to "fill in" here by hand.
 
 import { useEffect, useRef, useState } from "react";
+import type { XFeedSource } from "@/lib/social";
 
 type Dict = { title: string; subtitle: string; load: string; loading: string; privacyNote: string; fallback: string; open: string; follow: string };
 
 /** Fixed height (px) of the box, before and after loading. */
-export const FEED_HEIGHT = 520;
+export const FEED_HEIGHT = 400;
 const LOAD_TIMEOUT_MS = 9000;
 const WIDGETS_SRC = "https://platform.twitter.com/widgets.js";
 
-type Twttr = { widgets?: { createTimeline: (src: { sourceType: "profile"; screenName: string }, el: HTMLElement, opts: Record<string, unknown>) => Promise<HTMLElement | undefined> } };
+type TimelineSource = { sourceType: "profile"; screenName: string } | { sourceType: "list"; id: string };
+type Twttr = { widgets?: { createTimeline: (src: TimelineSource, el: HTMLElement, opts: Record<string, unknown>) => Promise<HTMLElement | undefined> } };
+
+/** What widgets.js is asked to render for a given source. */
+export function timelineSource(source: XFeedSource): TimelineSource {
+  return source.kind === "list" ? { sourceType: "list", id: source.listId } : { sourceType: "profile", screenName: source.handle };
+}
 
 function loadWidgets(): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -67,10 +82,11 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-export default function XFeed({ handle, profileUrl, dict }: { handle: string; profileUrl: string; dict: Dict }) {
+export default function XFeed({ source, profileUrl, dict }: { source: XFeedSource; profileUrl: string; dict: Dict }) {
   const [state, setState] = useState<State>("idle");
   const hostRef = useRef<HTMLDivElement | null>(null);
   const timer = useRef<number | null>(null);
+  const handle = source.handle;
 
   useEffect(() => {
     return () => {
@@ -87,7 +103,7 @@ export default function XFeed({ handle, profileUrl, dict }: { handle: string; pr
       const twttr = (window as unknown as { twttr?: Twttr }).twttr;
       if (!host || !twttr?.widgets) throw new Error("unavailable");
       host.innerHTML = "";
-      const el = await twttr.widgets.createTimeline({ sourceType: "profile", screenName: handle }, host, {
+      const el = await twttr.widgets.createTimeline(timelineSource(source), host, {
         theme: embedTheme(),
         height: FEED_HEIGHT - 2,
         dnt: true,
@@ -103,38 +119,39 @@ export default function XFeed({ handle, profileUrl, dict }: { handle: string; pr
   }
 
   return (
-    <section aria-labelledby="xfeed-title" className="surface p-5 sm:p-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h2 id="xfeed-title" className="flex items-center gap-2 font-title text-xl font-semibold sm:text-2xl">
-            <XIcon className="h-5 w-5" />
+    <section aria-labelledby="xfeed-title" className="surface p-4 sm:p-5">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h2 id="xfeed-title" className="flex items-center gap-2 font-title text-lg font-semibold">
+            <XIcon className="h-4 w-4 shrink-0" />
             {dict.title}
           </h2>
-          <p className="mt-1 text-sm text-ink-muted">{dict.subtitle}</p>
+          <p className="mt-0.5 text-sm text-ink-muted">{dict.subtitle}</p>
         </div>
-        <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost h-9 px-4">
-          {dict.follow}
+        <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost h-8 shrink-0 px-3 text-xs">
+          @{handle}
+          <span className="sr-only"> — {dict.follow}</span>
         </a>
       </div>
 
       {/* The box has the same height in every state: loading it shifts nothing. */}
-      <div className="relative mt-4 overflow-hidden rounded-xl border border-line" style={{ height: FEED_HEIGHT }}>
+      <div className="relative mt-3 overflow-hidden rounded-xl border border-line" style={{ height: FEED_HEIGHT }}>
         {/* The embed renders into this host; it is mounted from the first render so React never owns its children. */}
         <div ref={hostRef} className="absolute inset-0 overflow-y-auto" hidden={state !== "ready"} />
 
         {state === "idle" || state === "loading" ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center">
-            <p className="max-w-md text-sm leading-relaxed text-ink-muted">{dict.privacyNote}</p>
-            <button type="button" onClick={load} disabled={state === "loading"} aria-busy={state === "loading"} className="btn btn-primary h-10 px-5">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-5 text-center">
+            <p className="max-w-xs text-xs leading-relaxed text-ink-muted">{dict.privacyNote}</p>
+            <button type="button" onClick={load} disabled={state === "loading"} aria-busy={state === "loading"} className="btn btn-primary h-10 px-4 text-sm">
               {state === "loading" ? dict.loading : dict.load.replace("{handle}", handle)}
             </button>
           </div>
         ) : null}
 
         {state === "failed" ? (
-          <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center">
-            <p className="max-w-md text-sm leading-relaxed text-ink-muted">{dict.fallback}</p>
-            <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary h-10 px-5">
+          <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-5 text-center">
+            <p className="max-w-xs text-sm leading-relaxed text-ink-muted">{dict.fallback}</p>
+            <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary h-10 px-4 text-sm">
               {dict.open.replace("{handle}", handle)}
             </a>
           </div>

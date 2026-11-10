@@ -12,7 +12,7 @@ import {
   landingMarkdown,
   modelMarkdown,
 } from "@/lib/seo/markdown";
-import { aboutDoc, homeAboutDoc, methodologyDoc } from "@/lib/seo/content/sitePages";
+import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "@/lib/seo/content/sitePages";
 import { guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
@@ -197,6 +197,7 @@ describe("markdown twins", () => {
         docMarkdown(aboutDoc(lang), lang, url),
         docMarkdown(methodologyDoc(lang), lang, url),
         docMarkdown(homeAboutDoc(lang), lang, url, { title: "Promptea" }),
+        docMarkdown(howItWorksDoc(lang), lang, url),
       ];
       for (const md of docs) {
         expect(md.startsWith("# ")).toBe(true);
@@ -216,9 +217,17 @@ describe("markdown twins", () => {
     expect(md).toContain(g.faq[0].a.en);
   });
 
-  it("the home twin renders the how-to steps with their names", () => {
-    const md = docMarkdown(homeAboutDoc("en"), "en", absUrl("/en"), { title: "Promptea" });
+  it("the how-it-works twin renders the how-to steps with their names and the FAQ", () => {
+    const doc = howItWorksDoc("en");
+    const md = docMarkdown(doc, "en", absUrl("/en/how-it-works"));
     expect(md).toMatch(/1\. \*\*Paste your prompt\.\*\*/);
+    expect(md).toContain(doc.faq[0].q);
+  });
+
+  it("the home twin is short and points at how-it-works (v1.8.1)", () => {
+    const md = docMarkdown(homeAboutDoc("en"), "en", absUrl("/en"), { title: "Promptea" });
+    expect(md).toContain("/en/how-it-works");
+    expect(md).not.toMatch(/Frequently asked questions/);
   });
 
   it("article twin: summary, sources with the primary marked, date and correction", () => {

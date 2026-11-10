@@ -26,7 +26,9 @@ import type { TargetAI } from "@/lib/domain";
 export type IsoDay = string;
 
 export const CONTENT_UPDATED = {
-  home: "2026-11-08",
+  home: "2026-11-10",
+  /** /how-it-works (v1.8.1): the long product explanation that used to sit under the home page. */
+  howItWorks: "2026-11-10",
   about: "2026-11-08",
   methodology: "2026-11-08",
   analyzer: "2026-10-09",
@@ -37,9 +39,9 @@ export const CONTENT_UPDATED = {
   glossary: "2026-11-09",
   models: "2026-11-09",
   landings: "2026-11-09",
-  changelog: "2026-11-05",
+  changelog: "2026-11-10",
   privacy: "2026-11-08",
-  benchmarks: "2026-11-08",
+  benchmarks: "2026-11-10",
   /** Bumped when the AI Daily index / weekly archive layout changes, not per article. */
   blogIndex: "2026-11-08",
   weeklyArchive: "2026-11-08",

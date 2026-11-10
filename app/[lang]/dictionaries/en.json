@@ -322,16 +322,7 @@
     "marqueeLabel": "Last 72 h",
     "marqueePause": "Pause headlines",
     "marqueePlay": "Resume headlines",
-    "cardsAria": "Promptea tools",
     "cards": {
-      "analyze": {
-        "title": "Analyze a prompt",
-        "body": "Score your prompt, catch problems, and get an optimized version for each model."
-      },
-      "bestAi": {
-        "title": "Find the best AI",
-        "body": "Describe your task and we recommend which AI and model to use, and why."
-      },
       "daily": {
         "title": "AI Daily",
         "body": "One verified AI story a day, the weekly digest, and the archive."
@@ -341,32 +332,21 @@
         "body": "Frontier model rankings by category, with source, date and metric."
       }
     },
-    "secondaryAria": "More resources",
-    "secondary": {
-      "prompts": "Prompts",
-      "guides": "Guides",
-      "models": "Models",
-      "glossary": "Glossary",
-      "library": "Library"
-    },
-    "showcaseTitle": "A quick tour of Promptea",
-    "showcaseBody": "A real tour of the app: analyze a prompt, copy the optimized version, pick an AI, read the news, and explore benchmarks.",
-    "showcaseCaption": "Automated recording of the interface with a demo prompt.",
-    "showcasePending": "The demo video is being generated.",
-    "toolsTitle": "Tools",
     "promptBox": {
       "title": "Paste your prompt and analyze it",
       "label": "Your prompt",
       "placeholder": "Paste the prompt you want to improve here…",
       "submit": "Analyze prompt",
-      "hint": "Opens the analyzer with your prompt loaded. Free, no account.",
-      "tooLong": "Only the first {n} characters will be sent."
+      "hint": "Opens the analyzer with your prompt loaded.",
+      "tooLong": "Only the first {n} characters will be sent.",
+      "explain": "You get a 0–100 score across six criteria, what to fix, and a prompt optimized for the AI you pick. Free, no account, and your prompt text is not stored on our servers."
     },
     "latest": {
       "title": "Latest in AI Daily",
       "subtitle": "One verified story a day, with its sources.",
       "all": "See all stories",
-      "weekly": "Weekly digest"
+      "weekly": "Weekly digest",
+      "lead": "Top story"
     },
     "teaser": {
       "title": "Benchmarks at a glance",
@@ -388,11 +368,19 @@
       "title": "The week in AI, in your inbox",
       "body": "Every Monday, the AI stories that mattered. No spam: unsubscribe any time."
     },
-    "about": {
-      "title": "What Promptea is and how it works",
-      "aboutLink": "About Promptea",
-      "methodologyLink": "Methodology"
-    }
+    "actionsAria": "What you can do here",
+    "actions": {
+      "analyze": {
+        "title": "Analyze a prompt",
+        "body": "Score it, see what to fix and get an optimized version."
+      },
+      "bestAi": {
+        "title": "Find the best AI",
+        "body": "Describe your task and we tell you which model fits, and why."
+      }
+    },
+    "howItWorks": "How this works",
+    "sideAria": "Follow Promptea"
   },
   "analyzerPage": {
     "title": "Prompt analyzer",
@@ -511,5 +499,34 @@
       "colShare": "Share",
       "center": "models"
     }
+  },
+  "nav": {
+    "main": "Main navigation",
+    "home": "Promptea — home",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "analyzer": "Analyzer",
+    "bestAi": "Best AI",
+    "daily": "AI Daily",
+    "benchmarks": "Benchmarks",
+    "prompts": "Prompts",
+    "guides": "Guides",
+    "models": "Models",
+    "glossary": "Glossary",
+    "library": "Library"
+  },
+  "howItWorksPage": {
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "inShort": "In short:",
+    "ctaAnalyze": "Analyze a prompt",
+    "ctaBestAi": "Find the best AI",
+    "tourTitle": "A quick tour of Promptea",
+    "tourBody": "A real tour of the app: analyze a prompt, copy the optimized version, pick an AI, read the news, and explore benchmarks.",
+    "tourCaption": "Automated recording of the interface with a demo prompt.",
+    "tourPending": "The demo video is being generated.",
+    "moreAria": "Read more",
+    "methodology": "Read the full methodology",
+    "about": "About Promptea"
   }
 }

@@ -322,16 +322,7 @@
     "marqueeLabel": "Últimas 72 h",
     "marqueePause": "Pausar titulares",
     "marqueePlay": "Reanudar titulares",
-    "cardsAria": "Herramientas de Promptea",
     "cards": {
-      "analyze": {
-        "title": "Analizar prompt",
-        "body": "Puntuá tu prompt, detectá problemas y obtené una versión optimizada para cada modelo."
-      },
-      "bestAi": {
-        "title": "Elegir la mejor IA",
-        "body": "Describí tu tarea y te recomendamos qué IA y qué modelo usar, con el porqué."
-      },
       "daily": {
         "title": "IA al día",
         "body": "Una noticia de IA verificada por día, el resumen semanal y su archivo."
@@ -341,32 +332,21 @@
         "body": "Rankings de modelos de frontera por categoría, con fuente, fecha y métrica."
       }
     },
-    "secondaryAria": "Más recursos",
-    "secondary": {
-      "prompts": "Prompts",
-      "guides": "Guías",
-      "models": "Modelos",
-      "glossary": "Glosario",
-      "library": "Biblioteca"
-    },
-    "showcaseTitle": "Un recorrido por Promptea",
-    "showcaseBody": "Un recorrido real por la app: analizar un prompt, copiar la versión optimizada, elegir una IA, leer las noticias y explorar benchmarks.",
-    "showcaseCaption": "Grabación automatizada de la interfaz con un prompt de demostración.",
-    "showcasePending": "El video de demostración se está generando.",
-    "toolsTitle": "Herramientas",
     "promptBox": {
       "title": "Pegá tu prompt y analizalo",
       "label": "Tu prompt",
       "placeholder": "Pegá acá el prompt que querés mejorar…",
       "submit": "Analizar prompt",
-      "hint": "Se abre el analizador con tu prompt cargado. Gratis y sin cuenta.",
-      "tooLong": "Se enviarán los primeros {n} caracteres."
+      "hint": "Abre el analizador con tu prompt cargado.",
+      "tooLong": "Se enviarán los primeros {n} caracteres.",
+      "explain": "Recibís un puntaje de 0 a 100 en seis criterios, qué corregir y un prompt optimizado para la IA que elijas. Gratis, sin cuenta, y el texto de tu prompt no se guarda en nuestros servidores."
     },
     "latest": {
       "title": "Lo último en IA al día",
       "subtitle": "Una nota verificada por día, con sus fuentes.",
       "all": "Ver todas las notas",
-      "weekly": "Resumen semanal"
+      "weekly": "Resumen semanal",
+      "lead": "Nota principal"
     },
     "teaser": {
       "title": "Benchmarks de un vistazo",
@@ -388,11 +368,19 @@
       "title": "La semana en IA, en tu correo",
       "body": "Cada lunes, las historias de IA que importaron. Sin spam: te das de baja cuando quieras."
     },
-    "about": {
-      "title": "Qué es Promptea y cómo funciona",
-      "aboutLink": "Acerca de Promptea",
-      "methodologyLink": "Metodología"
-    }
+    "actionsAria": "Qué podés hacer acá",
+    "actions": {
+      "analyze": {
+        "title": "Analizar un prompt",
+        "body": "Puntualo, mirá qué corregir y llevate una versión optimizada."
+      },
+      "bestAi": {
+        "title": "Encontrar la mejor IA",
+        "body": "Contanos tu tarea y te decimos qué modelo conviene, y por qué."
+      }
+    },
+    "howItWorks": "Cómo funciona",
+    "sideAria": "Seguí a Promptea"
   },
   "analyzerPage": {
     "title": "Analizador de prompts",
@@ -511,5 +499,34 @@
       "colShare": "Participación",
       "center": "modelos"
     }
+  },
+  "nav": {
+    "main": "Navegación principal",
+    "home": "Promptea — inicio",
+    "menu": "Menú",
+    "closeMenu": "Cerrar menú",
+    "analyzer": "Analizador",
+    "bestAi": "Elegir IA",
+    "daily": "IA al Día",
+    "benchmarks": "Benchmarks",
+    "prompts": "Prompts",
+    "guides": "Guías",
+    "models": "Modelos",
+    "glossary": "Glosario",
+    "library": "Biblioteca"
+  },
+  "howItWorksPage": {
+    "breadcrumb": "Ruta de navegación",
+    "home": "Inicio",
+    "inShort": "En breve:",
+    "ctaAnalyze": "Analizar un prompt",
+    "ctaBestAi": "Encontrar la mejor IA",
+    "tourTitle": "Un recorrido por Promptea",
+    "tourBody": "Un recorrido real por la app: analizar un prompt, copiar la versión optimizada, elegir una IA, leer las noticias y explorar benchmarks.",
+    "tourCaption": "Grabación automatizada de la interfaz con un prompt de demostración.",
+    "tourPending": "El video de demostración se está generando.",
+    "moreAria": "Seguir leyendo",
+    "methodology": "Leer la metodología completa",
+    "about": "Acerca de Promptea"
   }
 }

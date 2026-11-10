@@ -204,10 +204,10 @@ export default async function RootLayout({
           <ToastProvider>
             <AnimatedBackground />
             <GlassEnhancer />
-            <TopBar lang={lang} />
+            <TopBar lang={lang} dict={dict.nav} />
             {children}
             <Footer lang={lang} appFeedbackDict={dict.appFeedback} />
-            {/* v1.8.0: the one controller of newsletter prompts (pill + AI Daily modal; coordinates the dock) */}
+            {/* The one controller of newsletter prompts (v1.8.1: first-visit card + pill; AI Daily modal; coordinates the dock) */}
             <NewsletterNudges lang={lang} dict={dict.newsletterNudge} formDict={dict.newsletter.bar} />
           </ToastProvider>
         </Providers>

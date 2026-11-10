@@ -44,6 +44,10 @@ const EXPECTED_CRAWLERS = [
 ];
 
 const LOCALES = ["es", "en"];
+/** Keep equal to LLMS_FULL_TOTAL_BYTES / 1024 in lib/seo/llms.ts (test-enforced). */
+const LLMS_FULL_MAX_KB = 400;
+/** <title> length above which a page fails (the brand suffix included). */
+const TITLE_MAX_LENGTH = 90;
 const SINGLE_META = [
   "description", "og:title", "og:description", "og:url", "og:type", "og:site_name", "og:locale", "og:image",
   "twitter:card", "twitter:title", "twitter:description", "twitter:image",
@@ -262,8 +266,9 @@ async function checkLlms(origin) {
       for (const l of links) linkSet.add(l);
     } else {
       const kb = Math.round(Buffer.byteLength(r.body) / 1024);
-      if (kb > 350) warn(`${path} is ${kb} KB`, "very large for a single context window");
-      else record(`${path} size is reasonable (${kb} KB)`, true);
+      // Ceiling and its criterion: LLMS_FULL_TOTAL_BYTES in lib/seo/llms.ts (≈100–110 k tokens,
+      // a single fetch into a 200 k-token context). Above it the file is rejected, not warned about.
+      record(`${path} is within the ${LLMS_FULL_MAX_KB} KB ceiling (${kb} KB)`, kb <= LLMS_FULL_MAX_KB, `${kb} KB`);
     }
   }
 
@@ -309,7 +314,7 @@ async function checkLlms(origin) {
 // pages: head tags, headings, JSON-LD
 // ---------------------------------------------------------------------------
 
-const KEY_PATHS = ["", "/about", "/methodology", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/weekly", "/analyzer", "/best-ai"];
+const KEY_PATHS = ["", "/how-it-works", "/about", "/methodology", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/weekly", "/analyzer", "/best-ai"];
 
 function pickKeyPages(urls, origin) {
   const picks = new Set();
@@ -335,7 +340,7 @@ function checkPage(loc, origin, res, sitemapEntry) {
 
   if (head.h1.length !== 1) problems.push(`${head.h1.length} <h1> (want exactly 1): ${head.h1.join(" | ").slice(0, 120)}`);
   if (head.titles.length !== 1) problems.push(`${head.titles.length} <title>`);
-  else if (head.titles[0].length < 10 || head.titles[0].length > 120) problems.push(`title length ${head.titles[0].length}`);
+  else if (head.titles[0].length < 10 || head.titles[0].length > TITLE_MAX_LENGTH) problems.push(`title length ${head.titles[0].length} (max ${TITLE_MAX_LENGTH})`);
   if (head.canonicals.length !== 1) problems.push(`${head.canonicals.length} canonical link(s)`);
   else if (head.canonicals[0] !== loc) problems.push(`canonical ${head.canonicals[0]} ≠ ${loc}`);
 
@@ -369,6 +374,15 @@ function checkPage(loc, origin, res, sitemapEntry) {
   const ld = validateLd(html, { url: loc });
   for (const e of ld.errors) problems.push(`JSON-LD: ${e}`);
   if (visibleText(html).split(" ").length < 60) problems.push("fewer than 60 words of server-rendered text");
+  // v1.8.1: the HowTo + FAQ moved with their text from the home page to /how-it-works.
+  const types = ld.types || [];
+  if (/^\/(es|en)\/how-it-works$/.test(path)) {
+    for (const t of ["HowTo", "FAQPage", "BreadcrumbList"]) if (!types.includes(t)) problems.push(`JSON-LD: /how-it-works must carry ${t}`);
+  }
+  if (/^\/(es|en)$/.test(path)) {
+    for (const t of ["HowTo", "FAQPage"]) if (types.includes(t)) problems.push(`JSON-LD: the home page no longer prints the ${t} text, so it must not claim it`);
+    if (!/href="\/(es|en)\/how-it-works"/.test(html)) problems.push("the home page does not link to /how-it-works");
+  }
   return { problems, head, types: ld.types };
 }
 

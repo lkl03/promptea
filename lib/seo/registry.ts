@@ -134,6 +134,20 @@ export const CORE_PAGES: readonly CorePage[] = [
     markdown: true,
   },
   {
+    id: "how-it-works",
+    slug: "how-it-works",
+    section: "about",
+    title: { en: "How Promptea works", es: "Cómo funciona Promptea" },
+    description: {
+      en: "What Promptea is, how a prompt is scored 0–100 on six criteria, how to use the analyzer, supported AIs and prompt types, and the FAQ.",
+      es: "Qué es Promptea, cómo se puntúa un prompt de 0 a 100 en seis criterios, cómo usar el analizador, IAs y tipos de prompt soportados, y las preguntas frecuentes.",
+    },
+    updated: CONTENT_UPDATED.howItWorks,
+    changeFrequency: "monthly",
+    priority: 0.7,
+    markdown: true,
+  },
+  {
     id: "about",
     slug: "about",
     section: "about",

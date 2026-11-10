@@ -55,10 +55,105 @@ function modelFamilyList(): string {
 }
 
 // ---------------------------------------------------------------------------
-// Home: the crawlable block under the hub
+// Home (v1.8.1: compact) and "How it works" (the long form that used to sit
+// under the home page)
 // ---------------------------------------------------------------------------
 
+/** One-paragraph answer to "what is Promptea?", shared by the home page and /how-it-works. */
+function prompteaTldr(lang: Locale): string {
+  const t = tr(lang);
+  return t(
+    `Promptea is a free web tool that reads your prompt, scores it from 0 to 100 on six criteria (${SCORE_DIMENSIONS.map((d) => d.label.en.toLowerCase()).join(", ")}), tells you what to fix and writes an improved version for the AI you pick: ${modelFamilyList()}. Works in English and Spanish, no account needed.`,
+    `Promptea es una herramienta web gratuita que lee tu prompt, le pone un puntaje de 0 a 100 en seis criterios (${SCORE_DIMENSIONS.map((d) => d.label.es.toLowerCase()).join(", ")}), te dice qué corregir y escribe una versión mejorada para la IA que elijas: ${modelFamilyList()}. Funciona en español e inglés y no pide cuenta.`,
+  );
+}
+
+/**
+ * The home page. v1.8.1: the page itself is short (logo, the two actions, the
+ * prompt box, the latest stories), so its document is short too — the summary
+ * and where to go. Its <title>, description and <h1> are unchanged. Everything
+ * that explains the product in depth is howItWorksDoc(), one click away.
+ */
 export function homeAboutDoc(lang: Locale): PageDoc {
+  const t = tr(lang);
+  return {
+    title: t(
+      "Promptea — Free prompt analyzer & optimizer for ChatGPT, Claude, Gemini",
+      "Promptea — Analizador de prompts gratis para ChatGPT, Claude, Gemini",
+    ),
+    absoluteTitle: true,
+    description: t(
+      "Score any prompt 0–100 on six criteria, see what to fix and get a rewrite tuned for GPT, Claude, Gemini, Grok, Kimi, DeepSeek or Perplexity. Free, no account.",
+      "Puntuá tu prompt de 0 a 100 en seis criterios, mirá qué corregir y obtené una versión mejorada para GPT, Claude, Gemini, Grok, Kimi, DeepSeek o Perplexity. Gratis, sin cuenta.",
+    ),
+    h1: t(
+      "Promptea — analyze, score and optimize your AI prompts",
+      "Promptea — analizá, puntuá y optimizá tus prompts de IA",
+    ),
+    tldr: prompteaTldr(lang),
+    sections: [
+      {
+        id: "start",
+        heading: t("What you can do on Promptea", "Qué podés hacer en Promptea"),
+        blocks: [
+          {
+            type: "dl",
+            items: [
+              {
+                term: t("Analyze a prompt", "Analizar un prompt"),
+                text: t(
+                  "Paste a prompt and get a 0–100 score across six criteria, what to fix and a version optimized for the AI you choose. Free, no account.",
+                  "Pegá un prompt y recibí un puntaje de 0 a 100 en seis criterios, qué corregir y una versión optimizada para la IA que elijas. Gratis, sin cuenta.",
+                ),
+              },
+              {
+                term: t("Find the best AI", "Encontrar la mejor IA"),
+                text: t(
+                  "Describe your task and get a ranked, explained recommendation of which AI and model fits it.",
+                  "Describí tu tarea y recibí una recomendación ordenada y explicada de qué IA y modelo conviene.",
+                ),
+              },
+              {
+                term: t("AI Daily", "IA al Día"),
+                text: t(
+                  "One verified AI story every morning, with its sources, plus a weekly digest.",
+                  "Una noticia de IA verificada cada mañana, con sus fuentes, y un resumen semanal.",
+                ),
+              },
+              {
+                term: t("Benchmarks", "Benchmarks"),
+                text: t(
+                  "Rankings of AI models by category, with the source, date and metric of each benchmark.",
+                  "Rankings de modelos de IA por categoría, con la fuente, la fecha y la métrica de cada benchmark.",
+                ),
+              },
+            ],
+          },
+          {
+            type: "links",
+            items: [
+              { href: `/${lang}/analyzer`, label: t("Prompt analyzer", "Analizador de prompts") },
+              { href: `/${lang}/best-ai`, label: t("Find the best AI", "Encontrar la mejor IA") },
+              { href: `/${lang}/blog`, label: t("AI Daily", "IA al Día") },
+              { href: `/${lang}/benchmarks`, label: t("Benchmarks", "Benchmarks") },
+              { href: `/${lang}/how-it-works`, label: t("How Promptea works", "Cómo funciona Promptea") },
+            ],
+          },
+        ],
+      },
+    ],
+    faq: [],
+    updated: CONTENT_UPDATED.home,
+  };
+}
+
+/**
+ * /{lang}/how-it-works — what Promptea is, how a prompt is scored, how to use
+ * it, which AIs and prompt types it supports, and the FAQ. Until v1.8.0 this
+ * was the long block at the bottom of the home page; the text is the same, and
+ * so are the HowTo and FAQPage JSON-LD built from it (lib/seo/pageGraphs.ts).
+ */
+export function howItWorksDoc(lang: Locale): PageDoc {
   const t = tr(lang);
   const purposes = purposeList(lang);
   const models = currentModels();
@@ -66,7 +161,7 @@ export function homeAboutDoc(lang: Locale): PageDoc {
   const howToSteps: DocStep[] = [
     {
       name: t("Paste your prompt", "Pegá tu prompt"),
-      text: t("Paste the prompt you want to improve in the box on this page or in the analyzer.", "Pegá el prompt que querés mejorar en el cuadro de esta página o en el analizador."),
+      text: t("Paste the prompt you want to improve in the box on the home page or in the analyzer.", "Pegá el prompt que querés mejorar en el cuadro de la página de inicio o en el analizador."),
     },
     {
       name: t("Choose purpose and AI", "Elegí propósito e IA"),
@@ -84,23 +179,13 @@ export function homeAboutDoc(lang: Locale): PageDoc {
   }).filter((x) => x.text);
 
   return {
-    title: t(
-      "Promptea — Free prompt analyzer & optimizer for ChatGPT, Claude, Gemini",
-      "Promptea — Analizador de prompts gratis para ChatGPT, Claude, Gemini",
-    ),
-    absoluteTitle: true,
+    title: t("How Promptea works: prompt scoring, AIs and FAQ", "Cómo funciona Promptea: puntaje, IAs y preguntas"),
     description: t(
-      "Score any prompt 0–100 on six criteria, see what to fix and get a rewrite tuned for GPT, Claude, Gemini, Grok, Kimi, DeepSeek or Perplexity. Free, no account.",
-      "Puntuá tu prompt de 0 a 100 en seis criterios, mirá qué corregir y obtené una versión mejorada para GPT, Claude, Gemini, Grok, Kimi, DeepSeek o Perplexity. Gratis, sin cuenta.",
+      "What Promptea is, how a prompt gets its 0–100 score on six criteria, how to use the analyzer, which AIs and prompt types it supports, and answers to common questions.",
+      "Qué es Promptea, cómo se calcula el puntaje de 0 a 100 en seis criterios, cómo usar el analizador, qué IAs y tipos de prompt soporta, y respuestas a las preguntas frecuentes.",
     ),
-    h1: t(
-      "Promptea — analyze, score and optimize your AI prompts",
-      "Promptea — analizá, puntuá y optimizá tus prompts de IA",
-    ),
-    tldr: t(
-      `Promptea is a free web tool that reads your prompt, scores it from 0 to 100 on six criteria (${SCORE_DIMENSIONS.map((d) => d.label.en.toLowerCase()).join(", ")}), tells you what to fix and writes an improved version for the AI you pick: ${modelFamilyList()}. Works in English and Spanish, no account needed.`,
-      `Promptea es una herramienta web gratuita que lee tu prompt, le pone un puntaje de 0 a 100 en seis criterios (${SCORE_DIMENSIONS.map((d) => d.label.es.toLowerCase()).join(", ")}), te dice qué corregir y escribe una versión mejorada para la IA que elijas: ${modelFamilyList()}. Funciona en español e inglés y no pide cuenta.`,
-    ),
+    h1: t("How Promptea works", "Cómo funciona Promptea"),
+    tldr: prompteaTldr(lang),
     sections: [
       {
         id: "what-is-promptea",
@@ -226,7 +311,7 @@ export function homeAboutDoc(lang: Locale): PageDoc {
         ),
       },
     ],
-    updated: CONTENT_UPDATED.home,
+    updated: CONTENT_UPDATED.howItWorks,
   };
 }
 
@@ -613,9 +698,11 @@ export function methodologyDoc(lang: Locale): PageDoc {
 }
 
 /** Kept in one place so the registry, the md router and the pages agree on ids. */
-export const SITE_PAGE_IDS = ["about", "methodology"] as const;
+export const SITE_PAGE_IDS = ["about", "methodology", "how-it-works"] as const;
 export type SitePageId = (typeof SITE_PAGE_IDS)[number];
 
 export function sitePageDoc(id: SitePageId, lang: Locale): PageDoc {
-  return id === "about" ? aboutDoc(lang) : methodologyDoc(lang);
+  if (id === "about") return aboutDoc(lang);
+  if (id === "how-it-works") return howItWorksDoc(lang);
+  return methodologyDoc(lang);
 }

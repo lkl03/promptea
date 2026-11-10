@@ -1301,6 +1301,46 @@ html {
   }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.8.1 — home: the two quiet action links under the tagline, and the side
+   column (X feed + newsletter).
+   ═══════════════════════════════════════════════════════════════════════════ */
+.home-action-title {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 160ms ease;
+}
+.home-action-arrow {
+  display: inline-block;
+  transition: transform 200ms var(--ease-out-strong);
+}
+@media (hover: hover) and (pointer: fine) {
+  .home-action:hover .home-action-title {
+    text-decoration-color: var(--accent);
+  }
+  .home-action:hover .home-action-arrow {
+    transform: translateX(3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-action-arrow {
+    transition: none;
+  }
+  .home-action:hover .home-action-arrow {
+    transform: none;
+  }
+}
+/* The side column sticks next to the main content only when it fits the
+   viewport whole: a sticky box taller than the screen would hide its own end. */
+@media (min-width: 1024px) and (min-height: 860px) {
+  .home-side {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
 /* v1.7.0 — mobile newsletter bar slides away for the footer / soft keyboard. */
 .newsletter-dock-bar {
   transition:
