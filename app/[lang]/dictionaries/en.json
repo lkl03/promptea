@@ -360,7 +360,7 @@
       "load": "Load the @{handle} feed",
       "loading": "Loading the feed…",
       "privacyNote": "The feed is shown by X, a third party: when loaded, X may receive data from your browser and set cookies. It is not loaded until you ask for it.",
-      "fallback": "We couldn't load the feed. It may be blocked by your browser or an extension.",
+      "fallback": "X did not show the feed here. X sometimes refuses embedded timelines, or your browser or an extension may be blocking it. The profile opens fine.",
       "open": "Open @{handle} on X",
       "follow": "Follow us on X"
     },
@@ -523,10 +523,36 @@
     "ctaBestAi": "Find the best AI",
     "tourTitle": "A quick tour of Promptea",
     "tourBody": "A real tour of the app: analyze a prompt, copy the optimized version, pick an AI, read the news, and explore benchmarks.",
-    "tourCaption": "Automated recording of the interface with a demo prompt.",
+    "tourCaption": "Automated recording of the interface with a demo prompt. Recorded on an earlier version: the home page looks different today, the steps are the same.",
     "tourPending": "The demo video is being generated.",
     "moreAria": "Read more",
     "methodology": "Read the full methodology",
     "about": "About Promptea"
+  },
+  "changelog": {
+    "v181": {
+      "released": "Released: 2026-11-10",
+      "items": [
+        "A new home page that explains itself at a glance: what Promptea does, the two things you can do (analyze a prompt, find the best AI) and the box to paste your prompt, which now says what you get back.",
+        "One menu for the whole site, in the same place on every page, with a compact version on phones.",
+        "New page “How Promptea works”: how a prompt is scored, which AIs are supported, the FAQ and the product tour.",
+        "Benchmarks: the ranking no longer overlaps on any screen, phones no longer scroll sideways, and a new chart shows which providers are in the top of each benchmark.",
+        "The prompt you paste on the home page no longer travels in the address bar on its way to the analyzer.",
+        "The newsletter card opens by itself only on your first visit, without blocking the page; after that it stays as a small pill.",
+        "The background moves a little more; if your system asks for reduced motion it stays still.",
+        "Fixes: the analyzer works with browser storage blocked, weekly editions show their real label, and the footer shows the right version."
+      ]
+    },
+    "v180": {
+      "released": "Released: 2026-11-09",
+      "items": [
+        "Prompt engine: a before → after score for the optimized prompt, better handling of every prompt type, and an optional second AI provider so the optimizer keeps working when one is down.",
+        "Benchmarks with charts: top models per benchmark, price vs. score, a frontier matrix and a cost calculator.",
+        "A prompt library saved only in your browser, and a shareable card with your score (never the prompt text).",
+        "Brand: the mascot is now the favicon and the social card, and it hops when you hover or tap it. The feedback dialog no longer shows the page through it.",
+        "About and Methodology pages, a larger glossary and deeper guides.",
+        "Easier to find and cite: structured data on every page, llms.txt and a plain-text version of each guide for AI assistants."
+      ]
+    }
   }
 }

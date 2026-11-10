@@ -360,7 +360,7 @@
       "load": "Cargar el feed de @{handle}",
       "loading": "Cargando el feed…",
       "privacyNote": "El feed lo muestra X, un tercero: al cargarlo, X puede recibir datos de tu navegador y usar cookies. No se carga hasta que lo pedís.",
-      "fallback": "No pudimos cargar el feed. Puede estar bloqueado por tu navegador o una extensión.",
+      "fallback": "X no mostró el feed acá. A veces X rechaza los timelines embebidos, o tu navegador o una extensión lo bloquean. El perfil se abre sin problemas.",
       "open": "Abrir @{handle} en X",
       "follow": "Seguinos en X"
     },
@@ -523,10 +523,36 @@
     "ctaBestAi": "Encontrar la mejor IA",
     "tourTitle": "Un recorrido por Promptea",
     "tourBody": "Un recorrido real por la app: analizar un prompt, copiar la versión optimizada, elegir una IA, leer las noticias y explorar benchmarks.",
-    "tourCaption": "Grabación automatizada de la interfaz con un prompt de demostración.",
+    "tourCaption": "Grabación automatizada de la interfaz con un prompt de demostración. Se grabó en una versión anterior: la página de inicio hoy se ve distinta, los pasos son los mismos.",
     "tourPending": "El video de demostración se está generando.",
     "moreAria": "Seguir leyendo",
     "methodology": "Leer la metodología completa",
     "about": "Acerca de Promptea"
+  },
+  "changelog": {
+    "v181": {
+      "released": "Lanzado: 10-11-2026",
+      "items": [
+        "Nueva página de inicio que se entiende de un vistazo: qué hace Promptea, las dos cosas que podés hacer (analizar un prompt, encontrar la mejor IA) y la caja para pegar tu prompt, que ahora dice qué vas a recibir.",
+        "Un solo menú para todo el sitio, en el mismo lugar en todas las páginas, con una versión compacta en el celular.",
+        "Nueva página “Cómo funciona Promptea”: cómo se puntúa un prompt, qué IAs soporta, las preguntas frecuentes y el recorrido por la app.",
+        "Benchmarks: el ranking ya no se superpone en ninguna pantalla, en el celular ya no hay scroll horizontal, y un gráfico nuevo muestra qué proveedores están en el top de cada benchmark.",
+        "El prompt que pegás en el inicio ya no viaja en la barra de direcciones camino al analizador.",
+        "La tarjeta del newsletter se abre sola únicamente en tu primera visita, sin bloquear la página; después queda como una pastilla chica.",
+        "El fondo se mueve un poco más; si tu sistema pide menos movimiento, queda quieto.",
+        "Correcciones: el analizador funciona con el almacenamiento del navegador bloqueado, las ediciones semanales muestran su etiqueta real y el pie muestra la versión correcta."
+      ]
+    },
+    "v180": {
+      "released": "Lanzado: 09-11-2026",
+      "items": [
+        "Motor de prompts: puntaje antes → después del prompt optimizado, mejor tratamiento de cada tipo de prompt y un segundo proveedor de IA opcional para que el optimizador siga funcionando si uno se cae.",
+        "Benchmarks con gráficos: mejores modelos por benchmark, precio vs. puntaje, matriz de frontera y calculadora de costo.",
+        "Una biblioteca de prompts guardada solo en tu navegador y una tarjeta para compartir tu puntaje (nunca el texto del prompt).",
+        "Marca: la mascota ahora es el favicon y la tarjeta para redes, y salta cuando pasás el mouse o la tocás. El diálogo de feedback ya no deja ver la página por detrás.",
+        "Páginas Acerca de y Metodología, un glosario más grande y guías más profundas.",
+        "Más fácil de encontrar y citar: datos estructurados en todas las páginas, llms.txt y una versión en texto plano de cada guía para asistentes de IA."
+      ]
+    }
   }
 }

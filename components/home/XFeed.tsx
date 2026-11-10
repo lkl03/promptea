@@ -120,19 +120,18 @@ export default function XFeed({ source, profileUrl, dict }: { source: XFeedSourc
 
   return (
     <section aria-labelledby="xfeed-title" className="surface p-4 sm:p-5">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h2 id="xfeed-title" className="flex items-center gap-2 font-title text-lg font-semibold">
-            <XIcon className="h-4 w-4 shrink-0" />
-            {dict.title}
-          </h2>
-          <p className="mt-0.5 text-sm text-ink-muted">{dict.subtitle}</p>
-        </div>
+      {/* Title and handle share a row when they fit; in a narrow column the handle wraps under the title. */}
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <h2 id="xfeed-title" className="flex items-center gap-2 whitespace-nowrap font-title text-lg font-semibold">
+          <XIcon className="h-4 w-4 shrink-0" />
+          {dict.title}
+        </h2>
         <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost h-8 shrink-0 px-3 text-xs">
           @{handle}
           <span className="sr-only"> — {dict.follow}</span>
         </a>
       </div>
+      <p className="mt-1 text-sm text-ink-muted">{dict.subtitle}</p>
 
       {/* The box has the same height in every state: loading it shifts nothing. */}
       <div className="relative mt-3 overflow-hidden rounded-xl border border-line" style={{ height: FEED_HEIGHT }}>

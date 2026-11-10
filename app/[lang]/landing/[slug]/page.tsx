@@ -103,7 +103,7 @@ export default async function LandingPage({
         </h2>
         <div className="flex flex-wrap gap-2">
           {page.internalLinks.map((link) => (
-            <Link key={link.label[l]} href={link.href(l)} className="btn h-9 px-4 text-xs">
+            <Link key={link.label[l]} href={link.href(l)} className="btn btn-ghost h-9 px-4 text-xs">
               {link.label[l]}
             </Link>
           ))}

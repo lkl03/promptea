@@ -1335,7 +1335,8 @@ html {
 /* The side column sticks next to the main content only when it fits the
    viewport whole: a sticky box taller than the screen would hide its own end. */
 @media (min-width: 1024px) and (min-height: 860px) {
-  .home-side {
+  .home-side,
+  .side-sticky {
     position: sticky;
     top: 1rem;
   }
@@ -1398,6 +1399,25 @@ html {
    card width instead of stretching it across the page. */
 .bm-picker {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
+}
+/* Phones, many benchmarks in one category: a single scrollable row with snap
+   points instead of a tall stack between the category pills and the chart. */
+@media (max-width: 639px) {
+  .bm-picker[data-many] {
+    /* !important: these compete with the element's own utilities (grid, m-0, p-0). */
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
+    padding-bottom: 0.5rem !important;
+    margin-inline: -1rem !important;
+    padding-inline: 1rem !important;
+    scroll-padding-inline: 1rem;
+  }
+  .bm-picker[data-many] > li {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

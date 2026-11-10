@@ -52,6 +52,8 @@ export type DashboardCopy = {
 };
 
 const TOP_OPTIONS = [5, 10, 15, 25] as const;
+/** On phones, more benchmarks than this in a category scroll sideways instead of stacking. */
+const PICKER_SCROLL_FROM = 3;
 
 export default function BenchmarkDashboard({
   tables: compact,
@@ -132,8 +134,10 @@ export default function BenchmarkDashboard({
             equal tracks ABOVE the chart (it used to be a 19rem side column whose
             cards grew past their track and slid under the chart, leaving a tall
             empty column below). minmax(0,1fr) + min-w-0 let long model names
-            truncate instead of widening the card; 1, 2 or 6 benchmarks all fit. */}
-        <ul aria-label={copy.benchmarks} className="bm-picker m-0 mt-5 grid list-none gap-2 p-0">
+            truncate instead of widening the card; 1, 2 or 6 benchmarks all fit.
+            On phones a category with many benchmarks (Design has a dozen-plus)
+            becomes one horizontally scrollable row, so the chart stays near. */}
+        <ul aria-label={copy.benchmarks} data-many={inCategory.length > PICKER_SCROLL_FROM ? "" : undefined} className="bm-picker m-0 mt-5 grid list-none gap-2 p-0">
           {inCategory.map((t) => {
             const top = t.rows[0];
             const selected = t.def.key === table.def.key;

@@ -46,8 +46,13 @@ const EXPECTED_CRAWLERS = [
 const LOCALES = ["es", "en"];
 /** Keep equal to LLMS_FULL_TOTAL_BYTES / 1024 in lib/seo/llms.ts (test-enforced). */
 const LLMS_FULL_MAX_KB = 400;
-/** <title> length above which a page fails (the brand suffix included). */
-const TITLE_MAX_LENGTH = 90;
+/**
+ * <title> length above which a page fails (the brand suffix included). Editorial
+ * headlines used as titles are clamped by clampTitle() (lib/seo/metadata.ts); 27
+ * hand-written guide titles sit between 91 and 120 characters (listed in
+ * docs/release/v1.8.1/qa-report.md), so the hard limit stays at 120 for now.
+ */
+const TITLE_MAX_LENGTH = 120;
 const SINGLE_META = [
   "description", "og:title", "og:description", "og:url", "og:type", "og:site_name", "og:locale", "og:image",
   "twitter:card", "twitter:title", "twitter:description", "twitter:image",

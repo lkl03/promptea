@@ -53,13 +53,15 @@ for (const width of WIDTHS) {
       const cards = [...list.querySelectorAll("button")].map((b) => b.getBoundingClientRect());
       const panel = list.nextElementSibling.getBoundingClientRect();
       const lr = list.getBoundingClientRect();
+      // Phones with many benchmarks: the picker is one scrollable row (cards extend past it by design).
+      const scrolls = getComputedStyle(list).overflowX === "auto";
       const hit = (a, b) => a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5;
       let overlapPanel = 0;
       let overlapCards = 0;
       let wider = 0;
       cards.forEach((c, i) => {
         if (hit(c, panel)) overlapPanel++;
-        if (c.right > lr.right + 0.5 || c.left < lr.left - 0.5) wider++;
+        if (!scrolls && (c.right > lr.right + 0.5 || c.left < lr.left - 0.5)) wider++;
         for (let j = i + 1; j < cards.length; j++) if (hit(c, cards[j])) overlapCards++;
       });
       return {

@@ -253,7 +253,7 @@ console.log(r.meta.taskType, r.meta.routing, r.score, r.findings.map(f => f.id),
 
 ## 9) Qué cambió en v1.8.0 (engine 2.3.0)
 
-Ver también `CHANGELOG.md` (`## v1.8.0 (unreleased)`) y `docs/engine-contract.md` (§1, §2.C, §2.G, §2.I, §2.J).
+Ver también `CHANGELOG.md` (`## v1.8.0 — 2026-11-09`) y `docs/engine-contract.md` (§1, §2.C, §2.G, §2.I, §2.J).
 
 ### 9a) Bugs de §5 — estado
 

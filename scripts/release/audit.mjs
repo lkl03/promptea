@@ -23,12 +23,22 @@ const BASE = (args.base ?? "http://localhost:3070").replace(/\/+$/, "");
 const CHROME = process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const SHOTS = "shots" in args;
 const QUICK = "quick" in args;
-const OUT = join(process.cwd(), "docs", "release", "v1.8.0");
+// v1.8.1: --out=dir picks where screenshots go (default: the current release folder).
+const OUT = args.out ? join(process.cwd(), args.out) : join(process.cwd(), "docs", "release", "v1.8.1", "audit");
 
-const PAGES = (args.pages ? args.pages.split(",") : ["/es", "/en", "/es/analyzer", "/es/best-ai", "/es/blog", "/es/benchmarks", "/es/guides", "/es/models", "/es/glossary", "/es/prompts", "/es/privacy"]).map((p) => p.trim());
+const PAGES = (args.pages ? args.pages.split(",") : ["/es", "/en", "/es/how-it-works", "/en/how-it-works", "/es/analyzer", "/es/best-ai", "/es/blog", "/es/blog/weekly", "/es/benchmarks", "/es/guides", "/es/guides/json-output", "/es/models", "/es/glossary", "/es/prompts", "/es/prompts/code", "/es/landing/prompt-analyzer", "/es/library", "/es/share", "/es/about", "/es/methodology", "/es/changelog", "/es/privacy", "/es/esta-pagina-no-existe"]).map((p) => p.trim());
 const THEMES = QUICK ? ["aqua", "metro", "glass"] : ["aqua", "metro", "glass"];
 const SCHEMES = QUICK ? ["light"] : ["light", "dark"];
-const VIEWPORTS = QUICK ? [{ name: "desktop", width: 1280, height: 800 }] : [{ name: "desktop", width: 1280, height: 800 }, { name: "mobile", width: 375, height: 812, mobile: true }];
+// v1.8.1: the widths of the release brief — 1920, 1440, 1024, 768 and 375.
+const VIEWPORTS = QUICK
+  ? [{ name: "desktop", width: 1440, height: 900 }]
+  : [
+      { name: "wide", width: 1920, height: 1000 },
+      { name: "desktop", width: 1440, height: 900 },
+      { name: "laptop", width: 1024, height: 768 },
+      { name: "tablet", width: 768, height: 1024 },
+      { name: "mobile", width: 375, height: 812, mobile: true },
+    ];
 
 const slug = (p) => (p.replace(/^\//, "").replace(/\//g, "_") || "root");
 
@@ -81,15 +91,20 @@ async function main() {
             await page.goto(BASE + path, { waitUntil: "networkidle2", timeout: 45_000 });
             await new Promise((r) => setTimeout(r, 700));
             const m = await page.evaluate(() => ({
+              h1: document.querySelectorAll("h1").length,
+              canonicals: document.querySelectorAll('link[rel="canonical"]').length,
+              headers: document.querySelectorAll("body > header, body header.relative").length,
               overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
               cls: Math.round((window.__cls ?? 0) * 1000) / 1000,
               themeAttr: document.documentElement.dataset.theme,
             }));
             runs++;
             if (m.overflow > 1) findings.push(`${label}: horizontal overflow ${m.overflow}px`);
+            if (m.h1 !== 1) findings.push(`${label}: ${m.h1} <h1> (want exactly 1)`);
+            if (m.canonicals > 1) findings.push(`${label}: ${m.canonicals} canonical links`);
             if (m.cls > 0.1) findings.push(`${label}: CLS ${m.cls}`);
             // Dev-only noise that is not an app problem.
-            const real = errors.filter((e) => !/favicon|Download the React DevTools|Fast Refresh|\[HMR\]/.test(e) && !(vercelInsights404 > 0 && /Failed to load resource.*404/.test(e)));
+            const real = errors.filter((e) => !/favicon|Download the React DevTools|Fast Refresh|\[HMR\]/.test(e) && !(path.includes("no-existe") && /404/.test(e)) && !(vercelInsights404 > 0 && /Failed to load resource.*404/.test(e)));
             for (const e of real) findings.push(`${label}: ${e}`);
             if (SHOTS) await page.screenshot({ path: join(OUT, `${slug(path)}__${theme}-${scheme}__${vp.name}.jpg`), fullPage: false, type: "jpeg", quality: 78 });
             // The feedback modal (the v1.8.0 translucency bug): open it from the footer and capture it on the analyzer.

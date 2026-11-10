@@ -68,13 +68,13 @@ export default async function ModelsIndexPage({ params }: { params: Promise<{ la
               : "If you need strict output, start with the JSON guide. If you’re doing studying/workflows, check the prompt packs."}
           </p>
           <div className="flex flex-wrap gap-2 pt-2">
-            <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>
               {l === "es" ? "Guía: JSON estricto" : "Guide: Strict JSON"}
             </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/prompts/study`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/prompts/study`}>
               {l === "es" ? "Prompts: Estudio" : "Prompts: Study"}
             </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/glossary`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary`}>
               {l === "es" ? "Glosario" : "Glossary"}
             </Link>
           </div>
@@ -100,9 +100,9 @@ export default async function ModelsIndexPage({ params }: { params: Promise<{ la
             : "If your prompts fail due to hallucinations or low precision, check these glossary terms:"}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Link className="btn h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>
-          <Link className="btn h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
-          <Link className="btn h-9 px-4" href={`/${l}/glossary/temperature`}>Temperature</Link>
+          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>
+          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
+          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/temperature`}>Temperature</Link>
         </div>
       </section>
     </main>

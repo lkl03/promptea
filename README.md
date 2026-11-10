@@ -1,18 +1,19 @@
 # Promptea
 
-A prompt utility with an AI news desk. The homepage (`/[lang]`) is a hub with the latest AI Daily headlines, four entry points (Analyze a prompt · Find the best AI · AI Daily · Benchmarks), secondary resources and a product showcase video.
+A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Promptea is and what to do in one screen: the logo and tagline, two action links (Analyze a prompt · Find the best AI), a box to paste a prompt, the latest AI Daily stories, a Benchmarks teaser and, in a side column, the X feed card and the newsletter sign-up. One header (`components/TopBar.tsx`) carries the navigation on every page.
 
 - **Improve Prompt** (`/[lang]/analyzer`, the homepage until v1.7.0 — old `/[lang]?prompt=…` links are redirected with their parameters) — analyze your prompt, detect issues, score it, and generate a genuinely personalized improved version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
 - **Find the Best AI** (`/[lang]/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI, model, or working environment (e.g. Claude Code vs. plain chat) fits it best, with ranked alternatives and concrete adaptation advice.
+- **How Promptea works** (`/[lang]/how-it-works`, v1.8.1) — what it is, how a prompt is scored, supported AIs and prompt types, the FAQ and the product tour video. The long explanation that used to sit at the bottom of the home page, with its `HowTo` + `FAQPage` JSON-LD, a markdown twin and a place in `llms.txt`.
 - **Benchmarks** (`/[lang]/benchmarks`) — leaders per benchmark, frontier models, an explorable ranking table and what each benchmark measures, from OpenRouter's benchmarks API (server-side, cached, honest fallbacks).
 
 Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
 
-## Latest update — v1.7.3 (2026-11-05)
+## Latest update — v1.8.1 (2026-11-10)
 
-**Two new guides — AI prompts for competitor analysis and AI prompts for SOPs — and template buttons on model pages that screen readers can tell apart.** Shipped in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+**The visual defects of v1.8.0 fixed (the Benchmarks ranking overlap first), a home page rebuilt to explain itself in five seconds, one header for every page, a "How Promptea works" page that keeps the SEO content the home used to carry, a first-visit newsletter card, a more visible ambient background, and a full QA pass.** Details in [CHANGELOG.md](./CHANGELOG.md); evidence and what could not be verified in [`docs/release/v1.8.1/qa-report.md`](./docs/release/v1.8.1/qa-report.md).
 
-_Previous update: v1.7.2 (2026-10-29) — guides on testing one prompt across models and on status reports, current model names in two guide FAQs, distinct accessible names for guide template buttons._
+_Previous update: v1.8.0 (2026-11-09) — prompt engine 2.3.0 (before → after score, provider failover, optional judge), Benchmarks with charts, prompt library and share card, SEO/GEO (llms.txt, JSON-LD on every page, `npm run seo:check`)._
 
 ## How it works
 
@@ -114,11 +115,18 @@ npm test           # vitest
 npm run build      # production build (works offline — fonts are local)
 ```
 
-## Brand & release tooling (v1.8.0)
+## Brand & release tooling
 
 - `node scripts/brand/build-brand-assets.mjs` — regenerates every brand raster (wordmark light/dark, mascot, favicons, apple-touch, manifest and OG artwork) from `public/brand/promptea-logo-mascot-source.png`.
-- `node scripts/release/audit.mjs --base=http://localhost:3070 [--shots] [--quick]` — real-Chrome audit of the public pages across themes × colour schemes × desktop/mobile: console/hydration errors, horizontal overflow, CLS, and the feedback-modal fill; `--shots` saves screenshots to `docs/release/v1.8.0/`.
-- `BENCHMARKS_DEV_FIXTURE=1 npm run dev` (development only) renders a clearly fictitious benchmark dataset so the charts can be reviewed without an OpenRouter key.
+- `node scripts/release/audit.mjs --base=http://localhost:3182 [--shots] [--quick] [--out=dir]` — real-Chrome audit of 23 pages across 5 widths (1920, 1440, 1024, 768, 375) × themes × colour schemes: console/hydration errors, horizontal overflow, CLS, one `<h1>`, one canonical, and (with `--shots`) the feedback-modal fill and screenshots.
+- v1.8.1 release checks, all with a real Chrome (`puppeteer-core`) and all read-only against anything that is not localhost:
+  - `scripts/release/benchmarks-layout.mjs` — the "Ranking by benchmark" layout at 5 widths × every category: no overlap, no card wider than its list, no gap, no overflow.
+  - `scripts/release/ambient-check.mjs` — how far the ambient background moves in a few seconds, frame rate, layouts, long tasks and CLS; Metro flat, reduced motion static.
+  - `scripts/release/a11y-check.mjs` — keyboard and focus on the header menu, the home page and the newsletter card; accessible names; contrast per theme.
+  - `scripts/release/qa-local.mjs` — **localhost only**: the engine on the 8 purposes × es/en, the share card with hostile parameters, `noindex`, no-JavaScript and blocked-storage degradation, the home → analyzer hand-off.
+  - `scripts/release/perf.mjs` — LCP, CLS, long tasks, HTML/JS/CSS bytes, DOM size and page height, desktop and throttled mobile.
+  - `scripts/release/capture.mjs --set=before|after` — the before/after screenshots in `docs/release/`; `scripts/release/overflow.mjs` — which elements stick out of the viewport.
+- Development-only fixtures (unreachable in production builds), to review pages without credentials: `BENCHMARKS_DEV_FIXTURE=1` (a clearly fictitious benchmark dataset) and `BLOG_DEV_FIXTURE=1` (v1.8.1: six clearly fictitious AI Daily stories, including the two weekly editions). Example: `BENCHMARKS_DEV_FIXTURE=1 BLOG_DEV_FIXTURE=1 NEXT_PUBLIC_X_HANDLE=promptea_me npm run dev`.
 
 ## Environment variables
 
@@ -139,7 +147,8 @@ npm run build      # production build (works offline — fonts are local)
 | `PROMPT_JUDGE_CONFIDENCE_MAX` | optional | The judge runs only when `meta.confidence` is below this value (default `60`). |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
-| `NEXT_PUBLIC_X_HANDLE` | optional | Promptea's X account (`promptea` or `@promptea`). Enables the homepage X feed (official timeline, click-to-load) and the footer link `https://x.com/<handle>`. If unset it is derived from `NEXT_PUBLIC_X_URL`; with neither, the feed section is hidden. |
+| `NEXT_PUBLIC_X_HANDLE` | optional | Promptea's X account (`promptea` or `@promptea`). Enables the X feed card (home side column and AI Daily; official embed, click-to-load, with a link-to-profile fallback) and the footer link `https://x.com/<handle>`. If unset it is derived from `NEXT_PUBLIC_X_URL`; with neither, the card is not rendered. |
+| `NEXT_PUBLIC_X_LIST_ID` | optional | v1.8.1. Numeric id of an X list: when set (and valid), the feed card embeds that list instead of the account's own timeline. The handle still names the account and feeds the "Follow" link. To change what the card shows, change these variables, not `components/home/XFeed.tsx`. |
 | `NEXT_PUBLIC_X_URL` | optional | Profile URL for the footer link (default `https://x.com`). Also the fallback source of the handle. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
 | `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to allow LIVE Promptea Weekly sends. Default `false` (live runs return `DELIVERY_DISABLED`). `promptea.me` is verified in Resend. |
@@ -164,7 +173,7 @@ AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PRO
 - `app/[lang]/blog/` — AI Daily index and article pages (server-rendered, ISR-cached, degrade to empty when Firestore is unavailable); `app/api/internal/blog/publish/` — the HMAC-signed publish endpoint.
 - `lib/benchmarks/` — v1.7.0 benchmarks: `schema.ts` (per-row Zod validation of the OpenRouter contract), `catalog.ts` (what each benchmark measures, metric, limitations), `normalize.ts` (one ranking per benchmark, prices per 1M tokens, frontier definition), `load.ts` (fetch → validate → live / last snapshot / unavailable), `server.ts` (key + Firestore snapshot); `app/api/benchmarks/` is a public status endpoint.
 - `lib/blog/marquee.ts` — homepage news marquee eligibility (published in the last 72 h by `publishedAt`, never rejuvenated by edits).
-- `scripts/showcase/` — records and encodes the hub's showcase video from the real app (see its README).
+- `scripts/showcase/` — records and encodes the product tour video shown on `/how-it-works` from the real app (see its README).
 - `components/analyzer/`, `components/results/` — decomposed feature modules; `PromptBox`/`ResultsPanel` orchestrate.
 - `app/globals.css` + `lib/themes.ts` — theme tokens (Aqua / Metro / Glass) and registry.
 - `app/[lang]/dictionaries/` — EN/ES copy (key parity is test-enforced).

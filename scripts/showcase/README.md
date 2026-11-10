@@ -1,6 +1,7 @@
 # Product showcase video
 
-The hub (`/[lang]`) embeds a short tour of the real app. It is **recorded from
+`/[lang]/how-it-works` embeds a short tour of the real app (until v1.8.0 it sat
+at the bottom of the home page). It is **recorded from
 the running interface**, not composited: a headless Chrome drives the UI while
 the Chrome DevTools screencast captures every painted frame. The recorder only
 adds a visible cursor and a caption strip naming each step (the same captions
@@ -14,6 +15,15 @@ The demo prompt and task are sample text written for the video; no personal
 or private data is used. Whatever state a page is genuinely in is what gets
 recorded (for example, Benchmarks shows its empty state when no OpenRouter key
 is configured) — nothing is faked.
+
+> **v1.8.1 status.** The files in `public/showcase/` were recorded on v1.7.0:
+> they show the old hub and a "v1.7.0" caption. The recorder below is updated
+> for the v1.8.1 home (it opens the analyzer from the "Analyze a prompt" link
+> and its captions no longer name a version), but the video was **not**
+> re-recorded as part of v1.8.1: a faithful recording needs the production
+> Firebase/OpenRouter variables for real AI Daily and Benchmarks content, and
+> the recorder runs a real analysis, which writes telemetry. Re-record it from
+> a machine with `.env.local` when convenient (four commands, below).
 
 ## Regenerate
 
