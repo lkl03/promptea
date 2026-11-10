@@ -60,16 +60,16 @@ I need:
     target: "claude",
   },
   pt: {
-    prompt: `You are a senior software engineer. I'm getting this error in Next.js 14:
+    prompt: `Você é um engenheiro de software sênior. Estou recebendo este erro no Next.js 14:
 
 Error: "Cannot read properties of undefined (reading 'map')"
 
-It happens in the ProductList component when the products prop is not passed from the server.
+Ele acontece no componente ProductList quando a prop products não é passada pelo servidor.
 
-I need:
-1. Exactly why this happens
-2. How to prevent it (default value, guard clause, or Suspense)
-3. A snippet showing the applied fix`,
+Preciso de:
+1. Por que exatamente isso acontece
+2. Como evitar (valor padrão, guard clause ou Suspense)
+3. Um trecho de código com a correção aplicada`,
     purpose: "code",
     target: "claude",
   },

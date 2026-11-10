@@ -85,37 +85,37 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
       close: "Close",
     },
     pt: {
-      button: "New? See how it works →",
-      title: "How Promptea works",
-      intro: "Five quick steps to turn a vague prompt into an optimized version for the AI you use.",
+      button: "Primeira vez? Veja como funciona →",
+      title: "Como o Promptea funciona",
+      intro: "Cinco passos rápidos para transformar um prompt vago em uma versão otimizada para a IA que você usa.",
       steps: [
         {
-          title: "1. Pick model and prompt type",
+          title: "1. Escolha o modelo e o tipo de prompt",
           body:
-            "Select the AI family (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) and what the prompt is for: text, code, data, marketing, study, image, translation, or summarization.",
+            "Selecione a família de IA (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) e para que serve o prompt: texto, código, dados, marketing, estudo, imagem, tradução ou resumo.",
         },
         {
-          title: "2. Paste, write, or dictate your prompt",
+          title: "2. Cole, escreva ou dite seu prompt",
           body:
-            "Paste the text, write it, or dictate it with your voice using the mic. If you have extra context (logs, code, data, notes), attach up to 3 files.",
+            "Cole o texto, escreva ou dite com a voz usando o microfone. Se tiver contexto extra (logs, código, dados, anotações), anexe até 3 arquivos.",
         },
         {
-          title: "3. Review the analysis",
+          title: "3. Revise a análise",
           body:
-            "Check the score, areas to improve, follow-up questions, and detected risks. Fix the critical issues and re-analyze.",
+            "Veja a pontuação, os pontos a melhorar, as perguntas de acompanhamento e os riscos detectados. Corrija os problemas críticos e analise de novo.",
         },
         {
-          title: "4. Copy the optimized prompt",
+          title: "4. Copie o prompt otimizado",
           body:
-            "Once optimized, copy it and paste into your preferred AI. The structure adapts to each model and each kind of task.",
+            "Com o prompt otimizado, copie e cole na sua IA preferida. A estrutura se adapta a cada modelo e a cada tipo de tarefa.",
         },
         {
-          title: "5. Choose the output format",
+          title: "5. Escolha o formato de saída",
           body:
-            "Checklist mode: best for chat with humans. Pure JSON mode: best for automations, APIs, and workflows.",
+            "Modo Checklist: melhor para conversar no chat. Modo JSON puro: melhor para automações, APIs e fluxos de trabalho.",
         },
       ],
-      close: "Close",
+      close: "Fechar",
     },
   },
   "best-ai": {
@@ -187,37 +187,37 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
       close: "Close",
     },
     pt: {
-      button: "New? See how it works →",
-      title: "How Find the Best AI works",
+      button: "Primeira vez? Veja como funciona →",
+      title: "Como funciona o Encontrar a melhor IA",
       intro:
-        "Paste a prompt you already have and find out which AI fits it best — no AI jargon required.",
+        "Cole um prompt que você já tem e descubra qual IA combina mais com ele — sem precisar de jargão de IA.",
       steps: [
         {
-          title: "1. Paste or dictate your prompt",
-          body: "Write, paste, or dictate the prompt you already have. Nothing else to configure.",
+          title: "1. Cole ou dite seu prompt",
+          body: "Escreva, cole ou dite o prompt que você já tem. Não há mais nada para configurar.",
         },
         {
-          title: "2. We detect signals in your text",
+          title: "2. Detectamos sinais no seu texto",
           body:
-            "We look for concrete clues: code paths and commands, requests for sources or current information, JSON data, image references, translations, summaries, and more.",
+            "Procuramos pistas concretas: caminhos de código e comandos, pedidos de fontes ou de informação atual, dados em JSON, referências a imagens, traduções, resumos e mais.",
         },
         {
-          title: "3. We compare the AIs",
+          title: "3. Comparamos as IAs",
           body:
-            "Those signals score each AI and environment (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Perplexity) against verified capabilities. The ranking is 100% deterministic: no AI decides for you.",
+            "Esses sinais pontuam cada IA e ambiente (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Perplexity) com base em capacidades verificadas. O ranking é 100% determinístico: nenhuma IA decide por você.",
         },
         {
-          title: "4. Get the recommendation",
+          title: "4. Receba a recomendação",
           body:
-            "You see the best fit with its score and confidence level, why we picked it (citing what we found in your prompt), and up to 3 alternatives with their trade-offs. If it's a tie, we say so.",
+            "Você vê a melhor opção com a pontuação e o nível de confiança, por que a escolhemos (citando o que encontramos no seu prompt) e até 3 alternativas com seus pontos de atenção. Se der empate, a gente avisa.",
         },
         {
-          title: "5. Improve your prompt for that AI",
+          title: "5. Melhore seu prompt para essa IA",
           body:
-            "One click takes you to Improve Prompt with the recommended AI, model, and purpose preselected.",
+            "Um clique leva você ao Melhorar prompt com a IA, o modelo e o propósito recomendados já selecionados.",
         },
       ],
-      close: "Close",
+      close: "Fechar",
     },
   },
 };

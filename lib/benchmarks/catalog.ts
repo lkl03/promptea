@@ -35,18 +35,18 @@ export const SOURCE_INFO: Record<BenchmarkDef["source"], { name: string; url: st
 };
 
 export const CATEGORY_LABELS: Record<BenchmarkCategory, Record<Lang, string>> = {
-  general: { es: "Inteligencia general", en: "General intelligence", pt: "General intelligence" },
-  coding: { es: "Programación", en: "Coding", pt: "Coding" },
-  agents: { es: "Agentes y herramientas", en: "Agents and tools", pt: "Agents and tools" },
-  science: { es: "Razonamiento científico", en: "Scientific reasoning", pt: "Scientific reasoning" },
-  search: { es: "Búsqueda", en: "Search", pt: "Search" },
-  design: { es: "Diseño y UI", en: "Design and UI", pt: "Design and UI" },
+  general: { es: "Inteligencia general", en: "General intelligence", pt: "Inteligência geral" },
+  coding: { es: "Programación", en: "Coding", pt: "Programação" },
+  agents: { es: "Agentes y herramientas", en: "Agents and tools", pt: "Agentes e ferramentas" },
+  science: { es: "Razonamiento científico", en: "Scientific reasoning", pt: "Raciocínio científico" },
+  search: { es: "Búsqueda", en: "Search", pt: "Busca" },
+  design: { es: "Diseño y UI", en: "Design and UI", pt: "Design e UI" },
 };
 
 const AA_LIMITS = {
   es: "Es un índice compuesto: combina varias evaluaciones de terceros con la ponderación que define Artificial Analysis, y cambia entre versiones. Sirve para comparar modelos dentro del mismo índice, no para predecir el resultado en tu tarea concreta.",
   en: "It is a composite index: it combines several third-party evaluations with weights chosen by Artificial Analysis, and it changes between versions. Use it to compare models within the same index, not to predict results on your specific task.",
-  pt: "It is a composite index: it combines several third-party evaluations with weights chosen by Artificial Analysis, and it changes between versions. Use it to compare models within the same index, not to predict results on your specific task.",
+  pt: "É um índice composto: combina várias avaliações de terceiros com pesos escolhidos pela Artificial Analysis e muda de uma versão para outra. Use-o para comparar modelos dentro do mesmo índice, não para prever resultados na sua tarefa específica.",
 };
 
 const STATIC_DEFS: BenchmarkDef[] = [
@@ -56,11 +56,11 @@ const STATIC_DEFS: BenchmarkDef[] = [
     source: "artificial-analysis",
     label: { es: "Intelligence Index", en: "Intelligence Index", pt: "Intelligence Index" },
     metric: "index",
-    metricLabel: { es: "Índice compuesto (más alto es mejor)", en: "Composite index (higher is better)", pt: "Composite index (higher is better)" },
+    metricLabel: { es: "Índice compuesto (más alto es mejor)", en: "Composite index (higher is better)", pt: "Índice composto (quanto maior, melhor)" },
     measures: {
       es: "Capacidad general: agrega evaluaciones de razonamiento, conocimiento, matemática y programación en un solo índice.",
       en: "General capability: aggregates reasoning, knowledge, math and coding evaluations into a single index.",
-      pt: "General capability: aggregates reasoning, knowledge, math and coding evaluations into a single index.",
+      pt: "Capacidade geral: agrega avaliações de raciocínio, conhecimento, matemática e programação em um único índice.",
     },
     limitations: AA_LIMITS,
     frontier: true,
@@ -71,11 +71,11 @@ const STATIC_DEFS: BenchmarkDef[] = [
     source: "artificial-analysis",
     label: { es: "Coding Index", en: "Coding Index", pt: "Coding Index" },
     metric: "index",
-    metricLabel: { es: "Índice compuesto (más alto es mejor)", en: "Composite index (higher is better)", pt: "Composite index (higher is better)" },
+    metricLabel: { es: "Índice compuesto (más alto es mejor)", en: "Composite index (higher is better)", pt: "Índice composto (quanto maior, melhor)" },
     measures: {
       es: "Programación: agrega evaluaciones de generación y resolución de código.",
       en: "Coding: aggregates code generation and problem-solving evaluations.",
-      pt: "Coding: aggregates code generation and problem-solving evaluations.",
+      pt: "Programação: agrega avaliações de geração de código e resolução de problemas.",
     },
     limitations: AA_LIMITS,
     frontier: true,
@@ -86,11 +86,11 @@ const STATIC_DEFS: BenchmarkDef[] = [
     source: "artificial-analysis",
     label: { es: "Agentic Index", en: "Agentic Index", pt: "Agentic Index" },
     metric: "index",
-    metricLabel: { es: "Índice compuesto (más alto es mejor)", en: "Composite index (higher is better)", pt: "Composite index (higher is better)" },
+    metricLabel: { es: "Índice compuesto (más alto es mejor)", en: "Composite index (higher is better)", pt: "Índice composto (quanto maior, melhor)" },
     measures: {
       es: "Trabajo agéntico: agrega evaluaciones de uso de herramientas y tareas de varios pasos.",
       en: "Agentic work: aggregates tool-use and multi-step task evaluations.",
-      pt: "Agentic work: aggregates tool-use and multi-step task evaluations.",
+      pt: "Trabalho agêntico: agrega avaliações de uso de ferramentas e de tarefas em várias etapas.",
     },
     limitations: AA_LIMITS,
     frontier: true,
@@ -101,16 +101,16 @@ const STATIC_DEFS: BenchmarkDef[] = [
     source: "openrouter",
     label: { es: "GPQA Diamond", en: "GPQA Diamond", pt: "GPQA Diamond" },
     metric: "accuracy",
-    metricLabel: { es: "Precisión: % de respuestas correctas", en: "Accuracy: % correct answers", pt: "Accuracy: % correct answers" },
+    metricLabel: { es: "Precisión: % de respuestas correctas", en: "Accuracy: % correct answers", pt: "Acurácia: % de respostas corretas" },
     measures: {
       es: "Preguntas de opción múltiple de biología, física y química a nivel de posgrado, difíciles de responder buscando en la web. Corrida por OpenRouter.",
       en: "Graduate-level multiple-choice questions in biology, physics and chemistry that are hard to answer by searching the web. Run by OpenRouter.",
-      pt: "Graduate-level multiple-choice questions in biology, physics and chemistry that are hard to answer by searching the web. Run by OpenRouter.",
+      pt: "Questões de múltipla escolha de nível de pós-graduação em biologia, física e química, difíceis de responder pesquisando na web. Executado pela OpenRouter.",
     },
     limitations: {
       es: "Es de opción múltiple y de un solo dominio (ciencias); los mejores modelos ya puntúan muy alto, así que las diferencias pequeñas pueden caer dentro del margen de variación entre corridas.",
       en: "Multiple choice and single-domain (science); top models already score very high, so small gaps can fall within run-to-run variation.",
-      pt: "Multiple choice and single-domain (science); top models already score very high, so small gaps can fall within run-to-run variation.",
+      pt: "Múltipla escolha e de um só domínio (ciência); os melhores modelos já pontuam muito alto, então diferenças pequenas podem estar dentro da variação entre execuções.",
     },
     frontier: true,
   },
@@ -120,26 +120,26 @@ const STATIC_DEFS: BenchmarkDef[] = [
     source: "openrouter",
     label: { es: "τ-bench (verificado, aerolínea)", en: "τ-bench (verified, airline)", pt: "τ-bench (verified, airline)" },
     metric: "accuracy",
-    metricLabel: { es: "Precisión: % de tareas resueltas", en: "Accuracy: % of tasks solved", pt: "Accuracy: % of tasks solved" },
+    metricLabel: { es: "Precisión: % de tareas resueltas", en: "Accuracy: % of tasks solved", pt: "Acurácia: % de tarefas resolvidas" },
     measures: {
       es: "Un agente atiende a un usuario simulado de una aerolínea usando herramientas y siguiendo políticas. Corrida por OpenRouter.",
       en: "An agent serves a simulated airline customer using tools while following policies. Run by OpenRouter.",
-      pt: "An agent serves a simulated airline customer using tools while following policies. Run by OpenRouter.",
+      pt: "Um agente atende um cliente simulado de uma companhia aérea usando ferramentas e seguindo políticas. Executado pela OpenRouter.",
     },
     limitations: {
       es: "Cubre un solo dominio (aerolínea) con un usuario simulado; no mide otros tipos de agentes ni integraciones reales.",
       en: "Covers a single domain (airline) with a simulated user; it does not measure other kinds of agents or real integrations.",
-      pt: "Covers a single domain (airline) with a simulated user; it does not measure other kinds of agents or real integrations.",
+      pt: "Cobre um único domínio (companhia aérea) com um usuário simulado; não mede outros tipos de agentes nem integrações reais.",
     },
     frontier: true,
   },
 ];
 
 const SEARCH_LABELS: Record<string, Record<Lang, string>> = {
-  search_browsecomp: { es: "BrowseComp (búsqueda)", en: "BrowseComp (search)", pt: "BrowseComp (search)" },
-  search_hle: { es: "Humanity's Last Exam (búsqueda)", en: "Humanity's Last Exam (search)", pt: "Humanity's Last Exam (search)" },
-  search_dsqa: { es: "DSQA (búsqueda)", en: "DSQA (search)", pt: "DSQA (search)" },
-  search_widesearch: { es: "WideSearch (búsqueda)", en: "WideSearch (search)", pt: "WideSearch (search)" },
+  search_browsecomp: { es: "BrowseComp (búsqueda)", en: "BrowseComp (search)", pt: "BrowseComp (busca)" },
+  search_hle: { es: "Humanity's Last Exam (búsqueda)", en: "Humanity's Last Exam (search)", pt: "Humanity's Last Exam (busca)" },
+  search_dsqa: { es: "DSQA (búsqueda)", en: "DSQA (search)", pt: "DSQA (busca)" },
+  search_widesearch: { es: "WideSearch (búsqueda)", en: "WideSearch (search)", pt: "WideSearch (busca)" },
 };
 
 function searchDef(type: string, metric: "accuracy" | "f1_by_item"): BenchmarkDef {
@@ -151,17 +151,17 @@ function searchDef(type: string, metric: "accuracy" | "f1_by_item"): BenchmarkDe
     metric: metric === "f1_by_item" ? "f1" : "accuracy",
     metricLabel:
       metric === "f1_by_item"
-        ? { es: "F1 por ítem (más alto es mejor)", en: "F1 by item (higher is better)", pt: "F1 by item (higher is better)" }
-        : { es: "Precisión: % de respuestas correctas", en: "Accuracy: % correct answers", pt: "Accuracy: % correct answers" },
+        ? { es: "F1 por ítem (más alto es mejor)", en: "F1 by item (higher is better)", pt: "F1 por item (quanto maior, melhor)" }
+        : { es: "Precisión: % de respuestas correctas", en: "Accuracy: % correct answers", pt: "Acurácia: % de respostas corretas" },
     measures: {
       es: "Benchmark de búsqueda de OpenRouter: el modelo responde usando una herramienta de búsqueda web.",
       en: "OpenRouter search benchmark: the model answers using a web-search tool.",
-      pt: "OpenRouter search benchmark: the model answers using a web-search tool.",
+      pt: "Benchmark de busca da OpenRouter: o modelo responde usando uma ferramenta de busca na web.",
     },
     limitations: {
       es: "OpenRouter publica la configuración con mejor puntaje de cada modelo (motor de búsqueda, superficie, esfuerzo), así que el resultado depende también de esa configuración, no solo del modelo.",
       en: "OpenRouter publishes each model's best-scoring configuration (search engine, surface, effort), so the result also depends on that configuration, not only on the model.",
-      pt: "OpenRouter publishes each model's best-scoring configuration (search engine, surface, effort), so the result also depends on that configuration, not only on the model.",
+      pt: "A OpenRouter publica a configuração de melhor pontuação de cada modelo (buscador, superfície, esforço), então o resultado também depende dessa configuração, não só do modelo.",
     },
     frontier: false,
   };
@@ -175,16 +175,16 @@ function designDef(arena: string, category: string): BenchmarkDef {
     source: "design-arena",
     label: { es: `Design Arena · ${pretty}`, en: `Design Arena · ${pretty}`, pt: `Design Arena · ${pretty}` },
     metric: "elo",
-    metricLabel: { es: "Elo (más alto es mejor; relativo a esta arena)", en: "Elo (higher is better; relative to this arena)", pt: "Elo (higher is better; relative to this arena)" },
+    metricLabel: { es: "Elo (más alto es mejor; relativo a esta arena)", en: "Elo (higher is better; relative to this arena)", pt: "Elo (quanto maior, melhor; relativo a esta arena)" },
     measures: {
       es: "Comparaciones cara a cara votadas por personas: qué resultado visual prefieren entre dos modelos para la misma consigna.",
       en: "Head-to-head comparisons voted by people: which visual result they prefer between two models for the same brief.",
-      pt: "Head-to-head comparisons voted by people: which visual result they prefer between two models for the same brief.",
+      pt: "Comparações diretas votadas por pessoas: qual resultado visual elas preferem entre dois modelos para o mesmo briefing.",
     },
     limitations: {
       es: "Mide preferencia, no corrección. El Elo solo es comparable dentro de la misma arena y categoría.",
       en: "Measures preference, not correctness. Elo is only comparable within the same arena and category.",
-      pt: "Measures preference, not correctness. Elo is only comparable within the same arena and category.",
+      pt: "Mede preferência, não correção. O Elo só é comparável dentro da mesma arena e categoria.",
     },
     frontier: false,
   };

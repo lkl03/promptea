@@ -8,6 +8,7 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import LibraryView from "@/components/library/LibraryView";
 import { toLang, type Lang } from "@/lib/domain";
+import { languageAlternates } from "@/lib/seo/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: dict.library.metaTitle,
     description: dict.library.metaDescription,
     robots: { index: false, follow: true },
-    alternates: { canonical: `/${l}/library`, languages: { es: "/es/library", en: "/en/library", pt: "/en/library" } },
+    alternates: { canonical: `/${l}/library`, languages: languageAlternates((x) => `/${x}/library`) },
   };
 }
 

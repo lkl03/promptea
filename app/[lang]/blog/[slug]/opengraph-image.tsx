@@ -44,7 +44,7 @@ const FALLBACK: Record<Lang, { title: string; footer: string }> = {
     footer: "promptea.me",
   },
   pt: {
-    title: "The AI story of the day, verified.",
+    title: "A notícia de IA do dia, verificada.",
     footer: "promptea.me",
   },
 };

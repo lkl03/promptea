@@ -96,13 +96,13 @@ type Section = { section: SeoSection; title: Record<Locale, string> };
 
 /** Static sections, in display order. AI Daily is built separately (it is per-edition). */
 const SECTIONS: readonly Section[] = [
-  { section: "tools", title: { en: "Tools", es: "Herramientas", pt: "Tools" } },
-  { section: "about", title: { en: "About, method and policies", es: "Acerca de, método y políticas", pt: "About, method and policies" } },
+  { section: "tools", title: { en: "Tools", es: "Herramientas", pt: "Ferramentas" } },
+  { section: "about", title: { en: "About, method and policies", es: "Acerca de, método y políticas", pt: "Sobre, método e políticas" } },
   // "ai-daily" is inserted here by buildLlmsTxt
-  { section: "guides", title: { en: "Prompting guides", es: "Guías de prompting", pt: "Prompting guides" } },
-  { section: "models", title: { en: "Prompts by model", es: "Prompts por modelo", pt: "Prompts by model" } },
-  { section: "glossary", title: { en: "Glossary", es: "Glosario", pt: "Glossary" } },
-  { section: "prompts", title: { en: "Prompt packs", es: "Packs de prompts", pt: "Prompt packs" } },
+  { section: "guides", title: { en: "Prompting guides", es: "Guías de prompting", pt: "Guias de prompting" } },
+  { section: "models", title: { en: "Prompts by model", es: "Prompts por modelo", pt: "Prompts por modelo" } },
+  { section: "glossary", title: { en: "Glossary", es: "Glosario", pt: "Glossário" } },
+  { section: "prompts", title: { en: "Prompt packs", es: "Packs de prompts", pt: "Pacotes de prompts" } },
   { section: "landing", title: { en: "Landing pages", es: "Páginas de producto", pt: "Landing pages" } },
 ];
 
