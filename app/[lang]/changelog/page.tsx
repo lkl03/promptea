@@ -4,7 +4,7 @@ import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { toLang } from "@/lib/domain";
+import { isContentLang, pick, toLang } from "@/lib/domain";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -12,11 +12,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return pageMetadata({
     lang: l,
     path: `/${l}/changelog`,
-    title: l === "es" ? "Historial de versiones" : "Changelog",
-    description:
-      l === "es"
-        ? "Historial completo de versiones de Promptea: nuevas guías SEO, mejoras del analizador de prompts y correcciones de producto."
-        : "Full version history for Promptea: new SEO guides, prompt analyzer improvements, and product fixes.",
+    title: pick(l, { es: "Historial de versiones", en: "Changelog", pt: "Histórico de versões" }),
+    description: pick(l, {
+      es: "Historial completo de versiones de Promptea: nuevas guías SEO, mejoras del analizador de prompts y correcciones de producto.",
+      en: "Full version history for Promptea: new SEO guides, prompt analyzer improvements, and product fixes.",
+      pt: "Histórico completo de versões do Promptea: novos guias, melhorias no analisador de prompts e correções do produto.",
+    }),
   });
 }
 
@@ -25,6 +26,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
   if (!hasLocale(lang)) notFound();
 
   const isEs = lang === "es";
+  const olderInEnglish = !isContentLang(lang);
   const dict = await getDictionary(lang);
 
   return (
@@ -60,6 +62,16 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
         </ul>
       </div>
 
+      {/* Everything from v1.7.3 down was written in Spanish and English only (inline, before the
+          cards moved to the dictionaries). A language added later (pt) reads the English text and
+          is told so; the wrapper carries lang="en" so the markup does not claim otherwise. */}
+      {olderInEnglish ? (
+        <p role="note" data-content-lang-notice className="surface-soft border-l-4 p-4 text-sm">
+          {dict.changelog.olderNotice}
+        </p>
+      ) : null}
+
+      <div className="space-y-6" lang={olderInEnglish ? "en" : undefined}>
       {/* v1.7.3 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">
@@ -1391,6 +1403,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
           </li>
           <li>{isEs ? "Telemetría en Firestore con TTL + feedback del usuario." : "Firestore telemetry with TTL + user feedback."}</li>
         </ul>
+      </div>
       </div>
     </main>
   );

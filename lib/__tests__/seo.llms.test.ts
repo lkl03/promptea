@@ -1,4 +1,4 @@
-import { contentLangFor } from "@/lib/domain";
+import { LANG_NAME, contentLangFor } from "@/lib/domain";
 import { describe, expect, it } from "vitest";
 
 import { makeArticle, makeEdition, makeSnapshot } from "./seo.fixtures";
@@ -43,11 +43,12 @@ describe("llms.txt", () => {
 
       it("has the expected sections", () => {
         for (const h of ["## Optional"]) expect(txt).toContain(h);
-        expect(txt).toMatch(lang === "es" ? /## Herramientas/ : /## Tools/);
-        expect(txt).toMatch(lang === "es" ? /## Guías de prompting/ : /## Prompting guides/);
-        expect(txt).toMatch(lang === "es" ? /## Glosario/ : /## Glossary/);
-        expect(txt).toMatch(lang === "es" ? /## Prompts por modelo/ : /## Prompts by model/);
-        expect(txt).toMatch(lang === "es" ? /### Cómo citar/ : /### How to cite/);
+        const h = {
+          es: ["## Herramientas", "## Guías de prompting", "## Glosario", "## Prompts por modelo", "### Cómo citar"],
+          en: ["## Tools", "## Prompting guides", "## Glossary", "## Prompts by model", "### How to cite"],
+          pt: ["## Ferramentas", "## Guias de prompting", "## Glossário", "## Prompts por modelo", "### Como citar"],
+        }[lang];
+        for (const heading of h) expect(txt).toContain(heading);
       });
 
       it("links every page of the registry exactly once (markdown twin when there is one)", () => {
@@ -203,7 +204,7 @@ describe("markdown twins", () => {
       for (const md of docs) {
         expect(md.startsWith("# ")).toBe(true);
         expect(md).toContain(url);
-        expect(md).toContain(lang === "es" ? "Español" : "English");
+        expect(md).toContain(LANG_NAME[lang]);
         expect(md).not.toMatch(/<\/?(div|span|p|ul|li|script|style)\b/i);
         expect(withoutKnownProse(md)).not.toMatch(/undefined|\[object Object\]/);
         for (const l of links(md)) expect(() => new URL(l)).not.toThrow();

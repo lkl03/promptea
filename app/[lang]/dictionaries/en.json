@@ -531,6 +531,7 @@
     "about": "About Promptea"
   },
   "changelog": {
+    "olderNotice": "Versions before v1.8.0 are listed in English.",
     "v181": {
       "released": "Released: 2026-11-10",
       "items": [

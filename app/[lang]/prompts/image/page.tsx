@@ -4,7 +4,7 @@ import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { toLang, type Lang } from "@/lib/domain";
+import { pick, toLang, type Lang } from "@/lib/domain";
 
 function buildOpenLink(lang: Lang, purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -25,11 +25,17 @@ export async function generateMetadata({
   return pageMetadata({
     lang: l,
     path: `/${l}/prompts/image`,
-    title: l === "es" ? "Prompts para imágenes (plantillas)" : "Image prompts (templates)",
+    title: pick(l, {
+      es: "Prompts para imágenes (plantillas)",
+      en: "Image prompts (templates)",
+      pt: "Prompts para imagens (templates)",
+    }),
     description:
-      l === "es"
-        ? "Plantillas para generar imágenes: estilo, composición, iluminación y variantes. Abrilas en Promptea y optimizalas por IA."
-        : "Templates for image generation: style, composition, lighting and variations. Open in Promptea and optimize per AI.",
+      pick(l, {
+        es: "Plantillas para generar imágenes: estilo, composición, iluminación y variantes. Abrilas en Promptea y optimizalas por IA.",
+        en: "Templates for image generation: style, composition, lighting and variations. Open in Promptea and optimize per AI.",
+        pt: "Templates para geração de imagens: estilo, composição, iluminação e variações. Abra no Promptea e otimize para cada IA.",
+      }),
   });
 }
 
@@ -42,20 +48,22 @@ export default async function ImagePromptPackPage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = l === "es" ? "Prompts para imágenes" : "Image prompts";
+  const title = pick(l, { es: "Prompts para imágenes", en: "Image prompts", pt: "Prompts para imagens" });
   const subtitle =
-    l === "es"
-      ? "Describí sujeto, estilo y composición. Elegí un ejemplo y abrilo en Promptea."
-      : "Describe subject, style, and composition. Pick an example and open it in Promptea.";
+    pick(l, {
+      es: "Describí sujeto, estilo y composición. Elegí un ejemplo y abrilo en Promptea.",
+      en: "Describe subject, style, and composition. Pick an example and open it in Promptea.",
+      pt: "Descreva o sujeito, o estilo e a composição. Escolha um exemplo e abra no Promptea.",
+    });
 
   const examples = [
     {
-      title: l === "es" ? "Producto (foto tipo e-commerce)" : "Product (e-commerce style)",
+      title: pick(l, { es: "Producto (foto tipo e-commerce)", en: "Product (e-commerce style)", pt: "Produto (estilo e-commerce)" }),
       target: "gpt",
       purpose: "image",
       prompt:
-        l === "es"
-          ? `Generá una imagen de producto:
+        pick(l, {
+          es: `Generá una imagen de producto:
 - producto: [qué es]
 - material: [material]
 - color: [color]
@@ -65,8 +73,8 @@ export default async function ImagePromptPackPage({
 - estilo: hiperrealista
 - relación de aspecto: 1:1
 
-Dame 3 variantes con cambios sutiles.`
-          : `Generate a product image:
+Dame 3 variantes con cambios sutiles.`,
+          en: `Generate a product image:
 - product: [what]
 - material: [material]
 - color: [color]
@@ -77,14 +85,30 @@ Dame 3 variantes con cambios sutiles.`
 - aspect ratio: 1:1
 
 Give 3 variants with subtle changes.`,
+          pt: `Gere uma imagem de produto:
+- produto: [o quê]
+- material: [material]
+- cor: [cor]
+- fundo: branco limpo
+- iluminação: softbox, sombras suaves
+- enquadramento: vista 3/4 + variante frontal
+- estilo: hiper-realista
+- proporção: 1:1
+
+Entregue 3 variantes com mudanças sutis.`,
+        }),
     },
     {
-      title: l === "es" ? "Ilustración estilo editorial" : "Editorial illustration style",
+      title: pick(l, {
+        es: "Ilustración estilo editorial",
+        en: "Editorial illustration style",
+        pt: "Estilo de ilustração editorial",
+      }),
       target: "claude",
       purpose: "image",
       prompt:
-        l === "es"
-          ? `Ilustración editorial:
+        pick(l, {
+          es: `Ilustración editorial:
 - tema: [tema]
 - estilo: tinta + acuarela suave
 - paleta: [colores]
@@ -93,8 +117,8 @@ Give 3 variants with subtle changes.`,
 - textura: papel
 - relación de aspecto: 4:5
 
-Incluí 2 variantes de composición.`
-          : `Editorial illustration:
+Incluí 2 variantes de composición.`,
+          en: `Editorial illustration:
 - topic: [topic]
 - style: ink + soft watercolor
 - palette: [colors]
@@ -104,14 +128,25 @@ Incluí 2 variantes de composición.`
 - aspect ratio: 4:5
 
 Include 2 composition variants.`,
+          pt: `Ilustração editorial:
+- tema: [tema]
+- estilo: nanquim + aquarela suave
+- paleta: [cores]
+- composição: sujeito à esquerda, espaço negativo à direita
+- clima: [clima]
+- textura: grão de papel
+- proporção: 4:5
+
+Inclua 2 variantes de composição.`,
+        }),
     },
     {
-      title: l === "es" ? "Personaje (turnaround)" : "Character (turnaround)",
+      title: pick(l, { es: "Personaje (turnaround)", en: "Character (turnaround)", pt: "Personagem (turnaround)" }),
       target: "gpt",
       purpose: "image",
       prompt:
-        l === "es"
-          ? `Diseñá un personaje:
+        pick(l, {
+          es: `Diseñá un personaje:
 - descripción: [edad, rasgos, ropa]
 - estilo: animación moderna (limpio)
 - 3 poses: frontal, perfil, espalda
@@ -119,8 +154,8 @@ Include 2 composition variants.`,
 - fondo: gris neutro
 - relación de aspecto: 16:9
 
-Evitá texto en la imagen.`
-          : `Design a character:
+Evitá texto en la imagen.`,
+          en: `Design a character:
 - description: [age, traits, outfit]
 - style: modern animation (clean)
 - 3 poses: front, side, back
@@ -129,14 +164,28 @@ Evitá texto en la imagen.`
 - aspect ratio: 16:9
 
 Avoid text in the image.`,
+          pt: `Crie um personagem:
+- descrição: [idade, traços, roupa]
+- estilo: animação moderna (limpa)
+- 3 poses: frente, perfil, costas
+- expressão: 3 emoções
+- fundo: cinza neutro
+- proporção: 16:9
+
+Evite texto na imagem.`,
+        }),
     },
     {
-      title: l === "es" ? "Thumbnail estilo YouTube (sin texto)" : "YouTube-style thumbnail (no text)",
+      title: pick(l, {
+        es: "Thumbnail estilo YouTube (sin texto)",
+        en: "YouTube-style thumbnail (no text)",
+        pt: "Thumbnail estilo YouTube (sem texto)",
+      }),
       target: "gemini",
       purpose: "image",
       prompt:
-        l === "es"
-          ? `Necesito una thumbnail:
+        pick(l, {
+          es: `Necesito una thumbnail:
 - tema: [tema]
 - estilo: alto contraste, nítido
 - sujeto: [quién/qué]
@@ -145,8 +194,8 @@ Avoid text in the image.`,
 - relación de aspecto: 16:9
 - NO texto (lo agrego después)
 
-Dame 4 variantes con diferentes composiciones.`
-          : `I need a thumbnail:
+Dame 4 variantes con diferentes composiciones.`,
+          en: `I need a thumbnail:
 - topic: [topic]
 - style: high contrast, sharp
 - subject: [who/what]
@@ -156,22 +205,33 @@ Dame 4 variantes con diferentes composiciones.`
 - NO text (I’ll add later)
 
 Give 4 variants with different compositions.`,
+          pt: `Preciso de uma thumbnail:
+- tema: [tema]
+- estilo: alto contraste, nítido
+- sujeito: [quem/o quê]
+- fundo: simples, com profundidade
+- iluminação: luz de recorte
+- proporção: 16:9
+- SEM texto (eu adiciono depois)
+
+Entregue 4 variantes com composições diferentes.`,
+        }),
     },
     {
-      title: l === "es" ? "Paisaje cinematográfico" : "Cinematic landscape",
+      title: pick(l, { es: "Paisaje cinematográfico", en: "Cinematic landscape", pt: "Paisagem cinematográfica" }),
       target: "grok",
       purpose: "image",
       prompt:
-        l === "es"
-          ? `Paisaje cinematográfico:
+        pick(l, {
+          es: `Paisaje cinematográfico:
 - lugar: [descripción]
 - hora: golden hour
 - atmósfera: niebla ligera
 - lente: 35mm, profundidad de campo suave
 - detalle: elementos en primer plano
 - estilo: cine, color grading teal/orange sutil
-- relación de aspecto: 21:9`
-          : `Cinematic landscape:
+- relación de aspecto: 21:9`,
+          en: `Cinematic landscape:
 - place: [description]
 - time: golden hour
 - atmosphere: light fog
@@ -179,22 +239,35 @@ Give 4 variants with different compositions.`,
 - detail: foreground elements
 - style: cinema, subtle teal/orange grading
 - aspect ratio: 21:9`,
+          pt: `Paisagem cinematográfica:
+- lugar: [descrição]
+- horário: golden hour
+- atmosfera: neblina leve
+- lente: 35mm, profundidade de campo suave
+- detalhe: elementos em primeiro plano
+- estilo: cinema, color grading teal/orange sutil
+- proporção: 21:9`,
+        }),
     },
     {
-      title: l === "es" ? "Icon set / UI illustration" : "Icon set / UI illustration",
+      title: pick(l, {
+        es: "Icon set / UI illustration",
+        en: "Icon set / UI illustration",
+        pt: "Conjunto de ícones / ilustração de UI",
+      }),
       target: "deepseek",
       purpose: "image",
       prompt:
-        l === "es"
-          ? `Diseñá un set de íconos:
+        pick(l, {
+          es: `Diseñá un set de íconos:
 - tema: [tema]
 - estilo: outline limpio, 2px
 - consistencia: mismo grid y radio
 - fondo: transparente
 - relación de aspecto: 1:1 por ícono
 
-Dame 12 íconos distintos (describilos).`
-          : `Design an icon set:
+Dame 12 íconos distintos (describilos).`,
+          en: `Design an icon set:
 - theme: [theme]
 - style: clean outline, 2px
 - consistency: same grid and radius
@@ -202,37 +275,66 @@ Dame 12 íconos distintos (describilos).`
 - aspect ratio: 1:1 per icon
 
 Provide 12 different icons (describe them).`,
+          pt: `Crie um conjunto de ícones:
+- tema: [tema]
+- estilo: contorno limpo, 2px
+- consistência: mesma grade e mesmo raio
+- fundo: transparente
+- proporção: 1:1 por ícone
+
+Entregue 12 ícones diferentes (descreva cada um).`,
+        }),
     },
   ];
 
   const faq = [
     {
-      q: l === "es" ? "¿Cómo hago que el resultado sea consistente?" : "How do I make results consistent?",
+      q: pick(l, {
+        es: "¿Cómo hago que el resultado sea consistente?",
+        en: "How do I make results consistent?",
+        pt: "Como deixo os resultados consistentes?",
+      }),
       a:
-        l === "es"
-          ? "Definí estilo, iluminación, encuadre y relación de aspecto. Pedí variantes con cambios controlados."
-          : "Specify style, lighting, framing, and aspect ratio. Ask for variants with controlled changes.",
+        pick(l, {
+          es: "Definí estilo, iluminación, encuadre y relación de aspecto. Pedí variantes con cambios controlados.",
+          en: "Specify style, lighting, framing, and aspect ratio. Ask for variants with controlled changes.",
+          pt: "Especifique estilo, iluminação, enquadramento e proporção. Peça variantes com mudanças controladas.",
+        }),
     },
     {
-      q: l === "es" ? "¿Qué debería incluir sí o sí?" : "What should I always include?",
+      q: pick(l, { es: "¿Qué debería incluir sí o sí?", en: "What should I always include?", pt: "O que devo sempre incluir?" }),
       a:
-        l === "es"
-          ? "Sujeto, estilo, composición, fondo, luz y aspecto (1:1, 16:9, 4:5)."
-          : "Subject, style, composition, background, lighting, and aspect ratio (1:1, 16:9, 4:5).",
+        pick(l, {
+          es: "Sujeto, estilo, composición, fondo, luz y aspecto (1:1, 16:9, 4:5).",
+          en: "Subject, style, composition, background, lighting, and aspect ratio (1:1, 16:9, 4:5).",
+          pt: "Sujeito, estilo, composição, fundo, iluminação e proporção (1:1, 16:9, 4:5).",
+        }),
     },
     {
-      q: l === "es" ? "¿Puedo pedir múltiples variantes?" : "Can I request multiple variants?",
+      q: pick(l, {
+        es: "¿Puedo pedir múltiples variantes?",
+        en: "Can I request multiple variants?",
+        pt: "Posso pedir várias variantes?",
+      }),
       a:
-        l === "es"
-          ? "Sí. Es lo mejor para iterar: pedí 3–4 variantes con cambios explícitos (pose, paleta, encuadre)."
-          : "Yes. It’s best for iteration: request 3–4 variants with explicit changes (pose, palette, framing).",
+        pick(l, {
+          es: "Sí. Es lo mejor para iterar: pedí 3–4 variantes con cambios explícitos (pose, paleta, encuadre).",
+          en: "Yes. It’s best for iteration: request 3–4 variants with explicit changes (pose, palette, framing).",
+          pt: "Sim. É o ideal para iterar: peça 3 ou 4 variantes com mudanças explícitas (pose, paleta, enquadramento).",
+        }),
     },
     {
-      q: l === "es" ? "¿Esto agrega texto a la imagen?" : "Will this add text in the image?",
+      q: pick(l, {
+        es: "¿Esto agrega texto a la imagen?",
+        en: "Will this add text in the image?",
+        pt: "Isso vai colocar texto na imagem?",
+      }),
       a:
-        l === "es"
-          ? "Si no querés texto, pedilo explícitamente (“evitá texto en la imagen”)."
-          : "If you don’t want text, ask explicitly (“avoid text in the image”).",
+        pick(l, {
+          es: "Si no querés texto, pedilo explícitamente (“evitá texto en la imagen”).",
+          en: "If you don’t want text, ask explicitly (“avoid text in the image”).",
+          pt: "Se você não quer texto, peça de forma explícita (“evite texto na imagem”).",
+        }),
     },
   ];
 
@@ -256,10 +358,10 @@ Provide 12 different icons (describe them).`,
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {l === "es" ? "← Ver todos los packs" : "← View all packs"}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {l === "es" ? "Abrir analizador →" : "Open Analyzer →"}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →" })}
           </Link>
         </div>
       </div>
@@ -274,10 +376,14 @@ Provide 12 different icons (describe them).`,
 
               <div className="flex items-center justify-between gap-3">
                 <div className="text-xs opacity-70">
-                  {l === "es" ? "Se abre en el analizador con el prompt precargado." : "Opens the analyzer with the prompt prefilled."}
+                  {pick(l, {
+                    es: "Se abre en el analizador con el prompt precargado.",
+                    en: "Opens the analyzer with the prompt prefilled.",
+                    pt: "Abre o analisador com o prompt já preenchido.",
+                  })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {l === "es" ? "Abrir en Promptea" : "Open in Promptea"}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
                 </Link>
               </div>
             </div>
@@ -286,7 +392,7 @@ Provide 12 different icons (describe them).`,
       </div>
 
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{l === "es" ? "Preguntas frecuentes" : "FAQ"}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

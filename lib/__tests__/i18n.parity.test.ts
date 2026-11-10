@@ -59,6 +59,22 @@ describe("i18n parity", () => {
     expect(wrong).toEqual([]);
   });
 
+  // A dictionary that was copied and never translated passes every structural
+  // check above. This one catches it: a Portuguese (or Spanish) value may equal
+  // the English one only when the text is a name or a term that is not
+  // translated (docs/i18n/pt-glossary.md).
+  const SAME_AS_ENGLISH = /^(Promptea|AI Daily|Promptea Weekly|Blog|Tags|Benchmarks|Prompts|Menu|Feedback|Bug|Design|Checklist|JSON|Original|Top \{n\}|~\{n\} tokens|\{n\} h|\{provider\}: \{count\} \(\{pct\}\)|\{source\} · \{date\}|your@email\.com|General|Error|No|Marketing|Normal|Total|Global|Chat|Editorial|Sponsor|Copy)$/;
+
+  /** Values that predate this check and are left as they are on purpose (es keeps "Fix:" since v1.3). */
+  const KNOWN_SAME: Partial<Record<Lang, string[]>> = { es: ["results.fixLabel"] };
+
+  test.each(LANGS.filter((l) => l !== reference))("%s is translated: no value is left identical to English", (lang) => {
+    const untranslated = [...flat[reference]]
+      .filter(([key, value]) => flat[lang].get(key) === value && !SAME_AS_ENGLISH.test(value) && !KNOWN_SAME[lang]?.includes(key))
+      .map(([key, value]) => `${key} = ${value}`);
+    expect(untranslated).toEqual([]);
+  });
+
   test("required sections exist", () => {
     for (const lang of LANGS) {
       expect(dicts[lang]).toHaveProperty("app");

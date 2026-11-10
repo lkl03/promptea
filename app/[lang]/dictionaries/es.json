@@ -531,6 +531,7 @@
     "about": "Acerca de Promptea"
   },
   "changelog": {
+    "olderNotice": "Las versiones anteriores a la v1.8.0 se muestran en español.",
     "v181": {
       "released": "Lanzado: 10-11-2026",
       "items": [
