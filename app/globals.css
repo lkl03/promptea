@@ -590,15 +590,22 @@
   background: var(--canvas);
 }
 
-/* ── Ambient motion (v1.8.0) ─────────────────────────────────────────────────
-   Five soft washes drift very slowly (34–59 s per leg, alternating) behind
-   everything. Cost model: each blob is one composited layer rasterised ONCE
+/* ── Ambient motion (v1.8.0; v1.8.1: clearly perceptible) ────────────────────
+   Five soft washes drift behind everything. v1.8.0 moved them so slowly
+   (34–59 s per leg, one easing curve) that the background read as static.
+   v1.8.1: each blob follows a closed four-point path of roughly 13–16 % of
+   the viewport in 22–38 s, with a gentle change of scale (0.9–1.2) and
+   opacity, so the wash visibly breathes within a few seconds without ever
+   pulling the eye from the content.
+
+   Cost model (unchanged): each blob is one composited layer rasterised ONCE
    (a radial gradient); the animation only changes transform + opacity, which
    the compositor handles without layout or paint, so there is no main-thread
    work per frame. will-change is set on these five elements only, the
-   container is paint-contained, and the two extra blobs are dropped on small
-   screens. Metro stays flat (blobs not displayed); under reduced motion the
-   blobs stay put, i.e. the old static wash. */
+   container is paint-contained and fixed (it can never shift layout), and
+   the two extra blobs are dropped on small screens. Metro stays flat (blobs
+   not displayed); under prefers-reduced-motion the blobs stay put, i.e. the
+   static wash. */
 .ambient-blob {
   display: none;
   position: absolute;
@@ -617,16 +624,20 @@
 [data-theme="glass"] .ambient-blob {
   display: block;
 }
-.ambient-blob-1 { --bx: 12%; --by: 8%;  --bw: 46rem; --bh: 36rem; --blob-c: var(--blob-1); --dur: 41s; --dx: 16vw;  --dy: 10vh;  --delay: 0s; }
-.ambient-blob-2 { --bx: 88%; --by: 2%;  --bw: 41rem; --bh: 34rem; --blob-c: var(--blob-2); --dur: 53s; --dx: -14vw; --dy: 16vh;  --delay: -9s; }
-.ambient-blob-3 { --bx: 78%; --by: 88%; --bw: 50rem; --bh: 42rem; --blob-c: var(--blob-3); --dur: 47s; --dx: -12vw; --dy: -14vh; --delay: -17s; }
-.ambient-blob-4 { --bx: 8%;  --by: 92%; --bw: 38rem; --bh: 36rem; --blob-c: var(--blob-4); --dur: 59s; --dx: 15vw;  --dy: -10vh; --delay: -25s; }
-.ambient-blob-5 { --bx: 50%; --by: 50%; --bw: 42rem; --bh: 36rem; --blob-c: var(--blob-5); --dur: 34s; --dx: 10vw;  --dy: 9vh;   --delay: -5s; }
+.ambient-blob-1 { --bx: 12%; --by: 8%;  --bw: 46rem; --bh: 36rem; --blob-c: var(--blob-1); --dur: 26s; --dx: 15vw;  --dy: 13vh;  --delay: 0s; }
+.ambient-blob-2 { --bx: 88%; --by: 2%;  --bw: 41rem; --bh: 34rem; --blob-c: var(--blob-2); --dur: 33s; --dx: -14vw; --dy: 15vh;  --delay: -9s; }
+.ambient-blob-3 { --bx: 78%; --by: 88%; --bw: 50rem; --bh: 42rem; --blob-c: var(--blob-3); --dur: 29s; --dx: -15vw; --dy: -14vh; --delay: -17s; }
+.ambient-blob-4 { --bx: 8%;  --by: 92%; --bw: 38rem; --bh: 36rem; --blob-c: var(--blob-4); --dur: 38s; --dx: 16vw;  --dy: -12vh; --delay: -25s; }
+.ambient-blob-5 { --bx: 50%; --by: 50%; --bw: 42rem; --bh: 36rem; --blob-c: var(--blob-5); --dur: 22s; --dx: 13vw;  --dy: 11vh;  --delay: -5s; }
 
+/* A closed loop (no "alternate"): four waypoints around the resting position,
+   so the path never retraces itself and the motion has no visible turnaround. */
 @keyframes ambientDrift {
   0%   { transform: translate3d(-50%, -50%, 0) scale(1); opacity: 1; }
-  50%  { transform: translate3d(calc(-50% + var(--dx)), calc(-50% + var(--dy)), 0) scale(1.1); opacity: 0.82; }
-  100% { transform: translate3d(calc(-50% + var(--dx) * -0.45), calc(-50% + var(--dy) * 0.55), 0) scale(0.96); opacity: 1; }
+  25%  { transform: translate3d(calc(-50% + var(--dx)), calc(-50% + var(--dy) * 0.55), 0) scale(1.2); opacity: 0.8; }
+  50%  { transform: translate3d(calc(-50% + var(--dx) * 0.3), calc(-50% + var(--dy)), 0) scale(0.9); opacity: 1; }
+  75%  { transform: translate3d(calc(-50% + var(--dx) * -0.75), calc(-50% + var(--dy) * 0.3), 0) scale(1.12); opacity: 0.78; }
+  100% { transform: translate3d(-50%, -50%, 0) scale(1); opacity: 1; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .aqua .ambient-blob,
@@ -634,7 +645,7 @@
   .glass .ambient-blob,
   [data-theme="glass"] .ambient-blob {
     will-change: transform, opacity;
-    animation: ambientDrift var(--dur) ease-in-out var(--delay) infinite alternate;
+    animation: ambientDrift var(--dur) ease-in-out var(--delay) infinite;
   }
 }
 @media (max-width: 639px) {
@@ -735,7 +746,7 @@
   --blob-2: rgba(140, 200, 255, 0.36);
   --blob-3: rgba(186, 160, 255, 0.28);
   --blob-4: rgba(120, 230, 210, 0.3);
-  --blob-5: transparent;
+  --blob-5: rgba(150, 190, 255, 0.2);
 }
 @media (prefers-color-scheme: dark) {
   [data-theme="glass"] .ambient,
@@ -744,8 +755,9 @@
     --blob-1: rgba(46, 190, 130, 0.28);
     --blob-2: rgba(60, 120, 220, 0.22);
     --blob-3: rgba(120, 80, 220, 0.2);
-    --blob-4: transparent;
-    --blob-5: transparent;
+    /* v1.8.1: two more faint washes, so the dark canvas has light moving across all of it. */
+    --blob-4: rgba(40, 170, 160, 0.17);
+    --blob-5: rgba(70, 110, 225, 0.12);
   }
 }
 
