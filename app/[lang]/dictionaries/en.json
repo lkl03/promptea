@@ -436,7 +436,9 @@
     "close": "Close",
     "modalTitle": "Before you go: want the best of the week in your inbox?",
     "modalBody": "A summary every Monday with the AI stories that mattered, verified and with their sources. It is free and you can unsubscribe any time.",
-    "modalDismiss": "Not now"
+    "modalDismiss": "Not now",
+    "compactCta": "Subscribe",
+    "hide": "Hide for a few days"
   },
   "library": {
     "metaTitle": "Prompt library",

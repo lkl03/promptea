@@ -69,7 +69,9 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
 let blocked = 0;
 
 for (const s of shots) {
-  const page = await browser.newPage();
+  // A fresh context per shot: every capture is a first visit (no shared localStorage).
+  const context = await browser.createBrowserContext();
+  const page = await context.newPage();
   const h = s.h ?? (s.w < 600 ? 812 : 900);
   await page.setViewport({ width: s.w, height: h, deviceScaleFactor: 1, isMobile: s.w < 600, hasTouch: s.w < 600 });
   await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: s.scheme ?? "light" }]);
@@ -114,7 +116,7 @@ for (const s of shots) {
   } catch (e) {
     console.log(`ERR ${s.name}: ${e.message}`);
   }
-  await page.close();
+  await context.close();
 }
 await browser.close();
 if (!LOCAL) console.log(`${blocked} non-GET request(s) blocked (read-only capture)`);

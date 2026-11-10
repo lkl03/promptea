@@ -91,7 +91,7 @@ describe("eligibility", () => {
 describe("persistence never throws", () => {
   test("round trip", () => {
     const st = memStorage();
-    const s: NudgeState = { subscribed: false, pillDismissedAt: NOW, dockDismissedAt: 0, modalShownAt: NOW - DAY };
+    const s: NudgeState = { subscribed: false, pillDismissedAt: NOW, dockDismissedAt: 0, modalShownAt: NOW - DAY, cardShownAt: NOW - 2 * DAY };
     expect(writeState(st, s)).toBe(true);
     expect(readState(st)).toEqual(s);
   });

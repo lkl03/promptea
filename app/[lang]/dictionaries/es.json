@@ -436,7 +436,9 @@
     "close": "Cerrar",
     "modalTitle": "Antes de irte: ¿te mandamos lo mejor de la semana?",
     "modalBody": "Un resumen cada lunes con las historias de IA que importaron, verificadas y con sus fuentes. Es gratis y te das de baja cuando quieras.",
-    "modalDismiss": "Ahora no"
+    "modalDismiss": "Ahora no",
+    "compactCta": "Suscribirme",
+    "hide": "Ocultar por unos días"
   },
   "library": {
     "metaTitle": "Biblioteca de prompts",

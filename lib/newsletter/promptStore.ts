@@ -60,8 +60,8 @@ function emit() {
 function patch(next: Partial<NudgeSnapshot>, persist = true) {
   snapshot = { ...snapshot, ...next };
   if (persist) {
-    const { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt } = snapshot;
-    writeState(local(), { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt });
+    const { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt, cardShownAt } = snapshot;
+    writeState(local(), { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt, cardShownAt });
   }
   emit();
 }
@@ -98,6 +98,11 @@ export const nudgeActions = {
   dismissPill(now = Date.now()) {
     hydrate();
     patch({ pillDismissedAt: now, pillFormOpen: false });
+  },
+  /** v1.8.1 — the first-visit card opened by itself: remembered for good, so it happens once per browser. */
+  markCardShown(now = Date.now()) {
+    hydrate();
+    if (snapshot.cardShownAt === 0) patch({ cardShownAt: now });
   },
   dismissDock(now = Date.now()) {
     hydrate();

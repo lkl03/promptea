@@ -21,7 +21,7 @@ export type AppEventName =
   | "newsletter_prompt_dismissed";
 
 /** Which newsletter surface an event refers to. "inline" = the forms embedded in pages. */
-export type NewsletterSurface = "pill" | "modal" | "dock" | "inline";
+export type NewsletterSurface = "pill" | "card" | "modal" | "dock" | "inline";
 
 export function trackAppEvent(args: {
   event: AppEventName;
