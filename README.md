@@ -1,6 +1,6 @@
 # Promptea
 
-A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Promptea is and what to do in one screen: the logo and tagline, two action links (Analyze a prompt · Find the best AI), a box to paste a prompt, the latest AI Daily stories, a Benchmarks teaser and, in a side column, the X feed card and the newsletter sign-up. One header (`components/TopBar.tsx`) carries the navigation on every page.
+A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Promptea is and what to do in one screen: the logo and tagline, a strip of AI Daily headlines from the last 72 hours, two action links (Analyze a prompt · Find the best AI), a box to paste a prompt, the latest AI Daily stories, a Benchmarks teaser and, in a side column, the X feed card and the newsletter sign-up. One header (`components/TopBar.tsx`) carries the navigation on every page.
 
 - **Improve Prompt** (`/[lang]/analyzer`, the homepage until v1.7.0 — old `/[lang]?prompt=…` links are redirected with their parameters) — analyze your prompt, detect issues, score it, and generate a genuinely personalized improved version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
 - **Find the Best AI** (`/[lang]/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI, model, or working environment (e.g. Claude Code vs. plain chat) fits it best, with ranked alternatives and concrete adaptation advice.
@@ -147,8 +147,8 @@ npm run build      # production build (works offline — fonts are local)
 | `PROMPT_JUDGE_CONFIDENCE_MAX` | optional | The judge runs only when `meta.confidence` is below this value (default `60`). |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URLs for SEO. |
 | `NEXT_PUBLIC_ENABLE_ADS`, `NEXT_PUBLIC_GOOGLE_ADS_*` | optional | Ad slots + conversion tracking. |
-| `NEXT_PUBLIC_X_HANDLE` | optional | Promptea's X account (`promptea` or `@promptea`). Enables the X feed card (home side column and AI Daily; official embed, click-to-load, with a link-to-profile fallback) and the footer link `https://x.com/<handle>`. If unset it is derived from `NEXT_PUBLIC_X_URL`; with neither, the card is not rendered. |
-| `NEXT_PUBLIC_X_LIST_ID` | optional | v1.8.1. Numeric id of an X list: when set (and valid), the feed card embeds that list instead of the account's own timeline. The handle still names the account and feeds the "Follow" link. To change what the card shows, change these variables, not `components/home/XFeed.tsx`. |
+| `NEXT_PUBLIC_X_HANDLE` | optional | Promptea's X account (`promptea` or `@promptea`). Names the account on the X feed card and builds the footer link `https://x.com/<handle>`. If unset it is derived from `NEXT_PUBLIC_X_URL`. |
+| `NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID` | optional | v1.8.1. Id (UUID) of the Elfsight "Twitter Feed" widget shown by the X feed card (home side column and AI Daily). Defaults to Promptea's widget (`DEFAULT_X_WIDGET_ID` in `lib/social.ts`); `off` hides the card. The account, layout and number of posts are set in the Elfsight dashboard; the look comes from `app/globals.css` ("X feed (Elfsight)"). |
 | `NEXT_PUBLIC_X_URL` | optional | Profile URL for the footer link (default `https://x.com`). Also the fallback source of the handle. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
 | `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to allow LIVE Promptea Weekly sends. Default `false` (live runs return `DELIVERY_DISABLED`). `promptea.me` is verified in Resend. |

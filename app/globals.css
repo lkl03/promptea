@@ -1455,3 +1455,207 @@ html {
     border-color: var(--accent);
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.8.1 — X feed (Elfsight "Twitter Feed" widget, components/home/XFeed.tsx)
+
+   Elfsight renders the posts as plain DOM inside .x-feed-box (classes
+   eapps-twitter-feed-*), with its own white cards, system font and X blue.
+   These rules restyle it with Promptea's tokens, so it follows Aqua, Metro and
+   Glass (light and dark) without per-theme code. !important is needed
+   throughout: the widget injects its stylesheet after ours.
+
+   Deliberately untouched: Elfsight's own "Free … Widget" badge. Hiding it is
+   against the free plan's terms; it goes away with a paid plan.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.x-feed-box [class*="eapps-twitter-feed"] {
+  font-family: inherit !important;
+  box-sizing: border-box;
+}
+.x-feed-box .eapps-twitter-feed-container,
+.x-feed-box .eapps-twitter-feed-inner,
+.x-feed-box .eapps-twitter-feed-posts,
+.x-feed-box .eapps-twitter-feed-posts-container {
+  background: transparent !important;
+  color: var(--ink) !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+/* The card already has its own heading and a link to the profile. */
+.x-feed-box .eapps-twitter-feed-title,
+.x-feed-box .eapps-twitter-feed-header {
+  display: none !important;
+}
+
+/* One post = one row separated by a hairline (no white card). */
+.x-feed-box .eapps-twitter-feed-posts-item {
+  padding: 0 !important;
+  background: transparent !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-inner {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0.875rem 0.875rem 0.75rem !important;
+  color: var(--ink) !important;
+  transition: background-color 160ms ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .x-feed-box .eapps-twitter-feed-posts-item-inner:hover {
+    background: var(--surface-soft) !important;
+  }
+}
+
+/* Author line */
+.x-feed-box .eapps-twitter-feed-posts-item-user-name,
+.x-feed-box .eapps-twitter-feed-posts-item-user-name a {
+  color: var(--ink) !important;
+  font-weight: 600 !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-user-screen-name,
+.x-feed-box .eapps-twitter-feed-posts-item-user-screen-name a,
+.x-feed-box .eapps-twitter-feed-posts-item-user-date,
+.x-feed-box .eapps-twitter-feed-posts-item-user-date a,
+.x-feed-box .eapps-twitter-feed-posts-item-date,
+.x-feed-box .eapps-twitter-feed-posts-item-date a {
+  color: var(--ink-muted) !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-user-image {
+  border-radius: 9999px !important;
+  border: 1px solid var(--line) !important;
+}
+
+/* Post text */
+.x-feed-box .eapps-twitter-feed-posts-item-text {
+  color: var(--ink) !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.55 !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-text a {
+  color: var(--accent) !important;
+  text-decoration: none !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-text a:hover {
+  text-decoration: underline !important;
+}
+
+/* Media and link previews */
+.x-feed-box .eapps-twitter-feed-posts-item-media,
+.x-feed-box .eapps-twitter-feed-posts-item-media img,
+.x-feed-box .eapps-twitter-feed-posts-item-media video {
+  border-radius: 12px !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-link-inner {
+  background: var(--surface-soft) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 12px !important;
+  color: var(--ink) !important;
+  overflow: hidden !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-link-info,
+.x-feed-box .eapps-twitter-feed-posts-item-link-info * {
+  color: var(--ink-muted) !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-link-no-image-icon-container {
+  background: transparent !important;
+  color: var(--ink-muted) !important;
+}
+
+/* The X mark of each post and the placeholder icon of a link preview follow the text colour
+   (they are dark by default, i.e. invisible on Metro and Glass dark). */
+.x-feed-box .eapps-twitter-feed-posts-item-user-post,
+.x-feed-box .eapps-twitter-feed-posts-item-user-post svg,
+.x-feed-box .eapps-twitter-feed-posts-item-user-post path,
+.x-feed-box .eapps-twitter-feed-posts-item-link-no-image-icon-container svg,
+.x-feed-box .eapps-twitter-feed-posts-item-link-no-image-icon-container path {
+  color: var(--ink-muted) !important;
+  fill: var(--ink-muted) !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-link-info,
+.x-feed-box .eapps-twitter-feed-posts-item-link-no-image {
+  background: transparent !important;
+}
+
+/* Reply / repost / like / share counters */
+.x-feed-box .eapps-twitter-feed-posts-item-actions-item,
+.x-feed-box .eapps-twitter-feed-posts-item-actions-item-text {
+  color: var(--ink-muted) !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-item-actions-item-icon svg,
+.x-feed-box .eapps-twitter-feed-posts-item-actions-item-icon path {
+  fill: currentColor !important;
+}
+@media (hover: hover) and (pointer: fine) {
+  .x-feed-box .eapps-twitter-feed-posts-item-actions-item:hover,
+  .x-feed-box .eapps-twitter-feed-posts-item-actions-item:hover .eapps-twitter-feed-posts-item-actions-item-text {
+    color: var(--accent) !important;
+  }
+}
+
+/* Share menu */
+.x-feed-box .eui-popover-content {
+  background: var(--overlay-fill) !important;
+  border: 1px solid var(--line-strong) !important;
+  border-radius: 12px !important;
+  color: var(--ink) !important;
+  box-shadow: 0 12px 30px -16px rgb(var(--shadow-color) / 0.45) !important;
+}
+.x-feed-box .eui-popover-content-item,
+.x-feed-box .eui-popover-content-item-title {
+  color: var(--ink) !important;
+}
+.x-feed-box .eui-popover-content-item:hover {
+  background: var(--surface-soft) !important;
+}
+
+/* "Load more" = the site's ghost button */
+.x-feed-box .eapps-twitter-feed-posts-show-more {
+  margin: 0.75rem auto !important;
+  display: flex !important;
+  width: max-content !important;
+  min-height: 2.25rem;
+  align-items: center;
+  padding: 0 1rem !important;
+  background: transparent !important;
+  color: var(--ink-muted) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 0.75rem !important;
+  font-size: 0.8125rem !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+.x-feed-box .eapps-twitter-feed-posts-show-more:hover {
+  background: var(--surface-soft) !important;
+  color: var(--ink) !important;
+  border-color: var(--line-strong) !important;
+}
+.x-feed-box .eapps-loader-inner,
+.x-feed-box .eapps-twitter-feed-posts-show-more-loader-inner {
+  border-color: var(--accent) transparent transparent !important;
+}
+.x-feed-box .eapps-twitter-feed-error {
+  color: var(--ink-muted) !important;
+  font-size: 0.8125rem !important;
+  padding: 1rem !important;
+}
+
+/* The scroll area inside the fixed-height box */
+.x-feed-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.x-feed-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+/* Metro is flat and square. */
+[data-theme="metro"] .x-feed-box,
+[data-theme="metro"] .x-feed-box .eapps-twitter-feed-posts-item-link-inner,
+[data-theme="metro"] .x-feed-box .eapps-twitter-feed-posts-item-media,
+[data-theme="metro"] .x-feed-box .eapps-twitter-feed-posts-item-media img,
+[data-theme="metro"] .x-feed-box .eapps-twitter-feed-posts-show-more,
+[data-theme="metro"] .x-feed-box .eui-popover-content {
+  border-radius: 0 !important;
+}

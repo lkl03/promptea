@@ -357,10 +357,9 @@
     "xFeed": {
       "title": "Seguinos en X",
       "subtitle": "Novedades de Promptea y de la IA, en vivo.",
-      "load": "Cargar el feed de @{handle}",
       "loading": "Cargando el feed…",
-      "privacyNote": "El feed lo muestra X, un tercero: al cargarlo, X puede recibir datos de tu navegador y usar cookies. No se carga hasta que lo pedís.",
-      "fallback": "X no mostró el feed acá. A veces X rechaza los timelines embebidos, o tu navegador o una extensión lo bloquean. El perfil se abre sin problemas.",
+      "privacyNote": "Se muestra con un widget de Elfsight; las publicaciones son de X. Los dos son terceros y pueden recibir datos de tu navegador.",
+      "fallback": "No se pudo mostrar el feed acá. Puede que tu navegador o una extensión lo estén bloqueando. El perfil se abre sin problemas.",
       "open": "Abrir @{handle} en X",
       "follow": "Seguinos en X"
     },

@@ -8,10 +8,10 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { storyLabel } from "@/components/home/LatestDaily";
 import { HANDOFF_PROMPT_MAX, HOME_PROMPT_MAX, stashPromptForAnalyzer } from "@/components/home/HomePromptBox";
-import { timelineSource } from "@/components/home/XFeed";
+import { ELFSIGHT_PLATFORM_SRC } from "@/components/home/XFeed";
 import { NAV_LINKS } from "@/components/TopBar";
 import { HANDOFF_KEY } from "@/lib/matcher/handoff";
-import { resolveXFeedSource } from "@/lib/social";
+import { DEFAULT_X_WIDGET_ID, resolveXWidgetId } from "@/lib/social";
 import { homeAboutDoc, howItWorksDoc } from "@/lib/seo/content/sitePages";
 import { CORE_PAGES, allStaticSeoUrls } from "@/lib/seo/registry";
 import { LOCALES } from "@/lib/seo/site";
@@ -62,14 +62,14 @@ describe("home page structure", () => {
   // The component only: the header comment explains what was removed, and names it.
   const home = file.slice(file.indexOf("export default async function"));
 
-  test("the long blocks left the home: no about section, no video, no tool cards, no marquee", () => {
-    expect(home).not.toMatch(/HomeAbout|ShowcaseVideo|HubCards|NewsMarquee/);
+  test("the long blocks left the home: no about section, no video, no tool cards", () => {
+    expect(home).not.toMatch(/HomeAbout|ShowcaseVideo|HubCards/);
     expect(existsSync(join(root, "components", "home", "HubCards.tsx"))).toBe(false);
     expect(existsSync(join(root, "components", "home", "HomeAbout.tsx"))).toBe(false);
   });
 
   test("reading order: heading, actions + how it works, prompt box, stories, benchmarks; X and newsletter aside", () => {
-    const order = ["<h1", "t.actionsAria", "/how-it-works", "<HomePromptBox", "<LatestDaily", "<BenchmarksTeaser", "<aside", "<XFeed"];
+    const order = ["<NewsMarquee", "<h1", "t.actionsAria", "/how-it-works", "<HomePromptBox", "<LatestDaily", "<BenchmarksTeaser", "<aside", "<XFeed"];
     const at = order.map((m) => home.indexOf(m));
     expect(at.every((i) => i > 0), JSON.stringify(at)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
@@ -160,31 +160,75 @@ describe("Latest in AI Daily", () => {
   });
 });
 
-describe("X feed source", () => {
-  test("no handle, no card", () => {
-    expect(resolveXFeedSource(undefined, undefined, undefined)).toBeNull();
-    expect(resolveXFeedSource("", "https://x.com", "123456789")).toBeNull();
+describe("X feed card (Elfsight widget)", () => {
+  const src = read("components", "home", "XFeed.tsx");
+
+  test("renders Promptea's widget by default; a valid env id overrides it; 'off' disables the card", () => {
+    expect(DEFAULT_X_WIDGET_ID).toBe("941b1ba8-5c1c-4d91-a254-c242d3c77a61");
+    expect(resolveXWidgetId(undefined)).toBe(DEFAULT_X_WIDGET_ID);
+    expect(resolveXWidgetId("  ")).toBe(DEFAULT_X_WIDGET_ID);
+    expect(resolveXWidgetId("0F0E0D0C-1111-2222-3333-444455556666")).toBe("0f0e0d0c-1111-2222-3333-444455556666");
+    expect(resolveXWidgetId("off")).toBeNull();
+    expect(resolveXWidgetId("none")).toBeNull();
   });
 
-  test("a handle gives the profile timeline; a valid list id switches the source", () => {
-    expect(resolveXFeedSource("@promptea_me", undefined, undefined)).toEqual({ kind: "profile", handle: "promptea_me" });
-    const list = resolveXFeedSource("promptea_me", undefined, " 1234567890123 ");
-    expect(list).toEqual({ kind: "list", handle: "promptea_me", listId: "1234567890123" });
-    expect(timelineSource(list!)).toEqual({ sourceType: "list", id: "1234567890123" });
-    expect(timelineSource({ kind: "profile", handle: "promptea_me" })).toEqual({ sourceType: "profile", screenName: "promptea_me" });
-  });
-
-  test("a malformed list id is ignored (never passed to the embed)", () => {
-    for (const bad of ["abc", "12", "123456789'); alert(1)//", "https://x.com/i/lists/1"]) {
-      expect(resolveXFeedSource("promptea_me", undefined, bad)).toEqual({ kind: "profile", handle: "promptea_me" });
+  test("a malformed id never reaches the page (it becomes a class name)", () => {
+    for (const bad of ["abc", '941b1ba8"><script>alert(1)</script>', "941b1ba8-5c1c-4d91-a254-c242d3c77a61 extra", "../../x"]) {
+      expect(resolveXWidgetId(bad)).toBe(DEFAULT_X_WIDGET_ID);
     }
   });
 
-  test("the card stays a click-to-load facade with a fixed height", () => {
-    const src = read("components", "home", "XFeed.tsx");
-    expect(src).toMatch(/onClick=\{load\}/);
+  test("the widget element is the one Elfsight expects; loading is deferred once, by the card", () => {
+    expect(src).toMatch(/className=\{`elfsight-app-\$\{widgetId\}`\}/);
+    // Elfsight's own lazy attribute stacked a second observer on ours and sometimes never fired.
+    expect(src).not.toMatch(/data-elfsight-app-lazy=/);
+    expect(ELFSIGHT_PLATFORM_SRC).toBe("https://elfsightcdn.com/platform.js");
+  });
+
+  test("nothing is requested until the card is near the viewport, and X's own widget is gone", () => {
+    expect(src).toMatch(/new IntersectionObserver\(/);
+    expect(src).not.toMatch(/platform\.twitter\.com/);
+    // The script is only ever added by loadPlatform(), which only start() calls, which only the observer calls.
+    expect(src.match(/loadPlatform\(\)/g)).toHaveLength(2);
+    expect(read("app", "[lang]", "layout.tsx")).not.toMatch(/elfsight/i);
+  });
+
+  test("fixed-height box (no layout shift) and a profile-link fallback when nothing renders", () => {
     expect(src).toMatch(/style=\{\{ height: FEED_HEIGHT \}\}/);
-    expect(src).not.toMatch(/useEffect\(\(\) => \{\s*load\(\)/);
+    expect(src).toMatch(/LOAD_TIMEOUT_MS/);
+    expect(src).toMatch(/state === "failed"/);
+  });
+
+  test("both dictionaries carry the card's strings, and the privacy page names Elfsight", () => {
+    for (const lang of LOCALES) {
+      const x = dict(lang).hub.xFeed;
+      for (const k of ["title", "subtitle", "loading", "privacyNote", "fallback", "open", "follow"]) expect(x[k], `${lang}.${k}`).toBeTruthy();
+      expect(x.privacyNote).toMatch(/Elfsight/);
+    }
+    expect(read("app", "[lang]", "privacy", "page.tsx")).toMatch(/Elfsight/);
+  });
+});
+
+describe("news marquee on the home page", () => {
+  const file = read("app", "[lang]", "page.tsx");
+  const home = file.slice(file.indexOf("export default async function"));
+
+  test("it is back, above the logo, fed by the same query as the latest stories", () => {
+    expect(home).toMatch(/<NewsMarquee /);
+    expect(home.indexOf("<NewsMarquee ")).toBeLessThan(home.indexOf("<h1"));
+    expect(file).toMatch(/selectMarqueeItems\(articles, new Date\(\)\)/);
+    expect(file.match(/listAllPublishedArticles\(/g)).toHaveLength(1);
+  });
+
+  test("it renders nothing when no story qualifies (no empty strip)", () => {
+    expect(home).toMatch(/marquee\.length > 0 \?/);
+  });
+
+  test("its strings exist in both dictionaries", () => {
+    for (const lang of LOCALES) {
+      const h = dict(lang).hub;
+      for (const k of ["marqueeLabel", "marqueePause", "marqueePlay"]) expect(h[k], `${lang}.hub.${k}`).toBeTruthy();
+    }
   });
 });
 

@@ -40,7 +40,7 @@ export const CONTENT_UPDATED = {
   models: "2026-11-09",
   landings: "2026-11-09",
   changelog: "2026-11-10",
-  privacy: "2026-11-08",
+  privacy: "2026-11-10",
   benchmarks: "2026-11-10",
   /** Bumped when the AI Daily index / weekly archive layout changes, not per article. */
   blogIndex: "2026-11-08",

@@ -51,7 +51,7 @@ import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 import { getSiteUrl } from "@/lib/seo/site";
 import NewsletterDock from "@/components/newsletter/NewsletterDock";
 import XFeed from "@/components/home/XFeed";
-import { getXFeedSource, getXLinks } from "@/lib/social";
+import { getXLinks, getXWidgetId } from "@/lib/social";
 import DailyTabs from "@/components/blog/DailyTabs";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -195,7 +195,8 @@ export default async function BlogIndexPage({
   const requestedPage = parsePage(sp.page);
 
   const dict = await getDictionary(l);
-  const xSource = getXFeedSource();
+  const xWidgetId = getXWidgetId();
+  const x = getXLinks();
   const t = dict.blog;
 
   const all = await loadCards(l);
@@ -394,9 +395,9 @@ export default async function BlogIndexPage({
           </p>
         </div>
 
-        {/* v1.8.1: the side column also carries the X feed card (desktop; only with an account configured). */}
+        {/* v1.8.1: the side column also carries the X feed card (desktop). */}
         <NewsletterDock lang={l} dict={dict.newsletterDock} formDict={dict.newsletter.bar}>
-          {xSource ? <XFeed source={xSource} profileUrl={getXLinks().url} dict={dict.hub.xFeed} /> : null}
+          {xWidgetId ? <XFeed widgetId={xWidgetId} handle={x.handle} profileUrl={x.url} dict={dict.hub.xFeed} /> : null}
         </NewsletterDock>
       </div>
     </main>

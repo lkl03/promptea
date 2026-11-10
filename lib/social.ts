@@ -9,16 +9,13 @@
 //                         NEXT_PUBLIC_X_HANDLE is not set (default https://x.com,
 //                         which carries no handle)
 //
-//   NEXT_PUBLIC_X_LIST_ID (v1.8.1, optional) the numeric id of an X list: when
-//                         set, the feed card embeds that list instead of the
-//                         account's own timeline (the handle still names the
-//                         account and feeds the "Follow" link).
+//   NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID (optional) the id of the Elfsight "Twitter
+//                         Feed" widget the feed card renders. Defaults to
+//                         Promptea's own widget (DEFAULT_X_WIDGET_ID below).
 //
-// Without a handle there is nothing to embed: the feed card is not rendered and
-// the footer keeps linking to the generic URL.
-//
-// To change what the feed card shows, change these variables — never the
-// component (components/home/XFeed.tsx renders whatever source it is given).
+// The handle names the account in the footer link and on the feed card; the
+// posts themselves come from the Elfsight widget, whose account, layout and
+// number of posts are set in the Elfsight dashboard (components/home/XFeed.tsx).
 
 /** X handles: 1–15 letters, digits or underscores. */
 const HANDLE_RE = /^[A-Za-z0-9_]{1,15}$/;
@@ -58,23 +55,22 @@ export function getXLinks(): XLinks {
 }
 
 // ---------------------------------------------------------------------------
-// Feed source (v1.8.1)
+// Feed widget (v1.8.1): Elfsight "Twitter Feed"
 // ---------------------------------------------------------------------------
 
-/** What the X feed card embeds: an account's timeline, or a curated list owned by that account. */
-export type XFeedSource = { kind: "profile"; handle: string } | { kind: "list"; handle: string; listId: string };
+/** Promptea's Elfsight widget (created by the owner on 2026-11-10). */
+export const DEFAULT_X_WIDGET_ID = "941b1ba8-5c1c-4d91-a254-c242d3c77a61";
 
-/** X list ids are numeric snowflakes. */
-const LIST_ID_RE = /^[0-9]{5,25}$/;
+/** Elfsight widget ids are UUIDs; anything else is ignored (the id becomes a class name). */
+const WIDGET_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** Pure: null when there is no valid handle (no card), a list when a valid list id is given, the profile otherwise. */
-export function resolveXFeedSource(handleEnv: string | undefined, urlEnv: string | undefined, listIdEnv: string | undefined): XFeedSource | null {
-  const { handle } = resolveXLinks(handleEnv, urlEnv);
-  if (!handle) return null;
-  const listId = listIdEnv?.trim();
-  return listId && LIST_ID_RE.test(listId) ? { kind: "list", handle, listId } : { kind: "profile", handle };
+/** Pure: the env value when it is a valid id, the default otherwise; "off" (or "none") disables the card. */
+export function resolveXWidgetId(env: string | undefined): string | null {
+  const v = env?.trim();
+  if (v && /^(off|none|false|0)$/i.test(v)) return null;
+  return v && WIDGET_ID_RE.test(v) ? v.toLowerCase() : DEFAULT_X_WIDGET_ID;
 }
 
-export function getXFeedSource(): XFeedSource | null {
-  return resolveXFeedSource(process.env.NEXT_PUBLIC_X_HANDLE, process.env.NEXT_PUBLIC_X_URL, process.env.NEXT_PUBLIC_X_LIST_ID);
+export function getXWidgetId(): string | null {
+  return resolveXWidgetId(process.env.NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID);
 }

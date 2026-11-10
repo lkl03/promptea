@@ -4,6 +4,8 @@ Fecha: 2026-11-10 · Rama: `claude/stoic-greider-4d1132` · Base: `main` @ `1134
 
 Este documento dice **qué se probó, cómo, con qué resultado**, y separa lo que se verificó de verdad de lo que no se pudo verificar. Todo lo marcado "verificado" se puede repetir con los comandos de la sección 7.
 
+> **Actualización del 2026-11-10, posterior al merge de #37 (pedido del dueño):** (1) el marquee de noticias volvió a la home, debajo del header; (2) el feed de X ya no usa el embed oficial (hallazgo V-9) sino un widget de Elfsight, con estilos propios para los tres temas. Verificado en local: carga en recarga y en navegación interna (home ↔ IA al Día), 10 publicaciones reales, sin scroll horizontal, y fallback al perfil cuando no renderiza. Lo que sigue describe el estado al momento del PR.
+
 ## 1. Cómo se probó
 
 | Entorno | Para qué | Datos |

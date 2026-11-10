@@ -357,10 +357,9 @@
     "xFeed": {
       "title": "Follow us on X",
       "subtitle": "Promptea and AI news, live.",
-      "load": "Load the @{handle} feed",
       "loading": "Loading the feed…",
-      "privacyNote": "The feed is shown by X, a third party: when loaded, X may receive data from your browser and set cookies. It is not loaded until you ask for it.",
-      "fallback": "X did not show the feed here. X sometimes refuses embedded timelines, or your browser or an extension may be blocking it. The profile opens fine.",
+      "privacyNote": "Shown with an Elfsight widget; the posts come from X. Both are third parties and may receive data from your browser.",
+      "fallback": "The feed could not be shown here. Your browser or an extension may be blocking it. The profile opens fine.",
       "open": "Open @{handle} on X",
       "follow": "Follow us on X"
     },

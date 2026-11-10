@@ -2,74 +2,62 @@
 
 // components/home/XFeed.tsx
 //
-// v1.8.0 — the official X timeline embed, behind a facade.
-// v1.8.1 — it is now a compact card for a side column (home, AI Daily): sticky
-// on desktop next to the main content, stacked after it on phones.
+// The X feed card (home side column, AI Daily side column).
 //
-// Third-party scripts are the usual cause of slow first renders, layout shift
-// and privacy surprises, so nothing from X is requested until the visitor asks
-// for it:
+// v1.8.0–v1.8.1 embedded X's own timeline widget behind a click-to-load facade.
+// X stopped rendering that embed (the widget created an empty frame, in
+// production too), so the card only ever showed its fallback. Since v1.8.1 the
+// feed comes from an Elfsight "Twitter Feed" widget instead: Elfsight fetches
+// the posts on its side and renders them into this page.
 //
-//   1. First render: a static card (heading, a one-line privacy note, a
-//      "Load the feed" button and a plain link to the profile). No script, no
-//      iframe, no cookies. It reserves exactly the height the loaded timeline
-//      will use (FEED_HEIGHT), so loading it causes no layout shift.
-//   2. On click: https://platform.twitter.com/widgets.js is added once and the
-//      timeline is created into the reserved box, themed light/dark from the
-//      active Promptea theme.
-//   3. If the script is blocked, errors, or nothing appears within a timeout,
-//      the box shows a graceful fallback: the profile link.
+// How it loads:
+//   - Nothing is requested from Elfsight until the card is near the viewport
+//     (IntersectionObserver, 300 px margin). Then https://elfsightcdn.com/platform.js
+//     is added once per page and it fills the `elfsight-app-<id>` element.
+//     Elfsight's own `data-elfsight-app-lazy` attribute is NOT used: it defers
+//     again with a second observer, and inside this scroll box that second
+//     wait sometimes never fired (the widget stayed empty). One deferral, ours.
+//   - The feed box has a fixed height and scrolls inside, so loading it shifts
+//     nothing and the sticky side column keeps its size.
+//   - If nothing has rendered after LOAD_TIMEOUT_MS (script blocked by the
+//     browser or an extension, Elfsight down, the plan's view limit reached),
+//     the box shows a link to the profile instead of staying empty.
 //
-// ── Changing what the card shows (no change to this file's structure) ────────
-// The card renders whatever `source` it is given (lib/social.ts → getXFeedSource()):
-//   - another account:  set NEXT_PUBLIC_X_HANDLE (with or without "@");
-//   - a curated X list: set NEXT_PUBLIC_X_LIST_ID to the list's numeric id
-//     (the handle is still used for the "Follow" link);
-//   - no handle at all: pages do not render the card.
-// No tweet is ever written into the page by us: the content is X's own embed,
-// loaded on request. There is nothing to "fill in" here by hand.
+// Which widget: lib/social.ts → getXWidgetId() (NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID,
+// with the Promptea widget as default). Its content (account, number of posts,
+// layout) is configured in the Elfsight dashboard, not here. Its look is matched
+// to Promptea's three themes in app/globals.css ("X feed (Elfsight)").
 
 import { useEffect, useRef, useState } from "react";
-import type { XFeedSource } from "@/lib/social";
 
-type Dict = { title: string; subtitle: string; load: string; loading: string; privacyNote: string; fallback: string; open: string; follow: string };
+type Dict = { title: string; subtitle: string; loading: string; privacyNote: string; fallback: string; open: string; follow: string };
 
-/** Fixed height (px) of the box, before and after loading. */
-export const FEED_HEIGHT = 400;
-const LOAD_TIMEOUT_MS = 9000;
-const WIDGETS_SRC = "https://platform.twitter.com/widgets.js";
+/** Fixed height (px) of the feed box, before and after loading. */
+export const FEED_HEIGHT = 460;
+const LOAD_TIMEOUT_MS = 12000;
+export const ELFSIGHT_PLATFORM_SRC = "https://elfsightcdn.com/platform.js";
 
-type TimelineSource = { sourceType: "profile"; screenName: string } | { sourceType: "list"; id: string };
-type Twttr = { widgets?: { createTimeline: (src: TimelineSource, el: HTMLElement, opts: Record<string, unknown>) => Promise<HTMLElement | undefined> } };
-
-/** What widgets.js is asked to render for a given source. */
-export function timelineSource(source: XFeedSource): TimelineSource {
-  return source.kind === "list" ? { sourceType: "list", id: source.listId } : { sourceType: "profile", screenName: source.handle };
-}
-
-function loadWidgets(): Promise<void> {
+/** Adds Elfsight's platform script once per page. Rejects when the browser could not load it. */
+function loadPlatform(): Promise<void> {
   return new Promise((resolve, reject) => {
-    const w = window as unknown as { twttr?: Twttr };
-    if (w.twttr?.widgets) return resolve();
-    const existing = document.querySelector<HTMLScriptElement>(`script[src="${WIDGETS_SRC}"]`);
+    const existing = document.querySelector<HTMLScriptElement>(`script[src="${ELFSIGHT_PLATFORM_SRC}"]`);
+    if (existing?.dataset.loaded === "1") return resolve();
     const s = existing ?? document.createElement("script");
-    s.addEventListener("load", () => resolve(), { once: true });
+    s.addEventListener(
+      "load",
+      () => {
+        s.dataset.loaded = "1";
+        resolve();
+      },
+      { once: true }
+    );
     s.addEventListener("error", () => reject(new Error("blocked")), { once: true });
     if (!existing) {
-      s.src = WIDGETS_SRC;
+      s.src = ELFSIGHT_PLATFORM_SRC;
       s.async = true;
-      s.charset = "utf-8";
       document.head.appendChild(s);
     }
   });
-}
-
-/** Dark when the active theme is dark: Metro always, Glass when the system prefers dark. */
-function embedTheme(): "light" | "dark" {
-  const t = document.documentElement.dataset.theme;
-  if (t === "metro") return "dark";
-  if (t === "glass") return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  return "light";
 }
 
 type State = "idle" | "loading" | "ready" | "failed";
@@ -82,41 +70,56 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
-export default function XFeed({ source, profileUrl, dict }: { source: XFeedSource; profileUrl: string; dict: Dict }) {
+export default function XFeed({ widgetId, handle, profileUrl, dict }: { widgetId: string; handle: string | null; profileUrl: string; dict: Dict }) {
   const [state, setState] = useState<State>("idle");
+  const boxRef = useRef<HTMLDivElement | null>(null);
   const hostRef = useRef<HTMLDivElement | null>(null);
-  const timer = useRef<number | null>(null);
-  const handle = source.handle;
 
   useEffect(() => {
-    return () => {
-      if (timer.current) window.clearTimeout(timer.current);
-    };
-  }, []);
+    const box = boxRef.current;
+    const host = hostRef.current;
+    if (!box || !host) return;
+    let timer: number | undefined;
+    let cancelled = false;
 
-  async function load() {
-    setState("loading");
-    timer.current = window.setTimeout(() => setState((s) => (s === "loading" ? "failed" : s)), LOAD_TIMEOUT_MS);
-    try {
-      await loadWidgets();
-      const host = hostRef.current;
-      const twttr = (window as unknown as { twttr?: Twttr }).twttr;
-      if (!host || !twttr?.widgets) throw new Error("unavailable");
-      host.innerHTML = "";
-      const el = await twttr.widgets.createTimeline(timelineSource(source), host, {
-        theme: embedTheme(),
-        height: FEED_HEIGHT - 2,
-        dnt: true,
-        chrome: "noheader nofooter transparent",
-        lang: document.documentElement.lang === "en" ? "en" : "es",
+    // "Ready" = Elfsight put real content into the host element.
+    const rendered = () => host.childElementCount > 0 && host.getBoundingClientRect().height > 40;
+    const mo = new MutationObserver(() => {
+      if (rendered()) {
+        window.clearTimeout(timer);
+        setState("ready");
+      }
+    });
+
+    const start = () => {
+      if (cancelled) return;
+      setState("loading");
+      mo.observe(host, { childList: true, subtree: true });
+      timer = window.setTimeout(() => setState((s) => (s === "ready" || rendered() ? "ready" : "failed")), LOAD_TIMEOUT_MS);
+      loadPlatform().catch(() => {
+        window.clearTimeout(timer);
+        if (!cancelled) setState("failed");
       });
-      if (timer.current) window.clearTimeout(timer.current);
-      setState(el ? "ready" : "failed");
-    } catch {
-      if (timer.current) window.clearTimeout(timer.current);
-      setState("failed");
-    }
-  }
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          start();
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    io.observe(box);
+
+    return () => {
+      cancelled = true;
+      io.disconnect();
+      mo.disconnect();
+      window.clearTimeout(timer);
+    };
+  }, [widgetId]);
 
   return (
     <section aria-labelledby="xfeed-title" className="surface p-4 sm:p-5">
@@ -127,35 +130,36 @@ export default function XFeed({ source, profileUrl, dict }: { source: XFeedSourc
           {dict.title}
         </h2>
         <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost h-8 shrink-0 px-3 text-xs">
-          @{handle}
-          <span className="sr-only"> — {dict.follow}</span>
+          {handle ? `@${handle}` : dict.follow}
+          {handle ? <span className="sr-only"> — {dict.follow}</span> : null}
         </a>
       </div>
       <p className="mt-1 text-sm text-ink-muted">{dict.subtitle}</p>
 
-      {/* The box has the same height in every state: loading it shifts nothing. */}
-      <div className="relative mt-3 overflow-hidden rounded-xl border border-line" style={{ height: FEED_HEIGHT }}>
-        {/* The embed renders into this host; it is mounted from the first render so React never owns its children. */}
-        <div ref={hostRef} className="absolute inset-0 overflow-y-auto" hidden={state !== "ready"} />
+      {/* Same height in every state: loading the feed shifts nothing. The posts scroll inside. */}
+      <div ref={boxRef} className="x-feed-box relative mt-3 overflow-hidden rounded-xl border border-line" style={{ height: FEED_HEIGHT }}>
+        <div className="x-feed-scroll absolute inset-0 overflow-y-auto overscroll-contain" tabIndex={state === "ready" ? 0 : -1} role="region" aria-label={dict.title} hidden={state === "failed"}>
+          {/* Elfsight renders into this element; React never owns its children. */}
+          <div ref={hostRef} className={`elfsight-app-${widgetId}`} style={{ minHeight: 1 }} suppressHydrationWarning />
+        </div>
 
         {state === "idle" || state === "loading" ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-5 text-center">
-            <p className="max-w-xs text-xs leading-relaxed text-ink-muted">{dict.privacyNote}</p>
-            <button type="button" onClick={load} disabled={state === "loading"} aria-busy={state === "loading"} className="btn btn-primary h-10 px-4 text-sm">
-              {state === "loading" ? dict.loading : dict.load.replace("{handle}", handle)}
-            </button>
-          </div>
+          <p role="status" className="pointer-events-none absolute inset-0 flex items-center justify-center p-5 text-center text-sm text-ink-muted">
+            {dict.loading}
+          </p>
         ) : null}
 
         {state === "failed" ? (
           <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-5 text-center">
             <p className="max-w-xs text-sm leading-relaxed text-ink-muted">{dict.fallback}</p>
             <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary h-10 px-4 text-sm">
-              {dict.open.replace("{handle}", handle)}
+              {handle ? dict.open.replace("{handle}", handle) : dict.follow}
             </a>
           </div>
         ) : null}
       </div>
+
+      <p className="mt-2 text-[11px] leading-snug text-ink-muted">{dict.privacyNote}</p>
     </section>
   );
 }

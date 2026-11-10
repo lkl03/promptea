@@ -6,6 +6,9 @@
 //
 //   0. the site header (components/TopBar.tsx, shared with every page): the
 //      navigation, centred, next to the language and theme switches;
+//   0b. the news marquee: AI Daily headlines from the last 72 hours, one slim
+//      strip (hidden when nothing qualifies). Removed in the first v1.8.1 cut
+//      and put back at the owner's request;
 //   1. the logo with the mascot (the <h1>) + the tagline;
 //   2. two quiet action links, each with a one-line description — "Analyze a
 //      prompt" and "Find the best AI" — and a clear "How this works" link;
@@ -25,12 +28,6 @@
 //     The crawlable text and its HowTo/FAQPage JSON-LD live there now.
 //   - the big "Tools" cards: they duplicated the header and the action links.
 //   - the loose "Prompts · Guides · Models · Glossary · Library" links: the header.
-//   - the news marquee: it scrolled the same headlines "Latest in AI Daily"
-//     lists a few hundred pixels below (both come from the same query, and the
-//     marquee's 72-hour window is a subset of the newest stories), so above the
-//     logo it competed with the page's one job without adding a destination.
-//     The component and its selection rules are untouched (components/home/
-//     NewsMarquee.tsx, lib/blog/marquee.ts) should it be wanted elsewhere.
 //
 // Everything that needs Firestore or a third party degrades to nothing (or to
 // the plain card) when it is unavailable, and the page stays statically
@@ -44,6 +41,7 @@ import { notFound } from "next/navigation";
 
 import { getDictionary, hasLocale } from "./dictionaries";
 import BrandLogo from "@/components/BrandLogo";
+import NewsMarquee from "@/components/home/NewsMarquee";
 import HomePromptBox from "@/components/home/HomePromptBox";
 import LatestDaily, { type LatestArticle } from "@/components/home/LatestDaily";
 import BenchmarksTeaser from "@/components/home/BenchmarksTeaser";
@@ -51,9 +49,10 @@ import XFeed from "@/components/home/XFeed";
 import SubscribeForm from "@/components/newsletter/SubscribeForm";
 import JsonLd from "@/components/seo/JsonLd";
 import { listAllPublishedArticles } from "@/lib/blog/server";
+import { selectMarqueeItems, type MarqueeItem } from "@/lib/blog/marquee";
 import { getBenchmarks } from "@/lib/benchmarks/server";
 import { buildTeaser, type Teaser } from "@/lib/benchmarks/teaser";
-import { getXFeedSource, getXLinks } from "@/lib/social";
+import { getXLinks, getXWidgetId } from "@/lib/social";
 import { homeAboutDoc } from "@/lib/seo/content/sitePages";
 import { homeGraph } from "@/lib/seo/pageGraphs";
 import { markdownPathOf } from "@/lib/seo/registry";
@@ -65,14 +64,18 @@ export const revalidate = 300;
 /** How many stories the "Latest in AI Daily" block shows: one lead + three in a row. */
 const LATEST_COUNT = 4;
 
+/** How many recent stories are read to pick the marquee's last-72-hours headlines from. */
+const NEWS_WINDOW = 30;
+
 /**
- * Firestore never breaks the home: an outage (or no credentials) empties the
- * latest-stories block, which then falls back to the plain AI Daily card.
+ * Firestore never breaks the home: an outage (or no credentials) hides the news
+ * strip and empties the latest-stories block, which then falls back to the plain
+ * AI Daily card. One query feeds both.
  */
-async function loadLatest(lang: Lang): Promise<LatestArticle[]> {
+async function loadNews(lang: Lang): Promise<{ marquee: MarqueeItem[]; latest: LatestArticle[] }> {
   try {
-    const articles = await listAllPublishedArticles(lang, LATEST_COUNT);
-    return articles.slice(0, LATEST_COUNT).map((a) => ({
+    const articles = await listAllPublishedArticles(lang, NEWS_WINDOW);
+    const latest = articles.slice(0, LATEST_COUNT).map((a) => ({
       slug: a.slug,
       title: a.title,
       deck: a.deck,
@@ -82,8 +85,9 @@ async function loadLatest(lang: Lang): Promise<LatestArticle[]> {
       eventDate: a.eventDate,
       publishedAt: a.publishedAt,
     }));
+    return { marquee: selectMarqueeItems(articles, new Date()), latest };
   } catch {
-    return [];
+    return { marquee: [], latest: [] };
   }
 }
 
@@ -138,9 +142,9 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(l);
   const t = dict.hub;
   const doc = homeAboutDoc(l);
-  const [latest, teaser] = await Promise.all([loadLatest(l), loadTeaser()]);
+  const [{ marquee, latest }, teaser] = await Promise.all([loadNews(l), loadTeaser()]);
   const x = getXLinks();
-  const xSource = getXFeedSource();
+  const xWidgetId = getXWidgetId();
 
   const actions = [
     { href: `/${l}/analyzer`, ...t.actions.analyze },
@@ -163,6 +167,13 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
     <main className="mx-auto w-full max-w-6xl px-4 pb-12 pt-2 3xl:max-w-7xl">
       {/* WebPage node of the home: what the page is, tied to the site-wide graph. */}
       <JsonLd data={homeGraph(doc, l)} />
+
+      {/* 0b. News marquee (renders nothing when no story of the last 72 h qualifies) */}
+      {marquee.length > 0 ? (
+        <div className="mx-auto mt-2 max-w-5xl">
+          <NewsMarquee items={marquee} lang={l} dict={{ label: t.marqueeLabel, pause: t.marqueePause, play: t.marqueePlay }} />
+        </div>
+      ) : null}
 
       {/* 1. Logo + tagline */}
       <header className="mt-8 flex flex-col items-center text-center sm:mt-10">
@@ -229,8 +240,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </div>
 
         <aside aria-label={t.sideAria} className="home-side grid min-w-0 grid-cols-1 gap-6">
-          {/* X feed: only when an account is configured (NEXT_PUBLIC_X_HANDLE) */}
-          {xSource ? <XFeed source={xSource} profileUrl={x.url} dict={t.xFeed} /> : null}
+          {/* X feed: the Elfsight widget (lib/social.ts → getXWidgetId) */}
+          {xWidgetId ? <XFeed widgetId={xWidgetId} handle={x.handle} profileUrl={x.url} dict={t.xFeed} /> : null}
           <div className="hidden lg:block">{newsletter("home-newsletter-title")}</div>
         </aside>
       </div>

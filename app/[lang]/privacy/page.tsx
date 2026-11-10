@@ -135,18 +135,18 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
         <ul className="list-disc pl-5 space-y-2">
           <li>
             {isEs
-              ? "La página de inicio puede mostrar el timeline oficial de X (Twitter). Es contenido de un tercero: lo carga y lo sirve X Corp. desde platform.twitter.com y x.com."
-              : "The home page can show the official X (Twitter) timeline. It is third-party content, loaded and served by X Corp. from platform.twitter.com and x.com."}
+              ? "La página de inicio y la de IA al Día muestran las publicaciones de Promptea en X (Twitter) con un widget de Elfsight. Es contenido de terceros: lo carga y lo sirve Elfsight desde elfsightcdn.com y sus servidores, y las publicaciones, imágenes y avatares son de X."
+              : "The home page and AI Daily show Promptea's posts on X (Twitter) through an Elfsight widget. It is third-party content: Elfsight loads and serves it from elfsightcdn.com and its own servers, and the posts, images and avatars come from X."}
           </li>
           <li>
             {isEs
-              ? "No se carga automáticamente: solo después de que presionás “Cargar el feed”. Hasta ese momento no se hace ningún pedido a X desde la página."
-              : "It is not loaded automatically: only after you press “Load the feed”. Until then the page makes no request to X."}
+              ? "Se carga solo cuando la tarjeta del feed está por entrar en pantalla; en una página donde no aparece esa tarjeta no se hace ningún pedido a Elfsight."
+              : "It loads only when the feed card is about to come on screen; a page that does not show that card makes no request to Elfsight."}
           </li>
           <li>
             {isEs
-              ? "Al cargarlo, X puede recibir tu dirección IP y datos de tu navegador, y puede usar cookies o almacenamiento propio, según su política de privacidad (x.com/privacy). Pedimos a X que no use el widget para personalizar (dnt). Promptea no recibe esos datos."
-              : "When loaded, X may receive your IP address and browser data and may use its own cookies or storage, as described in its privacy policy (x.com/privacy). We ask X not to use the widget for personalization (dnt). Promptea does not receive that data."}
+              ? "Al cargarse, Elfsight (y X, por las imágenes) pueden recibir tu dirección IP y datos de tu navegador, y pueden usar cookies o almacenamiento propio, según sus políticas de privacidad (elfsight.com/privacy-policy, x.com/privacy). Promptea no recibe esos datos."
+              : "When it loads, Elfsight (and X, for the images) may receive your IP address and browser data and may use their own cookies or storage, as described in their privacy policies (elfsight.com/privacy-policy, x.com/privacy). Promptea does not receive that data."}
           </li>
         </ul>
 
