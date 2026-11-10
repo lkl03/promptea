@@ -23,7 +23,7 @@ function caps(partial: Partial<ModelCapabilities>): ModelCapabilities {
     reasoningTier: 2,
     codingAgentFit: 2,
     taskFit: {},
-    promptGuidance: { es: "guía", en: "guidance" },
+    promptGuidance: { es: "guía", en: "guidance", pt: "orientação" },
     ...partial,
   };
 }
@@ -37,7 +37,7 @@ function entry(id: string, target: TargetAI, capabilities: ModelCapabilities, ex
     family: "TEST",
     status: "stable",
     strengths: [],
-    notes: { es: "", en: "" },
+    notes: { es: "", en: "", pt: "" },
     verifiedAt: "2026-08-03",
     sourceUrl: "https://example.com",
     selectable: true,

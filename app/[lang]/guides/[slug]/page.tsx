@@ -12,10 +12,10 @@ import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { guideGraph } from "@/lib/seo/pageGraphs";
+import { LANGS, toLang } from "@/lib/domain";
 
 export function generateStaticParams() {
-  const LOCALES = ["es", "en"] as const;
-  return LOCALES.flatMap((lang) => guides.map((g) => ({ lang, slug: g.slug })));
+  return LANGS.flatMap((lang) => guides.map((g) => ({ lang, slug: g.slug })));
 }
 
 export async function generateMetadata({
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string; slug: string }>;
 }): Promise<Metadata> {
   const { lang, slug } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   const guide = getGuide(slug);
   if (!guide) return {};
@@ -48,7 +48,7 @@ export default async function GuidePage({
 }) {
   const { lang, slug } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const guide = getGuide(slug);
   if (!guide) notFound();

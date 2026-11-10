@@ -85,7 +85,7 @@ export type ModelCapabilities = {
   codingAgentFit: FitScore;
   taskFit: TaskFitScores;
   /** Model-specific prompting advice, shown in matcher adaptation tips. */
-  promptGuidance: { es: string; en: string };
+  promptGuidance: Record<Lang, string>;
 };
 
 export type ModelEntry = {
@@ -98,7 +98,7 @@ export type ModelEntry = {
   family: string;
   status: ModelStatus;
   strengths: ModelStrength[];
-  notes: { es: string; en: string };
+  notes: Record<Lang, string>;
   /** Exact model id in the provider's API, when it differs from `id`. */
   apiModelId?: string;
   openRouterId?: string;
@@ -156,6 +156,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El modelo más capaz de OpenAI (GPT-6, sep 2026) para el trabajo de punta a punta más difícil. Necesita menos instrucciones paso a paso que los GPT anteriores: dale objetivo, restricciones y permisos, y dejalo llevar la tarea hasta el final.",
       en: "OpenAI's most capable model (GPT-6, Sep 2026) for the hardest end-to-end work. It needs less step-by-step instruction than earlier GPTs: give it the goal, constraints, and permissions, and let it carry the task through.",
+      pt: "OpenAI's most capable model (GPT-6, Sep 2026) for the hardest end-to-end work. It needs less step-by-step instruction than earlier GPTs: give it the goal, constraints, and permissions, and let it carry the task through.",
     },
     apiModelId: "gpt-6-astra",
     verifiedAt: VERIFIED,
@@ -193,6 +194,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Preferí objetivo y restricciones a listas de pasos: la guía demasiado específica ahora empeora los resultados. Pedile que tienda a la acción y termine la tarea, dale permisos explícitos (correr tests y arreglar fallas sin preguntar) y pedí prosa si no querés listas. No tiene esfuerzo 'none': usá 'low' como mínimo.",
         en: "Prefer the goal and constraints over step lists — overly specific guidance now hurts results. Tell it to bias toward action and finish the task, grant explicit permissions (run tests and fix failures without asking), and ask for prose if you don't want lists. It has no 'none' effort: use 'low' as the floor.",
+        pt: "Prefer the goal and constraints over step lists — overly specific guidance now hurts results. Tell it to bias toward action and finish the task, grant explicit permissions (run tests and fix failures without asking), and ask for prose if you don't want lists. It has no 'none' effort: use 'low' as the floor.",
       },
     },
     interactionProfiles: ["chat", "codingAgent"],
@@ -209,6 +211,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El Sol actual de OpenAI (29-09-2026): rendimiento cercano a Astra para coding complejo, computer use y trabajo profesional, a menor costo. OpenAI sugiere compararlo con Astra en tus tareas para decidir calidad vs costo.",
       en: "OpenAI's current Sol model (2026-09-29): near-Astra performance for complex coding, computer use, and professional work at a lower cost. OpenAI suggests comparing it with Astra on your tasks to weigh quality against cost.",
+      pt: "OpenAI's current Sol model (2026-09-29): near-Astra performance for complex coding, computer use, and professional work at a lower cost. OpenAI suggests comparing it with Astra on your tasks to weigh quality against cost.",
     },
     apiModelId: "gpt-6.1-sol",
     verifiedAt: VERIFIED_OCT,
@@ -247,6 +250,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "OpenAI no publica reglas de prompting propias de 6.1 Sol: partí de la guía de la familia GPT-6 (objetivo, restricciones y formato de salida exacto, cada instrucción una sola vez). El esfuerzo va de low a max (default medium); no admite 'none' ni 'minimal', así que 'low' es el piso. Las herramientas requieren la Responses API.",
         en: "OpenAI publishes no 6.1 Sol–specific prompting rules: start from the GPT-6 family guidance (goal, constraints, and an exact output format, each instruction stated once). Effort runs low to max (default medium); 'none' and 'minimal' aren't supported, so 'low' is the floor. Tool calling requires the Responses API.",
+        pt: "OpenAI publishes no 6.1 Sol–specific prompting rules: start from the GPT-6 family guidance (goal, constraints, and an exact output format, each instruction stated once). Effort runs low to max (default medium); 'none' and 'minimal' aren't supported, so 'low' is the floor. Tool calling requires the Responses API.",
       },
     },
     interactionProfiles: ["chat", "codingAgent"],
@@ -263,6 +267,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El GPT-6 más eficiente, para tareas acotadas y de alto volumen. Conviene dar pasos cortos y un ejemplo del resultado esperado.",
       en: "The most efficient GPT-6 model, for focused, high-volume tasks. Prefer short, ordered steps and one example of the expected result.",
+      pt: "The most efficient GPT-6 model, for focused, high-volume tasks. Prefer short, ordered steps and one example of the expected result.",
     },
     apiModelId: "gpt-6-luna",
     verifiedAt: VERIFIED,
@@ -299,6 +304,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Mantené el prompt compacto: pasos cortos y ordenados, un ejemplo del resultado esperado y formato de salida explícito. Para tareas realmente difíciles, escalá a Sol o Astra en vez de subirle el esfuerzo a Luna.",
         en: "Keep prompts compact: short ordered steps, one example of the expected result, and an explicit output format. For genuinely hard tasks escalate to Sol or Astra rather than raising Luna's effort.",
+        pt: "Keep prompts compact: short ordered steps, one example of the expected result, and an explicit output format. For genuinely hard tasks escalate to Sol or Astra rather than raising Luna's effort.",
       },
     },
     interactionProfiles: ["chat"],
@@ -315,6 +321,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Sol anterior (sigue disponible en la API; OpenAI remite a GPT-6.1 Sol como el Sol más nuevo). Usá GPT-6.1 Sol.",
       en: "Previous Sol (still served by the API; OpenAI points to GPT-6.1 Sol as the newer Sol model). Use GPT-6.1 Sol.",
+      pt: "Previous Sol (still served by the API; OpenAI points to GPT-6.1 Sol as the newer Sol model). Use GPT-6.1 Sol.",
     },
     apiModelId: "gpt-6-sol",
     verifiedAt: VERIFIED_OCT,
@@ -333,6 +340,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior (GPT-5.6 Sol, todavía disponible en la API). Promptea ahora optimiza para GPT-6.1 Sol.",
       en: "Previous generation (GPT-5.6 Sol, still served by the API). Promptea now optimizes for GPT-6.1 Sol.",
+      pt: "Previous generation (GPT-5.6 Sol, still served by the API). Promptea now optimizes for GPT-6.1 Sol.",
     },
     apiModelId: "gpt-5.6-sol",
     verifiedAt: VERIFIED,
@@ -351,6 +359,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior (todavía disponible en la API). Su lugar de balance costo/inteligencia lo toma GPT-6.1 Sol.",
       en: "Previous generation (still served by the API). Its cost/intelligence balance slot is now GPT-6.1 Sol.",
+      pt: "Previous generation (still served by the API). Its cost/intelligence balance slot is now GPT-6.1 Sol.",
     },
     apiModelId: "gpt-5.6-terra",
     verifiedAt: VERIFIED,
@@ -369,6 +378,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior (todavía disponible en la API). Usá GPT-6 Luna.",
       en: "Previous generation (still served by the API). Use GPT-6 Luna.",
+      pt: "Previous generation (still served by the API). Use GPT-6 Luna.",
     },
     apiModelId: "gpt-5.6-luna",
     verifiedAt: VERIFIED,
@@ -387,6 +397,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior de GPT. Considerá GPT-6 Astra para mejores resultados.",
       en: "Previous GPT generation. Consider GPT-6 Astra for better results.",
+      pt: "Previous GPT generation. Consider GPT-6 Astra for better results.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.openai,
@@ -404,6 +415,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior de GPT (Pro). Considerá GPT-6 Astra para mejores resultados.",
       en: "Previous GPT generation (Pro). Consider GPT-6 Astra for better results.",
+      pt: "Previous GPT generation (Pro). Consider GPT-6 Astra for better results.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.openai,
@@ -421,6 +433,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Modelo legacy de la serie GPT-4. Considerá GPT-6.1 Sol para mejores resultados.",
       en: "Legacy GPT-4-series model. Consider GPT-6.1 Sol for better results.",
+      pt: "Legacy GPT-4-series model. Consider GPT-6.1 Sol for better results.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.openai,
@@ -438,6 +451,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Modelo legacy multimodal. Considerá GPT-6.1 Sol para mejores resultados.",
       en: "Legacy multimodal model. Consider GPT-6.1 Sol for better results.",
+      pt: "Legacy multimodal model. Consider GPT-6.1 Sol for better results.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.openai,
@@ -455,6 +469,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Modelo legacy liviano. Considerá GPT-6 Luna para mejores resultados.",
       en: "Legacy lightweight model. Consider GPT-6 Luna for better results.",
+      pt: "Legacy lightweight model. Consider GPT-6 Luna for better results.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.openai,
@@ -472,6 +487,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Modelo de razonamiento deprecado por OpenAI (se apaga el 2026-12-11). Las capacidades de razonamiento están integradas en GPT-6.",
       en: "Reasoning model deprecated by OpenAI (shutdown 2026-12-11). Reasoning capabilities are integrated into GPT-6.",
+      pt: "Reasoning model deprecated by OpenAI (shutdown 2026-12-11). Reasoning capabilities are integrated into GPT-6.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: "https://developers.openai.com/api/docs/deprecations",
@@ -491,6 +507,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El modelo con el que Anthropic recomienda empezar (GA 22-09-2026): coding agéntico de largo aliento y trabajo de conocimiento, contexto de 1M. Piensa siempre: la profundidad se regula con effort (default medium), no con 'pensá con cuidado' en el prompt.",
       en: "Anthropic's recommended starting model (GA 2026-09-22): long-running agentic coding and knowledge work, 1M context. It always thinks — depth is set with effort (default medium), not with 'think carefully' in the prompt.",
+      pt: "Anthropic's recommended starting model (GA 2026-09-22): long-running agentic coding and knowledge work, 1M context. It always thinks — depth is set with effort (default medium), not with 'think carefully' in the prompt.",
     },
     apiModelId: "claude-opus-5-5",
     verifiedAt: VERIFIED,
@@ -528,6 +545,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Dale en un solo pedido completo el objetivo, el contexto, las restricciones y cómo se ve 'terminado'; sacá las líneas de 'pensá con cuidado' o 'revisá dos veces': piensa siempre y el effort (default medium) es el control. En frontend nombrá los estilos concretos a evitar, y envolvé el texto pegado de terceros en etiquetas para que sus instrucciones se traten como datos.",
         en: "Give the goal, context, constraints, and what 'done' looks like in one complete request; drop 'think carefully' or 'double-check' lines — it always thinks and effort (default medium) is the control. For frontend work name the specific styles to avoid, and wrap pasted third-party text in tags so its instructions are treated as data.",
+        pt: "Give the goal, context, constraints, and what 'done' looks like in one complete request; drop 'think carefully' or 'double-check' lines — it always thinks and effort (default medium) is the control. For frontend work name the specific styles to avoid, and wrap pasted third-party text in tags so its instructions are treated as data.",
       },
     },
     interactionProfiles: ["chat", "codingAgent"],
@@ -544,6 +562,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El modelo más capaz de Anthropic de acceso general (GA 01-09-2026), para el razonamiento más exigente y corridas autónomas largas. Explicale la intención y marcá límites: las listas de pasos sobre-prescriptivas le bajan la calidad.",
       en: "Anthropic's most capable widely released model (GA 2026-09-01), for the most demanding reasoning and long autonomous runs. Explain the intent and state boundaries — over-prescriptive step lists reduce its quality.",
+      pt: "Anthropic's most capable widely released model (GA 2026-09-01), for the most demanding reasoning and long autonomous runs. Explain the intent and state boundaries — over-prescriptive step lists reduce its quality.",
     },
     apiModelId: "claude-fable-5-1",
     verifiedAt: VERIFIED,
@@ -580,6 +599,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Explicá para quién es y qué habilita el resultado, y expresá objetivos y restricciones en vez de pasos. Marcá qué no tocar, pedí un cierre que empiece por el resultado y mantené tus instrucciones de verificación. El effort arranca en high; bajalo a medium/low donde tus evals lo permitan.",
         en: "Say who the result is for and what it enables, and state goals and constraints instead of steps. Mark what not to touch, ask for a final message that leads with the outcome, and keep your verification instructions. Effort starts at high; step down to medium/low where your evals hold.",
+        pt: "Say who the result is for and what it enables, and state goals and constraints instead of steps. Mark what not to touch, ask for a final message that leads with the outcome, and keep your verification instructions. Effort starts at high; step down to medium/low where your evals hold.",
       },
     },
     interactionProfiles: ["chat", "codingAgent"],
@@ -596,6 +616,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El Claude con la mejor combinación de velocidad e inteligencia (28-09-2026), para coding, agentes y trabajo empresarial del día a día; contexto de 1M. Los prompts de Sonnet 5 siguen funcionando; el effort (default high) es el control principal.",
       en: "The Claude with the best combination of speed and intelligence (2026-09-28), for everyday coding, agent, and enterprise work; 1M context. Sonnet 5 prompts keep working; effort (default high) is the main control.",
+      pt: "The Claude with the best combination of speed and intelligence (2026-09-28), for everyday coding, agent, and enterprise work; 1M context. Sonnet 5 prompts keep working; effort (default high) is the main control.",
     },
     apiModelId: "claude-sonnet-5-5",
     verifiedAt: VERIFIED_OCT,
@@ -635,6 +656,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Estructurá con etiquetas XML, documentos largos arriba y la consulta al final, y criterios de éxito explícitos. Regulá el pensamiento con effort (default high; medium o low para chat y tareas sensibles a la latencia), no con frases como 'pensá menos'. Si querés solo ideas o un plan, decilo, y no le pidas que escriba su razonamiento: pedí una explicación breve.",
         en: "Structure with XML tags, long documents at the top and the query at the end, and explicit success criteria. Control thinking with effort (default high; medium or low for chat and latency-sensitive work), not with lines like 'think less'. If you only want ideas or a plan, say so, and don't ask it to write out its reasoning: ask for a short explanation instead.",
+        pt: "Structure with XML tags, long documents at the top and the query at the end, and explicit success criteria. Control thinking with effort (default high; medium or low for chat and latency-sensitive work), not with lines like 'think less'. If you only want ideas or a plan, say so, and don't ask it to write out its reasoning: ask for a short explanation instead.",
       },
     },
     interactionProfiles: ["chat", "codingAgent"],
@@ -651,6 +673,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El Claude más rápido (07-10-2026), para tareas de alto volumen y sensibles a la latencia: clasificación, extracción, ruteo y subagentes. Contexto de 1M y, por primera vez en Haiku, niveles de effort (default medium).",
       en: "The fastest Claude (2026-10-07), for high-volume, latency-sensitive work: classification, extraction, routing, and subagents. 1M context and, for the first time on Haiku, effort levels (default medium).",
+      pt: "The fastest Claude (2026-10-07), for high-volume, latency-sensitive work: classification, extraction, routing, and subagents. 1M context and, for the first time on Haiku, effort levels (default medium).",
     },
     apiModelId: "claude-haiku-5-5",
     verifiedAt: VERIFIED_OCT,
@@ -690,6 +713,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Mantené el prompt corto y explícito: tarea clara, formato de salida exacto y 1-2 ejemplos. El effort reemplaza al budget_tokens de Haiku 4.5: low para chat y volumen alto, medium (default) para casi todo, high para seguir instrucciones al pie de la letra. Si tiene búsqueda, dale la fecha de hoy.",
         en: "Keep prompts short and explicit: a clear task, an exact output format, and 1-2 examples. Effort replaces Haiku 4.5's budget_tokens: low for chat and high volume, medium (default) for most work, high for strict instruction following. If it can search, give it today's date.",
+        pt: "Keep prompts short and explicit: a clear task, an exact output format, and 1-2 examples. Effort replaces Haiku 4.5's budget_tokens: low for chat and high volume, medium (default) for most work, high for strict instruction following. If it can search, give it today's date.",
       },
     },
     interactionProfiles: ["chat", "codingAgent"],
@@ -706,6 +730,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Sonnet anterior (activo como legacy; retiro no antes del 30-06-2027). Usá Claude Sonnet 5.5: los prompts de Sonnet 5 siguen funcionando.",
       en: "Previous Sonnet (active legacy; retirement no sooner than 2027-06-30). Use Claude Sonnet 5.5; Sonnet 5 prompts keep working.",
+      pt: "Previous Sonnet (active legacy; retirement no sooner than 2027-06-30). Use Claude Sonnet 5.5; Sonnet 5 prompts keep working.",
     },
     apiModelId: "claude-sonnet-5",
     openRouterId: "anthropic/claude-sonnet-5",
@@ -725,6 +750,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Haiku anterior (legacy; Anthropic indica un retiro no antes del 15-10-2026). Usá Claude Haiku 5.5.",
       en: "Previous Haiku (legacy; Anthropic lists retirement no sooner than 2026-10-15). Use Claude Haiku 5.5.",
+      pt: "Previous Haiku (legacy; Anthropic lists retirement no sooner than 2026-10-15). Use Claude Haiku 5.5.",
     },
     apiModelId: "claude-haiku-4-5",
     verifiedAt: VERIFIED_OCT,
@@ -743,6 +769,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior de Fable (activa como legacy; retiro no antes del 09-06-2027). Usá Claude Fable 5.1.",
       en: "Previous Fable generation (active legacy; retirement no sooner than 2027-06-09). Use Claude Fable 5.1.",
+      pt: "Previous Fable generation (active legacy; retirement no sooner than 2027-06-09). Use Claude Fable 5.1.",
     },
     apiModelId: "claude-fable-5",
     openRouterId: "anthropic/claude-fable-5",
@@ -762,6 +789,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Opus anterior (activo como legacy; retiro no antes del 24-07-2027). Usá Claude Opus 5.5: más rápido, más barato y con effort medium por defecto.",
       en: "Previous Opus (active legacy; retirement no sooner than 2027-07-24). Use Claude Opus 5.5 — faster, cheaper, and medium effort by default.",
+      pt: "Previous Opus (active legacy; retirement no sooner than 2027-07-24). Use Claude Opus 5.5 — faster, cheaper, and medium effort by default.",
     },
     apiModelId: "claude-opus-5",
     verifiedAt: VERIFIED,
@@ -780,6 +808,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior de Opus (legacy; retiro no antes del 28-05-2027). Usá Claude Opus 5.5.",
       en: "Previous Opus generation (legacy; retirement no sooner than 2027-05-28). Use Claude Opus 5.5.",
+      pt: "Previous Opus generation (legacy; retirement no sooner than 2027-05-28). Use Claude Opus 5.5.",
     },
     apiModelId: "claude-opus-4-8",
     openRouterId: "anthropic/claude-opus-4.8",
@@ -799,6 +828,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Alias genérico legacy. Usá Claude Sonnet 5.5.",
       en: "Legacy generic alias. Use Claude Sonnet 5.5.",
+      pt: "Legacy generic alias. Use Claude Sonnet 5.5.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.anthropic,
@@ -816,6 +846,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Alias genérico legacy. Usá Claude Opus 5.5.",
       en: "Legacy generic alias. Use Claude Opus 5.5.",
+      pt: "Legacy generic alias. Use Claude Opus 5.5.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.anthropic,
@@ -833,6 +864,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Alias genérico legacy. Usá Claude Haiku 5.5.",
       en: "Legacy generic alias. Use Claude Haiku 5.5.",
+      pt: "Legacy generic alias. Use Claude Haiku 5.5.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.anthropic,
@@ -852,6 +884,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El Flash más inteligente de Google (GA sep 2026), para ingeniería de software de largo aliento, agentes autónomos y flujos empresariales complejos. Tiende a respuestas cortas: pedile detalle si lo necesitás.",
       en: "Google's most intelligent Flash (GA Sep 2026), for long-horizon software engineering, autonomous agents, and complex enterprise workflows. Defaults to terse answers; ask for detail when you need it.",
+      pt: "Google's most intelligent Flash (GA Sep 2026), for long-horizon software engineering, autonomous agents, and complex enterprise workflows. Defaults to terse answers; ask for detail when you need it.",
     },
     apiModelId: "gemini-3.8-flash",
     verifiedAt: VERIFIED,
@@ -889,6 +922,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Con inputs largos, contexto primero e instrucción al final, con un solo estilo de delimitadores. thinking_level arranca en medium (low, medium o high; minimal no está disponible) y los parámetros de sampling están deprecados: no los envíes. Por defecto es escueto, así que pedí detalle de forma explícita.",
         en: "For long inputs put context first and the instruction last, with one consistent delimiter style. thinking_level defaults to medium (low, medium, or high; minimal is unavailable) and sampling parameters are deprecated — don't send them. It is terse by default, so ask for detail explicitly.",
+        pt: "For long inputs put context first and the instruction last, with one consistent delimiter style. thinking_level defaults to medium (low, medium, or high; minimal is unavailable) and sampling parameters are deprecated — don't send them. It is terse by default, so ask for detail explicitly.",
       },
     },
     interactionProfiles: ["chat", "multimodalAssistant", "codingAgent"],
@@ -905,6 +939,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Flash de la generación anterior (GA ago 2026) para coding complejo y flujos agénticos. Mismo contexto de 1M y multimodal completo.",
       en: "Previous-generation Flash (GA Aug 2026) for complex coding and agentic workflows. Same 1M context and full multimodality.",
+      pt: "Previous-generation Flash (GA Aug 2026) for complex coding and agentic workflows. Same 1M context and full multimodality.",
     },
     apiModelId: "gemini-3.7-flash",
     verifiedAt: VERIFIED,
@@ -941,6 +976,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Contexto primero e instrucciones al final para inputs largos, con delimitadores consistentes. thinking_level por defecto medium (low, medium o high); pedí prosa detallada de forma explícita porque por defecto es escueto.",
         en: "Context first and instructions last for long inputs, with consistent delimiters. thinking_level defaults to medium (low, medium, or high); ask explicitly for detailed prose because it is terse by default.",
+        pt: "Context first and instructions last for long inputs, with consistent delimiters. thinking_level defaults to medium (low, medium, or high); ask explicitly for detailed prose because it is terse by default.",
       },
     },
     interactionProfiles: ["chat", "multimodalAssistant", "codingAgent"],
@@ -957,6 +993,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Flash GA (jul 2026) que balancea velocidad y multimodalidad para tareas agénticas generales. Tiende a respuestas cortas; pedile detalle si lo necesitás.",
       en: "GA Flash (Jul 2026) balancing speed and multimodality for general agentic tasks. Defaults to terse answers; ask for detail when you need it.",
+      pt: "GA Flash (Jul 2026) balancing speed and multimodality for general agentic tasks. Defaults to terse answers; ask for detail when you need it.",
     },
     apiModelId: "gemini-3.6-flash",
     verifiedAt: VERIFIED,
@@ -993,6 +1030,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Para inputs largos poné el contexto primero y las instrucciones al final, con un solo estilo de delimitadores. Controlá la profundidad con thinking_level (default medium; admite minimal); por defecto es escueto, así que pedile prosa detallada de forma explícita.",
         en: "Place context first and instructions at the end for long inputs, using one consistent delimiter style. Control depth with thinking_level (default medium; minimal is available); it is terse by default, so ask explicitly for detailed prose.",
+        pt: "Place context first and instructions at the end for long inputs, using one consistent delimiter style. Control depth with thinking_level (default medium; minimal is available); it is terse by default, so ask explicitly for detailed prose.",
       },
     },
     interactionProfiles: ["chat", "multimodalAssistant", "codingAgent"],
@@ -1009,6 +1047,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El modelo 3.5 más rápido y barato. Google lo recomienda (junto a 3.8 Flash) para proyectos nuevos de alto volumen, como extracción de datos y subagentes.",
       en: "The fastest, lowest-cost 3.5 model. Google recommends it (alongside 3.8 Flash) for new high-volume work such as data extraction and subagents.",
+      pt: "The fastest, lowest-cost 3.5 model. Google recommends it (alongside 3.8 Flash) for new high-volume work such as data extraction and subagents.",
     },
     apiModelId: "gemini-3.5-flash-lite",
     verifiedAt: VERIFIED,
@@ -1045,6 +1084,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Mantené el prompt compacto, con instrucciones explícitas y un formato o schema de salida exacto; subí thinking_level desde el mínimo por defecto cuando la tarea necesite lógica de varios pasos, y sumá un ejemplo corto del resultado esperado.",
         en: "Keep prompts compact with explicit instructions and an exact output format or schema; raise thinking_level from the minimal default when a task needs multi-step logic, and add one short example of the expected result.",
+        pt: "Keep prompts compact with explicit instructions and an exact output format or schema; raise thinking_level from the minimal default when a task needs multi-step logic, and add one short example of the expected result.",
       },
     },
     interactionProfiles: ["chat", "multimodalAssistant"],
@@ -1061,6 +1101,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Inteligencia avanzada para problemas complejos (sigue en preview; no hay un Pro más nuevo). Pedí que marque supuestos y dé formato visible.",
       en: "Advanced intelligence for complex problem-solving (still in preview; there is no newer Pro). Ask it to state assumptions and use a visible format.",
+      pt: "Advanced intelligence for complex problem-solving (still in preview; there is no newer Pro). Ask it to state assumptions and use a visible format.",
     },
     apiModelId: "gemini-3.1-pro-preview",
     verifiedAt: VERIFIED,
@@ -1097,6 +1138,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Pedile que marque supuestos en problemas complejos; thinking_level arranca en high (low, medium o high). Contexto primero e instrucciones al final para inputs largos, con delimitadores consistentes.",
         en: "Ask it to state assumptions on complex problems; thinking_level defaults to high (low, medium, or high). Context first, instructions last for long inputs, with consistent delimiters.",
+        pt: "Ask it to state assumptions on complex problems; thinking_level defaults to high (low, medium, or high). Context first, instructions last for long inputs, with consistent delimiters.",
       },
     },
     interactionProfiles: ["chat", "multimodalAssistant"],
@@ -1113,6 +1155,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Google ahora lo marca como 'Legacy Flash' (sigue disponible y cuesta más que 3.6-3.8). Usá Gemini 3.8 Flash.",
       en: "Google now labels it a 'Legacy Flash model' (still served, and priced above 3.6–3.8). Use Gemini 3.8 Flash.",
+      pt: "Google now labels it a 'Legacy Flash model' (still served, and priced above 3.6–3.8). Use Gemini 3.8 Flash.",
     },
     apiModelId: "gemini-3.5-flash",
     openRouterId: "google/gemini-3.5-flash",
@@ -1132,6 +1175,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Deprecado por Google: se apaga el 07-05-2027 y lo reemplaza Gemini 3.5 Flash-Lite.",
       en: "Deprecated by Google: shuts down 2027-05-07, replaced by Gemini 3.5 Flash-Lite.",
+      pt: "Deprecated by Google: shuts down 2027-05-07, replaced by Gemini 3.5 Flash-Lite.",
     },
     apiModelId: "gemini-3.1-flash-lite",
     verifiedAt: VERIFIED,
@@ -1150,6 +1194,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Alias genérico legacy. Usá Gemini 3.1 Pro o Gemini 3.8 Flash.",
       en: "Legacy generic alias. Use Gemini 3.1 Pro or Gemini 3.8 Flash.",
+      pt: "Legacy generic alias. Use Gemini 3.1 Pro or Gemini 3.8 Flash.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.google,
@@ -1167,6 +1212,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Alias genérico legacy. Usá Gemini 3.8 Flash.",
       en: "Legacy generic alias. Use Gemini 3.8 Flash.",
+      pt: "Legacy generic alias. Use Gemini 3.8 Flash.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.google,
@@ -1186,6 +1232,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El Grok más capaz (sep 2026) y el que xAI recomienda para código y chat (contexto 500k). Tono directo; definí tono y nivel de informalidad.",
       en: "The most capable Grok (Sep 2026) and xAI's recommendation for code and chat (500k context). Direct tone; define tone and informality for best results.",
+      pt: "The most capable Grok (Sep 2026) and xAI's recommendation for code and chat (500k context). Direct tone; define tone and informality for best results.",
     },
     apiModelId: "grok-4.7",
     verifiedAt: VERIFIED,
@@ -1223,6 +1270,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "El razonamiento no se puede apagar: reasoning_effort va de low a xhigh (default high), bajalo para agentes sensibles a la latencia. Poné primero el contenido estable y la pregunta al final, activá la búsqueda web/X para temas actuales y especificá el tono: por defecto es directo.",
         en: "Reasoning can't be turned off: reasoning_effort runs low to xhigh (default high) — lower it for latency-sensitive agents. Put stable content first and the question last, enable web/X search for current events, and specify tone — it is direct by default.",
+        pt: "Reasoning can't be turned off: reasoning_effort runs low to xhigh (default high) — lower it for latency-sensitive agents. Put stable content first and the question last, enable web/X search for current events, and specify tone — it is direct by default.",
       },
     },
     interactionProfiles: ["chat", "researchAssistant"],
@@ -1239,6 +1287,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Grok con contexto de 1M tokens y precio más bajo. Útil para material largo; separá fuente e instrucciones.",
       en: "Grok with a 1M-token context at a lower price. Useful for long material; separate source text from instructions.",
+      pt: "Grok with a 1M-token context at a lower price. Useful for long material; separate source text from instructions.",
     },
     apiModelId: "grok-4.3",
     openRouterId: "x-ai/grok-4.3",
@@ -1276,6 +1325,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "reasoning_effort admite 'none' (default low): usalo para respuestas rápidas y subilo cuando haga falta razonar. Con documentos largos, separá el material fuente de las instrucciones con etiquetas XML o títulos, y mantené un prefijo estable para aprovechar el caching.",
         en: "reasoning_effort supports 'none' (default low): use it for fast replies and raise it when reasoning is needed. For long documents, separate source material from instructions with XML tags or headings, and keep a stable prefix to exploit caching.",
+        pt: "reasoning_effort supports 'none' (default low): use it for fast replies and raise it when reasoning is needed. For long documents, separate source material from instructions with XML tags or headings, and keep a stable prefix to exploit caching.",
       },
     },
     interactionProfiles: ["chat"],
@@ -1292,6 +1342,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Grok especializado en coding agéntico (motor del Grok Build CLI; también atiende el alias grok-code-fast-1). Pedí criterios de corrección y casos borde.",
       en: "Agentic-coding-specialized Grok (powers the Grok Build CLI; also serves the grok-code-fast-1 alias). Ask for correctness criteria and edge cases.",
+      pt: "Agentic-coding-specialized Grok (powers the Grok Build CLI; also serves the grok-code-fast-1 alias). Ask for correctness criteria and edge cases.",
     },
     apiModelId: "grok-build-0.1",
     openRouterId: "x-ai/grok-build-0.1",
@@ -1329,6 +1380,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Señalale los archivos y secciones relevantes en vez de tirarle todo el repo: el contexto irrelevante lo degrada. Estructurá objetivos, restricciones y contexto con títulos o etiquetas XML, definí criterios de corrección explícitos e iterá en diffs chicos.",
         en: "Point it at the specific files and sections relevant to the task instead of dumping the whole repo — irrelevant context degrades it. Structure goals, constraints, and context with headings or XML tags, state explicit correctness criteria, and iterate in small diffs.",
+        pt: "Point it at the specific files and sections relevant to the task instead of dumping the whole repo — irrelevant context degrades it. Structure goals, constraints, and context with headings or XML tags, state explicit correctness criteria, and iterate in small diffs.",
       },
     },
     interactionProfiles: ["codingAgent", "codeSpecialist"],
@@ -1345,6 +1397,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Generación anterior (sigue disponible, mismo precio que 4.7). Usá Grok 4.7.",
       en: "Previous generation (still served, same price as 4.7). Use Grok 4.7.",
+      pt: "Previous generation (still served, same price as 4.7). Use Grok 4.7.",
     },
     apiModelId: "grok-4.5",
     verifiedAt: VERIFIED,
@@ -1363,6 +1416,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Familia Grok 2 retirada por xAI. Usá Grok 4.7.",
       en: "Grok 2 family retired by xAI. Use Grok 4.7.",
+      pt: "Grok 2 family retired by xAI. Use Grok 4.7.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.xai,
@@ -1382,6 +1436,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Modelo estándar de DeepSeek (V4.1-Flash, sep 2026): contexto 1M, entrada de texto e imagen, modos thinking y non-thinking. Pedí tests y edge cases para código.",
       en: "DeepSeek's standard model (V4.1-Flash, Sep 2026): 1M context, text and image input, thinking and non-thinking modes. Ask for tests and edge cases for code.",
+      pt: "DeepSeek's standard model (V4.1-Flash, Sep 2026): 1M context, text and image input, thinking and non-thinking modes. Ask for tests and edge cases for code.",
     },
     apiModelId: "deepseek-flash",
     verifiedAt: VERIFIED,
@@ -1419,6 +1474,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "El modo thinking viene activado (effort high por defecto): bajalo a low o 'none' para tareas rápidas. En modo JSON incluí la palabra 'json' y un ejemplo del formato con max_tokens generoso, y devolvé el reasoning_content completo en loops con herramientas.",
         en: "Thinking is on by default (effort high): drop to low or 'none' for quick tasks. In JSON mode include the word 'json' plus an example of the format with generous max_tokens, and pass reasoning_content back in full in tool loops.",
+        pt: "Thinking is on by default (effort high): drop to low or 'none' for quick tasks. In JSON mode include the word 'json' plus an example of the format with generous max_tokens, and pass reasoning_content back in full in tool loops.",
       },
     },
     interactionProfiles: ["chat", "codeSpecialist"],
@@ -1435,6 +1491,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El DeepSeek más capaz (V4-Pro-0813, solo texto): excelente para razonamiento y código con criterios de aceptación explícitos.",
       en: "DeepSeek's most capable model (V4-Pro-0813, text only): excels at reasoning and code with explicit acceptance criteria.",
+      pt: "DeepSeek's most capable model (V4-Pro-0813, text only): excels at reasoning and code with explicit acceptance criteria.",
     },
     apiModelId: "deepseek-v4-pro",
     openRouterId: "deepseek/deepseek-v4-pro",
@@ -1472,6 +1529,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Dale criterios de aceptación, tests y casos borde explícitos para código, y elegí el effort por tarea (low simple, high agentes del día a día, max lo complejo). En modo thinking ignora los parámetros de sampling: guialo con instrucciones, no con temperature.",
         en: "Give explicit acceptance criteria, tests, and edge cases for code, and pick effort per task (low for simple, high for daily agent work, max for complex). Sampling params are ignored in thinking mode — steer with instructions, not temperature.",
+        pt: "Give explicit acceptance criteria, tests, and edge cases for code, and pick effort per task (low for simple, high for daily agent work, max for complex). Sampling params are ignored in thinking mode — steer with instructions, not temperature.",
       },
     },
     interactionProfiles: ["chat", "codeSpecialist", "codingAgent"],
@@ -1488,6 +1546,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Nombre legacy: DeepSeek lo sigue aceptando pero lo atiende V4.1-Flash. Usá deepseek-flash.",
       en: "Legacy name: DeepSeek still accepts it but serves it with V4.1-Flash. Use deepseek-flash.",
+      pt: "Legacy name: DeepSeek still accepts it but serves it with V4.1-Flash. Use deepseek-flash.",
     },
     apiModelId: "deepseek-v4-flash",
     openRouterId: "deepseek/deepseek-v4-flash",
@@ -1507,6 +1566,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Alias retirado por DeepSeek el 2026-07-24 (ya no resuelve). Usá DeepSeek Flash.",
       en: "Alias retired by DeepSeek on 2026-07-24 (no longer resolves). Use DeepSeek Flash.",
+      pt: "Alias retired by DeepSeek on 2026-07-24 (no longer resolves). Use DeepSeek Flash.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: "https://api-docs.deepseek.com/updates",
@@ -1529,6 +1589,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Preset de la Agent API para preguntas de investigación del día a día (búsqueda web + lectura de URLs, hasta 5 pasos). Es el preset que usan los ejemplos de Perplexity; reemplaza a Sonar Reasoning Pro.",
       en: "Agent API preset for everyday research questions (web search + URL fetch, up to 5 steps). The preset Perplexity's examples use; replaces Sonar Reasoning Pro.",
+      pt: "Agent API preset for everyday research questions (web search + URL fetch, up to 5 steps). The preset Perplexity's examples use; replaces Sonar Reasoning Pro.",
     },
     apiModelId: "low",
     verifiedAt: VERIFIED,
@@ -1566,6 +1627,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "La pregunta es la semilla de la búsqueda: hacela específica, con el vocabulario de las páginas que querés encontrar. Instrucciones cortas (se releen en cada paso), filtros de dominio/fecha como parámetros y no en prosa, sin respuestas de ejemplo, y leé las fuentes desde search_results, no del texto.",
         en: "The question seeds the search: make it specific, with the vocabulary of the pages you want found. Keep instructions short (they are re-read every step), express domain/date limits as parameters, not prose, skip example answers, and read sources from search_results, not the text.",
+        pt: "The question seeds the search: make it specific, with the vocabulary of the pages you want found. Keep instructions short (they are re-read every step), express domain/date limits as parameters, not prose, skip example answers, and read sources from search_results, not the text.",
       },
     },
     interactionProfiles: ["researchAssistant"],
@@ -1582,6 +1644,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Preset de la Agent API para búsquedas de un dato, definiciones y resúmenes rápidos (un paso). Reemplaza a Sonar y a Sonar Pro.",
       en: "Agent API preset for single-fact lookups, definitions, and quick summaries (one step). Replaces Sonar and Sonar Pro.",
+      pt: "Agent API preset for single-fact lookups, definitions, and quick summaries (one step). Replaces Sonar and Sonar Pro.",
     },
     apiModelId: "fast",
     verifiedAt: VERIFIED,
@@ -1618,6 +1681,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Una pregunta puntual y específica, con 2-3 palabras de contexto para desambiguar: una consulta vaga produce búsquedas vagas. Pedí que avise si no encuentra la respuesta.",
         en: "One pointed, specific question with 2-3 disambiguating context words — vague queries produce vague searches. Ask it to say when it can't find the answer.",
+        pt: "One pointed, specific question with 2-3 disambiguating context words — vague queries produce vague searches. Ask it to say when it can't find the answer.",
       },
     },
     interactionProfiles: ["researchAssistant"],
@@ -1634,6 +1698,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Preset de la Agent API para navegación de varios saltos y agregación amplia de fuentes (hasta 15 pasos).",
       en: "Agent API preset for multi-hop browsing and wide aggregation across many sources (up to 15 steps).",
+      pt: "Agent API preset for multi-hop browsing and wide aggregation across many sources (up to 15 steps).",
     },
     apiModelId: "medium",
     verifiedAt: VERIFIED,
@@ -1670,6 +1735,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Poné la pregunta analítica completa, con todos los detalles buscables. Limitá la cantidad de ítems si querés una lista y pedí que marque resultados casi coincidentes (otro año, otra empresa).",
         en: "Put the full analytical question with every searchable specific. Cap the item count if you want a list, and ask it to flag near-miss results (a different year, a related company).",
+        pt: "Put the full analytical question with every searchable specific. Cap the item count if you want a list, and ask it to flag near-miss results (a different year, a related company).",
       },
     },
     interactionProfiles: ["researchAssistant"],
@@ -1686,6 +1752,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Preset de la Agent API para razonamiento experto y cobertura exhaustiva de fuentes. Reemplaza a Sonar Deep Research; definí alcance, período y formato del informe.",
       en: "Agent API preset for expert-level reasoning and exhaustive source coverage. Replaces Sonar Deep Research; define scope, time period, and report format.",
+      pt: "Agent API preset for expert-level reasoning and exhaustive source coverage. Replaces Sonar Deep Research; define scope, time period, and report format.",
     },
     apiModelId: "high",
     verifiedAt: VERIFIED,
@@ -1722,6 +1789,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Tratá el prompt como un brief de investigación, no como una pregunta: definí de entrada alcance, período, geografía, dimensiones de análisis y estructura del informe (máximo 5 secciones).",
         en: "Treat the prompt as a research brief, not a question: define scope, time period, geography, analysis dimensions, and report structure up front (at most 5 sections).",
+        pt: "Treat the prompt as a research brief, not a question: define scope, time period, geography, analysis dimensions, and report structure up front (at most 5 sections).",
       },
     },
     interactionProfiles: ["researchAssistant"],
@@ -1738,6 +1806,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El preset más capaz de la Agent API: trabajo abierto y agéntico con código en sandbox, loops largos de herramientas y búsqueda en muchas fuentes (hasta 100 pasos). Perplexity lo indica para investigación profunda de punta, cuando la capacidad importa más que la velocidad.",
       en: "The Agent API's most capable preset: open-ended agentic work with sandboxed code, long tool-use loops, and gathering across many sources (up to 100 steps). Perplexity points to it for state-of-the-art deep research, when capability matters more than speed.",
+      pt: "The Agent API's most capable preset: open-ended agentic work with sandboxed code, long tool-use loops, and gathering across many sources (up to 100 steps). Perplexity points to it for state-of-the-art deep research, when capability matters more than speed.",
     },
     apiModelId: "xhigh",
     verifiedAt: VERIFIED_OCT,
@@ -1774,6 +1843,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Usalo para tareas abiertas, no para una pregunta puntual: describí el resultado final que querés (informe, tabla, archivo), qué tiene que calcular o verificar con código, y el alcance, período y fuentes. Los límites duros (dominios, fechas) van como filtros de web_search, no en prosa.",
         en: "Use it for open-ended tasks, not a single question: describe the end result you want (report, table, file), what it should compute or check with code, and the scope, time period, and sources. Hard limits (domains, dates) go in web_search filters, not prose.",
+        pt: "Use it for open-ended tasks, not a single question: describe the end result you want (report, table, file), what it should compute or check with code, and the scope, time period, and sources. Hard limits (domains, dates) go in web_search filters, not prose.",
       },
     },
     interactionProfiles: ["researchAssistant"],
@@ -1790,6 +1860,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El soporte de Sonar Chat Completions terminó el 27-09-2026 (las llamadas sincrónicas se reformulan como pedidos a la Agent API). Perplexity lo mapea al preset 'fast'.",
       en: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'fast' preset.",
+      pt: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'fast' preset.",
     },
     apiModelId: "sonar-pro",
     openRouterId: "perplexity/sonar-pro",
@@ -1809,6 +1880,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El soporte de Sonar Chat Completions terminó el 27-09-2026 (las llamadas sincrónicas se reformulan como pedidos a la Agent API). Perplexity lo mapea al preset 'fast'.",
       en: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'fast' preset.",
+      pt: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'fast' preset.",
     },
     apiModelId: "sonar",
     verifiedAt: VERIFIED_OCT,
@@ -1827,6 +1899,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El soporte de Sonar Chat Completions terminó el 27-09-2026 (las llamadas sincrónicas se reformulan como pedidos a la Agent API). Perplexity lo mapea al preset 'low'.",
       en: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'low' preset.",
+      pt: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'low' preset.",
     },
     apiModelId: "sonar-reasoning-pro",
     openRouterId: "perplexity/sonar-reasoning-pro",
@@ -1846,6 +1919,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El soporte de Sonar Chat Completions terminó el 27-09-2026 (las llamadas sincrónicas se reformulan como pedidos a la Agent API). Perplexity lo mapea al preset 'high'.",
       en: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'high' preset.",
+      pt: "Sonar Chat Completions support ended on 2026-09-27 (synchronous calls are being reformulated as Agent API requests). Perplexity maps it to the 'high' preset.",
     },
     apiModelId: "sonar-deep-research",
     verifiedAt: VERIFIED_OCT,
@@ -1866,6 +1940,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "El Kimi más capaz y el que Moonshot recomienda para uso general (contexto 1M; texto, imagen y video). Siempre razona; ideal para ingeniería de software, trabajo de conocimiento y razonamiento profundo.",
       en: "The most capable Kimi and Moonshot's recommendation for general use (1M context; text, image, and video). Always reasons; built for software engineering, knowledge work, and deep reasoning.",
+      pt: "The most capable Kimi and Moonshot's recommendation for general use (1M context; text, image, and video). Always reasons; built for software engineering, knowledge work, and deep reasoning.",
     },
     apiModelId: "kimi-k3",
     verifiedAt: VERIFIED,
@@ -1903,6 +1978,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Siempre razona: reasoning_effort low, high o max (default max), y decidilo de entrada porque cambiarlo a mitad de sesión rompe el caché. La temperatura ya no se puede fijar. Separá bien material fuente de instrucciones y, para JSON, definí campos y un objeto de ejemplo.",
         en: "Always reasons: reasoning_effort low, high, or max (default max) — decide it up front, since changing it mid-session breaks caching. Temperature can no longer be set. Clearly separate source material from instructions and, for JSON, define the fields and an example object.",
+        pt: "Always reasons: reasoning_effort low, high, or max (default max) — decide it up front, since changing it mid-session breaks caching. Temperature can no longer be set. Clearly separate source material from instructions and, for JSON, define the fields and an example object.",
       },
     },
     interactionProfiles: ["chat", "codingAgent", "multimodalAssistant"],
@@ -1919,6 +1995,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Kimi multimodal de uso general (texto, imagen y video; modos thinking y non-thinking). Separá fuente vs instrucciones y marcá prioridades.",
       en: "General-purpose multimodal Kimi (text, image, and video input; thinking and non-thinking modes). Split source vs instructions and mark priorities.",
+      pt: "General-purpose multimodal Kimi (text, image, and video input; thinking and non-thinking modes). Split source vs instructions and mark priorities.",
     },
     apiModelId: "kimi-k2.6",
     verifiedAt: VERIFIED,
@@ -1955,6 +2032,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Elegí explícitamente modo thinking o instantáneo según la tarea; la temperatura ya viene fija (1.0 thinking, 0.6 instantáneo) y no se puede cambiar. Usá Partial Mode para forzar formato, JSON Mode con campos y un ejemplo (con schemas complejos es inestable), y separá el texto fuente de las instrucciones.",
         en: "Choose thinking vs instant mode explicitly per task; temperature is now fixed (1.0 thinking, 0.6 instant) and can't be changed. Use Partial Mode to enforce format, JSON Mode with fields and an example (it is unstable with complex schemas), and split source text from instructions.",
+        pt: "Choose thinking vs instant mode explicitly per task; temperature is now fixed (1.0 thinking, 0.6 instant) and can't be changed. Use Partial Mode to enforce format, JSON Mode with fields and an example (it is unstable with complex schemas), and split source text from instructions.",
       },
     },
     interactionProfiles: ["chat", "multimodalAssistant"],
@@ -1971,6 +2049,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Kimi especializado en coding agéntico, con seguimiento de instrucciones confiable en contextos largos. Par natural del Kimi Code CLI.",
       en: "Agentic-coding-specialized Kimi with reliable instruction following in long contexts. Natural pairing with the Kimi Code CLI.",
+      pt: "Agentic-coding-specialized Kimi with reliable instruction following in long contexts. Natural pairing with the Kimi Code CLI.",
     },
     apiModelId: "kimi-k2.7-code",
     verifiedAt: VERIFIED,
@@ -2007,6 +2086,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
       promptGuidance: {
         es: "Tratalo como un modelo de código para loops de agente: dale contexto del repo, criterios de aceptación concretos y comandos de test, y dejalo iterar con herramientas en vez de pedirle todo de una. Devolvé el reasoning_content completo en cada turno (es obligatorio).",
         en: "Treat it as an agent-loop coding model: give repo context, concrete acceptance criteria, and test commands, and let it iterate with tools rather than one-shotting. Pass reasoning_content back in full on every turn (required).",
+        pt: "Treat it as an agent-loop coding model: give repo context, concrete acceptance criteria, and test commands, and let it iterate with tools rather than one-shotting. Pass reasoning_content back in full on every turn (required).",
       },
     },
     interactionProfiles: ["codingAgent", "codeSpecialist"],
@@ -2023,6 +2103,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Alias genérico legacy de Promptea (no es un id de la API de Kimi). Usá Kimi K3.",
       en: "Promptea's legacy generic alias (not a Kimi API id). Use Kimi K3.",
+      pt: "Promptea's legacy generic alias (not a Kimi API id). Use Kimi K3.",
     },
     verifiedAt: VERIFIED,
     sourceUrl: SRC.moonshot,
@@ -2042,6 +2123,7 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     notes: {
       es: "Modelo open-source legacy que se mapeaba al target GPT. Ya no es seleccionable.",
       en: "Legacy open-source model previously mapped onto the GPT target. No longer selectable.",
+      pt: "Legacy open-source model previously mapped onto the GPT target. No longer selectable.",
     },
     verifiedAt: VERIFIED_PREV,
     sourceUrl: SRC.openai,

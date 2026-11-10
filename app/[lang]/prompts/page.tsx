@@ -6,6 +6,7 @@ import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { toLang } from "@/lib/domain";
 
 export async function generateMetadata({
   params,
@@ -13,7 +14,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   return pageMetadata({
     lang: l,
@@ -33,7 +34,7 @@ export default async function PromptsIndexPage({
 }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const title = l === "es" ? "Packs de prompts" : "Prompt packs";
   const subtitle =

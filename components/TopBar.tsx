@@ -34,6 +34,7 @@ export type NavDict = {
   home: string; // aria-label of the logo link
   menu: string;
   closeMenu: string;
+  language: string; // aria-label of the language switcher
   analyzer: string;
   bestAi: string;
   daily: string;
@@ -45,7 +46,7 @@ export type NavDict = {
   library: string;
 };
 
-type NavKey = Exclude<keyof NavDict, "main" | "home" | "menu" | "closeMenu">;
+type NavKey = Exclude<keyof NavDict, "main" | "home" | "menu" | "closeMenu" | "language">;
 
 /** Order and grouping of the navigation. `group` only draws the hairline between tools and resources. */
 export const NAV_LINKS: ReadonlyArray<{ key: NavKey; path: string; group: "tools" | "resources" }> = [
@@ -175,7 +176,7 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
               <MenuIcon open={open} />
             </button>
           ) : null}
-          <LanguageSwitcher lang={lang} />
+          <LanguageSwitcher lang={lang} label={dict.language} />
           <ThemeToggle lang={lang} />
         </div>
 

@@ -21,16 +21,17 @@
 // <script type="application/ld+json"> tag — the one sanctioned use of
 // dangerouslySetInnerHTML in this codebase. Article prose never goes near it.
 
-import type { Lang } from "@/lib/domain";
+import { pick, type Lang } from "@/lib/domain";
 import { getSiteUrl } from "@/lib/seo/site";
 import { breadcrumbNode, entityIds, graph, pageId, ref, webPageNode } from "@/lib/seo/jsonld";
 import { newest } from "@/lib/seo/dates";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 
-/** Human label for the section, used in breadcrumbs. Same string in both locales. */
+/** Human label for the section, used in breadcrumbs. Same string in every locale. */
 export const BLOG_SECTION_LABEL: Record<Lang, string> = {
   es: "AI Daily",
   en: "AI Daily",
+  pt: "AI Daily",
 };
 
 /** JSON-LD is untyped by nature; this alias keeps the intent readable. */
@@ -202,7 +203,7 @@ export function blogBreadcrumbNode(input: BlogBreadcrumbInput): JsonLd {
       {
         "@type": "ListItem",
         position: 1,
-        name: lang === "es" ? "Inicio" : "Home",
+        name: pick(lang, { es: "Inicio", en: "Home", pt: "Início" }),
         item: abs(siteUrl, `/${lang}`),
       },
       {
@@ -256,7 +257,7 @@ export function blogIndexJsonLd(input: BlogIndexJsonLdInput): JsonLd {
   const url = abs(input.siteUrl, blogIndexPath(input.lang));
   const ids = entityIds(input.siteUrl);
   const items = input.items ?? [];
-  const home = input.lang === "es" ? "Inicio" : "Home";
+  const home = pick(input.lang, { es: "Inicio", en: "Home", pt: "Início" });
 
   const blog: JsonLd = {
     "@type": "Blog",

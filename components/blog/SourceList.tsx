@@ -10,6 +10,7 @@
 
 import { formatEditorialDate } from "@/lib/blog/dates";
 import type { Source } from "@/lib/blog/types";
+import { type Lang } from "@/lib/domain";
 
 export type SourceListDict = {
   sources: string;
@@ -30,7 +31,7 @@ export default function SourceList({
   dict,
 }: {
   sources: Source[];
-  lang: "es" | "en";
+  lang: Lang;
   dict: SourceListDict;
 }) {
   if (sources.length === 0) return null;

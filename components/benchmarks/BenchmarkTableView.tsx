@@ -14,6 +14,7 @@ import type { BenchmarkTable } from "@/lib/benchmarks/normalize";
 import { formatPrice, formatScore } from "@/lib/benchmarks/normalize";
 import { PROVIDER_TO_PROMPTEA, SOURCE_INFO } from "@/lib/benchmarks/catalog";
 import { providerColor } from "@/lib/benchmarks/chart";
+import { type Lang } from "@/lib/domain";
 
 type Sort = "score" | "score-asc" | "price" | "name";
 
@@ -48,7 +49,7 @@ export default function BenchmarkTableView({
   onHighlight,
 }: {
   table: BenchmarkTable;
-  lang: "es" | "en";
+  lang: Lang;
   copy: TableCopy;
   highlightId?: string | null;
   onHighlight?: (id: string | null) => void;

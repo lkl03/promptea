@@ -12,10 +12,10 @@ import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import ModelRegistryList from "@/components/seo/ModelRegistryList";
 import { modelGraph } from "@/lib/seo/pageGraphs";
+import { LANGS, toLang } from "@/lib/domain";
 
 export function generateStaticParams() {
-  const LOCALES = ["es", "en"] as const;
-  return LOCALES.flatMap((lang) => modelPages.map((m) => ({ lang, slug: m.slug })));
+  return LANGS.flatMap((lang) => modelPages.map((m) => ({ lang, slug: m.slug })));
 }
 
 export async function generateMetadata({
@@ -24,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string; slug: string }>;
 }): Promise<Metadata> {
   const { lang, slug } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   const model = getModelPage(slug);
   if (!model) return {};
@@ -48,7 +48,7 @@ export default async function ModelPage({
 }) {
   const { lang, slug } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const model = getModelPage(slug);
   if (!model) notFound();

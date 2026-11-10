@@ -15,6 +15,7 @@ import type { BarChartModel } from "@/lib/benchmarks/chart";
 import { providerColor } from "@/lib/benchmarks/chart";
 import { formatScore } from "@/lib/benchmarks/normalize";
 import type { BenchmarkDef } from "@/lib/benchmarks/catalog";
+import { INTL_LOCALE, type Lang } from "@/lib/domain";
 
 export type BarsCopy = {
   title: string; // "Top {n} · {benchmark}"
@@ -24,8 +25,8 @@ export type BarsCopy = {
   showingOf: string; // "Showing {n} of {total} models"
 };
 
-function fmtAxis(v: number, metric: BenchmarkDef["metric"], lang: "es" | "en") {
-  const locale = lang === "es" ? "es-AR" : "en-US";
+function fmtAxis(v: number, metric: BenchmarkDef["metric"], lang: Lang) {
+  const locale = INTL_LOCALE[lang];
   if (metric === "accuracy" || metric === "f1") return `${v.toLocaleString(locale)}%`;
   return v.toLocaleString(locale);
 }
@@ -40,7 +41,7 @@ export default function BenchmarkBars({
 }: {
   model: BarChartModel;
   def: BenchmarkDef;
-  lang: "es" | "en";
+  lang: Lang;
   copy: BarsCopy;
   highlightId?: string | null;
   onHighlight?: (id: string | null) => void;

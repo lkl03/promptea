@@ -19,6 +19,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { MarqueeItem } from "@/lib/blog/marquee";
+import { type Lang } from "@/lib/domain";
 
 type Dict = { label: string; pause: string; play: string };
 
@@ -36,7 +37,7 @@ function useReducedMotion() {
   );
 }
 
-function Headlines({ items, lang, hidden }: { items: MarqueeItem[]; lang: "es" | "en"; hidden?: boolean }) {
+function Headlines({ items, lang, hidden }: { items: MarqueeItem[]; lang: Lang; hidden?: boolean }) {
   return (
     <ul className="flex shrink-0 items-center gap-8 pr-8" aria-hidden={hidden || undefined} inert={hidden || undefined}>
       {items.map((item) => (
@@ -55,7 +56,7 @@ function Headlines({ items, lang, hidden }: { items: MarqueeItem[]; lang: "es" |
   );
 }
 
-export default function NewsMarquee({ items, lang, dict }: { items: MarqueeItem[]; lang: "es" | "en"; dict: Dict }) {
+export default function NewsMarquee({ items, lang, dict }: { items: MarqueeItem[]; lang: Lang; dict: Dict }) {
   const reduced = useReducedMotion();
   const [paused, setPaused] = useState(false);
   const [overflows, setOverflows] = useState(false);

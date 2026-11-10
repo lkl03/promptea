@@ -19,7 +19,7 @@
 // /en/blog/feed.xml is never locale-redirected and needs no extra matcher.
 
 import { hasLocale } from "../../dictionaries";
-import type { Lang } from "@/lib/domain";
+import { contentLangFor, isContentLang, type ContentLang } from "@/lib/domain";
 import { escapeXml, truncateWords } from "@/lib/blog/render";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import { blogArticlePath, blogFeedPath, blogIndexPath } from "@/lib/blog/jsonld";
@@ -32,7 +32,7 @@ export const revalidate = 300;
 /** Newest N articles. An aggregator does not need the full archive. */
 const FEED_LIMIT = 50;
 
-const CHANNEL: Record<Lang, { title: string; description: string; language: string }> = {
+const CHANNEL: Record<ContentLang, { title: string; description: string; language: string }> = {
   es: {
     title: "Promptea · AI Daily",
     description:
@@ -97,7 +97,12 @@ export async function GET(
   if (!hasLocale(lang)) {
     return new Response("Not found", { status: 404 });
   }
-  const l = (lang === "en" ? "en" : "es") as Lang;
+  // AI Daily is written in Spanish and English: a locale without an edition of
+  // its own (pt) has no feed of its own either — it points at the English one.
+  if (!isContentLang(lang)) {
+    return Response.redirect(`${getSiteUrl().replace(/\/+$/, "")}${blogFeedPath(contentLangFor(lang))}`, 308);
+  }
+  const l: ContentLang = lang;
 
   const siteUrl = getSiteUrl().replace(/\/+$/, "");
   const indexUrl = `${siteUrl}${blogIndexPath(l)}`;

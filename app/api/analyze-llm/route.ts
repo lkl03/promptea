@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { LANGS } from "@/lib/domain";
 import { fetchGroqHints, isGroqEnabled } from "@/lib/llm/groq";
 
 export const runtime = "nodejs";
@@ -7,7 +8,7 @@ export const runtime = "nodejs";
 const BodySchema = z.object({
   prompt: z.string().min(1).max(20000),
   taskType: z.string().min(1).max(60).optional(),
-  lang: z.enum(["es", "en"]).optional(),
+  lang: z.enum(LANGS).optional(),
 });
 
 // POST /api/analyze-llm

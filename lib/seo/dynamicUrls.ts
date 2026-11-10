@@ -9,6 +9,7 @@ import type { NewsletterEdition } from "@/lib/newsletter/types";
 import { weeklyEditionPath } from "@/lib/newsletter/paths";
 import { newest, toDay } from "./dates";
 import type { SeoUrl } from "./registry";
+import type { ContentLang } from "@/lib/domain";
 import type { Locale } from "./site";
 
 export function articlePath(lang: Locale, slug: string): string {
@@ -38,7 +39,7 @@ export function articleUrl(a: PublicArticle): SeoUrl {
   };
 }
 
-export function editionUrl(e: NewsletterEdition, lang: Locale): SeoUrl {
+export function editionUrl(e: NewsletterEdition, lang: ContentLang): SeoUrl {
   const c = e.locales[lang];
   return {
     lang,

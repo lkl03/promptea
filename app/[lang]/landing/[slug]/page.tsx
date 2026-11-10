@@ -11,12 +11,13 @@ import { buildPrefillHref } from "@/lib/seo/prefill";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
+import { LANGS, toLang } from "@/lib/domain";
 
 type Params = { lang: string; slug: string };
 
 export async function generateStaticParams() {
   return landings.flatMap((l) =>
-    ["es", "en"].map((lang) => ({ lang, slug: l.slug }))
+    LANGS.map((lang) => ({ lang, slug: l.slug }))
   );
 }
 
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { lang, slug } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const page = getLanding(slug);
   if (!page) return {};
 
@@ -52,7 +53,7 @@ export default async function LandingPage({
   const page = getLanding(slug);
   if (!page) notFound();
 
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const ctaHref = page.prefill
     ? buildPrefillHref({

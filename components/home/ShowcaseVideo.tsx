@@ -18,8 +18,9 @@
 
 import { useEffect, useRef } from "react";
 import { SHOWCASE } from "@/lib/showcase";
+import { type Lang } from "@/lib/domain";
 
-type Props = { lang: "es" | "en"; caption: string; pending: string; title: string };
+type Props = { lang: Lang; caption: string; pending: string; title: string };
 
 export default function ShowcaseVideo({ lang, caption, pending, title }: Props) {
   const ref = useRef<HTMLVideoElement | null>(null);

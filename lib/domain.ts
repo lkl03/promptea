@@ -12,11 +12,77 @@
 // Languages
 // ---------------------------------------------------------------------------
 
-export const LANGS = ["es", "en"] as const;
+/**
+ * The ONE list of interface languages (v1.8.2 added Brazilian Portuguese).
+ * Routes (`/es`, `/en`, `/pt`), the proxy, the dictionaries, the sitemap,
+ * hreflang, llms.txt, validators and the engine all derive from it:
+ * lib/seo/site.ts re-exports it as LOCALES and nothing else may spell the list
+ * out (`lib/__tests__/i18n.locales.test.ts` enforces it).
+ */
+export const LANGS = ["es", "en", "pt"] as const;
 export type Lang = (typeof LANGS)[number];
 
 export function isLang(v: unknown): v is Lang {
   return LANGS.includes(v as Lang);
+}
+
+/** Where a visitor lands when nothing matches their language (also hreflang x-default). */
+export const DEFAULT_LANG: Lang = "en";
+
+/** A route segment that may not be a locale → a locale (the default when it is not). */
+export function toLang(v: unknown): Lang {
+  return isLang(v) ? v : DEFAULT_LANG;
+}
+
+/** BCP 47 tag for `<html lang>`, JSON-LD `inLanguage` and `Intl` formatters. */
+export const LANG_TAG: Record<Lang, string> = { es: "es", en: "en", pt: "pt-BR" };
+
+/** Locale passed to `Intl.*` / `toLocaleString` for dates, numbers and currency. */
+export const INTL_LOCALE: Record<Lang, string> = { es: "es-AR", en: "en-US", pt: "pt-BR" };
+
+/** Short label of each language in the language switcher. */
+export const LANG_LABEL: Record<Lang, string> = { es: "ES", en: "EN", pt: "PT" };
+
+/** Full name of each language, in that language (aria-labels, selects). */
+export const LANG_NAME: Record<Lang, string> = { es: "Español", en: "English", pt: "Português" };
+
+/**
+ * Pick the text for `lang` from an inline `{ es, en, pt }` literal. For copy
+ * that lives next to the markup instead of in the dictionaries; TypeScript
+ * rejects a literal that misses a language.
+ */
+export function pick<T>(lang: Lang, by: Record<Lang, T>): T {
+  return by[lang];
+}
+
+/**
+ * Languages the editorial content is WRITTEN in: AI Daily articles, the weekly
+ * summary and the newsletter are published by an external routine in Spanish
+ * and English only (lib/blog/types.ts is that contract). The interface can be in
+ * more languages than the content.
+ */
+export const CONTENT_LANGS = ["es", "en"] as const;
+export type ContentLang = (typeof CONTENT_LANGS)[number];
+
+export function isContentLang(v: unknown): v is ContentLang {
+  return CONTENT_LANGS.includes(v as ContentLang);
+}
+
+/**
+ * The content language shown under an interface language. Portuguese readers
+ * get the English edition: it is the site's default language (x-default) and
+ * the one the sources of AI Daily are written in. The page says so and offers
+ * the Spanish edition next to it.
+ */
+export const CONTENT_LANG_FOR: Record<Lang, ContentLang> = { es: "es", en: "en", pt: "en" };
+
+export function contentLangFor(lang: Lang): ContentLang {
+  return CONTENT_LANG_FOR[lang];
+}
+
+/** True when the interface language has no edition of its own (today: pt). */
+export function contentIsFallback(lang: Lang): boolean {
+  return CONTENT_LANG_FOR[lang] !== lang;
 }
 
 // ---------------------------------------------------------------------------

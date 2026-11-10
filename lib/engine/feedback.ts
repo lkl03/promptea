@@ -12,7 +12,7 @@ import { modelNoteForTarget } from "@/lib/models";
 
 export type ScoreCriterion = {
   key: string;
-  label: { es: string; en: string };
+  label: Record<Lang, string>;
 };
 
 export type FeedbackBlock = {
@@ -31,61 +31,61 @@ function t(lang: Lang, es: string, en: string) {
 
 const CRITERIA_BY_TASK: Record<string, ScoreCriterion[]> = {
   coding: [
-    { key: "context", label: { es: "Contexto del repo y del stack", en: "Repo and stack context" } },
-    { key: "boundaries", label: { es: "Límites de la tarea", en: "Task boundaries" } },
-    { key: "acceptance", label: { es: "Criterios de aceptación", en: "Acceptance criteria" } },
-    { key: "tests", label: { es: "Tests / cómo validar", en: "Tests / how to validate" } },
-    { key: "format", label: { es: "Formato del entregable", en: "Output format" } },
+    { key: "context", label: { es: "Contexto del repo y del stack", en: "Repo and stack context", pt: "Repo and stack context" } },
+    { key: "boundaries", label: { es: "Límites de la tarea", en: "Task boundaries", pt: "Task boundaries" } },
+    { key: "acceptance", label: { es: "Criterios de aceptación", en: "Acceptance criteria", pt: "Acceptance criteria" } },
+    { key: "tests", label: { es: "Tests / cómo validar", en: "Tests / how to validate", pt: "Tests / how to validate" } },
+    { key: "format", label: { es: "Formato del entregable", en: "Output format", pt: "Output format" } },
   ],
   debugging: [
-    { key: "error", label: { es: "Mensaje de error completo", en: "Full error message" } },
-    { key: "repro", label: { es: "Pasos para reproducir", en: "Reproduction steps" } },
-    { key: "env", label: { es: "Entorno y versiones", en: "Environment and versions" } },
-    { key: "expected", label: { es: "Comportamiento esperado", en: "Expected behavior" } },
+    { key: "error", label: { es: "Mensaje de error completo", en: "Full error message", pt: "Full error message" } },
+    { key: "repro", label: { es: "Pasos para reproducir", en: "Reproduction steps", pt: "Reproduction steps" } },
+    { key: "env", label: { es: "Entorno y versiones", en: "Environment and versions", pt: "Environment and versions" } },
+    { key: "expected", label: { es: "Comportamiento esperado", en: "Expected behavior", pt: "Expected behavior" } },
   ],
   refactor: [
-    { key: "scope", label: { es: "Alcance del refactor", en: "Refactor scope" } },
-    { key: "invariants", label: { es: "Invariantes que mantener", en: "Invariants to preserve" } },
-    { key: "tradeoffs", label: { es: "Trade-offs aceptables", en: "Acceptable trade-offs" } },
-    { key: "tests", label: { es: "Tests / cobertura", en: "Tests / coverage" } },
+    { key: "scope", label: { es: "Alcance del refactor", en: "Refactor scope", pt: "Refactor scope" } },
+    { key: "invariants", label: { es: "Invariantes que mantener", en: "Invariants to preserve", pt: "Invariants to preserve" } },
+    { key: "tradeoffs", label: { es: "Trade-offs aceptables", en: "Acceptable trade-offs", pt: "Acceptable trade-offs" } },
+    { key: "tests", label: { es: "Tests / cobertura", en: "Tests / coverage", pt: "Tests / coverage" } },
   ],
   data_extraction: [
-    { key: "schema", label: { es: "Esquema y tipos", en: "Schema and types" } },
-    { key: "validation", label: { es: "Reglas de validación", en: "Validation rules" } },
-    { key: "examples", label: { es: "Ejemplos input/output", en: "Input/output examples" } },
-    { key: "missing", label: { es: "Política para faltantes", en: "Missing-value policy" } },
+    { key: "schema", label: { es: "Esquema y tipos", en: "Schema and types", pt: "Schema and types" } },
+    { key: "validation", label: { es: "Reglas de validación", en: "Validation rules", pt: "Validation rules" } },
+    { key: "examples", label: { es: "Ejemplos input/output", en: "Input/output examples", pt: "Input/output examples" } },
+    { key: "missing", label: { es: "Política para faltantes", en: "Missing-value policy", pt: "Missing-value policy" } },
   ],
   marketing: [
-    { key: "audience", label: { es: "Audiencia", en: "Audience" } },
-    { key: "tone", label: { es: "Tono y voz de marca", en: "Tone and brand voice" } },
-    { key: "channel", label: { es: "Canal y formato", en: "Channel and format" } },
-    { key: "cta", label: { es: "CTA", en: "Call to action" } },
-    { key: "differentiator", label: { es: "Propuesta de valor", en: "Differentiator" } },
+    { key: "audience", label: { es: "Audiencia", en: "Audience", pt: "Audience" } },
+    { key: "tone", label: { es: "Tono y voz de marca", en: "Tone and brand voice", pt: "Tone and brand voice" } },
+    { key: "channel", label: { es: "Canal y formato", en: "Channel and format", pt: "Channel and format" } },
+    { key: "cta", label: { es: "CTA", en: "Call to action", pt: "Call to action" } },
+    { key: "differentiator", label: { es: "Propuesta de valor", en: "Differentiator", pt: "Differentiator" } },
   ],
   study: [
-    { key: "level", label: { es: "Nivel del usuario", en: "Learner level" } },
-    { key: "objective", label: { es: "Objetivo de aprendizaje", en: "Learning objective" } },
-    { key: "examples", label: { es: "Ejemplos / práctica", en: "Examples / practice" } },
-    { key: "format", label: { es: "Formato y feedback", en: "Format and feedback style" } },
+    { key: "level", label: { es: "Nivel del usuario", en: "Learner level", pt: "Learner level" } },
+    { key: "objective", label: { es: "Objetivo de aprendizaje", en: "Learning objective", pt: "Learning objective" } },
+    { key: "examples", label: { es: "Ejemplos / práctica", en: "Examples / practice", pt: "Examples / practice" } },
+    { key: "format", label: { es: "Formato y feedback", en: "Format and feedback style", pt: "Format and feedback style" } },
   ],
   image: [
-    { key: "subject", label: { es: "Sujeto", en: "Subject" } },
-    { key: "style", label: { es: "Estilo", en: "Style" } },
-    { key: "composition", label: { es: "Composición", en: "Composition" } },
-    { key: "lighting", label: { es: "Iluminación", en: "Lighting" } },
-    { key: "aspect", label: { es: "Relación de aspecto / negativos", en: "Aspect ratio / negatives" } },
+    { key: "subject", label: { es: "Sujeto", en: "Subject", pt: "Subject" } },
+    { key: "style", label: { es: "Estilo", en: "Style", pt: "Style" } },
+    { key: "composition", label: { es: "Composición", en: "Composition", pt: "Composition" } },
+    { key: "lighting", label: { es: "Iluminación", en: "Lighting", pt: "Lighting" } },
+    { key: "aspect", label: { es: "Relación de aspecto / negativos", en: "Aspect ratio / negatives", pt: "Aspect ratio / negatives" } },
   ],
   research: [
-    { key: "scope", label: { es: "Alcance", en: "Scope" } },
-    { key: "sources", label: { es: "Fuentes / período", en: "Sources / time period" } },
-    { key: "format", label: { es: "Formato del entregable", en: "Output format" } },
-    { key: "criteria", label: { es: "Criterios de calidad", en: "Quality criteria" } },
+    { key: "scope", label: { es: "Alcance", en: "Scope", pt: "Scope" } },
+    { key: "sources", label: { es: "Fuentes / período", en: "Sources / time period", pt: "Sources / time period" } },
+    { key: "format", label: { es: "Formato del entregable", en: "Output format", pt: "Output format" } },
+    { key: "criteria", label: { es: "Criterios de calidad", en: "Quality criteria", pt: "Quality criteria" } },
   ],
   text: [
-    { key: "goal", label: { es: "Objetivo claro", en: "Clear goal" } },
-    { key: "context", label: { es: "Contexto mínimo", en: "Minimal context" } },
-    { key: "format", label: { es: "Formato de salida", en: "Output format" } },
-    { key: "constraints", label: { es: "Tono / largo / restricciones", en: "Tone / length / constraints" } },
+    { key: "goal", label: { es: "Objetivo claro", en: "Clear goal", pt: "Clear goal" } },
+    { key: "context", label: { es: "Contexto mínimo", en: "Minimal context", pt: "Minimal context" } },
+    { key: "format", label: { es: "Formato de salida", en: "Output format", pt: "Output format" } },
+    { key: "constraints", label: { es: "Tono / largo / restricciones", en: "Tone / length / constraints", pt: "Tone / length / constraints" } },
   ],
 };
 

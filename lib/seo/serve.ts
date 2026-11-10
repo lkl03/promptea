@@ -7,10 +7,16 @@ import "server-only";
 
 import { loadArticles, loadBenchmarksSnapshot, loadEditions } from "./dynamic";
 import type { LlmsInput } from "./llms";
+import { isContentLang } from "@/lib/domain";
 import type { Locale } from "./site";
 
 export async function loadLlmsInput(lang: Locale): Promise<LlmsInput> {
-  const [articles, editions, benchmarks] = await Promise.all([loadArticles(lang, 200), loadEditions(), loadBenchmarksSnapshot()]);
+  // AI Daily is written in es/en: a locale without an edition of its own lists none.
+  const [articles, editions, benchmarks] = await Promise.all([
+    isContentLang(lang) ? loadArticles(lang, 200) : Promise.resolve([]),
+    isContentLang(lang) ? loadEditions() : Promise.resolve([]),
+    loadBenchmarksSnapshot(),
+  ]);
   return { lang, articles, editions, benchmarks };
 }
 

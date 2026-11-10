@@ -6,7 +6,7 @@
 // keyboard users get native focus + Enter activation.
 
 import Link from "next/link";
-import type { AppMode } from "@/lib/domain";
+import type { AppMode, Lang } from "@/lib/domain";
 import type { ModeDict } from "@/lib/uiDict";
 
 export default function ModeSwitcher({
@@ -14,7 +14,7 @@ export default function ModeSwitcher({
   active,
   dict,
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   active: AppMode;
   dict: ModeDict;
 }) {

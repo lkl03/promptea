@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
+import { isLang } from "@/lib/domain";
 
 export const runtime = "nodejs";
 
@@ -26,7 +27,8 @@ export async function POST(req: NextRequest) {
   }
 
   const sessionId = String(body?.sessionId ?? "").trim();
-  const lang = body?.lang === "en" ? "en" : "es";
+  // Unknown / missing language keeps the pre-1.8.2 default ("es").
+  const lang = isLang(body?.lang) ? body.lang : "es";
 
   // ✅ No confíes en projectId del cliente
   const projectId = process.env.FIREBASE_PROJECT_ID ?? null;

@@ -8,6 +8,7 @@ import type { Metadata } from "next";
 
 import { glossary } from "@/lib/seo/content/glossary";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { toLang } from "@/lib/domain";
 
 export async function generateMetadata({
   params,
@@ -15,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   return pageMetadata({
     lang: l,
@@ -31,7 +32,7 @@ export async function generateMetadata({
 export default async function GlossaryIndexPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const title = l === "es" ? "Glosario de prompt engineering" : "Prompt engineering glossary";
   const subtitle =

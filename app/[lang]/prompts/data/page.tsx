@@ -4,8 +4,9 @@ import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { toLang, type Lang } from "@/lib/domain";
 
-function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
+function buildOpenLink(lang: Lang, purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
   qp.set("purpose", purpose);
   qp.set("target", target);
@@ -19,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   return pageMetadata({
     lang: l,
@@ -39,7 +40,7 @@ export default async function DataPromptPackPage({
 }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const title = l === "es" ? "Prompts de datos" : "Data prompts";
   const subtitle =

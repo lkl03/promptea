@@ -5,15 +5,15 @@
 
 import { PURPOSES, type Lang, type PromptPurpose } from "@/lib/domain";
 
-const LABELS: Record<PromptPurpose, { es: string; en: string }> = {
-  text: { es: "Texto", en: "Text" },
-  study: { es: "Estudio", en: "Study" },
-  code: { es: "Código", en: "Code" },
-  data: { es: "Data/JSON", en: "Data/JSON" },
-  image: { es: "Imagen", en: "Image" },
-  marketing: { es: "Marketing", en: "Marketing" },
-  translation: { es: "Traducción", en: "Translation" },
-  summarization: { es: "Resumen", en: "Summary" },
+const LABELS: Record<PromptPurpose, Record<Lang, string>> = {
+  text: { es: "Texto", en: "Text", pt: "Text" },
+  study: { es: "Estudio", en: "Study", pt: "Study" },
+  code: { es: "Código", en: "Code", pt: "Code" },
+  data: { es: "Data/JSON", en: "Data/JSON", pt: "Data/JSON" },
+  image: { es: "Imagen", en: "Image", pt: "Image" },
+  marketing: { es: "Marketing", en: "Marketing", pt: "Marketing" },
+  translation: { es: "Traducción", en: "Translation", pt: "Translation" },
+  summarization: { es: "Resumen", en: "Summary", pt: "Summary" },
 };
 
 export function purposeOptions(lang: Lang): Array<{ value: PromptPurpose; label: string }> {

@@ -1,3 +1,4 @@
+import { type Lang } from "@/lib/domain";
 export type TelemetryEventName = "analyze" | "copy" | "feedback";
 
 export type TelemetryEvent = {
@@ -8,7 +9,7 @@ export type TelemetryEvent = {
   projectId?: string | null;
   engineVersion: string;
 
-  lang?: "es" | "en";
+  lang?: Lang;
   target?: string;
   taskType?: string;
   purpose?: string | null;

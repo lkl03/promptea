@@ -208,6 +208,7 @@ export async function POST(req: NextRequest) {
       urls: {
         en: `/en/blog/${payload.locales.en.slug}`,
         es: `/es/blog/${payload.locales.es.slug}`,
+        pt: `/en/blog/${payload.locales.en.slug}`,
       },
     },
     { status: result.outcome === "already_published" ? 200 : 201 }

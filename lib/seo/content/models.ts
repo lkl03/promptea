@@ -17,10 +17,11 @@ export type ModelPage = {
 export const modelPages: ModelPage[] = [
   {
     slug: "gpt",
-    title: { en: "Prompts for GPT: structure first, ambiguity last", es: "Prompts para GPT: estructura primero, ambigüedad cero" },
+    title: { en: "Prompts for GPT: structure first, ambiguity last", es: "Prompts para GPT: estructura primero, ambigüedad cero", pt: "Prompts for GPT: structure first, ambiguity last" },
     description: {
       en: "Reusable GPT prompt templates: clear constraints, formats, and iteration loops.",
       es: "Plantillas reutilizables para GPT: restricciones claras, formato, e iteración sin vueltas.",
+      pt: "Reusable GPT prompt templates: clear constraints, formats, and iteration loops.",
     },
     bullets: {
       en: [
@@ -33,10 +34,15 @@ export const modelPages: ModelPage[] = [
         "Usá delimitadores si hay mucho texto (\\\"\\\"\\\" ... \\\"\\\"\\\").",
         "Si falta info, pedí preguntas primero (en vez de adivinar).",
       ],
+      pt: [
+        "Put the instruction first, then context, then output format.",
+        "Use delimiters for long context (\\\"\\\"\\\" ... \\\"\\\"\\\").",
+        "Ask for questions first if info is missing.",
+      ],
     },
     templates: [
       {
-        title: { en: "Clear answer + format", es: "Respuesta clara + formato" },
+        title: { en: "Clear answer + format", es: "Respuesta clara + formato", pt: "Clear answer + format" },
         purpose: "text",
         prompt: {
           en: `Goal: [what you want]
@@ -47,10 +53,14 @@ If info is missing, ask up to 3 questions first.`,
 Contexto: [hechos clave]
 Formato de salida: lista con headings.
 Si falta info, haceme hasta 3 preguntas primero.`,
+          pt: `Goal: [what you want]
+Context: [key facts]
+Output format: bullet list with headings.
+If info is missing, ask up to 3 questions first.`,
         },
       },
       {
-        title: { en: "Decision memo", es: "Memo de decisión" },
+        title: { en: "Decision memo", es: "Memo de decisión", pt: "Decision memo" },
         purpose: "text",
         prompt: {
           en: `Write a decision memo.
@@ -69,25 +79,35 @@ Devolvé:
 - pros/cons por opción
 - riesgos
 - próximos pasos`,
+          pt: `Write a decision memo.
+Options: [A, B, C]
+Constraints: [budget/time]
+Return:
+- recommendation
+- pros/cons per option
+- risks
+- next steps`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How do I reduce generic answers?", es: "¿Cómo reduzco respuestas genéricas?" },
+        q: { en: "How do I reduce generic answers?", es: "¿Cómo reduzco respuestas genéricas?", pt: "How do I reduce generic answers?" },
         a: {
           en: "Force an output structure and add constraints. Without constraints, the model fills gaps with generic advice.",
           es: "Forzá estructura de salida y meté restricciones. Sin restricciones, la IA rellena con generalidades.",
+          pt: "Force an output structure and add constraints. Without constraints, the model fills gaps with generic advice.",
         },
       },
     ],
   },
   {
     slug: "claude",
-    title: { en: "Prompts for Claude: explicit steps and quality bar", es: "Prompts para Claude: pasos explícitos y barra de calidad" },
+    title: { en: "Prompts for Claude: explicit steps and quality bar", es: "Prompts para Claude: pasos explícitos y barra de calidad", pt: "Prompts for Claude: explicit steps and quality bar" },
     description: {
       en: "Templates for Claude that emphasize clear evaluation criteria and careful handling of missing info.",
       es: "Plantillas para Claude con criterios claros y manejo cuidadoso de info faltante.",
+      pt: "Templates for Claude that emphasize clear evaluation criteria and careful handling of missing info.",
     },
     bullets: {
       en: [
@@ -100,10 +120,15 @@ Devolvé:
         "Para cosas complejas, pedí un mini-plan antes de la respuesta final.",
         "Si querés consistencia, poné ejemplo de tono/formato.",
       ],
+      pt: [
+        "Give a checklist of what must be covered.",
+        "Ask for a short plan before the final answer (when complex).",
+        "Add examples of desired tone/format when needed.",
+      ],
     },
     templates: [
       {
-        title: { en: "Rubric-based review", es: "Review con rúbrica" },
+        title: { en: "Rubric-based review", es: "Review con rúbrica", pt: "Rubric-based review" },
         purpose: "code",
         prompt: {
           en: `Review this code with a rubric.
@@ -118,10 +143,16 @@ Devolvé:
 - issues priorizados (P0/P1/P2)
 - fixes concretos (snippets)
 - checklist de tests`,
+          pt: `Review this code with a rubric.
+Rubric: correctness, security, performance, readability, tests.
+Return:
+- prioritized issues (P0/P1/P2)
+- concrete fixes (snippets)
+- test checklist`,
         },
       },
       {
-        title: { en: "Long-context summarizer", es: "Resumen de texto largo" },
+        title: { en: "Long-context summarizer", es: "Resumen de texto largo", pt: "Long-context summarizer" },
         purpose: "text",
         prompt: {
           en: `Summarize the text below.
@@ -138,25 +169,34 @@ Salida:
 3) 5 preguntas abiertas
 Texto:
 """[pegá]"""`,
+          pt: `Summarize the text below.
+Output:
+1) 10 bullets (key facts)
+2) 5 decisions
+3) 5 open questions
+Text:
+"""[paste]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Should I ask for chain-of-thought?", es: "¿Conviene pedir razonamiento paso a paso?" },
+        q: { en: "Should I ask for chain-of-thought?", es: "¿Conviene pedir razonamiento paso a paso?", pt: "Should I ask for chain-of-thought?" },
         a: {
           en: "Ask for a brief plan or key steps instead of full hidden reasoning. It keeps output short and useful.",
           es: "Pedí un plan breve o pasos clave (no el razonamiento completo). Te da utilidad sin inflar el texto.",
+          pt: "Ask for a brief plan or key steps instead of full hidden reasoning. It keeps output short and useful.",
         },
       },
     ],
   },
   {
     slug: "gemini",
-    title: { en: "Prompts for Gemini: specify goal + format, iterate", es: "Prompts para Gemini: objetivo + formato, iteración" },
+    title: { en: "Prompts for Gemini: specify goal + format, iterate", es: "Prompts para Gemini: objetivo + formato, iteración", pt: "Prompts for Gemini: specify goal + format, iterate" },
     description: {
       en: "Practical Gemini prompt templates focused on format, constraints, and iteration loops.",
       es: "Plantillas para Gemini enfocadas en formato, restricciones e iteración.",
+      pt: "Practical Gemini prompt templates focused on format, constraints, and iteration loops.",
     },
     bullets: {
       en: [
@@ -169,10 +209,15 @@ Texto:
         "Usá ejemplos si necesitás estructura estricta.",
         "Aclarale qué hacer si no está seguro (preguntar / 'desconocido').",
       ],
+      pt: [
+        "State the goal and the output format up front.",
+        "Use examples when you need strict structure.",
+        "Tell it what to do when uncertain (ask questions / say 'unknown').",
+      ],
     },
     templates: [
       {
-        title: { en: "Strict JSON extraction", es: "Extracción JSON estricta" },
+        title: { en: "Strict JSON extraction", es: "Extracción JSON estricta", pt: "Strict JSON extraction" },
         purpose: "data",
         prompt: {
           en: `Return ONLY JSON.
@@ -183,35 +228,43 @@ Text:
 Esquema: {"items":[{"name":"string","value":"number|null"}]}
 Texto:
 """[pegá]"""`,
+          pt: `Return ONLY JSON.
+Schema: {"items":[{"name":"string","value":"number|null"}]}
+Text:
+"""[paste]"""`,
         },
       },
       {
-        title: { en: "Compare options table", es: "Tabla comparativa de opciones" },
+        title: { en: "Compare options table", es: "Tabla comparativa de opciones", pt: "Compare options table" },
         purpose: "text",
         prompt: {
           en: `Compare these options: [A, B, C]
 Output as a table with columns: Option | Pros | Cons | Risks | Best for.`,
           es: `Compará estas opciones: [A, B, C]
 Salida: tabla con columnas Opción | Pros | Contras | Riesgos | Mejor para.`,
+          pt: `Compare these options: [A, B, C]
+Output as a table with columns: Option | Pros | Cons | Risks | Best for.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How do I avoid verbose outputs?", es: "¿Cómo evito que se vaya de largo?" },
+        q: { en: "How do I avoid verbose outputs?", es: "¿Cómo evito que se vaya de largo?", pt: "How do I avoid verbose outputs?" },
         a: {
           en: "Set a max length (e.g., '<= 120 words') or fixed number of bullets/rows.",
           es: "Poné límite (ej: '<= 120 palabras') o número fijo de bullets/filas.",
+          pt: "Set a max length (e.g., '<= 120 words') or fixed number of bullets/rows.",
         },
       },
     ],
   },
   {
     slug: "grok",
-    title: { en: "Prompts for Grok: be direct, ask for checks", es: "Prompts para Grok: directo y con checks" },
+    title: { en: "Prompts for Grok: be direct, ask for checks", es: "Prompts para Grok: directo y con checks", pt: "Prompts for Grok: be direct, ask for checks" },
     description: {
       en: "Templates that ask Grok for concrete outputs and quick validation steps.",
       es: "Plantillas que piden outputs concretos y pasos de validación rápidos.",
+      pt: "Templates that ask Grok for concrete outputs and quick validation steps.",
     },
     bullets: {
       en: [
@@ -224,10 +277,15 @@ Salida: tabla con columnas Opción | Pros | Contras | Riesgos | Mejor para.`,
         "Pedí un sanity-check corto (supuestos, riesgos).",
         "Preferí entregables concretos (bullets, diff, checklist).",
       ],
+      pt: [
+        "Keep the ask direct: task + constraints + format.",
+        "Request a short sanity-check section (assumptions, risks).",
+        "Prefer concrete deliverables (bullets, diff, checklist).",
+      ],
     },
     templates: [
       {
-        title: { en: "Fast critique (assumptions)", es: "Crítica rápida (supuestos)" },
+        title: { en: "Fast critique (assumptions)", es: "Crítica rápida (supuestos)", pt: "Fast critique (assumptions)" },
         purpose: "text",
         prompt: {
           en: `Critique this plan.
@@ -244,10 +302,17 @@ Devolvé:
 - 3 alternativas
 Plan:
 """[pegá]"""`,
+          pt: `Critique this plan.
+Return:
+- 5 assumptions
+- 5 risks
+- 3 alternatives
+Plan:
+"""[paste]"""`,
         },
       },
       {
-        title: { en: "Code bug triage", es: "Triage de bug de código" },
+        title: { en: "Code bug triage", es: "Triage de bug de código", pt: "Code bug triage" },
         purpose: "code",
         prompt: {
           en: `Bug report:
@@ -270,25 +335,37 @@ Devolvé:
 - causa más probable
 - 3 checks para confirmar
 - fix sugerido`,
+          pt: `Bug report:
+Expected:
+Actual:
+Logs:
+Code snippet:
+
+Return:
+- most likely cause
+- 3 checks to confirm
+- fix suggestion`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why ask for sanity checks?", es: "¿Por qué pedir sanity checks?" },
+        q: { en: "Why ask for sanity checks?", es: "¿Por qué pedir sanity checks?", pt: "Why ask for sanity checks?" },
         a: {
           en: "It forces the model to surface assumptions instead of confidently inventing missing context.",
           es: "Lo obliga a explicitar supuestos en vez de inventar contexto con seguridad falsa.",
+          pt: "It forces the model to surface assumptions instead of confidently inventing missing context.",
         },
       },
     ],
   },
   {
     slug: "kimi",
-    title: { en: "Prompts for Kimi: structure + constraints", es: "Prompts para Kimi: estructura + restricciones" },
+    title: { en: "Prompts for Kimi: structure + constraints", es: "Prompts para Kimi: estructura + restricciones", pt: "Prompts for Kimi: structure + constraints" },
     description: {
       en: "General prompt templates designed to keep outputs structured and practical.",
       es: "Plantillas generales para mantener outputs estructurados y prácticos.",
+      pt: "General prompt templates designed to keep outputs structured and practical.",
     },
     bullets: {
       en: [
@@ -301,10 +378,15 @@ Devolvé:
         "Sumá restricciones y criterios de aceptación.",
         "Si falta info crítica, pedí preguntas.",
       ],
+      pt: [
+        "Use a fixed output structure (headings, bullets, steps).",
+        "Add constraints and acceptance criteria.",
+        "Ask for questions if critical info is missing.",
+      ],
     },
     templates: [
       {
-        title: { en: "Explain + example + pitfalls", es: "Explicación + ejemplo + errores" },
+        title: { en: "Explain + example + pitfalls", es: "Explicación + ejemplo + errores", pt: "Explain + example + pitfalls" },
         purpose: "study",
         prompt: {
           en: `Teach me: [topic]
@@ -321,25 +403,34 @@ Devolvé:
 - ejemplo resuelto
 - errores comunes
 - 5 preguntas de práctica`,
+          pt: `Teach me: [topic]
+Return:
+- intuition
+- formal definition
+- worked example
+- common pitfalls
+- 5 practice questions`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Do templates differ by model?", es: "¿Cambian las plantillas según el modelo?" },
+        q: { en: "Do templates differ by model?", es: "¿Cambian las plantillas según el modelo?", pt: "Do templates differ by model?" },
         a: {
           en: "Core structure is the same. What changes is how strict you must be about format and validation.",
           es: "La estructura base es la misma. Lo que cambia es cuán estricto tenés que ser con formato y validación.",
+          pt: "Core structure is the same. What changes is how strict you must be about format and validation.",
         },
       },
     ],
   },
   {
     slug: "deepseek",
-    title: { en: "Prompts for DeepSeek: explicit format and tests", es: "Prompts para DeepSeek: formato explícito y tests" },
+    title: { en: "Prompts for DeepSeek: explicit format and tests", es: "Prompts para DeepSeek: formato explícito y tests", pt: "Prompts for DeepSeek: explicit format and tests" },
     description: {
       en: "Templates for engineering tasks: specs, implementations, and test-driven outputs.",
       es: "Plantillas para tareas de ingeniería: specs, implementaciones y salida con tests.",
+      pt: "Templates for engineering tasks: specs, implementations, and test-driven outputs.",
     },
     bullets: {
       en: [
@@ -352,10 +443,15 @@ Devolvé:
         "Pedí casos límite y checklist de tests.",
         "Para cosas complejas: pasos cortos.",
       ],
+      pt: [
+        "Specify the deliverable (spec, code, tests).",
+        "Ask for edge cases and a test checklist.",
+        "Prefer smaller steps for complex tasks.",
+      ],
     },
     templates: [
       {
-        title: { en: "Implement from spec (with tests)", es: "Implementar desde spec (con tests)" },
+        title: { en: "Implement from spec (with tests)", es: "Implementar desde spec (con tests)", pt: "Implement from spec (with tests)" },
         purpose: "code",
         prompt: {
           en: `Implement this feature:
@@ -380,25 +476,38 @@ Devolvé:
 2) código
 3) tests
 4) cómo correrlo`,
+          pt: `Implement this feature:
+[spec]
+
+Constraints:
+- language: [x]
+- style: [x]
+Return:
+1) brief plan
+2) code
+3) tests
+4) how to run`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why insist on tests?", es: "¿Por qué insistir con tests?" },
+        q: { en: "Why insist on tests?", es: "¿Por qué insistir con tests?", pt: "Why insist on tests?" },
         a: {
           en: "It forces the solution to be verifiable. Without tests, you get plausible but brittle code.",
           es: "Te obliga a que sea verificable. Sin tests, te da código plausible pero frágil.",
+          pt: "It forces the solution to be verifiable. Without tests, you get plausible but brittle code.",
         },
       },
     ],
   },
   {
     slug: "perplexity",
-    title: { en: "Prompts for Perplexity: specific questions, sourced answers", es: "Prompts para Perplexity: preguntas específicas, respuestas con fuentes" },
+    title: { en: "Prompts for Perplexity: specific questions, sourced answers", es: "Prompts para Perplexity: preguntas específicas, respuestas con fuentes", pt: "Prompts for Perplexity: specific questions, sourced answers" },
     description: {
       en: "Templates for Perplexity's Agent API presets (fast, low, medium, high, xhigh): questions that seed a good web search, capped lists and honest 'the sources don't say' answers.",
       es: "Plantillas para los presets de la Agent API de Perplexity (fast, low, medium, high, xhigh): preguntas que siembran una buena búsqueda web, listas acotadas y respuestas honestas de 'las fuentes no lo dicen'.",
+      pt: "Templates for Perplexity's Agent API presets (fast, low, medium, high, xhigh): questions that seed a good web search, capped lists and honest 'the sources don't say' answers.",
     },
     bullets: {
       en: [
@@ -415,10 +524,17 @@ Devolvé:
         "Los límites de dominio y de fecha son parámetros de la API y las citas vuelven por separado: no pidas URLs ni 'solo del sitio X' en la prosa, y leé las fuentes desde los resultados de búsqueda de la respuesta.",
         "Elegí el preset según el tamaño del trabajo: fast para un dato puntual, low para investigación del día a día, medium para preguntas de varios saltos entre fuentes, high para un informe exhaustivo, xhigh para trabajo agéntico abierto.",
       ],
+      pt: [
+        "Perplexity searches the web and reads pages before it answers, so your prompt seeds the search: make the question specific and use the vocabulary the relevant pages would use.",
+        "Keep instructions short and give it permission to say the sources do not answer the question, and to flag results that only nearly match (a different year, a related company, a similar name).",
+        "Cap list lengths and use at most five sections. Do not paste example answers: a search latches onto their topic, so describe the structure you want instead.",
+        "Domain and recency limits are API parameters, and citations come back separately: do not ask for URLs or 'only site X' in the prose, and read the sources from the response's search results.",
+        "Pick the preset by the size of the job: fast for a single fact, low for everyday research, medium for multi-hop questions across sources, high for an exhaustive report, xhigh for open-ended agentic work.",
+      ],
     },
     templates: [
       {
-        title: { en: "Sourced research question", es: "Pregunta de investigación con fuentes" },
+        title: { en: "Sourced research question", es: "Pregunta de investigación con fuentes", pt: "Sourced research question" },
         purpose: "text",
         prompt: {
           en: `What changed in [topic, with country/product and year] since [month year]?
@@ -429,10 +545,14 @@ If a result is about a different year, company or product, state the mismatch fi
 Respondé en 5 bullets como máximo, lo más relevante primero, una oración cada uno.
 Si las fuentes no cubren algo, decilo en vez de adivinar.
 Si un resultado es de otro año, empresa o producto, marcá primero la diferencia.`,
+          pt: `What changed in [topic, with country/product and year] since [month year]?
+Answer in at most 5 bullets, most relevant first, one sentence each.
+If the sources do not cover something, say so instead of guessing.
+If a result is about a different year, company or product, state the mismatch first.`,
         },
       },
       {
-        title: { en: "Research brief (high / xhigh)", es: "Brief de investigación (high / xhigh)" },
+        title: { en: "Research brief (high / xhigh)", es: "Brief de investigación (high / xhigh)", pt: "Research brief (high / xhigh)" },
         purpose: "text",
         prompt: {
           en: `Research brief: [question].
@@ -445,29 +565,37 @@ Alcance: [qué entra y qué no]. Período: [fechas].
 Formato del informe: un resumen corto y después como máximo 5 secciones, cada una con el hallazgo clave y la evidencia que lo respalda.
 Compará [A] y [B] según [criterios]. Si las fuentes discrepan, mostrá ambas posturas.
 Si las fuentes no responden una parte del brief, decí cuál.`,
+          pt: `Research brief: [question].
+Scope: [what is in and out of scope]. Period: [dates].
+Report format: a short summary, then at most 5 sections, each with the key finding and the evidence behind it.
+Compare [A] and [B] on [criteria]. If sources disagree, show both positions.
+If the sources do not answer part of the brief, say which part.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which Perplexity preset should I use?", es: "¿Qué preset de Perplexity conviene usar?" },
+        q: { en: "Which Perplexity preset should I use?", es: "¿Qué preset de Perplexity conviene usar?", pt: "Which Perplexity preset should I use?" },
         a: {
           en: "Match the preset to the job: fast for single-fact lookups, low for everyday research (the preset Perplexity's own examples use), medium for multi-hop questions, high for exhaustive coverage, xhigh for open-ended agentic work. The models list on this page shows each one with its verification date.",
           es: "Elegí el preset según el trabajo: fast para datos puntuales, low para investigación del día a día (el preset que usan los ejemplos de Perplexity), medium para preguntas de varios saltos, high para cobertura exhaustiva, xhigh para trabajo agéntico abierto. La lista de modelos de esta página muestra cada uno con su fecha de verificación.",
+          pt: "Match the preset to the job: fast for single-fact lookups, low for everyday research (the preset Perplexity's own examples use), medium for multi-hop questions, high for exhaustive coverage, xhigh for open-ended agentic work. The models list on this page shows each one with its verification date.",
         },
       },
       {
-        q: { en: "Should I paste URLs or examples into a Perplexity prompt?", es: "¿Conviene pegar URLs o ejemplos en un prompt de Perplexity?" },
+        q: { en: "Should I paste URLs or examples into a Perplexity prompt?", es: "¿Conviene pegar URLs o ejemplos en un prompt de Perplexity?", pt: "Should I paste URLs or examples into a Perplexity prompt?" },
         a: {
           en: "Not in the prose. Citations come back as separate results, domain and date limits are API filters, and example answers pull the search toward their own topic. Describe the structure you want and let the search find the sources.",
           es: "No en la prosa. Las citas vuelven como resultados aparte, los límites de dominio y fecha son filtros de la API y las respuestas de ejemplo desvían la búsqueda hacia su propio tema. Describí la estructura que querés y dejá que la búsqueda encuentre las fuentes.",
+          pt: "Not in the prose. Citations come back as separate results, domain and date limits are API filters, and example answers pull the search toward their own topic. Describe the structure you want and let the search find the sources.",
         },
       },
       {
-        q: { en: "What happened to Sonar?", es: "¿Qué pasó con Sonar?" },
+        q: { en: "What happened to Sonar?", es: "¿Qué pasó con Sonar?", pt: "What happened to Sonar?" },
         a: {
           en: "Perplexity ended support for Sonar Chat Completions on September 27, 2026 and points new work to the Agent API, where you choose a preset. Promptea's registry follows that change.",
           es: "Perplexity terminó el soporte de Sonar Chat Completions el 27 de septiembre de 2026 y dirige el trabajo nuevo a la Agent API, donde se elige un preset. El registro de Promptea sigue ese cambio.",
+          pt: "Perplexity ended support for Sonar Chat Completions on September 27, 2026 and points new work to the Agent API, where you choose a preset. Promptea's registry follows that change.",
         },
       },
     ],

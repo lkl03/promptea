@@ -44,7 +44,7 @@ export function compactTables(tables: BenchmarkTable[]): CompactTable[] {
   }));
 }
 
-const EMPTY_TEXT = { es: "", en: "" };
+const EMPTY_TEXT = { es: "", en: "", pt: "" };
 
 /**
  * Rebuilds full tables. Rows arrive in ranking order (best first); ranks are

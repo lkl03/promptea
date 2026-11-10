@@ -20,6 +20,7 @@
 import { FormEvent, useId, useState } from "react";
 import { nudgeActions } from "@/lib/newsletter/promptStore";
 import { trackAppEvent, type NewsletterSurface } from "@/lib/telemetry/appEvents.client";
+import { type Lang } from "@/lib/domain";
 
 export type SubscribeFormDict = {
   emailPlaceholder: string;
@@ -45,7 +46,7 @@ export default function SubscribeForm({
   onDone,
   surface = "inline",
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   dict: SubscribeFormDict;
   autoFocus?: boolean;
   onDone?: () => void;
@@ -54,7 +55,7 @@ export default function SubscribeForm({
 }) {
   const id = useId();
   const [email, setEmail] = useState("");
-  const [preferredLang, setPreferredLang] = useState<"en" | "es">(lang);
+  const [preferredLang, setPreferredLang] = useState<Lang>(lang);
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -147,7 +148,7 @@ export default function SubscribeForm({
         <select
           id={`${id}-lang`}
           value={preferredLang}
-          onChange={(e) => setPreferredLang(e.target.value as "en" | "es")}
+          onChange={(e) => setPreferredLang(e.target.value as Lang)}
           className="field h-8 px-2 text-xs"
         >
           <option value="es">Español</option>

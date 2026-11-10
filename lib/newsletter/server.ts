@@ -21,7 +21,7 @@ import "server-only";
 import * as crypto from "node:crypto";
 import { FieldPath, FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
-import type { Lang } from "@/lib/domain";
+import type { ContentLang } from "@/lib/domain";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
 import { sortEditionsNewestFirst, stripEditionMeta, toPublicEdition } from "@/lib/newsletter/archive";
 import type { ClaimResult, NewsletterRunRecord, NewsletterStore, SubscriberRecord } from "@/lib/newsletter/run";
@@ -63,7 +63,7 @@ function deliveryDocId(editionId: string, recipientKey: string): string {
 
 export async function addSubscriber(input: {
   email: string;
-  lang: Lang;
+  lang: ContentLang;
 }): Promise<{ outcome: "subscribed" | "already_subscribed" }> {
   const db = getAdminFirestore();
   const email = input.email.trim().toLowerCase();
@@ -116,7 +116,7 @@ export async function addSubscriber(input: {
 }
 
 export type RemoveSubscriberResult =
-  | { ok: true; lang: Lang | null }
+  | { ok: true; lang: ContentLang | null }
   | { ok: false; reason: "invalid_token" | "not_found" | "unavailable" };
 
 /** Idempotent: unsubscribing twice is still a success. */

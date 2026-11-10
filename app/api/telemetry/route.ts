@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sanitizeTelemetry } from "@/lib/telemetry/sanitize";
 import { upsertAnalysisEvent } from "@/lib/telemetry/server";
+import { isLang } from "@/lib/domain";
 
 export const runtime = "nodejs";
 
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest) {
       analysisId,
       sessionId,
       projectId: event.projectId ?? process.env.FIREBASE_PROJECT_ID ?? null,
-      lang: (event.lang === "en" ? "en" : "es") as "es" | "en",
+      lang: isLang(event.lang) ? event.lang : "es",
       target: String(event.target ?? "gpt"),
       taskType: event.taskType ?? null,
       engineVersion: String(event.engineVersion ?? "unknown"),

@@ -15,6 +15,7 @@
 
 import { parseItem, type BenchmarkItem, type BenchmarkMeta } from "./schema";
 import { getBenchmarkDef, CATEGORY_ORDER, PROVIDER_LABELS, type BenchmarkDef } from "./catalog";
+import { INTL_LOCALE, type Lang } from "@/lib/domain";
 
 export type Price = { inputPerM: number | null; outputPerM: number | null };
 
@@ -238,8 +239,8 @@ export function frontierModels(snapshot: BenchmarksSnapshot): FrontierModel[] {
 }
 
 /** Human formatting for a score under its benchmark's metric. */
-export function formatScore(value: number, metric: BenchmarkDef["metric"], lang: "es" | "en"): string {
-  const locale = lang === "es" ? "es-AR" : "en-US";
+export function formatScore(value: number, metric: BenchmarkDef["metric"], lang: Lang): string {
+  const locale = INTL_LOCALE[lang];
   if (metric === "accuracy" || metric === "f1") {
     const pct = value <= 1 ? value * 100 : value;
     return `${pct.toLocaleString(locale, { maximumFractionDigits: 1, minimumFractionDigits: 1 })}%`;
@@ -248,8 +249,8 @@ export function formatScore(value: number, metric: BenchmarkDef["metric"], lang:
   return value.toLocaleString(locale, { maximumFractionDigits: 1, minimumFractionDigits: 1 });
 }
 
-export function formatPrice(v: number | null, lang: "es" | "en"): string {
+export function formatPrice(v: number | null, lang: Lang): string {
   if (v === null) return "—";
-  const locale = lang === "es" ? "es-AR" : "en-US";
+  const locale = INTL_LOCALE[lang];
   return `US$${v.toLocaleString(locale, { maximumFractionDigits: v < 1 ? 3 : 2 })}`;
 }

@@ -281,7 +281,8 @@
       "title": "AI Daily",
       "blurb": "One verified AI story a day, with its sources attached.",
       "cta": "Read today's edition"
-    }
+    },
+    "langNotice": "AI Daily is published in English and Spanish. You are reading the English edition."
   },
   "newsletter": {
     "title": "Promptea Weekly",
@@ -504,6 +505,7 @@
     "home": "Promptea — home",
     "menu": "Menu",
     "closeMenu": "Close menu",
+    "language": "Language",
     "analyzer": "Analyzer",
     "bestAi": "Best AI",
     "daily": "AI Daily",

@@ -21,7 +21,7 @@ import { guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
-import { TARGETS } from "@/lib/domain";
+import { TARGETS, isContentLang, type ContentLang } from "@/lib/domain";
 import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "./content/sitePages";
 import { CONTENT_UPDATED, formatDay, newest, toDay } from "./dates";
 import { SCORE_DIMENSIONS, TARGET_SHORT, currentModels, purposeList } from "./facts";
@@ -96,14 +96,14 @@ type Section = { section: SeoSection; title: Record<Locale, string> };
 
 /** Static sections, in display order. AI Daily is built separately (it is per-edition). */
 const SECTIONS: readonly Section[] = [
-  { section: "tools", title: { en: "Tools", es: "Herramientas" } },
-  { section: "about", title: { en: "About, method and policies", es: "Acerca de, método y políticas" } },
+  { section: "tools", title: { en: "Tools", es: "Herramientas", pt: "Tools" } },
+  { section: "about", title: { en: "About, method and policies", es: "Acerca de, método y políticas", pt: "About, method and policies" } },
   // "ai-daily" is inserted here by buildLlmsTxt
-  { section: "guides", title: { en: "Prompting guides", es: "Guías de prompting" } },
-  { section: "models", title: { en: "Prompts by model", es: "Prompts por modelo" } },
-  { section: "glossary", title: { en: "Glossary", es: "Glosario" } },
-  { section: "prompts", title: { en: "Prompt packs", es: "Packs de prompts" } },
-  { section: "landing", title: { en: "Landing pages", es: "Páginas de producto" } },
+  { section: "guides", title: { en: "Prompting guides", es: "Guías de prompting", pt: "Prompting guides" } },
+  { section: "models", title: { en: "Prompts by model", es: "Prompts por modelo", pt: "Prompts by model" } },
+  { section: "glossary", title: { en: "Glossary", es: "Glosario", pt: "Glossary" } },
+  { section: "prompts", title: { en: "Prompt packs", es: "Packs de prompts", pt: "Prompt packs" } },
+  { section: "landing", title: { en: "Landing pages", es: "Páginas de producto", pt: "Landing pages" } },
 ];
 
 export function summaryText(lang: Locale): string {
@@ -194,7 +194,7 @@ function aiDailySections(i: LlmsInput): string[] {
     out.push("");
   }
 
-  const eds = i.editions.slice(0, LLMS_MAX_EDITIONS).map((e) => editionUrl(e, i.lang));
+  const eds = isContentLang(i.lang) ? i.editions.slice(0, LLMS_MAX_EDITIONS).map((e) => editionUrl(e, i.lang as ContentLang)) : [];
   if (eds.length > 0) {
     out.push(`## ${t("Weekly digest editions", "Ediciones del resumen semanal")}`, "", ...eds.map((u) => `- [${u.title.replace(/[[\]]/g, "")}](${absUrl(u.path)}): ${toDay(u.updated)} — ${u.description.replace(/\s+/g, " ").trim()}`), "");
   }

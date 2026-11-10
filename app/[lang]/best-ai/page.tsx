@@ -12,6 +12,7 @@ import ModeSwitcher from "@/components/ModeSwitcher";
 import MatcherBox from "@/components/matcher/MatcherBox";
 import HowItWorks from "@/components/HowItWorks";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { toLang, type Lang } from "@/lib/domain";
 
 export async function generateMetadata({
   params,
@@ -19,7 +20,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang: rawLang } = await params;
-  const lang = (rawLang === "en" ? "en" : "es") as "es" | "en";
+  const lang = toLang(rawLang);
 
   const title =
     lang === "es" ? "Elegir la mejor IA para tu prompt" : "Find the Best AI for your prompt";
@@ -35,7 +36,7 @@ export default async function BestAiPage({ params }: { params: Promise<{ lang: s
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
 
-  const dict = await getDictionary(lang as "es" | "en");
+  const dict = await getDictionary(lang as Lang);
 
   return (
     <main className="px-4 pb-10 pt-8 sm:pt-10">
@@ -49,16 +50,16 @@ export default async function BestAiPage({ params }: { params: Promise<{ lang: s
             {dict.matcher.subtitle}
           </p>
           <div className="mt-3 flex justify-center">
-            <HowItWorks lang={lang as "es" | "en"} mode="best-ai" />
+            <HowItWorks lang={lang as Lang} mode="best-ai" />
           </div>
         </header>
 
         <div className="mt-6">
-          <ModeSwitcher lang={lang as "es" | "en"} active="best-ai" dict={dict.mode} />
+          <ModeSwitcher lang={lang as Lang} active="best-ai" dict={dict.mode} />
         </div>
 
         <div className="mt-8">
-          <MatcherBox dict={dict} lang={lang as "es" | "en"} />
+          <MatcherBox dict={dict} lang={lang as Lang} />
         </div>
       </div>
     </main>

@@ -14,6 +14,7 @@ import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { docMarkdown, glossaryMarkdown, guideMarkdown, modelMarkdown, benchmarksMarkdown } from "@/lib/seo/markdown";
 import { LOCALES, absUrl, type Locale } from "@/lib/seo/site";
+import { inLocaleIndex } from "@/lib/seo/registry";
 import { validateLd, isIsoDate, squash } from "../../scripts/seo/ld.mjs";
 import { decodeEntities, headings, ldBlocks, parseHead, visibleText } from "../../scripts/seo/html.mjs";
 
@@ -115,7 +116,9 @@ describe("page graphs resolve against the site graph and match their visible con
     });
 
     it(`${lang}: registry pages (tools, hubs, landings, legal) have a graph; unknown paths do not`, () => {
-      for (const p of ["analyzer", "best-ai", "guides", "models", "glossary", "prompts", "privacy", "changelog", "blog/weekly"]) {
+      // AI Daily pages are not part of a locale without an edition of its own (pt).
+      const editorial = inLocaleIndex("ai-daily", lang) ? ["blog/weekly"] : [];
+      for (const p of ["analyzer", "best-ai", "guides", "models", "glossary", "prompts", "privacy", "changelog", ...editorial]) {
         const path = `/${lang}/${p}`;
         const g = registryPageGraph(lang, path, { collection: ["guides", "models", "glossary", "prompts", "blog/weekly"].includes(p) });
         expect(g, p).not.toBeNull();

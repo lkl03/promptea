@@ -12,7 +12,7 @@
 
 import type { ProviderSlice } from "@/lib/benchmarks/chart";
 import { donutArcs, providerColor } from "@/lib/benchmarks/chart";
-import type { Lang } from "@/lib/domain";
+import { type Lang, INTL_LOCALE } from "@/lib/domain";
 
 export type ShareCopy = {
   title: string; // "Providers in the top {n}"
@@ -34,7 +34,7 @@ const C = 2 * Math.PI * R;
 const OTHER_COLOR = "var(--ink-faint)";
 
 function pct(share: number, lang: Lang): string {
-  return new Intl.NumberFormat(lang === "es" ? "es-AR" : "en-US", { style: "percent", maximumFractionDigits: 0 }).format(share);
+  return new Intl.NumberFormat(INTL_LOCALE[lang], { style: "percent", maximumFractionDigits: 0 }).format(share);
 }
 
 export default function ProviderShareDonut({

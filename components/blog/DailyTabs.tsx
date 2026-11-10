@@ -7,9 +7,10 @@
 
 import Link from "next/link";
 import { weeklyArchivePath } from "@/lib/newsletter/paths";
+import { type Lang } from "@/lib/domain";
 
 type Props = {
-  lang: "es" | "en";
+  lang: Lang;
   active: "news" | "weekly";
   dict: { aria: string; news: string; weekly: string };
 };

@@ -18,6 +18,7 @@ import { newest } from "./dates";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
 import { weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 import { absUrl, type Locale } from "./site";
+import { type ContentLang } from "@/lib/domain";
 
 const home = (lang: Locale) => (lang === "es" ? "Inicio" : "Home");
 
@@ -223,7 +224,7 @@ export function registryPageGraph(lang: Locale, path: string, opts: { collection
  * Home › AI Daily › Weekly › edition. Dates are the edition's own: published
  * (else sent, else the week's last day) and last sent/published.
  */
-export function weeklyEditionGraph(e: NewsletterEdition, lang: Locale): JsonLdNode {
+export function weeklyEditionGraph(e: NewsletterEdition, lang: ContentLang): JsonLdNode {
   const c = e.locales[lang];
   const path = weeklyEditionPath(lang, e.editionId);
   const url = absUrl(path);

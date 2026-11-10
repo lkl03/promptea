@@ -4,10 +4,11 @@ import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { toLang } from "@/lib/domain";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   return pageMetadata({
     lang: l,
     path: `/${l}/privacy`,

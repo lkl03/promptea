@@ -281,7 +281,8 @@
       "title": "IA al Día",
       "blurb": "Una noticia de IA verificada por día, con sus fuentes a la vista.",
       "cta": "Leer la edición de hoy"
-    }
+    },
+    "langNotice": "AI Daily se publica en inglés y español. Estás leyendo la edición en español."
   },
   "newsletter": {
     "title": "Promptea Semanal",
@@ -504,6 +505,7 @@
     "home": "Promptea — inicio",
     "menu": "Menú",
     "closeMenu": "Cerrar menú",
+    "language": "Idioma",
     "analyzer": "Analizador",
     "bestAi": "Elegir IA",
     "daily": "IA al Día",

@@ -7,7 +7,7 @@
 // "development" AND BLOG_DEV_FIXTURE=1 (see lib/blog/server.ts). Production
 // never reads it, so no invented story can ever be published.
 
-import type { BlogCategory, BlogEdition, Lang } from "@/lib/domain";
+import type { BlogCategory, BlogEdition, ContentLang } from "@/lib/domain";
 import { editorialDate } from "@/lib/blog/dates";
 import type { PublicArticle } from "@/lib/blog/types";
 
@@ -20,8 +20,8 @@ type Seed = {
   daysAgo: number;
   edition: BlogEdition;
   category: BlogCategory;
-  title: Record<Lang, string>;
-  deck: Record<Lang, string>;
+  title: Record<ContentLang, string>;
+  deck: Record<ContentLang, string>;
 };
 
 const SEEDS: Seed[] = [
@@ -111,7 +111,7 @@ const SEEDS: Seed[] = [
   },
 ];
 
-export function blogDevFixture(lang: Lang, now: Date = new Date()): PublicArticle[] {
+export function blogDevFixture(lang: ContentLang, now: Date = new Date()): PublicArticle[] {
   return SEEDS.map((s) => {
     const when = new Date(now.getTime() - s.daysAgo * 86_400_000);
     const eventDate = editorialDate(when);

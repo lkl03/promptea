@@ -24,7 +24,7 @@
 
 import { BLOG_AUTHOR } from "@/lib/domain";
 import { getXLinks } from "@/lib/social";
-import { SITE_NAME, STUDIO_NAME, STUDIO_URL, getSiteUrl, type Locale } from "./site";
+import { LOCALES, LOCALE_TAG, SITE_NAME, STUDIO_NAME, STUDIO_URL, getSiteUrl, type Locale } from "./site";
 
 export type JsonLdNode = Record<string, unknown>;
 
@@ -135,7 +135,7 @@ export function websiteNode(siteUrl?: string): JsonLdNode {
     "@id": ids.website,
     url: o,
     name: SITE_NAME,
-    inLanguage: ["es", "en"],
+    inLanguage: LOCALES.map((l) => LOCALE_TAG[l]),
     publisher: ref(ids.organization),
   };
 }
@@ -157,6 +157,14 @@ const FEATURES: Record<Locale, string[]> = {
     "IA al Día: una noticia de IA verificada por día",
     "Benchmarks de modelos de IA con fuente y fecha",
   ],
+  pt: [
+    "Prompt score from 0 to 100 on six criteria",
+    "Findings and recommendations for each prompt",
+    "Optimized prompt for GPT, Claude, Gemini, Grok, Kimi, DeepSeek and Perplexity",
+    "Best-AI recommendation for a task",
+    "AI Daily: one verified AI story a day",
+    "AI model benchmarks with source and date",
+  ],
 };
 
 export function softwareApplicationNode(lang: Locale, description: string, siteUrl?: string): JsonLdNode {
@@ -170,7 +178,7 @@ export function softwareApplicationNode(lang: Locale, description: string, siteU
     url: `${o}/${lang}`,
     applicationCategory: "ProductivityApplication",
     operatingSystem: "Web",
-    inLanguage: ["es", "en"],
+    inLanguage: LOCALES.map((l) => LOCALE_TAG[l]),
     isAccessibleForFree: true,
     featureList: FEATURES[lang],
     image: ref(ids.logo),
@@ -228,7 +236,7 @@ export function webPageNode(i: WebPageInput): JsonLdNode {
     url: i.url,
     name: i.name,
     description: i.description,
-    inLanguage: i.lang,
+    inLanguage: LOCALE_TAG[i.lang],
     isPartOf: ref(ids.website),
     publisher: ref(ids.organization),
     ...(i.datePublished ? { datePublished: i.datePublished } : {}),
@@ -261,7 +269,7 @@ export function faqNode(url: string, lang: Locale, items: Array<{ question: stri
     "@type": "FAQPage",
     "@id": pageId(url, "faq"),
     url,
-    inLanguage: lang,
+    inLanguage: LOCALE_TAG[lang],
     isPartOf: ref(pageId(url, "webpage")),
     mainEntity: items.map((qa) => ({
       "@type": "Question",
@@ -280,7 +288,7 @@ export function howToNode(
     "@type": "HowTo",
     "@id": pageId(url, "howto"),
     name: input.name,
-    inLanguage: lang,
+    inLanguage: LOCALE_TAG[lang],
     ...(input.description ? { description: input.description } : {}),
     isPartOf: ref(pageId(url, "webpage")),
     step: input.steps.map((s, i) => ({
@@ -310,7 +318,7 @@ export function articleNode(i: {
     "@id": pageId(i.url, "article"),
     headline: i.headline.length > 110 ? `${i.headline.slice(0, 109).trimEnd()}…` : i.headline,
     description: i.description,
-    inLanguage: i.lang,
+    inLanguage: LOCALE_TAG[i.lang],
     mainEntityOfPage: ref(pageId(i.url, "webpage")),
     isPartOf: ref(pageId(i.url, "webpage")),
     dateModified: i.dateModified,
@@ -336,7 +344,7 @@ export function definedTermNode(i: {
     name: i.name,
     description: i.description,
     url: i.url,
-    inLanguage: i.lang,
+    inLanguage: LOCALE_TAG[i.lang],
     inDefinedTermSet: { "@type": "DefinedTermSet", "@id": `${i.setUrl}#termset`, name: i.setName, url: i.setUrl },
   };
 }
@@ -362,7 +370,7 @@ export function datasetNode(i: {
     name: i.name,
     description: i.description,
     url: i.url,
-    inLanguage: i.lang,
+    inLanguage: LOCALE_TAG[i.lang],
     isAccessibleForFree: true,
     creator: ref(ids.organization),
     publisher: ref(ids.organization),

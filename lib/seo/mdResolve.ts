@@ -19,6 +19,7 @@ import { articleUpdated } from "./dynamicUrls";
 import { articleMarkdown, benchmarksMarkdown, docMarkdown, glossaryMarkdown, guideMarkdown, landingMarkdown, modelMarkdown } from "./markdown";
 import { modelPageUpdated } from "./registry";
 import { absUrl, type Locale } from "./site";
+import { isContentLang } from "@/lib/domain";
 
 export type ResolvedMarkdown = {
   body: string;
@@ -77,6 +78,8 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
     return p ? { htmlPath, body: landingMarkdown(p, lang, url, CONTENT_UPDATED.landings) } : null;
   }
   if (kind === "blog") {
+    // Articles exist in the content languages only: no twin under /md/pt/blog.
+    if (!isContentLang(lang)) return null;
     try {
       const a = await getArticleBySlug(lang, slug);
       return a ? { htmlPath, body: articleMarkdown(a, url, articleUpdated(a)) } : null;

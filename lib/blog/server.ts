@@ -25,7 +25,7 @@ import {
   PUBLIC_BLOG_STATUSES,
   isPubliclyVisible,
 } from "@/lib/domain";
-import type { Lang } from "@/lib/domain";
+import type { ContentLang } from "@/lib/domain";
 import { editionDocId, editorialDate } from "@/lib/blog/dates";
 import { readingMinutes } from "@/lib/blog/render";
 import type {
@@ -87,7 +87,7 @@ function normalizePost(id: string, raw: Record<string, unknown>): BlogPost | nul
 }
 
 /** Project a stored post into the public, locale-specific shape a page renders. */
-export function toPublicArticle(post: BlogPost, lang: Lang): PublicArticle | null {
+export function toPublicArticle(post: BlogPost, lang: ContentLang): PublicArticle | null {
   if (!isPubliclyVisible(post.status)) return null;
   const content = post.locales[lang];
   if (!content) return null;
@@ -175,7 +175,7 @@ const publicStatuses = [...PUBLIC_BLOG_STATUSES];
  * page — keyset pagination, so it stays correct as new articles are added.
  */
 export async function listPublishedArticles(opts: {
-  lang: Lang;
+  lang: ContentLang;
   limit: number;
   cursorPublishedAt?: string | null;
 }): Promise<{ cards: ArticleCard[]; nextCursor: string | null }> {
@@ -221,7 +221,7 @@ export async function listPublishedArticles(opts: {
  * lookup, then filters in memory — the result set is at most one document.
  * Returns null for drafts and archived posts so they 404 publicly.
  */
-export async function getArticleBySlug(lang: Lang, slug: string): Promise<PublicArticle | null> {
+export async function getArticleBySlug(lang: ContentLang, slug: string): Promise<PublicArticle | null> {
   if (blogDevFixtureEnabled()) return blogDevFixture(lang).find((a) => a.slug === slug) ?? null;
   const db = getAdminFirestore();
 
@@ -245,7 +245,7 @@ export async function getArticleBySlug(lang: Lang, slug: string): Promise<Public
 }
 
 /** Every published article, for the sitemap and the RSS feed. */
-export async function listAllPublishedArticles(lang: Lang, max = 500): Promise<PublicArticle[]> {
+export async function listAllPublishedArticles(lang: ContentLang, max = 500): Promise<PublicArticle[]> {
   if (blogDevFixtureEnabled()) return blogDevFixture(lang).slice(0, max);
   const db = getAdminFirestore();
 

@@ -9,7 +9,7 @@
 // Quiet weeks are sent as they are — no placeholder stories. (v1.5.0 padded
 // the list to four with a "placeholder" slug whose link 404ed.)
 
-import type { Lang } from "@/lib/domain";
+import type { ContentLang } from "@/lib/domain";
 import type { PublicArticle } from "@/lib/blog/types";
 import type { NewsletterEdition, NewsletterLocaleContent, NewsletterStory, NewsletterTool } from "./types";
 import type { EditionWindow } from "./dates";
@@ -39,7 +39,7 @@ export function rankArticles(articles: PublicArticle[]): PublicArticle[] {
   });
 }
 
-function articleUrl(siteUrl: string, lang: Lang, slug: string): string {
+function articleUrl(siteUrl: string, lang: ContentLang, slug: string): string {
   return `${siteUrl}/${lang}/blog/${slug}`;
 }
 
@@ -67,7 +67,7 @@ function toTool(article: PublicArticle, siteUrl: string): NewsletterTool {
   };
 }
 
-function localeContent(articles: PublicArticle[], lang: Lang, window: EditionWindow, siteUrl: string): NewsletterLocaleContent {
+function localeContent(articles: PublicArticle[], lang: ContentLang, window: EditionWindow, siteUrl: string): NewsletterLocaleContent {
   const ranked = rankArticles(articles);
   const hero = ranked[0];
   const stories = ranked.slice(0, MAX_STORIES);

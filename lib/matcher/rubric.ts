@@ -13,7 +13,7 @@ export const RUBRIC_VERSION = "2026-08-04.1";
 
 export type SignalDef = {
   id: string;
-  label: { es: string; en: string };
+  label: Record<Lang, string>;
   /** Pure detector — no state, no randomness. */
   test: (ctx: SignalContext) => boolean;
   contributes: Array<{ category: MatchCategory; weight: number }>;
@@ -62,7 +62,7 @@ const RE = {
 export const SIGNALS: SignalDef[] = [
   {
     id: "repo_paths",
-    label: { es: "Rutas de repositorio o archivos de código", en: "Repository or code file paths" },
+    label: { es: "Rutas de repositorio o archivos de código", en: "Repository or code file paths", pt: "Repository or code file paths" },
     test: (c) => RE.repoPath.test(c.text),
     contributes: [
       { category: "codingAgent", weight: 2 },
@@ -71,7 +71,7 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "shell_commands",
-    label: { es: "Comandos de terminal", en: "Shell commands" },
+    label: { es: "Comandos de terminal", en: "Shell commands", pt: "Shell commands" },
     test: (c) => RE.shellCommand.test(c.text),
     contributes: [
       { category: "codingAgent", weight: 2 },
@@ -80,13 +80,13 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "git_workflow",
-    label: { es: "Flujo git / pull requests", en: "Git / pull-request workflow" },
+    label: { es: "Flujo git / pull requests", en: "Git / pull-request workflow", pt: "Git / pull-request workflow" },
     test: (c) => RE.gitWorkflow.test(c.text),
     contributes: [{ category: "codingAgent", weight: 1.5 }],
   },
   {
     id: "tests_acceptance",
-    label: { es: "Tests o criterios de aceptación", en: "Tests or acceptance criteria" },
+    label: { es: "Tests o criterios de aceptación", en: "Tests or acceptance criteria", pt: "Tests or acceptance criteria" },
     test: (c) => RE.testsAcceptance.test(c.text),
     contributes: [
       { category: "codingAgent", weight: 1.5 },
@@ -95,55 +95,55 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "autonomous_multistep",
-    label: { es: "Ejecución autónoma multi-paso", en: "Autonomous multi-step execution" },
+    label: { es: "Ejecución autónoma multi-paso", en: "Autonomous multi-step execution", pt: "Autonomous multi-step execution" },
     test: (c) => RE.autonomousAgent.test(c.text) && RE.gitWorkflow.test(c.text),
     contributes: [{ category: "codingAgent", weight: 1.5 }],
   },
   {
     id: "code_content",
-    label: { es: "Código en el prompt", en: "Code in the prompt" },
+    label: { es: "Código en el prompt", en: "Code in the prompt", pt: "Code in the prompt" },
     test: (c) => RE.codeFence.test(c.text) || RE.codeSymbol.test(c.text),
     contributes: [{ category: "coding", weight: 2 }],
   },
   {
     id: "coding_language",
-    label: { es: "Lenguajes o frameworks de programación", en: "Programming languages or frameworks" },
+    label: { es: "Lenguajes o frameworks de programación", en: "Programming languages or frameworks", pt: "Programming languages or frameworks" },
     test: (c) => RE.codingLanguage.test(c.text),
     contributes: [{ category: "coding", weight: 1.5 }],
   },
   {
     id: "debug_evidence",
-    label: { es: "Errores o comportamiento a depurar", en: "Errors or behavior to debug" },
+    label: { es: "Errores o comportamiento a depurar", en: "Errors or behavior to debug", pt: "Errors or behavior to debug" },
     test: (c) => RE.debugSignal.test(c.text),
     contributes: [{ category: "coding", weight: 1.5 }],
   },
   {
     id: "web_recency",
-    label: { es: "Necesita información actual de la web", en: "Needs current web information" },
+    label: { es: "Necesita información actual de la web", en: "Needs current web information", pt: "Needs current web information" },
     test: (c) => RE.webRecency.test(c.text) && (RE.searchVerb.test(c.text) || RE.citations.test(c.text) || /\b(precio|price|noticia|news|versi[oó]n m[aá]s reciente|latest version)\b/i.test(c.text)),
     contributes: [{ category: "research", weight: 2 }],
   },
   {
     id: "citations_required",
-    label: { es: "Pide fuentes o citas", en: "Requests sources or citations" },
+    label: { es: "Pide fuentes o citas", en: "Requests sources or citations", pt: "Requests sources or citations" },
     test: (c) => RE.citations.test(c.text),
     contributes: [{ category: "research", weight: 2 }],
   },
   {
     id: "search_task",
-    label: { es: "Tarea de búsqueda o investigación", en: "Search or research task" },
+    label: { es: "Tarea de búsqueda o investigación", en: "Search or research task", pt: "Search or research task" },
     test: (c) => RE.searchVerb.test(c.text),
     contributes: [{ category: "research", weight: 1.5 }],
   },
   {
     id: "long_input",
-    label: { es: "Contexto largo (documentos extensos)", en: "Long context (large documents)" },
+    label: { es: "Contexto largo (documentos extensos)", en: "Long context (large documents)", pt: "Long context (large documents)" },
     test: (c) => c.wordCount > 1200 || c.attachmentChars > 8000,
     contributes: [{ category: "longContext", weight: 2.5 }],
   },
   {
     id: "document_processing",
-    label: { es: "Procesamiento de documentos", en: "Document processing" },
+    label: { es: "Procesamiento de documentos", en: "Document processing", pt: "Document processing" },
     test: (c) => RE.longDocument.test(c.text),
     contributes: [
       { category: "longContext", weight: 1.5 },
@@ -152,67 +152,67 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "multimodal_refs",
-    label: { es: "Referencias a imágenes, video o audio", en: "References to images, video, or audio" },
+    label: { es: "Referencias a imágenes, video o audio", en: "References to images, video, or audio", pt: "References to images, video, or audio" },
     test: (c) => RE.multimodalRef.test(c.text),
     contributes: [{ category: "multimodal", weight: 2.5 }],
   },
   {
     id: "strict_json",
-    label: { es: "Salida JSON o schema estricto", en: "Strict JSON or schema output" },
+    label: { es: "Salida JSON o schema estricto", en: "Strict JSON or schema output", pt: "Strict JSON or schema output" },
     test: (c) => RE.jsonStrict.test(c.text),
     contributes: [{ category: "dataExtraction", weight: 2.5 }],
   },
   {
     id: "tabular_extraction",
-    label: { es: "Extracción de datos tabulares", en: "Tabular data extraction" },
+    label: { es: "Extracción de datos tabulares", en: "Tabular data extraction", pt: "Tabular data extraction" },
     test: (c) => RE.tabularData.test(c.text) && (RE.jsonStrict.test(c.text) || /\b(extrae[er]?|extract|parse)\b/i.test(c.text)),
     contributes: [{ category: "dataExtraction", weight: 1.5 }],
   },
   {
     id: "creative_writing",
-    label: { es: "Escritura creativa", en: "Creative writing" },
+    label: { es: "Escritura creativa", en: "Creative writing", pt: "Creative writing" },
     test: (c) => RE.creativeWriting.test(c.text),
     contributes: [{ category: "creativeWriting", weight: 2.5 }],
   },
   {
     id: "marketing_copy",
-    label: { es: "Copy de marketing", en: "Marketing copy" },
+    label: { es: "Copy de marketing", en: "Marketing copy", pt: "Marketing copy" },
     test: (c) => RE.marketingCopy.test(c.text),
     contributes: [{ category: "marketing", weight: 2.5 }],
   },
   {
     id: "translation_task",
-    label: { es: "Traducción", en: "Translation" },
+    label: { es: "Traducción", en: "Translation", pt: "Translation" },
     test: (c) => RE.translation.test(c.text),
     contributes: [{ category: "translation", weight: 2.5 }],
   },
   {
     id: "summarization_task",
-    label: { es: "Resumen de contenido", en: "Content summarization" },
+    label: { es: "Resumen de contenido", en: "Content summarization", pt: "Content summarization" },
     test: (c) => RE.summarization.test(c.text),
     contributes: [{ category: "summarization", weight: 2.5 }],
   },
   {
     id: "tutoring_task",
-    label: { es: "Aprendizaje o tutoría", en: "Learning or tutoring" },
+    label: { es: "Aprendizaje o tutoría", en: "Learning or tutoring", pt: "Learning or tutoring" },
     test: (c) => RE.tutoring.test(c.text),
     contributes: [{ category: "tutoring", weight: 2 }],
   },
   {
     id: "image_generation",
-    label: { es: "Generación de imágenes", en: "Image generation" },
+    label: { es: "Generación de imágenes", en: "Image generation", pt: "Image generation" },
     test: (c) => RE.imageGen.test(c.text),
     contributes: [{ category: "imagePrompts", weight: 3 }],
   },
   {
     id: "complex_reasoning",
-    label: { es: "Razonamiento complejo", en: "Complex reasoning" },
+    label: { es: "Razonamiento complejo", en: "Complex reasoning", pt: "Complex reasoning" },
     test: (c) => RE.complexReasoning.test(c.text),
     contributes: [{ category: "complexReasoning", weight: 2 }],
   },
   {
     id: "quick_lightweight",
-    label: { es: "Tarea corta y liviana", en: "Short, lightweight task" },
+    label: { es: "Tarea corta y liviana", en: "Short, lightweight task", pt: "Short, lightweight task" },
     test: (c) => c.wordCount <= 30 && RE.quickTask.test(c.text),
     contributes: [{ category: "fastLightweight", weight: 2 }],
   },

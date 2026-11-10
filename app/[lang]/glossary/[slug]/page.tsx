@@ -12,8 +12,9 @@ import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { glossaryGraph } from "@/lib/seo/pageGraphs";
+import { LANGS, toLang, type Lang } from "@/lib/domain";
 
-function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
+function buildOpenLink(lang: Lang, purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
   qp.set("purpose", purpose);
   qp.set("target", target);
@@ -22,8 +23,7 @@ function buildOpenLink(lang: "es" | "en", purpose: string, target: string, promp
 }
 
 export function generateStaticParams() {
-  const LOCALES = ["es", "en"] as const;
-  return LOCALES.flatMap((lang) => glossary.map((t) => ({ lang, slug: t.slug })));
+  return LANGS.flatMap((lang) => glossary.map((t) => ({ lang, slug: t.slug })));
 }
 
 export async function generateMetadata({
@@ -32,7 +32,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string; slug: string }>;
 }): Promise<Metadata> {
   const { lang, slug } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   const term = getTerm(slug);
   if (!term) return {};
@@ -56,7 +56,7 @@ export default async function GlossaryTermPage({
 }) {
   const { lang, slug } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const term = getTerm(slug);
   if (!term) notFound();

@@ -15,10 +15,11 @@ import { methodologyDoc } from "@/lib/seo/content/sitePages";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { docPageGraph } from "@/lib/seo/pageGraphs";
+import { toLang, type Lang } from "@/lib/domain";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const doc = methodologyDoc(l);
   const path = `/${l}/methodology`;
   return pageMetadata({ lang: l, path, title: doc.title, description: doc.description, markdownPath: markdownPathOf(path), modifiedTime: doc.updated });
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function MethodologyPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
   const doc = methodologyDoc(l);
 
   return (

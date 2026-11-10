@@ -90,7 +90,7 @@ export type AnalyzeResult = {
     };
     /** v1.3.0: input already is (or matches) an optimized prompt — minimal edits, adaptive layer skipped. */
     alreadyOptimized?: boolean;
-    scoreCriteria?: Array<{ key: string; label: { es: string; en: string } }>;
+    scoreCriteria?: Array<{ key: string; label: Record<Lang, string> }>;
     strengths?: string[];
     criticalIssues?: string[];
     quickWins?: string[];

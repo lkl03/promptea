@@ -15,7 +15,8 @@ import GlassEnhancer from "@/components/GlassEnhancer";
 import NewsletterNudges from "@/components/newsletter/NewsletterNudges";
 import JsonLd from "@/components/seo/JsonLd";
 import { siteGraph } from "@/lib/seo/jsonld";
-import { getSiteUrl } from "@/lib/seo/site";
+import { LOCALES, LOCALE_TAG, OG_LOCALE, getSiteUrl } from "@/lib/seo/site";
+import { toLang, type Lang } from "@/lib/domain";
 
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID; // e.g. "AW-17937226636"
 
@@ -51,31 +52,27 @@ const monoFont = localFont({
   display: "swap",
 });
 
-function seoForLang(lang: "es" | "en") {
-  if (lang === "en") {
-    return {
-      title: "Promptea — Prompt analyzer & optimizer for GPT, Claude, Gemini, Grok",
-      description:
-        "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity. Score, fix and rewrite prompts for text, code, data/JSON, marketing, study, image, translation and summaries.",
-      locale: "en_US",
-      keywords: [
-        "prompt analyzer",
-        "prompt optimizer",
-        "prompt engineering",
-        "ChatGPT prompts",
-        "Claude prompts",
-        "Gemini prompts",
-        "JSON prompts",
-        "coding prompts",
-        "AI prompt scoring",
-      ],
-    };
-  }
-  return {
+const SEO: Record<Lang, { title: string; description: string; keywords: string[] }> = {
+  en: {
+    title: "Promptea — Prompt analyzer & optimizer for GPT, Claude, Gemini, Grok",
+    description:
+      "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity. Score, fix and rewrite prompts for text, code, data/JSON, marketing, study, image, translation and summaries.",
+    keywords: [
+      "prompt analyzer",
+      "prompt optimizer",
+      "prompt engineering",
+      "ChatGPT prompts",
+      "Claude prompts",
+      "Gemini prompts",
+      "JSON prompts",
+      "coding prompts",
+      "AI prompt scoring",
+    ],
+  },
+  es: {
     title: "Promptea — Analizá y optimizá prompts para GPT, Claude, Gemini, Grok",
     description:
       "Analizador y optimizador de prompts gratis para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi y Perplexity. Puntúa, mejora y reescribe prompts para texto, código, data/JSON, marketing, estudio, imagen, traducción y resúmenes.",
-    locale: "es_AR",
     keywords: [
       "analizador de prompts",
       "optimizador de prompts",
@@ -86,7 +83,27 @@ function seoForLang(lang: "es" | "en") {
       "prompts de código",
       "prompt engineering",
     ],
-  };
+  },
+  pt: {
+    title: "Promptea — Analise e otimize prompts para GPT, Claude, Gemini, Grok",
+    description:
+      "Analisador e otimizador de prompts gratuito para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi e Perplexity. Pontua, corrige e reescreve prompts de texto, código, dados/JSON, marketing, estudo, imagem, tradução e resumos.",
+    keywords: [
+      "analisador de prompts",
+      "otimizador de prompts",
+      "engenharia de prompt",
+      "prompts para ChatGPT",
+      "prompts para Claude",
+      "prompts para Gemini",
+      "prompts JSON",
+      "prompts de código",
+      "prompt engineering",
+    ],
+  },
+};
+
+function seoForLang(lang: Lang) {
+  return { ...SEO[lang], locale: OG_LOCALE[lang] };
 }
 
 export const viewport: Viewport = {
@@ -106,7 +123,7 @@ const THEME_MIGRATION_SCRIPT = `(function(){try{var k="theme",v=localStorage.get
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang: rawLang } = await params;
-  const lang = (rawLang === "en" ? "en" : "es") as "es" | "en";
+  const lang = toLang(rawLang);
 
   const siteUrl = getSiteUrl();
   const seo = seoForLang(lang);
@@ -136,7 +153,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       title: seo.title,
       description: seo.description,
       locale: seo.locale,
-      alternateLocale: lang === "en" ? ["es_AR"] : ["en_US"],
+      alternateLocale: LOCALES.filter((l) => l !== lang).map((l) => OG_LOCALE[l]),
     },
     twitter: {
       card: "summary_large_image",
@@ -158,14 +175,13 @@ export default async function RootLayout({
   const { lang: rawLang } = await params;
   if (!hasLocale(rawLang)) notFound();
 
-  const dict = await getDictionary(rawLang as "es" | "en");
-
-  const lang = (rawLang === "en" ? "en" : "es") as "es" | "en";
+  const lang = toLang(rawLang);
+  const dict = await getDictionary(lang);
   // One connected graph (Organization, studio, logo, WebSite, SoftwareApplication) with stable @ids.
   const jsonLd = siteGraph(lang, seoForLang(lang).description);
 
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html lang={LOCALE_TAG[lang]} suppressHydrationWarning>
       <head>
         {/* Legacy theme migration — before next-themes boots. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_MIGRATION_SCRIPT }} />

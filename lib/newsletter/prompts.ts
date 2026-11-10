@@ -27,6 +27,8 @@
 //     card/pill is not shown: one way to subscribe at a time;
 //   - storage failures (private mode, blocked) degrade to "session only", never throw.
 
+import { LANGS } from "@/lib/domain";
+
 export const STORAGE_KEY = "promptea:newsletter-nudges";
 export const SESSION_KEY = "promptea:newsletter-nudges:session";
 
@@ -198,20 +200,23 @@ export function modalEligible(state: NudgeState, now: number, shownThisSession: 
 
 export type RouteKind = "daily" | "public" | "none";
 
+/** `/{any locale}/{segment}` and whatever is under it. */
+const LOCALE_ROUTE = (segment: string) => new RegExp(`^/(${LANGS.join("|")})/${segment}(/|$)`);
+
 /**
  * AI Daily pages carry the dock + modal; every other public page carries the
  * pill; newsletter management pages carry nothing (they are about the newsletter).
  */
 export function routeKind(pathname: string): RouteKind {
   const p = pathname.replace(/\/+$/, "");
-  if (/^\/(es|en)\/(weekly|unsubscribe)(\/|$)/.test(p) || /^\/api\//.test(p)) return "none";
-  if (/^\/(es|en)\/blog(\/|$)/.test(p)) return "daily";
+  if (LOCALE_ROUTE("(weekly|unsubscribe)").test(p) || /^\/api\//.test(p)) return "none";
+  if (LOCALE_ROUTE("blog").test(p)) return "daily";
   return "public";
 }
 
 /** Tool pages where a fixed element must stay small on phones (text boxes, results). */
 export function isToolRoute(pathname: string): boolean {
-  return /^\/(es|en)\/(analyzer|best-ai)(\/|$)/.test(pathname.replace(/\/+$/, ""));
+  return LOCALE_ROUTE("(analyzer|best-ai)").test(pathname.replace(/\/+$/, ""));
 }
 
 // ---------------------------------------------------------------------------

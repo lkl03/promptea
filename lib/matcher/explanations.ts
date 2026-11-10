@@ -36,22 +36,22 @@ export function productLabel(target: TargetAI, profile: InteractionProfile): str
   return TARGET_PRODUCT[target] ?? String(target).toUpperCase();
 }
 
-export const CATEGORY_LABEL: Record<MatchCategory, { es: string; en: string }> = {
-  chat: { es: "conversación general", en: "general chat" },
-  coding: { es: "trabajo con código", en: "code work" },
-  codingAgent: { es: "tareas de agente sobre repositorios", en: "repository agent tasks" },
-  research: { es: "investigación con información actual", en: "research with current information" },
-  longContext: { es: "documentos y contexto largo", en: "long documents and context" },
-  multimodal: { es: "contenido multimodal (imágenes, video)", en: "multimodal content (images, video)" },
-  dataExtraction: { es: "extracción de datos estricta", en: "strict data extraction" },
-  creativeWriting: { es: "escritura creativa", en: "creative writing" },
-  marketing: { es: "copy de marketing", en: "marketing copy" },
-  translation: { es: "traducción", en: "translation" },
-  summarization: { es: "resumen de contenido", en: "summarization" },
-  tutoring: { es: "estudio y tutoría", en: "study and tutoring" },
-  imagePrompts: { es: "prompts para generar imágenes", en: "image-generation prompts" },
-  complexReasoning: { es: "razonamiento complejo", en: "complex reasoning" },
-  fastLightweight: { es: "tareas rápidas y livianas", en: "fast lightweight tasks" },
+export const CATEGORY_LABEL: Record<MatchCategory, Record<Lang, string>> = {
+  chat: { es: "conversación general", en: "general chat", pt: "general chat" },
+  coding: { es: "trabajo con código", en: "code work", pt: "code work" },
+  codingAgent: { es: "tareas de agente sobre repositorios", en: "repository agent tasks", pt: "repository agent tasks" },
+  research: { es: "investigación con información actual", en: "research with current information", pt: "research with current information" },
+  longContext: { es: "documentos y contexto largo", en: "long documents and context", pt: "long documents and context" },
+  multimodal: { es: "contenido multimodal (imágenes, video)", en: "multimodal content (images, video)", pt: "multimodal content (images, video)" },
+  dataExtraction: { es: "extracción de datos estricta", en: "strict data extraction", pt: "strict data extraction" },
+  creativeWriting: { es: "escritura creativa", en: "creative writing", pt: "creative writing" },
+  marketing: { es: "copy de marketing", en: "marketing copy", pt: "marketing copy" },
+  translation: { es: "traducción", en: "translation", pt: "translation" },
+  summarization: { es: "resumen de contenido", en: "summarization", pt: "summarization" },
+  tutoring: { es: "estudio y tutoría", en: "study and tutoring", pt: "study and tutoring" },
+  imagePrompts: { es: "prompts para generar imágenes", en: "image-generation prompts", pt: "image-generation prompts" },
+  complexReasoning: { es: "razonamiento complejo", en: "complex reasoning", pt: "complex reasoning" },
+  fastLightweight: { es: "tareas rápidas y livianas", en: "fast lightweight tasks", pt: "fast lightweight tasks" },
 };
 
 function categoryLabel(category: MatchCategory, lang: Lang): string {

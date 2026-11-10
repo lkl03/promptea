@@ -25,6 +25,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { benchmarksGraph } from "@/lib/seo/pageGraphs";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
+import { toLang, INTL_LOCALE, type Lang } from "@/lib/domain";
 
 export const revalidate = 3600;
 
@@ -286,18 +287,145 @@ const COPY = {
     bestAiBody: "A benchmark doesn't know your use case. Describe what you want to do and we'll recommend an AI and model, with the reasoning.",
     bestAiCta: "Find the best AI",
   },
+  pt: {
+    metaTitle: "AI model benchmarks",
+    metaDescription: "AI model rankings by category — general intelligence, coding, agents, science, search and design — with the source, date and metric of every benchmark.",
+    title: "AI model benchmarks",
+    intro: "Who leads each benchmark today, which models are at the frontier, and what each test measures. Every ranking uses its own metric: there is no universal score.",
+    live: "Live data from OpenRouter",
+    asOf: "updated {date}",
+    fetched: "fetched {date}",
+    staleTitle: "Showing the last valid snapshot",
+    staleBody: "We couldn't refresh the data ({reason}). These rankings are {age} old.",
+    hours: "{n} h",
+    lessThanHour: "less than an hour",
+    emptyTitle: "Rankings are not available right now",
+    reasons: {
+      not_configured: "the data source connection is not configured yet",
+      unauthorized: "the source rejected the credential",
+      rate_limited: "the source is temporarily rate-limiting requests",
+      timeout: "the source took too long to answer",
+      upstream_error: "the source answered with an error",
+      invalid_response: "the source returned data in an unexpected format",
+      empty: "the source returned no results",
+    } as Record<FetchFailure, string>,
+    emptyBody: "Reason: {reason}. We'd rather show nothing than show invented or silently outdated rankings.",
+    nav: { label: "On this page", ranking: "Ranking", value: "Cost vs. performance", frontier: "Frontier models", calculator: "Cost calculator", about: "What each one measures" },
+    dash: {
+      rankingTitle: "Ranking by benchmark",
+      rankingIntro: "Pick a category and a benchmark: the chart shows the top models of that test. Every benchmark has its own metric: compare only within the same one.",
+      category: "Category",
+      benchmarks: "Benchmarks in this category and their leader",
+      leader: "Leader",
+      topN: "Number of models in the chart",
+      topLabel: "Top {n}",
+      fullTable: "View the full table ({n} models)",
+      valueTitle: "Cost vs. performance",
+      valueIntro: "Each dot is a model: higher is a better score, further left is cheaper (input price, log scale). The dashed line joins the models no other model beats on price and score at once.",
+      valueFor: "Benchmark: {benchmark}",
+      sourceLine: "{source} · {date}",
+      bars: {
+        title: "Top {n} · {benchmark}",
+        desc: "Horizontal bar chart: the top {n} models of {benchmark} ({metric}). {items}.",
+        axisNote: "The axis starts at {min}: Elo has no meaningful zero, so bar lengths are not proportional to the full value.",
+        errorNote: "The thin line over a bar is ± the standard deviation across runs.",
+        showingOf: "showing {n} of {total} models"
+      },
+      scatter: {
+        title: "Score vs. input price",
+        xAxis: "Input price (US$ per million tokens, log scale)",
+        yAxis: "Score",
+        efficientLegend: "Cost/performance frontier",
+        keys: "With the keyboard: focus the chart and use the ← → arrow keys to step through models from cheapest to priciest.",
+        excluded: "{n} models without a price are not plotted.",
+        empty: "There are not enough prices to plot this benchmark. The full table above is still available.",
+        desc: "Scatter plot: {n} models of {benchmark}, input price against score. {m} models form the cost/performance frontier: {frontier}.",
+        score: "Score",
+        inputPrice: "Input",
+        outputPrice: "Output",
+        rank: "Rank",
+        efficientBadge: "No model beats it on price and score at once",
+        perMillion: "per million tokens"
+      },
+      table: {
+        search: "Search",
+        searchPlaceholder: "Model or provider…",
+        provider: "Provider",
+        allProviders: "All",
+        sort: "Sort",
+        sortScore: "Best score first",
+        sortScoreAsc: "Lowest score first",
+        sortPrice: "Lowest price first",
+        sortName: "Name (A–Z)",
+        colRank: "#",
+        colModel: "Model",
+        colProvider: "Provider",
+        colScore: "Score",
+        colSource: "Benchmark / source",
+        colPrice: "Input / output price",
+        priceHint: "Price in US$ per million input / output tokens, as reported by the source. “—” = no data.",
+        noMatch: "No model matches your search.",
+        results: "{n} models",
+        guide: "Prompt guide",
+        stddev: "Standard deviation across runs"
+      },
+      calc: {
+        title: "Cost calculator",
+        intro: "Estimate what your usage would cost on each model of the benchmark selected above, at list price. “Best value” sorts by dollars per score point: the lower, the further each dollar goes.",
+        inputTokens: "Input tokens per request",
+        outputTokens: "Output tokens per request",
+        requests: "Number of requests",
+        presets: "Examples",
+        presetChat: "Short chat",
+        presetDoc: "Long document",
+        presetAgent: "Agent",
+        sortLabel: "Sort by",
+        sortValue: "Best value",
+        sortCost: "Lowest cost",
+        sortScore: "Best score",
+        colModel: "Model",
+        colScore: "Score",
+        colCost: "Cost per request",
+        colPerPoint: "US$ per point",
+        colTotal: "Total ({n} requests)",
+        summary: "{tokensIn} in and {tokensOut} out per request, {n} requests · {benchmark}",
+        excluded: "{n} models without both an input and an output price are left out: we do not count them as free.",
+        empty: "No model in this benchmark has the prices needed to compute a cost.",
+        estimate: "Estimate at list prices per million tokens (no caching, batching or discounts); real cost may differ. Scores come from the selected benchmark and are not comparable with others.",
+        showAll: "Show all {n} models",
+        showLess: "Show less",
+        bestAiTitle: "Not sure which one fits your task? A benchmark doesn't know your use case.",
+        bestAiCta: "Find the best AI",
+        guide: "Guide"
+      },
+    },
+    matrix: {"caption":"Each frontier model's rank in every general-capability benchmark","model":"Model","rankIn":"Rank in {benchmark}","notMeasured":"not measured","guide":"Guide"},
+    aboutSummary: "What each benchmark measures ({n})",
+    frontierTitle: "Frontier models",
+    frontierDef: `At Promptea, a model is “frontier” when it ranks in the top ${FRONTIER_TOP_N} of at least one general-capability benchmark in the current snapshot: Artificial Analysis' Intelligence, Coding or Agentic index, or OpenRouter's GPQA Diamond and τ-bench runs.`,
+    frontierWhy: "We use these because they measure broad capability — reasoning, coding and agentic work. Specialized rankings (search configurations, design arenas) are shown, but a narrow win there is not enough to call a model “frontier”. The list changes when the data does.",
+    frontierWhyLabel: "Why these benchmarks?",
+    matrixMore: "Showing {n} of {total} frontier models.",
+    context: "What each benchmark measures",
+    measures: "Measures",
+    limits: "Limitations",
+    source: "Source",
+    bestAiTitle: "Which one fits your task?",
+    bestAiBody: "A benchmark doesn't know your use case. Describe what you want to do and we'll recommend an AI and model, with the reasoning.",
+    bestAiCta: "Find the best AI",
+  },
 };
 
-function fmtDate(iso: string | null, lang: "es" | "en"): string | null {
+function fmtDate(iso: string | null, lang: Lang): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
-  return new Intl.DateTimeFormat(lang === "es" ? "es-AR" : "en-US", { dateStyle: "long", timeZone: "America/Argentina/Buenos_Aires" }).format(d);
+  return new Intl.DateTimeFormat(INTL_LOCALE[lang], { dateStyle: "long", timeZone: "America/Argentina/Buenos_Aires" }).format(d);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const c = COPY[l];
   const path = `/${l}/benchmarks`;
   return pageMetadata({ lang: l, path, title: c.metaTitle, description: c.metaDescription, markdownPath: markdownPathOf(path) });
@@ -306,7 +434,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function BenchmarksPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
   const c = COPY[l];
 
   const dict = await getDictionary(l);

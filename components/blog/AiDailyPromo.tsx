@@ -15,6 +15,7 @@
 // accessible name is the badge + section name + blurb + CTA.
 
 import Link from "next/link";
+import { type Lang } from "@/lib/domain";
 
 export type AiDailyPromoDict = {
   badge: string;
@@ -27,7 +28,7 @@ export default function AiDailyPromo({
   lang,
   dict,
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   dict: AiDailyPromoDict;
 }) {
   return (

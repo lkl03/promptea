@@ -12,7 +12,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "crypto";
-import type { TranscribeErrorReason } from "@/lib/domain";
+import { isLang, type TranscribeErrorReason } from "@/lib/domain";
 
 export const runtime = "nodejs";
 
@@ -89,7 +89,8 @@ export async function POST(req: NextRequest) {
   if (audio.size > MAX_AUDIO_BYTES) return fail("file_too_large", 413);
 
   const langRaw = String(form.get("lang") ?? "").toLowerCase();
-  const language = langRaw === "es" || langRaw === "en" ? langRaw : undefined;
+  // Whisper takes ISO 639-1 codes: es, en and pt are all valid hints.
+  const language = isLang(langRaw) ? langRaw : undefined;
 
   const ext = mime.includes("ogg") ? "ogg" : mime.includes("mp4") || mime.includes("m4a") ? "mp4" : mime.includes("wav") ? "wav" : mime.includes("mpeg") ? "mp3" : "webm";
   const upstream = new FormData();

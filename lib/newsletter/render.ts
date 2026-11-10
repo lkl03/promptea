@@ -10,7 +10,7 @@
 // unsubscribe URLs are built in one place (encoded, absolute), and a quiet
 // week with no tools simply omits that section.
 
-import type { Lang } from "@/lib/domain";
+import type { ContentLang } from "@/lib/domain";
 import type { NewsletterEdition } from "./types";
 import { weeklyEditionPath } from "./paths";
 
@@ -47,7 +47,7 @@ type RenderOptions = {
   siteUrl?: string;
 };
 
-export function renderNewsletterHtml(edition: NewsletterEdition, lang: Lang, opts: RenderOptions = {}): string {
+export function renderNewsletterHtml(edition: NewsletterEdition, lang: ContentLang, opts: RenderOptions = {}): string {
   const content = edition.locales[lang];
   if (!content) return "";
   const site = cleanSiteUrl(opts.siteUrl);
@@ -159,7 +159,7 @@ ${sponsorBlock}
 }
 
 /** Plain-text alternative (improves deliverability and accessibility). */
-export function renderNewsletterText(edition: NewsletterEdition, lang: Lang, opts: RenderOptions = {}): string {
+export function renderNewsletterText(edition: NewsletterEdition, lang: ContentLang, opts: RenderOptions = {}): string {
   const content = edition.locales[lang];
   if (!content) return "";
   const site = cleanSiteUrl(opts.siteUrl);

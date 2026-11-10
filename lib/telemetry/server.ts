@@ -2,6 +2,7 @@ import "server-only";
 
 import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
+import { type Lang } from "@/lib/domain";
 
 const COLLECTION = "telemetry_events";
 
@@ -16,7 +17,7 @@ type UpsertAnalysisEventInput = {
   analysisId: string;
   sessionId: string;
   projectId: string | null;
-  lang: "es" | "en";
+  lang: Lang;
   target: string;
   taskType: string | null;
   engineVersion: string;
@@ -96,7 +97,7 @@ export async function upsertAnalysisEvent(input: UpsertAnalysisEventInput) {
 type RecordMatchEventInput = {
   matchId: string;
   sessionId: string;
-  lang: "es" | "en";
+  lang: Lang;
   rubricVersion: string;
   profile: string;
   topCategory: string;

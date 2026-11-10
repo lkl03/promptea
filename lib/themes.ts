@@ -23,17 +23,19 @@
 // "classic" preference migrates to "system" before first paint (see
 // LEGACY_THEME_MAP and the inline script in app/[lang]/layout.tsx).
 
+import type { Lang } from "@/lib/domain";
+
 export const THEMES = ["aqua", "metro", "glass"] as const;
 export type ThemeName = (typeof THEMES)[number];
 
 /** Themes rendered on a dark base (drives color-scheme + Tailwind's dark variant). */
 export const DARK_THEMES: ThemeName[] = ["metro"];
 
-export const THEME_LABELS: Record<ThemeName | "system", { es: string; en: string }> = {
-  system: { es: "Sistema", en: "System" },
-  aqua: { es: "Aqua", en: "Aqua" },
-  metro: { es: "Metro", en: "Metro" },
-  glass: { es: "Glass", en: "Glass" },
+export const THEME_LABELS: Record<ThemeName | "system", Record<Lang, string>> = {
+  system: { es: "Sistema", en: "System", pt: "Sistema" },
+  aqua: { es: "Aqua", en: "Aqua", pt: "Aqua" },
+  metro: { es: "Metro", en: "Metro", pt: "Metro" },
+  glass: { es: "Glass", en: "Glass", pt: "Glass" },
 };
 
 /**

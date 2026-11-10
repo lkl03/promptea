@@ -17,6 +17,7 @@ import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
 import { HANDOFF_KEY, purposeForCategory, type HandoffPayload } from "@/lib/matcher/handoff";
 import type { MatchResult } from "@/lib/matcher/types";
 import type { UiDict } from "@/lib/uiDict";
+import { type Lang } from "@/lib/domain";
 
 const FORM_STATE_KEY = "promptea:form-state";
 
@@ -41,7 +42,7 @@ function writeSharedPrompt(prompt: string) {
   }
 }
 
-export default function MatcherBox({ dict, lang }: { dict: UiDict; lang: "es" | "en" }) {
+export default function MatcherBox({ dict, lang }: { dict: UiDict; lang: Lang }) {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState<MatchResult | null>(null);
   const [isPending, setIsPending] = useState(false);

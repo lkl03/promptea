@@ -1,3 +1,4 @@
+import { contentLangFor } from "@/lib/domain";
 import { describe, expect, it } from "vitest";
 
 import { makeArticle, makeEdition, makeSnapshot } from "./seo.fixtures";
@@ -129,7 +130,7 @@ describe("llms-full.txt", () => {
         makeArticle({
           slug: `big-${i}`,
           eventDate: `2026-10-${String(10 + i)}`,
-          lang,
+          lang: contentLangFor(lang),
           title: `Big story number ${i} headline`,
           body: Array.from({ length: 40 }, (_, k) => ({ type: "paragraph", text: `Paragraph ${k}. ` + "Lorem ipsum dolor sit amet. ".repeat(25) })) as never,
         }),

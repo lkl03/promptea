@@ -23,7 +23,7 @@ import NewsletterMarquee from "@/components/newsletter/NewsletterMarquee";
 // v1.2.0: types + normalization come from the shared domain module, so URL
 // prefill supports every purpose (translation/summarization were silently
 // dropped before) and can never drift from PromptBox or the API schema.
-import { isPurpose, isTarget, normalizePurpose as normalizePurposeAlias, type PromptPurpose, type TargetAI } from "@/lib/domain";
+import { isPurpose, isTarget, normalizePurpose as normalizePurposeAlias, type PromptPurpose, type TargetAI, toLang, type Lang } from "@/lib/domain";
 import { pageMetadata } from "@/lib/seo/metadata";
 
 function pickFirst(v: string | string[] | undefined): string | null {
@@ -56,7 +56,7 @@ function normalizePurpose(v: string | null): PromptPurpose | undefined {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const dict = await getDictionary(l);
   const t = dict.analyzerPage;
   return pageMetadata({ lang: l, path: `/${l}/analyzer`, title: t.metaTitle, description: t.metaDescription });
@@ -72,7 +72,7 @@ export default async function AnalyzerPage({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
 
-  const dict = await getDictionary(lang as "es" | "en");
+  const dict = await getDictionary(lang as Lang);
 
   const sp = (await searchParams) ?? {};
   const rawPrompt = pickFirst(sp.prompt);
@@ -107,32 +107,32 @@ export default async function AnalyzerPage({
             <h1 className="font-title text-3xl font-semibold tracking-tight sm:text-4xl">{dict.analyzerPage.title}</h1>
             <p className="mx-auto mt-3 max-w-2xl text-sm opacity-80 sm:text-base">{dict.analyzerPage.subtitle}</p>
             <div className="mt-3 flex justify-center">
-              <HowItWorks lang={lang as "es" | "en"} />
+              <HowItWorks lang={lang as Lang} />
             </div>
             {/* v1.4.1: AI Daily promo closes the hero block — visible without
                 scrolling and above the mode switcher, so it never sits between
                 the analyzer input and its actions. */}
             <div className="mt-3">
-              <AiDailyPromo lang={lang as "es" | "en"} dict={dict.blog.promo} />
+              <AiDailyPromo lang={lang as Lang} dict={dict.blog.promo} />
             </div>
             <div className="mt-2">
-              <NewsletterMarquee lang={lang as "es" | "en"} dict={dict.newsletter.marquee} />
+              <NewsletterMarquee lang={lang as Lang} dict={dict.newsletter.marquee} />
             </div>
           </header>
 
           <div className="mt-6">
-            <ModeSwitcher lang={lang as "es" | "en"} active="improve" dict={dict.mode} />
+            <ModeSwitcher lang={lang as Lang} active="improve" dict={dict.mode} />
           </div>
 
           {/* Mobile: Prompt of the Day above the analyzer */}
           <div className="mt-6 xl:hidden">
-            <PromptOfTheDay lang={lang as "es" | "en"} />
+            <PromptOfTheDay lang={lang as Lang} />
           </div>
 
           <div className="mt-8">
             <PromptBox
               dict={dict}
-              lang={lang as "es" | "en"}
+              lang={lang as Lang}
               initialPrompt={initialPrompt}
               initialPurpose={initialPurpose}
               initialTarget={initialTarget}
@@ -155,7 +155,7 @@ export default async function AnalyzerPage({
         {!showAds && (
           <aside className="hidden xl:block xl:row-start-1 xl:col-start-2">
             <div className="xl:sticky xl:top-24">
-              <PromptOfTheDay lang={lang as "es" | "en"} />
+              <PromptOfTheDay lang={lang as Lang} />
             </div>
           </aside>
         )}

@@ -3,13 +3,14 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
+import { type Lang } from "@/lib/domain";
 
 type Props = {
-  lang: "es" | "en";
+  lang: Lang;
 };
 
 const COPY: Record<
-  "es" | "en",
+  Lang,
   {
     trigger: string;
     title: string;
@@ -47,6 +48,29 @@ const COPY: Record<
     close: "Cerrar",
   },
   en: {
+    trigger: "Which one should I use?",
+    title: "Checklist vs JSON",
+    intro: "Both versions contain the same analysis. Only the way the optimized prompt is delivered changes.",
+    checklistTitle: "Checklist (normal format)",
+    checklistBody: [
+      "Easier to read and tweak by hand.",
+      "Best for pasting straight into ChatGPT, Claude, Gemini, or Grok.",
+      "The right pick for most use cases.",
+    ],
+    jsonTitle: "Pure JSON",
+    jsonBody: [
+      "Strict, parseable with JSON.parse().",
+      "Best for automations, APIs, agents, and repeatable workflows.",
+      "More rigid and less conversational.",
+    ],
+    recommendationTitle: "Quick recommendation",
+    recommendation: [
+      "Use Checklist if you'll paste the prompt manually.",
+      "Use JSON if another tool or pipeline will consume it.",
+    ],
+    close: "Close",
+  },
+  pt: {
     trigger: "Which one should I use?",
     title: "Checklist vs JSON",
     intro: "Both versions contain the same analysis. Only the way the optimized prompt is delivered changes.",

@@ -5,6 +5,7 @@ import { APP_VERSION } from "@/lib/version";
 import type { AppFeedbackDict } from "@/lib/uiDict";
 import { weeklyArchivePath } from "@/lib/newsletter/paths";
 import { getXLinks } from "@/lib/social";
+import { type Lang } from "@/lib/domain";
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -21,7 +22,7 @@ export default function Footer({
   lang,
   appFeedbackDict,
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   appFeedbackDict: AppFeedbackDict;
 }) {
   const year = new Date().getFullYear();

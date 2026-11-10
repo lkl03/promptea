@@ -14,12 +14,13 @@ import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import { BREAKDOWN_ORDER, bandColor, decodeCard, encodeCard, qualityBand, targetLabel, type BreakdownKey } from "@/lib/share/card";
 import { purposeLabel } from "@/lib/purposes";
+import { toLang, type Lang } from "@/lib/domain";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
 export async function generateMetadata({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: SearchParams }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const dict = await getDictionary(l);
   const data = decodeCard(await searchParams);
   const image = data
@@ -38,7 +39,7 @@ export async function generateMetadata({ params, searchParams }: { params: Promi
 export default async function SharePage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: SearchParams }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
   const dict = await getDictionary(l);
   const t = dict.share;
   const data = decodeCard(await searchParams);

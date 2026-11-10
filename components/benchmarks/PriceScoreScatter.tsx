@@ -19,6 +19,7 @@ import { useId, useMemo, useRef, useState } from "react";
 import { logScale, niceTicks, providerColor, type PricePoint } from "@/lib/benchmarks/chart";
 import { formatPrice } from "@/lib/benchmarks/normalize";
 import type { BenchmarkDef } from "@/lib/benchmarks/catalog";
+import { INTL_LOCALE, type Lang } from "@/lib/domain";
 
 export type ScatterCopy = {
   title: string; // "{benchmark} vs. price"
@@ -53,7 +54,7 @@ export default function PriceScoreScatter({
   points: PricePoint[];
   excluded: number;
   def: BenchmarkDef;
-  lang: "es" | "en";
+  lang: Lang;
   copy: ScatterCopy;
   activeId: string | null;
   onActive: (id: string | null) => void;
@@ -61,7 +62,7 @@ export default function PriceScoreScatter({
   const uid = useId();
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [focused, setFocused] = useState(false);
-  const locale = lang === "es" ? "es-AR" : "en-US";
+  const locale = INTL_LOCALE[lang];
 
   const model = useMemo(() => {
     if (points.length === 0) return null;

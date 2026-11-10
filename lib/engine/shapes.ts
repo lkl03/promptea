@@ -49,59 +49,59 @@ function bullet(lines: string[]) {
 // Heading registry (single source of truth — the extractor imports these)
 // ---------------------------------------------------------------------------
 
-type Heading = { es: string; en: string };
+type Heading = Record<Lang, string>;
 
 /** Core headings: the block that holds the user's request, per strategy. */
 const CORE_HEADING: Partial<Record<RefinementStrategy, Heading>> = {
-  agent_workflow: { es: "OBJETIVO:", en: "OBJECTIVE:" },
-  coding_implementation: { es: "OBJETIVO:", en: "GOAL:" },
-  debugging_review: { es: "PROBLEMA:", en: "PROBLEM:" },
-  data_schema: { es: "TAREA:", en: "TASK:" },
+  agent_workflow: { es: "OBJETIVO:", en: "OBJECTIVE:", pt: "OBJECTIVE:" },
+  coding_implementation: { es: "OBJETIVO:", en: "GOAL:", pt: "GOAL:" },
+  debugging_review: { es: "PROBLEMA:", en: "PROBLEM:", pt: "PROBLEM:" },
+  data_schema: { es: "TAREA:", en: "TASK:", pt: "TASK:" },
   // Kept registered so image prompts produced by v1.3–v1.5 (which used this
   // heading) still re-analyze into the v1.6 composer instead of nesting.
-  image_generation: { es: "DESCRIPCIÓN:", en: "DESCRIPTION:" },
-  translation: { es: "PEDIDO:", en: "REQUEST:" },
-  summarization: { es: "PEDIDO:", en: "REQUEST:" },
-  study_tutoring: { es: "TEMA:", en: "TOPIC:" },
-  analysis_research: { es: "PREGUNTA:", en: "QUESTION:" },
-  marketing_copy: { es: "BRIEF:", en: "BRIEF:" },
-  long_form_writing: { es: "ENCARGO:", en: "BRIEF:" },
-  planning_execution: { es: "OBJETIVO:", en: "GOAL:" },
-  general: { es: "PEDIDO:", en: "REQUEST:" },
+  image_generation: { es: "DESCRIPCIÓN:", en: "DESCRIPTION:", pt: "DESCRIPTION:" },
+  translation: { es: "PEDIDO:", en: "REQUEST:", pt: "REQUEST:" },
+  summarization: { es: "PEDIDO:", en: "REQUEST:", pt: "REQUEST:" },
+  study_tutoring: { es: "TEMA:", en: "TOPIC:", pt: "TOPIC:" },
+  analysis_research: { es: "PREGUNTA:", en: "QUESTION:", pt: "QUESTION:" },
+  marketing_copy: { es: "BRIEF:", en: "BRIEF:", pt: "BRIEF:" },
+  long_form_writing: { es: "ENCARGO:", en: "BRIEF:", pt: "BRIEF:" },
+  planning_execution: { es: "OBJETIVO:", en: "GOAL:", pt: "GOAL:" },
+  general: { es: "PEDIDO:", en: "REQUEST:", pt: "REQUEST:" },
 };
 
 /** Non-core section headings any shape can emit. */
 const SECTION_HEADING = {
-  stepsValidation: { es: "PASOS Y VALIDACIÓN:", en: "STEPS & VALIDATION:" },
-  delivery: { es: "ENTREGA:", en: "DELIVERY:" },
-  techRequirements: { es: "REQUISITOS TÉCNICOS:", en: "TECHNICAL REQUIREMENTS:" },
-  deliverable: { es: "ENTREGABLE:", en: "DELIVERABLE:" },
-  evidence: { es: "EVIDENCIA:", en: "EVIDENCE:" },
-  expectedAnswer: { es: "RESPUESTA ESPERADA:", en: "EXPECTED ANSWER:" },
-  schemaRules: { es: "SCHEMA Y REGLAS:", en: "SCHEMA & RULES:" },
-  output: { es: "SALIDA:", en: "OUTPUT:" },
+  stepsValidation: { es: "PASOS Y VALIDACIÓN:", en: "STEPS & VALIDATION:", pt: "STEPS & VALIDATION:" },
+  delivery: { es: "ENTREGA:", en: "DELIVERY:", pt: "DELIVERY:" },
+  techRequirements: { es: "REQUISITOS TÉCNICOS:", en: "TECHNICAL REQUIREMENTS:", pt: "TECHNICAL REQUIREMENTS:" },
+  deliverable: { es: "ENTREGABLE:", en: "DELIVERABLE:", pt: "DELIVERABLE:" },
+  evidence: { es: "EVIDENCIA:", en: "EVIDENCE:", pt: "EVIDENCE:" },
+  expectedAnswer: { es: "RESPUESTA ESPERADA:", en: "EXPECTED ANSWER:", pt: "EXPECTED ANSWER:" },
+  schemaRules: { es: "SCHEMA Y REGLAS:", en: "SCHEMA & RULES:", pt: "SCHEMA & RULES:" },
+  output: { es: "SALIDA:", en: "OUTPUT:", pt: "OUTPUT:" },
   // v1.3–v1.5 image headings, still registered for re-analysis of old outputs.
-  visualAttributes: { es: "ATRIBUTOS VISUALES:", en: "VISUAL ATTRIBUTES:" },
-  exclusions: { es: "EXCLUSIONES:", en: "EXCLUSIONS:" },
-  preserve: { es: "PRESERVAR:", en: "PRESERVE:" },
-  expectedSummary: { es: "RESUMEN ESPERADO:", en: "EXPECTED SUMMARY:" },
-  howToTeach: { es: "CÓMO EXPLICAR:", en: "HOW TO TEACH:" },
-  approach: { es: "ENFOQUE:", en: "APPROACH:" },
-  researchDeliverable: { es: "ENTREGA:", en: "DELIVERABLE:" },
-  brandAudience: { es: "MARCA Y AUDIENCIA:", en: "BRAND & AUDIENCE:" },
-  variants: { es: "VARIANTES:", en: "VARIANTS:" },
-  audienceTone: { es: "AUDIENCIA Y TONO:", en: "AUDIENCE & TONE:" },
-  structure: { es: "ESTRUCTURA:", en: "STRUCTURE:" },
-  expectedPlan: { es: "PLAN ESPERADO:", en: "EXPECTED PLAN:" },
-  responseFormat: { es: "FORMATO DE RESPUESTA:", en: "RESPONSE FORMAT:" },
-  attachedContext: { es: "CONTEXTO ADJUNTO:", en: "ATTACHED CONTEXT:" },
+  visualAttributes: { es: "ATRIBUTOS VISUALES:", en: "VISUAL ATTRIBUTES:", pt: "VISUAL ATTRIBUTES:" },
+  exclusions: { es: "EXCLUSIONES:", en: "EXCLUSIONS:", pt: "EXCLUSIONS:" },
+  preserve: { es: "PRESERVAR:", en: "PRESERVE:", pt: "PRESERVE:" },
+  expectedSummary: { es: "RESUMEN ESPERADO:", en: "EXPECTED SUMMARY:", pt: "EXPECTED SUMMARY:" },
+  howToTeach: { es: "CÓMO EXPLICAR:", en: "HOW TO TEACH:", pt: "HOW TO TEACH:" },
+  approach: { es: "ENFOQUE:", en: "APPROACH:", pt: "APPROACH:" },
+  researchDeliverable: { es: "ENTREGA:", en: "DELIVERABLE:", pt: "DELIVERABLE:" },
+  brandAudience: { es: "MARCA Y AUDIENCIA:", en: "BRAND & AUDIENCE:", pt: "BRAND & AUDIENCE:" },
+  variants: { es: "VARIANTES:", en: "VARIANTS:", pt: "VARIANTS:" },
+  audienceTone: { es: "AUDIENCIA Y TONO:", en: "AUDIENCE & TONE:", pt: "AUDIENCE & TONE:" },
+  structure: { es: "ESTRUCTURA:", en: "STRUCTURE:", pt: "STRUCTURE:" },
+  expectedPlan: { es: "PLAN ESPERADO:", en: "EXPECTED PLAN:", pt: "EXPECTED PLAN:" },
+  responseFormat: { es: "FORMATO DE RESPUESTA:", en: "RESPONSE FORMAT:", pt: "RESPONSE FORMAT:" },
+  attachedContext: { es: "CONTEXTO ADJUNTO:", en: "ATTACHED CONTEXT:", pt: "ATTACHED CONTEXT:" },
   // v1.6.0 model-profile sections.
-  scope: { es: "ALCANCE:", en: "SCOPE:" },
-  doneWhen: { es: "LISTO CUANDO:", en: "DONE WHEN:" },
-  userUpdates: { es: "AVISOS AL USUARIO:", en: "USER UPDATES:" },
-  permissions: { es: "PERMISOS Y AUTONOMÍA:", en: "PERMISSIONS & AUTONOMY:" },
-  focus: { es: "FOCO:", en: "FOCUS:" },
-  designDirection: { es: "DIRECCIÓN DE DISEÑO:", en: "DESIGN DIRECTION:" },
+  scope: { es: "ALCANCE:", en: "SCOPE:", pt: "SCOPE:" },
+  doneWhen: { es: "LISTO CUANDO:", en: "DONE WHEN:", pt: "DONE WHEN:" },
+  userUpdates: { es: "AVISOS AL USUARIO:", en: "USER UPDATES:", pt: "USER UPDATES:" },
+  permissions: { es: "PERMISOS Y AUTONOMÍA:", en: "PERMISSIONS & AUTONOMY:", pt: "PERMISSIONS & AUTONOMY:" },
+  focus: { es: "FOCO:", en: "FOCUS:", pt: "FOCUS:" },
+  designDirection: { es: "DIRECCIÓN DE DISEÑO:", en: "DESIGN DIRECTION:", pt: "DESIGN DIRECTION:" },
 } as const;
 
 function allHeadingLiterals(): string[] {
@@ -143,6 +143,7 @@ export const CORE_HEADINGS: readonly string[] = coreHeadingLiterals();
 const BRAINSTORM_LINE = {
   es: "Generá ideas variadas entre sí y marcá las 3 más prometedoras con una línea sobre por qué.",
   en: "Generate ideas that differ from each other and flag the 3 most promising with one line on why.",
+  pt: "Generate ideas that differ from each other and flag the 3 most promising with one line on why.",
 };
 
 const GUARDED_LINES = [
@@ -201,7 +202,7 @@ function designDirectionLines(core: string, profile: PromptProfile): Lines | nul
     es.push(`Salvo que se pidan, evitá: ${avoid.map((a) => a.es).join("; ")}.`);
     en.push(`Unless requested, avoid: ${avoid.map((a) => a.en).join("; ")}.`);
   }
-  return { es, en };
+  return { es, en, pt: en };
 }
 
 // ---------------------------------------------------------------------------
@@ -251,7 +252,7 @@ export type ShapeArgs = {
   modelId?: string | null;
 };
 
-type Section = { heading: Heading; lines: { es: string[]; en: string[] } };
+type Section = { heading: Heading; lines: Record<Lang, string[]> };
 
 function pick(lang: Lang, h: Heading): string {
   return t(lang, h.es, h.en);
@@ -342,6 +343,12 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
                 ? "If you notice pre-existing issues outside this request, report them at the end instead of fixing them."
                 : "Make routine judgment calls yourself; check in only if different readings of the request would lead to materially different work.",
             ],
+            pt: [
+              "Read the relevant code before changing it and keep the change within what was asked.",
+              fable
+                ? "If you notice pre-existing issues outside this request, report them at the end instead of fixing them."
+                : "Make routine judgment calls yourself; check in only if different readings of the request would lead to materially different work.",
+            ],
           },
         },
         {
@@ -349,6 +356,7 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
           lines: {
             es: ["El cambio funciona de punta a punta, sin stubs ni placeholders, y pasan los tests y comandos de validación existentes del proyecto."],
             en: ["The change works end to end, with no stubs or placeholders, and the project's existing tests and validation commands pass."],
+            pt: ["The change works end to end, with no stubs or placeholders, and the project's existing tests and validation commands pass."],
           },
         },
       ];
@@ -363,6 +371,12 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
               "Al terminar, empezá por el resultado: qué cambió, qué verificaste y qué necesita una decisión mía.",
             ],
             en: [
+              fable
+                ? "Report only progress you can point to a tool result for; if something is not verified yet, say so."
+                : "Before your first tool call, say in one sentence what you're about to do; while working, update only when you find something important or change direction.",
+              "When you finish, lead with the outcome: what changed, what you verified, and anything that needs my decision.",
+            ],
+            pt: [
               fable
                 ? "Report only progress you can point to a tool result for; if something is not verified yet, say so."
                 : "Before your first tool call, say in one sentence what you're about to do; while working, update only when you find something important or change direction.",
@@ -387,6 +401,10 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
               "You have permission to inspect the repo, run the tests, and fix failures without asking each time.",
               "Carry the task through to completion; ask only when truly blocked or before destructive or irreversible actions.",
             ],
+            pt: [
+              "You have permission to inspect the repo, run the tests, and fix failures without asking each time.",
+              "Carry the task through to completion; ask only when truly blocked or before destructive or irreversible actions.",
+            ],
           },
         },
         {
@@ -394,6 +412,7 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
           lines: {
             es: ["El cambio funciona de punta a punta y pasan los checks existentes."],
             en: ["The change works end to end and the existing checks pass."],
+            pt: ["The change works end to end and the existing checks pass."],
           },
         },
       ];
@@ -403,6 +422,7 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
           lines: {
             es: ["Resumí en párrafos cortos qué cambió y cómo lo verificaste."],
             en: ["Summarize in short paragraphs what changed and how you verified it."],
+            pt: ["Summarize in short paragraphs what changed and how you verified it."],
           },
         });
       }
@@ -422,6 +442,10 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
               "Work only in the files and sections this task touches; ask for any other file you need instead of scanning the whole repo.",
               "State the correctness criteria before changing code, then iterate in small diffs.",
             ],
+            pt: [
+              "Work only in the files and sections this task touches; ask for any other file you need instead of scanning the whole repo.",
+              "State the correctness criteria before changing code, then iterate in small diffs.",
+            ],
           },
         },
         {
@@ -429,6 +453,7 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
           lines: {
             es: ["Ejecutá los tests o comandos de validación existentes antes de dar por terminado."],
             en: ["Run the existing tests or validation commands before calling it done."],
+            pt: ["Run the existing tests or validation commands before calling it done."],
           },
         },
       ];
@@ -449,6 +474,11 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
               "Run the existing tests or validation commands before calling it done.",
               "If a requirement is ambiguous, ask before implementing.",
             ],
+            pt: [
+              "Before changing code, inspect the repo structure and confirm the affected files.",
+              "Run the existing tests or validation commands before calling it done.",
+              "If a requirement is ambiguous, ask before implementing.",
+            ],
           },
         },
       ];
@@ -461,6 +491,10 @@ function agentSections(profile: PromptProfile, complexity: Complexity): Section[
               "No amplíes el alcance más allá del pedido sin avisar.",
             ],
             en: [
+              "Summarize what changed, why, and how to verify it.",
+              "Do not expand scope beyond the request without flagging it.",
+            ],
+            pt: [
               "Summarize what changed, why, and how to verify it.",
               "Do not expand scope beyond the request without flagging it.",
             ],
@@ -511,6 +545,10 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "State the stack, versions, and dependencies you assume.",
               "Cover edge cases and error conditions.",
             ],
+            pt: [
+              "State the stack, versions, and dependencies you assume.",
+              "Cover edge cases and error conditions.",
+            ],
           },
         });
       }
@@ -519,6 +557,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
         lines: profile.codingDeliverable ?? {
           es: ["Explicación breve + código final completo.", "Tests mínimos y cómo ejecutarlo."],
           en: ["Brief explanation + complete final code.", "Minimal tests and how to run it."],
+          pt: ["Brief explanation + complete final code.", "Minimal tests and how to run it."],
         },
       });
       return renderSections(shaped, profile, sections);
@@ -537,6 +576,10 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Work from the exact error, the reproduction steps, and expected vs. actual behavior.",
               "If critical evidence is missing, ask for it before choosing a cause.",
             ],
+            pt: [
+              "Work from the exact error, the reproduction steps, and expected vs. actual behavior.",
+              "If critical evidence is missing, ask for it before choosing a cause.",
+            ],
           },
         },
         {
@@ -544,6 +587,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
           lines: {
             es: ["Diagnóstico, causa raíz, fix mínimo y cómo validar que quedó resuelto."],
             en: ["Diagnosis, root cause, minimal fix, and how to validate it is resolved."],
+            pt: ["Diagnosis, root cause, minimal fix, and how to validate it is resolved."],
           },
         },
       ]);
@@ -562,6 +606,10 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Respect field names, types, units, and order exactly as requested.",
               "Missing values: null (or the stated rule). Do not invent data.",
             ],
+            pt: [
+              "Respect field names, types, units, and order exactly as requested.",
+              "Missing values: null (or the stated rule). Do not invent data.",
+            ],
           },
         },
         {
@@ -569,6 +617,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
           lines: {
             es: ["Devolvé SOLO el formato final pedido (por ejemplo, JSON válido), sin explicación adicional."],
             en: ["Return ONLY the requested final format (e.g., valid JSON), with no extra explanation."],
+            pt: ["Return ONLY the requested final format (e.g., valid JSON), with no extra explanation."],
           },
         },
       ]);
@@ -585,6 +634,11 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "El sentido: no agregues contenido que no esté en la fuente.",
             ],
             en: [
+              "Proper names, numbers, placeholders, and technical terms, exactly.",
+              "Line breaks, lists, and the original formatting.",
+              "The meaning: do not add content absent from the source.",
+            ],
+            pt: [
               "Proper names, numbers, placeholders, and technical terms, exactly.",
               "Line breaks, lists, and the original formatting.",
               "The meaning: do not add content absent from the source.",
@@ -609,6 +663,11 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Match depth and focus to the stated audience.",
               "Do not invent facts or conclusions absent from the source.",
             ],
+            pt: [
+              "Open with 2-4 lines covering the essentials; then key points.",
+              "Match depth and focus to the stated audience.",
+              "Do not invent facts or conclusions absent from the source.",
+            ],
           },
         },
       ]);
@@ -625,6 +684,11 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Cerrá con una mini comprobación de comprensión.",
             ],
             en: [
+              "Adapt depth and vocabulary to the stated level (or ask first).",
+              "Use concrete examples and ramp from basic to technical.",
+              "End with a quick comprehension check.",
+            ],
+            pt: [
               "Adapt depth and vocabulary to the stated level (or ask first).",
               "Use concrete examples and ramp from basic to technical.",
               "End with a quick comprehension check.",
@@ -649,6 +713,11 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Cite sources and time range when recency matters.",
               "Make assumptions and information gaps explicit.",
             ],
+            pt: [
+              "Separate verifiable facts from inferences.",
+              "Cite sources and time range when recency matters.",
+              "Make assumptions and information gaps explicit.",
+            ],
           },
         },
       ];
@@ -658,6 +727,7 @@ export function buildShapedPrompt(args: ShapeArgs): string {
           lines: {
             es: ["Resumen ejecutivo, hallazgos clave, evidencia y recomendación."],
             en: ["Executive summary, key findings, evidence, and recommendation."],
+            pt: ["Executive summary, key findings, evidence, and recommendation."],
           },
         });
       }
@@ -677,6 +747,10 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Match the brand voice and speak to the stated audience.",
               "No claims that cannot be supported.",
             ],
+            pt: [
+              "Match the brand voice and speak to the stated audience.",
+              "No claims that cannot be supported.",
+            ],
           },
         },
         {
@@ -687,6 +761,10 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Cerrá recomendando cuál usar y por qué.",
             ],
             en: [
+              "Deliver 2-3 differentiated variants with hook, benefit, and CTA.",
+              "End by recommending which to use and why.",
+            ],
+            pt: [
               "Deliver 2-3 differentiated variants with hook, benefit, and CTA.",
               "End by recommending which to use and why.",
             ],
@@ -708,6 +786,10 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Define audience, tone, and voice; keep the author's voice if one exists.",
               "Respect the requested length; if none, propose one and say why.",
             ],
+            pt: [
+              "Define audience, tone, and voice; keep the author's voice if one exists.",
+              "Respect the requested length; if none, propose one and say why.",
+            ],
           },
         },
         {
@@ -718,6 +800,10 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Evitá relleno; cada sección debe aportar algo nuevo.",
             ],
             en: [
+              "Organize with a clear progression: opening, development, close.",
+              "Avoid filler; every section must add something new.",
+            ],
+            pt: [
               "Organize with a clear progression: opening, development, close.",
               "Avoid filler; every section must add something new.",
             ],
@@ -737,6 +823,11 @@ export function buildShapedPrompt(args: ShapeArgs): string {
               "Criterios de éxito verificables.",
             ],
             en: [
+              "Prioritized steps with dependencies and risks.",
+              "Mark a minimum viable version before the ideal plan.",
+              "Verifiable success criteria.",
+            ],
+            pt: [
               "Prioritized steps with dependencies and risks.",
               "Mark a minimum viable version before the ideal plan.",
               "Verifiable success criteria.",
@@ -763,6 +854,12 @@ export function buildShapedPrompt(args: ShapeArgs): string {
                 : "Si falta información crítica, hacé hasta 3 preguntas antes de asumir.",
             ],
             en: [
+              "Answer in a structured way, most important first.",
+              profile.clarifier === "assume"
+                ? "If critical information is missing, make a reasonable assumption and state it; ask only if it changes the result."
+                : "If critical information is missing, ask up to 3 questions before assuming.",
+            ],
+            pt: [
               "Answer in a structured way, most important first.",
               profile.clarifier === "assume"
                 ? "If critical information is missing, make a reasonable assumption and state it; ask only if it changes the result."

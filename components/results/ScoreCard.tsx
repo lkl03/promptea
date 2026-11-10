@@ -5,6 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { AnalyzeResponse } from "@/lib/analyzeClient";
 import { tpl } from "@/components/analyzer/format";
+import { type Lang } from "@/lib/domain";
 
 type ResultsDict = Record<string, string>;
 
@@ -104,7 +105,7 @@ export default function ScoreCard({
   result,
 }: {
   dict: ResultsDict;
-  lang: "es" | "en";
+  lang: Lang;
   result: AnalyzeResponse;
 }) {
   const explainLines = (result.meta.scoreExplain ?? [])

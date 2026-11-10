@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { THEMES, THEME_LABELS, type ThemeName } from "@/lib/themes";
+import { type Lang } from "@/lib/domain";
 
 function subscribeNoop() {
   return () => {};
@@ -58,7 +59,7 @@ function SwatchIcon({ theme, className }: { theme: ThemeName | "system"; classNa
   );
 }
 
-export default function ThemeToggle({ lang = "en" }: { lang?: "es" | "en" }) {
+export default function ThemeToggle({ lang = "en" }: { lang?: Lang }) {
   const { theme, setTheme } = useTheme();
   const mounted = useMounted();
   const [open, setOpen] = useState(false);
