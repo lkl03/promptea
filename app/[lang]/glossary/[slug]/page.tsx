@@ -102,7 +102,7 @@ export default async function GlossaryTermPage({
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs opacity-70">{l === "es" ? "Guías relacionadas:" : "Related guides:"}</span>
                   {relatedGuides.map((g) => (
-                    <Link key={g.slug} className="btn h-9 px-4" href={`/${l}/guides/${g.slug}`}>
+                    <Link key={g.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${g.slug}`}>
                       {g.title[l]}
                     </Link>
                   ))}
@@ -112,7 +112,7 @@ export default async function GlossaryTermPage({
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs opacity-70">{l === "es" ? "Términos relacionados:" : "Related terms:"}</span>
                   {relatedTerms.map((t) => (
-                    <Link key={t.slug} className="btn h-9 px-4" href={`/${l}/glossary/${t.slug}`}>
+                    <Link key={t.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/${t.slug}`}>
                       {t.title[l]}
                     </Link>
                   ))}
@@ -121,13 +121,13 @@ export default async function GlossaryTermPage({
             </div>
           ) : null}
           <div className="flex flex-wrap gap-2 pt-2">
-            <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>
               {l === "es" ? "JSON estricto" : "Strict JSON"}
             </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/models`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/models`}>
               {l === "es" ? "Modelos" : "Models"}
             </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/prompts`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/prompts`}>
               {l === "es" ? "Packs" : "Packs"}
             </Link>
           </div>

@@ -8,7 +8,7 @@ import { makeArticle, makeEdition, makeSnapshot } from "./seo.fixtures";
 import { editorialNode, entityIds, graph, pageId, serializeLd, siteGraph, webPageNode } from "@/lib/seo/jsonld";
 import { benchmarksGraph, docPageGraph, glossaryGraph, guideGraph, homeGraph, modelGraph, registryPageGraph, weeklyEditionGraph } from "@/lib/seo/pageGraphs";
 import { blogIndexJsonLd, newsArticleNode, blogBreadcrumbNode, truncateHeadline } from "@/lib/blog/jsonld";
-import { aboutDoc, homeAboutDoc, methodologyDoc } from "@/lib/seo/content/sitePages";
+import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "@/lib/seo/content/sitePages";
 import { guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
@@ -90,10 +90,22 @@ describe("page graphs resolve against the site graph and match their visible con
       }
     });
 
-    it(`${lang}: home (WebPage + HowTo + FAQ), about and methodology`, () => {
+    it(`${lang}: home (WebPage only), how-it-works (HowTo + FAQ), about and methodology`, () => {
+      // v1.8.1: the home page is short; its graph must not describe text it no longer prints.
       const home = homeAboutDoc(lang);
+      const homeLd = homeGraph(home, lang) as { "@graph": Array<{ "@type": string | string[] }> };
+      const homeTypes = homeLd["@graph"].flatMap((n) => n["@type"]);
+      expect(homeTypes).toContain("WebPage");
+      expect(homeTypes).not.toContain("FAQPage");
+      expect(homeTypes).not.toContain("HowTo");
       const homeHtml = page(lang, home.h1, docMarkdown(home, lang, absUrl(`/${lang}`)), homeGraph(home, lang));
-      expect(errs(homeHtml, absUrl(`/${lang}`), ["HowTo", "FAQPage"])).toEqual([]);
+      expect(errs(homeHtml, absUrl(`/${lang}`))).toEqual([]);
+
+      // The HowTo and the FAQ live with their visible text on /how-it-works.
+      const how = howItWorksDoc(lang);
+      const howPath = `/${lang}/how-it-works`;
+      const howHtml = page(lang, how.h1, docMarkdown(how, lang, absUrl(howPath)), docPageGraph({ doc: how, lang, path: howPath, kind: "how-it-works", label: how.h1 }));
+      expect(errs(howHtml, absUrl(howPath), ["HowTo", "FAQPage"])).toEqual([]);
 
       for (const [kind, doc] of [["about", aboutDoc(lang)], ["methodology", methodologyDoc(lang)]] as const) {
         const path = `/${lang}/${kind}`;

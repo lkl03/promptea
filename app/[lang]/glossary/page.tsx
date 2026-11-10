@@ -69,13 +69,13 @@ export default async function GlossaryIndexPage({ params }: { params: Promise<{ 
           </p>
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>
               {l === "es" ? "Guía: JSON estricto" : "Guide: Strict JSON"}
             </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/models`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/models`}>
               {l === "es" ? "Prompts por modelo" : "Prompts by model"}
             </Link>
-            <Link className="btn h-9 px-4" href={`/${l}/prompts`}>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/prompts`}>
               {l === "es" ? "Packs de prompts" : "Prompt packs"}
             </Link>
           </div>

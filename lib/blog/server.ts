@@ -19,6 +19,7 @@ import "server-only";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import type { Query } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
+import { blogDevFixture, blogDevFixtureEnabled } from "@/lib/blog/dev-fixture";
 import {
   BLOG_AUTHOR,
   PUBLIC_BLOG_STATUSES,
@@ -178,6 +179,8 @@ export async function listPublishedArticles(opts: {
   limit: number;
   cursorPublishedAt?: string | null;
 }): Promise<{ cards: ArticleCard[]; nextCursor: string | null }> {
+  // Development only (never in production builds): lib/blog/dev-fixture.ts.
+  if (blogDevFixtureEnabled()) return { cards: blogDevFixture(opts.lang).slice(0, opts.limit).map(toCard), nextCursor: null };
   const db = getAdminFirestore();
 
   let query: Query = db
@@ -219,6 +222,7 @@ export async function listPublishedArticles(opts: {
  * Returns null for drafts and archived posts so they 404 publicly.
  */
 export async function getArticleBySlug(lang: Lang, slug: string): Promise<PublicArticle | null> {
+  if (blogDevFixtureEnabled()) return blogDevFixture(lang).find((a) => a.slug === slug) ?? null;
   const db = getAdminFirestore();
 
   const snap = await db
@@ -242,6 +246,7 @@ export async function getArticleBySlug(lang: Lang, slug: string): Promise<Public
 
 /** Every published article, for the sitemap and the RSS feed. */
 export async function listAllPublishedArticles(lang: Lang, max = 500): Promise<PublicArticle[]> {
+  if (blogDevFixtureEnabled()) return blogDevFixture(lang).slice(0, max);
   const db = getAdminFirestore();
 
   const snap = await db

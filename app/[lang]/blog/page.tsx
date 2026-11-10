@@ -50,6 +50,8 @@ import { listAllPublishedArticles } from "@/lib/blog/server";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 import { getSiteUrl } from "@/lib/seo/site";
 import NewsletterDock from "@/components/newsletter/NewsletterDock";
+import XFeed from "@/components/home/XFeed";
+import { getXFeedSource, getXLinks } from "@/lib/social";
 import DailyTabs from "@/components/blog/DailyTabs";
 import { pageMetadata } from "@/lib/seo/metadata";
 
@@ -193,6 +195,7 @@ export default async function BlogIndexPage({
   const requestedPage = parsePage(sp.page);
 
   const dict = await getDictionary(l);
+  const xSource = getXFeedSource();
   const t = dict.blog;
 
   const all = await loadCards(l);
@@ -268,7 +271,7 @@ export default async function BlogIndexPage({
 
       <DailyTabs lang={l} active="news" dict={dict.dailyTabs} />
 
-      <div className="mt-8 grid grid-cols-1 gap-10 sm:mt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
+      <div className="mt-8 grid grid-cols-1 gap-10 sm:mt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start lg:gap-12">
         <div className="min-w-0">
           {/* ── Masthead ──────────────────────────────────────────────────────
               Name and one-line promise. The editorial disclosure moved under the
@@ -391,7 +394,10 @@ export default async function BlogIndexPage({
           </p>
         </div>
 
-        <NewsletterDock lang={l} dict={dict.newsletterDock} formDict={dict.newsletter.bar} />
+        {/* v1.8.1: the side column also carries the X feed card (desktop; only with an account configured). */}
+        <NewsletterDock lang={l} dict={dict.newsletterDock} formDict={dict.newsletter.bar}>
+          {xSource ? <XFeed source={xSource} profileUrl={getXLinks().url} dict={dict.hub.xFeed} /> : null}
+        </NewsletterDock>
       </div>
     </main>
   );

@@ -40,7 +40,18 @@ function MailIcon() {
   );
 }
 
-export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | "en"; dict: DockDict; formDict: SubscribeFormDict }) {
+export default function NewsletterDock({
+  lang,
+  dict,
+  formDict,
+  children,
+}: {
+  lang: "es" | "en";
+  dict: DockDict;
+  formDict: SubscribeFormDict;
+  /** v1.8.1 — more cards for the desktop side column (e.g. the X feed), shown under the newsletter card. */
+  children?: React.ReactNode;
+}) {
   const [sheetOpen, setSheetOpen] = useState(false);
   // Shared with the pill and the modal (persisted: dismissal for 7 days, subscribed for good).
   const snap = useSyncExternalStore(subscribeStore, getSnapshot, getServerSnapshot);
@@ -120,13 +131,19 @@ export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | 
     }
   }, [barHidden, lang]);
 
-  // Already subscribed (on this or another page): the dock is gone for good.
-  if (snap.subscribed && !sheetOpen) return null;
+  // Already subscribed (on this or another page): the dock is gone for good; the column keeps its other cards.
+  if (snap.subscribed && !sheetOpen) {
+    return children ? (
+      <aside aria-label={dict.title} className="side-sticky hidden content-start gap-6 lg:grid">
+        {children}
+      </aside>
+    ) : null;
+  }
 
   return (
     <>
       {/* Desktop: sticky card in the side column */}
-      <aside aria-label={dict.title} className="hidden lg:sticky lg:top-24 lg:block">
+      <aside aria-label={dict.title} className={children ? "side-sticky hidden content-start gap-6 lg:grid" : "hidden lg:sticky lg:top-24 lg:block"}>
         <div className="surface p-5">
           <p className="flex items-center gap-2 font-title text-base font-semibold text-ink">
             <span className="text-accent">
@@ -139,6 +156,7 @@ export default function NewsletterDock({ lang, dict, formDict }: { lang: "es" | 
             <SubscribeForm lang={lang} dict={formDict} surface="dock" />
           </div>
         </div>
+        {children}
       </aside>
 
       {/* Mobile: reserve the bar's height so it never covers the end of the content */}

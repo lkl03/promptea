@@ -45,7 +45,30 @@ export type PageMetadataInput = {
   markdownPath?: string;
   noindex?: boolean;
   keywords?: string[];
+  /**
+   * Title for Open Graph / Twitter cards when it should differ from <title>
+   * (e.g. the full headline of an edition whose <title> is clamped).
+   */
+  socialTitle?: string;
 };
+
+/** Longest <title> text (before " · Promptea") that search results show without cutting it. */
+export const TITLE_MAX = 60;
+
+/**
+ * v1.8.1 — a headline that fits a <title>: cut at the last whole word within
+ * `max` characters and closed with an ellipsis. Editorial headlines (weekly
+ * editions) run past 120 characters; search engines cut them mid-word and
+ * `npm run seo:check` rejects them. Short titles are returned untouched.
+ */
+export function clampTitle(text: string, max = TITLE_MAX): string {
+  const t = text.replace(/\s+/g, " ").trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max - 1);
+  const atWord = cut.lastIndexOf(" ");
+  const head = (atWord > max * 0.5 ? cut.slice(0, atWord) : cut).replace(/[\s,;:.\-–—]+$/, "");
+  return `${head}…`;
+}
 
 /** `{es, en, x-default}` for a path that is the same in both locales. */
 export function languageAlternates(pathFor: (lang: Locale) => string): Record<string, string> {
@@ -67,7 +90,7 @@ export function pageMetadata(i: PageMetadataInput): Metadata {
 
   // A title that already names the brand is used as is (no " · Promptea" suffix).
   const absolute = i.absoluteTitle || i.title.includes(SITE_NAME);
-  const ogTitle = absolute ? i.title : `${i.title} · ${SITE_NAME}`;
+  const ogTitle = i.socialTitle ?? (absolute ? i.title : `${i.title} · ${SITE_NAME}`);
   const ogImages = i.images ?? [{ url: `/${i.lang}/opengraph-image`, width: 1200, height: 630, alt: SITE_NAME }];
   const twitterImages = i.images ? i.images.map((im) => im.url) : [`/${i.lang}/twitter-image`];
   const other = LOCALES.filter((l) => l !== i.lang).map((l) => OG_LOCALE[l]);

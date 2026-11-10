@@ -4,7 +4,53 @@ All notable changes to Promptea are documented here.
 
 ---
 
-## v1.8.0 (unreleased)
+## v1.8.1 — 2026-11-10
+
+**Fixes for the visual defects of v1.8.0 that reached production, a home page rebuilt so that it explains itself in five seconds, a "How Promptea works" page that keeps the SEO content the home used to carry, one header for every page, a first-visit newsletter card, and a full QA pass.** Evidence, measurements and everything that could not be verified: [`docs/release/v1.8.1/qa-report.md`](./docs/release/v1.8.1/qa-report.md); before/after screenshots next to it.
+
+### Fixed
+- **Benchmarks — "Ranking by benchmark" no longer overlaps.** The benchmark cards sat in a fixed 19rem side column, but a long leader name could not shrink, so the card grew to 340 px and slid under the chart panel, leaving a tall empty column. The picker is now a grid of equal, shrinkable tracks above the chart; verified with a real Chrome at 1920, 1440, 1024, 768 and 375 px with 1, 2 and 14 benchmarks per category (`scripts/release/benchmarks-layout.mjs`, 30 checks).
+- **Benchmarks on phones**: bar lists no longer push the page wider than the screen with long model names (the values were cut off), and a category with many benchmarks (Design has 14) is one swipeable row instead of a 1,100 px stack.
+- **The analyzer with browser storage blocked**: `getSessionId()` let a `SecurityError` escape, so the page errored on load and no analysis could be sent. It now falls back to an in-memory id.
+- **The newsletter prompt never appeared on short pages**: it hid whenever any part of the footer was on screen. It now measures real overlap with the footer's controls.
+- "Latest in AI Daily": the top story no longer stretches into a half-empty card, and weekly editions are labelled "Week ahead" / "Week in review" instead of "Other" / "Digest".
+- Weekly edition `<title>` tags of 129–132 characters are clamped at a word boundary (social cards keep the full headline).
+- 27 buttons with no variant (bold text without a border) are now ghost buttons.
+- The footer and every other surface report the right version (they still said 1.7.3).
+
+### Changed
+- **Home page, rebuilt** (≈6,300 px → ≈1,900 px on desktop): logo and tagline; "Analyze a prompt" and "Find the best AI" as two quiet links with a one-line description, plus a "How this works" button; the prompt box, now saying what you get back (a 0–100 score on six criteria, what to fix, a prompt optimized for the AI you pick; free, no account); "Latest in AI Daily" with a filled primary button and a ghost secondary; a compact Benchmarks teaser; and, in a sticky side column on desktop, the X feed card and the newsletter sign-up (stacked after the content on phones). Removed: the big "Tools" cards, the loose resource links and the news marquee, which scrolled the same headlines listed right below it.
+- **One header for every page**, the home included: navigation centred next to the language and theme switches, with the nine destinations (the five resources that used to be loose links on the home among them). Below 1024 px it collapses into an accessible menu (Enter/Space opens, Esc closes and returns focus). Labels moved from the component to the dictionaries.
+- **The prompt pasted on the home no longer travels in the URL**: it is handed to the analyzer through `sessionStorage` (the existing matcher hand-off), which also lifts the 1,500-character cap to the analyzer's 6,000. The URL is only the fallback when storage is blocked or JavaScript is off.
+- **Ambient background, clearly perceptible**: each wash follows a closed path of ~13–16 % of the viewport in 22–38 s with a gentle change of scale and opacity (v1.8.0 measured 63 px in 4 s; now 96–174 px depending on where in the cycle the 4 s fall). Still only `transform`/`opacity` on five layers: 79 fps, no layouts, no long tasks, CLS 0. Metro stays flat; reduced motion stays static.
+- **Benchmarks page weight**: the dashboard tables travel as compact tuples instead of full objects. On production data (23 tables, 1,296 rows) the payload goes from 413 KB to 107 KB, about 46 % off the HTML document. Nothing displayed is rounded or dropped.
+- `llms-full.txt` has a documented 400 KB ceiling (≈100–110 k tokens: one fetch into a 200 k-token context) that the generator enforces; `seo:check` fails above it instead of warning at 350 KB.
+- The X feed card is compact and takes its source from the environment: `NEXT_PUBLIC_X_HANDLE`, or `NEXT_PUBLIC_X_LIST_ID` for a curated list. It also appears in the AI Daily side column.
+
+### Added
+- **`/{lang}/how-it-works`**: what Promptea is, how a prompt is scored (clarity, context, constraints, output format, verifiability, safety), how to use the analyzer, supported AIs and prompt types, the FAQ and the product tour video. Crawlable server-rendered HTML with `HowTo` + `FAQPage` JSON-LD built from the visible text, canonical/hreflang, sitemap entry, `llms.txt` / `llms-full.txt` and a markdown twin. The home keeps its title, description and `<h1>`; its JSON-LD is now only `WebPage`.
+- **A provider-share donut** next to the ranking bars: how the top-N of the selected benchmark splits by provider (a count of the models in the chart, not market share). Plain SVG with an equivalent table, a text description, and the source and date.
+- **First-visit newsletter card**: with nothing remembered in the browser, the card appears already open after 5 s, bottom-right. It is not a modal (no backdrop, never takes focus; Esc or Close collapses it to the pill). Later visits get only the pill; subscribing removes both for good; closing the pill hides it for 7 days. Still one controller: never together with the AI Daily modal, and not while an in-page sign-up form is on screen. Phones get a compact one-row version, and nothing opens by itself on the phone analyzer.
+- Release tooling (`scripts/release/`): `benchmarks-layout`, `ambient-check`, `a11y-check`, `qa-local`, `perf`, `capture`, `overflow`, and an `audit` matrix extended to 23 pages × 5 widths × 4 theme/scheme combinations.
+- Development-only fixtures for AI Daily (`BLOG_DEV_FIXTURE=1`) alongside the existing benchmarks one, so pages can be reviewed locally without credentials. Unreachable in production builds.
+
+### Known limitations / follow-ups
+- **The embedded X timeline does not render** for `@promptea_me`, in production or locally: X's widget creates an empty frame and the card shows its fallback (a link to the profile). Not fixable from the repository; see the QA report.
+- The product tour video is still the v1.7.0 recording (it shows the old hub). The recorder is updated for the new home; re-recording needs production credentials.
+- `npm audit` reports 26 advisories in dependencies, all present before this release (Next 16.1.1 and `firebase-admin` 13 among them). An in-range `npm audit fix` was tried and reverted: it left the install without a native CSS binary. Recommended as its own PR.
+- Aqua's primary button label measures 4.02:1 against the theme's blue (AA asks for 4.5:1). Left as is: it is the theme's approved accent.
+- 27 guide titles are 91–120 characters long.
+- Not verified: the LLM refiner and judge in production, a real newsletter sign-up, Google's Rich Results Test, Search Console, Bing, a real screen reader, Lighthouse.
+
+### Validated
+- `npm run lint`, `npm run typecheck`, `npm test` (1,377 tests; 75 new), `npm run build`, and `npm run seo:check` on a local production build (549 checks, 0 failures).
+- 460 page loads with a real Chrome without a console error, horizontal overflow, layout shift or duplicated `<h1>`/canonical; 77 accessibility checks (keyboard, focus, names, contrast); 57 local QA checks (the engine on the 8 purposes in both languages, share card with hostile parameters, no JavaScript, blocked storage).
+
+---
+
+## v1.8.0 — 2026-11-09
+
+**Three parallel workstreams — SEO/GEO (#36), prompt engine 2.3.0 (#34) and UI, brand and growth (#35) — shipped to production together. The app kept reporting 1.7.3 until v1.8.1 bumped the version.**
 
 ### SEO and GEO
 

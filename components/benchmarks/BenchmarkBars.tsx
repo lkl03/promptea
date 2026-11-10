@@ -81,7 +81,7 @@ export default function BenchmarkBars({
           ))}
         </div>
 
-        <ol className="relative m-0 grid list-none gap-2.5 p-0">
+        <ol className="relative m-0 grid list-none grid-cols-1 gap-2.5 p-0">
           {model.bars.map((b, i) => {
             const active = highlightId === b.modelId;
             return (

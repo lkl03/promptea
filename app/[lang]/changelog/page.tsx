@@ -1,4 +1,4 @@
-import { hasLocale } from "../dictionaries";
+import { getDictionary, hasLocale } from "../dictionaries";
 import JsonLd from "@/components/seo/JsonLd";
 import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import { notFound } from "next/navigation";
@@ -24,11 +24,40 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
   if (!hasLocale(lang)) notFound();
 
   const isEs = lang === "es";
+  const dict = await getDictionary(lang);
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <JsonLd data={registryPageGraph(lang, `/${lang}/changelog`, {})} />
       <h1 className="text-2xl font-semibold">Changelog</h1>
+
+      {/* v1.8.1 — the card's text lives in the dictionaries (dict.changelog), so a new locale needs no change here */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.8.1</div>
+          <div className="text-xs opacity-70">{dict.changelog.v181.released}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          {dict.changelog.v181.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* v1.8.0 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.8.0</div>
+          <div className="text-xs opacity-70">{dict.changelog.v180.released}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          {dict.changelog.v180.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
 
       {/* v1.7.3 */}
       <div className="surface-soft p-4 space-y-2">

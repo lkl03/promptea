@@ -18,7 +18,7 @@ import { getEditionById } from "@/lib/newsletter/server";
 import { editionIdForMonday, weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
-import { pageMetadata } from "@/lib/seo/metadata";
+import { clampTitle, pageMetadata } from "@/lib/seo/metadata";
 import JsonLd from "@/components/seo/JsonLd";
 import { weeklyEditionGraph } from "@/lib/seo/pageGraphs";
 
@@ -46,7 +46,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     lang: l,
     path: weeklyEditionPath(l, edition.editionId),
     alternatePaths: { es: weeklyEditionPath("es", edition.editionId), en: weeklyEditionPath("en", edition.editionId) },
-    title: c.heroHeadline,
+    // The hero headline is editorial and often runs past 120 characters: the <title> is
+    // clamped at a word boundary; social cards keep the full headline.
+    title: clampTitle(c.heroHeadline),
+    socialTitle: c.heroHeadline,
     description: c.preheader,
     type: "article",
     publishedTime: edition.publishedAt ?? edition.sentAt ?? undefined,

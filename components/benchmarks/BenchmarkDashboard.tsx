@@ -4,8 +4,9 @@
 //
 // v1.8.0 — the interactive part of /benchmarks, replacing the wall of cards:
 //
-//   #ranking  category pills → compact "leader of each benchmark" list (pick
-//             one) → top-N bar chart of the selected benchmark → the full
+//   #ranking  category pills → compact "leader of each benchmark" cards (pick
+//             one) → top-N bar chart of the selected benchmark, next to a
+//             donut of how that top-N splits by provider (v1.8.1) → the full
 //             table (collapsed, still in the HTML).
 //   #value    price vs. score scatter for the SAME benchmark, with the
 //             cost/performance frontier, tooltip, keyboard and a note about
@@ -20,11 +21,12 @@
 // server already validated, and no value is ever invented.
 
 import { useEffect, useMemo, useState } from "react";
-import type { BenchmarkTable } from "@/lib/benchmarks/normalize";
+import { expandTables, type CompactTable } from "@/lib/benchmarks/compact";
 import { formatScore } from "@/lib/benchmarks/normalize";
 import { CATEGORY_LABELS, CATEGORY_ORDER, SOURCE_INFO, type BenchmarkCategory } from "@/lib/benchmarks/catalog";
-import { buildBarChart, pricePoints } from "@/lib/benchmarks/chart";
+import { buildBarChart, pricePoints, providerShare } from "@/lib/benchmarks/chart";
 import BenchmarkBars, { type BarsCopy } from "./BenchmarkBars";
+import ProviderShareDonut, { type ShareCopy } from "./ProviderShareDonut";
 import PriceScoreScatter, { type ScatterCopy } from "./PriceScoreScatter";
 import BenchmarkTableView, { type TableCopy } from "./BenchmarkTableView";
 import CostCalculator, { type CalcCopy } from "./CostCalculator";
@@ -43,24 +45,29 @@ export type DashboardCopy = {
   valueFor: string; // "Showing: {benchmark}"
   sourceLine: string; // "{source} · {date}"
   bars: BarsCopy;
+  share: ShareCopy;
   scatter: ScatterCopy;
   table: TableCopy;
   calc: CalcCopy;
 };
 
 const TOP_OPTIONS = [5, 10, 15, 25] as const;
+/** On phones, more benchmarks than this in a category scroll sideways instead of stacking. */
+const PICKER_SCROLL_FROM = 3;
 
 export default function BenchmarkDashboard({
-  tables,
+  tables: compact,
   lang,
   copy,
   dateLabel,
 }: {
-  tables: BenchmarkTable[];
+  /** Compact wire format (lib/benchmarks/compact.ts): keeps the HTML payload small. */
+  tables: CompactTable[];
   lang: "es" | "en";
   copy: DashboardCopy;
   dateLabel: string | null;
 }) {
+  const tables = useMemo(() => expandTables(compact), [compact]);
   const categories = useMemo(
     () => CATEGORY_ORDER.filter((c) => tables.some((t) => t.def.category === c)),
     [tables]
@@ -83,7 +90,10 @@ export default function BenchmarkDashboard({
   const bars = useMemo(() => (table ? buildBarChart(table, topN) : null), [table, topN]);
   const scatter = useMemo(() => (table ? pricePoints(table) : { points: [], excluded: 0 }), [table]);
 
+  const share = useMemo(() => (bars ? providerShare(bars.bars) : []), [bars]);
+
   if (!table || !bars) return null;
+  const highlightProvider = highlightId ? (bars.bars.find((b) => b.modelId === highlightId)?.provider ?? null) : null;
 
   function choose(next: string) {
     setKey(next);
@@ -120,49 +130,67 @@ export default function BenchmarkDashboard({
           ))}
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[19rem_minmax(0,1fr)]">
-          {/* Leaders of the category: one compact row per benchmark */}
-          <ul aria-label={copy.benchmarks} className="m-0 grid list-none content-start gap-2 p-0">
-            {inCategory.map((t) => {
-              const top = t.rows[0];
-              const selected = t.def.key === table.def.key;
-              return (
-                <li key={t.def.key}>
-                  <button
-                    type="button"
-                    aria-pressed={selected}
-                    onClick={() => choose(t.def.key)}
-                    className={[
-                      "surface-soft block w-full p-3 text-left transition-colors",
-                      selected ? "!border-accent !bg-accent-soft" : "hover:border-line-strong",
-                    ].join(" ")}
-                  >
-                    <span className="block text-sm font-medium text-ink">{t.def.label[lang]}</span>
-                    <span className="mt-1 flex items-baseline justify-between gap-2 text-xs text-ink-muted">
-                      <span className="min-w-0 truncate">
-                        {copy.leader}: <span className="font-medium text-ink">{top.name}</span>
-                      </span>
-                      <span className="shrink-0 text-sm font-semibold tabular-nums text-accent">{formatScore(top.value, t.def.metric, lang)}</span>
+        {/* Benchmarks of the category, one compact card each. v1.8.1: a real grid of
+            equal tracks ABOVE the chart (it used to be a 19rem side column whose
+            cards grew past their track and slid under the chart, leaving a tall
+            empty column below). minmax(0,1fr) + min-w-0 let long model names
+            truncate instead of widening the card; 1, 2 or 6 benchmarks all fit.
+            On phones a category with many benchmarks (Design has a dozen-plus)
+            becomes one horizontally scrollable row, so the chart stays near. */}
+        <ul aria-label={copy.benchmarks} data-many={inCategory.length > PICKER_SCROLL_FROM ? "" : undefined} className="bm-picker m-0 mt-5 grid list-none gap-2 p-0">
+          {inCategory.map((t) => {
+            const top = t.rows[0];
+            const selected = t.def.key === table.def.key;
+            return (
+              <li key={t.def.key} className="min-w-0">
+                <button
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => choose(t.def.key)}
+                  className={[
+                    "surface-soft block h-full w-full min-w-0 p-3 text-left transition-colors",
+                    selected ? "!border-accent !bg-accent-soft" : "hover:border-line-strong",
+                  ].join(" ")}
+                >
+                  <span className="block truncate text-sm font-medium text-ink">{t.def.label[lang]}</span>
+                  <span className="mt-1 flex min-w-0 items-baseline justify-between gap-2 text-xs text-ink-muted">
+                    <span className="min-w-0 flex-1 truncate">
+                      {copy.leader}: <span className="font-medium text-ink">{top.name}</span>
                     </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                    <span className="shrink-0 text-sm font-semibold tabular-nums text-accent">{formatScore(top.value, t.def.metric, lang)}</span>
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
 
-          {/* The chart */}
-          <div className="surface min-w-0 p-4 sm:p-5">
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-xs text-ink-muted">{sourceLine}</p>
-              <div role="group" aria-label={copy.topN} className="flex items-center gap-1.5">
-                {TOP_OPTIONS.filter((n) => n <= Math.max(5, table.rows.length) || n === 5).map((n) => (
-                  <button key={n} type="button" className="pill !h-7 !px-2.5" aria-pressed={n === topN} onClick={() => setTopN(n)}>
-                    {copy.topLabel.replace("{n}", String(n))}
-                  </button>
-                ))}
-              </div>
+        {/* The chart (bars) + who those models belong to (donut) */}
+        <div className="surface mt-4 min-w-0 p-4 sm:p-5">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-xs text-ink-muted">{sourceLine}</p>
+            <div role="group" aria-label={copy.topN} className="flex flex-wrap items-center gap-1.5">
+              {TOP_OPTIONS.filter((n) => n <= Math.max(5, table.rows.length) || n === 5).map((n) => (
+                <button key={n} type="button" className="pill !h-7 !px-2.5" aria-pressed={n === topN} onClick={() => setTopN(n)}>
+                  {copy.topLabel.replace("{n}", String(n))}
+                </button>
+              ))}
             </div>
-            <BenchmarkBars model={bars} def={table.def} lang={lang} copy={copy.bars} highlightId={highlightId} onHighlight={setHighlightId} />
+          </div>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,19rem)] lg:gap-8">
+            <div className="min-w-0">
+              <BenchmarkBars model={bars} def={table.def} lang={lang} copy={copy.bars} highlightId={highlightId} onHighlight={setHighlightId} />
+            </div>
+            <div className="min-w-0 border-t border-line pt-5 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+              <ProviderShareDonut
+                slices={share}
+                total={bars.bars.length}
+                lang={lang}
+                copy={copy.share}
+                sourceLine={`${table.def.label[lang]} · ${sourceLine}`}
+                highlightProvider={highlightProvider}
+              />
+            </div>
           </div>
         </div>
 

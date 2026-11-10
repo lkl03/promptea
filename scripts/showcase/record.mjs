@@ -36,7 +36,7 @@ const DEMO = {
     prompt: "Escribí un mail para invitar a nuestros clientes a un webinar sobre cómo usar IA en atención al cliente. Que sea breve y con un llamado a la acción claro.",
     task: "Tengo que resumir contratos largos en PDF y sacar fechas y montos en una tabla.",
     steps: {
-      hub: "Promptea v1.7.0 · todo empieza en el hub",
+      hub: "Promptea · todo empieza en la página de inicio",
       analyze: "Analizar prompt · pegá tu prompt y elegí la IA",
       result: "Puntaje, problemas detectados y versión optimizada",
       copy: "Copiá el prompt optimizado con un clic",
@@ -52,7 +52,7 @@ const DEMO = {
     prompt: "Write an email inviting our customers to a webinar about using AI in customer support. Keep it short with a clear call to action.",
     task: "I need to summarize long PDF contracts and pull dates and amounts into a table.",
     steps: {
-      hub: "Promptea v1.7.0 · everything starts at the hub",
+      hub: "Promptea · it all starts on the home page",
       analyze: "Analyze a prompt · paste it and pick the AI",
       result: "Score, detected issues and an optimized version",
       copy: "Copy the optimized prompt in one click",
@@ -230,8 +230,8 @@ async function main() {
   await glide(W * 0.66, H * 0.62, 700);
   await sleep(1200);
 
-  // 2. Analyzer: open it from the hub card
-  const analyzeCard = await page.waitForSelector('a[data-card="analyze"]', { visible: true });
+  // 2. Analyzer: open it from the home page's "Analyze a prompt" link (v1.8.1: the hub cards are gone)
+  const analyzeCard = await page.waitForSelector('a.home-action[href$="/analyzer"]', { visible: true });
   await clickEl(analyzeCard);
   await page.waitForSelector("textarea", { visible: true, timeout: 60000 });
   await sleep(800);

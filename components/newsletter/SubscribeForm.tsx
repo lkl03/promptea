@@ -117,7 +117,7 @@ export default function SubscribeForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-3" noValidate data-newsletter-inline={surface === "inline" ? "" : undefined}>
       <div>
         <label htmlFor={`${id}-email`} className="sr-only">
           Email

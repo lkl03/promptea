@@ -90,9 +90,9 @@ export default async function ModelPage({
           </p>
 
           <div className="flex flex-wrap gap-2 pt-2">
-            <Link className="btn h-9 px-4" href={`/${l}/guides/json-output`}>{l === "es" ? "JSON estricto" : "Strict JSON"}</Link>
-            <Link className="btn h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
-            <Link className="btn h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>{l === "es" ? "JSON estricto" : "Strict JSON"}</Link>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>
           </div>
         </div>
       </section>

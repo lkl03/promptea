@@ -10,6 +10,8 @@ import { buildSnapshot, type BenchmarksSnapshot } from "./normalize";
 
 const LABS = ["northwind", "southgate", "eastfield", "westbrook", "lumen", "orbit", "kite"] as const;
 
+const DESIGN_CATEGORIES = ["uicomponent", "website", "dataviz", "gamedev", "3d", "logo", "svg", "image", "video", "slides", "mobile-app", "dashboard", "landing-page", "poster"] as const;
+
 // Deterministic pseudo-random so the dev page is stable between reloads.
 function rng(seed: number) {
   let s = seed;
@@ -28,7 +30,9 @@ export function devFixtureSnapshot(now: Date = new Date()): BenchmarksSnapshot {
     for (let i = 1; i <= count; i++) {
       n++;
       const slug = `${lab}/demo-${i}`;
-      const name = `Demo ${lab[0].toUpperCase()}${lab.slice(1)} ${i}`;
+      // The first model of each lab gets a long, real-world-shaped name ("… (Max, Default Fallback)"):
+      // long names are exactly what broke the ranking layout in v1.8.0.
+      const name = `Demo ${lab[0].toUpperCase()}${lab.slice(1)} ${i}${i === 1 ? " (Max, Default Fallback)" : ""}`;
       const tier = 0.35 + r() * 0.6; // overall capability 0.35–0.95
       const priced = r() > 0.1;
       const inPrice = (0.04 + tier * tier * 14 * (0.5 + r())) / 1_000_000;
@@ -83,18 +87,21 @@ export function devFixtureSnapshot(now: Date = new Date()): BenchmarksSnapshot {
           last_run_timestamp: now.toISOString(),
         });
       }
-      if (r() > 0.5) {
-        data.push({
-          source: "design-arena",
-          model_permaslug: slug,
-          display_name: name,
-          arena: "models",
-          category: "uicomponent",
-          elo: Math.round(1000 + tier * 380 + r() * 20),
-          win_rate: 40 + tier * 30,
-          avg_generation_time_ms: 3000,
-          pricing: null,
-        });
+      // Production carries a dozen-plus Design Arena categories: the picker must hold that many.
+      for (const category of DESIGN_CATEGORIES) {
+        if (r() > 0.5) {
+          data.push({
+            source: "design-arena",
+            model_permaslug: slug,
+            display_name: name,
+            arena: "models",
+            category,
+            elo: Math.round(1000 + tier * 380 + r() * 20),
+            win_rate: 40 + tier * 30,
+            avg_generation_time_ms: 3000,
+            pricing: null,
+          });
+        }
       }
     }
   }

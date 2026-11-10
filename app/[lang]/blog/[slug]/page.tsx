@@ -352,14 +352,14 @@ export default async function BlogArticlePage({
               {t.relatedTitle}
             </h2>
             <div className="mt-3 flex flex-wrap gap-2">
-              <Link className="btn h-9 px-4" href={`/${l}/guides`}>
+              <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides`}>
                 {t.relatedGuides}
               </Link>
-              <Link className="btn h-9 px-4" href={`/${l}/models`}>
+              <Link className="btn btn-ghost h-9 px-4" href={`/${l}/models`}>
                 {t.relatedModels}
               </Link>
               {modelLinks.map((m) => (
-                <Link key={m.slug} className="btn h-9 px-4" href={`/${l}/models/${m.slug}`}>
+                <Link key={m.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/models/${m.slug}`}>
                   {t.promptsFor.replace("{model}", m.label)}
                 </Link>
               ))}

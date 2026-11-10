@@ -43,12 +43,12 @@ describe("version synchronization", () => {
     expect(r.optimizedPrompt).toContain(`"promptea_version": "v${APP_VERSION}"`);
   });
 
-  // v1.8.0: an "## vX.Y.Z (unreleased)" section collects changes from
-  // parallel branches before the release bump; it is not a release yet, so
-  // these checks skip it (the release renames it and bumps APP_VERSION).
+  // v1.8.0 briefly tolerated an "## vX.Y.Z (unreleased)" heading while three
+  // parallel branches were collected; v1.8.1 consolidated it into a dated
+  // release and removed the tolerance: every "## vX.Y.Z" heading is a release.
   test("newest CHANGELOG.md entry is APP_VERSION (history untouched)", () => {
     const changelog = readFileSync(join(root, "CHANGELOG.md"), "utf8");
-    const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)(?! \(unreleased\))/gm)].map((m) => m[1]);
+    const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)/gm)].map((m) => m[1]);
     expect(headings.length).toBeGreaterThan(0);
     expect(headings[0]).toBe(APP_VERSION);
     // Historical entries must never be rewritten to the current version.
@@ -69,12 +69,17 @@ describe("version synchronization", () => {
     expect(cards.slice(1)).not.toContain(APP_VERSION);
   });
 
+  test("no CHANGELOG.md heading is left as (unreleased)", () => {
+    const changelog = readFileSync(join(root, "CHANGELOG.md"), "utf8");
+    expect(changelog).not.toMatch(/^## v\d+\.\d+\.\d+ \(unreleased\)/m);
+  });
+
   test("every CHANGELOG.md release also has a card on the public page", () => {
     const root_ = process.cwd();
     const changelog = readFileSync(join(root_, "CHANGELOG.md"), "utf8");
     const page = readFileSync(join(root_, "app", "[lang]", "changelog", "page.tsx"), "utf8");
 
-    const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)(?! \(unreleased\))/gm)].map((m) => m[1]);
+    const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)/gm)].map((m) => m[1]);
     const cards = new Set(
       [...page.matchAll(/text-lg font-medium">v(\d+\.\d+\.\d+)</g)].map((m) => m[1])
     );

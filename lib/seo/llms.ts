@@ -22,7 +22,7 @@ import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
 import { TARGETS } from "@/lib/domain";
-import { aboutDoc, homeAboutDoc, methodologyDoc } from "./content/sitePages";
+import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "./content/sitePages";
 import { CONTENT_UPDATED, formatDay, newest, toDay } from "./dates";
 import { SCORE_DIMENSIONS, TARGET_SHORT, currentModels, purposeList } from "./facts";
 import {
@@ -68,6 +68,24 @@ export const LLMS_FULL_MAX_ARTICLES = 7;
  * .md twin), and no document repeats a prompt inside a prefilled link.
  */
 export const LLMS_FULL_ARTICLES_BYTES = 60 * 1024;
+/**
+ * v1.8.1 — hard ceiling for the whole llms-full.txt (bytes of UTF-8).
+ *
+ * Criterion: the file exists to be fetched ONCE into an assistant's context.
+ * Spanish/English prose averages ~3.6–4 bytes per token, so 400 KB is about
+ * 100–110 k tokens: it fits the 200 k-token windows of current assistants with
+ * room left for the question and the answer. Above that it stops being a
+ * single-fetch document and the per-page .md twins (linked from llms.txt) are
+ * the right tool instead.
+ *
+ * The explanatory part (product, method, models, glossary, guides, landings) is
+ * always included: ~290 KB (en) / ~320 KB (es), most of it the guides. AI Daily
+ * is the only part that grows, so it gets what is left under this ceiling, never
+ * more than LLMS_FULL_ARTICLES_BYTES. `npm run seo:check` fails above the
+ * ceiling, and a unit test fails if the explanatory part alone gets within
+ * 40 KB of it — the signal to move more of the guides to their twins.
+ */
+export const LLMS_FULL_TOTAL_BYTES = 400 * 1024;
 
 function link(u: SeoUrl): string {
   const target = u.markdown ? markdownPathOf(u.path) : u.path;
@@ -278,6 +296,7 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   out.push(sectionTitle(t("About Promptea and how it works", "Acerca de Promptea y cómo funciona")));
   const docs: Array<[string, ReturnType<typeof aboutDoc>]> = [
     [`/${lang}`, homeAboutDoc(lang)],
+    [`/${lang}/how-it-works`, howItWorksDoc(lang)],
     [`/${lang}/about`, aboutDoc(lang)],
     [`/${lang}/methodology`, methodologyDoc(lang)],
   ];
@@ -313,13 +332,16 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   const recent = [...i.articles].sort((x, y) => (articleUpdated(y) > articleUpdated(x) ? 1 : -1)).slice(0, LLMS_FULL_MAX_ARTICLES);
   if (recent.length > 0) {
     const heading = sectionTitle(t("AI Daily — latest stories", "IA al Día — últimas notas"));
+    // Whatever the explanatory part left under the total ceiling, capped by the AI Daily budget.
+    const staticBytes = Buffer.byteLength(out.join("\n"));
+    const budget = Math.min(LLMS_FULL_ARTICLES_BYTES, LLMS_FULL_TOTAL_BYTES - staticBytes - 1024);
     let used = Buffer.byteLength(heading);
     const stories: string[] = [];
     for (const a of recent) {
       const u = articleUrl(a);
       const chunk = `${demote(articleMarkdown(a, absUrl(u.path), u.updated))}\n---\n`;
       used += Buffer.byteLength(chunk);
-      if (used > LLMS_FULL_ARTICLES_BYTES) break;
+      if (used > budget) break;
       stories.push(chunk);
     }
     if (stories.length > 0) out.splice(aiDailyAt, 0, heading, ...stories);

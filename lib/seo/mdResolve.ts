@@ -12,7 +12,7 @@ import { glossary } from "@/lib/seo/content/glossary";
 import { guides } from "@/lib/seo/content/guides";
 import { landings } from "@/lib/seo/content/landings";
 import { modelPages } from "@/lib/seo/content/models";
-import { aboutDoc, homeAboutDoc, methodologyDoc } from "./content/sitePages";
+import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "./content/sitePages";
 import { CONTENT_UPDATED } from "./dates";
 import { loadBenchmarksSnapshot } from "./dynamic";
 import { articleUpdated } from "./dynamicUrls";
@@ -30,6 +30,7 @@ export type ResolvedMarkdown = {
 export function staticMarkdownPaths(): string[][] {
   return [
     [],
+    ["how-it-works"],
     ["about"],
     ["methodology"],
     ["benchmarks"],
@@ -49,6 +50,7 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
   if (!kind) return { htmlPath, body: docMarkdown(homeAboutDoc(lang), lang, url, { title: "Promptea" }) };
 
   if (!slug) {
+    if (kind === "how-it-works") return { htmlPath, body: docMarkdown(howItWorksDoc(lang), lang, url) };
     if (kind === "about") return { htmlPath, body: docMarkdown(aboutDoc(lang), lang, url) };
     if (kind === "methodology") return { htmlPath, body: docMarkdown(methodologyDoc(lang), lang, url) };
     if (kind === "benchmarks") {

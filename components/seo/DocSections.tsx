@@ -62,11 +62,11 @@ function Block({ b }: { b: DocBlock }) {
           {b.items.map((x) => (
             <li key={x.href}>
               {isInternalPage(x.href) ? (
-                <Link href={x.href} className="btn h-9 px-4">
+                <Link href={x.href} className="btn btn-ghost h-9 px-4">
                   {x.label}
                 </Link>
               ) : (
-                <a href={x.href} className="btn h-9 px-4">
+                <a href={x.href} className="btn btn-ghost h-9 px-4">
                   {x.label}
                 </a>
               )}

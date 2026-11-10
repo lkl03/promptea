@@ -147,6 +147,83 @@ export function providerColor(provider: string): string {
 }
 
 // ---------------------------------------------------------------------------
+// Provider share (v1.8.1) — who the top-N of a benchmark belongs to
+// ---------------------------------------------------------------------------
+
+export type ProviderSlice = {
+  /** Provider id, or "other" for the grouped tail. */
+  provider: string;
+  label: string;
+  /** Models of this provider among the rows counted. */
+  count: number;
+  /** 0–1 share of the rows counted. */
+  share: number;
+  /** Best (lowest) rank this provider reaches among the rows counted. */
+  bestRank: number;
+  /** True for the grouped tail ("other providers"). */
+  grouped: boolean;
+};
+
+/** Slices beyond this many are grouped, so the donut stays readable. */
+export const PROVIDER_SHARE_MAX_SLICES = 6;
+
+/**
+ * How the rows shown (the top-N of ONE benchmark) split by provider. Counts
+ * models, nothing else: it describes the ranking next to it, it is not a
+ * market-share claim. Order: most models first, ties by best rank. Providers
+ * beyond `maxSlices - 1` are grouped into one "other" slice, always last.
+ */
+export function providerShare(
+  rows: ReadonlyArray<{ provider: string; providerLabel: string; rank: number }>,
+  maxSlices = PROVIDER_SHARE_MAX_SLICES
+): ProviderSlice[] {
+  const total = rows.length;
+  if (total === 0) return [];
+  const by = new Map<string, ProviderSlice>();
+  for (const r of rows) {
+    const cur = by.get(r.provider);
+    if (cur) {
+      cur.count++;
+      cur.bestRank = Math.min(cur.bestRank, r.rank);
+    } else {
+      by.set(r.provider, { provider: r.provider, label: r.providerLabel, count: 1, share: 0, bestRank: r.rank, grouped: false });
+    }
+  }
+  const sorted = [...by.values()].sort((a, b) => b.count - a.count || a.bestRank - b.bestRank || a.label.localeCompare(b.label));
+  const limit = Math.max(2, maxSlices);
+  let slices = sorted;
+  if (sorted.length > limit) {
+    const head = sorted.slice(0, limit - 1);
+    const tail = sorted.slice(limit - 1);
+    slices = [
+      ...head,
+      {
+        provider: "other",
+        label: "",
+        count: tail.reduce((n, s) => n + s.count, 0),
+        share: 0,
+        bestRank: Math.min(...tail.map((s) => s.bestRank)),
+        grouped: true,
+      },
+    ];
+  }
+  for (const s of slices) s.share = s.count / total;
+  return slices;
+}
+
+export type DonutArc = { start: number; end: number };
+
+/** Cumulative 0–1 arcs for a list of shares (they sum to 1 by construction). */
+export function donutArcs(shares: number[]): DonutArc[] {
+  let acc = 0;
+  return shares.map((s) => {
+    const arc = { start: acc, end: Math.min(1, acc + s) };
+    acc += s;
+    return arc;
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Price / score scatter
 // ---------------------------------------------------------------------------
 

@@ -3,14 +3,23 @@
 // components/newsletter/NewsletterNudges.tsx
 //
 // v1.8.0 — THE controller of the newsletter prompts. Mounted once in the root
-// layout, so it survives client-side navigation. It owns two surfaces and
-// coordinates the third (the AI Daily dock, which reads the same store):
+// layout, so it survives client-side navigation. It owns the floating surface
+// (card + pill) and the AI Daily modal, and coordinates the AI Daily dock,
+// which reads the same store:
 //
-//   PILL   (every public page except AI Daily) a small fixed pill, bottom-right
-//          with safe-area insets, that appears 5 s after entering the site and
-//          opens a mini form right there. On phones, on the tool pages
-//          (analyzer / best-ai) it collapses to an icon so it never covers the
-//          text box or the results.
+//   CARD   (v1.8.1; every public page except AI Daily) on the FIRST visit —
+//          nothing remembered in localStorage — the card appears ALREADY OPEN
+//          5 s after entering the site: title, short text and the form,
+//          bottom-right with safe-area insets. It is not a modal: no backdrop,
+//          it never takes focus, Esc and its close button collapse it to the
+//          pill. On phones it is one compact row ("Subscribe" expands it) and
+//          on the phone tool pages it does not open at all. It opens by itself
+//          once per browser.
+//   PILL   the collapsed state: a small fixed pill that (re)opens the card.
+//          Every later visit shows only the pill; closing the pill hides it
+//          for DISMISS_DAYS; subscribing removes everything for good. On
+//          phones, on the tool pages (analyzer / best-ai) it is just an icon so
+//          it never covers the text box or the results.
 //   MODAL  (AI Daily only) a stronger prompt, once per session and once a week:
 //          exit intent (mouse leaves through the top) on desktop; on touch
 //          devices, having scrolled 60% or read for ~25 s, and only when the
@@ -20,8 +29,10 @@
 // The rules (timing, frequency, persistence, "never stack") are pure and tested
 // in lib/newsletter/prompts.ts; state lives in lib/newsletter/promptStore.ts.
 // Steps aside — never overlaps — while: the footer is on screen, a text field is
-// focused or the soft keyboard is likely open, another modal dialog is open, or
-// the modal itself is showing. Reduced motion: no movement, fade only.
+// focused or the soft keyboard is likely open, another modal dialog is open, the
+// modal itself is showing, or (v1.8.1) an in-page subscription form
+// ([data-newsletter-inline]) is on screen: one way to subscribe at a time.
+// Fixed and out of flow, so it can never shift layout. Reduced motion: no movement, fade only.
 // Telemetry: impression / open / dismissed / subscribed, with the surface only.
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
@@ -36,7 +47,14 @@ import {
   MODAL_READ_MS,
   MODAL_SCROLL_IDLE_MS,
   PILL_DELAY_MS,
+  CARD_COMPACT_MAX_WIDTH,
+  cardEligible,
+  cardVariant,
   dwellAllows,
+  FLOATING_SIZES,
+  floatingBox,
+  floatingVisible,
+  rectsOverlap,
   isExitIntent,
   isToolRoute,
   modalEligible,
@@ -50,6 +68,10 @@ export type NudgeDict = {
   pill: string;
   panelTitle: string;
   panelBody: string;
+  /** v1.8.1 — the button of the compact (phone) card that expands the form. */
+  compactCta: string;
+  /** v1.8.1 — accessible name of the close button of the pill ("hide for a few days"). */
+  hide: string;
   close: string;
   modalTitle: string;
   modalBody: string;
@@ -108,20 +130,89 @@ function useTypingElsewhere(): boolean {
   return typing;
 }
 
-/** True while the page footer is (even partly) on screen. Re-attached on every navigation. */
-function useFooterVisible(pathname: string): boolean {
-  const [visible, setVisible] = useState(false);
+/**
+ * True while the floating surface would sit on top of a footer control.
+ *
+ * v1.8.0 hid the pill whenever any part of the footer was on screen, which on a
+ * short page (footer visible from the start) meant it never appeared at all.
+ * v1.8.1 measures instead: the box the surface occupies (bottom-right, `box`
+ * wide and tall) against the footer's own links and buttons. On a wide screen
+ * the footer's centred links are clear of the corner, so the card can show; on
+ * a phone they are under it, so it steps aside. Re-attached on every navigation.
+ */
+function useFooterInTheWay(pathname: string, boxWidth: number, boxHeight: number): boolean {
+  const [blocked, setBlocked] = useState(false);
   useEffect(() => {
     const footer = document.querySelector("footer");
     if (!footer) return;
-    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: "0px 0px -8px 0px" });
+    let raf = 0;
+    let onScreen = false;
+    const measure = () => {
+      raf = 0;
+      if (!onScreen) return setBlocked(false);
+      const box = floatingBox(window.innerWidth, window.innerHeight, boxWidth, boxHeight);
+      const hit = [...footer.querySelectorAll("a, button, input, select")].some((el) => rectsOverlap(el.getBoundingClientRect(), box));
+      setBlocked(hit);
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(measure);
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+      schedule();
+    });
     io.observe(footer);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
     return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      if (raf) cancelAnimationFrame(raf);
+      setBlocked(false);
+    };
+  }, [pathname, boxWidth, boxHeight]);
+  return blocked;
+}
+
+/** v1.8.1 — true while an in-page subscription form is (even partly) on screen. Re-attached on every navigation. */
+function useInlineFormVisible(pathname: string): boolean {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const seen = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) seen.add(e.target);
+        else seen.delete(e.target);
+      }
+      setVisible(seen.size > 0);
+    });
+    // The page content of a client navigation lands a tick after the pathname changes.
+    const t = window.setTimeout(() => {
+      document.querySelectorAll("[data-newsletter-inline]").forEach((el) => io.observe(el));
+    }, 0);
+    return () => {
+      window.clearTimeout(t);
       io.disconnect();
       setVisible(false);
     };
   }, [pathname]);
   return visible;
+}
+
+const SMALL_QUERY = `(max-width: ${CARD_COMPACT_MAX_WIDTH}px)`;
+function subscribeSmall(cb: () => void) {
+  const mq = window.matchMedia(SMALL_QUERY);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+/** Phone-sized viewport (the compact card). False on the server and on the first client render. */
+function useSmallViewport(): boolean {
+  return useSyncExternalStore(
+    subscribeSmall,
+    () => window.matchMedia(SMALL_QUERY).matches,
+    () => false
+  );
 }
 
 export default function NewsletterNudges({ lang, dict, formDict }: { lang: "es" | "en"; dict: NudgeDict; formDict: SubscribeFormDict }) {
@@ -134,18 +225,33 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: "es" 
   const [readyAt, setReadyAt] = useState<number | null>(null);
   const [celebrate, setCelebrate] = useState(false);
   const typing = useTypingElsewhere();
-  const footerVisible = useFooterVisible(pathname);
 
   useEffect(() => {
     const t = window.setTimeout(() => setReadyAt(Date.now()), PILL_DELAY_MS);
     return () => window.clearTimeout(t);
   }, []);
 
-  // ── Pill ──────────────────────────────────────────────────────────────
+  // ── Floating surface: first-visit card + pill ─────────────────────────
   const formOpen = snap.pillFormOpen;
-  const pillWanted = kind === "public" && readyAt !== null && (pillEligible(snap, readyAt) || celebrate) && !snap.modalOpen;
-  const pillVisible = pillWanted && (formOpen || (!footerVisible && !typing));
+  const small = useSmallViewport();
+  const inlineFormVisible = useInlineFormVisible(pathname);
+  // Who opened the card: "auto" = the first-visit card; "user" = the visitor (pill click / expanded it).
+  const [openedBy, setOpenedBy] = useState<"auto" | "user" | null>(null);
+  const userOpened = formOpen && openedBy === "user";
+  // On the phone tool pages a self-opened card would sit on the text box: only the icon pill there.
+  const cardSuppressed = formOpen && openedBy === "auto" && small && tool;
+  const showCard = formOpen && !cardSuppressed;
+  const compact = showCard && small && openedBy === "auto";
+  // The space the surface needs: the card when it is open or about to open by itself, the pill otherwise.
+  // Known from the first render (no clock involved), so the footer measurement is ready before the 5 s mark.
+  const cardLikely = showCard || (cardEligible(snap) && !(small && tool));
+  const box = cardLikely ? (small && openedBy !== "user" ? FLOATING_SIZES.compact : FLOATING_SIZES.card) : FLOATING_SIZES.pill;
+  const footerVisible = useFooterInTheWay(pathname, box.width, box.height);
+
+  const wanted = kind === "public" && readyAt !== null && (pillEligible(snap, readyAt) || celebrate || formOpen);
+  const pillVisible = floatingVisible({ wanted, modalOpen: snap.modalOpen, inlineFormVisible, footerVisible, typing, userOpened });
   const pillBtnRef = useRef<HTMLButtonElement | null>(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
   const impressed = useRef<Record<string, boolean>>({});
 
   const track = useCallback(
@@ -153,36 +259,81 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: "es" 
     [lang]
   );
 
+  // First visit: open the card by itself, once per browser, the first moment nothing is in its way.
   useEffect(() => {
-    if (pillVisible && !impressed.current.pill) {
+    if (kind !== "public" || readyAt === null || formOpen || snap.modalOpen) return;
+    if (inlineFormVisible || footerVisible || typing) return;
+    if (!cardEligible(snap)) return;
+    if (cardVariant(pathname, window.innerWidth) === "none") return;
+    if (document.querySelector('[role="dialog"][aria-modal="true"]')) return; // never on top of a real dialog
+    const t = window.setTimeout(() => {
+      nudgeActions.markCardShown();
+      nudgeActions.setPillFormOpen(true);
+      setOpenedBy("auto");
+      track("newsletter_prompt_impression", "card");
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, [kind, readyAt, formOpen, snap, inlineFormVisible, footerVisible, typing, pathname, track]);
+
+  useEffect(() => {
+    if (pillVisible && !showCard && !impressed.current.pill) {
       impressed.current.pill = true;
       track("newsletter_prompt_impression", "pill");
     }
-  }, [pillVisible, track]);
+  }, [pillVisible, showCard, track]);
 
   function openPill() {
+    setOpenedBy("user");
     nudgeActions.setPillFormOpen(true);
     track("newsletter_prompt_open", "pill");
   }
 
-  function closePill(dismiss: boolean) {
-    if (dismiss && !snap.subscribed) {
+  /** Collapse the card back to the pill. Focus returns to the pill only if it was inside the card. */
+  const closeCard = useCallback(
+    (dismissed: boolean) => {
+      const hadFocus = Boolean(cardRef.current?.contains(document.activeElement));
+      if (dismissed && !getSnapshot().subscribed) track("newsletter_prompt_dismissed", "card");
+      nudgeActions.setPillFormOpen(false);
+      setOpenedBy(null);
+      setCelebrate(false);
+      if (hadFocus) requestAnimationFrame(() => pillBtnRef.current?.focus());
+    },
+    [track]
+  );
+
+  /** The close button of the pill itself: hide the floating prompt for DISMISS_DAYS. */
+  function hidePill() {
+    if (!snap.subscribed) {
       nudgeActions.dismissPill();
       track("newsletter_prompt_dismissed", "pill");
     } else {
       nudgeActions.setPillFormOpen(false);
     }
+    setOpenedBy(null);
     setCelebrate(false);
-    requestAnimationFrame(() => pillBtnRef.current?.focus());
   }
 
   function onPillDone() {
     setCelebrate(true);
     window.setTimeout(() => {
       nudgeActions.setPillFormOpen(false);
+      setOpenedBy(null);
       setCelebrate(false);
     }, SUCCESS_LINGER_MS);
   }
+
+  // Esc collapses the card wherever the focus is (the card never takes it), unless a real
+  // dialog or an open menu owns the key.
+  useEffect(() => {
+    if (!showCard || !pillVisible) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || e.defaultPrevented) return;
+      if (document.querySelector('[role="dialog"][aria-modal="true"], [role="menu"], [role="listbox"]')) return;
+      closeCard(true);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showCard, pillVisible, closeCard]);
 
   // ── Modal (AI Daily) ──────────────────────────────────────────────────
   useEffect(() => {
@@ -272,58 +423,78 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: "es" 
         <div
           data-nudge-root
           className={["newsletter-pill-wrap fixed z-40", pillVisible ? "is-visible" : "is-hidden"].join(" ")}
-          style={{ right: "max(1rem, env(safe-area-inset-right))", bottom: "max(1rem, env(safe-area-inset-bottom))" }}
+          style={{ right: "max(0.75rem, env(safe-area-inset-right))", bottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
           inert={!pillVisible || undefined}
         >
-          {formOpen ? (
+          {showCard ? (
+            // Non-modal: no backdrop, no focus trap, focus is never moved here on its own.
             <div
+              ref={cardRef}
               role="dialog"
               aria-modal="false"
               aria-labelledby="nl-pill-title"
-              className="surface mb-3 w-[min(22rem,calc(100vw-2rem))] animate-toast-in p-4 shadow-lg"
-              onKeyDown={(e) => {
-                if (e.key === "Escape") {
-                  e.stopPropagation();
-                  closePill(true);
-                }
-              }}
+              data-newsletter-card={compact ? "compact" : "full"}
+              className={[
+                "newsletter-card surface animate-toast-in shadow-lg",
+                compact ? "w-[min(26rem,calc(100vw-1.5rem))] p-3" : "max-h-[calc(100dvh-1.5rem)] w-[min(23rem,calc(100vw-1.5rem))] overflow-y-auto p-4",
+              ].join(" ")}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <h2 id="nl-pill-title" className="font-title text-base font-semibold">
+              {compact ? (
+                <div className="flex items-center gap-2.5">
+                  <span className="shrink-0 text-accent">
+                    <MailIcon className="h-5 w-5" />
+                  </span>
+                  <h2 id="nl-pill-title" className="min-w-0 flex-1 font-title text-sm font-semibold leading-snug">
                     {dict.panelTitle}
                   </h2>
-                  <p className="mt-1 text-sm text-ink-muted">{dict.panelBody}</p>
+                  <button type="button" onClick={() => setOpenedBy("user")} className="btn btn-primary h-9 shrink-0 px-3.5 text-sm">
+                    {dict.compactCta}
+                  </button>
+                  <button type="button" onClick={() => closeCard(true)} className="btn-icon h-9 w-9 shrink-0" aria-label={dict.close} title={dict.close}>
+                    <CloseIcon />
+                  </button>
                 </div>
-                <button type="button" onClick={() => closePill(true)} className="btn-icon h-8 w-8 shrink-0" aria-label={dict.close} title={dict.close}>
-                  <CloseIcon />
-                </button>
-              </div>
-              <div className="mt-3">
-                <SubscribeForm lang={lang} dict={formDict} autoFocus surface="pill" onDone={onPillDone} />
-              </div>
+              ) : (
+                <>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h2 id="nl-pill-title" className="font-title text-base font-semibold leading-snug">
+                        {dict.panelTitle}
+                      </h2>
+                      <p className="mt-1 text-sm leading-snug text-ink-muted">{dict.panelBody}</p>
+                    </div>
+                    <button type="button" onClick={() => closeCard(true)} className="btn-icon h-8 w-8 shrink-0" aria-label={dict.close} title={dict.close}>
+                      <CloseIcon />
+                    </button>
+                  </div>
+                  <div className="mt-3">
+                    {/* Focus moves into the form only when the visitor opened the card themselves. */}
+                    <SubscribeForm lang={lang} dict={formDict} autoFocus={openedBy === "user"} surface={openedBy === "auto" ? "card" : "pill"} onDone={onPillDone} />
+                  </div>
+                </>
+              )}
             </div>
-          ) : null}
-
-          <div className="newsletter-pill flex items-center rounded-full border border-line-strong bg-[var(--overlay-fill)] shadow-lg">
-            <button
-              ref={pillBtnRef}
-              type="button"
-              onClick={() => (formOpen ? closePill(false) : openPill())}
-              aria-haspopup="dialog"
-              aria-expanded={formOpen}
-              className={["flex h-11 items-center gap-2 rounded-full pl-4 text-sm font-medium text-ink", tool ? "pr-3 sm:pr-2" : "pr-2"].join(" ")}
-            >
-              <span className="text-accent">
-                <MailIcon />
-              </span>
-              {/* On phone-sized tool pages the label collapses to an icon; the accessible name stays. */}
-              <span className={tool ? "sr-only sm:not-sr-only" : undefined}>{dict.pill}</span>
-            </button>
-            <button type="button" onClick={() => closePill(true)} className={["btn-icon mr-1.5 h-8 w-8 shrink-0 border-transparent bg-transparent", tool ? "hidden sm:inline-flex" : ""].join(" ")} aria-label={dict.close} title={dict.close}>
-              <CloseIcon />
-            </button>
-          </div>
+          ) : (
+            <div className="newsletter-pill flex items-center rounded-full border border-line-strong bg-[var(--overlay-fill)] shadow-lg">
+              <button
+                ref={pillBtnRef}
+                type="button"
+                onClick={openPill}
+                aria-haspopup="dialog"
+                aria-expanded={false}
+                className={["flex h-11 items-center gap-2 rounded-full pl-4 text-sm font-medium text-ink", tool ? "pr-3 sm:pr-2" : "pr-2"].join(" ")}
+              >
+                <span className="text-accent">
+                  <MailIcon />
+                </span>
+                {/* On phone-sized tool pages the label collapses to an icon; the accessible name stays. */}
+                <span className={tool ? "sr-only sm:not-sr-only" : undefined}>{dict.pill}</span>
+              </button>
+              <button type="button" onClick={hidePill} className={["btn-icon mr-1.5 h-8 w-8 shrink-0 border-transparent bg-transparent", tool ? "hidden sm:inline-flex" : ""].join(" ")} aria-label={dict.hide} title={dict.hide}>
+                <CloseIcon />
+              </button>
+            </div>
+          )}
         </div>
       ) : null}
 

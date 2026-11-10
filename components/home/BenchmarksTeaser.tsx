@@ -6,6 +6,7 @@
 // shows the plain Benchmarks card instead — never made-up numbers.
 
 import Link from "next/link";
+import type { Lang } from "@/lib/domain";
 import type { Teaser } from "@/lib/benchmarks/teaser";
 import { providerColor } from "@/lib/benchmarks/chart";
 import { formatScore } from "@/lib/benchmarks/normalize";
@@ -21,7 +22,7 @@ export default function BenchmarksTeaser({
   fallback,
 }: {
   teaser: Teaser | null;
-  lang: "es" | "en";
+  lang: Lang;
   dict: Dict;
   dateLabel: string | null;
   fallback: { title: string; body: string };
@@ -43,19 +44,19 @@ export default function BenchmarksTeaser({
   const src = SOURCE_INFO[def.source].name;
   return (
     <section aria-labelledby="teaser-title" className="surface p-5 sm:p-6">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+      <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
         <div>
           <h2 id="teaser-title" className="font-title text-xl font-semibold sm:text-2xl">
             {dict.title}
           </h2>
           <p className="mt-1 text-sm text-ink-muted">{dict.subtitle.replace("{benchmark}", def.label[lang])}</p>
         </div>
-        <Link href={`/${lang}/benchmarks`} className="text-sm font-medium text-accent hover:underline">
-          {dict.cta} →
+        <Link href={`/${lang}/benchmarks`} className="btn btn-ghost h-9 px-4">
+          {dict.cta} <span aria-hidden="true">→</span>
         </Link>
       </div>
 
-      <ol className="mt-5 grid list-none gap-3 p-0">
+      <ol className="mt-5 grid list-none grid-cols-1 gap-3 p-0">
         {rows.map((r) => (
           <li key={r.modelId}>
             <div className="flex items-baseline justify-between gap-3 text-sm">

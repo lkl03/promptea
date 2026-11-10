@@ -27,7 +27,7 @@ const APP_EVENTS = [
   "newsletter_prompt_dismissed",
 ] as const;
 
-const NEWSLETTER_SURFACES = ["pill", "modal", "dock", "inline"] as const;
+const NEWSLETTER_SURFACES = ["pill", "card", "modal", "dock", "inline"] as const;
 
 const AppEventSchema = z.object({
   sessionId: z.string().min(10).max(100),
