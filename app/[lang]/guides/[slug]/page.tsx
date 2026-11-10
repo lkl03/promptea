@@ -12,7 +12,7 @@ import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { guideGraph } from "@/lib/seo/pageGraphs";
-import { LANGS, toLang } from "@/lib/domain";
+import { pick, LANGS, toLang } from "@/lib/domain";
 
 export function generateStaticParams() {
   return LANGS.flatMap((lang) => guides.map((g) => ({ lang, slug: g.slug })));
@@ -68,7 +68,7 @@ export default async function GuidePage({
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/guides`} className="hover:underline underline-offset-2">
-            {l === "es" ? "← Volver a guías" : "← Back to guides"}
+            {pick(l, { es: "← Volver a guías", en: "← Back to guides", pt: "← Voltar aos guias" })}
           </Link>
         </div>
       </div>
@@ -89,12 +89,12 @@ export default async function GuidePage({
 
       {/* Templates */}
       <section className="mt-10">
-        <h2 className="text-sm font-medium">{l === "es" ? "Plantillas" : "Templates"}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Plantillas", en: "Templates", pt: "Templates" })}</h2>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {guide.templates.map((t, idx) => {
             const href = buildPrefillHref({ lang: l, prompt: t.prompt[l], purpose: t.purpose, target: t.target });
-            const openLabel = l === "es" ? "Abrir en Promptea" : "Open in Promptea";
+            const openLabel = pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" });
             return (
               <article key={idx} className="surface p-4 space-y-3">
                 <h3 className="text-sm font-medium">{t.title[l]}</h3>
@@ -102,9 +102,11 @@ export default async function GuidePage({
 
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-xs opacity-70">
-                    {l === "es"
-                      ? "Se abre en el analizador con el prompt precargado."
-                      : "Opens the analyzer with the prompt prefilled."}
+                    {pick(l, {
+                      es: "Se abre en el analizador con el prompt precargado.",
+                      en: "Opens the analyzer with the prompt prefilled.",
+                      pt: "Abre o analisador com o prompt já preenchido.",
+                    })}
                   </div>
                   {/* Every card has the same visible label; the accessible name
                       starts with it and adds the template title, so screen-reader
@@ -121,7 +123,7 @@ export default async function GuidePage({
 
       {/* FAQ visible */}
       <section className="mt-10 surface p-5">
-        <h2 className="text-sm font-medium">{l === "es" ? "Preguntas frecuentes" : "FAQ"}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</h2>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

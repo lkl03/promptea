@@ -21,7 +21,7 @@ import { guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
-import { TARGETS, isContentLang, type ContentLang } from "@/lib/domain";
+import { CONTENT_LANGS, TARGETS, contentIsFallback, contentLangFor, isContentLang, type ContentLang } from "@/lib/domain";
 import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "./content/sitePages";
 import { CONTENT_UPDATED, formatDay, newest, toDay } from "./dates";
 import { SCORE_DIMENSIONS, TARGET_SHORT, currentModels, purposeList } from "./facts";
@@ -37,7 +37,7 @@ import {
 } from "./markdown";
 import { articleUpdated, articleUrl, editionUrl } from "./dynamicUrls";
 import { editionHeading, editionOrder, markdownPathOf, staticSeoUrls, modelPageUpdated, type SeoSection, type SeoUrl } from "./registry";
-import { absUrl, type Locale } from "./site";
+import { LOCALES, absUrl, type Locale } from "./site";
 
 export type LlmsInput = {
   lang: Locale;
@@ -46,7 +46,11 @@ export type LlmsInput = {
   benchmarks: BenchmarksSnapshot | null;
 };
 
-const tr = (lang: Locale) => <T,>(en: T, es: T): T => (lang === "es" ? es : en);
+/** "Index in <language>", written in that language. */
+const OTHER_INDEX: Record<Locale, string> = { en: "Index in English", es: "Índice en español", pt: "Índice em português" };
+const OTHER_INDEX_NAME: Record<Locale, string> = { en: "English", es: "Español", pt: "Português" };
+
+const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T): T => ({ en, es, pt })[lang];
 
 /** How many AI Daily stories llms.txt lists (newest first, across editions). */
 export const LLMS_MAX_ARTICLES = 30;
@@ -109,8 +113,9 @@ const SECTIONS: readonly Section[] = [
 export function summaryText(lang: Locale): string {
   const t = tr(lang);
   return t(
-    "Promptea is a free prompt analyzer and optimizer: it scores a prompt from 0 to 100 on six criteria, lists what to fix and writes an optimized version for the AI model you choose. It also recommends which AI fits a task, publishes one verified AI story a day (AI Daily) and shows AI model benchmarks with source and date. Available in English and Spanish. Designed and developed by eterlab.",
+    "Promptea is a free prompt analyzer and optimizer: it scores a prompt from 0 to 100 on six criteria, lists what to fix and writes an optimized version for the AI model you choose. It also recommends which AI fits a task, publishes one verified AI story a day (AI Daily) and shows AI model benchmarks with source and date. Available in English, Spanish and Portuguese (AI Daily in English and Spanish). Designed and developed by eterlab.",
     "Promptea es un analizador y optimizador de prompts gratuito: puntúa un prompt de 0 a 100 en seis criterios, lista qué corregir y escribe una versión optimizada para el modelo de IA que elijas. También recomienda qué IA conviene para una tarea, publica una noticia de IA verificada por día (IA al Día) y muestra benchmarks de modelos con fuente y fecha. Disponible en español e inglés. Diseñada y desarrollada por eterlab.",
+    "O Promptea é um analisador e otimizador de prompts gratuito: pontua um prompt de 0 a 100 em seis critérios, lista o que corrigir e escreve uma versão otimizada para o modelo de IA que você escolher. Também recomenda qual IA combina com uma tarefa, publica uma notícia de IA verificada por dia (AI Daily, em inglês e espanhol) e mostra benchmarks de modelos de IA com fonte e data. Disponível em inglês, espanhol e português. Design e desenvolvimento da eterlab.",
   );
 }
 
@@ -121,16 +126,19 @@ function keyFacts(lang: Locale): string[] {
     t(
       `Score: 0–100, from six dimensions — ${SCORE_DIMENSIONS.map((d) => d.label.en.toLowerCase()).join(", ")}. Deterministic rules, no LLM decides the score.`,
       `Puntaje: 0–100, a partir de seis dimensiones — ${SCORE_DIMENSIONS.map((d) => d.label.es.toLowerCase()).join(", ")}. Reglas determinísticas, ningún LLM decide el puntaje.`,
+      `Pontuação: 0–100, a partir de seis dimensões — ${SCORE_DIMENSIONS.map((d) => d.label.pt.toLowerCase()).join(", ")}. Regras determinísticas; nenhum LLM decide a pontuação.`,
     ),
     t(
       `AI families supported: ${TARGETS.map((x) => TARGET_SHORT[x]).join(", ")} (${models.length} current models, verified against official provider docs up to ${formatDay(newest(...models.map((m) => m.verifiedAt)) ?? CONTENT_UPDATED.models, "en")}).`,
       `Familias de IA soportadas: ${TARGETS.map((x) => TARGET_SHORT[x]).join(", ")} (${models.length} modelos vigentes, verificados contra la documentación oficial hasta el ${formatDay(newest(...models.map((m) => m.verifiedAt)) ?? CONTENT_UPDATED.models, "es")}).`,
+      `Famílias de IA compatíveis: ${TARGETS.map((x) => TARGET_SHORT[x]).join(", ")} (${models.length} modelos atuais, verificados na documentação oficial dos provedores até ${formatDay(newest(...models.map((m) => m.verifiedAt)) ?? CONTENT_UPDATED.models, "pt")}).`,
     ),
-    t(`Prompt types: ${purposeList("en").join(", ")}.`, `Tipos de prompt: ${purposeList("es").join(", ")}.`),
-    t("Free to use, no account needed to analyze a prompt.", "Gratis, sin cuenta para analizar un prompt."),
+    t(`Prompt types: ${purposeList("en").join(", ")}.`, `Tipos de prompt: ${purposeList("es").join(", ")}.`, `Tipos de prompt: ${purposeList("pt").join(", ")}.`),
+    t("Free to use, no account needed to analyze a prompt.", "Gratis, sin cuenta para analizar un prompt.", "Uso gratuito, sem necessidade de conta para analisar um prompt."),
     t(
       "Privacy: telemetry stores metadata (score, task type, finding IDs), not the prompt text; the prompt library lives in the user’s browser.",
       "Privacidad: la telemetría guarda metadatos (puntaje, tipo de tarea, IDs de hallazgos), no el texto del prompt; la biblioteca de prompts vive en el navegador del usuario.",
+      "Privacidade: a telemetria guarda metadados (pontuação, tipo de tarefa, IDs dos achados), não o texto do prompt; a biblioteca de prompts fica no navegador do usuário.",
     ),
   ];
 }
@@ -141,6 +149,7 @@ function citeBlock(lang: Locale): string[] {
     t(
       "Cite the specific page you used, with its title, the URL (the HTML URL, without .md) and the date you accessed it. Name Promptea as the source and link to it. For benchmark figures also name the original source shown on the page (Artificial Analysis, OpenRouter or Design Arena) and its “as of” date. For news, cite the AI Daily article and, where possible, the primary sources it links.",
       "Citá la página concreta que usaste, con su título, la URL (la URL HTML, sin .md) y la fecha de acceso. Nombrá a Promptea como fuente y enlazala. Para cifras de benchmarks nombrá también la fuente original que muestra la página (Artificial Analysis, OpenRouter o Design Arena) y su fecha de actualización. Para noticias, citá el artículo de IA al Día y, cuando se pueda, las fuentes primarias que enlaza.",
+      "Cite a página específica que você usou, com o título, a URL (a URL do HTML, sem .md) e a data de acesso. Nomeie o Promptea como fonte e inclua o link. Para números de benchmarks, cite também a fonte original mostrada na página (Artificial Analysis, OpenRouter ou Design Arena) e a data de referência. Para notícias, cite o artigo do AI Daily e, quando possível, as fontes primárias que ele indica.",
     ),
   ];
 }
@@ -153,6 +162,7 @@ export function benchmarkSummary(snapshot: BenchmarksSnapshot | null, lang: Loca
       t(
         "No benchmark snapshot was available when this file was generated. Live rankings, with their source and date, are on the benchmarks page.",
         "No había un snapshot de benchmarks disponible cuando se generó este archivo. Los rankings en vivo, con su fuente y fecha, están en la página de benchmarks.",
+        "Não havia um snapshot de benchmarks disponível quando este arquivo foi gerado. Os rankings atualizados, com fonte e data, estão na página de benchmarks.",
       ),
     ];
   }
@@ -162,6 +172,7 @@ export function benchmarkSummary(snapshot: BenchmarksSnapshot | null, lang: Loca
     t(
       `Data as of ${formatDay(asOf, "en")}, collected through OpenRouter’s benchmarks API (sources: ${sources}). Each benchmark is its own ranking with its own metric; scores from different benchmarks are never combined, and a missing score means “not measured”. Top ${BENCH_ROWS} of the first ${BENCH_RANKINGS} rankings:`,
       `Datos al ${formatDay(asOf, "es")}, obtenidos de la API de benchmarks de OpenRouter (fuentes: ${sources}). Cada benchmark es su propio ranking con su propia métrica; los puntajes de benchmarks distintos nunca se combinan y un puntaje ausente significa “sin medición”. Top ${BENCH_ROWS} de los primeros ${BENCH_RANKINGS} rankings:`,
+      `Dados de ${formatDay(asOf, "pt")}, coletados pela API de benchmarks da OpenRouter (fontes: ${sources}). Cada benchmark é um ranking próprio, com sua própria métrica; pontuações de benchmarks diferentes nunca são combinadas, e uma pontuação ausente significa “não medido”. Os ${BENCH_ROWS} primeiros dos ${BENCH_RANKINGS} primeiros rankings:`,
     ),
     "",
   ];
@@ -173,8 +184,26 @@ function aiDailySections(i: LlmsInput): string[] {
   const t = tr(i.lang);
   const out: string[] = [];
 
+  // AI Daily is written in English and Spanish. A locale without an edition of
+  // its own (pt) says so and points at the two that exist, instead of listing
+  // English articles as if they were its own.
+  if (contentIsFallback(i.lang)) {
+    return [
+      "## AI Daily",
+      "",
+      t(
+        "AI Daily and the weekly digest are published in English and Spanish.",
+        "IA al Día y el resumen semanal se publican en inglés y español.",
+        "O AI Daily e o resumo semanal são publicados em inglês e espanhol; ainda não há edição em português.",
+      ),
+      "",
+      ...CONTENT_LANGS.map((l) => `- [AI Daily — ${OTHER_INDEX_NAME[l]}](${absUrl(`/${l}/blog`)}): ${absUrl(`/${l}/llms.txt`)}`),
+      "",
+    ];
+  }
+
   const blog = staticSeoUrls(i.lang).filter((u) => u.section === "ai-daily");
-  out.push(`## ${t("AI Daily and weekly digest", "IA al Día y resumen semanal")}`, "", ...blog.map(link), "");
+  out.push(`## ${t("AI Daily and weekly digest", "IA al Día y resumen semanal", "AI Daily e resumo semanal")}`, "", ...blog.map(link), "");
 
   // Newest first across editions, capped; then grouped by edition.
   const urls = [...i.articles]
@@ -196,7 +225,7 @@ function aiDailySections(i: LlmsInput): string[] {
 
   const eds = isContentLang(i.lang) ? i.editions.slice(0, LLMS_MAX_EDITIONS).map((e) => editionUrl(e, i.lang as ContentLang)) : [];
   if (eds.length > 0) {
-    out.push(`## ${t("Weekly digest editions", "Ediciones del resumen semanal")}`, "", ...eds.map((u) => `- [${u.title.replace(/[[\]]/g, "")}](${absUrl(u.path)}): ${toDay(u.updated)} — ${u.description.replace(/\s+/g, " ").trim()}`), "");
+    out.push(`## ${t("Weekly digest editions", "Ediciones del resumen semanal", "Edições do resumo semanal")}`, "", ...eds.map((u) => `- [${u.title.replace(/[[\]]/g, "")}](${absUrl(u.path)}): ${toDay(u.updated)} — ${u.description.replace(/\s+/g, " ").trim()}`), "");
   }
   return out;
 }
@@ -204,7 +233,6 @@ function aiDailySections(i: LlmsInput): string[] {
 /** /llms.txt — the index. */
 export function buildLlmsTxt(i: LlmsInput): string {
   const t = tr(i.lang);
-  const other: Locale = i.lang === "es" ? "en" : "es";
   const urls = staticSeoUrls(i.lang);
   const out: string[] = [];
 
@@ -212,8 +240,9 @@ export function buildLlmsTxt(i: LlmsInput): string {
   out.push(...keyFacts(i.lang).map((f) => `- ${f}`), "");
   out.push(
     t(
-      `Links ending in .md are clean markdown versions of the HTML page at the same URL without .md. Full text of everything below: ${absUrl(`/${i.lang}/llms-full.txt`)}. This index is in English; the Spanish one is ${absUrl("/es/llms.txt")}.`,
-      `Los enlaces que terminan en .md son versiones limpias en markdown de la página HTML con la misma URL sin .md. Texto completo de todo lo de abajo: ${absUrl(`/${i.lang}/llms-full.txt`)}. Este índice está en español; el de inglés es ${absUrl("/en/llms.txt")}.`,
+      `Links ending in .md are clean markdown versions of the HTML page at the same URL without .md. Full text of everything below: ${absUrl(`/${i.lang}/llms-full.txt`)}. This index is in English; Spanish: ${absUrl("/es/llms.txt")}; Portuguese: ${absUrl("/pt/llms.txt")}.`,
+      `Los enlaces que terminan en .md son versiones limpias en markdown de la página HTML con la misma URL sin .md. Texto completo de todo lo de abajo: ${absUrl(`/${i.lang}/llms-full.txt`)}. Este índice está en español; en inglés: ${absUrl("/en/llms.txt")}; en portugués: ${absUrl("/pt/llms.txt")}.`,
+      `Os links terminados em .md são versões limpas em markdown da página HTML da mesma URL sem .md. Texto completo de tudo o que está abaixo: ${absUrl(`/${i.lang}/llms-full.txt`)}. Este índice está em português; em inglês: ${absUrl("/en/llms.txt")}; em espanhol: ${absUrl("/es/llms.txt")}.`,
     ),
     "",
   );
@@ -223,10 +252,10 @@ export function buildLlmsTxt(i: LlmsInput): string {
     if (items.length === 0) continue;
     out.push(`## ${s.title[i.lang]}`, "", ...items.map(link), "");
     if (s.section === "tools") {
-      out.push(`### ${t("Benchmarks at a glance", "Benchmarks de un vistazo")}`, "", ...benchmarkSummary(i.benchmarks, i.lang), "");
+      out.push(`### ${t("Benchmarks at a glance", "Benchmarks de un vistazo", "Benchmarks em um relance")}`, "", ...benchmarkSummary(i.benchmarks, i.lang), "");
     }
     if (s.section === "about") {
-      out.push(`### ${t("How to cite", "Cómo citar")}`, "", ...citeBlock(i.lang), "");
+      out.push(`### ${t("How to cite", "Cómo citar", "Como citar")}`, "", ...citeBlock(i.lang), "");
       out.push(...aiDailySections(i));
     }
   }
@@ -234,10 +263,11 @@ export function buildLlmsTxt(i: LlmsInput): string {
   out.push(
     `## Optional`,
     "",
-    `- [${t("Spanish index", "Índice en inglés")}](${absUrl(`/${other}/llms.txt`)}): ${other === "es" ? "Índice en español" : "Index in English"}`,
-    `- [sitemap.xml](${absUrl("/sitemap.xml")}): ${t("all public URLs with real last-modified dates and hreflang alternates", "todas las URLs públicas con fechas reales de modificación y alternativas hreflang")}`,
-    `- [${t("AI Daily RSS feed", "Feed RSS de IA al Día")}](${absUrl(`/${i.lang}/blog/feed.xml`)}): ${t("latest AI Daily stories", "últimas notas de IA al Día")}`,
-    `- [robots.txt](${absUrl("/robots.txt")}): ${t("crawler rules, including AI crawlers", "reglas para rastreadores, incluidos los de IA")}`,
+    // The same index in every other language, each named in its own language.
+    ...LOCALES.filter((l) => l !== i.lang).map((l) => `- [${OTHER_INDEX[l]}](${absUrl(`/${l}/llms.txt`)}): ${OTHER_INDEX[l]}`),
+    `- [sitemap.xml](${absUrl("/sitemap.xml")}): ${t("all public URLs with real last-modified dates and hreflang alternates", "todas las URLs públicas con fechas reales de modificación y alternativas hreflang", "todas as URLs públicas, com datas reais de última modificação e alternativas hreflang")}`,
+    `- [${t("AI Daily RSS feed", "Feed RSS de IA al Día", "Feed RSS do AI Daily")}](${absUrl(`/${contentLangFor(i.lang)}/blog/feed.xml`)}): ${t("latest AI Daily stories", "últimas notas de IA al Día", "últimas notícias do AI Daily")}`,
+    `- [robots.txt](${absUrl("/robots.txt")}): ${t("crawler rules, including AI crawlers", "reglas para rastreadores, incluidos los de IA", "regras para crawlers, incluindo crawlers de IA")}`,
     "",
   );
 
@@ -286,14 +316,15 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   out.push(...keyFacts(lang).map((f) => `- ${f}`), "");
   out.push(
     t(
-      `Generated from the live content of ${absUrl("/en")}. Index with links: ${absUrl("/llms.txt")}. Spanish: ${absUrl("/es/llms-full.txt")}.`,
-      `Generado a partir del contenido vigente de ${absUrl("/es")}. Índice con enlaces: ${absUrl("/es/llms.txt")}. Inglés: ${absUrl("/en/llms-full.txt")}.`,
+      `Generated from the live content of ${absUrl("/en")}. Index with links: ${absUrl("/llms.txt")}. Spanish: ${absUrl("/es/llms-full.txt")}. Portuguese: ${absUrl("/pt/llms-full.txt")}.`,
+      `Generado a partir del contenido vigente de ${absUrl("/es")}. Índice con enlaces: ${absUrl("/es/llms.txt")}. Inglés: ${absUrl("/en/llms-full.txt")}. Portugués: ${absUrl("/pt/llms-full.txt")}.`,
+      `Gerado a partir do conteúdo publicado em ${absUrl("/pt")}. Índice com links: ${absUrl("/pt/llms.txt")}. Inglês: ${absUrl("/en/llms-full.txt")}. Espanhol: ${absUrl("/es/llms-full.txt")}.`,
     ),
     "",
   );
 
   // Product + method
-  out.push(sectionTitle(t("About Promptea and how it works", "Acerca de Promptea y cómo funciona")));
+  out.push(sectionTitle(t("About Promptea and how it works", "Acerca de Promptea y cómo funciona", "Sobre o Promptea e como ele funciona")));
   const docs: Array<[string, ReturnType<typeof aboutDoc>]> = [
     [`/${lang}`, homeAboutDoc(lang)],
     [`/${lang}/how-it-works`, howItWorksDoc(lang)],
@@ -303,7 +334,7 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   for (const [path, doc] of docs) out.push(demote(docMarkdown(doc, lang, absUrl(path), { title: path === `/${lang}` ? "Promptea" : doc.h1 })));
 
   // Benchmarks
-  out.push(sectionTitle(t("Benchmarks", "Benchmarks")));
+  out.push(sectionTitle(t("Benchmarks", "Benchmarks", "Benchmarks")));
   out.push(demote(benchmarksMarkdown(i.benchmarks, lang, absUrl(`/${lang}/benchmarks`), CONTENT_UPDATED.benchmarks)));
 
   // AI Daily goes between Benchmarks and Models, but it is the only part that grows
@@ -313,25 +344,25 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   // Models, glossary, guides, landings. Compact: prompts without the prefilled
   // links (each repeats its whole prompt URL-encoded) and, for guides, template
   // titles only; the per-page .md twin carries the full prompts.
-  out.push(sectionTitle(t("Prompts by model", "Prompts por modelo")));
+  out.push(sectionTitle(t("Prompts by model", "Prompts por modelo", "Prompts por modelo")));
   for (const m of modelPages) out.push(demote(modelMarkdown(m, lang, absUrl(`/${lang}/models/${m.slug}`), modelPageUpdated(m.slug), "prompts")), "---", "");
 
-  out.push(sectionTitle(t("Glossary", "Glosario")));
+  out.push(sectionTitle(t("Glossary", "Glosario", "Glossário")));
   for (const g of glossary) out.push(demote(glossaryMarkdown(g, lang, absUrl(`/${lang}/glossary/${g.slug}`), g.updated ?? CONTENT_UPDATED.glossary, "prompts")), "---", "");
 
-  out.push(sectionTitle(t("Prompting guides", "Guías de prompting")));
+  out.push(sectionTitle(t("Prompting guides", "Guías de prompting", "Guias de prompting")));
   for (const g of guides) out.push(demote(guideMarkdown(g, lang, absUrl(`/${lang}/guides/${g.slug}`), g.updated ?? CONTENT_UPDATED.guides, "titles")), "---", "");
 
-  out.push(sectionTitle(t("Landing pages", "Páginas de producto")));
+  out.push(sectionTitle(t("Landing pages", "Páginas de producto", "Landing pages")));
   for (const p of landings) out.push(demote(landingMarkdown(p, lang, absUrl(`/${lang}/landing/${p.slug}`), CONTENT_UPDATED.landings)), "---", "");
 
-  out.push(`\n# ${t("How to cite", "Cómo citar")}\n`, ...citeBlock(lang), "");
+  out.push(`\n# ${t("How to cite", "Cómo citar", "Como citar")}\n`, ...citeBlock(lang), "");
 
   // AI Daily: newest first, at most LLMS_FULL_MAX_ARTICLES, and only while they stay
   // inside LLMS_FULL_ARTICLES_BYTES. The rest is linked from llms.txt.
   const recent = [...i.articles].sort((x, y) => (articleUpdated(y) > articleUpdated(x) ? 1 : -1)).slice(0, LLMS_FULL_MAX_ARTICLES);
   if (recent.length > 0) {
-    const heading = sectionTitle(t("AI Daily — latest stories", "IA al Día — últimas notas"));
+    const heading = sectionTitle(t("AI Daily — latest stories", "IA al Día — últimas notas", "AI Daily — últimas notícias"));
     // Whatever the explanatory part left under the total ceiling, capped by the AI Daily budget.
     const staticBytes = Buffer.byteLength(out.join("\n"));
     const budget = Math.min(LLMS_FULL_ARTICLES_BYTES, LLMS_FULL_TOTAL_BYTES - staticBytes - 1024);

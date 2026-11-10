@@ -17,8 +17,8 @@
 //     WebVTT track, off by default because the frames carry the same strip).
 
 import { useEffect, useRef } from "react";
-import { SHOWCASE } from "@/lib/showcase";
-import { type Lang } from "@/lib/domain";
+import { SHOWCASE, SHOWCASE_LANG } from "@/lib/showcase";
+import { LANG_NAME, type Lang } from "@/lib/domain";
 
 type Props = { lang: Lang; caption: string; pending: string; title: string };
 
@@ -86,7 +86,7 @@ export default function ShowcaseVideo({ lang, caption, pending, title }: Props) 
           <source src={SHOWCASE.webm[lang]} type="video/webm" />
           <source src={SHOWCASE.mp4[lang]} type="video/mp4" />
           {/* Off by default: the recording already carries the same caption strip. */}
-          <track kind="captions" src={SHOWCASE.captions[lang]} srcLang={lang} label={lang === "es" ? "Español" : "English"} />
+          <track kind="captions" src={SHOWCASE.captions[lang]} srcLang={SHOWCASE_LANG[lang]} label={LANG_NAME[SHOWCASE_LANG[lang]]} />
         </video>
       </div>
       <figcaption className="mt-2 text-center text-xs text-ink-muted">{caption}</figcaption>

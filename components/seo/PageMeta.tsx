@@ -7,18 +7,18 @@
 
 import type { Locale } from "@/lib/seo/site";
 import { formatDay } from "@/lib/seo/dates";
+import { pick } from "@/lib/domain";
 
 export default function PageMeta({ lang, updated, markdownPath }: { lang: Locale; updated: string; markdownPath?: string }) {
-  const es = lang === "es";
   return (
     <p className="text-xs text-ink-faint">
-      {es ? "Última actualización: " : "Last updated: "}
+      {pick(lang, { es: "Última actualización: ", en: "Last updated: ", pt: "Última atualização: " })}
       <time dateTime={updated}>{formatDay(updated, lang)}</time>
       {markdownPath ? (
         <>
           {" · "}
           <a href={markdownPath} className="underline-offset-2 hover:underline">
-            {es ? "Versión en markdown" : "Markdown version"}
+            {pick(lang, { es: "Versión en markdown", en: "Markdown version", pt: "Versão em Markdown" })}
           </a>
         </>
       ) : null}

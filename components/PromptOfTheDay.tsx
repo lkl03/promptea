@@ -3,7 +3,7 @@
 
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { categoryLabel, getDailyPrompt, type DailyPrompt } from "@/lib/prompts/daily";
-import { INTL_LOCALE, type Lang } from "@/lib/domain";
+import { pick, INTL_LOCALE, type Lang } from "@/lib/domain";
 
 type Props = {
   lang: Lang;
@@ -42,8 +42,8 @@ export default function PromptOfTheDay({ lang, initialDate }: Props) {
   const today = useMemo(() => initialDate ?? new Date(), [initialDate]);
   const daily: DailyPrompt = useMemo(() => getDailyPrompt(today), [today]);
 
-  const heading = lang === "es" ? "Prompt del día" : "Prompt of the day";
-  const tryLabel = lang === "es" ? "Probar este prompt" : "Try this prompt";
+  const heading = pick(lang, { es: "Prompt del día", en: "Prompt of the day", pt: "Prompt do dia" });
+  const tryLabel = pick(lang, { es: "Probar este prompt", en: "Try this prompt", pt: "Testar este prompt" });
   const dateLabel = mounted ? formatDate(today, lang) : "";
 
   function handleTry() {

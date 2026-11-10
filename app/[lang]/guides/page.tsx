@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 
 import { guides } from "@/lib/seo/content/guides";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { toLang } from "@/lib/domain";
+import { pick, toLang } from "@/lib/domain";
 
 export async function generateMetadata({
   params,
@@ -21,11 +21,17 @@ export async function generateMetadata({
   return pageMetadata({
     lang: l,
     path: `/${l}/guides`,
-    title: l === "es" ? "Guías de prompting (sin humo)" : "Prompting guides (no fluff)",
+    title: pick(l, {
+      es: "Guías de prompting (sin humo)",
+      en: "Prompting guides (no fluff)",
+      pt: "Guias de prompting (sem enrolação)",
+    }),
     description:
-      l === "es"
-        ? "Guías prácticas para escribir mejores prompts: estructura, salida JSON, código, roles, few-shot, consejos por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) y casos de uso por área."
-        : "Practical guides to write better prompts: structure, JSON output, code, roles, few-shot, per-model advice (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and use cases by job.",
+      pick(l, {
+        es: "Guías prácticas para escribir mejores prompts: estructura, salida JSON, código, roles, few-shot, consejos por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) y casos de uso por área.",
+        en: "Practical guides to write better prompts: structure, JSON output, code, roles, few-shot, per-model advice (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and use cases by job.",
+        pt: "Guias práticos para escrever prompts melhores: estrutura, saída em JSON, código, papéis, few-shot, dicas por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) e casos de uso por profissão.",
+      }),
   });
 }
 
@@ -34,11 +40,13 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = l === "es" ? "Guías de prompting" : "Prompting guides";
+  const title = pick(l, { es: "Guías de prompting", en: "Prompting guides", pt: "Guias de prompting" });
   const subtitle =
-    l === "es"
-      ? "Guías evergreen con intención clara, templates copy-paste y FAQ."
-      : "Evergreen guides with clear intent, copy-paste templates and FAQs.";
+    pick(l, {
+      es: "Guías evergreen con intención clara, templates copy-paste y FAQ.",
+      en: "Evergreen guides with clear intent, copy-paste templates and FAQs.",
+      pt: "Guias atemporais, com intenção clara, templates prontos para copiar e perguntas frequentes.",
+    });
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pt-12 pb-12 3xl:max-w-7xl">
@@ -49,35 +57,39 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}`} className="hover:underline underline-offset-2">
-            {l === "es" ? "← Volver al inicio" : "← Back to home"}
+            {pick(l, { es: "← Volver al inicio", en: "← Back to home", pt: "← Voltar ao início" })}
           </Link>
         </div>
       </div>
 
       {/* ✅ SEO body content */}
       <section className="mt-10 surface p-5">
-        <h2 className="text-sm font-medium">{l === "es" ? "Por dónde empezar" : "Start here"}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Por dónde empezar", en: "Start here", pt: "Comece por aqui" })}</h2>
         <div className="mt-2 space-y-2 text-sm opacity-85">
           <p>
-            {l === "es"
-              ? "Si tus resultados varían mucho entre modelos o te devuelve cosas vagas, estas guías te ayudan a estructurar prompts con objetivos medibles: formato, restricciones, ejemplos y criterios de calidad."
-              : "If your results vary across models or you get vague outputs, these guides help you structure prompts with measurable goals: format, constraints, examples, and quality criteria."}
+            {pick(l, {
+              es: "Si tus resultados varían mucho entre modelos o te devuelve cosas vagas, estas guías te ayudan a estructurar prompts con objetivos medibles: formato, restricciones, ejemplos y criterios de calidad.",
+              en: "If your results vary across models or you get vague outputs, these guides help you structure prompts with measurable goals: format, constraints, examples, and quality criteria.",
+              pt: "Se os seus resultados variam de um modelo para outro ou as respostas saem vagas, estes guias ajudam a estruturar prompts com objetivos mensuráveis: formato, restrições, exemplos e critérios de qualidade.",
+            })}
           </p>
           <p>
-            {l === "es"
-              ? "Tip: combiná una guía + un template por modelo. Eso acelera el aprendizaje y mejora consistencia."
-              : "Tip: combine one guide + one model template. That speeds up learning and improves consistency."}
+            {pick(l, {
+              es: "Tip: combiná una guía + un template por modelo. Eso acelera el aprendizaje y mejora consistencia.",
+              en: "Tip: combine one guide + one model template. That speeds up learning and improves consistency.",
+              pt: "Dica: combine um guia com um template por modelo. Isso acelera o aprendizado e melhora a consistência.",
+            })}
           </p>
 
           <div className="flex flex-wrap gap-2 pt-2">
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>
-              {l === "es" ? "Guía: JSON estricto" : "Guide: Strict JSON"}
+              {pick(l, { es: "Guía: JSON estricto", en: "Guide: Strict JSON", pt: "Guia: JSON estrito" })}
             </Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/models`}>
-              {l === "es" ? "Prompts por modelo" : "Prompts by model"}
+              {pick(l, { es: "Prompts por modelo", en: "Prompts by model", pt: "Prompts por modelo" })}
             </Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/prompts`}>
-              {l === "es" ? "Packs de prompts" : "Prompt packs"}
+              {pick(l, { es: "Packs de prompts", en: "Prompt packs", pt: "Pacotes de prompts" })}
             </Link>
           </div>
         </div>
@@ -88,7 +100,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
           <Link key={g.slug} href={`/${l}/guides/${g.slug}`} className="surface p-4 space-y-2">
             <div className="text-sm font-medium">{g.title[l]}</div>
             <div className="text-sm opacity-80">{g.description[l]}</div>
-            <div className="text-xs opacity-70">{l === "es" ? "Abrir guía →" : "Open guide →"}</div>
+            <div className="text-xs opacity-70">{pick(l, { es: "Abrir guía →", en: "Open guide →", pt: "Abrir guia →" })}</div>
           </Link>
         ))}
       </div>

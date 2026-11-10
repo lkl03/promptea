@@ -11,7 +11,7 @@ import { buildPrefillHref } from "@/lib/seo/prefill";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
-import { LANGS, toLang } from "@/lib/domain";
+import { pick, LANGS, toLang } from "@/lib/domain";
 
 type Params = { lang: string; slug: string };
 
@@ -82,14 +82,14 @@ export default async function LandingPage({
             {page.ctaLabel[l]}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-secondary h-10 px-4">
-            {l === "es" ? "Ver el analizador" : "Open the analyzer"}
+            {pick(l, { es: "Ver el analizador", en: "Open the analyzer", pt: "Abrir o analisador" })}
           </Link>
         </div>
       </header>
 
       <section className="surface p-5 space-y-3">
         <h2 className="text-sm font-medium">
-          {l === "es" ? "Qué obtenés" : "What you get"}
+          {pick(l, { es: "Qué obtenés", en: "What you get", pt: "O que você recebe" })}
         </h2>
         <ul className="space-y-1.5 text-sm opacity-85 list-disc pl-5">
           {page.bullets[l].map((b) => (
@@ -100,7 +100,7 @@ export default async function LandingPage({
 
       <section className="surface-soft p-4 space-y-2">
         <h2 className="text-sm font-medium">
-          {l === "es" ? "Recursos relacionados" : "Related resources"}
+          {pick(l, { es: "Recursos relacionados", en: "Related resources", pt: "Recursos relacionados" })}
         </h2>
         <div className="flex flex-wrap gap-2">
           {page.internalLinks.map((link) => (
@@ -113,7 +113,7 @@ export default async function LandingPage({
 
       <div className="text-center text-xs opacity-70">
         <Link href={`/${l}`} className="hover:underline underline-offset-2">
-          {l === "es" ? "← Volver al inicio" : "← Back to home"}
+          {pick(l, { es: "← Volver al inicio", en: "← Back to home", pt: "← Voltar ao início" })}
         </Link>
       </div>
     </main>

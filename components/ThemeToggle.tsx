@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { THEMES, THEME_LABELS, type ThemeName } from "@/lib/themes";
-import { type Lang } from "@/lib/domain";
+import { pick, type Lang } from "@/lib/domain";
 
 function subscribeNoop() {
   return () => {};
@@ -86,7 +86,7 @@ export default function ThemeToggle({ lang = "en" }: { lang?: Lang }) {
     };
   }, [open]);
 
-  const label = lang === "es" ? "Tema" : "Theme";
+  const label = pick(lang, { es: "Tema", en: "Theme", pt: "Tema" });
   const stored = (theme ?? "system") as ThemeName | "system";
   const current: ThemeName | "system" = stored === "system" || THEMES.includes(stored as ThemeName) ? stored : "system";
   const options: Array<ThemeName | "system"> = ["system", ...THEMES];

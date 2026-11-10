@@ -23,7 +23,7 @@ import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
 import { CONTENT_UPDATED, modelsVerifiedAt } from "./dates";
-import { contentIsFallback } from "@/lib/domain";
+import { pick, contentIsFallback } from "@/lib/domain";
 import { LOCALES, type Locale } from "./site";
 
 export type ChangeFrequency = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
@@ -447,7 +447,7 @@ export function editionHeading(edition: string, lang: Locale): string {
   const known = EDITION_HEADINGS.find((h) => h.edition === edition);
   if (known) return known.title[lang];
   const label = edition.replace(/[-_]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  return lang === "es" ? `IA al Día — ${label}` : `AI Daily — ${label}`;
+  return pick(lang, { es: `IA al Día — ${label}`, en: `AI Daily — ${label}`, pt: `AI Daily — ${label}` });
 }
 
 /** Position of an edition in the display order (unknown editions go last, by name). */

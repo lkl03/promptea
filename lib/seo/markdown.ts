@@ -22,8 +22,9 @@ import { currentModels, modelSummary } from "./facts";
 import { formatDay, toDay } from "./dates";
 import type { DocBlock, PageDoc } from "./content/sitePages";
 import { SITE_NAME, absUrl, type Locale } from "./site";
+import { LANG_NAME } from "@/lib/domain";
 
-const tr = (lang: Locale) => <T,>(en: T, es: T): T => (lang === "es" ? es : en);
+const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T): T => ({ en, es, pt })[lang];
 
 /** Make a site-relative href absolute; leave full URLs alone. */
 export function href(h: string): string {
@@ -47,10 +48,10 @@ export function header(i: { title: string; description?: string; url: string; la
   const lines = [`# ${oneLine(i.title)}`, ""];
   if (i.description) lines.push(`> ${oneLine(i.description)}`, "");
   const meta = [
-    `${t("Source", "Fuente")}: ${SITE_NAME} — ${i.url}`,
-    `${t("Language", "Idioma")}: ${i.lang === "es" ? "Español" : "English"}`,
+    `${t("Source", "Fuente", "Fonte")}: ${SITE_NAME} — ${i.url}`,
+    `${t("Language", "Idioma", "Idioma")}: ${LANG_NAME[i.lang]}`,
   ];
-  if (i.updated) meta.push(`${t("Last updated", "Última actualización")}: ${toDay(i.updated)}`);
+  if (i.updated) meta.push(`${t("Last updated", "Última actualización", "Última atualização")}: ${toDay(i.updated)}`);
   lines.push(meta.join(" · "), "");
   return lines.join("\n");
 }
@@ -76,13 +77,13 @@ function blockToMarkdown(b: DocBlock): string {
 export function docMarkdown(doc: PageDoc, lang: Locale, url: string, opts: { title?: string } = {}): string {
   const t = tr(lang);
   const out: string[] = [header({ title: opts.title ?? doc.h1, description: doc.description, url, lang, updated: doc.updated })];
-  out.push(`**${t("In short", "En breve")}:** ${doc.tldr}`, "");
+  out.push(`**${t("In short", "En breve", "Em resumo")}:** ${doc.tldr}`, "");
   for (const s of doc.sections) {
     out.push(`## ${s.heading}`, "");
     for (const b of s.blocks) out.push(blockToMarkdown(b), "");
   }
   if (doc.faq.length > 0) {
-    out.push(`## ${t("Frequently asked questions", "Preguntas frecuentes")}`, "");
+    out.push(`## ${t("Frequently asked questions", "Preguntas frecuentes", "Perguntas frequentes")}`, "");
     for (const f of doc.faq) out.push(`### ${oneLine(f.q)}`, "", f.a, "");
   }
   return out.join("\n").trimEnd() + "\n";
@@ -105,17 +106,17 @@ function templatesMarkdown(
 ): string[] {
   const t = tr(lang);
   if (templates.length === 0) return [];
-  const out = [`## ${t("Templates", "Plantillas")}`, ""];
+  const out = [`## ${t("Templates", "Plantillas", "Templates")}`, ""];
   if (mode === "titles") {
     out.push(...templates.map((tpl) => `- ${oneLine(tpl.title[lang])}`), "");
-    if (twinUrl) out.push(t(`The prompts themselves: ${twinUrl}`, `Los prompts completos: ${twinUrl}`), "");
+    if (twinUrl) out.push(t(`The prompts themselves: ${twinUrl}`, `Los prompts completos: ${twinUrl}`, `Os prompts em si: ${twinUrl}`), "");
     return out;
   }
   for (const tpl of templates) {
     out.push(`### ${oneLine(tpl.title[lang])}`, "", fence(tpl.prompt[lang]), "");
     if (mode === "full") {
       const open = absUrl(buildPrefillHref({ lang, prompt: tpl.prompt[lang], purpose: tpl.purpose, target: tpl.target ?? defaultTarget }));
-      out.push(`[${t("Open in Promptea", "Abrir en Promptea")}](${open})`, "");
+      out.push(`[${t("Open in Promptea", "Abrir en Promptea", "Abrir no Promptea")}](${open})`, "");
     }
   }
   return out;
@@ -124,7 +125,7 @@ function templatesMarkdown(
 function faqMarkdown(lang: Locale, faq: Array<{ q: Record<Locale, string>; a: Record<Locale, string> }>): string[] {
   if (faq.length === 0) return [];
   const t = tr(lang);
-  const out = [`## ${t("Frequently asked questions", "Preguntas frecuentes")}`, ""];
+  const out = [`## ${t("Frequently asked questions", "Preguntas frecuentes", "Perguntas frequentes")}`, ""];
   for (const f of faq) out.push(`### ${oneLine(f.q[lang])}`, "", f.a[lang], "");
   return out;
 }
@@ -142,11 +143,11 @@ export function guideMarkdown(g: Guide, lang: Locale, url: string, updated: stri
 export function glossaryMarkdown(term: GlossaryTerm, lang: Locale, url: string, updated: string, templates: TemplateMode = "full"): string {
   const t = tr(lang);
   const out = [header({ title: term.title[lang], description: term.description[lang], url, lang, updated })];
-  out.push(`## ${t("What it means", "Qué significa")}`, "", ...term.body[lang].map((b) => `- ${oneLine(b)}`), "");
-  out.push(`## ${t("Example", "Ejemplo")}`, "", fence(term.example.prompt[lang]), "");
+  out.push(`## ${t("What it means", "Qué significa", "O que significa")}`, "", ...term.body[lang].map((b) => `- ${oneLine(b)}`), "");
+  out.push(`## ${t("Example", "Ejemplo", "Exemplo")}`, "", fence(term.example.prompt[lang]), "");
   if (templates === "full") {
     out.push(
-      `[${t("Open in Promptea", "Abrir en Promptea")}](${absUrl(buildPrefillHref({ lang, prompt: term.example.prompt[lang], purpose: term.example.purpose, target: term.example.target }))})`,
+      `[${t("Open in Promptea", "Abrir en Promptea", "Abrir no Promptea")}](${absUrl(buildPrefillHref({ lang, prompt: term.example.prompt[lang], purpose: term.example.purpose, target: term.example.target }))})`,
       "",
     );
   }
@@ -157,7 +158,7 @@ export function glossaryMarkdown(term: GlossaryTerm, lang: Locale, url: string, 
   const termLinks = (term.relatedTerms ?? []).flatMap((slug) =>
     glossary.filter((g) => g.slug === slug).map((g) => `- [${oneLine(g.title[lang])}](${absUrl(`/${lang}/glossary/${g.slug}`)})`),
   );
-  if (guideLinks.length + termLinks.length > 0) out.push(`## ${t("Related", "Relacionado")}`, "", ...guideLinks, ...termLinks, "");
+  if (guideLinks.length + termLinks.length > 0) out.push(`## ${t("Related", "Relacionado", "Relacionados")}`, "", ...guideLinks, ...termLinks, "");
   return out.join("\n").trimEnd() + "\n";
 }
 
@@ -173,29 +174,30 @@ export function landingMarkdown(p: LandingPage, lang: Locale, url: string, updat
 export function modelMarkdown(m: ModelPage, lang: Locale, url: string, updated: string, templates: TemplateMode = "full"): string {
   const t = tr(lang);
   const out = [header({ title: m.title[lang], description: m.description[lang], url, lang, updated })];
-  out.push(`## ${t("Quick tips", "Tips rápidos")}`, "", ...m.bullets[lang].map((b) => `- ${oneLine(b)}`), "");
+  out.push(`## ${t("Quick tips", "Tips rápidos", "Dicas rápidas")}`, "", ...m.bullets[lang].map((b) => `- ${oneLine(b)}`), "");
 
   const models = currentModels(m.slug);
   if (models.length > 0) {
-    out.push(`## ${t("Current models Promptea supports", "Modelos vigentes que soporta Promptea")}`, "");
+    out.push(`## ${t("Current models Promptea supports", "Modelos vigentes que soporta Promptea", "Modelos atuais compatíveis com o Promptea")}`, "");
     out.push(
       t(
         "Capabilities come from the provider’s official documentation; each entry shows the date it was last verified.",
         "Las capacidades salen de la documentación oficial del proveedor; cada entrada muestra la fecha de su última verificación.",
+        "As capacidades vêm da documentação oficial do provedor; cada item mostra a data da última verificação.",
       ),
       "",
     );
     for (const entry of models) {
       const s = modelSummary(entry, lang);
-      out.push(`### ${s.label}${s.default ? ` (${t("default", "por defecto")})` : ""}`, "", s.note, "");
+      out.push(`### ${s.label}${s.default ? ` (${t("default", "por defecto", "padrão")})` : ""}`, "", s.note, "");
       out.push(
-        `- ${t("Context window", "Ventana de contexto")}: ${s.context} tokens · ${t("max output", "salida máxima")}: ${s.maxOutput}`,
-        `- ${t("Input", "Entrada")}: ${s.inputs} · ${t("output", "salida")}: ${s.outputs}`,
-        `- ${t("Latency", "Latencia")}: ${s.latency} · ${t("structured output", "salida estructurada")}: ${s.structuredOutput ? t("yes", "sí") : t("no", "no")} · ${t("tool use", "uso de herramientas")}: ${s.toolUse ? t("yes", "sí") : t("no", "no")} · ${t("native search", "búsqueda nativa")}: ${s.nativeSearch ? t("yes", "sí") : t("no", "no")}`,
+        `- ${t("Context window", "Ventana de contexto", "Janela de contexto")}: ${s.context} tokens · ${t("max output", "salida máxima", "saída máxima")}: ${s.maxOutput}`,
+        `- ${t("Input", "Entrada", "Entrada")}: ${s.inputs} · ${t("output", "salida", "saída")}: ${s.outputs}`,
+        `- ${t("Latency", "Latencia", "Latência")}: ${s.latency} · ${t("structured output", "salida estructurada", "saída estruturada")}: ${s.structuredOutput ? t("yes", "sí", "sim") : t("no", "no", "não")} · ${t("tool use", "uso de herramientas", "uso de ferramentas")}: ${s.toolUse ? t("yes", "sí", "sim") : t("no", "no", "não")} · ${t("native search", "búsqueda nativa", "busca nativa")}: ${s.nativeSearch ? t("yes", "sí", "sim") : t("no", "no", "não")}`,
       );
-      if (s.strengths.length > 0) out.push(`- ${t("Strengths", "Fortalezas")}: ${s.strengths.join(", ")}`);
-      if (s.promptGuidance) out.push(`- ${t("How to prompt it", "Cómo promptearlo")}: ${oneLine(s.promptGuidance)}`);
-      out.push(`- ${t("Verified", "Verificado")}: ${s.verifiedAt} — [${t("source", "fuente")}](${s.sourceUrl})`, "");
+      if (s.strengths.length > 0) out.push(`- ${t("Strengths", "Fortalezas", "Pontos fortes")}: ${s.strengths.join(", ")}`);
+      if (s.promptGuidance) out.push(`- ${t("How to prompt it", "Cómo promptearlo", "Como escrever o prompt")}: ${oneLine(s.promptGuidance)}`);
+      out.push(`- ${t("Verified", "Verificado", "Verificado")}: ${s.verifiedAt} — [${t("source", "fuente", "fonte")}](${s.sourceUrl})`, "");
     }
   }
 
@@ -214,16 +216,16 @@ export function articleMarkdown(a: PublicArticle, url: string, updated: string):
   const out = [header({ title: a.title, description: a.deck, url, lang, updated })];
 
   const facts = [
-    `${t("Published", "Publicada")}: ${a.publishedAt ? toDay(a.publishedAt) : a.eventDate}`,
-    `${t("Event date", "Fecha del hecho")}: ${a.eventDate}`,
-    `${t("Category", "Categoría")}: ${a.category}`,
-    `${t("Author", "Autoría")}: ${a.author}`,
+    `${t("Published", "Publicada", "Publicado")}: ${a.publishedAt ? toDay(a.publishedAt) : a.eventDate}`,
+    `${t("Event date", "Fecha del hecho", "Data do fato")}: ${a.eventDate}`,
+    `${t("Category", "Categoría", "Categoria")}: ${a.category}`,
+    `${t("Author", "Autoría", "Autor")}: ${a.author}`,
   ];
-  if (a.coveredFrom && a.coveredTo) facts.push(`${t("Covers", "Cubre")}: ${a.coveredFrom} – ${a.coveredTo}`);
+  if (a.coveredFrom && a.coveredTo) facts.push(`${t("Covers", "Cubre", "Cobre")}: ${a.coveredFrom} – ${a.coveredTo}`);
   out.push(facts.join(" · "), "");
 
-  if (a.correction?.note) out.push(`> **${t("Correction", "Corrección")}:** ${oneLine(a.correction.note)}`, "");
-  out.push(`**${t("Summary", "Resumen")}:** ${a.summary}`, "");
+  if (a.correction?.note) out.push(`> **${t("Correction", "Corrección", "Correção")}:** ${oneLine(a.correction.note)}`, "");
+  out.push(`**${t("Summary", "Resumen", "Resumo")}:** ${a.summary}`, "");
 
   for (const b of a.body) {
     if (b.type === "paragraph") out.push(b.text, "");
@@ -232,22 +234,23 @@ export function articleMarkdown(a: PublicArticle, url: string, updated: string):
     else if (b.type === "quote") out.push(`> ${oneLine(b.text)}${b.attribution ? ` — ${oneLine(b.attribution)}` : ""}`, "");
   }
 
-  if (a.keyTakeaways.length > 0) out.push(`## ${t("Key takeaways", "Puntos clave")}`, "", ...a.keyTakeaways.map((x) => `- ${oneLine(x)}`), "");
-  if (a.whyItMatters.length > 0) out.push(`## ${t("Why this matters", "Por qué importa")}`, "", ...a.whyItMatters.map((x) => `- ${oneLine(x)}`), "");
+  if (a.keyTakeaways.length > 0) out.push(`## ${t("Key takeaways", "Puntos clave", "Pontos principais")}`, "", ...a.keyTakeaways.map((x) => `- ${oneLine(x)}`), "");
+  if (a.whyItMatters.length > 0) out.push(`## ${t("Why this matters", "Por qué importa", "Por que isso importa")}`, "", ...a.whyItMatters.map((x) => `- ${oneLine(x)}`), "");
 
   if (a.sources.length > 0) {
-    out.push(`## ${t("Sources", "Fuentes")}`, "");
+    out.push(`## ${t("Sources", "Fuentes", "Fontes")}`, "");
     for (const s of a.sources) {
-      out.push(`- [${oneLine(s.title)}](${s.url}) — ${oneLine(s.publisher)}${s.primary ? ` (${t("primary source", "fuente primaria")})` : ""}, ${t("accessed", "consultada el")} ${s.accessedAt}`);
+      out.push(`- [${oneLine(s.title)}](${s.url}) — ${oneLine(s.publisher)}${s.primary ? ` (${t("primary source", "fuente primaria", "fonte primária")})` : ""}, ${t("accessed", "consultada el", "acesso em")} ${s.accessedAt}`);
     }
     out.push("");
   }
-  if (a.singleSourceJustification) out.push(`> ${t("Single-source story", "Nota de una sola fuente")}: ${oneLine(a.singleSourceJustification)}`, "");
+  if (a.singleSourceJustification) out.push(`> ${t("Single-source story", "Nota de una sola fuente", "Notícia de fonte única")}: ${oneLine(a.singleSourceJustification)}`, "");
 
   out.push(
     `*${t(
       "Researched with AI assistance and verified against primary sources before publishing. Every claim links to where it came from.",
       "Investigada con asistencia de IA y verificada contra fuentes primarias antes de publicarse. Cada afirmación enlaza a su origen.",
+      "Pesquisado com apoio de IA e verificado em fontes primárias antes da publicação. Cada afirmação leva um link para a origem.",
     )}*`,
     "",
   );
@@ -267,7 +270,7 @@ export function benchmarkSections(snapshot: BenchmarksSnapshot, lang: Locale, n:
     out.push(
       `### ${table.def.label[lang]} — ${CATEGORY_LABELS[table.def.category][lang]}`,
       "",
-      `${t("Source", "Fuente")}: ${src.name} (${src.url}) · ${t("Metric", "Métrica")}: ${table.def.metricLabel[lang]}`,
+      `${t("Source", "Fuente", "Fonte")}: ${src.name} (${src.url}) · ${t("Metric", "Métrica", "Métrica")}: ${table.def.metricLabel[lang]}`,
       "",
       oneLine(table.def.measures[lang]),
       "",
@@ -289,37 +292,40 @@ export function benchmarksMarkdown(snapshot: BenchmarksSnapshot | null, lang: Lo
   const description = t(
     "Rankings of AI models by benchmark, with the source, date and metric of each. Each benchmark is its own ranking: scores from different benchmarks are never combined.",
     "Rankings de modelos de IA por benchmark, con la fuente, fecha y métrica de cada uno. Cada benchmark es su propio ranking: los puntajes de benchmarks distintos nunca se combinan.",
+    "Rankings de modelos de IA por benchmark, com a fonte, a data e a métrica de cada um. Cada benchmark é um ranking próprio: pontuações de benchmarks diferentes nunca são combinadas.",
   );
   if (!snapshot || snapshot.tables.length === 0) {
     return [
-      header({ title: t("AI model benchmarks", "Benchmarks de modelos de IA"), description, url, lang, updated: fallbackUpdated }),
+      header({ title: t("AI model benchmarks", "Benchmarks de modelos de IA", "Benchmarks de modelos de IA"), description, url, lang, updated: fallbackUpdated }),
       t(
         "The rankings are not available right now. Promptea prefers showing nothing to showing invented or silently outdated rankings; the live page shows them, with their source and date, as soon as the data source answers.",
         "Los rankings no están disponibles ahora. Promptea prefiere no mostrar nada antes que mostrar rankings inventados o desactualizados sin aviso; la página en vivo los muestra, con su fuente y fecha, apenas la fuente de datos responda.",
+        "Os rankings não estão disponíveis agora. O Promptea prefere não mostrar nada a mostrar rankings inventados ou desatualizados sem aviso; a página os exibe, com fonte e data, assim que a fonte de dados responde.",
       ),
       "",
-      `[${t("Methodology", "Metodología")}](${absUrl(`/${lang}/methodology`)})`,
+      `[${t("Methodology", "Metodología", "Metodologia")}](${absUrl(`/${lang}/methodology`)})`,
       "",
     ].join("\n");
   }
   const asOf = snapshot.asOf ?? snapshot.fetchedAt;
   const out = [
     header({
-      title: t("AI model benchmarks", "Benchmarks de modelos de IA"),
+      title: t("AI model benchmarks", "Benchmarks de modelos de IA", "Benchmarks de modelos de IA"),
       description,
       url,
       lang,
       updated: asOf || fallbackUpdated,
     }),
-    `${t("Data as of", "Datos al")} ${formatDay(asOf, lang)} · ${t("collected through", "obtenidos de")} OpenRouter’s benchmarks API (${snapshot.sourceUrl ?? "https://openrouter.ai/benchmarks"}).`,
+    `${t("Data as of", "Datos al", "Dados de")} ${formatDay(asOf, lang)} · ${t("collected through", "obtenidos de", "coletados via")} OpenRouter’s benchmarks API (${snapshot.sourceUrl ?? "https://openrouter.ai/benchmarks"}).`,
     "",
     t(
       "How to read it: compare models only within the same benchmark. A missing score means “not measured”, never zero.",
       "Cómo leerlo: comparé modelos solo dentro del mismo benchmark. Un puntaje ausente significa “sin medición”, nunca cero.",
+      "Como ler: compare modelos apenas dentro do mesmo benchmark. Uma pontuação ausente significa “não medido”, nunca zero.",
     ),
     "",
     ...benchmarkSections(snapshot, lang, 10),
-    `[${t("Methodology", "Metodología")}](${absUrl(`/${lang}/methodology`)})`,
+    `[${t("Methodology", "Metodología", "Metodologia")}](${absUrl(`/${lang}/methodology`)})`,
     "",
   ];
   return out.join("\n").trimEnd() + "\n";

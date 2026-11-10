@@ -5,7 +5,7 @@
 // file below; until then the hub shows an honest "being generated" state
 // instead of an empty player.
 
-import type { Lang } from "@/lib/domain";
+import type { ContentLang, Lang } from "@/lib/domain";
 
 type PerLang = Record<Lang, string>;
 
@@ -30,3 +30,10 @@ export const SHOWCASE: {
   poster: { es: "/showcase/promptea-showcase-es.jpg", en: "/showcase/promptea-showcase-en.jpg", pt: "/showcase/promptea-showcase-en.jpg" },
   captions: { es: "/showcase/promptea-showcase-es.vtt", en: "/showcase/promptea-showcase-en.vtt", pt: "/showcase/promptea-showcase-en.vtt" },
 };
+
+/**
+ * The language each recording was made in. There is no Portuguese recording
+ * (v1.8.2): /pt plays the English one, and its caption track is labelled as
+ * English so the player never claims a language the video is not in.
+ */
+export const SHOWCASE_LANG: Record<Lang, ContentLang> = { es: "es", en: "en", pt: "en" };

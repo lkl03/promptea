@@ -12,7 +12,7 @@ import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { glossaryGraph } from "@/lib/seo/pageGraphs";
-import { LANGS, toLang, type Lang } from "@/lib/domain";
+import { pick, LANGS, toLang, type Lang } from "@/lib/domain";
 
 function buildOpenLink(lang: Lang, purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -82,25 +82,27 @@ export default async function GlossaryTermPage({
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/glossary`} className="hover:underline underline-offset-2">
-            {l === "es" ? "← Volver al glosario" : "← Back to glossary"}
+            {pick(l, { es: "← Volver al glosario", en: "← Back to glossary", pt: "← Voltar ao glossário" })}
           </Link>
         </div>
       </div>
 
       {/* ✅ SEO editorial block */}
       <section className="mt-8 surface p-5">
-        <h2 className="text-sm font-medium">{l === "es" ? "Cómo aplicarlo en prompts" : "How to apply it in prompts"}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Cómo aplicarlo en prompts", en: "How to apply it in prompts", pt: "Como aplicar em prompts" })}</h2>
         <div className="mt-2 space-y-2 text-sm opacity-85">
           <p>
-            {l === "es"
-              ? "Usá este concepto para reducir ambigüedad y mejorar consistencia. Si tu output necesita formato estricto, combiná esto con una guía de JSON y un template por modelo."
-              : "Use this concept to reduce ambiguity and improve consistency. If you need strict formatting, combine it with a JSON guide and a per-model template."}
+            {pick(l, {
+              es: "Usá este concepto para reducir ambigüedad y mejorar consistencia. Si tu output necesita formato estricto, combiná esto con una guía de JSON y un template por modelo.",
+              en: "Use this concept to reduce ambiguity and improve consistency. If you need strict formatting, combine it with a JSON guide and a per-model template.",
+              pt: "Use este conceito para reduzir a ambiguidade e melhorar a consistência. Se precisar de formato estrito, combine-o com um guia de JSON e um template por modelo.",
+            })}
           </p>
           {relatedGuides.length > 0 || relatedTerms.length > 0 ? (
             <div className="space-y-2 pt-2">
               {relatedGuides.length > 0 ? (
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs opacity-70">{l === "es" ? "Guías relacionadas:" : "Related guides:"}</span>
+                  <span className="text-xs opacity-70">{pick(l, { es: "Guías relacionadas:", en: "Related guides:", pt: "Guias relacionados:" })}</span>
                   {relatedGuides.map((g) => (
                     <Link key={g.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${g.slug}`}>
                       {g.title[l]}
@@ -110,7 +112,7 @@ export default async function GlossaryTermPage({
               ) : null}
               {relatedTerms.length > 0 ? (
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs opacity-70">{l === "es" ? "Términos relacionados:" : "Related terms:"}</span>
+                  <span className="text-xs opacity-70">{pick(l, { es: "Términos relacionados:", en: "Related terms:", pt: "Termos relacionados:" })}</span>
                   {relatedTerms.map((t) => (
                     <Link key={t.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/${t.slug}`}>
                       {t.title[l]}
@@ -122,13 +124,13 @@ export default async function GlossaryTermPage({
           ) : null}
           <div className="flex flex-wrap gap-2 pt-2">
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>
-              {l === "es" ? "JSON estricto" : "Strict JSON"}
+              {pick(l, { es: "JSON estricto", en: "Strict JSON", pt: "JSON estrito" })}
             </Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/models`}>
-              {l === "es" ? "Modelos" : "Models"}
+              {pick(l, { es: "Modelos", en: "Models", pt: "Modelos" })}
             </Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/prompts`}>
-              {l === "es" ? "Packs" : "Packs"}
+              {pick(l, { es: "Packs", en: "Packs", pt: "Pacotes" })}
             </Link>
           </div>
         </div>
@@ -136,7 +138,7 @@ export default async function GlossaryTermPage({
 
       {/* Qué significa */}
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{l === "es" ? "Qué significa" : "What it means"}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Qué significa", en: "What it means", pt: "O que significa" })}</div>
         <ul className="mt-3 list-disc pl-5 text-sm opacity-90 space-y-1">
           {term.body[l].map((b, i) => (
             <li key={i}>{b}</li>
@@ -146,17 +148,21 @@ export default async function GlossaryTermPage({
 
       {/* Ejemplo */}
       <section className="mt-10">
-        <div className="text-sm font-medium">{l === "es" ? "Ejemplo copy-paste" : "Copy-paste example"}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Ejemplo copy-paste", en: "Copy-paste example", pt: "Exemplo pronto para copiar" })}</div>
 
         <article className="mt-3 surface p-4 space-y-3">
           <pre className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{term.example.prompt[l]}</pre>
 
           <div className="flex items-center justify-between gap-3">
             <div className="text-xs opacity-70">
-              {l === "es" ? "Se abre en el analizador con el prompt precargado." : "Opens the analyzer with the prompt prefilled."}
+              {pick(l, {
+                es: "Se abre en el analizador con el prompt precargado.",
+                en: "Opens the analyzer with the prompt prefilled.",
+                pt: "Abre o analisador com o prompt já preenchido.",
+              })}
             </div>
             <Link href={href} className="btn btn-primary h-9 px-4">
-              {l === "es" ? "Abrir en Promptea" : "Open in Promptea"}
+              {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
             </Link>
           </div>
         </article>
@@ -165,7 +171,7 @@ export default async function GlossaryTermPage({
       {/* FAQ visible */}
       {faq.length > 0 && (
         <section className="mt-10 surface p-5">
-          <div className="text-sm font-medium">{l === "es" ? "Preguntas frecuentes" : "FAQ"}</div>
+          <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
           <div className="mt-3 space-y-2">
             {faq.map((x) => (
               <details key={x.q} className="surface-soft p-3 rounded-2xl">

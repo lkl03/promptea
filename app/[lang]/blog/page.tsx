@@ -54,7 +54,7 @@ import XFeed from "@/components/home/XFeed";
 import { getXLinks, getXWidgetId } from "@/lib/social";
 import DailyTabs from "@/components/blog/DailyTabs";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { contentIsFallback, contentLangFor, toLang, type ContentLang } from "@/lib/domain";
+import { pick, contentIsFallback, contentLangFor, toLang, type ContentLang } from "@/lib/domain";
 import ContentLangNotice from "@/components/blog/ContentLangNotice";
 
 export const revalidate = 300;
@@ -371,17 +371,17 @@ export default async function BlogIndexPage({
 
                   {pages > 1 ? (
                     <nav
-                      aria-label={l === "es" ? "Paginación" : "Pagination"}
+                      aria-label={pick(l, { es: "Paginación", en: "Pagination", pt: "Paginação" })}
                       className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm"
                     >
                       {hasPrev ? (
                         <Link href={hrefForPage(page - 1)} className="btn btn-secondary h-9 px-4">
-                          {l === "es" ? "← Notas más recientes" : "← Newer articles"}
+                          {pick(l, { es: "← Notas más recientes", en: "← Newer articles", pt: "← Notícias mais recentes" })}
                         </Link>
                       ) : null}
 
                       <span className="text-xs tabular-nums text-ink-muted">
-                        {l === "es" ? `Página ${page} de ${pages}` : `Page ${page} of ${pages}`}
+                        {pick(l, { es: `Página ${page} de ${pages}`, en: `Page ${page} of ${pages}`, pt: `Página ${page} de ${pages}` })}
                       </span>
 
                       {hasNext ? (

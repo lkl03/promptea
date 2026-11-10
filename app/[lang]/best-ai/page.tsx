@@ -12,7 +12,7 @@ import ModeSwitcher from "@/components/ModeSwitcher";
 import MatcherBox from "@/components/matcher/MatcherBox";
 import HowItWorks from "@/components/HowItWorks";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { toLang, type Lang } from "@/lib/domain";
+import { pick, toLang, type Lang } from "@/lib/domain";
 
 export async function generateMetadata({
   params,
@@ -23,11 +23,17 @@ export async function generateMetadata({
   const lang = toLang(rawLang);
 
   const title =
-    lang === "es" ? "Elegir la mejor IA para tu prompt" : "Find the Best AI for your prompt";
+    pick(lang, {
+      es: "Elegir la mejor IA para tu prompt",
+      en: "Find the Best AI for your prompt",
+      pt: "Encontre a melhor IA para o seu prompt",
+    });
   const description =
-    lang === "es"
-      ? "Pegá tu prompt y descubrí qué IA le queda mejor: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi o Perplexity — con razones, alternativas y consejos concretos."
-      : "Paste your prompt and find out which AI fits it best: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, or Perplexity — with reasons, alternatives, and concrete advice.";
+    pick(lang, {
+      es: "Pegá tu prompt y descubrí qué IA le queda mejor: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi o Perplexity — con razones, alternativas y consejos concretos.",
+      en: "Paste your prompt and find out which AI fits it best: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, or Perplexity — with reasons, alternatives, and concrete advice.",
+      pt: "Cole seu prompt e descubra qual IA combina mais com ele: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi ou Perplexity — com motivos, alternativas e dicas concretas.",
+    });
 
   return pageMetadata({ lang, path: `/${lang}/best-ai`, title, description });
 }

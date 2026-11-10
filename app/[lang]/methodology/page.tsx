@@ -15,7 +15,7 @@ import { methodologyDoc } from "@/lib/seo/content/sitePages";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { docPageGraph } from "@/lib/seo/pageGraphs";
-import { toLang, type Lang } from "@/lib/domain";
+import { pick, toLang, type Lang } from "@/lib/domain";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -34,9 +34,9 @@ export default async function MethodologyPage({ params }: { params: Promise<{ la
   return (
     <main className="mx-auto w-full max-w-3xl px-4 pb-12 pt-12">
       <JsonLd data={docPageGraph({ doc, lang: l, path: `/${l}/methodology`, kind: "methodology", label: doc.h1 })} />
-      <nav aria-label={l === "es" ? "Ruta de navegación" : "Breadcrumb"} className="text-xs opacity-70">
+      <nav aria-label={pick(l, { es: "Ruta de navegación", en: "Breadcrumb", pt: "Trilha de navegação" })} className="text-xs opacity-70">
         <Link href={`/${l}`} className="hover:underline underline-offset-2">
-          {l === "es" ? "Inicio" : "Home"}
+          {pick(l, { es: "Inicio", en: "Home", pt: "Início" })}
         </Link>
         <span aria-hidden="true"> / </span>
         <span>{doc.h1}</span>

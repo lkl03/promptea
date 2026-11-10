@@ -25,7 +25,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { benchmarksGraph } from "@/lib/seo/pageGraphs";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
-import { toLang, INTL_LOCALE, type Lang } from "@/lib/domain";
+import { pick, toLang, INTL_LOCALE, type Lang } from "@/lib/domain";
 
 export const revalidate = 3600;
 
@@ -494,7 +494,7 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
               {c.bestAiCta}
             </Link>
             <Link href={`/${l}/models`} className="btn btn-ghost h-9 px-4">
-              {l === "es" ? "Guías por modelo" : "Model guides"}
+              {pick(l, { es: "Guías por modelo", en: "Model guides", pt: "Guias de modelos" })}
             </Link>
           </div>
         </section>
