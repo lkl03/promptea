@@ -496,5 +496,18 @@
     "cta": "Analizá tu prompt, gratis",
     "invalidTitle": "Esta tarjeta no es válida",
     "invalidBody": "El enlace no tiene un puntaje válido."
+  },
+  "benchmarks": {
+    "share": {
+      "title": "Proveedores en el top {n}",
+      "intro": "Cuántos de los modelos de este ranking son de cada proveedor. Cuenta modelos del gráfico, no cuota de mercado.",
+      "desc": "Gráfico de anillo: los {n} mejores modelos de este benchmark por proveedor. {items}.",
+      "item": "{provider}: {count} ({pct})",
+      "other": "Otros proveedores",
+      "colProvider": "Proveedor",
+      "colModels": "Modelos",
+      "colShare": "Participación",
+      "center": "modelos"
+    }
   }
 }

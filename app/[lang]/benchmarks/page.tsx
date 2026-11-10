@@ -12,7 +12,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { hasLocale } from "../dictionaries";
+import { getDictionary, hasLocale } from "../dictionaries";
 import BenchmarkDashboard, { type DashboardCopy } from "@/components/benchmarks/BenchmarkDashboard";
 import FrontierMatrix from "@/components/benchmarks/FrontierMatrix";
 import { getBenchmarks } from "@/lib/benchmarks/server";
@@ -20,6 +20,7 @@ import { frontierModels, FRONTIER_TOP_N } from "@/lib/benchmarks/normalize";
 import { snapshotAgeHours, type FetchFailure } from "@/lib/benchmarks/load";
 import { CATEGORY_LABELS, SOURCE_INFO } from "@/lib/benchmarks/catalog";
 import { frontierMatrix } from "@/lib/benchmarks/chart";
+import { compactTables } from "@/lib/benchmarks/compact";
 import JsonLd from "@/components/seo/JsonLd";
 import { benchmarksGraph } from "@/lib/seo/pageGraphs";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -308,6 +309,7 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
   const l = lang as "es" | "en";
   const c = COPY[l];
 
+  const dict = await getDictionary(l);
   const result = await getBenchmarks();
   const snapshot = result.status === "unavailable" ? null : result.snapshot;
   const frontier = snapshot ? frontierModels(snapshot) : [];
@@ -387,7 +389,7 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
           </nav>
 
           <div className="mt-10">
-            <BenchmarkDashboard tables={snapshot.tables} lang={l} copy={c.dash as DashboardCopy} dateLabel={dateLabel} />
+            <BenchmarkDashboard tables={compactTables(snapshot.tables)} lang={l} copy={{ ...c.dash, share: dict.benchmarks.share } as DashboardCopy} dateLabel={dateLabel} />
           </div>
 
           <section id="frontier" aria-labelledby="bm-frontier" className="mt-16 scroll-mt-24">

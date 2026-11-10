@@ -28,7 +28,9 @@ export function devFixtureSnapshot(now: Date = new Date()): BenchmarksSnapshot {
     for (let i = 1; i <= count; i++) {
       n++;
       const slug = `${lab}/demo-${i}`;
-      const name = `Demo ${lab[0].toUpperCase()}${lab.slice(1)} ${i}`;
+      // The first model of each lab gets a long, real-world-shaped name ("… (Max, Default Fallback)"):
+      // long names are exactly what broke the ranking layout in v1.8.0.
+      const name = `Demo ${lab[0].toUpperCase()}${lab.slice(1)} ${i}${i === 1 ? " (Max, Default Fallback)" : ""}`;
       const tier = 0.35 + r() * 0.6; // overall capability 0.35–0.95
       const priced = r() > 0.1;
       const inPrice = (0.04 + tier * tier * 14 * (0.5 + r())) / 1_000_000;

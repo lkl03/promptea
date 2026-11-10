@@ -1340,6 +1340,13 @@ html {
     animation: none;
   }
 }
+/* v1.8.1 — benchmark picker: equal tracks that can shrink (minmax(0,1fr)), so a
+   long leader name truncates inside its card instead of pushing it wider than
+   the track (the overlap bug of v1.8.0). auto-fill keeps a lone benchmark at
+   card width instead of stretching it across the page. */
+.bm-picker {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    v1.8.0 — newsletter pill (components/newsletter/NewsletterNudges.tsx)

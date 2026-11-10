@@ -55,7 +55,7 @@ export default function BenchmarksTeaser({
         </Link>
       </div>
 
-      <ol className="mt-5 grid list-none gap-3 p-0">
+      <ol className="mt-5 grid list-none grid-cols-1 gap-3 p-0">
         {rows.map((r) => (
           <li key={r.modelId}>
             <div className="flex items-baseline justify-between gap-3 text-sm">

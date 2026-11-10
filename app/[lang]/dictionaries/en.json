@@ -496,5 +496,18 @@
     "cta": "Analyze your prompt, free",
     "invalidTitle": "This card is not valid",
     "invalidBody": "The link does not carry a valid score."
+  },
+  "benchmarks": {
+    "share": {
+      "title": "Providers in the top {n}",
+      "intro": "How many of the models in this ranking belong to each provider. It counts models in the chart, not market share.",
+      "desc": "Donut chart: the top {n} models of this benchmark by provider. {items}.",
+      "item": "{provider}: {count} ({pct})",
+      "other": "Other providers",
+      "colProvider": "Provider",
+      "colModels": "Models",
+      "colShare": "Share",
+      "center": "models"
+    }
   }
 }
