@@ -136,6 +136,8 @@ for (const [path, want] of [["/en/library", true], ["/es/library", true], ["/en"
 
 // ── degradation: no JS, storage blocked ───────────────────────────────────
 const KEY = ["/en", "/es", "/en/how-it-works", "/en/analyzer", "/en/best-ai", "/en/benchmarks", "/en/blog", "/en/library", "/en/guides/json-output"];
+// 200, or 304 when the same browser already holds the page from an earlier check.
+const served = (res) => res.status() === 200 || res.status() === 304;
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ["--no-sandbox"] });
 {
   const page = await browser.newPage();
@@ -143,7 +145,7 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
   for (const path of KEY) {
     const res = await page.goto(BASE + path, { waitUntil: "domcontentloaded", timeout: 60_000 });
     const m = await page.evaluate(() => ({ h1: document.querySelectorAll("h1").length, words: (document.body.innerText || "").split(/\s+/).length, nav: document.querySelectorAll("header a, footer a").length }));
-    ok("no JavaScript", path, res.status() === 200 && m.h1 === 1 && m.words > 40 && m.nav > 5, `h1=${m.h1} words=${m.words} links=${m.nav}`);
+    ok("no JavaScript", path, served(res) && m.h1 === 1 && m.words > 40 && m.nav > 5, `h1=${m.h1} words=${m.words} links=${m.nav}`);
   }
   // The home prompt box is a plain GET form to the analyzer without JS.
   await page.goto(`${BASE}/en`, { waitUntil: "domcontentloaded" });
@@ -173,7 +175,7 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
     const res = await page.goto(BASE + path, { waitUntil: "networkidle2", timeout: 60_000 });
     await new Promise((r) => setTimeout(r, 5800)); // past the 5 s newsletter prompt
     const h1 = await page.evaluate(() => document.querySelectorAll("h1").length);
-    ok("storage blocked", path, res.status() === 200 && h1 === 1 && errors.length === 0, errors.slice(0, 2).join(" | "));
+    ok("storage blocked", path, served(res) && h1 === 1 && errors.length === 0, errors.slice(0, 2).join(" | "));
   }
   // The home hand-off falls back to the URL when sessionStorage is blocked.
   await page.goto(`${BASE}/en`, { waitUntil: "networkidle2" });

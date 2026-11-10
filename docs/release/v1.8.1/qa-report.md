@@ -31,7 +31,7 @@ Capturas "antes": [`before/`](./before). Capturas "después": [`after/`](./after
 | V-7 | **P1** | El aviso de newsletter no aparece nunca en páginas cortas: se ocultaba siempre que el footer estuviera en pantalla, y en una página corta el footer está en pantalla desde el inicio. No estaba reportado. | medición en `/en/prompts` a 1440×900 | **Arreglado** |
 | V-8 | **P1** | Con el almacenamiento del navegador bloqueado, `/analyzer` lanza `SecurityError` al cargar y ningún análisis puede enviarse (`getSessionId()` sin `try/catch`). No estaba reportado: lo encontró la prueba de degradación. | `scripts/release/qa-local.mjs` | **Arreglado** + test de regresión |
 | V-9 | **P1** | El feed embebido de X no renderiza: `widgets.js` carga y crea un iframe de 0 px de alto; a los 9 s aparece el fallback. Reproducido en **producción** y en local, en el Chrome real. La causa está del lado de X (ver sección 6). | Chrome real, `/en` | **No arreglable desde el repo** — fallback verificado, texto del fallback corregido, decisión del dueño |
-| V-10 | **P1** | El fondo animado casi no se percibe. Medido en producción: el blob más rápido se mueve 63 px (4,3 % del ancho) en 4 s y la escala varía 1,00–1,04. | `scripts/release/ambient-check.mjs` | **Arreglado** (≈100–146 px, 7–10 % en 4 s; escala 0,83–1,12) |
+| V-10 | **P1** | El fondo animado casi no se percibe. Medido en producción: el blob más rápido se mueve 63 px (4,3 % del ancho) en 4 s y la escala varía 1,00–1,04. | `scripts/release/ambient-check.mjs` | **Arreglado** (166–174 px, ≈12 % en 4 s; escala 0,79–1,15) |
 | V-11 | P2 | El footer muestra V1.7.3 estando 1.8.0 en producción. | `before/footer-version__en__1440__metro.jpg` | **Arreglado** (1.8.1) |
 | V-12 | P2 | `<title>` de 132 y 129 caracteres en `/es|en/blog/weekly/2026-10-12` (el titular editorial usado tal cual). | `seo:check` | **Arreglado** (recorte en límite de palabra; la tarjeta social conserva el titular completo) |
 | V-13 | P2 | El HTML de `/en/benchmarks` pesa 665–681 KB sin comprimir: 413 KB son las 1.296 filas de las 23 tablas serializadas como objetos completos. | medición sobre el HTML de producción | **Arreglado** (formato compacto: 107 KB para los mismos datos; ≈ −46 % del documento) |
@@ -96,15 +96,15 @@ El alta real (POST `/api/newsletter/subscribe`) **no se ejecutó**: la cubren lo
 
 ### 3.5 Fondo animado — verificado
 
-`node scripts/release/ambient-check.mjs` (ventana de 4 s, 1440×900):
+`node scripts/release/ambient-check.mjs` (ventana de 4 s, 1440×900; las filas de v1.8.1 son del build de producción local). El movimiento en una ventana de 4 s depende del punto del ciclo en que cae la medición: en otras corridas dio entre 96 y 174 px, siempre por encima de producción:
 
 | Caso | Movimiento máx. | Escala | fps | Layouts | Long tasks | CLS |
 | --- | --- | --- | --- | --- | --- | --- |
 | Producción v1.8.0, Aqua/Glass | 63 px (4,3–4,4 %) | 1,00–1,04 | 75 | 0 | 0 | 0 |
-| v1.8.1 Aqua claro | 96 px (6,7 %) | 0,86–1,06 | 79 | 0 | 0 | 0 |
-| v1.8.1 Glass claro | 146 px (10,1 %) | 0,83–1,12 | 79 | 0 | 0 | 0 |
-| v1.8.1 Glass oscuro | 143 px (9,9 %) | 0,83–1,12 | 79 | 0 | 0 | 0 |
-| v1.8.1 Metro | 0 (sin blobs) | — | 70 | 0 | 0 | 0 |
+| v1.8.1 Aqua claro | 174 px (12,1 %) | 0,79–1,15 | 78 | 0 | 0 | 0 |
+| v1.8.1 Glass claro | 166 px (11,6 %) | 0,80–1,14 | 79 | 0 | 0 | 0 |
+| v1.8.1 Glass oscuro | 172 px (12,0 %) | 0,79–1,15 | 79 | 0 | 0 | 0 |
+| v1.8.1 Metro | 0 (sin blobs) | — | 78 | 0 | 0 | 0 |
 | v1.8.1 `prefers-reduced-motion` | 0 | 1,00 | 78 | 0 | 0 | 0 |
 
 Solo `transform` y `opacity` en cinco capas propias; ninguna animación provoca layout. Las dos capturas separadas por 4 s (`after/ambient__*`) muestran el cambio a simple vista. No se tomó una traza de Performance en DevTools: las métricas equivalentes (fps por `requestAnimationFrame`, layouts y tiempo de hilo principal por CDP, long tasks y CLS por `PerformanceObserver`) salen del script.
@@ -157,7 +157,7 @@ No hubo regresiones medibles. **No se corrió Lighthouse** (no está en el proye
 | --- | --- |
 | `npm run lint` | sin errores |
 | `npm run typecheck` | sin errores |
-| `npm test` | **1.376 tests en 66 archivos, todos en verde** (1.302 al empezar; +74 de esta versión) |
+| `npm test` | **1.377 tests en 66 archivos, todos en verde** (1.302 al empezar; +75 de esta versión) |
 | `npm run build` | OK |
 | `npm run seo:check` | 549 / 549 |
 
