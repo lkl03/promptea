@@ -4839,16 +4839,16 @@ Texto:
     title: {
       en: "AI brainstorming prompts: generate and filter ideas without generic filler",
       es: "Prompts de brainstorming con IA: generá y filtrá ideas sin relleno genérico",
-      pt: "AI brainstorming prompts: generate and filter ideas without generic filler",
+      pt: "Prompts de brainstorming com IA: gere e filtre ideias sem enchimento",
     },
     description: {
       en: "How to use AI for brainstorming without getting obvious, repetitive ideas — covering divergent generation, constraint-based prompting, and structured filtering.",
       es: "Cómo usar IA para brainstorming sin obtener ideas obvias y repetitivas — con generación divergente, prompting basado en restricciones y filtrado estructurado.",
-      pt: "How to use AI for brainstorming without getting obvious, repetitive ideas — covering divergent generation, constraint-based prompting, and structured filtering.",
+      pt: "Como usar IA em um brainstorming sem receber ideias óbvias e repetitivas — com geração divergente, prompts baseados em restrições e filtragem estruturada.",
     },
     sections: [
       {
-        heading: { en: "Why AI brainstorming often produces generic ideas", es: "Por qué el brainstorming con IA suele producir ideas genéricas", pt: "Why AI brainstorming often produces generic ideas" },
+        heading: { en: "Why AI brainstorming often produces generic ideas", es: "Por qué el brainstorming con IA suele producir ideas genéricas", pt: "Por que o brainstorming com IA costuma gerar ideias genéricas" },
         bullets: {
           en: [
             "Vague prompts produce safe, central ideas: 'give me ideas for my app' returns the most common suggestions the model has seen — not the most useful for your specific situation.",
@@ -4865,16 +4865,16 @@ Texto:
             "Sin especificidad de dominio el resultado es genérico: el modelo por defecto ofrece sugerencias estándar del sector sin conocer tus restricciones, audiencia o contexto.",
           ],
           pt: [
-            "Vague prompts produce safe, central ideas: 'give me ideas for my app' returns the most common suggestions the model has seen — not the most useful for your specific situation.",
-            "No diversity requirement means clusters: without asking for variety, the model generates ideas that are similar to each other in angle and approach.",
-            "Asking for 'creative' ideas without constraints isn't enough — creativity needs a constraint to push against. 'Creative' alone defaults to novelty-sounding but structurally ordinary ideas.",
-            "Mixing generation and evaluation in the same prompt produces filtered, cautious output. AI self-censors during generation when it knows ideas will be judged immediately.",
-            "No domain specificity means generic: the model defaults to industry-standard suggestions without knowing your constraints, audience, or context.",
+            "Prompts vagos geram ideias seguras e centrais: 'me dê ideias para o meu app' devolve as sugestões mais comuns que o modelo já viu — não as mais úteis para a sua situação específica.",
+            "Sem exigência de variedade, as ideias se agrupam: se você não pedir diversidade, o modelo gera ideias parecidas entre si no ângulo e na abordagem.",
+            "Pedir ideias 'criativas' sem restrições não basta — a criatividade precisa de uma restrição contra a qual empurrar. 'Criativo' sozinho vira ideias que soam novas, mas são comuns na estrutura.",
+            "Misturar geração e avaliação no mesmo prompt gera uma saída filtrada e cautelosa. A IA se autocensura durante a geração quando sabe que as ideias serão julgadas na hora.",
+            "Sem especificidade da área, tudo fica genérico: o modelo recorre às sugestões padrão do setor sem conhecer suas restrições, seu público ou seu contexto.",
           ],
         },
       },
       {
-        heading: { en: "Constraints that produce better ideas", es: "Restricciones que producen mejores ideas", pt: "Constraints that produce better ideas" },
+        heading: { en: "Constraints that produce better ideas", es: "Restricciones que producen mejores ideas", pt: "Restrições que geram ideias melhores" },
         bullets: {
           en: [
             "Ban the obvious: list 2–3 categories that are too common and explicitly exclude them. 'Don't suggest social sharing features, gamification, or push notifications' forces the model past the defaults.",
@@ -4891,18 +4891,18 @@ Texto:
             "Agregá una restricción como presión creativa: '¿cómo se vería esto si tuviera que funcionar con presupuesto cero?' o '¿cuál es la versión mínima que igual resuelve el problema central?'",
           ],
           pt: [
-            "Ban the obvious: list 2–3 categories that are too common and explicitly exclude them. 'Don't suggest social sharing features, gamification, or push notifications' forces the model past the defaults.",
-            "Force diversity: ask for ideas from different angles — 'one that reduces cost, one that increases speed, one that changes the target user completely.'",
-            "Use cross-domain combinations: 'apply the core mechanic of [unrelated domain] to solve [your problem]' produces ideas that feel genuinely different.",
-            "Separate generation from evaluation: run one prompt for raw idea generation (quantity, no filtering), then a separate prompt to evaluate and rank. Mixing them cuts quantity and diversity.",
-            "Add a constraint as a creative pressure: 'what would this look like if it had to work with zero budget?' or 'what's the minimum version that still solves the core problem?'",
+            "Proíba o óbvio: liste 2–3 categorias comuns demais e exclua-as de forma explícita. 'Não sugira recursos de compartilhamento social, gamificação nem notificações push' força o modelo a ir além do padrão.",
+            "Force a diversidade: peça ideias de ângulos diferentes — 'uma que reduza o custo, uma que aumente a velocidade, uma que mude completamente o usuário-alvo'.",
+            "Use combinações entre áreas: 'aplique a mecânica central de [área sem relação] para resolver [seu problema]' gera ideias que parecem realmente diferentes.",
+            "Separe geração de avaliação: rode um prompt só para gerar ideias brutas (quantidade, sem filtro) e depois outro prompt para avaliar e ordenar. Misturar os dois reduz a quantidade e a diversidade.",
+            "Acrescente uma restrição como pressão criativa: 'como isso seria se tivesse de funcionar com orçamento zero?' ou 'qual é a versão mínima que ainda resolve o problema central?'",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Divergent idea generation with forced diversity", es: "Generación divergente de ideas con diversidad forzada", pt: "Divergent idea generation with forced diversity" },
+        title: { en: "Divergent idea generation with forced diversity", es: "Generación divergente de ideas con diversidad forzada", pt: "Geração divergente de ideias com diversidade forçada" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -4944,29 +4944,29 @@ NO sugieras: [listá 2-3 ideas obvias a excluir]
 Formato: lista numerada. Para cada idea: descripción en una línea + por qué encaja con la restricción.
 
 Todavía no evalúes ni recomiendes — solo generá.`,
-          pt: `Generate [N] ideas for [problem or opportunity].
+          pt: `Gere [N] ideias para [problema ou oportunidade].
 
-Context:
-- What it is: [brief description of the product/project/goal]
-- Target user: [who this is for]
-- Current constraint: [the main limitation — budget, time, technical, etc.]
+Contexto:
+- O que é: [breve descrição do produto/projeto/objetivo]
+- Usuário-alvo: [para quem é]
+- Restrição atual: [a principal limitação — orçamento, prazo, técnica etc.]
 
-Diversity requirement — generate at least one idea in each of these directions:
-1. One that reduces cost or complexity.
-2. One that completely changes the target user or use case.
-3. One borrowed from a different industry or domain.
-4. One that is the simplest possible version.
-5. [Optional: add your own angle]
+Exigência de diversidade — gere pelo menos uma ideia em cada uma destas direções:
+1. Uma que reduza o custo ou a complexidade.
+2. Uma que mude completamente o usuário-alvo ou o caso de uso.
+3. Uma emprestada de outro setor ou outra área.
+4. Uma que seja a versão mais simples possível.
+5. [Opcional: acrescente seu próprio ângulo]
 
-Do NOT suggest: [list 2-3 obvious ideas to exclude]
+NÃO sugira: [liste 2-3 ideias óbvias a excluir]
 
-Format: numbered list. For each idea: one-line description + why it fits the constraint.
+Formato: lista numerada. Para cada ideia: descrição em uma linha + por que ela se encaixa na restrição.
 
-Do not evaluate or recommend yet — just generate.`,
+Não avalie nem recomende ainda — só gere.`,
         },
       },
       {
-        title: { en: "Idea evaluation and filtering", es: "Evaluación y filtrado de ideas", pt: "Idea evaluation and filtering" },
+        title: { en: "Idea evaluation and filtering", es: "Evaluación y filtrado de ideas", pt: "Avaliação e filtragem de ideias" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -5008,43 +5008,43 @@ Para cada idea, devolvé:
 Terminá con:
 - Las 2 mejores ideas para desarrollar más y por qué.
 - Una idea que parece débil pero podría valer la pena revisitar con una restricción diferente.`,
-          pt: `Evaluate these ideas and help me prioritize them.
+          pt: `Avalie estas ideias e me ajude a priorizá-las.
 
-Ideas:
-[paste your list of ideas here]
+Ideias:
+[cole aqui sua lista de ideias]
 
-Evaluation criteria (most important first):
-1. [Criterion 1, e.g. "feasibility with a 3-person team in 2 weeks"]
-2. [Criterion 2, e.g. "solves the core user pain, not just a nice-to-have"]
-3. [Criterion 3, e.g. "low reversibility risk — easy to undo if it doesn't work"]
+Critérios de avaliação (do mais importante para o menos):
+1. [Critério 1, ex. "viabilidade com um time de 3 pessoas em 2 semanas"]
+2. [Critério 2, ex. "resolve a dor central do usuário, não é só um extra"]
+3. [Critério 3, ex. "baixo risco de irreversibilidade — fácil de desfazer se não funcionar"]
 
-For each idea, return:
-- Score: [1-5] for each criterion
-- Strongest point: [what makes this idea worth considering]
-- Biggest risk: [the main reason it could fail]
-- Verdict: [Keep / Develop further / Drop]
+Para cada ideia, retorne:
+- Nota: [1-5] para cada critério
+- Ponto mais forte: [o que faz esta ideia valer a pena]
+- Maior risco: [o principal motivo pelo qual ela pode falhar]
+- Veredito: [Manter / Desenvolver mais / Descartar]
 
-End with:
-- Top 2 ideas to develop further and why.
-- One idea that looks weak but might be worth revisiting with a different constraint.`,
+Termine com:
+- As 2 melhores ideias para desenvolver e por quê.
+- Uma ideia que parece fraca, mas que talvez valha a pena revisitar com outra restrição.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How do I get AI to generate genuinely original ideas?", es: "¿Cómo hago para que la IA genere ideas genuinamente originales?", pt: "How do I get AI to generate genuinely original ideas?" },
+        q: { en: "How do I get AI to generate genuinely original ideas?", es: "¿Cómo hago para que la IA genere ideas genuinamente originales?", pt: "Como faço a IA gerar ideias realmente originais?" },
         a: {
           en: "There's no guarantee of true originality, but you can push toward less common territory by banning the obvious categories, asking for cross-domain combinations, forcing diversity requirements, and adding unusual constraints. Originality also depends on your follow-up: use AI-generated ideas as starting points, not final answers. The value is in covering more ground quickly so you can identify the non-obvious angles worth exploring.",
           es: "No hay garantía de originalidad real, pero podés empujar hacia territorio menos común prohibiendo las categorías obvias, pidiendo combinaciones de distintos dominios, forzando requisitos de diversidad y agregando restricciones inusuales. La originalidad también depende de tu seguimiento: usá las ideas generadas por IA como puntos de partida, no como respuestas finales. El valor está en cubrir más terreno rápido para identificar los ángulos no obvios que vale la pena explorar.",
-          pt: "There's no guarantee of true originality, but you can push toward less common territory by banning the obvious categories, asking for cross-domain combinations, forcing diversity requirements, and adding unusual constraints. Originality also depends on your follow-up: use AI-generated ideas as starting points, not final answers. The value is in covering more ground quickly so you can identify the non-obvious angles worth exploring.",
+          pt: "Não há garantia de originalidade verdadeira, mas você pode empurrar o modelo para territórios menos comuns proibindo as categorias óbvias, pedindo combinações entre áreas, impondo exigências de diversidade e acrescentando restrições incomuns. A originalidade também depende do que você faz depois: use as ideias geradas pela IA como ponto de partida, não como resposta final. O valor está em cobrir mais terreno rapidamente para identificar os ângulos menos óbvios que valem a pena explorar.",
         },
       },
       {
-        q: { en: "Should I use AI for all my brainstorming?", es: "¿Debo usar IA para todo mi brainstorming?", pt: "Should I use AI for all my brainstorming?" },
+        q: { en: "Should I use AI for all my brainstorming?", es: "¿Debo usar IA para todo mi brainstorming?", pt: "Devo usar IA em todos os meus brainstormings?" },
         a: {
           en: "AI is best for quantity and breadth: quickly covering the idea space and surfacing angles you might not have considered. Use it early in a process to generate a large set of candidates. Human judgment remains essential for filtering — you understand context, stakeholder dynamics, and implementation realities better than the model. A good workflow: AI for generation, you for filtering and developing the best candidates.",
           es: "La IA es mejor para cantidad y amplitud: cubrir rápidamente el espacio de ideas y hacer emerger ángulos que podrías no haber considerado. Usala al inicio de un proceso para generar un gran conjunto de candidatos. El criterio humano sigue siendo esencial para el filtrado — entendés mejor que el modelo el contexto, la dinámica de los stakeholders y las realidades de implementación. Un buen flujo: IA para generación, vos para filtrar y desarrollar los mejores candidatos.",
-          pt: "AI is best for quantity and breadth: quickly covering the idea space and surfacing angles you might not have considered. Use it early in a process to generate a large set of candidates. Human judgment remains essential for filtering — you understand context, stakeholder dynamics, and implementation realities better than the model. A good workflow: AI for generation, you for filtering and developing the best candidates.",
+          pt: "A IA é melhor em quantidade e abrangência: cobrir rapidamente o espaço de ideias e trazer ângulos que você talvez não tivesse considerado. Use-a no começo do processo para gerar um grande conjunto de candidatas. O julgamento humano continua essencial para filtrar — você entende o contexto, a dinâmica entre as partes interessadas e a realidade da implementação melhor que o modelo. Um bom fluxo: a IA gera, você filtra e desenvolve as melhores candidatas.",
         },
       },
     ],
@@ -5054,16 +5054,16 @@ End with:
     title: {
       en: "Prompts for Kimi: long context, document analysis, and deep research",
       es: "Prompts para Kimi: contexto largo, análisis de documentos e investigación profunda",
-      pt: "Prompts for Kimi: long context, document analysis, and deep research",
+      pt: "Prompts para o Kimi: contexto longo, documentos e pesquisa a fundo",
     },
     description: {
       en: "How to write prompts that get the most out of Kimi's large context window and strong document-understanding capabilities.",
       es: "Cómo escribir prompts que aprovechan la ventana de contexto extensa de Kimi y sus capacidades de comprensión de documentos.",
-      pt: "How to write prompts that get the most out of Kimi's large context window and strong document-understanding capabilities.",
+      pt: "Como escrever prompts que aproveitam ao máximo a grande janela de contexto do Kimi e sua forte capacidade de compreender documentos.",
     },
     sections: [
       {
-        heading: { en: "What makes Kimi different", es: "Qué hace diferente a Kimi", pt: "What makes Kimi different" },
+        heading: { en: "What makes Kimi different", es: "Qué hace diferente a Kimi", pt: "O que torna o Kimi diferente" },
         bullets: {
           en: [
             "Kimi supports very long context windows — you can paste entire documents, lengthy codebases, or multiple sources without hitting length limits quickly.",
@@ -5080,16 +5080,16 @@ End with:
             "Tiende a ser exhaustivo; poné un límite explícito de longitud si querés salida concisa.",
           ],
           pt: [
-            "Kimi supports very long context windows — you can paste entire documents, lengthy codebases, or multiple sources without hitting length limits quickly.",
-            "It handles long-range dependencies well: questions that require connecting information from different sections of the same document.",
-            "Strong at structured document understanding: contracts, research papers, technical specs, and multi-section reports.",
-            "For deep research tasks, Kimi can hold a large volume of reference material in context while answering focused questions about it.",
-            "It tends to be thorough; set an explicit length limit if you want concise output.",
+            "O Kimi aceita janelas de contexto muito longas — você pode colar documentos inteiros, bases de código extensas ou várias fontes sem esbarrar rápido nos limites de tamanho.",
+            "Ele lida bem com dependências de longo alcance: perguntas que exigem conectar informações de seções diferentes do mesmo documento.",
+            "Forte na compreensão de documentos estruturados: contratos, artigos científicos, especificações técnicas e relatórios com várias seções.",
+            "Em tarefas de pesquisa a fundo, o Kimi consegue manter um grande volume de material de referência no contexto enquanto responde a perguntas focadas sobre ele.",
+            "Ele tende a ser minucioso; defina um limite de tamanho explícito se você quiser uma saída concisa.",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with Kimi", es: "Patrones que funcionan bien con Kimi", pt: "Patterns that work well with Kimi" },
+        heading: { en: "Patterns that work well with Kimi", es: "Patrones que funcionan bien con Kimi", pt: "Padrões que funcionam bem com o Kimi" },
         bullets: {
           en: [
             "Paste the full document first, then ask your question at the end — Kimi reads everything before answering.",
@@ -5108,19 +5108,19 @@ End with:
             "Cuando la precisión es crítica, pedile a Kimi que marque lo que no está seguro en vez de llenar huecos con inferencia.",
           ],
           pt: [
-            "Paste the full document first, then ask your question at the end — Kimi reads everything before answering.",
-            "Use section markers to help Kimi navigate large documents: label sections with '=== Section: [name] ===' for clear anchoring.",
-            "For multi-document tasks, separate sources clearly with headers and tell Kimi which source to prioritize if they conflict.",
-            "Ask Kimi to cite the specific passage it's drawing from — this surfaces exactly where in the document the answer lives.",
-            "For research tasks, give Kimi a list of sources and a specific question; ask it to synthesize across all sources rather than answering from just one.",
-            "When accuracy is critical, ask Kimi to flag anything it's uncertain about instead of filling gaps with inference.",
+            "Cole primeiro o documento completo e faça a pergunta no final — o Kimi lê tudo antes de responder.",
+            "Use marcadores de seção para ajudar o Kimi a navegar em documentos grandes: rotule as seções com '=== Seção: [nome] ===' para ter uma referência clara.",
+            "Em tarefas com vários documentos, separe bem as fontes com cabeçalhos e diga ao Kimi qual fonte priorizar se houver conflito.",
+            "Peça ao Kimi para citar o trecho específico em que ele se baseia — isso mostra exatamente em que parte do documento está a resposta.",
+            "Em tarefas de pesquisa, dê ao Kimi uma lista de fontes e uma pergunta específica; peça que ele faça uma síntese de todas as fontes em vez de responder com base em uma só.",
+            "Quando a precisão for crítica, peça ao Kimi para sinalizar tudo de que não tiver certeza em vez de preencher as lacunas com inferências.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Long-document Q&A with source anchoring", es: "Q&A sobre documento largo con anclaje de fuente", pt: "Long-document Q&A with source anchoring" },
+        title: { en: "Long-document Q&A with source anchoring", es: "Q&A sobre documento largo con anclaje de fuente", pt: "Perguntas e respostas sobre um documento longo, ancoradas na fonte" },
         purpose: "text",
         target: "kimi",
         prompt: {
@@ -5154,25 +5154,25 @@ Reglas:
 
 Pregunta:
 [tu pregunta]`,
-          pt: `Answer questions about the document below using ONLY the content in the document.
+          pt: `Responda a perguntas sobre o documento abaixo usando APENAS o conteúdo do documento.
 
-Rules:
-1. For each answer, quote the relevant passage (max 2 sentences) before your response.
-2. If the answer is not in the document, say: "Not found in document."
-3. If information appears in multiple sections, note each location.
-4. Do not add outside knowledge.
-5. If a question is ambiguous, ask one clarifying question before answering.
+Regras:
+1. Para cada resposta, cite o trecho relevante (no máximo 2 frases) antes de responder.
+2. Se a resposta não estiver no documento, diga: "Não encontrado no documento."
+3. Se a informação aparecer em várias seções, indique cada local.
+4. Não acrescente conhecimento externo.
+5. Se uma pergunta for ambígua, faça uma pergunta de esclarecimento antes de responder.
 
-=== Document Start ===
-[paste the full document here]
-=== Document End ===
+=== Início do documento ===
+[cole aqui o documento completo]
+=== Fim do documento ===
 
-Question:
-[your question]`,
+Pergunta:
+[sua pergunta]`,
         },
       },
       {
-        title: { en: "Multi-source research synthesis", es: "Síntesis de investigación con múltiples fuentes", pt: "Multi-source research synthesis" },
+        title: { en: "Multi-source research synthesis", es: "Síntesis de investigación con múltiples fuentes", pt: "Síntese de pesquisa com várias fontes" },
         purpose: "text",
         target: "kimi",
         prompt: {
@@ -5216,44 +5216,44 @@ Instrucciones:
 3. Cuando las fuentes contradigan, enunciá el desacuerdo explícitamente y no elijas un lado sin evidencia.
 4. Terminá con: brechas — qué NO cubren las fuentes y que haría falta para una respuesta completa.
 5. Mantenés el total de la respuesta en menos de 400 palabras.`,
-          pt: `You will receive multiple sources. Synthesize them to answer the research question below.
+          pt: `Você vai receber várias fontes. Faça uma síntese delas para responder à pergunta de pesquisa abaixo.
 
-Research question: [your question]
+Pergunta de pesquisa: [sua pergunta]
 
-Sources:
---- Source 1: [title or description] ---
-[paste source 1]
+Fontes:
+--- Fonte 1: [título ou descrição] ---
+[cole a fonte 1]
 
---- Source 2: [title or description] ---
-[paste source 2]
+--- Fonte 2: [título ou descrição] ---
+[cole a fonte 2]
 
---- Source 3: [title or description] (optional) ---
-[paste source 3 or remove this section]
+--- Fonte 3: [título ou descrição] (opcional) ---
+[cole a fonte 3 ou remova esta seção]
 
-Instructions:
-1. Answer based only on the provided sources — do not add outside knowledge.
-2. When sources agree, state the consensus and cite which sources agree.
-3. When sources conflict, state the disagreement explicitly and do not pick a side without evidence.
-4. End with: gaps — what the sources do NOT cover that would be needed for a complete answer.
-5. Keep the total response under 400 words.`,
+Instruções:
+1. Responda só com base nas fontes fornecidas — não acrescente conhecimento externo.
+2. Quando as fontes concordarem, declare o consenso e cite quais fontes concordam.
+3. Quando as fontes divergirem, declare a divergência de forma explícita e não escolha um lado sem evidências.
+4. Termine com: lacunas — o que as fontes NÃO cobrem e seria necessário para uma resposta completa.
+5. Mantenha a resposta total abaixo de 400 palavras.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How large a document can I paste into Kimi?", es: "¿Qué tan largo puede ser el documento que pego en Kimi?", pt: "How large a document can I paste into Kimi?" },
+        q: { en: "How large a document can I paste into Kimi?", es: "¿Qué tan largo puede ser el documento que pego en Kimi?", pt: "Qual o tamanho do documento que posso colar no Kimi?" },
         a: {
           en: "Kimi's context window is large enough to handle book-length documents. For practical accuracy, focused questions on specific sections work better than open-ended 'tell me everything' prompts. If accuracy is critical, split very long documents into logical segments and query each segment separately before synthesizing.",
           es: "La ventana de contexto de Kimi es lo suficientemente grande para manejar documentos del tamaño de un libro. Para precisión práctica, las preguntas enfocadas en secciones específicas funcionan mejor que los prompts abiertos del tipo 'contame todo'. Si la precisión es crítica, dividí documentos muy largos en segmentos lógicos y consultá cada segmento por separado antes de sintetizar.",
-          pt: "Kimi's context window is large enough to handle book-length documents. For practical accuracy, focused questions on specific sections work better than open-ended 'tell me everything' prompts. If accuracy is critical, split very long documents into logical segments and query each segment separately before synthesizing.",
+          pt: "A janela de contexto do Kimi é grande o bastante para documentos do tamanho de um livro. Para ter precisão na prática, perguntas focadas em seções específicas funcionam melhor que prompts abertos do tipo 'me conte tudo'. Se a precisão for crítica, divida documentos muito longos em segmentos lógicos e consulte cada um separadamente antes de fazer a síntese.",
         },
       },
       {
-        q: { en: "Does Kimi work well for technical research papers?", es: "¿Kimi funciona bien para artículos de investigación técnicos?", pt: "Does Kimi work well for technical research papers?" },
+        q: { en: "Does Kimi work well for technical research papers?", es: "¿Kimi funciona bien para artículos de investigación técnicos?", pt: "O Kimi funciona bem com artigos científicos técnicos?" },
         a: {
           en: "Yes — Kimi handles technical language well and can track terminology across long academic documents. For research papers, specify exactly what you want: a summary of the methodology, the key findings, limitations, or a comparison with other cited works. 'Summarize this paper' is too vague; 'summarize the methodology section in 3 bullets and list the stated limitations' gives consistent results.",
           es: "Sí — Kimi maneja bien el lenguaje técnico y puede rastrear terminología a lo largo de documentos académicos largos. Para artículos de investigación, especificá exactamente lo que querés: un resumen de la metodología, los hallazgos clave, las limitaciones o una comparación con otras obras citadas. 'Resumí este paper' es demasiado vago; 'resumí la sección de metodología en 3 bullets y listá las limitaciones declaradas' da resultados consistentes.",
-          pt: "Yes — Kimi handles technical language well and can track terminology across long academic documents. For research papers, specify exactly what you want: a summary of the methodology, the key findings, limitations, or a comparison with other cited works. 'Summarize this paper' is too vague; 'summarize the methodology section in 3 bullets and list the stated limitations' gives consistent results.",
+          pt: "Sim — o Kimi lida bem com linguagem técnica e consegue acompanhar a terminologia ao longo de documentos acadêmicos longos. Para artigos científicos, especifique exatamente o que você quer: um resumo da metodologia, os principais achados, as limitações ou uma comparação com outros trabalhos citados. 'Resuma este artigo' é vago demais; 'resuma a seção de metodologia em 3 tópicos e liste as limitações declaradas' gera resultados consistentes.",
         },
       },
     ],
@@ -5263,16 +5263,16 @@ Instructions:
     title: {
       en: "AI prompts for data analysis: SQL, trends, and interpretation",
       es: "Prompts de IA para análisis de datos: SQL, tendencias e interpretación",
-      pt: "AI prompts for data analysis: SQL, trends, and interpretation",
+      pt: "Prompts de IA para análise de dados: SQL, tendências e interpretação",
     },
     description: {
       en: "Prompt templates for data analysis tasks — generating SQL queries, interpreting results, spotting trends, and cleaning messy datasets.",
       es: "Plantillas de prompts para tareas de análisis de datos — generación de SQL, interpretación de resultados, detección de tendencias y limpieza de datasets.",
-      pt: "Prompt templates for data analysis tasks — generating SQL queries, interpreting results, spotting trends, and cleaning messy datasets.",
+      pt: "Templates de prompt para tarefas de análise de dados — gerar consultas SQL, interpretar resultados, identificar tendências e limpar conjuntos de dados bagunçados.",
     },
     sections: [
       {
-        heading: { en: "Why data analysis prompts fail", es: "Por qué fallan los prompts de análisis de datos", pt: "Why data analysis prompts fail" },
+        heading: { en: "Why data analysis prompts fail", es: "Por qué fallan los prompts de análisis de datos", pt: "Por que os prompts de análise de dados falham" },
         bullets: {
           en: [
             "No schema provided: the model invents column names and table structures it doesn't have.",
@@ -5289,16 +5289,16 @@ Instructions:
             "Sin pedido de validación: el SQL puede verse correcto y tener errores de lógica — siempre pedí un paso de verificación.",
           ],
           pt: [
-            "No schema provided: the model invents column names and table structures it doesn't have.",
-            "Underspecified goal: 'analyze this data' can mean dozens of things — specify what decision the analysis should support.",
-            "Missing constraints: no row limits, no date ranges, no filter criteria — the model guesses.",
-            "No output format: data analysis results need a specific format (table, SQL query, bullet summary) or they become walls of text.",
-            "No validation request: SQL can look correct and still have logic errors — always ask for a check step.",
+            "Nenhum esquema fornecido: o modelo inventa nomes de colunas e estruturas de tabelas que não tem.",
+            "Objetivo pouco especificado: 'analise estes dados' pode significar dezenas de coisas — diga qual decisão a análise deve apoiar.",
+            "Faltam restrições: sem limite de linhas, sem intervalo de datas, sem critérios de filtro — o modelo chuta.",
+            "Nenhum formato de saída: resultados de análise de dados precisam de um formato específico (tabela, consulta SQL, resumo em tópicos), senão viram paredes de texto.",
+            "Nenhum pedido de validação: um SQL pode parecer certo e ainda ter erros de lógica — sempre peça uma etapa de verificação.",
           ],
         },
       },
       {
-        heading: { en: "Parameters that make data prompts reliable", es: "Parámetros que hacen los prompts de datos confiables", pt: "Parameters that make data prompts reliable" },
+        heading: { en: "Parameters that make data prompts reliable", es: "Parámetros que hacen los prompts de datos confiables", pt: "Parâmetros que deixam os prompts de dados confiáveis" },
         bullets: {
           en: [
             "Always provide the schema: table name, column names, data types, and a 2-3 row sample.",
@@ -5315,18 +5315,18 @@ Instructions:
             "Para análisis de tendencias: especificá el grano temporal (diario/semanal/mensual) y la definición de la métrica explícitamente.",
           ],
           pt: [
-            "Always provide the schema: table name, column names, data types, and a 2-3 row sample.",
-            "State the decision: 'The output will be used to decide [X]' gives the model the right level of detail to target.",
-            "Specify output format: query only, table, or bullet list with key numbers.",
-            "Ask for a logic check: 'Explain what the query does and flag any assumptions you made about the data.'",
-            "For trend analysis: specify the time grain (daily/weekly/monthly) and the metric definition explicitly.",
+            "Sempre forneça o esquema: nome da tabela, nomes das colunas, tipos de dados e uma amostra de 2-3 linhas.",
+            "Diga qual é a decisão: 'A saída será usada para decidir [X]' dá ao modelo o nível de detalhe certo a buscar.",
+            "Especifique o formato de saída: só a consulta, uma tabela ou uma lista em tópicos com os números principais.",
+            "Peça uma verificação da lógica: 'Explique o que a consulta faz e sinalize as suposições que você fez sobre os dados.'",
+            "Para análise de tendências: especifique a granularidade de tempo (diária/semanal/mensal) e a definição da métrica de forma explícita.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "SQL query from plain-English requirements", es: "Query SQL a partir de requisitos en lenguaje natural", pt: "SQL query from plain-English requirements" },
+        title: { en: "SQL query from plain-English requirements", es: "Query SQL a partir de requisitos en lenguaje natural", pt: "Consulta SQL a partir de requisitos em linguagem simples" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -5376,33 +5376,33 @@ Salida:
 2. Una explicación en lenguaje natural de qué hace (2-3 oraciones).
 3. Supuestos que hiciste sobre los datos.
 4. Casos límite que este query no maneja.`,
-          pt: `Write a SQL query for the following requirement.
+          pt: `Escreva uma consulta SQL para o requisito a seguir.
 
-Database: [PostgreSQL / MySQL / SQLite — specify]
+Banco de dados: [PostgreSQL / MySQL / SQLite — especifique]
 
-Table schema:
-Table name: [name]
-Columns: [column_name (type), column_name (type), ...]
-Sample rows (2-3):
-[paste 2-3 rows]
+Esquema da tabela:
+Nome da tabela: [nome]
+Colunas: [column_name (tipo), column_name (tipo), ...]
+Linhas de amostra (2-3):
+[cole 2-3 linhas]
 
-Requirement:
-[describe what the query should return in plain English]
+Requisito:
+[descreva em linguagem simples o que a consulta deve retornar]
 
-Constraints:
-- Filter to: [date range / status / category — specify or remove]
-- Limit results to: [number] rows if no specific filter
-- Sort by: [column and direction]
+Restrições:
+- Filtrar por: [intervalo de datas / status / categoria — especifique ou remova]
+- Limitar os resultados a: [número] linhas se não houver filtro específico
+- Ordenar por: [coluna e direção]
 
-Output:
-1. The SQL query.
-2. A plain-English explanation of what it does (2-3 sentences).
-3. Assumptions you made about the data.
-4. Any edge cases this query does not handle.`,
+Saída:
+1. A consulta SQL.
+2. Uma explicação em linguagem simples do que ela faz (2-3 frases).
+3. As suposições que você fez sobre os dados.
+4. Os casos de borda que esta consulta não trata.`,
         },
       },
       {
-        title: { en: "Trend analysis and interpretation", es: "Análisis e interpretación de tendencias", pt: "Trend analysis and interpretation" },
+        title: { en: "Trend analysis and interpretation", es: "Análisis e interpretación de tendencias", pt: "Análise e interpretação de tendências" },
         purpose: "data",
         target: "claude",
         prompt: {
@@ -5446,44 +5446,44 @@ Restricciones:
 - No especules sobre causas salvo que los datos las soporten explícitamente.
 - Si una tendencia tiene señales contradictorias, notá la contradicción en vez de elegir una.
 - Mantenés el total de la respuesta en menos de 250 palabras.`,
-          pt: `Analyze the data below and identify meaningful trends.
+          pt: `Analise os dados abaixo e identifique tendências relevantes.
 
-Metric: [what is being measured]
-Time grain: [daily / weekly / monthly]
-Period: [start date] to [end date]
-Decision this analysis supports: [one sentence on what you will decide with this]
+Métrica: [o que está sendo medido]
+Granularidade de tempo: [diária / semanal / mensal]
+Período: [data inicial] a [data final]
+Decisão que esta análise apoia: [uma frase sobre o que você vai decidir com isso]
 
-Data:
-[paste data as CSV, table, or bullet list]
+Dados:
+[cole os dados como CSV, tabela ou lista em tópicos]
 
-Output:
-1. The main trend in 1-2 sentences (direction, magnitude, notable changes).
-2. Up to 3 specific observations worth investigating (not generic statements — name the exact time period or data point).
-3. What the data does NOT tell you (limitations, missing context).
-4. One follow-up question to answer before acting on this data.
+Saída:
+1. A principal tendência em 1-2 frases (direção, magnitude, mudanças relevantes).
+2. Até 3 observações específicas que valem uma investigação (nada de afirmações genéricas — indique o período ou o ponto de dados exato).
+3. O que os dados NÃO dizem (limitações, contexto ausente).
+4. Uma pergunta de acompanhamento a responder antes de agir com base nestes dados.
 
-Constraints:
-- Do not speculate about causes unless the data explicitly supports it.
-- If a trend has contradictory signals, note the contradiction instead of picking one.
-- Keep the total response under 250 words.`,
+Restrições:
+- Não especule sobre as causas, a menos que os dados sustentem isso de forma explícita.
+- Se uma tendência tiver sinais contraditórios, aponte a contradição em vez de escolher um deles.
+- Mantenha a resposta total abaixo de 250 palavras.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which AI model is best for SQL generation?", es: "¿Qué modelo de IA es mejor para generación de SQL?", pt: "Which AI model is best for SQL generation?" },
+        q: { en: "Which AI model is best for SQL generation?", es: "¿Qué modelo de IA es mejor para generación de SQL?", pt: "Qual modelo de IA é o melhor para gerar SQL?" },
         a: {
           en: "For SQL generation, GPT and Claude are both strong. GPT tends to write cleaner queries quickly; Claude handles complex multi-step logic well and is more likely to flag ambiguities in the schema. For data interpretation, Claude's tendency to note uncertainty is useful — it will flag when the data doesn't support a strong conclusion instead of speculating.",
           es: "Para generación de SQL, GPT y Claude son ambos sólidos. GPT tiende a escribir queries limpios rápidamente; Claude maneja bien la lógica compleja de múltiples pasos y es más propenso a señalar ambigüedades en el schema. Para interpretación de datos, la tendencia de Claude a notar incertidumbre es útil — señalará cuando los datos no apoyan una conclusión fuerte en vez de especular.",
-          pt: "For SQL generation, GPT and Claude are both strong. GPT tends to write cleaner queries quickly; Claude handles complex multi-step logic well and is more likely to flag ambiguities in the schema. For data interpretation, Claude's tendency to note uncertainty is useful — it will flag when the data doesn't support a strong conclusion instead of speculating.",
+          pt: "Para gerar SQL, o GPT e o Claude são ambos fortes. O GPT tende a escrever consultas mais limpas rapidamente; o Claude lida bem com lógica complexa de várias etapas e tem mais chance de apontar ambiguidades no esquema. Na interpretação de dados, a tendência do Claude de indicar a incerteza é útil — ele avisa quando os dados não sustentam uma conclusão forte em vez de especular.",
         },
       },
       {
-        q: { en: "How do I avoid hallucinated column names in SQL prompts?", es: "¿Cómo evito nombres de columnas inventados en prompts SQL?", pt: "How do I avoid hallucinated column names in SQL prompts?" },
+        q: { en: "How do I avoid hallucinated column names in SQL prompts?", es: "¿Cómo evito nombres de columnas inventados en prompts SQL?", pt: "Como evito nomes de colunas inventados em prompts de SQL?" },
         a: {
           en: "Always paste the exact schema — table name, column names, types, and at least 2 sample rows. The model cannot invent a name it can see in front of it. If you add the constraint 'Use only the column names listed in the schema above — do not invent new ones,' most models will respect it. For critical queries, ask it to list all column names it used and verify them against the schema.",
           es: "Siempre pegá el schema exacto — nombre de tabla, nombres de columnas, tipos y al menos 2 filas de muestra. El modelo no puede inventar un nombre que puede ver delante. Si agregás la restricción 'Usá solo los nombres de columnas listados en el schema de arriba — no inventes nuevos', la mayoría de los modelos lo respetará. Para queries críticos, pedile que liste todos los nombres de columnas que usó y verificalos contra el schema.",
-          pt: "Always paste the exact schema — table name, column names, types, and at least 2 sample rows. The model cannot invent a name it can see in front of it. If you add the constraint 'Use only the column names listed in the schema above — do not invent new ones,' most models will respect it. For critical queries, ask it to list all column names it used and verify them against the schema.",
+          pt: "Sempre cole o esquema exato — nome da tabela, nomes das colunas, tipos e pelo menos 2 linhas de amostra. O modelo não precisa inventar um nome que está vendo à sua frente. Se você acrescentar a restrição 'Use só os nomes de colunas listados no esquema acima — não invente novos', a maioria dos modelos vai respeitar. Em consultas críticas, peça que ele liste todos os nomes de colunas que usou e confira com o esquema.",
         },
       },
     ],
@@ -5493,16 +5493,16 @@ Constraints:
     title: {
       en: "AI prompts for learning: tutoring, concept checks, and study guides",
       es: "Prompts de IA para aprender: tutoría, checks de concepto y guías de estudio",
-      pt: "AI prompts for learning: tutoring, concept checks, and study guides",
+      pt: "Prompts de IA para estudar: aulas, checagem de conceitos e guias",
     },
     description: {
       en: "Prompt templates that turn AI into a patient tutor — for explaining concepts, testing understanding, building study plans, and connecting new material to what you already know.",
       es: "Plantillas de prompts que convierten la IA en un tutor paciente — para explicar conceptos, testear comprensión, construir planes de estudio y conectar material nuevo con lo que ya sabés.",
-      pt: "Prompt templates that turn AI into a patient tutor — for explaining concepts, testing understanding, building study plans, and connecting new material to what you already know.",
+      pt: "Templates de prompt que transformam a IA em um tutor paciente — para explicar conceitos, testar a compreensão, montar planos de estudo e conectar o conteúdo novo ao que você já sabe.",
     },
     sections: [
       {
-        heading: { en: "Why AI tutoring prompts fail", es: "Por qué fallan los prompts de tutoría con IA", pt: "Why AI tutoring prompts fail" },
+        heading: { en: "Why AI tutoring prompts fail", es: "Por qué fallan los prompts de tutoría con IA", pt: "Por que os prompts de tutoria com IA falham" },
         bullets: {
           en: [
             "No level specified: the model can't calibrate whether 'explain recursion' means explain it to a beginner or a senior developer.",
@@ -5519,16 +5519,16 @@ Constraints:
             "Demasiado amplio: 'ayudame a aprender machine learning' produce una lista de lecturas; un tema enfocado con una pregunta específica produce comprensión.",
           ],
           pt: [
-            "No level specified: the model can't calibrate whether 'explain recursion' means explain it to a beginner or a senior developer.",
-            "No prior knowledge stated: without knowing what you already understand, the model either over-explains basics or skips foundational steps.",
-            "No check step: explanations with no comprehension check leave gaps — you don't know what you missed.",
-            "Single pass only: one explanation is rarely enough for hard concepts; prompts that invite follow-up are more effective.",
-            "Too broad: 'help me learn machine learning' produces a reading list; a focused topic with a specific question produces understanding.",
+            "Nenhum nível especificado: o modelo não consegue calibrar se 'explique recursão' é para um iniciante ou para um desenvolvedor sênior.",
+            "Nenhum conhecimento prévio declarado: sem saber o que você já entende, o modelo ou explica demais o básico ou pula etapas fundamentais.",
+            "Nenhuma etapa de verificação: explicações sem checagem da compreensão deixam lacunas — você não sabe o que deixou passar.",
+            "Uma única passada: uma explicação raramente basta para conceitos difíceis; prompts que abrem espaço para acompanhamento são mais eficazes.",
+            "Amplo demais: 'me ajude a aprender machine learning' gera uma lista de leituras; um tema focado com uma pergunta específica gera compreensão.",
           ],
         },
       },
       {
-        heading: { en: "What makes AI tutoring effective", es: "Qué hace efectiva la tutoría con IA", pt: "What makes AI tutoring effective" },
+        heading: { en: "What makes AI tutoring effective", es: "Qué hace efectiva la tutoría con IA", pt: "O que torna a tutoria com IA eficaz" },
         bullets: {
           en: [
             "State your level and what you already know — this is the single most useful signal for calibration.",
@@ -5547,19 +5547,19 @@ Constraints:
             "Para temas complejos, pedís un mapa conceptual: 'Dibujá las relaciones entre estas ideas antes de explicar cada una.'",
           ],
           pt: [
-            "State your level and what you already know — this is the single most useful signal for calibration.",
-            "Ask for examples first, then the principle: concrete cases are easier to reason from than abstract definitions.",
-            "Request a comprehension check at the end: 'Give me 2 questions to test whether I understood this correctly.'",
-            "Use the Feynman test prompt: ask the model to explain what you just learned as if you need to teach it to someone else — gaps become obvious.",
-            "If something doesn't click, describe what is confusing specifically — 'I don't understand X because Y' gets better help than 'explain again'.",
-            "For complex topics, ask for a concept map: 'Draw the relationships between these ideas before explaining each one.'",
+            "Diga seu nível e o que você já sabe — esse é o sinal mais útil para a calibração.",
+            "Peça exemplos primeiro e depois o princípio: é mais fácil raciocinar a partir de casos concretos do que de definições abstratas.",
+            "Peça uma checagem de compreensão no final: 'Me dê 2 perguntas para testar se eu entendi direito.'",
+            "Use o prompt do teste de Feynman: peça ao modelo para explicar o que você acabou de aprender como se você precisasse ensinar a outra pessoa — as lacunas ficam evidentes.",
+            "Se algo não fizer sentido, descreva especificamente o que confunde — 'Não entendo X porque Y' recebe uma ajuda melhor que 'explique de novo'.",
+            "Em temas complexos, peça um mapa conceitual: 'Desenhe as relações entre estas ideias antes de explicar cada uma.'",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Calibrated concept explanation", es: "Explicación calibrada de un concepto", pt: "Calibrated concept explanation" },
+        title: { en: "Calibrated concept explanation", es: "Explicación calibrada de un concepto", pt: "Explicação de conceito calibrada" },
         purpose: "study",
         target: "claude",
         prompt: {
@@ -5587,22 +5587,22 @@ Instrucciones:
 3. Mostrás un ejemplo simple resuelto.
 4. Destacás los 1-2 errores más comunes que cometen los principiantes.
 5. Terminás con: 2 preguntas cortas que testean si realmente lo entendí, no solo lo memoricé.`,
-          pt: `Explain [concept] to me.
+          pt: `Me explique [conceito].
 
-My level: [complete beginner / familiar with basics / intermediate — pick one]
-What I already know: [describe in 1-2 sentences, or 'nothing yet']
-Goal: [why you're learning this — e.g. 'to use it in my Python scripts' / 'for a job interview']
+Meu nível: [iniciante total / conheço o básico / intermediário — escolha um]
+O que eu já sei: [descreva em 1-2 frases, ou 'nada ainda']
+Objetivo: [por que você está aprendendo isso — ex. 'para usar nos meus scripts em Python' / 'para uma entrevista de emprego']
 
-Instructions:
-1. Start with a concrete real-world example before the formal definition.
-2. Explain using analogies to [something I'm already familiar with, e.g. spreadsheets / cooking / building construction].
-3. Show a simple worked example.
-4. Highlight the 1-2 most common mistakes beginners make.
-5. End with: 2 short questions that test whether I actually understood, not just memorized.`,
+Instruções:
+1. Comece com um exemplo concreto do mundo real antes da definição formal.
+2. Explique usando analogias com [algo que eu já conheço, ex. planilhas / culinária / construção civil].
+3. Mostre um exemplo simples resolvido.
+4. Destaque os 1-2 erros mais comuns que os iniciantes cometem.
+5. Termine com: 2 perguntas curtas que testem se eu realmente entendi, e não só decorei.`,
         },
       },
       {
-        title: { en: "Study plan for a specific topic", es: "Plan de estudio para un tema específico", pt: "Study plan for a specific topic" },
+        title: { en: "Study plan for a specific topic", es: "Plan de estudio para un tema específico", pt: "Plano de estudo para um tema específico" },
         purpose: "study",
         target: "gpt",
         prompt: {
@@ -5642,42 +5642,42 @@ Restricciones:
 - Mantené el plan alcanzable en el tiempo que especifiqué.
 - No rellenes con temas opcionales 'nice to have'.
 - Si mi tiempo es demasiado corto para el objetivo, decilo directamente y sugerí un alcance reducido.`,
-          pt: `Build a focused study plan for me.
+          pt: `Monte um plano de estudo focado para mim.
 
-Topic: [what you want to learn]
-My current level: [beginner / some familiarity / intermediate]
-Time available: [hours per week] for [number of weeks]
-Goal: [what you want to be able to DO at the end — specific task, not 'understand it better']
+Tema: [o que você quer aprender]
+Meu nível atual: [iniciante / alguma familiaridade / intermediário]
+Tempo disponível: [horas por semana] durante [número de semanas]
+Objetivo: [o que você quer ser capaz de FAZER no final — uma tarefa específica, não 'entender melhor']
 
-Output format:
-1. Learning path: ordered list of sub-topics (most foundational first).
-2. For each sub-topic: one practice exercise I can do to confirm I understand it.
-3. The 3 resources to prioritize (type only: 'video tutorial', 'hands-on project', 'official docs' — do not recommend specific paid resources).
-4. Weekly milestone: what I should be able to do after each week.
-5. Warning: one common mistake people make when learning this that delays progress.
+Formato de saída:
+1. Trilha de aprendizado: lista ordenada de subtemas (os mais fundamentais primeiro).
+2. Para cada subtema: um exercício prático que eu possa fazer para confirmar que entendi.
+3. Os 3 recursos a priorizar (só o tipo: 'videoaula', 'projeto prático', 'documentação oficial' — não recomende recursos pagos específicos).
+4. Marco semanal: o que eu devo conseguir fazer depois de cada semana.
+5. Alerta: um erro comum que as pessoas cometem ao aprender isso e que atrasa o progresso.
 
-Constraints:
-- Keep the plan achievable in the time I specified.
-- Do not pad with optional 'nice to have' topics.
-- If my time is too short for the goal, say so directly and suggest a reduced scope.`,
+Restrições:
+- Mantenha o plano viável no tempo que eu indiquei.
+- Não encha com temas opcionais do tipo 'seria bom saber'.
+- Se o meu tempo for curto demais para o objetivo, diga isso de forma direta e sugira um escopo menor.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Is AI a good replacement for a human tutor?", es: "¿La IA reemplaza bien a un tutor humano?", pt: "Is AI a good replacement for a human tutor?" },
+        q: { en: "Is AI a good replacement for a human tutor?", es: "¿La IA reemplaza bien a un tutor humano?", pt: "A IA substitui bem um professor particular?" },
         a: {
           en: "For structured content that doesn't require hands-on feedback — concepts, worked examples, practice problems — AI tutors are genuinely useful and available at any hour. For skills that need real-time observation (public speaking, physical technique, lab work) or mentorship on career and judgment calls, a human tutor is much better. The highest-value AI tutoring use case is the thing you'd be embarrassed to ask a human 20 times: explaining the same concept differently until it clicks.",
           es: "Para contenido estructurado que no requiere retroalimentación práctica — conceptos, ejemplos resueltos, problemas de práctica — los tutores de IA son genuinamente útiles y están disponibles a cualquier hora. Para habilidades que necesitan observación en tiempo real (oratoria, técnica física, trabajo de laboratorio) o mentoría en carrera y decisiones de criterio, un tutor humano es mucho mejor. El caso de uso de mayor valor en la tutoría con IA es lo que te daría vergüenza preguntarle a un humano 20 veces: explicar el mismo concepto de distintas maneras hasta que haga click.",
-          pt: "For structured content that doesn't require hands-on feedback — concepts, worked examples, practice problems — AI tutors are genuinely useful and available at any hour. For skills that need real-time observation (public speaking, physical technique, lab work) or mentorship on career and judgment calls, a human tutor is much better. The highest-value AI tutoring use case is the thing you'd be embarrassed to ask a human 20 times: explaining the same concept differently until it clicks.",
+          pt: "Para conteúdo estruturado que não exige feedback prático — conceitos, exemplos resolvidos, exercícios — os tutores de IA são realmente úteis e estão disponíveis a qualquer hora. Para habilidades que exigem observação em tempo real (falar em público, técnica física, trabalho de laboratório) ou mentoria sobre carreira e decisões de julgamento, um tutor humano é muito melhor. O uso de maior valor da tutoria com IA é aquilo que você teria vergonha de perguntar 20 vezes a uma pessoa: explicar o mesmo conceito de jeitos diferentes até fazer sentido.",
         },
       },
       {
-        q: { en: "How do I know if AI explanations are accurate?", es: "¿Cómo sé si las explicaciones de la IA son correctas?", pt: "How do I know if AI explanations are accurate?" },
+        q: { en: "How do I know if AI explanations are accurate?", es: "¿Cómo sé si las explicaciones de la IA son correctas?", pt: "Como sei se as explicações da IA estão corretas?" },
         a: {
           en: "AI explanations can be wrong, especially on niche topics, cutting-edge research, or precise technical details. Cross-check key claims against official documentation or authoritative sources. Ask the model to flag its uncertainty: 'Mark anything you're not confident about.' For foundational topics in well-established fields (standard algorithms, core language features, classical physics), accuracy is generally high. For anything recent or specialized, verify before relying on it.",
           es: "Las explicaciones de la IA pueden estar equivocadas, especialmente en temas de nicho, investigación de vanguardia o detalles técnicos precisos. Verificá afirmaciones clave contra documentación oficial o fuentes autorizadas. Pedile al modelo que marque su incertidumbre: 'Marcá todo sobre lo que no estés seguro.' Para temas fundamentales en campos bien establecidos (algoritmos estándar, características centrales de lenguajes, física clásica), la precisión generalmente es alta. Para cualquier cosa reciente o especializada, verificá antes de confiar en ello.",
-          pt: "AI explanations can be wrong, especially on niche topics, cutting-edge research, or precise technical details. Cross-check key claims against official documentation or authoritative sources. Ask the model to flag its uncertainty: 'Mark anything you're not confident about.' For foundational topics in well-established fields (standard algorithms, core language features, classical physics), accuracy is generally high. For anything recent or specialized, verify before relying on it.",
+          pt: "As explicações da IA podem estar erradas, principalmente em temas de nicho, pesquisas de ponta ou detalhes técnicos precisos. Confira as afirmações principais na documentação oficial ou em fontes confiáveis. Peça ao modelo para sinalizar a incerteza: 'Marque tudo de que você não tiver certeza.' Em temas fundamentais de áreas bem estabelecidas (algoritmos clássicos, recursos centrais de uma linguagem, física clássica), a precisão costuma ser alta. Para qualquer coisa recente ou especializada, verifique antes de confiar.",
         },
       },
     ],
@@ -5687,16 +5687,16 @@ Constraints:
     title: {
       en: "Prompts for Perplexity: grounded answers from the web",
       es: "Prompts para Perplexity: respuestas respaldadas por la web",
-      pt: "Prompts for Perplexity: grounded answers from the web",
+      pt: "Prompts para o Perplexity: respostas ancoradas na web",
     },
     description: {
       en: "How to write Perplexity prompts for the Agent API presets (fast, low, medium, high): specific questions that seed better searches, capped lists, honest 'not found' answers, and filters as parameters instead of prose.",
       es: "Cómo escribir prompts para los presets de la Agent API de Perplexity (fast, low, medium, high): preguntas específicas que siembran mejores búsquedas, listas acotadas, respuestas honestas cuando no hay datos y filtros como parámetros en vez de prosa.",
-      pt: "How to write Perplexity prompts for the Agent API presets (fast, low, medium, high): specific questions that seed better searches, capped lists, honest 'not found' answers, and filters as parameters instead of prose.",
+      pt: "Como escrever prompts do Perplexity para os presets da Agent API (fast, low, medium, high): perguntas específicas que geram buscas melhores, listas com limite, respostas honestas de 'não encontrado' e filtros como parâmetros em vez de texto.",
     },
     sections: [
       {
-        heading: { en: "What makes Perplexity different", es: "Qué hace diferente a Perplexity", pt: "What makes Perplexity different" },
+        heading: { en: "What makes Perplexity different", es: "Qué hace diferente a Perplexity", pt: "O que torna o Perplexity diferente" },
         bullets: {
           en: [
             "Perplexity searches the web before answering and returns the sources it used, so you can check each claim against the page it came from.",
@@ -5713,16 +5713,16 @@ Constraints:
             "Evitalo para escritura creativa, redacción de textos largos o tareas donde la búsqueda web agrega ruido en lugar de fundamento.",
           ],
           pt: [
-            "Perplexity searches the web before answering and returns the sources it used, so you can check each claim against the page it came from.",
-            "It runs as an agent loop: on each step it can search, read the results, and decide whether to search again or answer. Your prompt shapes the searches, not only the final text.",
-            "It handles current events, prices, product specs, and fast-changing facts far better than a model answering from training data alone.",
-            "Use it when freshness or verifiable sources matter: recent releases, current regulations, live pricing, 'what changed since…' questions.",
-            "Avoid it for creative writing, long-form drafting, or tasks where web retrieval adds noise rather than grounding.",
+            "O Perplexity pesquisa na web antes de responder e devolve as fontes que usou, para você conferir cada afirmação na página de onde ela veio.",
+            "Ele funciona como um loop de agente: a cada passo, pode pesquisar, ler os resultados e decidir se pesquisa de novo ou responde. Seu prompt molda as buscas, não só o texto final.",
+            "Ele lida com acontecimentos atuais, preços, especificações de produtos e fatos que mudam rápido muito melhor que um modelo que responde só com os dados de treinamento.",
+            "Use quando a atualidade ou fontes verificáveis importarem: lançamentos recentes, regulamentações vigentes, preços atualizados, perguntas do tipo 'o que mudou desde…'.",
+            "Evite em escrita criativa, redação de textos longos ou tarefas em que a busca na web acrescenta ruído em vez de ancoragem.",
           ],
         },
       },
       {
-        heading: { en: "Sonar is gone: which preset to pick", es: "Sonar ya no está: qué preset elegir", pt: "Sonar is gone: which preset to pick" },
+        heading: { en: "Sonar is gone: which preset to pick", es: "Sonar ya no está: qué preset elegir", pt: "O Sonar acabou: qual preset escolher" },
         bullets: {
           en: [
             "Perplexity ended support for Sonar Chat Completions on September 27, 2026 and recommends the Agent API for all new work. In the API you now choose a preset instead of a Sonar model.",
@@ -5741,17 +5741,17 @@ Constraints:
             "Perplexity también documenta un preset xhigh, el más capaz, para trabajo agéntico abierto (ejecutar código, loops largos con herramientas). Usalo cuando la tarea es un proyecto, no una pregunta.",
           ],
           pt: [
-            "Perplexity ended support for Sonar Chat Completions on September 27, 2026 and recommends the Agent API for all new work. In the API you now choose a preset instead of a Sonar model.",
-            "fast — single-fact lookups, definitions, and quick summaries. Write one pointed question.",
-            "low — everyday research with light multi-step lookups. Perplexity's recommended starting point.",
-            "medium — multi-hop browsing that chains evidence across many sources. State the full analytical question.",
-            "high — the broadest coverage and longest reasoning. Write a research brief, not a question.",
-            "Perplexity also documents an xhigh preset, its most capable, for open-ended agentic work (running code, long tool-use loops). Use it when the task is a project, not a question.",
+            "O Perplexity encerrou o suporte ao Sonar Chat Completions em 27 de setembro de 2026 e recomenda a Agent API para todo trabalho novo. Na API, agora você escolhe um preset em vez de um modelo Sonar.",
+            "fast — consultas de um único fato, definições e resumos rápidos. Escreva uma pergunta certeira.",
+            "low — pesquisa do dia a dia com consultas leves em várias etapas. É o ponto de partida recomendado pelo Perplexity.",
+            "medium — navegação em vários saltos que encadeia evidências de muitas fontes. Declare a pergunta analítica completa.",
+            "high — a cobertura mais ampla e o raciocínio mais longo. Escreva um briefing de pesquisa, não uma pergunta.",
+            "O Perplexity também documenta um preset xhigh, o mais capaz, para trabalho agêntico aberto (executar código, loops longos de uso de ferramentas). Use quando a tarefa for um projeto, não uma pergunta.",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with Perplexity", es: "Patrones que funcionan bien con Perplexity", pt: "Patterns that work well with Perplexity" },
+        heading: { en: "Patterns that work well with Perplexity", es: "Patrones que funcionan bien con Perplexity", pt: "Padrões que funcionam bem com o Perplexity" },
         bullets: {
           en: [
             "Be specific and use the vocabulary relevant pages would use: 'energy efficiency ratings of heat pumps vs. gas furnaces for homes' beats 'which heating is better?'. Your question seeds the first search.",
@@ -5770,17 +5770,17 @@ Constraints:
             "Describí la estructura que querés en lugar de pegar respuestas de ejemplo; el contenido del ejemplo arrastra la búsqueda hacia su propio tema.",
           ],
           pt: [
-            "Be specific and use the vocabulary relevant pages would use: 'energy efficiency ratings of heat pumps vs. gas furnaces for homes' beats 'which heating is better?'. Your question seeds the first search.",
-            "Add two or three words of context when a term is ambiguous (a product name, a country, a year).",
-            "Cap list lengths: 'the 5 most relevant…'. Without a cap, the length is arbitrary.",
-            "Give it an explicit out: 'If the sources don't answer this, say so instead of guessing.' This is Perplexity's own advice for reducing hallucinations.",
-            "Ask it to flag near-misses: 'If results are about a different year, a parent company, or a similar product, state the mismatch first.'",
-            "Describe the structure you want instead of pasting example answers; example content pulls the search toward its own topic.",
+            "Seja específico e use o vocabulário que as páginas relevantes usariam: 'classificação de eficiência energética de bombas de calor vs. aquecedores a gás para residências' é melhor que 'qual aquecimento é melhor?'. Sua pergunta alimenta a primeira busca.",
+            "Acrescente duas ou três palavras de contexto quando um termo for ambíguo (um nome de produto, um país, um ano).",
+            "Limite o tamanho das listas: 'os 5 mais relevantes…'. Sem limite, o tamanho é arbitrário.",
+            "Dê a ele uma saída explícita: 'Se as fontes não responderem a isto, diga isso em vez de chutar.' É o próprio conselho do Perplexity para reduzir alucinações.",
+            "Peça que ele aponte os resultados quase certos: 'Se os resultados forem sobre outro ano, uma empresa controladora ou um produto parecido, declare a diferença primeiro.'",
+            "Descreva a estrutura que você quer em vez de colar respostas de exemplo; o conteúdo de exemplo puxa a busca para o tema dele.",
           ],
         },
       },
       {
-        heading: { en: "Constraints: parameters beat prose", es: "Restricciones: los parámetros le ganan a la prosa", pt: "Constraints: parameters beat prose" },
+        heading: { en: "Constraints: parameters beat prose", es: "Restricciones: los parámetros le ganan a la prosa", pt: "Restrições: parâmetros funcionam melhor que texto" },
         bullets: {
           en: [
             "In the API, put hard limits (allowed domains, date ranges, region) in the web_search filters, not in the prompt. Filters apply on every search; prose may not carry through every step of the loop.",
@@ -5795,17 +5795,17 @@ Constraints:
             "Mantené cortas las instrucciones personalizadas: se releen en cada paso. En la API, definir instructions reemplaza el system prompt del preset, así que sobrescribilo solo si necesitás un comportamiento propio de tu app.",
           ],
           pt: [
-            "In the API, put hard limits (allowed domains, date ranges, region) in the web_search filters, not in the prompt. Filters apply on every search; prose may not carry through every step of the loop.",
-            "In the Perplexity app there are no filters, so a short prose constraint ('prefer official announcements') is fine, but treat it as a preference, not a guarantee.",
-            "Don't ask for URLs in the answer text. Sources come back separately; the model can mistype a URL it writes out.",
-            "Keep custom instructions short: they are re-read on every step. In the API, setting instructions replaces the preset's built-in system prompt, so only override it when you need app-specific behavior.",
+            "Na API, coloque os limites rígidos (domínios permitidos, intervalos de datas, região) nos filtros de web_search, não no prompt. Os filtros valem em todas as buscas; o texto pode não se manter em todos os passos do loop.",
+            "No app do Perplexity não há filtros, então uma restrição curta em texto ('prefira comunicados oficiais') funciona, mas trate-a como preferência, não como garantia.",
+            "Não peça URLs no texto da resposta. As fontes voltam separadas; o modelo pode digitar errado uma URL que ele mesmo escreve.",
+            "Mantenha as instruções personalizadas curtas: elas são relidas a cada passo. Na API, definir instructions substitui o system prompt embutido no preset, então só sobrescreva quando precisar de um comportamento específico do seu app.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Current-state research with sources", es: "Investigación del estado actual con fuentes", pt: "Current-state research with sources" },
+        title: { en: "Current-state research with sources", es: "Investigación del estado actual con fuentes", pt: "Pesquisa sobre a situação atual, com fontes" },
         purpose: "text",
         target: "perplexity",
         prompt: {
@@ -5827,19 +5827,19 @@ Por cada desarrollo:
 Cerrá con un párrafo breve sobre lo que todavía es incierto o está en discusión.
 
 Si las fuentes no cubren alguna parte, decilo en vez de completar el hueco. Si un resultado es de otro período, producto u organización distinto del que pregunté, aclará la diferencia antes de usarlo.`,
-          pt: `What are the 3 most important developments in [specific topic, with the terms an expert would use] between [start month year] and [end month year]?
+          pt: `Quais são os 3 desdobramentos mais importantes em [tema específico, com os termos que um especialista usaria] entre [mês e ano iniciais] e [mês e ano finais]?
 
-For each development:
-- What changed, who it affects, and why it matters (3–4 sentences).
-- Cite the sources that support it, preferring official announcements and primary documents.
+Para cada desdobramento:
+- O que mudou, quem é afetado e por que importa (3–4 frases).
+- Cite as fontes que o sustentam, dando preferência a comunicados oficiais e documentos primários.
 
-Finish with one short paragraph on what is still uncertain or disputed.
+Termine com um parágrafo curto sobre o que ainda é incerto ou contestado.
 
-If the sources don't cover part of this, say so instead of filling the gap. If a result is about a different period, product, or organization than the one I asked about, state the mismatch before using it.`,
+Se as fontes não cobrirem parte disto, diga isso em vez de preencher a lacuna. Se um resultado for sobre um período, produto ou organização diferente do que eu perguntei, declare a diferença antes de usá-lo.`,
         },
       },
       {
-        title: { en: "Deep-research brief (high preset)", es: "Brief de investigación profunda (preset high)", pt: "Deep-research brief (high preset)" },
+        title: { en: "Deep-research brief (high preset)", es: "Brief de investigación profunda (preset high)", pt: "Briefing de pesquisa a fundo (preset high)" },
         purpose: "text",
         target: "perplexity",
         prompt: {
@@ -5875,48 +5875,48 @@ Estructura del informe (máximo 5 secciones, lo más relevante primero):
 - Preguntas abiertas y evidencia contradictoria
 
 Donde las fuentes no coincidan, mostrá ambas posturas. Donde no haya una fuente confiable, escribí "no encontrado" en lugar de estimar.`,
-          pt: `Research brief: [topic]
+          pt: `Briefing de pesquisa: [tema]
 
-Scope: [what is in / what is out]
-Period: [start] to [end]
-Geography: [countries or markets]
-Analysis dimensions:
-1. [dimension 1, e.g., current pricing models]
-2. [dimension 2, e.g., regulatory changes]
-3. [dimension 3, e.g., main providers and how they differ]
+Escopo: [o que entra / o que fica de fora]
+Período: [início] a [fim]
+Geografia: [países ou mercados]
+Dimensões da análise:
+1. [dimensão 1, ex. modelos de preço atuais]
+2. [dimensão 2, ex. mudanças regulatórias]
+3. [dimensão 3, ex. principais fornecedores e como se diferenciam]
 
-Report structure (at most 5 sections, most relevant first):
-- Executive summary (5 bullets max)
-- One section per dimension, with sources for every factual claim
-- Open questions and conflicting evidence
+Estrutura do relatório (no máximo 5 seções, as mais relevantes primeiro):
+- Resumo executivo (no máximo 5 tópicos)
+- Uma seção por dimensão, com fontes para cada afirmação factual
+- Perguntas em aberto e evidências conflitantes
 
-Where sources disagree, show both positions. Where no reliable source exists, write "not found" instead of estimating.`,
+Quando as fontes divergirem, mostre as duas posições. Quando não houver fonte confiável, escreva "não encontrado" em vez de estimar.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "When should I use Perplexity instead of ChatGPT or Claude?", es: "¿Cuándo uso Perplexity en vez de ChatGPT o Claude?", pt: "When should I use Perplexity instead of ChatGPT or Claude?" },
+        q: { en: "When should I use Perplexity instead of ChatGPT or Claude?", es: "¿Cuándo uso Perplexity en vez de ChatGPT o Claude?", pt: "Quando devo usar o Perplexity em vez do ChatGPT ou do Claude?" },
         a: {
           en: "Use Perplexity when the answer depends on facts that change — current prices, recent product releases, today's news, updated regulations — or when you need sources you can check. Models answering from training data have a cutoff and can give stale information with confidence. Use ChatGPT or Claude for tasks where reasoning over material you provide, long-form writing, or nuanced judgment matter more than freshness. A common workflow is to gather sourced facts in Perplexity and paste them into another model for drafting.",
           es: "Usá Perplexity cuando la respuesta depende de hechos que cambian — precios actuales, lanzamientos recientes, noticias de hoy, regulaciones actualizadas — o cuando necesitás fuentes que puedas verificar. Los modelos que responden desde su entrenamiento tienen una fecha de corte y pueden darte información desactualizada con total seguridad. Usá ChatGPT o Claude cuando importan más el razonamiento sobre material que vos aportás, la redacción larga o el criterio fino. Un flujo habitual es juntar los datos con fuentes en Perplexity y pegarlos en otro modelo para redactar.",
-          pt: "Use Perplexity when the answer depends on facts that change — current prices, recent product releases, today's news, updated regulations — or when you need sources you can check. Models answering from training data have a cutoff and can give stale information with confidence. Use ChatGPT or Claude for tasks where reasoning over material you provide, long-form writing, or nuanced judgment matter more than freshness. A common workflow is to gather sourced facts in Perplexity and paste them into another model for drafting.",
+          pt: "Use o Perplexity quando a resposta depender de fatos que mudam — preços atuais, lançamentos recentes de produtos, notícias do dia, regulamentações atualizadas — ou quando você precisar de fontes que possa conferir. Modelos que respondem com base nos dados de treinamento têm uma data de corte e podem dar informações desatualizadas com toda a confiança. Use o ChatGPT ou o Claude em tarefas em que raciocinar sobre o material que você fornece, escrever textos longos ou fazer julgamentos com nuances importa mais que a atualidade. Um fluxo comum é reunir fatos com fontes no Perplexity e colá-los em outro modelo para redigir.",
         },
       },
       {
-        q: { en: "I used Sonar or Sonar Pro in the API. What do I switch to?", es: "Usaba Sonar o Sonar Pro en la API. ¿A qué me paso?", pt: "I used Sonar or Sonar Pro in the API. What do I switch to?" },
+        q: { en: "I used Sonar or Sonar Pro in the API. What do I switch to?", es: "Usaba Sonar o Sonar Pro en la API. ¿A qué me paso?", pt: "Eu usava o Sonar ou o Sonar Pro na API. Para o que eu migro?" },
         a: {
           en: "Perplexity's migration docs include a table recommending a preset for each former Sonar model; use it as a starting point and confirm on a sample of your own queries, since Perplexity says presets are tuned over time. Support for Sonar Chat Completions ended on September 27, 2026; Perplexity says synchronous and streaming requests are being reformulated as Agent API requests gradually, while asynchronous Sonar requests are no longer supported. The prompt advice in this guide applies to all presets; what changes most between them is how much research you ask for in one prompt.",
           es: "La documentación de migración de Perplexity incluye una tabla que recomienda un preset para cada modelo Sonar anterior; tomala como punto de partida y confirmala con una muestra de tus propias consultas, porque Perplexity aclara que los presets se ajustan con el tiempo. El soporte de Sonar Chat Completions terminó el 27 de septiembre de 2026; según Perplexity, las solicitudes sincrónicas y en streaming se están reformulando gradualmente como solicitudes de la Agent API, mientras que las asincrónicas de Sonar ya no tienen soporte. Los consejos de prompting de esta guía aplican a todos los presets; lo que más cambia entre ellos es cuánta investigación pedís en un solo prompt.",
-          pt: "Perplexity's migration docs include a table recommending a preset for each former Sonar model; use it as a starting point and confirm on a sample of your own queries, since Perplexity says presets are tuned over time. Support for Sonar Chat Completions ended on September 27, 2026; Perplexity says synchronous and streaming requests are being reformulated as Agent API requests gradually, while asynchronous Sonar requests are no longer supported. The prompt advice in this guide applies to all presets; what changes most between them is how much research you ask for in one prompt.",
+          pt: "A documentação de migração do Perplexity traz uma tabela que recomenda um preset para cada antigo modelo Sonar; use-a como ponto de partida e confirme com uma amostra das suas próprias consultas, já que o Perplexity diz que os presets são ajustados com o tempo. O suporte ao Sonar Chat Completions terminou em 27 de setembro de 2026; o Perplexity diz que as requisições síncronas e de streaming estão sendo reformuladas aos poucos como requisições da Agent API, enquanto as requisições assíncronas do Sonar não são mais aceitas. Os conselhos de prompt deste guia valem para todos os presets; o que mais muda entre eles é quanta pesquisa você pede em um único prompt.",
         },
       },
       {
-        q: { en: "How do I check if Perplexity's sources are reliable?", es: "¿Cómo verifico si las fuentes de Perplexity son confiables?", pt: "How do I check if Perplexity's sources are reliable?" },
+        q: { en: "How do I check if Perplexity's sources are reliable?", es: "¿Cómo verifico si las fuentes de Perplexity son confiables?", pt: "Como confiro se as fontes do Perplexity são confiáveis?" },
         a: {
           en: "Open the cited sources, especially for important decisions. Perplexity surfaces what it can find and access — that isn't the same as editorial curation, and pages behind logins or paywalls may be missing. For medical, legal, or financial decisions, treat the output as a starting point for your own source review, not a final answer. Asking it to say when sources don't answer the question, and to flag near-miss results, makes gaps visible instead of hidden.",
           es: "Abrí las fuentes citadas, sobre todo para decisiones importantes. Perplexity muestra lo que puede encontrar y acceder — eso no es lo mismo que curaduría editorial, y pueden faltar páginas detrás de un login o un muro de pago. Para decisiones médicas, legales o financieras, tomá el resultado como punto de partida para tu propia revisión de fuentes, no como respuesta final. Pedirle que avise cuando las fuentes no responden la pregunta y que marque los casi-aciertos hace visibles los huecos en vez de esconderlos.",
-          pt: "Open the cited sources, especially for important decisions. Perplexity surfaces what it can find and access — that isn't the same as editorial curation, and pages behind logins or paywalls may be missing. For medical, legal, or financial decisions, treat the output as a starting point for your own source review, not a final answer. Asking it to say when sources don't answer the question, and to flag near-miss results, makes gaps visible instead of hidden.",
+          pt: "Abra as fontes citadas, principalmente em decisões importantes. O Perplexity mostra o que consegue encontrar e acessar — isso não é o mesmo que uma curadoria editorial, e páginas atrás de login ou paywall podem ficar de fora. Em decisões médicas, jurídicas ou financeiras, trate a saída como ponto de partida para a sua própria revisão das fontes, não como resposta final. Pedir que ele diga quando as fontes não respondem à pergunta e que aponte os resultados quase certos deixa as lacunas visíveis em vez de escondidas.",
         },
       },
     ],
@@ -5926,16 +5926,16 @@ Where sources disagree, show both positions. Where no reliable source exists, wr
     title: {
       en: "How to debug a prompt that gives bad output",
       es: "Cómo depurar un prompt que da resultados malos",
-      pt: "How to debug a prompt that gives bad output",
+      pt: "Como depurar um prompt que gera respostas ruins",
     },
     description: {
       en: "A systematic method for diagnosing why a prompt fails and fixing it without trial and error.",
       es: "Un método sistemático para diagnosticar por qué falla un prompt y corregirlo sin prueba y error.",
-      pt: "A systematic method for diagnosing why a prompt fails and fixing it without trial and error.",
+      pt: "Um método sistemático para diagnosticar por que um prompt falha e corrigi-lo sem tentativa e erro.",
     },
     sections: [
       {
-        heading: { en: "The most common failure modes", es: "Los modos de falla más comunes", pt: "The most common failure modes" },
+        heading: { en: "The most common failure modes", es: "Los modos de falla más comunes", pt: "Os modos de falha mais comuns" },
         bullets: {
           en: [
             "Missing goal: you described the task but not what success looks like — the model guesses the acceptance criteria.",
@@ -5954,17 +5954,17 @@ Where sources disagree, show both positions. Where no reliable source exists, wr
             "Sin ancla para información faltante: cuando el modelo no sabe algo, llena el hueco. Decirle que marque los huecos previene alucinaciones.",
           ],
           pt: [
-            "Missing goal: you described the task but not what success looks like — the model guesses the acceptance criteria.",
-            "Ambiguous scope: 'brief' means 50 words to you and 500 to the model. Specify numbers.",
-            "Missing context: the model lacks the constraints, definitions, or background that make the task unambiguous in your head.",
-            "Wrong format: you want a table, the model gives prose. You want JSON, the model adds markdown fences.",
-            "Conflicting instructions: 'be concise' plus 'cover everything' in the same prompt produce averaged-out garbage.",
-            "No anchor for missing info: when the model doesn't know something, it fills the gap. Telling it to flag gaps prevents hallucinations.",
+            "Falta o objetivo: você descreveu a tarefa, mas não como é o sucesso — o modelo adivinha os critérios de aceitação.",
+            "Escopo ambíguo: 'breve' significa 50 palavras para você e 500 para o modelo. Especifique números.",
+            "Falta contexto: o modelo não tem as restrições, as definições ou o histórico que deixam a tarefa inequívoca na sua cabeça.",
+            "Formato errado: você quer uma tabela e o modelo entrega texto corrido. Você quer JSON e o modelo acrescenta blocos de markdown.",
+            "Instruções conflitantes: 'seja conciso' mais 'cubra tudo' no mesmo prompt geram uma média sem utilidade.",
+            "Nenhuma âncora para a informação ausente: quando o modelo não sabe algo, ele preenche a lacuna. Dizer a ele para sinalizar as lacunas evita alucinações.",
           ],
         },
       },
       {
-        heading: { en: "The debugging process", es: "El proceso de depuración", pt: "The debugging process" },
+        heading: { en: "The debugging process", es: "El proceso de depuración", pt: "O processo de depuração" },
         bullets: {
           en: [
             "Step 1 — isolate the symptom: write down exactly what went wrong. 'Too long', 'wrong format', 'hallucinated facts', 'missed the point', 'inconsistent across runs'.",
@@ -5981,18 +5981,18 @@ Where sources disagree, show both positions. Where no reliable source exists, wr
             "Paso 5 — bloqueá lo que funciona con un ejemplo de formato: una vez que el output es correcto, agregá un ejemplo de una línea del formato exacto que querés. Previene la deriva cuando reutilizás el prompt.",
           ],
           pt: [
-            "Step 1 — isolate the symptom: write down exactly what went wrong. 'Too long', 'wrong format', 'hallucinated facts', 'missed the point', 'inconsistent across runs'.",
-            "Step 2 — find the missing instruction: for each symptom, ask 'what would I need to say to a capable human to prevent this?' That missing instruction is what goes into the prompt.",
-            "Step 3 — add one fix at a time: change a single variable per run so you know what actually fixed it. Multiple changes at once make it impossible to know which one worked.",
-            "Step 4 — test with edge cases: run the fixed prompt on a harder version of the task, a short input, a long input, and an input with missing data. Real prompts need to handle all of these.",
-            "Step 5 — lock what works with a format example: once the output is right, add a one-line example of the exact format you want. It prevents drift when you reuse the prompt.",
+            "Passo 1 — isole o sintoma: anote exatamente o que deu errado. 'Longo demais', 'formato errado', 'fatos inventados', 'não entendeu o ponto', 'inconsistente entre execuções'.",
+            "Passo 2 — encontre a instrução que falta: para cada sintoma, pergunte 'o que eu precisaria dizer a uma pessoa capaz para evitar isso?' Essa instrução que falta é o que entra no prompt.",
+            "Passo 3 — acrescente uma correção de cada vez: mude uma única variável por execução para saber o que realmente resolveu. Várias mudanças ao mesmo tempo tornam impossível saber qual funcionou.",
+            "Passo 4 — teste com casos de borda: rode o prompt corrigido em uma versão mais difícil da tarefa, com uma entrada curta, uma longa e uma com dados faltando. Prompts reais precisam dar conta de tudo isso.",
+            "Passo 5 — fixe o que funciona com um exemplo de formato: quando a saída estiver certa, acrescente um exemplo de uma linha do formato exato que você quer. Isso evita desvios quando você reutilizar o prompt.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Prompt self-diagnostic", es: "Auto-diagnóstico de prompt", pt: "Prompt self-diagnostic" },
+        title: { en: "Prompt self-diagnostic", es: "Auto-diagnóstico de prompt", pt: "Autodiagnóstico de prompt" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -6022,23 +6022,23 @@ Prompt a revisar:
 """
 [pegá el prompt que está dando resultados malos]
 """`,
-          pt: `You are a prompt quality reviewer. Analyze the following prompt and identify the top 3 reasons it might produce bad output.
+          pt: `Você é um revisor de qualidade de prompts. Analise o prompt a seguir e identifique os 3 principais motivos pelos quais ele pode gerar uma saída ruim.
 
-For each issue:
-1. Name the failure mode (e.g., "missing format constraint", "ambiguous scope", "no anchor for missing info").
-2. Quote the exact part of the prompt that causes it.
-3. Write a 1-sentence fix.
+Para cada problema:
+1. Dê nome ao modo de falha (ex.: "falta restrição de formato", "escopo ambíguo", "nenhuma âncora para informação ausente").
+2. Cite a parte exata do prompt que causa o problema.
+3. Escreva uma correção em 1 frase.
 
-Then rewrite the full prompt with all three fixes applied.
+Depois, reescreva o prompt completo com as três correções aplicadas.
 
-Prompt to review:
+Prompt para revisar:
 """
-[paste the prompt that is giving bad results]
+[cole o prompt que está dando resultados ruins]
 """`,
         },
       },
       {
-        title: { en: "Output comparison: what changed?", es: "Comparación de outputs: ¿qué cambió?", pt: "Output comparison: what changed?" },
+        title: { en: "Output comparison: what changed?", es: "Comparación de outputs: ¿qué cambió?", pt: "Comparação de saídas: o que mudou?" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -6074,40 +6074,40 @@ Enfocate en:
 - ¿Qué regla de formato de output faltaba en el prompt que generó A?
 - ¿Qué restricción o ejemplo haría que A fuera imposible y B predecible?
 - Escribí el agregado mínimo al prompt original (1–3 líneas) que cierra la brecha.`,
-          pt: `Compare these two prompt outputs and explain what instruction change would produce output B instead of output A.
+          pt: `Compare estas duas saídas de prompt e explique qual mudança de instrução geraria a saída B em vez da saída A.
 
-Output A (bad):
+Saída A (ruim):
 """
-[paste the bad output]
-"""
-
-Output B (good):
-"""
-[paste an example of the output you actually want]
+[cole a saída ruim]
 """
 
-Focus on:
-- What output format rule was missing in the prompt that generated A?
-- What constraint or example would make A impossible and B predictable?
-- Write the minimum addition to the original prompt (1–3 lines) that closes the gap.`,
+Saída B (boa):
+"""
+[cole um exemplo da saída que você realmente quer]
+"""
+
+Concentre-se em:
+- Qual regra de formato de saída faltou no prompt que gerou A?
+- Qual restrição ou exemplo tornaria A impossível e B previsível?
+- Escreva o acréscimo mínimo ao prompt original (1–3 linhas) que fecha essa lacuna.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why does my prompt work sometimes but not others?", es: "¿Por qué mi prompt a veces funciona y a veces no?", pt: "Why does my prompt work sometimes but not others?" },
+        q: { en: "Why does my prompt work sometimes but not others?", es: "¿Por qué mi prompt a veces funciona y a veces no?", pt: "Por que meu prompt funciona às vezes e às vezes não?" },
         a: {
           en: "Inconsistent outputs usually mean the prompt has ambiguity the model resolves differently each time — no single correct interpretation, so it picks one at random. The fix is to reduce ambiguity: specify the format with an example, constrain the scope with numbers, and remove conflicting instructions. When strict consistency matters, also lower the model's temperature setting if you control it, or lock the output to a JSON schema where one is available.",
           es: "Los outputs inconsistentes generalmente significan que el prompt tiene ambigüedad que el modelo resuelve de manera diferente cada vez — sin una interpretación correcta única, elige una al azar. El fix es reducir la ambigüedad: especificá el formato con un ejemplo, restringí el alcance con números y eliminá instrucciones contradictorias. Cuando la consistencia estricta importa, también bajá la configuración de temperatura del modelo si la controlás, o bloqueá el output a un JSON schema cuando haya uno disponible.",
-          pt: "Inconsistent outputs usually mean the prompt has ambiguity the model resolves differently each time — no single correct interpretation, so it picks one at random. The fix is to reduce ambiguity: specify the format with an example, constrain the scope with numbers, and remove conflicting instructions. When strict consistency matters, also lower the model's temperature setting if you control it, or lock the output to a JSON schema where one is available.",
+          pt: "Saídas inconsistentes costumam significar que o prompt tem uma ambiguidade que o modelo resolve de um jeito diferente a cada vez — não há uma única interpretação correta, então ele escolhe uma ao acaso. A correção é reduzir a ambiguidade: especifique o formato com um exemplo, restrinja o escopo com números e remova instruções conflitantes. Quando a consistência rigorosa importar, também reduza a temperatura do modelo, se você tiver controle sobre ela, ou fixe a saída em um JSON Schema quando houver essa opção.",
         },
       },
       {
-        q: { en: "How many iterations does it usually take to fix a prompt?", es: "¿Cuántas iteraciones suele llevar arreglar un prompt?", pt: "How many iterations does it usually take to fix a prompt?" },
+        q: { en: "How many iterations does it usually take to fix a prompt?", es: "¿Cuántas iteraciones suele llevar arreglar un prompt?", pt: "Quantas iterações costuma levar para corrigir um prompt?" },
         a: {
           en: "Most prompt problems are fixed in 2–3 iterations when you change one thing at a time. Common mistakes that drag it out: changing multiple things at once (so you can't tell what worked), testing only on the original input (missing edge cases), and fixing symptoms instead of root causes. A prompt that handles 5 diverse test inputs reliably is genuinely fixed. One that passes only the original test case will break in production.",
           es: "La mayoría de los problemas de prompts se arreglan en 2–3 iteraciones cuando cambiás una cosa a la vez. Los errores comunes que lo prolongan: cambiar múltiples cosas a la vez (así no podés saber qué funcionó), testear solo en el input original (sin casos límite), y arreglar síntomas en lugar de causas raíz. Un prompt que maneja de manera confiable 5 inputs diversos está genuinamente arreglado. Uno que pasa solo el caso de test original se va a romper en producción.",
-          pt: "Most prompt problems are fixed in 2–3 iterations when you change one thing at a time. Common mistakes that drag it out: changing multiple things at once (so you can't tell what worked), testing only on the original input (missing edge cases), and fixing symptoms instead of root causes. A prompt that handles 5 diverse test inputs reliably is genuinely fixed. One that passes only the original test case will break in production.",
+          pt: "A maioria dos problemas de prompt se resolve em 2–3 iterações quando você muda uma coisa de cada vez. Erros comuns que prolongam o processo: mudar várias coisas ao mesmo tempo (aí você não sabe o que funcionou), testar só com a entrada original (deixando de fora os casos de borda) e corrigir sintomas em vez das causas. Um prompt que dá conta de 5 entradas de teste variadas de forma confiável está realmente corrigido. Um que só passa no caso de teste original vai quebrar em produção.",
         },
       },
     ],
