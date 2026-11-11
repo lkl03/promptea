@@ -21,7 +21,7 @@ import "server-only";
 import * as crypto from "node:crypto";
 import { FieldPath, FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
-import type { ContentLang } from "@/lib/domain";
+import { isContentLang, isLang, type ContentLang, type Lang } from "@/lib/domain";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
 import { sortEditionsNewestFirst, stripEditionMeta, toPublicEdition } from "@/lib/newsletter/archive";
 import type { ClaimResult, NewsletterRunRecord, NewsletterStore, SubscriberRecord } from "@/lib/newsletter/run";
@@ -63,11 +63,16 @@ function deliveryDocId(editionId: string, recipientKey: string): string {
 
 export async function addSubscriber(input: {
   email: string;
+  /** The edition to send: Spanish or English. */
   lang: ContentLang;
+  /** v1.8.2: the interface language of the form, stored only when it has no edition of its own ("pt"). */
+  uiLang?: Lang;
 }): Promise<{ outcome: "subscribed" | "already_subscribed" }> {
   const db = getAdminFirestore();
   const email = input.email.trim().toLowerCase();
   const emailHash = hashEmail(email);
+  // Stored only when it adds information (a Portuguese visitor reading the English edition).
+  const uiLang = input.uiLang && input.uiLang !== input.lang ? { uiLang: input.uiLang } : {};
 
   try {
     const snap = await db
@@ -88,6 +93,7 @@ export async function addSubscriber(input: {
       await doc.ref.update({
         status: "active",
         lang: input.lang,
+        ...uiLang,
         updatedAt: FieldValue.serverTimestamp(),
       });
 
@@ -99,6 +105,7 @@ export async function addSubscriber(input: {
       email,
       emailHash,
       lang: input.lang,
+      ...uiLang,
       subscribedAt: new Date().toISOString(),
       unsubscribeToken: generateUnsubscribeToken(),
       status: "active",
@@ -116,7 +123,7 @@ export async function addSubscriber(input: {
 }
 
 export type RemoveSubscriberResult =
-  | { ok: true; lang: ContentLang | null }
+  | { ok: true; lang: Lang | null }
   | { ok: false; reason: "invalid_token" | "not_found" | "unavailable" };
 
 /** Idempotent: unsubscribing twice is still a success. */
@@ -140,8 +147,11 @@ export async function removeSubscriber(token: string): Promise<RemoveSubscriberR
       updatedAt: FieldValue.serverTimestamp(),
     });
 
-    const lang = doc.data()?.lang;
-    return { ok: true, lang: lang === "es" || lang === "en" ? lang : null };
+    // The confirmation page is shown in the language the person subscribed from
+    // (uiLang, v1.8.2) when there is one, else in the language of their edition.
+    const data = doc.data();
+    const lang = isLang(data?.uiLang) ? data.uiLang : isContentLang(data?.lang) ? data.lang : null;
+    return { ok: true, lang };
   } catch (err) {
     console.error("[newsletter] removeSubscriber failed:", (err as { code?: unknown })?.code ?? "unknown");
     return { ok: false, reason: "unavailable" };

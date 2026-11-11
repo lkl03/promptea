@@ -8,6 +8,7 @@
 // not an OOM.
 
 import { z } from "zod";
+import { CONTENT_LANGS, LANGS } from "@/lib/domain";
 
 // ---------------------------------------------------------------------------
 // Helpers (mirroring the trimmed helper in blog/types.ts)
@@ -123,7 +124,15 @@ export type NewsletterEdition = z.infer<typeof NewsletterEditionSchema>;
 export const NewsletterSubscriberSchema = z.object({
   email: z.string().trim().min(5).max(320).toLowerCase(),
   emailHash: trimmed(64, 64),
-  lang: z.enum(["en", "es"]),
+  /** The EDITION the subscriber receives. The newsletter is written in Spanish and English. */
+  lang: z.enum(CONTENT_LANGS),
+  /**
+   * v1.8.2 — the interface language the person subscribed from, when it is not
+   * one the newsletter is written in (today: "pt"). Kept so a future Portuguese
+   * edition can be offered to exactly these subscribers; nothing reads it for
+   * sending. Absent on every subscriber created before v1.8.2.
+   */
+  uiLang: z.enum(LANGS).optional(),
   subscribedAt: z.string(),
   unsubscribeToken: trimmed(64, 64),
   status: z.enum(["active", "unsubscribed"]),
@@ -137,7 +146,10 @@ export type NewsletterSubscriber = z.infer<typeof NewsletterSubscriberSchema>;
 
 export const SubscribeRequestSchema = z.object({
   email: z.string().trim().min(5).max(320).email("invalid email address"),
-  lang: z.enum(["en", "es"]),
+  /** The edition to receive: "es" or "en" (unchanged contract). */
+  lang: z.enum(CONTENT_LANGS),
+  /** v1.8.2 — optional: the interface language of the form ("pt" under /pt). */
+  uiLang: z.enum(LANGS).optional(),
   consent: z.literal(true, {
     message: "consent must be true",
   }),

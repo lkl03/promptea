@@ -300,6 +300,7 @@
       "barCta": "Assinar",
       "emailPlaceholder": "seu@email.com",
       "languageLabel": "Idioma da newsletter",
+      "languageHint": "A newsletter ainda não tem edição em português: escolha entre inglês e espanhol.",
       "consentLabel": "Quero receber a newsletter Promptea Weekly.",
       "submit": "Assinar",
       "submitting": "Assinando…",

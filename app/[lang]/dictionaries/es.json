@@ -300,6 +300,7 @@
       "barCta": "Suscribirme",
       "emailPlaceholder": "tu@email.com",
       "languageLabel": "Idioma",
+      "languageHint": "El newsletter se escribe en español e inglés.",
       "consentLabel": "Quiero recibir el newsletter Promptea Semanal.",
       "submit": "Suscribirme",
       "submitting": "Suscribiendo…",
