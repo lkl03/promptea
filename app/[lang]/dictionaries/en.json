@@ -534,6 +534,17 @@
   },
   "changelog": {
     "olderNotice": "Versions before v1.8.0 are listed in English.",
+    "v182": {
+      "released": "Released: 2026-11-11",
+      "items": [
+        "Promptea now speaks Brazilian Portuguese: pick PT in the header. The interface, the product pages, the glossary, the model pages and the prompt packs are translated.",
+        "The analyzer answers in Portuguese: score, findings, recommendations and the optimized prompt. A prompt written in Portuguese is analyzed properly from any language of the site.",
+        "Find the best AI explains its recommendation in Portuguese too.",
+        "AI Daily and the newsletter are still written in English and Spanish: under PT they are shown in English, and the page says so.",
+        "Guides are read in English under PT until each one is translated, with a notice.",
+        "Image prompts requested in Portuguese are composed in English around your own words, which is what image generators understand best."
+      ]
+    },
     "v181": {
       "released": "Released: 2026-11-10",
       "items": [

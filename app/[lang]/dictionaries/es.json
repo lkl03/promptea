@@ -534,6 +534,17 @@
   },
   "changelog": {
     "olderNotice": "Las versiones anteriores a la v1.8.0 se muestran en español.",
+    "v182": {
+      "released": "Lanzado: 11-11-2026",
+      "items": [
+        "Promptea ahora habla portugués de Brasil: elegí PT en el encabezado. La interfaz, las páginas del producto, el glosario, las páginas de modelos y los packs de prompts están traducidos.",
+        "El analizador responde en portugués: puntaje, hallazgos, recomendaciones y prompt optimizado. Un prompt escrito en portugués se analiza bien desde cualquier idioma del sitio.",
+        "Elegir la mejor IA también explica su recomendación en portugués.",
+        "IA al Día y el newsletter se siguen escribiendo en inglés y español: en PT se muestran en inglés y la página lo avisa.",
+        "Las guías se leen en inglés en PT hasta que cada una se traduzca, con un aviso.",
+        "Los prompts de imagen pedidos en portugués se arman en inglés con tus propias palabras, que es lo que mejor entienden los generadores de imágenes."
+      ]
+    },
     "v181": {
       "released": "Lanzado: 10-11-2026",
       "items": [
