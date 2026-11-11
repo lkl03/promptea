@@ -6117,16 +6117,16 @@ Concentre-se em:
     title: {
       en: "AI prompts for product managers: PRDs, user research, and prioritization",
       es: "Prompts de IA para product managers: PRDs, investigación de usuarios y priorización",
-      pt: "AI prompts for product managers: PRDs, user research, and prioritization",
+      pt: "Prompts de IA para gerentes de produto: PRDs, pesquisa com usuários e priorização",
     },
     description: {
       en: "Copy-paste prompt templates for the recurring PM workflows that AI handles well: writing specs, synthesizing research, and structuring prioritization decisions.",
       es: "Plantillas de prompts copy-paste para los flujos de trabajo recurrentes de un PM que la IA maneja bien: escribir specs, sintetizar investigación y estructurar decisiones de priorización.",
-      pt: "Copy-paste prompt templates for the recurring PM workflows that AI handles well: writing specs, synthesizing research, and structuring prioritization decisions.",
+      pt: "Templates de prompt para copiar e colar nos fluxos recorrentes de PM em que a IA se sai bem: escrever especificações, sintetizar pesquisas e estruturar decisões de priorização.",
     },
     sections: [
       {
-        heading: { en: "Where AI saves PMs the most time", es: "Dónde la IA ahorra más tiempo a los PMs", pt: "Where AI saves PMs the most time" },
+        heading: { en: "Where AI saves PMs the most time", es: "Dónde la IA ahorra más tiempo a los PMs", pt: "Onde a IA economiza mais tempo de um PM" },
         bullets: {
           en: [
             "First-draft specs: a well-structured PRD template takes 30 minutes to fill instead of 3 hours to start from scratch.",
@@ -6143,16 +6143,16 @@ Concentre-se em:
             "Panorama competitivo: resumir cómo los competidores abordan un problema específico ahorra horas de cambiar de pestaña (especialmente con un modelo con acceso web).",
           ],
           pt: [
-            "First-draft specs: a well-structured PRD template takes 30 minutes to fill instead of 3 hours to start from scratch.",
-            "User interview synthesis: summarizing 10 interviews into themes, evidence, and gaps is mechanical work — AI handles it well when you give it structure.",
-            "Prioritization frameworks: scoring features against RICE, ICE, or a custom rubric is faster when AI fills in the reasoning for each criterion.",
-            "Stakeholder communication: translating technical scope into executive summaries or customer-facing notes is a common AI strength.",
-            "Competitive landscape: summarizing how competitors address a specific problem saves hours of tab-switching (especially with a web-grounded model).",
+            "Primeiros rascunhos de especificações: um template de PRD bem estruturado leva 30 minutos para preencher, em vez de 3 horas começando do zero.",
+            "Síntese de entrevistas com usuários: resumir 10 entrevistas em temas, evidências e lacunas é um trabalho mecânico — a IA faz isso bem quando você dá a estrutura.",
+            "Frameworks de priorização: pontuar funcionalidades com RICE, ICE ou um critério próprio é mais rápido quando a IA preenche o raciocínio de cada critério.",
+            "Comunicação com as partes interessadas: traduzir um escopo técnico em resumos executivos ou notas para clientes é um ponto forte comum da IA.",
+            "Panorama competitivo: resumir como os concorrentes resolvem um problema específico poupa horas pulando entre abas (principalmente com um modelo que pesquisa na web).",
           ],
         },
       },
       {
-        heading: { en: "How to get reliable output for PM work", es: "Cómo obtener outputs confiables para trabajo de PM", pt: "How to get reliable output for PM work" },
+        heading: { en: "How to get reliable output for PM work", es: "Cómo obtener outputs confiables para trabajo de PM", pt: "Como obter saídas confiáveis no trabalho de PM" },
         bullets: {
           en: [
             "Always give the model the business context: who the user is, what the product does, and what constraint matters most (time, scope, resources).",
@@ -6169,18 +6169,18 @@ Concentre-se em:
             "Usá el modelo para stress-test: 'Jugá al abogado del diablo. ¿Cuáles son las objeciones más fuertes a esta priorización?' Saca a la luz los huecos antes de la reunión de equipo.",
           ],
           pt: [
-            "Always give the model the business context: who the user is, what the product does, and what constraint matters most (time, scope, resources).",
-            "Paste raw material in: interview notes, support tickets, data snippets. The model synthesizes better when it has real input rather than invented scenarios.",
-            "Ask for structure before prose: 'Give me the 5 themes first, then I'll tell you which to expand.' Reviewing structure is faster than reviewing paragraphs.",
-            "Specify the audience: a PRD for engineers needs different depth than a one-pager for the CEO. Name the reader.",
-            "Use the model to stress-test: 'Play devil's advocate. What are the strongest objections to this prioritization?' Surfaces gaps before the team meeting.",
+            "Sempre dê ao modelo o contexto do negócio: quem é o usuário, o que o produto faz e qual restrição mais importa (prazo, escopo, recursos).",
+            "Cole o material bruto: notas de entrevistas, tickets de suporte, trechos de dados. O modelo sintetiza melhor quando tem insumos reais em vez de cenários inventados.",
+            "Peça a estrutura antes do texto: 'Me dê primeiro os 5 temas, depois eu digo quais expandir.' Revisar a estrutura é mais rápido que revisar parágrafos.",
+            "Especifique o público: um PRD para engenheiros precisa de uma profundidade diferente da de um one-pager para o CEO. Diga quem vai ler.",
+            "Use o modelo para pôr à prova: 'Faça o papel de advogado do diabo. Quais são as objeções mais fortes a esta priorização?' Isso revela as lacunas antes da reunião com o time.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Lean PRD first draft", es: "Primer borrador de PRD simplificado", pt: "Lean PRD first draft" },
+        title: { en: "Lean PRD first draft", es: "Primer borrador de PRD simplificado", pt: "Primeiro rascunho de PRD enxuto" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -6220,28 +6220,28 @@ Formato de salida:
 ## Preguntas abiertas
 
 Mantené menos de 600 palabras. Este es un primer borrador para alineación del equipo, no una spec final.`,
-          pt: `Write a lean PRD first draft for this feature.
+          pt: `Escreva um primeiro rascunho de PRD enxuto para esta funcionalidade.
 
-Feature: [what it does in one sentence]
-User problem: [the pain point it solves, from the user's perspective]
-Target user: [who specifically — role, context, or user segment]
-Business goal: [the metric this is expected to move, and by roughly how much]
-Scope constraints: [what is explicitly out of scope for v1]
-Key open questions: [2–3 things that need answers before build]
+Funcionalidade: [o que ela faz, em uma frase]
+Problema do usuário: [a dor que ela resolve, do ponto de vista do usuário]
+Usuário-alvo: [quem, especificamente — cargo, contexto ou segmento de usuários]
+Objetivo de negócio: [a métrica que se espera mover, e mais ou menos quanto]
+Restrições de escopo: [o que fica explicitamente fora da v1]
+Principais perguntas em aberto: [2–3 coisas que precisam de resposta antes de construir]
 
-Output format:
-## Problem
-## Proposed solution (2–3 sentences)
-## User stories (3–5, as "As a [user], I want [action] so that [outcome]")
-## Success criteria (measurable, not aspirational)
-## Out of scope
-## Open questions
+Formato de saída:
+## Problema
+## Solução proposta (2–3 frases)
+## Histórias de usuário (3–5, no formato "Como [usuário], quero [ação] para [resultado]")
+## Critérios de sucesso (mensuráveis, não aspiracionais)
+## Fora do escopo
+## Perguntas em aberto
 
-Keep it under 600 words. This is a first draft for team alignment, not a final spec.`,
+Mantenha abaixo de 600 palavras. Este é um primeiro rascunho para alinhar o time, não uma especificação final.`,
         },
       },
       {
-        title: { en: "User interview synthesis", es: "Síntesis de entrevistas de usuarios", pt: "User interview synthesis" },
+        title: { en: "User interview synthesis", es: "Síntesis de entrevistas de usuarios", pt: "Síntese de entrevistas com usuários" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -6289,46 +6289,46 @@ Restricciones:
 - Incluí solo temas respaldados por al menos 2 usuarios diferentes.
 - No inventes citas ni agregues suposiciones externas.
 - Marcá cualquier cosa donde la evidencia sea escasa (solo 1 usuario lo mencionó).`,
-          pt: `Synthesize the following user interview notes into structured findings.
+          pt: `Sintetize as seguintes notas de entrevistas com usuários em achados estruturados.
 
-Interview notes:
+Notas das entrevistas:
 """
-[paste raw notes from 3–10 interviews here]
+[cole aqui as notas brutas de 3–10 entrevistas]
 """
 
-Output:
-1. Top 5 themes — each with:
-   - Theme name (3–5 words)
-   - 1-sentence description
-   - 2–3 direct quotes or paraphrases that support it
-   - Which user segment mentioned it most
+Saída:
+1. Os 5 temas principais — cada um com:
+   - Nome do tema (3–5 palavras)
+   - Descrição em 1 frase
+   - 2–3 citações diretas ou paráfrases que o sustentam
+   - Qual segmento de usuários mais o mencionou
 
-2. Top 3 unmet needs (things users said they wish existed or complained about most)
+2. As 3 principais necessidades não atendidas (o que os usuários disseram que gostariam que existisse ou de que mais reclamaram)
 
-3. Gaps — what important questions remain unanswered by these interviews?
+3. Lacunas — quais perguntas importantes estas entrevistas deixam sem resposta?
 
-Constraints:
-- Only include themes supported by at least 2 different users.
-- Do not invent quotes or add outside assumptions.
-- Flag anything where the evidence is thin (only 1 user mentioned it).`,
+Restrições:
+- Inclua só temas sustentados por pelo menos 2 usuários diferentes.
+- Não invente citações nem acrescente suposições externas.
+- Sinalize tudo em que a evidência for fraca (só 1 usuário mencionou).`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can AI replace user research?", es: "¿Puede la IA reemplazar la investigación de usuarios?", pt: "Can AI replace user research?" },
+        q: { en: "Can AI replace user research?", es: "¿Puede la IA reemplazar la investigación de usuarios?", pt: "A IA pode substituir a pesquisa com usuários?" },
         a: {
           en: "No. AI synthesizes information you give it; it cannot observe behavior, pick up on tone, notice what users avoid saying, or ask follow-up questions in the moment. Where AI genuinely saves time is after the research: transcribing, synthesizing across interviews, grouping themes, and drafting summaries. The judgment about which themes matter for your product and which user quotes reveal something real versus situational still needs a PM who understands the context.",
           es: "No. La IA sintetiza la información que le das; no puede observar comportamiento, captar el tono, notar lo que los usuarios evitan decir, ni hacer preguntas de seguimiento en el momento. Donde la IA realmente ahorra tiempo es después de la investigación: transcribir, sintetizar entre entrevistas, agrupar temas y redactar resúmenes. El criterio sobre qué temas importan para tu producto y qué citas de usuarios revelan algo real versus situacional todavía necesita un PM que entienda el contexto.",
-          pt: "No. AI synthesizes information you give it; it cannot observe behavior, pick up on tone, notice what users avoid saying, or ask follow-up questions in the moment. Where AI genuinely saves time is after the research: transcribing, synthesizing across interviews, grouping themes, and drafting summaries. The judgment about which themes matter for your product and which user quotes reveal something real versus situational still needs a PM who understands the context.",
+          pt: "Não. A IA sintetiza as informações que você dá a ela; ela não consegue observar o comportamento, perceber o tom, notar o que os usuários evitam dizer nem fazer perguntas de acompanhamento na hora. Onde a IA realmente economiza tempo é depois da pesquisa: transcrever, sintetizar entre entrevistas, agrupar temas e redigir resumos. O julgamento sobre quais temas importam para o seu produto e quais citações revelam algo real em vez de circunstancial ainda exige um PM que entenda o contexto.",
         },
       },
       {
-        q: { en: "How do I get AI to write a PRD in our internal format?", es: "¿Cómo hago que la IA escriba un PRD en nuestro formato interno?", pt: "How do I get AI to write a PRD in our internal format?" },
+        q: { en: "How do I get AI to write a PRD in our internal format?", es: "¿Cómo hago que la IA escriba un PRD en nuestro formato interno?", pt: "Como faço a IA escrever um PRD no nosso formato interno?" },
         a: {
           en: "Paste a real example from your team (anonymized or with sensitive details replaced) and say: 'Use exactly this structure and heading format for the new PRD I'm about to describe.' One well-chosen example is more effective than a detailed description of your format — the model infers section order, tone, depth, and terminology from the example. Keep the example short enough that the new content dominates the context.",
           es: "Pegá un ejemplo real de tu equipo (anonimizado o con detalles sensibles reemplazados) y decí: 'Usá exactamente esta estructura y formato de encabezados para el nuevo PRD que voy a describir.' Un ejemplo bien elegido es más efectivo que una descripción detallada de tu formato — el modelo infiere el orden de secciones, el tono, la profundidad y la terminología del ejemplo. Manté el ejemplo lo suficientemente corto como para que el nuevo contenido domine el contexto.",
-          pt: "Paste a real example from your team (anonymized or with sensitive details replaced) and say: 'Use exactly this structure and heading format for the new PRD I'm about to describe.' One well-chosen example is more effective than a detailed description of your format — the model infers section order, tone, depth, and terminology from the example. Keep the example short enough that the new content dominates the context.",
+          pt: "Cole um exemplo real do seu time (anonimizado ou com os detalhes sensíveis substituídos) e diga: 'Use exatamente esta estrutura e este formato de títulos no novo PRD que vou descrever.' Um exemplo bem escolhido é mais eficaz que uma descrição detalhada do seu formato — o modelo deduz a ordem das seções, o tom, a profundidade e a terminologia a partir do exemplo. Mantenha o exemplo curto o bastante para que o conteúdo novo predomine no contexto.",
         },
       },
     ],
@@ -6338,16 +6338,16 @@ Constraints:
     title: {
       en: "Prompt templates for summarization: documents, meetings, and research",
       es: "Plantillas de prompt para resumir: documentos, reuniones e investigación",
-      pt: "Prompt templates for summarization: documents, meetings, and research",
+      pt: "Templates de prompt para resumos: documentos, reuniões e pesquisas",
     },
     description: {
       en: "Copy-paste templates to summarize long documents, meeting notes, and research reliably — with format and length controls built in.",
       es: "Plantillas copy-paste para resumir documentos largos, notas de reuniones e investigaciones de forma confiable, con controles de formato y longitud incluidos.",
-      pt: "Copy-paste templates to summarize long documents, meeting notes, and research reliably — with format and length controls built in.",
+      pt: "Templates para copiar e colar e resumir documentos longos, notas de reunião e pesquisas de forma confiável — com controles de formato e tamanho embutidos.",
     },
     sections: [
       {
-        heading: { en: "Why most summarization prompts fail", es: "Por qué la mayoría de los prompts de resumen fallan", pt: "Why most summarization prompts fail" },
+        heading: { en: "Why most summarization prompts fail", es: "Por qué la mayoría de los prompts de resumen fallan", pt: "Por que a maioria dos prompts de resumo falha" },
         bullets: {
           en: [
             "No length constraint: 'summarize this' gets whatever length the model prefers, not what you need.",
@@ -6364,16 +6364,16 @@ Constraints:
             "Sin instrucción para información faltante: cuando el input es ambiguo, el modelo llena huecos con suposiciones en lugar de marcarlos.",
           ],
           pt: [
-            "No length constraint: 'summarize this' gets whatever length the model prefers, not what you need.",
-            "No format specified: prose summaries and bullet lists carry different information density — pick one explicitly.",
-            "No audience specified: a summary for a technical team looks nothing like one for an executive or a customer.",
-            "No signal about what matters: the model weights recency and repetition by default, not importance to your actual goal.",
-            "No instruction for missing info: when input is ambiguous, the model fills gaps with assumptions rather than flagging them.",
+            "Nenhuma restrição de tamanho: 'resuma isto' recebe o tamanho que o modelo prefere, não o que você precisa.",
+            "Nenhum formato especificado: resumos em texto corrido e listas em tópicos têm densidades de informação diferentes — escolha um de forma explícita.",
+            "Nenhum público especificado: um resumo para um time técnico não tem nada a ver com um para um executivo ou um cliente.",
+            "Nenhum sinal do que importa: por padrão, o modelo dá peso ao que é recente e repetido, não ao que importa para o seu objetivo real.",
+            "Nenhuma instrução para informação ausente: quando a entrada é ambígua, o modelo preenche as lacunas com suposições em vez de sinalizá-las.",
           ],
         },
       },
       {
-        heading: { en: "What makes a reliable summarization prompt", es: "Qué hace confiable a un prompt de resumen", pt: "What makes a reliable summarization prompt" },
+        heading: { en: "What makes a reliable summarization prompt", es: "Qué hace confiable a un prompt de resumen", pt: "O que torna um prompt de resumo confiável" },
         bullets: {
           en: [
             "State the audience and purpose: 'For an executive who will not read the original' produces a different summary than 'For a teammate who needs to take action.'",
@@ -6390,18 +6390,18 @@ Constraints:
             "Pedí un formato estructurado: título + bullets + ítems de acción es más fácil de escanear y actuar que prosa sin cortes.",
           ],
           pt: [
-            "State the audience and purpose: 'For an executive who will not read the original' produces a different summary than 'For a teammate who needs to take action.'",
-            "Set a hard length: '5 bullets max', 'under 150 words', '3 sentences'. The constraint forces prioritization.",
-            "Name what to preserve: key decisions, numbers, dates, open questions, action items — whatever must survive the compression.",
-            "Name what to skip: background the reader knows, examples that only illustrate a point already made, repeated caveats.",
-            "Ask for a structured format: headline + bullets + action items is easier to scan and act on than unbroken prose.",
+            "Diga o público e o propósito: 'Para um executivo que não vai ler o original' gera um resumo diferente de 'Para um colega que precisa agir'.",
+            "Defina um tamanho rígido: 'no máximo 5 tópicos', 'menos de 150 palavras', '3 frases'. A restrição força a priorização.",
+            "Diga o que preservar: decisões principais, números, datas, perguntas em aberto, itens de ação — tudo o que precisa sobreviver à compressão.",
+            "Diga o que pular: o histórico que o leitor já conhece, exemplos que só ilustram um ponto já feito, ressalvas repetidas.",
+            "Peça um formato estruturado: título + tópicos + itens de ação é mais fácil de ler e de transformar em ação do que um texto corrido sem pausas.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Document or article summary", es: "Resumen de documento o artículo", pt: "Document or article summary" },
+        title: { en: "Document or article summary", es: "Resumen de documento o artículo", pt: "Resumo de documento ou artigo" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -6443,29 +6443,29 @@ Documento:
 """
 [pegá el documento acá]
 """`,
-          pt: `Summarize the following document.
+          pt: `Resuma o documento a seguir.
 
-Audience: [who will read this — e.g., a product manager, a non-technical executive, a customer]
-Purpose: [what they will do with the summary — e.g., decide whether to read the full doc, prepare for a meeting, share with their team]
+Público: [quem vai ler — ex. um gerente de produto, um executivo sem perfil técnico, um cliente]
+Propósito: [o que a pessoa vai fazer com o resumo — ex. decidir se lê o documento completo, se preparar para uma reunião, compartilhar com o time]
 
-Output format:
-- Headline (1 sentence): the single most important takeaway
-- Key points (3–5 bullets): decisions made, numbers that matter, open questions
-- Action items (if any): who needs to do what
+Formato de saída:
+- Título (1 frase): a conclusão mais importante
+- Pontos principais (3–5 tópicos): decisões tomadas, números que importam, perguntas em aberto
+- Itens de ação (se houver): quem precisa fazer o quê
 
-Constraints:
-- Under 200 words total
-- Do not include background the audience already knows
-- If something is unclear in the source, flag it rather than guessing
+Restrições:
+- Menos de 200 palavras no total
+- Não inclua o histórico que o público já conhece
+- Se algo estiver pouco claro na fonte, sinalize em vez de chutar
 
-Document:
+Documento:
 """
-[paste document here]
+[cole o documento aqui]
 """`,
         },
       },
       {
-        title: { en: "Meeting notes summary", es: "Resumen de notas de reunión", pt: "Meeting notes summary" },
+        title: { en: "Meeting notes summary", es: "Resumen de notas de reunión", pt: "Resumo de notas de reunião" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -6529,54 +6529,54 @@ Notas de la reunión:
 """
 [pegá las notas crudas de la reunión acá]
 """`,
-          pt: `Summarize the following meeting notes into a concise record.
+          pt: `Resuma as notas de reunião a seguir em um registro conciso.
 
-Output format:
-## One-line summary
-[What was decided or accomplished in one sentence]
+Formato de saída:
+## Resumo em uma linha
+[O que foi decidido ou realizado, em uma frase]
 
-## Decisions made
-- [Decision 1 — who decided it, if mentioned]
-- [Decision 2]
+## Decisões tomadas
+- [Decisão 1 — quem decidiu, se mencionado]
+- [Decisão 2]
 
-## Open questions
-- [Question that was raised but not resolved]
+## Perguntas em aberto
+- [Pergunta que foi levantada, mas não resolvida]
 
-## Action items
-| Owner | Task | Due date |
+## Itens de ação
+| Responsável | Tarefa | Prazo |
 |-------|------|----------|
-| [name] | [task] | [date or "TBD"] |
+| [nome] | [tarefa] | [data ou "A definir"] |
 
-## What was NOT decided
-[Scope, timeline, or resource questions still open]
+## O que NÃO foi decidido
+[Questões de escopo, cronograma ou recursos ainda em aberto]
 
-Constraints:
-- Keep the format exactly as above
-- If the notes don't mention something (e.g., no due dates), use "not mentioned" — do not invent
-- Flag any conflict or unresolved disagreement you see in the notes
+Restrições:
+- Mantenha o formato exatamente como acima
+- Se as notas não mencionarem algo (ex.: nenhum prazo), use "não mencionado" — não invente
+- Sinalize qualquer conflito ou divergência não resolvida que você perceber nas notas
 
-Meeting notes:
+Notas da reunião:
 """
-[paste raw meeting notes here]
+[cole aqui as notas brutas da reunião]
 """`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why does AI miss important details in my summaries?", es: "¿Por qué la IA omite detalles importantes en mis resúmenes?", pt: "Why does AI miss important details in my summaries?" },
+        q: { en: "Why does AI miss important details in my summaries?", es: "¿Por qué la IA omite detalles importantes en mis resúmenes?", pt: "Por que a IA deixa de fora detalhes importantes nos meus resumos?" },
         a: {
           en: "By default, models weight recency and frequency — content that appears late in the document or is mentioned multiple times is more likely to surface. If your key detail appears once, early, or in a footnote, it gets compressed out. The fix is to explicitly tell the model what must survive: 'Preserve all decisions, numbers, and action items.' If a specific detail is critical, name it: 'Do not lose the budget figure, even if the section around it is cut.'",
           es: "Por defecto, los modelos ponderan recencia y frecuencia — el contenido que aparece tarde en el documento o se menciona varias veces tiene más probabilidades de aparecer. Si tu detalle clave aparece una vez, al principio, o en una nota al pie, se comprime. El fix es decirle explícitamente al modelo qué debe sobrevivir: 'Preservá todas las decisiones, números y ítems de acción.' Si un detalle específico es crítico, nombralo: 'No perdás la cifra del presupuesto, aunque se corte la sección que la rodea.'",
-          pt: "By default, models weight recency and frequency — content that appears late in the document or is mentioned multiple times is more likely to surface. If your key detail appears once, early, or in a footnote, it gets compressed out. The fix is to explicitly tell the model what must survive: 'Preserve all decisions, numbers, and action items.' If a specific detail is critical, name it: 'Do not lose the budget figure, even if the section around it is cut.'",
+          pt: "Por padrão, os modelos dão peso ao que é recente e frequente — o conteúdo que aparece no fim do documento ou é mencionado várias vezes tem mais chance de aparecer. Se o seu detalhe principal aparece uma vez só, no começo ou em uma nota de rodapé, ele some na compressão. A correção é dizer explicitamente ao modelo o que precisa sobreviver: 'Preserve todas as decisões, números e itens de ação.' Se um detalhe específico for crítico, diga qual: 'Não perca o valor do orçamento, mesmo que a seção em volta dele seja cortada.'",
         },
       },
       {
-        q: { en: "How do I summarize a document that is too long to paste?", es: "¿Cómo resumo un documento que es demasiado largo para pegarlo?", pt: "How do I summarize a document that is too long to paste?" },
+        q: { en: "How do I summarize a document that is too long to paste?", es: "¿Cómo resumo un documento que es demasiado largo para pegarlo?", pt: "Como resumo um documento longo demais para colar?" },
         a: {
           en: "If the document fits in the model's context window (which for modern models is typically 128k–200k tokens, or roughly 100k–150k words), paste it in full — models handle long inputs well when given explicit output constraints. If it doesn't fit, divide the document into logical sections, summarize each one with the same template, then ask the model to synthesize the section summaries into a final summary. Keep the section summaries short so the final synthesis step has room to work.",
           es: "Si el documento entra en la ventana de contexto del modelo (que para modelos modernos suele ser 128k–200k tokens, o aproximadamente 100k–150k palabras), pegalo completo — los modelos manejan inputs largos bien cuando se les dan restricciones de output explícitas. Si no entra, dividí el documento en secciones lógicas, resumí cada una con la misma plantilla, y luego pedile al modelo que sintetice los resúmenes de sección en un resumen final. Mantené los resúmenes de sección cortos para que el paso de síntesis final tenga espacio para trabajar.",
-          pt: "If the document fits in the model's context window (which for modern models is typically 128k–200k tokens, or roughly 100k–150k words), paste it in full — models handle long inputs well when given explicit output constraints. If it doesn't fit, divide the document into logical sections, summarize each one with the same template, then ask the model to synthesize the section summaries into a final summary. Keep the section summaries short so the final synthesis step has room to work.",
+          pt: "Se o documento couber na janela de contexto do modelo (que nos modelos atuais costuma ser de 128 mil a 200 mil tokens, ou cerca de 100 mil a 150 mil palavras), cole o texto completo — os modelos lidam bem com entradas longas quando recebem restrições de saída explícitas. Se não couber, divida o documento em seções lógicas, resuma cada uma com o mesmo template e depois peça ao modelo para sintetizar os resumos das seções em um resumo final. Mantenha os resumos das seções curtos para que a síntese final tenha espaço para trabalhar.",
         },
       },
     ],
@@ -6586,16 +6586,16 @@ Meeting notes:
     title: {
       en: "How to write better prompts for Claude",
       es: "Cómo escribir mejores prompts para Claude",
-      pt: "How to write better prompts for Claude",
+      pt: "Como escrever prompts melhores para o Claude",
     },
     description: {
       en: "Practical patterns for getting consistent, high-quality output from Claude — what it excels at, how to structure requests, and where it needs explicit guidance.",
       es: "Patrones prácticos para obtener outputs consistentes y de alta calidad de Claude: en qué es fuerte, cómo estructurar pedidos, y dónde necesita instrucciones explícitas.",
-      pt: "Practical patterns for getting consistent, high-quality output from Claude — what it excels at, how to structure requests, and where it needs explicit guidance.",
+      pt: "Padrões práticos para obter do Claude saídas consistentes e de alta qualidade — em que ele se destaca, como estruturar os pedidos e onde ele precisa de orientação explícita.",
     },
     sections: [
       {
-        heading: { en: "Where Claude stands out", es: "Dónde Claude se destaca", pt: "Where Claude stands out" },
+        heading: { en: "Where Claude stands out", es: "Dónde Claude se destaca", pt: "Onde o Claude se destaca" },
         bullets: {
           en: [
             "Long, nuanced tasks: Claude handles long-context documents (200k token window) better than most models. Paste the full contract, code file, or research paper and ask precise questions about it.",
@@ -6612,16 +6612,16 @@ Meeting notes:
             "Edición segura de textos: preservar la voz del autor, no agregar opiniones no solicitadas, mantenerse en el formato pedido — Claude respeta bien los límites editoriales.",
           ],
           pt: [
-            "Long, nuanced tasks: Claude handles long-context documents (200k token window) better than most models. Paste the full contract, code file, or research paper and ask precise questions about it.",
-            "Following complex instructions: Claude is particularly good at applying a long set of rules simultaneously — a style guide, a review rubric, or a multi-part format constraint — without dropping items from the middle.",
-            "Calibrated uncertainty: Claude is more likely than other models to say 'I'm not sure' or flag a confidence limitation rather than confidently hallucinating a fact. Useful for research tasks where knowing what is uncertain matters.",
-            "Reasoning through ambiguity: when you say 'think through this carefully before answering', Claude tends to produce genuine reasoning steps rather than superficial filler.",
-            "Safe text editing: preserving the author's voice, not adding unsolicited opinions, staying in the requested format — Claude respects editorial boundaries well.",
+            "Tarefas longas e cheias de nuances: o Claude lida com documentos de contexto longo (janela de 200 mil tokens) melhor que a maioria dos modelos. Cole o contrato, o arquivo de código ou o artigo científico completo e faça perguntas precisas sobre ele.",
+            "Seguir instruções complexas: o Claude é especialmente bom em aplicar um conjunto longo de regras ao mesmo tempo — um guia de estilo, um critério de revisão ou uma restrição de formato em várias partes — sem perder itens do meio.",
+            "Incerteza calibrada: o Claude tem mais chance que outros modelos de dizer 'não tenho certeza' ou sinalizar um limite de confiança em vez de inventar um fato com segurança. Útil em tarefas de pesquisa em que saber o que é incerto importa.",
+            "Raciocinar diante da ambiguidade: quando você diz 'pense nisso com cuidado antes de responder', o Claude tende a produzir etapas de raciocínio reais em vez de enchimento superficial.",
+            "Edição de texto segura: preservar a voz do autor, não acrescentar opiniões que ninguém pediu, manter o formato solicitado — o Claude respeita bem os limites editoriais.",
           ],
         },
       },
       {
-        heading: { en: "How to structure requests for Claude", es: "Cómo estructurar pedidos para Claude", pt: "How to structure requests for Claude" },
+        heading: { en: "How to structure requests for Claude", es: "Cómo estructurar pedidos para Claude", pt: "Como estruturar pedidos para o Claude" },
         bullets: {
           en: [
             "State the goal before the context: Claude is trained to consider early instructions carefully. Put 'your task is X' before pasting a long document, not after.",
@@ -6638,18 +6638,18 @@ Meeting notes:
             "Para inputs muy largos, ancorá la tarea al final también: después de pegar un documento de 50 páginas, repetí la instrucción central en 1 oración. Claude lee todo el contexto pero la instrucción final tiene peso de recencia.",
           ],
           pt: [
-            "State the goal before the context: Claude is trained to consider early instructions carefully. Put 'your task is X' before pasting a long document, not after.",
-            "Be explicit about format: Claude defaults to well-structured prose with headers. If you want bullets only, no prose, or a specific schema, say so directly.",
-            "Use 'think step by step' for reasoning tasks: for analysis, comparisons, or multi-step decisions, this phrase reliably produces more reasoned output.",
-            "Tell Claude what to skip: 'Do not add caveats about AI limitations', 'Do not start with a restatement of my request', 'Do not offer alternatives I didn't ask for' — Claude respects these constraints.",
-            "For very long inputs, anchor the task at the end too: after pasting a 50-page document, repeat the core instruction in 1 sentence. Claude reads the whole context but the final instruction carries recency weight.",
+            "Declare o objetivo antes do contexto: o Claude é treinado para levar em conta com atenção as instruções do início. Coloque 'sua tarefa é X' antes de colar um documento longo, não depois.",
+            "Seja explícito sobre o formato: o Claude usa por padrão texto bem estruturado com títulos. Se você quiser só tópicos, nada de texto corrido ou um esquema específico, diga isso diretamente.",
+            "Use 'pense passo a passo' em tarefas de raciocínio: em análises, comparações ou decisões de várias etapas, essa frase gera de forma confiável uma saída mais bem fundamentada.",
+            "Diga ao Claude o que pular: 'Não acrescente ressalvas sobre as limitações da IA', 'Não comece repetindo o meu pedido', 'Não ofereça alternativas que eu não pedi' — o Claude respeita essas restrições.",
+            "Em entradas muito longas, ancore a tarefa também no final: depois de colar um documento de 50 páginas, repita a instrução central em 1 frase. O Claude lê todo o contexto, mas a instrução final tem o peso de ser a mais recente.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Structured analysis with Claude", es: "Análisis estructurado con Claude", pt: "Structured analysis with Claude" },
+        title: { en: "Structured analysis with Claude", es: "Análisis estructurado con Claude", pt: "Análise estruturada com o Claude" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -6687,27 +6687,27 @@ Documento:
 """
 [pegá el documento acá]
 """`,
-          pt: `Your task: analyze the document below and answer the specific questions listed.
+          pt: `Sua tarefa: analisar o documento abaixo e responder às perguntas específicas listadas.
 
-Think through the document carefully before answering. If a question cannot be answered from the document alone, say so explicitly rather than guessing.
+Leia o documento com atenção antes de responder. Se uma pergunta não puder ser respondida só com o documento, diga isso de forma explícita em vez de chutar.
 
-Questions to answer:
-1. [Your first specific question]
-2. [Your second specific question]
-3. [Your third specific question]
+Perguntas a responder:
+1. [Sua primeira pergunta específica]
+2. [Sua segunda pergunta específica]
+3. [Sua terceira pergunta específica]
 
-Format: answer each question with a label (Q1:, Q2:, Q3:), followed by 2–4 sentences. Use a bullet for evidence when citing a specific part of the document.
+Formato: responda a cada pergunta com um rótulo (P1:, P2:, P3:), seguido de 2–4 frases. Use um tópico para a evidência quando citar uma parte específica do documento.
 
-Do not include an introduction or conclusion. Start directly with Q1.
+Não inclua introdução nem conclusão. Comece diretamente pela P1.
 
-Document:
+Documento:
 """
-[paste document here]
+[cole o documento aqui]
 """`,
         },
       },
       {
-        title: { en: "Claude as a writing editor", es: "Claude como editor de escritura", pt: "Claude as a writing editor" },
+        title: { en: "Claude as a writing editor", es: "Claude como editor de escritura", pt: "O Claude como editor de texto" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -6745,41 +6745,41 @@ Texto a editar:
 """
 [pegá tu borrador acá]
 """`,
-          pt: `Edit the following text for clarity and concision.
+          pt: `Edite o texto a seguir para deixá-lo mais claro e conciso.
 
-Rules:
-- Preserve my voice and phrasing wherever possible — only change what genuinely obscures the meaning
-- Do not add information, opinions, or examples I did not include
-- Do not convert my sentence structure to yours — if I use short sentences, keep them short
-- Flag any sentence you are unsure about rather than silently rewriting it
-- Do not add caveats or qualifications I did not write
+Regras:
+- Preserve minha voz e minhas formulações sempre que possível — só mude o que realmente atrapalha o sentido
+- Não acrescente informações, opiniões ou exemplos que eu não incluí
+- Não converta a minha estrutura de frases na sua — se eu uso frases curtas, mantenha-as curtas
+- Sinalize qualquer frase sobre a qual você tenha dúvida em vez de reescrevê-la sem avisar
+- Não acrescente ressalvas ou qualificações que eu não escrevi
 
-Output format:
-1. The edited text (full version)
-2. A brief note on what you changed and why (3–5 bullets max)
+Formato de saída:
+1. O texto editado (versão completa)
+2. Uma nota breve sobre o que você mudou e por quê (no máximo 3–5 tópicos)
 
-Text to edit:
+Texto para editar:
 """
-[paste your draft here]
+[cole seu rascunho aqui]
 """`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Does Claude need a system prompt?", es: "¿Claude necesita un system prompt?", pt: "Does Claude need a system prompt?" },
+        q: { en: "Does Claude need a system prompt?", es: "¿Claude necesita un system prompt?", pt: "O Claude precisa de um system prompt?" },
         a: {
           en: "Not necessarily, but a clear role and ruleset at the top of your prompt acts like one. Claude respects early instructions carefully, so opening with 'You are a concise editor. Rules: preserve the author's voice, flag uncertainty, no added opinions.' shapes the entire response. For chat interfaces where you can't set a true system prompt, this pattern is the practical equivalent.",
           es: "No necesariamente, pero un rol claro y un conjunto de reglas al principio del prompt actúa como uno. Claude respeta las instrucciones tempranas con cuidado, así que abrir con 'Sos un editor conciso. Reglas: preservá la voz del autor, marcá la incertidumbre, sin opiniones agregadas.' da forma a toda la respuesta. Para interfaces de chat donde no podés establecer un system prompt real, este patrón es el equivalente práctico.",
-          pt: "Not necessarily, but a clear role and ruleset at the top of your prompt acts like one. Claude respects early instructions carefully, so opening with 'You are a concise editor. Rules: preserve the author's voice, flag uncertainty, no added opinions.' shapes the entire response. For chat interfaces where you can't set a true system prompt, this pattern is the practical equivalent.",
+          pt: "Não necessariamente, mas um papel e um conjunto de regras claros no topo do prompt funcionam como um. O Claude respeita com atenção as instruções iniciais, então abrir com 'Você é um editor conciso. Regras: preserve a voz do autor, sinalize a incerteza, sem opiniões acrescentadas.' molda toda a resposta. Em interfaces de chat em que você não consegue definir um system prompt de verdade, esse padrão é o equivalente prático.",
         },
       },
       {
-        q: { en: "When should I use Claude versus GPT or Gemini?", es: "¿Cuándo usar Claude versus GPT o Gemini?", pt: "When should I use Claude versus GPT or Gemini?" },
+        q: { en: "When should I use Claude versus GPT or Gemini?", es: "¿Cuándo usar Claude versus GPT o Gemini?", pt: "Quando devo usar o Claude em vez do GPT ou do Gemini?" },
         a: {
           en: "Claude tends to perform better for tasks requiring careful instruction-following, long-document analysis, preserving an author's voice during editing, and nuanced reasoning where getting things wrong has real costs (legal, medical, financial). GPT and Gemini have their own strengths — GPT has deep tool-use and plugin ecosystems, Gemini integrates tightly with Google Workspace. For general tasks, the best model is often whichever one you have access to and have already tested with your specific prompts.",
           es: "Claude tiende a rendir mejor para tareas que requieren seguimiento cuidadoso de instrucciones, análisis de documentos largos, preservar la voz de un autor durante la edición, y razonamiento matizado donde equivocarse tiene costos reales (legales, médicos, financieros). GPT y Gemini tienen sus propias fortalezas — GPT tiene ecosistemas profundos de uso de herramientas y plugins, Gemini se integra estrechamente con Google Workspace. Para tareas generales, el mejor modelo suele ser el que ya tenés acceso y ya probaste con tus prompts específicos.",
-          pt: "Claude tends to perform better for tasks requiring careful instruction-following, long-document analysis, preserving an author's voice during editing, and nuanced reasoning where getting things wrong has real costs (legal, medical, financial). GPT and Gemini have their own strengths — GPT has deep tool-use and plugin ecosystems, Gemini integrates tightly with Google Workspace. For general tasks, the best model is often whichever one you have access to and have already tested with your specific prompts.",
+          pt: "O Claude tende a se sair melhor em tarefas que exigem seguir instruções com cuidado, analisar documentos longos, preservar a voz de um autor durante a edição e raciocinar com nuances quando um erro tem custo real (jurídico, médico, financeiro). O GPT e o Gemini têm seus próprios pontos fortes — o GPT tem ecossistemas amplos de uso de ferramentas e plugins, e o Gemini se integra de perto ao Google Workspace. Para tarefas gerais, o melhor modelo muitas vezes é aquele a que você tem acesso e que já testou com os seus prompts específicos.",
         },
       },
     ],
@@ -6789,16 +6789,16 @@ Text to edit:
     title: {
       en: "AI prompts for sales teams: outreach, discovery, and proposals",
       es: "Prompts de IA para equipos de ventas: outreach, discovery y propuestas",
-      pt: "AI prompts for sales teams: outreach, discovery, and proposals",
+      pt: "Prompts de IA para times de vendas: prospecção, descoberta e propostas",
     },
     description: {
       en: "Copy-paste prompt templates for the recurring sales workflows where AI genuinely saves time — cold outreach, discovery prep, and proposal writing.",
       es: "Plantillas de prompts copy-paste para los flujos de trabajo de ventas donde la IA realmente ahorra tiempo: outreach en frío, preparación de discovery y escritura de propuestas.",
-      pt: "Copy-paste prompt templates for the recurring sales workflows where AI genuinely saves time — cold outreach, discovery prep, and proposal writing.",
+      pt: "Templates de prompt para copiar e colar nos fluxos de vendas recorrentes em que a IA realmente economiza tempo — prospecção a frio, preparação de descoberta e redação de propostas.",
     },
     sections: [
       {
-        heading: { en: "Where AI fits in a sales workflow", es: "Dónde encaja la IA en un flujo de trabajo de ventas", pt: "Where AI fits in a sales workflow" },
+        heading: { en: "Where AI fits in a sales workflow", es: "Dónde encaja la IA en un flujo de trabajo de ventas", pt: "Onde a IA entra em um fluxo de vendas" },
         bullets: {
           en: [
             "Personalized outreach at scale: drafting a first email tailored to a prospect's role, company, and recent news is faster with AI — but you must give it the specifics, not let it invent them.",
@@ -6815,16 +6815,16 @@ Text to edit:
             "Secuenciación de seguimiento: 'Escribí una secuencia de 3 emails de seguimiento para un prospecto que quedó en silencio después de una demo positiva' es una tarea que la IA maneja bien con el contexto correcto.",
           ],
           pt: [
-            "Personalized outreach at scale: drafting a first email tailored to a prospect's role, company, and recent news is faster with AI — but you must give it the specifics, not let it invent them.",
-            "Discovery call prep: summarizing a prospect's business from their website, press releases, and LinkedIn before a call saves 30–60 minutes of manual research.",
-            "Objection anticipation: 'What are the top 5 objections a [role] at a [company type] would have to adopting [your solution]?' gives you a sharper prep list than guessing.",
-            "Proposal first drafts: an executive summary, ROI framing, and scope section from a template is faster to refine than to write from scratch for each deal.",
-            "Follow-up sequencing: 'Write a 3-email follow-up sequence for a prospect who went quiet after a positive demo' is a task AI handles well with the right context.",
+            "Prospecção personalizada em escala: redigir um primeiro e-mail adaptado ao cargo, à empresa e às notícias recentes de um prospect é mais rápido com IA — mas você precisa dar os detalhes, não deixar que ela os invente.",
+            "Preparação para a call de descoberta: resumir o negócio de um prospect a partir do site, dos comunicados à imprensa e do LinkedIn antes da call poupa 30–60 minutos de pesquisa manual.",
+            "Antecipar objeções: 'Quais são as 5 principais objeções que um [cargo] de uma [tipo de empresa] teria para adotar [sua solução]?' gera uma lista de preparação mais afiada do que adivinhar.",
+            "Primeiros rascunhos de propostas: um resumo executivo, um enquadramento de ROI e uma seção de escopo a partir de um template são mais rápidos de refinar do que escrever do zero para cada negócio.",
+            "Sequências de follow-up: 'Escreva uma sequência de 3 e-mails de follow-up para um prospect que sumiu depois de uma demo positiva' é uma tarefa que a IA faz bem com o contexto certo.",
           ],
         },
       },
       {
-        heading: { en: "How to get personalized output, not generic filler", es: "Cómo obtener output personalizado, no relleno genérico", pt: "How to get personalized output, not generic filler" },
+        heading: { en: "How to get personalized output, not generic filler", es: "Cómo obtener output personalizado, no relleno genérico", pt: "Como obter uma saída personalizada, não enchimento genérico" },
         bullets: {
           en: [
             "Paste real context: the prospect's job title, company size, industry, a recent news item, or a pain point they've mentioned. AI cannot personalize from nothing.",
@@ -6841,18 +6841,18 @@ Text to edit:
             "Revisá antes de enviar: los borradores de IA son puntos de partida. Leé cada palabra antes de enviar — un nombre de empresa incorrecto, una feature incorrecta del producto, o un tono que no te representa es peor que no enviar nada.",
           ],
           pt: [
-            "Paste real context: the prospect's job title, company size, industry, a recent news item, or a pain point they've mentioned. AI cannot personalize from nothing.",
-            "Specify the tone and relationship: 'We have never spoken' produces a different email than 'We met briefly at SaaStr and they mentioned they were evaluating tools.'",
-            "Name the call to action: 'The only goal of this email is to get a 20-minute call. Do not pitch features. Do not over-explain.' Generic outreach pitches the product; good outreach pitches the conversation.",
-            "Ask for multiple variations: 'Write 3 versions of this subject line' gives you options without extra prompts.",
-            "Review before sending: AI drafts are starting points. Read every word before hitting send — a wrong company name, wrong product feature, or a tone that doesn't fit you is worse than no email at all.",
+            "Cole o contexto real: o cargo do prospect, o porte da empresa, o setor, uma notícia recente ou uma dor que ele mencionou. A IA não consegue personalizar a partir do nada.",
+            "Especifique o tom e a relação: 'Nunca conversamos' gera um e-mail diferente de 'Nos conhecemos rapidamente no SaaStr e ele mencionou que estava avaliando ferramentas.'",
+            "Diga qual é a chamada para ação: 'O único objetivo deste e-mail é conseguir uma call de 20 minutos. Não apresente funcionalidades. Não explique demais.' A prospecção genérica vende o produto; a boa prospecção vende a conversa.",
+            "Peça várias variações: 'Escreva 3 versões desta linha de assunto' dá opções sem prompts extras.",
+            "Revise antes de enviar: rascunhos de IA são pontos de partida. Leia cada palavra antes de clicar em enviar — um nome de empresa errado, uma funcionalidade errada do produto ou um tom que não combina com você é pior do que não mandar e-mail nenhum.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Cold outreach email (first touch)", es: "Email de outreach en frío (primer contacto)", pt: "Cold outreach email (first touch)" },
+        title: { en: "Cold outreach email (first touch)", es: "Email de outreach en frío (primer contacto)", pt: "E-mail de prospecção a frio (primeiro contato)" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -6902,33 +6902,33 @@ Reglas:
 - Tono: directo y respetuoso — ni casual, ni corporativo
 
 Output: el asunto, luego el cuerpo del email.`,
-          pt: `Write a cold outreach email for a sales first touch.
+          pt: `Escreva um e-mail de prospecção a frio para um primeiro contato de vendas.
 
-Context:
-- My name: [Your name]
-- My role: [Your role, e.g. Account Executive at Acme]
-- What we sell: [One sentence — what it does, not features]
-- Prospect's name: [Name]
-- Prospect's role: [Title]
-- Prospect's company: [Company name] — [industry, size if known]
-- Specific reason for reaching out: [a recent news item, a trigger event, a role-specific pain point — be specific, do not invent]
+Contexto:
+- Meu nome: [Seu nome]
+- Meu cargo: [Seu cargo, ex. Executivo de contas na Acme]
+- O que vendemos: [Uma frase — o que faz, não as funcionalidades]
+- Nome do prospect: [Nome]
+- Cargo do prospect: [Cargo]
+- Empresa do prospect: [Nome da empresa] — [setor, porte se souber]
+- Motivo específico do contato: [uma notícia recente, um evento gatilho, uma dor específica do cargo — seja específico, não invente]
 
-Goal of this email: get a 20-minute exploratory call. Nothing else.
+Objetivo deste e-mail: conseguir uma call exploratória de 20 minutos. Nada mais.
 
-Rules:
-- Subject line: under 8 words, no clickbait
-- Opening: reference the specific reason for reaching out in the first sentence
-- Do not list product features
-- Do not use words like "synergies", "leverage", "solution", or "game-changer"
-- CTA: one specific ask (a call link, a reply, a specific date/time)
-- Length: under 120 words total
-- Tone: direct and respectful — not casual, not corporate
+Regras:
+- Assunto: menos de 8 palavras, sem clickbait
+- Abertura: mencione o motivo específico do contato na primeira frase
+- Não liste funcionalidades do produto
+- Não use palavras como "sinergias", "alavancar", "solução" ou "revolucionário"
+- CTA: um pedido específico (um link para a call, uma resposta, uma data/horário específico)
+- Tamanho: menos de 120 palavras no total
+- Tom: direto e respeitoso — nem casual, nem corporativo
 
-Output: the subject line, then the email body.`,
+Saída: a linha de assunto e depois o corpo do e-mail.`,
         },
       },
       {
-        title: { en: "Proposal executive summary", es: "Resumen ejecutivo de propuesta", pt: "Proposal executive summary" },
+        title: { en: "Proposal executive summary", es: "Resumen ejecutivo de propuesta", pt: "Resumo executivo de proposta" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -6970,43 +6970,43 @@ Reglas para el resumen ejecutivo:
 - Terminá con una oración sobre por qué somos el socio correcto para esto (razón específica, no genérica)
 
 No escribas la propuesta completa — solo la sección de resumen ejecutivo.`,
-          pt: `Write an executive summary section for a sales proposal.
+          pt: `Escreva a seção de resumo executivo de uma proposta comercial.
 
-Deal context:
-- Prospect: [Company name] — [industry, size]
-- Decision maker: [Name, title]
-- Problem they described: [In their words if possible — what they said the pain is]
-- What we are proposing: [Brief description of scope]
-- Key business outcome they want: [The metric or result they care about — not our pitch, their goal]
-- Timeline: [Their desired timeline]
+Contexto do negócio:
+- Prospect: [Nome da empresa] — [setor, porte]
+- Tomador de decisão: [Nome, cargo]
+- Problema que ele descreveu: [Com as palavras dele, se possível — qual ele disse que é a dor]
+- O que estamos propondo: [Breve descrição do escopo]
+- Principal resultado de negócio que ele quer: [A métrica ou o resultado que importa para ele — não o nosso pitch, o objetivo dele]
+- Prazo: [O prazo que ele deseja]
 
-Rules for the executive summary:
-- Start with their problem, not our product
-- Use their language for the problem, not ours
-- State the outcome we are committing to (not features we are delivering)
-- Under 200 words
-- No jargon, no acronyms unless they used them first
-- End with one sentence about why we are the right partner for this (specific reason, not generic)
+Regras do resumo executivo:
+- Comece pelo problema dele, não pelo nosso produto
+- Use a linguagem dele para o problema, não a nossa
+- Declare o resultado com que estamos nos comprometendo (não as funcionalidades que vamos entregar)
+- Menos de 200 palavras
+- Sem jargão, sem siglas, a menos que ele as tenha usado primeiro
+- Termine com uma frase sobre por que somos o parceiro certo para isso (um motivo específico, não genérico)
 
-Do not write the full proposal — only the executive summary section.`,
+Não escreva a proposta inteira — só a seção de resumo executivo.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can AI write follow-up emails that don't sound like AI wrote them?", es: "¿Puede la IA escribir emails de seguimiento que no suenen a que los escribió una IA?", pt: "Can AI write follow-up emails that don't sound like AI wrote them?" },
+        q: { en: "Can AI write follow-up emails that don't sound like AI wrote them?", es: "¿Puede la IA escribir emails de seguimiento que no suenen a que los escribió una IA?", pt: "A IA consegue escrever e-mails de follow-up que não pareçam escritos por IA?" },
         a: {
           en: "Yes, with the right constraints. The reason AI follow-ups sound generic is that the prompt was generic — 'write a follow-up email' with no context. The fix: give the model the prospect's name, what was discussed in the last call, what they said their biggest concern was, and what the agreed next step was. Add 'match my tone exactly — do not add enthusiasm I did not express.' With real context and a tone constraint, the output is much closer to how you actually write.",
           es: "Sí, con las restricciones correctas. La razón por la que los seguimientos de IA suenan genéricos es que el prompt era genérico — 'escribí un email de seguimiento' sin contexto. El fix: darle al modelo el nombre del prospecto, qué se discutió en la última llamada, cuál dijeron que era su mayor preocupación, y cuál fue el siguiente paso acordado. Agregar 'adaptá exactamente mi tono — no agregues entusiasmo que yo no expresé.' Con contexto real y una restricción de tono, el output es mucho más cercano a cómo realmente escribís.",
-          pt: "Yes, with the right constraints. The reason AI follow-ups sound generic is that the prompt was generic — 'write a follow-up email' with no context. The fix: give the model the prospect's name, what was discussed in the last call, what they said their biggest concern was, and what the agreed next step was. Add 'match my tone exactly — do not add enthusiasm I did not express.' With real context and a tone constraint, the output is much closer to how you actually write.",
+          pt: "Sim, com as restrições certas. Os follow-ups de IA soam genéricos porque o prompt foi genérico — 'escreva um e-mail de follow-up' sem contexto. A correção: dê ao modelo o nome do prospect, o que foi discutido na última call, qual ele disse ser a maior preocupação e qual foi o próximo passo combinado. Acrescente 'imite exatamente o meu tom — não acrescente um entusiasmo que eu não demonstrei.' Com contexto real e uma restrição de tom, a saída fica muito mais próxima de como você realmente escreve.",
         },
       },
       {
-        q: { en: "What sales tasks should I NOT use AI for?", es: "¿Qué tareas de ventas NO debería usar IA?", pt: "What sales tasks should I NOT use AI for?" },
+        q: { en: "What sales tasks should I NOT use AI for?", es: "¿Qué tareas de ventas NO debería usar IA?", pt: "Em quais tarefas de vendas eu NÃO devo usar IA?" },
         a: {
           en: "Live conversations: calls, real-time negotiations, and relationship-building moments where the prospect can sense you are not present. Relationship history: AI does not know the trust and context built over months of relationship — do not let it rewrite an email to a key account without reading it yourself. Reference checks: never use AI to write what appears to be a customer quote or reference. Anything requiring real verification: if the accuracy of a claim matters (pricing, legal terms, technical specs), verify it yourself before it goes to the prospect.",
           es: "Conversaciones en vivo: llamadas, negociaciones en tiempo real y momentos de construcción de relaciones donde el prospecto puede sentir que no estás presente. Historia de relación: la IA no conoce la confianza y el contexto construidos durante meses de relación — no la dejes reescribir un email a una cuenta clave sin leerlo vos mismo. Referencias: nunca uses IA para escribir lo que parece ser una cita o referencia de cliente. Cualquier cosa que requiera verificación real: si la precisión de una afirmación importa (precios, términos legales, specs técnicas), verificala vos mismo antes de que llegue al prospecto.",
-          pt: "Live conversations: calls, real-time negotiations, and relationship-building moments where the prospect can sense you are not present. Relationship history: AI does not know the trust and context built over months of relationship — do not let it rewrite an email to a key account without reading it yourself. Reference checks: never use AI to write what appears to be a customer quote or reference. Anything requiring real verification: if the accuracy of a claim matters (pricing, legal terms, technical specs), verify it yourself before it goes to the prospect.",
+          pt: "Conversas ao vivo: calls, negociações em tempo real e momentos de construção de relacionamento em que o prospect percebe que você não está presente. Histórico de relacionamento: a IA não conhece a confiança e o contexto construídos ao longo de meses — não deixe que ela reescreva um e-mail para uma conta importante sem que você mesmo leia. Referências: nunca use IA para escrever o que pareça ser uma citação ou referência de cliente. Tudo o que exige verificação real: se a precisão de uma afirmação importa (preço, termos jurídicos, especificações técnicas), confira você mesmo antes que chegue ao prospect.",
         },
       },
     ],
@@ -7016,16 +7016,16 @@ Do not write the full proposal — only the executive summary section.`,
     title: {
       en: "AI prompts for customer support: ticket responses, FAQs, and escalation scripts",
       es: "Prompts de IA para soporte al cliente: respuestas a tickets, FAQs y scripts de escalación",
-      pt: "AI prompts for customer support: ticket responses, FAQs, and escalation scripts",
+      pt: "Prompts de IA para suporte ao cliente: respostas, FAQs e escalonamento",
     },
     description: {
       en: "Copy-paste prompt templates for the recurring customer support tasks where AI saves the most time — drafting ticket replies, writing help articles, and preparing escalation summaries.",
       es: "Plantillas de prompts copy-paste para las tareas de soporte al cliente donde la IA ahorra más tiempo: respuestas a tickets, artículos de ayuda y resúmenes de escalación.",
-      pt: "Copy-paste prompt templates for the recurring customer support tasks where AI saves the most time — drafting ticket replies, writing help articles, and preparing escalation summaries.",
+      pt: "Templates de prompt para copiar e colar nas tarefas recorrentes de suporte em que a IA mais economiza tempo — rascunhos de resposta a tickets, artigos de ajuda e resumos para escalonamento.",
     },
     sections: [
       {
-        heading: { en: "Where AI fits in customer support", es: "Dónde encaja la IA en soporte al cliente", pt: "Where AI fits in customer support" },
+        heading: { en: "Where AI fits in customer support", es: "Dónde encaja la IA en soporte al cliente", pt: "Onde a IA entra no suporte ao cliente" },
         bullets: {
           en: [
             "First-draft ticket replies: AI can draft a reply to a support ticket in seconds. You still review and personalize, but the blank-page problem disappears.",
@@ -7042,16 +7042,16 @@ Do not write the full proposal — only the executive summary section.`,
             "Identificación de brechas en la base de conocimientos: pegá los temas de tickets recientes y pedile a la IA que identifique las tres preguntas más comunes que no tienen un artículo de ayuda claro. Esto es más rápido que categorizar tickets manualmente.",
           ],
           pt: [
-            "First-draft ticket replies: AI can draft a reply to a support ticket in seconds. You still review and personalize, but the blank-page problem disappears.",
-            "Help article and FAQ drafting: given a list of common questions and your product's behavior, AI can produce a first draft of a help article or FAQ page in the correct voice.",
-            "Escalation summaries: before handing a ticket to a specialist or manager, AI can summarize the conversation thread — what was tried, what failed, what the customer's core issue is — so the escalation is productive from the first message.",
-            "Tone calibration: support copy has a specific register — calm, clear, not overly apologetic, not defensive. A well-constrained prompt produces responses in that register consistently.",
-            "Knowledge base gap spotting: paste recent ticket themes and ask AI to identify the three most common questions that do not have a clear help article. This is faster than manually categorizing tickets.",
+            "Primeiros rascunhos de resposta a tickets: a IA consegue redigir uma resposta a um ticket de suporte em segundos. Você ainda revisa e personaliza, mas o problema da página em branco desaparece.",
+            "Redação de artigos de ajuda e FAQs: com uma lista de perguntas comuns e o comportamento do seu produto, a IA produz um primeiro rascunho de um artigo de ajuda ou de uma página de FAQ na voz certa.",
+            "Resumos para escalonamento: antes de passar um ticket para um especialista ou gestor, a IA pode resumir a conversa — o que foi tentado, o que falhou, qual é o problema central do cliente — para que o escalonamento seja produtivo desde a primeira mensagem.",
+            "Calibração de tom: o texto de suporte tem um registro específico — calmo, claro, sem excesso de desculpas, sem defensividade. Um prompt bem restringido produz respostas nesse registro de forma consistente.",
+            "Identificar lacunas na base de conhecimento: cole os temas recentes dos tickets e peça à IA para identificar as três perguntas mais comuns que não têm um artigo de ajuda claro. É mais rápido que categorizar os tickets à mão.",
           ],
         },
       },
       {
-        heading: { en: "How to write support prompts that stay on-brand", es: "Cómo escribir prompts de soporte que se mantengan en la marca", pt: "How to write support prompts that stay on-brand" },
+        heading: { en: "How to write support prompts that stay on-brand", es: "Cómo escribir prompts de soporte que se mantengan en la marca", pt: "Como escrever prompts de suporte alinhados à marca" },
         bullets: {
           en: [
             "Paste your voice guidelines in the prompt: 'Our support tone is calm and direct. We say 'you' not 'dear customer'. We apologize once and move to resolution. We do not use corporate filler words.' This should appear in every support prompt.",
@@ -7068,18 +7068,18 @@ Do not write the full proposal — only the executive summary section.`,
             "Pedí una versión, no tres: los equipos de soporte necesitan una respuesta única y utilizable. Las opciones múltiples crean sobrecarga de decisión en un flujo de trabajo que ya corre rápido.",
           ],
           pt: [
-            "Paste your voice guidelines in the prompt: 'Our support tone is calm and direct. We say 'you' not 'dear customer'. We apologize once and move to resolution. We do not use corporate filler words.' This should appear in every support prompt.",
-            "Give the model the ticket text verbatim: do not summarize the customer's message before asking AI to draft a reply. The model needs the exact words to match tone and avoid missing context.",
-            "Specify what the reply must do: 'The reply must acknowledge the issue, confirm the workaround we sent in the previous message, and close with a next step.' Vague prompts produce vague replies.",
-            "State what NOT to include: 'Do not promise a resolution date. Do not ask for information we already have. Do not use phrases like 'Thank you for your patience' at the start.' Explicit avoidance lists reduce the review pass.",
-            "Ask for one version, not three: support teams need a single, usable reply. Multiple options create decision overhead in a workflow that already runs fast.",
+            "Cole suas diretrizes de voz no prompt: 'Nosso tom de suporte é calmo e direto. Dizemos 'você', não 'prezado cliente'. Pedimos desculpas uma vez e partimos para a solução. Não usamos palavras de enchimento corporativas.' Isso deve aparecer em todo prompt de suporte.",
+            "Dê ao modelo o texto do ticket na íntegra: não resuma a mensagem do cliente antes de pedir à IA uma resposta. O modelo precisa das palavras exatas para acertar o tom e não perder contexto.",
+            "Especifique o que a resposta precisa fazer: 'A resposta precisa reconhecer o problema, confirmar a solução alternativa que enviamos na mensagem anterior e terminar com um próximo passo.' Prompts vagos geram respostas vagas.",
+            "Diga o que NÃO incluir: 'Não prometa uma data de resolução. Não peça informações que já temos. Não use frases como 'Agradecemos a sua paciência' no início.' Listas explícitas do que evitar reduzem o trabalho de revisão.",
+            "Peça uma versão, não três: times de suporte precisam de uma única resposta utilizável. Várias opções criam um custo de decisão em um fluxo que já é rápido.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Support ticket reply (first response)", es: "Respuesta a ticket de soporte (primera respuesta)", pt: "Support ticket reply (first response)" },
+        title: { en: "Support ticket reply (first response)", es: "Respuesta a ticket de soporte (primera respuesta)", pt: "Resposta a ticket de suporte (primeira resposta)" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -7127,32 +7127,32 @@ Reglas:
 - Cerrá con una oración clara de próximo paso o de establecimiento de expectativas
 - Menos de 150 palabras en total
 - No repitas el problema del cliente de vuelta en su totalidad`,
-          pt: `Draft a customer support reply to the following ticket.
+          pt: `Redija uma resposta de suporte ao cliente para o ticket a seguir.
 
-Our support tone: calm, direct, and solution-focused. We use plain language. We do not use "dear customer", excessive apologies, or corporate filler phrases. We acknowledge the issue once, then move to the resolution.
+Nosso tom de suporte: calmo, direto e focado na solução. Usamos linguagem simples. Não usamos "prezado cliente", desculpas em excesso nem frases de enchimento corporativas. Reconhecemos o problema uma vez e depois partimos para a solução.
 
-Customer ticket:
+Ticket do cliente:
 """
-[Paste the customer's ticket text here]
+[Cole aqui o texto do ticket do cliente]
 """
 
-Known context:
-- Product/feature the issue is about: [describe briefly]
-- What we know about the cause: [known bug / expected behavior / user error / under investigation]
-- Resolution or next step we can offer: [fix in next release / workaround / escalation / refund / etc.]
-- Anything we must NOT promise or commit to: [list any]
+Contexto conhecido:
+- Produto/funcionalidade a que o problema se refere: [descreva brevemente]
+- O que sabemos sobre a causa: [bug conhecido / comportamento esperado / erro do usuário / em investigação]
+- Solução ou próximo passo que podemos oferecer: [correção na próxima versão / solução alternativa / escalonamento / reembolso / etc.]
+- O que NÃO podemos prometer nem assumir: [liste, se houver]
 
-Rules:
-- Open by acknowledging the specific issue the customer described, not with a generic apology
-- State the resolution or next step clearly in the first 3 sentences
-- If we are asking the customer to do something, list the steps as numbered items
-- Close with one clear next step or expectation-setting sentence
-- Under 150 words total
-- Do not repeat the customer's issue back to them in full`,
+Regras:
+- Abra reconhecendo o problema específico que o cliente descreveu, não com um pedido de desculpas genérico
+- Declare a solução ou o próximo passo com clareza nas 3 primeiras frases
+- Se estivermos pedindo que o cliente faça algo, liste os passos como itens numerados
+- Termine com um próximo passo claro ou uma frase que alinhe as expectativas
+- Menos de 150 palavras no total
+- Não repita o problema do cliente por inteiro de volta para ele`,
         },
       },
       {
-        title: { en: "Escalation summary for a specialist handoff", es: "Resumen de escalación para traspaso a especialista", pt: "Escalation summary for a specialist handoff" },
+        title: { en: "Escalation summary for a specialist handoff", es: "Resumen de escalación para traspaso a especialista", pt: "Resumo de escalonamento para passar a um especialista" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -7198,45 +7198,45 @@ Formato de output:
 5. Información relevante de cuenta: [nivel de cuenta / suscripción / detalles de contrato si aplica]
 
 Mantené el resumen completo en menos de 200 palabras.`,
-          pt: `Write a concise escalation summary for a customer support ticket being handed off to a specialist team.
+          pt: `Escreva um resumo de escalonamento conciso para um ticket de suporte que está sendo passado a um time especializado.
 
-Ticket thread:
+Histórico do ticket:
 """
-[Paste the full conversation thread here — customer messages and previous support replies]
+[Cole aqui a conversa completa — mensagens do cliente e respostas anteriores do suporte]
 """
 
-Escalation context:
-- Team receiving this: [e.g. Billing team / Engineering / Account management]
-- Why it is being escalated: [e.g. billing discrepancy outside frontline authority / confirmed bug / VIP account]
-- What frontline support has already tried: [list steps taken]
-- What the customer's core problem is in one sentence: [your summary]
+Contexto do escalonamento:
+- Time que vai receber: [ex. time de cobrança / engenharia / gestão de contas]
+- Por que está sendo escalonado: [ex. divergência de cobrança fora da alçada do primeiro nível / bug confirmado / conta VIP]
+- O que o primeiro nível de suporte já tentou: [liste os passos dados]
+- Qual é o problema central do cliente, em uma frase: [seu resumo]
 
-Output format:
-1. Issue (1–2 sentences): what the customer is experiencing
-2. Impact on customer: severity, urgency, how long they have been waiting
-3. What has been tried: bullet list, no more than 5 items
-4. What we need from the receiving team: specific ask, not "please help"
-5. Relevant account info: [account tier / subscription / contract details if relevant]
+Formato de saída:
+1. Problema (1–2 frases): o que o cliente está enfrentando
+2. Impacto no cliente: gravidade, urgência, há quanto tempo ele está esperando
+3. O que já foi tentado: lista em tópicos, no máximo 5 itens
+4. O que precisamos do time que vai receber: um pedido específico, não "por favor, ajudem"
+5. Informações relevantes da conta: [nível da conta / assinatura / detalhes do contrato, se relevantes]
 
-Keep the entire summary under 200 words.`,
+Mantenha o resumo inteiro abaixo de 200 palavras.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Should AI write support replies unsupervised?", es: "¿Debería la IA escribir respuestas de soporte sin supervisión?", pt: "Should AI write support replies unsupervised?" },
+        q: { en: "Should AI write support replies unsupervised?", es: "¿Debería la IA escribir respuestas de soporte sin supervisión?", pt: "A IA deve escrever respostas de suporte sem supervisão?" },
         a: {
           en: "Not for anything that involves commitments, account changes, or sensitive situations. AI drafts are a productivity tool for the support agent writing the reply — the agent reviews, edits, and sends. Fully automated AI replies (no human in the loop) only work reliably for a narrow set of low-stakes confirmations like 'your ticket was received' or 'your refund has been processed'. For anything involving troubleshooting, billing, policy, or frustrated customers, keep a human in the loop.",
           es: "No para nada que involucre compromisos, cambios de cuenta o situaciones delicadas. Los borradores de IA son una herramienta de productividad para el agente de soporte que escribe la respuesta — el agente revisa, edita y envía. Las respuestas de IA completamente automatizadas (sin humano en el circuito) solo funcionan de manera confiable para un conjunto reducido de confirmaciones de bajo riesgo como 'tu ticket fue recibido' o 'tu reembolso fue procesado'. Para cualquier cosa que involucre resolución de problemas, facturación, políticas o clientes frustrados, mantené un humano en el circuito.",
-          pt: "Not for anything that involves commitments, account changes, or sensitive situations. AI drafts are a productivity tool for the support agent writing the reply — the agent reviews, edits, and sends. Fully automated AI replies (no human in the loop) only work reliably for a narrow set of low-stakes confirmations like 'your ticket was received' or 'your refund has been processed'. For anything involving troubleshooting, billing, policy, or frustrated customers, keep a human in the loop.",
+          pt: "Não em nada que envolva compromissos, alterações de conta ou situações delicadas. Os rascunhos de IA são uma ferramenta de produtividade para o agente que escreve a resposta — o agente revisa, edita e envia. Respostas de IA totalmente automatizadas (sem uma pessoa no circuito) só funcionam de forma confiável em um conjunto restrito de confirmações de baixo risco, como 'seu ticket foi recebido' ou 'seu reembolso foi processado'. Em tudo o que envolva solução de problemas, cobrança, políticas ou clientes frustrados, mantenha uma pessoa no circuito.",
         },
       },
       {
-        q: { en: "How do I keep AI replies consistent across a support team?", es: "¿Cómo mantengo las respuestas de IA consistentes en un equipo de soporte?", pt: "How do I keep AI replies consistent across a support team?" },
+        q: { en: "How do I keep AI replies consistent across a support team?", es: "¿Cómo mantengo las respuestas de IA consistentes en un equipo de soporte?", pt: "Como mantenho as respostas de IA consistentes em um time de suporte?" },
         a: {
           en: "Build a shared prompt library with your team's voice guidelines baked in. Every agent uses the same base prompt (with tone rules, avoidance lists, and product terminology) and then fills in the ticket-specific context. When the base prompt is consistent, the output voice is consistent — regardless of who runs it. Review the output of new agents more closely for the first week to catch cases where the base prompt needs updating.",
           es: "Construí una biblioteca de prompts compartida con las guías de voz de tu equipo ya incorporadas. Cada agente usa el mismo prompt base (con reglas de tono, listas de exclusión y terminología del producto) y luego completa el contexto específico del ticket. Cuando el prompt base es consistente, la voz del output es consistente — sin importar quién lo ejecute. Revisá el output de los agentes nuevos más de cerca durante la primera semana para detectar casos en que el prompt base necesita actualización.",
-          pt: "Build a shared prompt library with your team's voice guidelines baked in. Every agent uses the same base prompt (with tone rules, avoidance lists, and product terminology) and then fills in the ticket-specific context. When the base prompt is consistent, the output voice is consistent — regardless of who runs it. Review the output of new agents more closely for the first week to catch cases where the base prompt needs updating.",
+          pt: "Monte uma biblioteca de prompts compartilhada com as diretrizes de voz do time embutidas. Todos os agentes usam o mesmo prompt-base (com regras de tom, listas do que evitar e a terminologia do produto) e depois preenchem o contexto específico do ticket. Quando o prompt-base é consistente, a voz da saída é consistente — não importa quem o use. Revise com mais atenção a saída dos agentes novos na primeira semana para identificar casos em que o prompt-base precisa ser atualizado.",
         },
       },
     ],
@@ -7246,16 +7246,16 @@ Keep the entire summary under 200 words.`,
     title: {
       en: "Structured output prompting: how to get reliable JSON, tables, and lists from any AI",
       es: "Prompts para output estructurado: cómo obtener JSON, tablas y listas confiables de cualquier IA",
-      pt: "Structured output prompting: how to get reliable JSON, tables, and lists from any AI",
+      pt: "Prompts de saída estruturada: JSON, tabelas e listas confiáveis em qualquer IA",
     },
     description: {
       en: "Techniques and templates for prompting AI to return structured, machine-readable output consistently — without hallucinated fields, format drift, or plain-text contamination.",
       es: "Técnicas y plantillas para que la IA devuelva output estructurado y legible por máquinas de manera consistente — sin campos inventados, desviación de formato ni contaminación de texto plano.",
-      pt: "Techniques and templates for prompting AI to return structured, machine-readable output consistently — without hallucinated fields, format drift, or plain-text contamination.",
+      pt: "Técnicas e templates para fazer a IA devolver saídas estruturadas e legíveis por máquina de forma consistente — sem campos inventados, sem desvio de formato e sem texto solto misturado.",
     },
     sections: [
       {
-        heading: { en: "Why structured output prompts fail", es: "Por qué fallan los prompts de output estructurado", pt: "Why structured output prompts fail" },
+        heading: { en: "Why structured output prompts fail", es: "Por qué fallan los prompts de output estructurado", pt: "Por que os prompts de saída estruturada falham" },
         bullets: {
           en: [
             "No schema: asking for 'JSON with the extracted data' without specifying exact field names, types, and nesting almost always produces inconsistent results across runs.",
@@ -7272,16 +7272,16 @@ Keep the entire summary under 200 words.`,
             "Formatos de fecha/número inconsistentes: el modelo formatea fechas de manera diferente entre respuestas. Fix: especificá el formato exacto ('ISO 8601: YYYY-MM-DD') y dá un valor de ejemplo.",
           ],
           pt: [
-            "No schema: asking for 'JSON with the extracted data' without specifying exact field names, types, and nesting almost always produces inconsistent results across runs.",
-            "Prose leakage: the model adds an explanation before or after the JSON block. This breaks parsers. Fix: 'Return only the JSON object. No explanation, no markdown code fences, no other text.'",
-            "Hallucinated fields: the model invents field names it thinks you want. Fix: provide the exact schema — field names, their types, and what to put when a value is not found ('null', empty string, or a sentinel like 'N/A').",
-            "Nested structure mismatch: you ask for a list but get a dict, or vice versa. Fix: show an example output in the prompt — not just a description, but the actual structure with placeholder values.",
-            "Inconsistent date/number formats: the model formats dates differently across responses. Fix: specify the exact format ('ISO 8601: YYYY-MM-DD') and give an example value.",
+            "Nenhum esquema: pedir 'JSON com os dados extraídos' sem especificar os nomes exatos dos campos, os tipos e o aninhamento quase sempre gera resultados inconsistentes entre execuções.",
+            "Vazamento de texto: o modelo acrescenta uma explicação antes ou depois do bloco JSON. Isso quebra os parsers. Correção: 'Retorne apenas o objeto JSON. Sem explicação, sem blocos de código markdown, sem nenhum outro texto.'",
+            "Campos inventados: o modelo inventa os nomes de campos que acha que você quer. Correção: forneça o esquema exato — os nomes dos campos, os tipos e o que colocar quando um valor não for encontrado ('null', string vazia ou um marcador como 'N/A').",
+            "Estrutura aninhada diferente: você pede uma lista e recebe um dicionário, ou o contrário. Correção: mostre um exemplo de saída no prompt — não só uma descrição, mas a estrutura real com valores de exemplo.",
+            "Formatos de data/número inconsistentes: o modelo formata as datas de jeitos diferentes em cada resposta. Correção: especifique o formato exato ('ISO 8601: YYYY-MM-DD') e dê um valor de exemplo.",
           ],
         },
       },
       {
-        heading: { en: "The four elements of a reliable structured output prompt", es: "Los cuatro elementos de un prompt de output estructurado confiable", pt: "The four elements of a reliable structured output prompt" },
+        heading: { en: "The four elements of a reliable structured output prompt", es: "Los cuatro elementos de un prompt de output estructurado confiable", pt: "Os quatro elementos de um prompt de saída estruturada confiável" },
         bullets: {
           en: [
             "1. Task description: what to extract or generate, and from what input. 'Extract all line items from the invoice text below.'",
@@ -7296,17 +7296,17 @@ Keep the entire summary under 200 words.`,
             "4. Restricción de output: 'Devolvé solo el JSON. Sin comentarios, sin formato markdown, sin preámbulo.' Poné esto al final del prompt — es la última instrucción que ve el modelo antes de generar.",
           ],
           pt: [
-            "1. Task description: what to extract or generate, and from what input. 'Extract all line items from the invoice text below.'",
-            "2. Exact schema: the complete JSON structure with field names, types, and instructions for missing values. Paste the schema literally, not as a prose description.",
-            "3. Example output: a complete, filled-in example with realistic placeholder values. Models learn format from examples faster than from descriptions.",
-            "4. Output constraint: 'Return only the JSON. No commentary, no markdown formatting, no preamble.' Put this at the end of the prompt — it is the last instruction the model sees before generating.",
+            "1. Descrição da tarefa: o que extrair ou gerar, e a partir de qual entrada. 'Extraia todos os itens da nota fiscal no texto abaixo.'",
+            "2. Esquema exato: a estrutura JSON completa, com os nomes dos campos, os tipos e as instruções para valores ausentes. Cole o esquema literalmente, não como uma descrição em texto.",
+            "3. Exemplo de saída: um exemplo completo e preenchido, com valores de exemplo realistas. Os modelos aprendem o formato por exemplos mais rápido que por descrições.",
+            "4. Restrição de saída: 'Retorne apenas o JSON. Sem comentários, sem formatação markdown, sem introdução.' Coloque isso no fim do prompt — é a última instrução que o modelo vê antes de gerar.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Structured data extraction to JSON", es: "Extracción de datos estructurados a JSON", pt: "Structured data extraction to JSON" },
+        title: { en: "Structured data extraction to JSON", es: "Extracción de datos estructurados a JSON", pt: "Extração de dados estruturados para JSON" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -7382,18 +7382,18 @@ Output de ejemplo (solo de referencia — usá los valores del texto real):
     { "item_campo_a": "Ítem A", "item_campo_b": 19.99 }
   ]
 }`,
-          pt: `Extract structured data from the text below and return it as JSON.
+          pt: `Extraia dados estruturados do texto abaixo e retorne como JSON.
 
-Text to process:
+Texto a processar:
 """
-[Paste the input text here — an invoice, email, form, article, etc.]
+[Cole aqui o texto de entrada — uma nota fiscal, um e-mail, um formulário, um artigo etc.]
 """
 
-Return a JSON object matching this exact schema:
+Retorne um objeto JSON que siga exatamente este esquema:
 {
-  "field_one": string,         // [describe what this field contains]
-  "field_two": string | null,  // [describe; null if not found]
-  "field_three": number | null, // [describe; null if not found]
+  "field_one": string,         // [descreva o que este campo contém]
+  "field_two": string | null,  // [descreva; null se não for encontrado]
+  "field_three": number | null, // [descreva; null se não for encontrado]
   "items": [
     {
       "item_field_a": string,
@@ -7402,16 +7402,16 @@ Return a JSON object matching this exact schema:
   ]
 }
 
-Rules:
-- Use null (not "N/A", not empty string) for any field not found in the text
-- Dates in ISO 8601 format: YYYY-MM-DD
-- Numbers as numeric types, not strings
-- Do not add fields not in the schema
-- Return only the JSON object — no explanation, no markdown code fence, no other text
+Regras:
+- Use null (não "N/A", não string vazia) para qualquer campo que não esteja no texto
+- Datas no formato ISO 8601: YYYY-MM-DD
+- Números como tipos numéricos, não como strings
+- Não acrescente campos que não estejam no esquema
+- Retorne apenas o objeto JSON — sem explicação, sem bloco de código markdown, sem nenhum outro texto
 
-Example output (for reference only — use values from the actual text):
+Exemplo de saída (só como referência — use os valores do texto real):
 {
-  "field_one": "Example value",
+  "field_one": "Valor de exemplo",
   "field_two": null,
   "field_three": 42,
   "items": [
@@ -7421,7 +7421,7 @@ Example output (for reference only — use values from the actual text):
         },
       },
       {
-        title: { en: "Structured comparison table", es: "Tabla de comparación estructurada", pt: "Structured comparison table" },
+        title: { en: "Structured comparison table", es: "Tabla de comparación estructurada", pt: "Tabela de comparação estruturada" },
         purpose: "data",
         target: "claude",
         prompt: {
@@ -7491,20 +7491,20 @@ Reglas:
 - ideal_para: una oración describiendo el caso de uso ideal
 - evitar_si: una oración describiendo cuándo NO elegir este ítem
 - Devolvé solo el array JSON — sin preámbulo, sin explicación, sin markdown`,
-          pt: `Generate a structured comparison of the items listed below and return the result as a JSON array.
+          pt: `Gere uma comparação estruturada dos itens listados abaixo e retorne o resultado como um array JSON.
 
-Items to compare:
+Itens a comparar:
 1. [Item A]
 2. [Item B]
-3. [Item C — add more as needed]
+3. [Item C — acrescente mais se precisar]
 
-Dimensions to compare across (evaluate each item on each dimension):
-- [Dimension 1, e.g. "Ease of setup"]
-- [Dimension 2, e.g. "Cost"]
-- [Dimension 3, e.g. "Scalability"]
-- [Add or remove dimensions as needed]
+Dimensões de comparação (avalie cada item em cada dimensão):
+- [Dimensão 1, ex. "Facilidade de configuração"]
+- [Dimensão 2, ex. "Custo"]
+- [Dimensão 3, ex. "Escalabilidade"]
+- [Acrescente ou remova dimensões conforme necessário]
 
-Return a JSON array in this exact format:
+Retorne um array JSON exatamente neste formato:
 [
   {
     "item": string,
@@ -7518,30 +7518,30 @@ Return a JSON array in this exact format:
   }
 ]
 
-Rules:
-- Rating must be exactly "high", "medium", or "low" — no other values
-- Note: one sentence, under 20 words, factual, no superlatives
-- best_for: one sentence describing the ideal use case
-- avoid_if: one sentence describing when NOT to choose this item
-- Return only the JSON array — no preamble, no explanation, no markdown`,
+Regras:
+- rating deve ser exatamente "high", "medium" ou "low" — nenhum outro valor
+- note: uma frase, com menos de 20 palavras, factual, sem superlativos
+- best_for: uma frase descrevendo o caso de uso ideal
+- avoid_if: uma frase descrevendo quando NÃO escolher este item
+- Retorne apenas o array JSON — sem introdução, sem explicação, sem markdown`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which model is best for structured output?", es: "¿Qué modelo es mejor para output estructurado?", pt: "Which model is best for structured output?" },
+        q: { en: "Which model is best for structured output?", es: "¿Qué modelo es mejor para output estructurado?", pt: "Qual modelo é o melhor para saída estruturada?" },
         a: {
           en: "Most current models offer a native structured-output (JSON schema) mode and tool use: the selectable GPT, Claude, Gemini, Grok, DeepSeek and Kimi models in Promptea's registry all do, while Perplexity's Agent API presets are built for cited web answers rather than schema-constrained output. Prompt quality still matters: an explicit schema, field descriptions and rules for missing values reduce wrong or empty fields even when the format itself is enforced. For critical production pipelines, use the model's native JSON mode or function-calling API rather than relying on the prompt alone: it enforces the schema at the generation level, not just as a request.",
           es: "La mayoría de los modelos actuales ofrece un modo nativo de salida estructurada (JSON schema) y uso de herramientas: todos los modelos seleccionables de GPT, Claude, Gemini, Grok, DeepSeek y Kimi del registro de Promptea lo tienen, mientras que los presets de la Agent API de Perplexity están pensados para respuestas web con citas y no para output restringido a schema. La calidad del prompt sigue importando: un schema explícito, descripciones de campos y reglas para valores faltantes reducen campos incorrectos o vacíos aunque el formato esté garantizado. Para pipelines de producción críticos, usá el modo JSON nativo del modelo o la API de function-calling en lugar de depender solo del prompt: aplica el schema a nivel de generación, no solo como un pedido.",
-          pt: "Most current models offer a native structured-output (JSON schema) mode and tool use: the selectable GPT, Claude, Gemini, Grok, DeepSeek and Kimi models in Promptea's registry all do, while Perplexity's Agent API presets are built for cited web answers rather than schema-constrained output. Prompt quality still matters: an explicit schema, field descriptions and rules for missing values reduce wrong or empty fields even when the format itself is enforced. For critical production pipelines, use the model's native JSON mode or function-calling API rather than relying on the prompt alone: it enforces the schema at the generation level, not just as a request.",
+          pt: "A maioria dos modelos atuais oferece um modo nativo de saída estruturada (JSON Schema) e uso de ferramentas: todos os modelos de GPT, Claude, Gemini, Grok, DeepSeek e Kimi que podem ser escolhidos no registro do Promptea têm isso, enquanto os presets da Agent API da Perplexity foram feitos para respostas da web com fontes, não para saídas restritas a um esquema. A qualidade do prompt continua importando: um esquema explícito, descrições dos campos e regras para valores ausentes reduzem campos errados ou vazios mesmo quando o formato em si é imposto. Em pipelines críticos de produção, use o modo JSON nativo do modelo ou a API de function calling em vez de depender só do prompt: ela impõe o esquema no nível da geração, não apenas como um pedido.",
         },
       },
       {
-        q: { en: "What should I do when the model keeps adding prose before the JSON?", es: "¿Qué hago cuando el modelo sigue agregando prosa antes del JSON?", pt: "What should I do when the model keeps adding prose before the JSON?" },
+        q: { en: "What should I do when the model keeps adding prose before the JSON?", es: "¿Qué hago cuando el modelo sigue agregando prosa antes del JSON?", pt: "O que fazer quando o modelo continua acrescentando texto antes do JSON?" },
         a: {
           en: "Two changes fix this in most cases. First, move the output constraint to the very end of your prompt: 'Return only the JSON. Nothing before it, nothing after it.' Second, start your user message with what you want the model to output: some models treat the first token of the response as completion of whatever you started. If you still get prose, switch to the model's native JSON mode if available — it enforces the constraint at the sampling level, making prose contamination structurally impossible.",
           es: "Dos cambios solucionan esto en la mayoría de los casos. Primero, mové la restricción de output al final de tu prompt: 'Devolvé solo el JSON. Nada antes, nada después.' Segundo, empezá tu mensaje de usuario con lo que querés que el modelo genere: algunos modelos tratan el primer token de la respuesta como la finalización de lo que empezaste. Si seguís obteniendo prosa, cambiá al modo JSON nativo del modelo si está disponible — aplica la restricción a nivel de muestreo, haciendo que la contaminación de prosa sea estructuralmente imposible.",
-          pt: "Two changes fix this in most cases. First, move the output constraint to the very end of your prompt: 'Return only the JSON. Nothing before it, nothing after it.' Second, start your user message with what you want the model to output: some models treat the first token of the response as completion of whatever you started. If you still get prose, switch to the model's native JSON mode if available — it enforces the constraint at the sampling level, making prose contamination structurally impossible.",
+          pt: "Duas mudanças resolvem isso na maioria dos casos. Primeiro, leve a restrição de saída para o final do prompt: 'Retorne apenas o JSON. Nada antes, nada depois.' Segundo, comece sua mensagem com o que você quer que o modelo produza: alguns modelos tratam o primeiro token da resposta como a continuação do que você começou. Se ainda vier texto, mude para o modo JSON nativo do modelo, se houver — ele impõe a restrição no nível da amostragem, o que torna estruturalmente impossível misturar texto ao JSON.",
         },
       },
     ],
