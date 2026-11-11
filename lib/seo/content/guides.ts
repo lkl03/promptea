@@ -30,16 +30,16 @@ export const guides: Guide[] = [
     title: {
       en: "Prompt checklist (copy-paste) to get better outputs",
       es: "Checklist de prompt (copy-paste) para mejores respuestas",
-      pt: "Prompt checklist (copy-paste) to get better outputs",
+      pt: "Checklist de prompt (para copiar e colar) e obter respostas melhores",
     },
     description: {
       en: "A practical checklist you can paste into any prompt to reduce ambiguity and improve structure.",
       es: "Un checklist práctico para pegar en cualquier prompt y reducir ambigüedad (más estructura, menos humo).",
-      pt: "A practical checklist you can paste into any prompt to reduce ambiguity and improve structure.",
+      pt: "Um checklist prático para colar em qualquer prompt, reduzir a ambiguidade e melhorar a estrutura.",
     },
     sections: [
       {
-        heading: { en: "What to include", es: "Qué incluir", pt: "What to include" },
+        heading: { en: "What to include", es: "Qué incluir", pt: "O que incluir" },
         bullets: {
           en: [
             "Goal: what success looks like (1 sentence).",
@@ -56,16 +56,16 @@ export const guides: Guide[] = [
             "Criterio de calidad: qué evitar + criterios de aceptación.",
           ],
           pt: [
-            "Goal: what success looks like (1 sentence).",
-            "Context: what the model must know (data, constraints, definitions).",
-            "Output format: bullets / JSON / table / steps.",
-            "Edge cases + what to do when info is missing.",
-            "Quality bar: what to avoid + acceptance criteria.",
+            "Objetivo: como é o sucesso (1 frase).",
+            "Contexto: o que o modelo precisa saber (dados, restrições, definições).",
+            "Formato de saída: tópicos / JSON / tabela / passos.",
+            "Casos de borda + o que fazer quando faltar informação.",
+            "Padrão de qualidade: o que evitar + critérios de aceitação.",
           ],
         },
       },
       {
-        heading: { en: "Common mistakes", es: "Errores típicos", pt: "Common mistakes" },
+        heading: { en: "Common mistakes", es: "Errores típicos", pt: "Erros comuns" },
         bullets: {
           en: [
             "Asking for 'the best' without criteria (the model guesses).",
@@ -78,14 +78,14 @@ export const guides: Guide[] = [
             "Mezclar objetivos (ej: 'sé breve' + 'sé exhaustivo').",
           ],
           pt: [
-            "Asking for 'the best' without criteria (the model guesses).",
-            "No examples of the output format (inconsistent structure).",
-            "Mixing goals (e.g., 'be concise' + 'be exhaustive').",
+            "Pedir 'o melhor' sem critérios (o modelo adivinha).",
+            "Não dar exemplos do formato de saída (a estrutura sai inconsistente).",
+            "Misturar objetivos (ex.: 'seja conciso' + 'seja exaustivo').",
           ],
         },
       },
       {
-        heading: { en: "Before → after: the same request, rewritten", es: "Antes → después: el mismo pedido, reescrito", pt: "Before → after: the same request, rewritten" },
+        heading: { en: "Before → after: the same request, rewritten", es: "Antes → después: el mismo pedido, reescrito", pt: "Antes → depois: o mesmo pedido, reescrito" },
         bullets: {
           en: [
             "Before: \"Write something about our new feature.\"",
@@ -98,14 +98,14 @@ export const guides: Guide[] = [
             "Qué cambió: ahora están dichos el objetivo, la audiencia, el largo, el tono y la salida, así que el modelo no tiene que adivinar nada importante.",
           ],
           pt: [
-            "Before: \"Write something about our new feature.\"",
-            "After: \"Write a 120-word announcement of [feature] for existing customers. Goal: get them to try it this week. Include one concrete benefit and a link placeholder. Tone: plain, no hype. Output: a subject line and the body.\"",
-            "What changed: the goal, the audience, the length, the tone and the output are now stated, so the model has nothing important left to guess.",
+            "Antes: \"Escreva algo sobre a nossa nova funcionalidade.\"",
+            "Depois: \"Escreva um anúncio de 120 palavras sobre [funcionalidade] para clientes atuais. Objetivo: fazer com que testem ainda esta semana. Inclua um benefício concreto e um marcador de link. Tom: simples, sem hype. Saída: assunto e corpo.\"",
+            "O que mudou: o objetivo, o público, o tamanho, o tom e a saída agora estão declarados, então o modelo não precisa adivinhar nada importante.",
           ],
         },
       },
       {
-        heading: { en: "How to use it in three steps", es: "Cómo usarlo en tres pasos", pt: "How to use it in three steps" },
+        heading: { en: "How to use it in three steps", es: "Cómo usarlo en tres pasos", pt: "Como usar em três passos" },
         bullets: {
           en: [
             "Write the goal first, in one sentence. If you cannot, the prompt is not ready to send.",
@@ -120,17 +120,17 @@ export const guides: Guide[] = [
             "Promptea puede puntuar el prompt de 0 a 100 en seis criterios y listar qué corregir, para que no tengas que encontrar la línea débil a prueba y error.",
           ],
           pt: [
-            "Write the goal first, in one sentence. If you cannot, the prompt is not ready to send.",
-            "Fill in only the context lines that would change the answer, and delete the rest of the skeleton.",
-            "Run it and compare the answer with your quality bar. Fix the line that caused each miss (vague answer: goal or context; wrong shape: output format; too generic: constraints) and run again.",
-            "Promptea can score the prompt from 0 to 100 on six criteria and list what to fix, so you do not have to find the weak line by trial and error.",
+            "Escreva primeiro o objetivo, em uma frase. Se você não conseguir, o prompt ainda não está pronto para ser enviado.",
+            "Preencha só as linhas de contexto que mudariam a resposta e apague o resto do esqueleto.",
+            "Rode o prompt e compare a resposta com o seu padrão de qualidade. Corrija a linha que causou cada falha (resposta vaga: objetivo ou contexto; forma errada: formato de saída; genérica demais: restrições) e rode de novo.",
+            "O Promptea pode pontuar o prompt de 0 a 100 em seis critérios e listar o que corrigir, para você não precisar achar a linha fraca por tentativa e erro.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Universal prompt skeleton", es: "Esqueleto universal de prompt", pt: "Universal prompt skeleton" },
+        title: { en: "Universal prompt skeleton", es: "Esqueleto universal de prompt", pt: "Esqueleto universal de prompt" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -170,58 +170,58 @@ Calidad:
 - Debe incluir: [items]
 - Debe evitar: [items]
 Si falta info, haceme hasta 3 preguntas antes de responder.`,
-          pt: `Task: [what you want]
+          pt: `Tarefa: [o que você quer]
 
-Goal (success looks like):
-- [1 sentence]
+Objetivo (como é o sucesso):
+- [1 frase]
 
-Context:
-- Audience: [who]
-- Constraints: [time/budget/stack/forbidden things]
-- Inputs: [paste data or describe]
-- Definitions: [terms]
+Contexto:
+- Público: [quem]
+- Restrições: [prazo/orçamento/stack/o que é proibido]
+- Insumos: [cole os dados ou descreva]
+- Definições: [termos]
 
-Output format:
-- [exact format: bullets / JSON schema / table columns]
+Formato de saída:
+- [formato exato: tópicos / esquema JSON / colunas da tabela]
 
-Quality bar:
-- Must include: [items]
-- Must avoid: [items]
-If missing info, ask up to 3 questions before answering.`,
+Padrão de qualidade:
+- Deve incluir: [itens]
+- Deve evitar: [itens]
+Se faltar informação, faça até 3 perguntas antes de responder.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Do I need long prompts?", es: "¿Necesito prompts largos?", pt: "Do I need long prompts?" },
+        q: { en: "Do I need long prompts?", es: "¿Necesito prompts largos?", pt: "Preciso de prompts longos?" },
         a: {
           en: "No. The goal is clarity, not length. Add only the context that changes the answer.",
           es: "No. La idea es claridad, no longitud. Sumá solo el contexto que cambia la respuesta.",
-          pt: "No. The goal is clarity, not length. Add only the context that changes the answer.",
+          pt: "Não. O objetivo é clareza, não tamanho. Adicione só o contexto que muda a resposta.",
         },
       },
       {
-        q: { en: "How do I get consistent formatting?", es: "¿Cómo logro formato consistente?", pt: "How do I get consistent formatting?" },
+        q: { en: "How do I get consistent formatting?", es: "¿Cómo logro formato consistente?", pt: "Como consigo uma formatação consistente?" },
         a: {
           en: "Specify the exact format and include a tiny example if needed.",
           es: "Definí el formato exacto y, si hace falta, poné un mini ejemplo.",
-          pt: "Specify the exact format and include a tiny example if needed.",
+          pt: "Especifique o formato exato e inclua um exemplo bem pequeno, se for preciso.",
         },
       },
       {
-        q: { en: "Which line should I fix when the answer is off?", es: "¿Qué línea corrijo cuando la respuesta no sirve?", pt: "Which line should I fix when the answer is off?" },
+        q: { en: "Which line should I fix when the answer is off?", es: "¿Qué línea corrijo cuando la respuesta no sirve?", pt: "Que linha devo corrigir quando a resposta sai errada?" },
         a: {
           en: "Match the symptom to the line: vague or off-topic means the goal or context is weak; the wrong shape means the output format is missing; generic or too long means the constraints are loose; invented details mean you should add 'use only the data I provide'.",
           es: "Relacioná el síntoma con la línea: vaga o fuera de tema significa objetivo o contexto débiles; forma equivocada, que falta el formato de salida; genérica o demasiado larga, restricciones flojas; detalles inventados, que conviene agregar 'usá solo los datos que te doy'.",
-          pt: "Match the symptom to the line: vague or off-topic means the goal or context is weak; the wrong shape means the output format is missing; generic or too long means the constraints are loose; invented details mean you should add 'use only the data I provide'.",
+          pt: "Relacione o sintoma com a linha: resposta vaga ou fora do assunto significa objetivo ou contexto fracos; forma errada significa que falta o formato de saída; genérica ou longa demais significa restrições frouxas; detalhes inventados pedem um 'use apenas os dados que eu fornecer'.",
         },
       },
       {
-        q: { en: "Is the same checklist right for every model?", es: "¿El mismo checklist sirve para todos los modelos?", pt: "Is the same checklist right for every model?" },
+        q: { en: "Is the same checklist right for every model?", es: "¿El mismo checklist sirve para todos los modelos?", pt: "O mesmo checklist serve para todos os modelos?" },
         a: {
           en: "The structure is model-independent: goal, context, format, edge cases, quality bar. What changes between models is how strict to be about format and how to handle examples or search; see the per-model pages.",
           es: "La estructura es independiente del modelo: objetivo, contexto, formato, casos límite, criterio de calidad. Lo que cambia entre modelos es cuán estricto ser con el formato y cómo tratar ejemplos o búsqueda; mirá las páginas por modelo.",
-          pt: "The structure is model-independent: goal, context, format, edge cases, quality bar. What changes between models is how strict to be about format and how to handle examples or search; see the per-model pages.",
+          pt: "A estrutura não depende do modelo: objetivo, contexto, formato, casos de borda, padrão de qualidade. O que muda de um modelo para outro é o rigor com o formato e a forma de lidar com exemplos ou busca; veja as páginas por modelo.",
         },
       },
     ],
@@ -229,15 +229,15 @@ If missing info, ask up to 3 questions before answering.`,
   {
     slug: "json-output",
     updated: "2026-11-09",
-    title: { en: "How to force valid JSON output (no markdown)", es: "Cómo forzar salida JSON válida (sin markdown)", pt: "How to force valid JSON output (no markdown)" },
+    title: { en: "How to force valid JSON output (no markdown)", es: "Cómo forzar salida JSON válida (sin markdown)", pt: "Como forçar uma saída em JSON válido (sem markdown)" },
     description: {
       en: "Templates to extract and transform data into strict JSON, with validation rules.",
       es: "Plantillas para extraer/transformar datos a JSON estricto, con reglas de validación.",
-      pt: "Templates to extract and transform data into strict JSON, with validation rules.",
+      pt: "Templates para extrair e transformar dados em JSON estrito, com regras de validação.",
     },
     sections: [
       {
-        heading: { en: "Rules that work", es: "Reglas que funcionan", pt: "Rules that work" },
+        heading: { en: "Rules that work", es: "Reglas que funcionan", pt: "Regras que funcionam" },
         bullets: {
           en: [
             "Tell it: 'Output ONLY JSON' and forbid extra text.",
@@ -252,15 +252,15 @@ If missing info, ask up to 3 questions before answering.`,
             "Pedí una segunda pasada: validar + corregir JSON.",
           ],
           pt: [
-            "Tell it: 'Output ONLY JSON' and forbid extra text.",
-            "Define a schema (keys, types, allowed values).",
-            "State what to do on missing fields (null vs omit).",
-            "Ask for a second pass: validate + fix JSON.",
+            "Diga: 'Retorne SOMENTE JSON' e proíba texto extra.",
+            "Defina um esquema (chaves, tipos, valores permitidos).",
+            "Diga o que fazer com campos ausentes (null ou omitir).",
+            "Peça uma segunda passada: validar + corrigir o JSON.",
           ],
         },
       },
       {
-        heading: { en: "Before → after: from 'give me JSON' to a contract", es: "Antes → después: de 'dame JSON' a un contrato", pt: "Before → after: from 'give me JSON' to a contract" },
+        heading: { en: "Before → after: from 'give me JSON' to a contract", es: "Antes → después: de 'dame JSON' a un contrato", pt: "Antes → depois: de 'me dê um JSON' a um contrato" },
         bullets: {
           en: [
             "Before: \"Give me the contact data from this email as JSON.\" Typical result: a sentence of introduction, a markdown code fence, and keys that change from run to run.",
@@ -273,14 +273,14 @@ If missing info, ask up to 3 questions before answering.`,
             "Qué cambió: la salida es un esquema definido, con una regla para valores faltantes y la prohibición de texto extra, así que el mismo prompt da la misma forma cada vez.",
           ],
           pt: [
-            "Before: \"Give me the contact data from this email as JSON.\" Typical result: a sentence of introduction, a markdown code fence, and keys that change from run to run.",
-            "After: \"Extract the contact data. Return ONLY valid JSON, no markdown. Schema: {name: string, email: string|null, phone: string|null}. Use null for anything missing; do not guess.\"",
-            "What changed: the output is a defined schema with a rule for missing values and a ban on extra text, so the same prompt gives the same shape every time.",
+            "Antes: \"Me dê os dados de contato deste e-mail em JSON.\" Resultado típico: uma frase de introdução, um bloco de código markdown e chaves que mudam de uma execução para outra.",
+            "Depois: \"Extraia os dados de contato. Retorne SOMENTE JSON válido, sem markdown. Esquema: {name: string, email: string|null, phone: string|null}. Use null para tudo o que faltar; não adivinhe.\"",
+            "O que mudou: a saída é um esquema definido, com uma regra para valores ausentes e a proibição de texto extra, então o mesmo prompt entrega sempre o mesmo formato.",
           ],
         },
       },
       {
-        heading: { en: "Validate in code, not by hope", es: "Validá en el código, no por fe", pt: "Validate in code, not by hope" },
+        heading: { en: "Validate in code, not by hope", es: "Validá en el código, no por fe", pt: "Valide no código, não na esperança" },
         bullets: {
           en: [
             "Parse the response with a real JSON parser and check it against the schema (required keys, types, allowed values) before using it.",
@@ -295,17 +295,17 @@ If missing info, ask up to 3 questions before answering.`,
             "Un JSON válido no es necesariamente un contenido correcto. Contrastá valores con el texto fuente, sobre todo números y fechas.",
           ],
           pt: [
-            "Parse the response with a real JSON parser and check it against the schema (required keys, types, allowed values) before using it.",
-            "On failure, retry once with the error attached: 'Your previous output failed validation: [error]. Return corrected JSON only.'",
-            "Where the model or API offers a native structured-output mode, use it: the format is then enforced at generation time instead of requested in prose. Promptea's model pages show which current models list it.",
-            "Valid JSON is not necessarily correct content. Spot-check values against the source text, especially numbers and dates.",
+            "Processe a resposta com um parser de JSON de verdade e confira com o esquema (chaves obrigatórias, tipos, valores permitidos) antes de usá-la.",
+            "Em caso de falha, tente mais uma vez anexando o erro: 'Sua saída anterior falhou na validação: [erro]. Retorne apenas o JSON corrigido.'",
+            "Onde o modelo ou a API oferecer um modo nativo de saída estruturada, use-o: o formato passa a ser imposto na geração, em vez de pedido em prosa. As páginas de modelos do Promptea mostram quais modelos atuais o oferecem.",
+            "JSON válido não é necessariamente conteúdo correto. Confira por amostragem os valores com o texto-fonte, principalmente números e datas.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Extract structured JSON", es: "Extraer JSON estructurado", pt: "Extract structured JSON" },
+        title: { en: "Extract structured JSON", es: "Extraer JSON estructurado", pt: "Extrair JSON estruturado" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -355,10 +355,10 @@ Texto:
 """[pegá acá]"""
 
 Antes de finalizar, validá que sea JSON válido y que matchee el esquema.`,
-          pt: `Extract data from the text below.
-Return ONLY valid JSON (no markdown, no comments).
+          pt: `Extraia os dados do texto abaixo.
+Retorne SOMENTE JSON válido (sem markdown, sem comentários).
 
-Schema:
+Esquema:
 {
   "people": [
     {
@@ -370,18 +370,18 @@ Schema:
   "dates": ["YYYY-MM-DD"]
 }
 
-Rules:
-- If missing, use null (do not invent).
-- If a date is ambiguous, omit it.
+Regras:
+- Se faltar, use null (não invente).
+- Se uma data for ambígua, omita.
 
-Text:
-"""[paste here]"""
+Texto:
+"""[cole aqui]"""
 
-Before finalizing, validate that the output is valid JSON and matches the schema.`,
+Antes de finalizar, valide se a saída é um JSON válido e segue o esquema.`,
         },
       },
       {
-        title: { en: "Transform JSON to a new schema", es: "Transformar JSON a un nuevo esquema", pt: "Transform JSON to a new schema" },
+        title: { en: "Transform JSON to a new schema", es: "Transformar JSON a un nuevo esquema", pt: "Transformar JSON para um novo esquema" },
         purpose: "data",
         target: "gemini",
         prompt: {
@@ -423,59 +423,59 @@ Reglas:
 - Asegurate de que tags estén en minúsculas.
 
 Validá el JSON antes de devolverlo.`,
-          pt: `You will receive JSON input. Convert it to the output schema.
-Return ONLY valid JSON.
+          pt: `Você vai receber um JSON de entrada. Converta-o para o esquema de saída.
+Retorne SOMENTE JSON válido.
 
-Input JSON:
-"""[paste JSON]"""
+JSON de entrada:
+"""[cole o JSON]"""
 
-Output schema:
+Esquema de saída:
 {
   "items": [
     { "id": "string", "title": "string", "tags": ["string"] }
   ]
 }
 
-Rules:
-- Preserve meaning; do not invent new items.
-- If an input field doesn't map, ignore it.
-- Ensure tags are lowercase.
+Regras:
+- Preserve o sentido; não invente itens novos.
+- Se um campo de entrada não tiver correspondência, ignore.
+- Garanta que as tags fiquem em minúsculas.
 
-Validate JSON before output.`,
+Valide o JSON antes de retornar.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why does the model still add text?", es: "¿Por qué igual agrega texto?", pt: "Why does the model still add text?" },
+        q: { en: "Why does the model still add text?", es: "¿Por qué igual agrega texto?", pt: "Por que o modelo ainda coloca texto?" },
         a: {
           en: "Because you didn't make it costly. Repeat the constraint, provide a schema, and ask for validation.",
           es: "Porque no lo hiciste costoso. Repetí la restricción, poné esquema y pedí validación.",
-          pt: "Because you didn't make it costly. Repeat the constraint, provide a schema, and ask for validation.",
+          pt: "Porque você não deixou isso custoso. Repita a restrição, forneça um esquema e peça validação.",
         },
       },
       {
-        q: { en: "Should I use JSON Schema?", es: "¿Conviene usar JSON Schema?", pt: "Should I use JSON Schema?" },
+        q: { en: "Should I use JSON Schema?", es: "¿Conviene usar JSON Schema?", pt: "Devo usar JSON Schema?" },
         a: {
           en: "Yes for strict integrations. Even a simplified schema (keys + types) helps a lot.",
           es: "Sí si vas a integrar. Aunque sea un esquema simplificado (claves + tipos) mejora mucho.",
-          pt: "Yes for strict integrations. Even a simplified schema (keys + types) helps a lot.",
+          pt: "Sim, em integrações estritas. Até um esquema simplificado (chaves + tipos) ajuda bastante.",
         },
       },
       {
-        q: { en: "What should the model return when a value is missing?", es: "¿Qué debe devolver el modelo cuando falta un valor?", pt: "What should the model return when a value is missing?" },
+        q: { en: "What should the model return when a value is missing?", es: "¿Qué debe devolver el modelo cuando falta un valor?", pt: "O que o modelo deve retornar quando falta um valor?" },
         a: {
           en: "Pick one rule and state it: null for a missing value or omit the key. Mixing the two forces your code to handle both. Also tell it not to guess.",
           es: "Elegí una regla y decila: null para un valor faltante u omitir la clave. Mezclar ambas obliga a tu código a manejar las dos. Aclarale también que no adivine.",
-          pt: "Pick one rule and state it: null for a missing value or omit the key. Mixing the two forces your code to handle both. Also tell it not to guess.",
+          pt: "Escolha uma regra e declare: null para o valor ausente ou omitir a chave. Misturar as duas obriga o seu código a tratar ambas. Diga também para não adivinhar.",
         },
       },
       {
-        q: { en: "Can I ask for JSON and an explanation in the same answer?", es: "¿Puedo pedir JSON y una explicación en la misma respuesta?", pt: "Can I ask for JSON and an explanation in the same answer?" },
+        q: { en: "Can I ask for JSON and an explanation in the same answer?", es: "¿Puedo pedir JSON y una explicación en la misma respuesta?", pt: "Posso pedir JSON e uma explicação na mesma resposta?" },
         a: {
           en: "Keep them apart: put the explanation in a dedicated key such as \"notes\", or make a second request. Text outside the JSON breaks parsing.",
           es: "Mantenelos separados: poné la explicación en una clave dedicada como \"notes\" o hacé una segunda solicitud. El texto fuera del JSON rompe el parseo.",
-          pt: "Keep them apart: put the explanation in a dedicated key such as \"notes\", or make a second request. Text outside the JSON breaks parsing.",
+          pt: "Mantenha os dois separados: coloque a explicação em uma chave própria, como \"notes\", ou faça um segundo pedido. Texto fora do JSON quebra o parse.",
         },
       },
     ],
