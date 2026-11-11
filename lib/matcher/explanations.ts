@@ -9,8 +9,8 @@ import type { InteractionProfile, Lang, MatchCategory, TargetAI } from "@/lib/do
 import type { ModelEntry } from "@/lib/models";
 import type { CategoryContribution, MatcherFeatures, ScoredModel } from "./types";
 
-function t(lang: Lang, es: string, en: string): string {
-  return lang === "es" ? es : en;
+function t(lang: Lang, es: string, en: string, pt: string): string {
+  return { es, en, pt }[lang];
 }
 
 // ── Labels ──────────────────────────────────────────────────────────────────
@@ -37,26 +37,26 @@ export function productLabel(target: TargetAI, profile: InteractionProfile): str
 }
 
 export const CATEGORY_LABEL: Record<MatchCategory, Record<Lang, string>> = {
-  chat: { es: "conversación general", en: "general chat", pt: "general chat" },
-  coding: { es: "trabajo con código", en: "code work", pt: "code work" },
-  codingAgent: { es: "tareas de agente sobre repositorios", en: "repository agent tasks", pt: "repository agent tasks" },
-  research: { es: "investigación con información actual", en: "research with current information", pt: "research with current information" },
-  longContext: { es: "documentos y contexto largo", en: "long documents and context", pt: "long documents and context" },
-  multimodal: { es: "contenido multimodal (imágenes, video)", en: "multimodal content (images, video)", pt: "multimodal content (images, video)" },
-  dataExtraction: { es: "extracción de datos estricta", en: "strict data extraction", pt: "strict data extraction" },
-  creativeWriting: { es: "escritura creativa", en: "creative writing", pt: "creative writing" },
-  marketing: { es: "copy de marketing", en: "marketing copy", pt: "marketing copy" },
-  translation: { es: "traducción", en: "translation", pt: "translation" },
-  summarization: { es: "resumen de contenido", en: "summarization", pt: "summarization" },
-  tutoring: { es: "estudio y tutoría", en: "study and tutoring", pt: "study and tutoring" },
-  imagePrompts: { es: "prompts para generar imágenes", en: "image-generation prompts", pt: "image-generation prompts" },
-  complexReasoning: { es: "razonamiento complejo", en: "complex reasoning", pt: "complex reasoning" },
-  fastLightweight: { es: "tareas rápidas y livianas", en: "fast lightweight tasks", pt: "fast lightweight tasks" },
+  chat: { es: "conversación general", en: "general chat", pt: "chat geral" },
+  coding: { es: "trabajo con código", en: "code work", pt: "trabalho com código" },
+  codingAgent: { es: "tareas de agente sobre repositorios", en: "repository agent tasks", pt: "tarefas de agente em repositório" },
+  research: { es: "investigación con información actual", en: "research with current information", pt: "pesquisa com informação atual" },
+  longContext: { es: "documentos y contexto largo", en: "long documents and context", pt: "documentos longos e contexto" },
+  multimodal: { es: "contenido multimodal (imágenes, video)", en: "multimodal content (images, video)", pt: "conteúdo multimodal (imagens, vídeo)" },
+  dataExtraction: { es: "extracción de datos estricta", en: "strict data extraction", pt: "extração estrita de dados" },
+  creativeWriting: { es: "escritura creativa", en: "creative writing", pt: "escrita criativa" },
+  marketing: { es: "copy de marketing", en: "marketing copy", pt: "textos de marketing" },
+  translation: { es: "traducción", en: "translation", pt: "tradução" },
+  summarization: { es: "resumen de contenido", en: "summarization", pt: "resumo" },
+  tutoring: { es: "estudio y tutoría", en: "study and tutoring", pt: "estudo e tutoria" },
+  imagePrompts: { es: "prompts para generar imágenes", en: "image-generation prompts", pt: "prompts de geração de imagens" },
+  complexReasoning: { es: "razonamiento complejo", en: "complex reasoning", pt: "raciocínio complexo" },
+  fastLightweight: { es: "tareas rápidas y livianas", en: "fast lightweight tasks", pt: "tarefas rápidas e leves" },
 };
 
 function categoryLabel(category: MatchCategory, lang: Lang): string {
   const entry = CATEGORY_LABEL[category];
-  return lang === "es" ? entry.es : entry.en;
+  return entry[lang];
 }
 
 function topContributions(scored: ScoredModel, max = 3): CategoryContribution[] {
@@ -91,13 +91,14 @@ export function buildReasons(
     citedSignalSets.add(key);
 
     const evidenceTxt = signalNames.length
-      ? t(lang, ` (detectamos: ${signalNames.join(", ")})`, ` (detected: ${signalNames.join(", ")})`)
+      ? t(lang, ` (detectamos: ${signalNames.join(", ")})`, ` (detected: ${signalNames.join(", ")})`, ` (detectado: ${signalNames.join(", ")})`)
       : "";
     reasons.push(
       t(
         lang,
         `Tu prompt apunta a ${categoryLabel(c.category, lang)}${evidenceTxt}, y ${entry.label} está entre las mejores opciones para eso.`,
-        `Your prompt targets ${categoryLabel(c.category, lang)}${evidenceTxt}, and ${entry.label} is among the strongest options for that.`
+        `Your prompt targets ${categoryLabel(c.category, lang)}${evidenceTxt}, and ${entry.label} is among the strongest options for that.`,
+        `Seu prompt aponta para ${categoryLabel(c.category, lang)}${evidenceTxt}, e ${entry.label} está entre as opções mais fortes para isso.`
       )
     );
   }
@@ -107,7 +108,8 @@ export function buildReasons(
       t(
         lang,
         `Por las rutas, comandos o criterios de validación que incluye, conviene un agente de código que trabaje sobre el repo — no un chat común.`,
-        `Given the paths, commands, or validation criteria it includes, a repository coding agent fits better than plain chat.`
+        `Given the paths, commands, or validation criteria it includes, a repository coding agent fits better than plain chat.`,
+        `Pelos caminhos de arquivo, comandos ou critérios de validação que ele inclui, um agente de programação com acesso ao repositório combina mais do que um chat comum.`
       )
     );
   } else if (profile === "researchAssistant" && entry.capabilities?.nativeSearch) {
@@ -115,7 +117,8 @@ export function buildReasons(
       t(
         lang,
         `Pide información actual o fuentes: ${entry.label} busca en la web y cita fuentes de forma nativa.`,
-        `It asks for current information or sources: ${entry.label} searches the web and cites sources natively.`
+        `It asks for current information or sources: ${entry.label} searches the web and cites sources natively.`,
+        `Ele pede informação atual ou fontes: ${entry.label} busca na web e cita as fontes de forma nativa.`
       )
     );
   } else if (entry.capabilities?.latencyClass === "fast" && (features.evidence.fastLightweight ?? 0) > 0) {
@@ -123,7 +126,8 @@ export function buildReasons(
       t(
         lang,
         `Es una tarea corta: ${entry.label} responde rápido y a bajo costo sin sacrificar calidad en pedidos simples.`,
-        `It's a short task: ${entry.label} answers fast and cheaply without losing quality on simple requests.`
+        `It's a short task: ${entry.label} answers fast and cheaply without losing quality on simple requests.`,
+        `É uma tarefa curta: ${entry.label} responde rápido e barato, sem perder qualidade em pedidos simples.`
       )
     );
   }
@@ -133,7 +137,8 @@ export function buildReasons(
       t(
         lang,
         `${entry.label} es un asistente general sólido y equilibrado para este tipo de pedido.`,
-        `${entry.label} is a solid, balanced general assistant for this kind of request.`
+        `${entry.label} is a solid, balanced general assistant for this kind of request.`,
+        `${entry.label} é um assistente geral sólido e equilibrado para este tipo de pedido.`
       )
     );
   }
@@ -142,7 +147,8 @@ export function buildReasons(
       t(
         lang,
         "Tu prompt no muestra señales especializadas (código, datos, búsqueda…), así que conviene un asistente conversacional versátil.",
-        "Your prompt shows no specialized signals (code, data, search…), so a versatile conversational assistant is the safest fit."
+        "Your prompt shows no specialized signals (code, data, search…), so a versatile conversational assistant is the safest fit.",
+        "Seu prompt não mostra sinais especializados (código, dados, busca…), então um assistente conversacional versátil é a opção mais segura."
       )
     );
   }
@@ -171,16 +177,18 @@ export function buildTradeoff(
     return t(
       lang,
       `Queda por detrás en ${categoryLabel(worst.category, lang)} para este prompt.`,
-      `It falls behind on ${categoryLabel(worst.category, lang)} for this prompt.`
+      `It falls behind on ${categoryLabel(worst.category, lang)} for this prompt.`,
+      `Fica atrás em ${categoryLabel(worst.category, lang)} para este prompt.`
     );
   }
   if (altEntry.capabilities?.latencyClass === "slow") {
-    return t(lang, "Suele ser más lento y costoso.", "Tends to be slower and more expensive.");
+    return t(lang, "Suele ser más lento y costoso.", "Tends to be slower and more expensive.", "Tende a ser mais lento e mais caro.");
   }
   return t(
     lang,
     "Diferencia mínima: cualquiera de los dos funciona bien acá.",
-    "Minimal difference: either works well here."
+    "Minimal difference: either works well here.",
+    "Diferença mínima: qualquer um dos dois funciona bem aqui."
   );
 }
 
@@ -191,13 +199,14 @@ export function buildBestAt(lang: Lang, alt: ScoredModel, altEntry: ModelEntry):
     return t(
       lang,
       `Fuerte en ${categoryLabel(tops[0].category, lang)}.`,
-      `Strong at ${categoryLabel(tops[0].category, lang)}.`
+      `Strong at ${categoryLabel(tops[0].category, lang)}.`,
+      `Forte em ${categoryLabel(tops[0].category, lang)}.`
     );
   }
   if (caps?.latencyClass === "fast") {
-    return t(lang, "Rápido y económico.", "Fast and inexpensive.");
+    return t(lang, "Rápido y económico.", "Fast and inexpensive.", "Rápido e barato.");
   }
-  return t(lang, "Alternativa general equilibrada.", "Balanced general alternative.");
+  return t(lang, "Alternativa general equilibrada.", "Balanced general alternative.", "Alternativa geral equilibrada.");
 }
 
 // ── Adaptation advice ───────────────────────────────────────────────────────
@@ -218,7 +227,8 @@ export function buildAdaptationAdvice(
         t(
           lang,
           "Tu prompt no define criterios de aceptación: agregá cómo validar el resultado (tests, comandos) para que el agente sepa cuándo terminó.",
-          "Your prompt doesn't define acceptance criteria: add how to validate the result (tests, commands) so the agent knows when it's done."
+          "Your prompt doesn't define acceptance criteria: add how to validate the result (tests, commands) so the agent knows when it's done.",
+          "Seu prompt não define critérios de aceitação: diga como validar o resultado (testes, comandos) para o agente saber quando terminou."
         )
       );
     }
@@ -227,7 +237,8 @@ export function buildAdaptationAdvice(
         t(
           lang,
           "Mantené las rutas de archivos exactas como están: el agente las usa para ubicar el trabajo.",
-          "Keep the exact file paths as written: the agent uses them to locate the work."
+          "Keep the exact file paths as written: the agent uses them to locate the work.",
+          "Mantenha os caminhos de arquivo exatamente como estão: o agente os usa para localizar o trabalho."
         )
       );
     }
@@ -238,7 +249,8 @@ export function buildAdaptationAdvice(
       t(
         lang,
         "Ya exigís JSON: definí el schema exacto (campos y tipos) y la regla para valores faltantes; este modelo respeta salida estructurada nativa.",
-        "You already require JSON: define the exact schema (fields and types) and the missing-value rule; this model honors native structured output."
+        "You already require JSON: define the exact schema (fields and types) and the missing-value rule; this model honors native structured output.",
+        "Você já exige JSON: defina o esquema exato (campos e tipos) e a regra para valores ausentes; este modelo respeita a saída estruturada nativa."
       )
     );
   }
@@ -248,13 +260,14 @@ export function buildAdaptationAdvice(
       t(
         lang,
         "Como pedís actualidad, acotá el período (por ejemplo, \"desde 2025\") y pedí las fuentes con URL.",
-        "Since you ask for recency, constrain the time range (e.g., \"since 2025\") and request sources with URLs."
+        "Since you ask for recency, constrain the time range (e.g., \"since 2025\") and request sources with URLs.",
+        "Como você pede atualidade, delimite o período (ex.: \"desde 2025\") e peça fontes com URLs."
       )
     );
   }
 
   if (caps?.promptGuidance) {
-    advice.push(lang === "es" ? caps.promptGuidance.es : caps.promptGuidance.en);
+    advice.push(caps.promptGuidance[lang]);
   }
 
   return advice.slice(0, 3);
@@ -274,7 +287,8 @@ export function buildSwitchingAdvice(
       t(
         lang,
         "Si preferís un chat común en lugar de un agente: pegá el código relevante en el prompt (el chat no puede abrir tu repo) y pedí el diff o archivo completo como salida.",
-        "If you prefer plain chat instead of an agent: paste the relevant code into the prompt (chat can't open your repo) and ask for a diff or full file as output."
+        "If you prefer plain chat instead of an agent: paste the relevant code into the prompt (chat can't open your repo) and ask for a diff or full file as output.",
+        "Se você preferir um chat comum em vez de um agente: cole o código relevante no prompt (o chat não consegue abrir o seu repositório) e peça um diff ou o arquivo completo como saída."
       )
     );
   } else if (profile === "researchAssistant") {
@@ -282,7 +296,8 @@ export function buildSwitchingAdvice(
       t(
         lang,
         "Si usás una IA sin búsqueda web: aportá vos los datos actuales (pegá artículos o cifras) y pedile solo el análisis.",
-        "If you use an AI without web search: supply the current data yourself (paste articles or figures) and ask only for the analysis."
+        "If you use an AI without web search: supply the current data yourself (paste articles or figures) and ask only for the analysis.",
+        "Se você usar uma IA sem busca na web: forneça você mesmo os dados atuais (cole os artigos ou os números) e peça só a análise."
       )
     );
   } else if ((features.evidence.dataExtraction ?? 0) > 0) {
@@ -290,7 +305,8 @@ export function buildSwitchingAdvice(
       t(
         lang,
         "Para modelos sin modo JSON nativo: agregá un ejemplo del JSON esperado y la instrucción \"respondé solo con el JSON, sin texto extra\".",
-        "For models without native JSON mode: add an example of the expected JSON plus the instruction \"reply with the JSON only, no extra text\"."
+        "For models without native JSON mode: add an example of the expected JSON plus the instruction \"reply with the JSON only, no extra text\".",
+        "Para modelos sem modo JSON nativo: adicione um exemplo do JSON esperado e a instrução \"responda somente com o JSON, sem texto extra\"."
       )
     );
   } else {
@@ -298,7 +314,8 @@ export function buildSwitchingAdvice(
       t(
         lang,
         "Para cambiar de IA sin perder calidad: conservá el objetivo y el formato de salida tal como están; ajustá solo los delimitadores al estilo del modelo elegido.",
-        "To switch AIs without losing quality: keep the goal and output format as written; only adjust delimiters to the chosen model's style."
+        "To switch AIs without losing quality: keep the goal and output format as written; only adjust delimiters to the chosen model's style.",
+        "Para trocar de IA sem perder qualidade: mantenha o objetivo e o formato de saída como estão; ajuste apenas os delimitadores ao estilo do modelo escolhido."
       )
     );
   }
@@ -308,7 +325,8 @@ export function buildSwitchingAdvice(
       t(
         lang,
         "Tu material es largo: si el otro modelo tiene menos contexto, dividí el documento en partes y pedí una síntesis incremental.",
-        "Your material is long: if the other model has less context, split the document and ask for an incremental synthesis."
+        "Your material is long: if the other model has less context, split the document and ask for an incremental synthesis.",
+        "Seu material é longo: se o outro modelo tiver menos contexto, divida o documento e peça uma síntese incremental."
       )
     );
   }
@@ -328,12 +346,14 @@ export function buildTieBreaker(
     return t(
       lang,
       `Empate técnico: elegimos ${primaryEntry.label} por una leve ventaja en ${cat}; la alternativa rinde casi igual.`,
-      `Technical tie: we picked ${primaryEntry.label} for a slight edge in ${cat}; the alternative performs almost identically.`
+      `Technical tie: we picked ${primaryEntry.label} for a slight edge in ${cat}; the alternative performs almost identically.`,
+      `Empate técnico: escolhemos ${primaryEntry.label} por uma leve vantagem em ${cat}; a alternativa tem um desempenho quase idêntico.`
     );
   }
   return t(
     lang,
     `Empate técnico entre las dos primeras opciones: cualquiera funciona bien para este prompt.`,
-    `Technical tie between the top two options: either works well for this prompt.`
+    `Technical tie between the top two options: either works well for this prompt.`,
+    `Empate técnico entre as duas primeiras opções: qualquer uma funciona bem para este prompt.`
   );
 }

@@ -88,6 +88,12 @@ export type AnalyzeResult = {
       complexity: string;
       signals: string[];
     };
+    /**
+     * v1.8.2: set when the optimized prompt is written in a language other than
+     * `lang`. Today only "en" for a Portuguese image request (the art-directed
+     * image prompt is composed in English around the user's own words).
+     */
+    optimizedPromptLang?: Lang;
     /** v1.3.0: input already is (or matches) an optimized prompt — minimal edits, adaptive layer skipped. */
     alreadyOptimized?: boolean;
     scoreCriteria?: Array<{ key: string; label: Record<Lang, string> }>;

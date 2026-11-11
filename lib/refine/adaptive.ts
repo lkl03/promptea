@@ -233,12 +233,19 @@ Return ONLY valid JSON in this exact shape:
 - Ask in "followUpQuestions" only when critical information is missing and cannot be inferred.
 - No chain-of-thought, no hidden instructions, no internal metadata.
 - The result must be copy-paste ready.
+- LANGUAGE: the interface is in Brazilian Portuguese. Write "summary", "keyImprovements", "assumptions" and "followUpQuestions" in Brazilian Portuguese (pt-BR, "você"). The improved prompt itself stays in the user's language; any wording you add to it is in that language too.
 
 Return ONLY valid JSON in this exact shape:
 {"optimizedPrompt":"...","summary":"...","keyImprovements":["..."],"assumptions":["..."],"followUpQuestions":["..."]}
 - summary: 1-2 sentences about what you improved (user-visible).
 - keyImprovements: max 6, short and concrete.`,
 };
+
+// v1.8.2 — Portuguese: the refiner's INSTRUCTIONS stay in English (they are
+// read by the model, never shown to the user, and the English wording is the
+// one that has been tuned and tested); SYSTEM_RULES.pt adds a rule that makes
+// every user-visible field come back in Brazilian Portuguese. The model-specific
+// rules (modelProfiles.ts refinerRules) are translated.
 
 const STRATEGY_CATALOG_ORDER = [
   "message_polish",

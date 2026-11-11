@@ -1,6 +1,37 @@
 import type { Lang } from "../promptTemplates";
 import type { Features, TaskType } from "./types";
 import { normalizeText, wordCount } from "./normalize";
+import { detectPromptLanguage } from "@/lib/refine/language";
+import {
+  isPt,
+  PT_AUDIENCE,
+  PT_CODE_CONSTRAINT,
+  PT_CODE_DELIVERABLE,
+  PT_CODE_SUCCESS,
+  PT_CONSTRAINTS,
+  PT_DEBUG_EXPECTED,
+  PT_ERROR,
+  PT_EXAMPLES,
+  PT_IMAGE_NEGATIVE,
+  PT_INJECTION,
+  PT_INPUTS,
+  PT_INVENT,
+  PT_LENGTH,
+  PT_LENGTH_LIMIT,
+  PT_LONG,
+  PT_NO_ASSUME,
+  PT_OUTPUT_FORMAT,
+  PT_OUTPUT_LABEL,
+  PT_REGION,
+  PT_REPRO,
+  PT_SHORT,
+  PT_SUCCESS,
+  PT_SUMMARY_SHAPE,
+  PT_TASK_GOAL,
+  PT_TIMEFRAME,
+  PT_TONE,
+  PT_TRANSLATION_TARGET,
+} from "./pt";
 import {
   CODE_CONSTRAINT_RE,
   CODE_DELIVERABLE_RE,
@@ -25,6 +56,13 @@ function scoreKeywords(text: string, patterns: RegExp[]) {
 
 function detectDominantLanguageMismatch(core: string, uiLang: Lang) {
   const t = core.toLowerCase();
+  // v1.8.2: the Spanish/English keyword counts below say nothing about a
+  // Portuguese interface; a mismatch there is "the prompt clearly reads as
+  // another language" (lib/refine/language.ts).
+  if (uiLang === "pt") {
+    const d = detectPromptLanguage(core, "pt");
+    return d.lang !== "pt" && d.confidence >= 0.5;
+  }
 
   const esHits = scoreKeywords(t, [
     /\b(el|la|los|las|un|una|para|que|con|sin|como|quiero|necesito|resumen|traducir|explicá|explica)\b/,
@@ -109,7 +147,7 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
   const words = wordCount(clean);
 
   // v1.8.0: shared with the linter so score and findings agree.
-  const hasGoal = hasGoalSignal(clean, task) || detectGoal(t, task);
+  const hasGoal = hasGoalSignal(clean, task, lang) || detectGoal(t, task);
 
   const hasInputs =
     hasAny(t, [
@@ -160,9 +198,9 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
       /\b(output:|salida:|formato:)/,
     ]) ||
     // v1.8.0: "3 headlines", "max 120 words", "5 practice questions".
-    hasImplicitOutputSpec(clean) ||
+    hasImplicitOutputSpec(clean, lang) ||
     // v1.8.0: an image prompt's output is its medium/style or aspect ratio.
-    (task === "image" && hasImageOutputSpec(clean));
+    (task === "image" && hasImageOutputSpec(clean, lang));
 
   const hasSuccessCriteria = hasAny(t, [
     /\b(success criteri(?:a|on)|acceptance criteri(?:a|on)|must include|verify|validation)\b/,
@@ -228,7 +266,7 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
   const codeSuccess =
     (isCode && CODE_SUCCESS_RE.test(clean)) || (task === "debugging" && DEBUG_EXPECTED_RE.test(clean));
 
-  return {
+  const base: Features = {
     words,
     hasGoal,
     hasInputs,
@@ -246,5 +284,39 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
     injectionLike,
     contradictions,
     languageMismatch,
+  };
+
+  // v1.8.2 (engine 2.4.0): a prompt that reads as Portuguese is ALSO checked
+  // against the Portuguese vocabulary (lib/engine/pt.ts). Signals are only ever
+  // added, never removed, and Spanish/English prompts never reach this branch.
+  if (!isPt(clean, lang)) return base;
+
+  const isDebugOrCode = task === "debugging" || task === "coding";
+  return {
+    ...base,
+    hasGoal: base.hasGoal || (PT_TASK_GOAL[task]?.test(clean) ?? false),
+    hasInputs: base.hasInputs || PT_INPUTS.test(clean),
+    hasAudience: base.hasAudience || PT_AUDIENCE.test(clean),
+    hasExamples: base.hasExamples || PT_EXAMPLES.test(clean),
+    hasConstraints:
+      base.hasConstraints ||
+      PT_CONSTRAINTS.test(clean) ||
+      (task === "translation" && PT_TRANSLATION_TARGET.test(clean)) ||
+      (task === "summarization" && PT_SUMMARY_SHAPE.test(clean)) ||
+      (task === "image" && PT_IMAGE_NEGATIVE.test(clean)) ||
+      (isCode && PT_CODE_CONSTRAINT.test(clean)),
+    hasOutputFormat: base.hasOutputFormat || PT_OUTPUT_FORMAT.test(clean) || PT_OUTPUT_LABEL.test(clean) || (isCode && PT_CODE_DELIVERABLE.test(clean)),
+    hasSuccessCriteria:
+      base.hasSuccessCriteria || PT_SUCCESS.test(clean) || (isCode && PT_CODE_SUCCESS.test(clean)) || (task === "debugging" && PT_DEBUG_EXPECTED.test(clean)),
+    hasTone: base.hasTone || PT_TONE.test(clean),
+    hasLengthHint: base.hasLengthHint || PT_LENGTH.test(clean) || PT_LENGTH_LIMIT.test(clean),
+    hasTimeframe: base.hasTimeframe || PT_TIMEFRAME.test(clean),
+    hasRegion: base.hasRegion || PT_REGION.test(clean),
+    hasErrorDetails: base.hasErrorDetails || (isDebugOrCode && PT_ERROR.test(clean)),
+    hasReproSteps: base.hasReproSteps || (task === "debugging" && PT_REPRO.test(clean)),
+    injectionLike: base.injectionLike || PT_INJECTION.test(clean),
+    contradictions: base.contradictions || (PT_SHORT.test(clean) && PT_LONG.test(clean)) || (PT_NO_ASSUME.test(clean) && PT_INVENT.test(clean)),
+    // The prompt is Portuguese and is being read as Portuguese: not a mismatch.
+    languageMismatch: lang === "pt" ? false : base.languageMismatch,
   };
 }
