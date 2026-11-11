@@ -2025,16 +2025,16 @@ Pergunta: [sua pergunta]`,
     title: {
       en: "Prompts for Grok: directness, real-time context, and structured responses",
       es: "Prompts para Grok: directness, contexto en tiempo real y respuestas estructuradas",
-      pt: "Prompts for Grok: directness, real-time context, and structured responses",
+      pt: "Prompts para o Grok: objetividade, tempo real e respostas estruturadas",
     },
     description: {
       en: "How to write prompts that get direct, high-signal responses from Grok — including tone controls, real-time awareness, and structuring tips.",
       es: "Cómo escribir prompts que producen respuestas directas y de alta señal con Grok — con controles de tono, conciencia de tiempo real y tips de estructura.",
-      pt: "How to write prompts that get direct, high-signal responses from Grok — including tone controls, real-time awareness, and structuring tips.",
+      pt: "Como escrever prompts que tiram do Grok respostas diretas e com muito conteúdo útil — com controles de tom, uso de informação em tempo real e dicas de estrutura.",
     },
     sections: [
       {
-        heading: { en: "What makes Grok different", es: "Qué hace diferente a Grok", pt: "What makes Grok different" },
+        heading: { en: "What makes Grok different", es: "Qué hace diferente a Grok", pt: "O que torna o Grok diferente" },
         bullets: {
           en: [
             "Grok defaults to a direct, confident style — it cuts filler and gets to the point faster than most models.",
@@ -2051,16 +2051,16 @@ Pergunta: [sua pergunta]`,
             "Funciona mejor cuando la tarea es concreta — prompts vagos producen respuestas cortas y a veces superficiales.",
           ],
           pt: [
-            "Grok defaults to a direct, confident style — it cuts filler and gets to the point faster than most models.",
-            "It has real-time awareness for current events; use this with a date constraint when recency matters.",
-            "Tone is more flexible than other models — you can push it toward casual, sharp, or formal and it follows well.",
-            "On ambiguous questions, it picks an interpretation and commits; specify if you want alternatives.",
-            "Works best when the task is concrete — vague prompts get short, sometimes shallow responses.",
+            "O Grok tem, por padrão, um estilo direto e confiante — corta o enchimento e vai ao ponto mais rápido que a maioria dos modelos.",
+            "Ele tem acesso a informações em tempo real sobre acontecimentos atuais; use isso com uma restrição de data quando a atualidade importar.",
+            "O tom é mais flexível que o de outros modelos — você pode puxá-lo para o casual, o afiado ou o formal, e ele acompanha bem.",
+            "Em perguntas ambíguas, ele escolhe uma interpretação e segue com ela; especifique se você quiser alternativas.",
+            "Funciona melhor quando a tarefa é concreta — prompts vagos recebem respostas curtas e, às vezes, superficiais.",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with Grok", es: "Patrones que funcionan bien con Grok", pt: "Patterns that work well with Grok" },
+        heading: { en: "Patterns that work well with Grok", es: "Patrones que funcionan bien con Grok", pt: "Padrões que funcionam bem com o Grok" },
         bullets: {
           en: [
             "State the exact output you want: 'Give me 3 options, each on a new line, no explanation.'",
@@ -2077,18 +2077,18 @@ Pergunta: [sua pergunta]`,
             "Para tareas complejas, agregá una estructura breve: 'Primero: [X]. Luego: [Y]. Finalmente: [Z].'",
           ],
           pt: [
-            "State the exact output you want: 'Give me 3 options, each on a new line, no explanation.'",
-            "Use a tone instruction: 'Be direct. Skip the preamble. No hedging unless the uncertainty is real.'",
-            "For real-time tasks: 'As of [date], what is the current status of [topic]?'",
-            "Ask for alternatives explicitly: 'Give me two versions — one formal, one casual.'",
-            "For complex tasks, add a brief structure: 'First: [X]. Then: [Y]. Finally: [Z].'",
+            "Diga a saída exata que você quer: 'Me dê 3 opções, cada uma em uma linha, sem explicação.'",
+            "Use uma instrução de tom: 'Seja direto. Pule a introdução. Sem rodeios, a não ser que a incerteza seja real.'",
+            "Para tarefas em tempo real: 'Em [data], qual é a situação atual de [tema]?'",
+            "Peça alternativas de forma explícita: 'Me dê duas versões — uma formal e uma casual.'",
+            "Para tarefas complexas, acrescente uma estrutura breve: 'Primeiro: [X]. Depois: [Y]. Por fim: [Z].'",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Direct opinion with trade-offs", es: "Opinión directa con trade-offs", pt: "Direct opinion with trade-offs" },
+        title: { en: "Direct opinion with trade-offs", es: "Opinión directa con trade-offs", pt: "Opinião direta com trade-offs" },
         purpose: "text",
         target: "grok",
         prompt: {
@@ -2114,21 +2114,21 @@ Quiero:
 3. Una cosa que la mayoría pasa por alto.
 
 Tono: directo y conciso. Sin frases de relleno.`,
-          pt: `Give me your direct assessment of this decision or topic.
+          pt: `Me dê sua avaliação direta sobre esta decisão ou tema.
 
-Topic: [describe the decision or question]
-Context: [brief background, 2-3 sentences max]
+Tema: [descreva a decisão ou a pergunta]
+Contexto: [breve histórico, no máximo 2-3 frases]
 
-I want:
-1. Your direct recommendation (1-2 sentences, no hedging unless uncertainty is real).
-2. The main trade-off I should know.
-3. One thing most people miss about this.
+Quero:
+1. Sua recomendação direta (1-2 frases, sem rodeios, a não ser que a incerteza seja real).
+2. O principal trade-off que eu deveria conhecer.
+3. Uma coisa que a maioria das pessoas deixa passar sobre isso.
 
-Tone: direct and concise. No filler phrases.`,
+Tom: direto e conciso. Sem frases de enchimento.`,
         },
       },
       {
-        title: { en: "Quick structured comparison", es: "Comparación estructurada rápida", pt: "Quick structured comparison" },
+        title: { en: "Quick structured comparison", es: "Comparación estructurada rápida", pt: "Comparação estruturada rápida" },
         purpose: "text",
         target: "grok",
         prompt: {
@@ -2160,38 +2160,38 @@ Contras de Opción B (máx 2): [bullets]
 Elección para [mi caso de uso: describí en 1 oración]: [tu elección directa y una razón en 1 oración]
 
 Sin preámbulo. Sin párrafo de conclusión.`,
-          pt: `Compare these options directly.
+          pt: `Compare estas opções de forma direta.
 
-Options:
-- Option A: [describe]
-- Option B: [describe]
+Opções:
+- Opção A: [descreva]
+- Opção B: [descreva]
 
-Format:
-Option A pros (max 3): [bullets]
-Option A cons (max 2): [bullets]
-Option B pros (max 3): [bullets]
-Option B cons (max 2): [bullets]
-Pick for [my use case: describe in 1 sentence]: [your direct pick and a 1-sentence reason]
+Formato:
+Prós da opção A (no máximo 3): [tópicos]
+Contras da opção A (no máximo 2): [tópicos]
+Prós da opção B (no máximo 3): [tópicos]
+Contras da opção B (no máximo 2): [tópicos]
+Escolha para [meu caso de uso: descreva em 1 frase]: [sua escolha direta e um motivo em 1 frase]
 
-No preamble. No conclusion paragraph.`,
+Sem introdução. Sem parágrafo de conclusão.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Does Grok work for technical tasks like code or data?", es: "¿Grok funciona para tareas técnicas como código o datos?", pt: "Does Grok work for technical tasks like code or data?" },
+        q: { en: "Does Grok work for technical tasks like code or data?", es: "¿Grok funciona para tareas técnicas como código o datos?", pt: "O Grok funciona para tarefas técnicas, como código ou dados?" },
         a: {
           en: "Yes, but it shines most on opinion, analysis, and writing tasks. For code and data extraction, DeepSeek or Claude may produce more careful, verifiable answers. Use Grok when you want speed and directness over exhaustive detail.",
           es: "Sí, pero brilla más en tareas de opinión, análisis y escritura. Para código y extracción de datos, DeepSeek o Claude pueden producir respuestas más cuidadosas y verificables. Usá Grok cuando priorizás velocidad y directness sobre detalle exhaustivo.",
-          pt: "Yes, but it shines most on opinion, analysis, and writing tasks. For code and data extraction, DeepSeek or Claude may produce more careful, verifiable answers. Use Grok when you want speed and directness over exhaustive detail.",
+          pt: "Sim, mas ele se destaca mais em opinião, análise e escrita. Para código e extração de dados, o DeepSeek ou o Claude podem gerar respostas mais cuidadosas e verificáveis. Use o Grok quando você quiser rapidez e objetividade mais do que detalhes exaustivos.",
         },
       },
       {
-        q: { en: "How do I get Grok to slow down and be more thorough?", es: "¿Cómo hago que Grok sea más exhaustivo?", pt: "How do I get Grok to slow down and be more thorough?" },
+        q: { en: "How do I get Grok to slow down and be more thorough?", es: "¿Cómo hago que Grok sea más exhaustivo?", pt: "Como faço o Grok ir com mais calma e ser mais minucioso?" },
         a: {
           en: "Ask for a step-by-step breakdown and specify the number of points: 'Walk me through this in 5 steps. Don't skip steps.' Without a structure constraint, Grok tends to compress.",
           es: "Pedí un desglose paso a paso y especificá el número de puntos: 'Guiame por esto en 5 pasos. No saltees pasos.' Sin restricción de estructura, Grok tiende a comprimir.",
-          pt: "Ask for a step-by-step breakdown and specify the number of points: 'Walk me through this in 5 steps. Don't skip steps.' Without a structure constraint, Grok tends to compress.",
+          pt: "Peça um passo a passo e especifique o número de pontos: 'Me explique isso em 5 passos. Não pule nenhum.' Sem uma restrição de estrutura, o Grok tende a resumir.",
         },
       },
     ],
@@ -2201,16 +2201,16 @@ No preamble. No conclusion paragraph.`,
     title: {
       en: "AI prompt templates for business: planning, reports, and customer support",
       es: "Templates de prompts de IA para negocios: planificación, reportes y soporte al cliente",
-      pt: "AI prompt templates for business: planning, reports, and customer support",
+      pt: "Templates de prompt de IA para empresas: planejamento, relatórios e suporte",
     },
     description: {
       en: "Ready-to-use AI prompt templates for common business workflows — from project planning and status reports to customer support scripts and decision memos.",
       es: "Templates de prompts de IA listos para usar en flujos de trabajo empresariales comunes — desde planificación de proyectos y reportes de estado hasta scripts de soporte al cliente y memos de decisión.",
-      pt: "Ready-to-use AI prompt templates for common business workflows — from project planning and status reports to customer support scripts and decision memos.",
+      pt: "Templates de prompt de IA prontos para usar em fluxos de trabalho comuns nas empresas — do planejamento de projetos e relatórios de status a roteiros de suporte ao cliente e memorandos de decisão.",
     },
     sections: [
       {
-        heading: { en: "Why generic business prompts fail", es: "Por qué fallan los prompts de negocio genéricos", pt: "Why generic business prompts fail" },
+        heading: { en: "Why generic business prompts fail", es: "Por qué fallan los prompts de negocio genéricos", pt: "Por que os prompts genéricos para empresas falham" },
         bullets: {
           en: [
             "They omit stakeholder context: the model doesn't know who reads this or what they care about.",
@@ -2227,16 +2227,16 @@ No preamble. No conclusion paragraph.`,
             "Scope creep: sin un límite claro, el modelo agrega secciones que nadie pidió.",
           ],
           pt: [
-            "They omit stakeholder context: the model doesn't know who reads this or what they care about.",
-            "No format or length constraint: business docs need consistent structure, not creative flair.",
-            "Missing decision criteria: 'help me decide' without criteria produces balanced-but-useless analysis.",
-            "No tone guidance: the right tone for a board memo differs from a team standup update.",
-            "Scope creep: without a clear boundary, the model adds sections nobody asked for.",
+            "Omitem o contexto das partes interessadas: o modelo não sabe quem vai ler nem com o que essa pessoa se importa.",
+            "Nenhuma restrição de formato ou de tamanho: documentos de negócio precisam de estrutura consistente, não de criatividade.",
+            "Faltam critérios de decisão: 'me ajude a decidir' sem critérios gera uma análise equilibrada, mas inútil.",
+            "Nenhuma orientação de tom: o tom certo para um memorando ao conselho é diferente do de uma atualização para a daily do time.",
+            "Escopo que cresce sozinho: sem um limite claro, o modelo acrescenta seções que ninguém pediu.",
           ],
         },
       },
       {
-        heading: { en: "Business prompt parameters that work", es: "Parámetros de prompts de negocio que funcionan", pt: "Business prompt parameters that work" },
+        heading: { en: "Business prompt parameters that work", es: "Parámetros de prompts de negocio que funcionan", pt: "Parâmetros que funcionam em prompts para empresas" },
         bullets: {
           en: [
             "Audience + their goal: 'For the CFO, who needs to decide whether to approve budget.'",
@@ -2253,18 +2253,18 @@ No preamble. No conclusion paragraph.`,
             "Qué omitir: 'No incluyas contexto que ya sé. Enfocate en [gap específico].'",
           ],
           pt: [
-            "Audience + their goal: 'For the CFO, who needs to decide whether to approve budget.'",
-            "Hard format: specify exactly the sections, their order, and word limits per section.",
-            "Decision criteria: list what makes an option better or worse before asking for a recommendation.",
-            "Tone: 'formal and precise' / 'short and direct for async team reading' / 'reassuring but honest'.",
-            "What to omit: 'Do not include background I already know. Focus on [specific gap].'",
+            "Público + o objetivo dele: 'Para o CFO, que precisa decidir se aprova o orçamento.'",
+            "Formato rígido: especifique exatamente as seções, a ordem e o limite de palavras de cada uma.",
+            "Critérios de decisão: liste o que torna uma opção melhor ou pior antes de pedir uma recomendação.",
+            "Tom: 'formal e preciso' / 'curto e direto para o time ler quando puder' / 'tranquilizador, mas honesto'.",
+            "O que omitir: 'Não inclua o histórico que eu já conheço. Concentre-se em [lacuna específica].'",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Project status report", es: "Reporte de estado de proyecto", pt: "Project status report" },
+        title: { en: "Project status report", es: "Reporte de estado de proyecto", pt: "Relatório de status do projeto" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -2302,27 +2302,27 @@ Restricciones:
 - Total: <= 200 palabras.
 - Sin voz pasiva.
 - Si falta un dato, escribí '[POR DEFINIR]' — no rellenes con estimaciones salvo que se indique.`,
-          pt: `Write a project status report.
+          pt: `Escreva um relatório de status do projeto.
 
-Audience: [team / manager / executive — pick one]
-Project: [name and one-line description]
-Reporting period: [e.g. Week of July 7]
+Público: [time / gestor / executivo — escolha um]
+Projeto: [nome e descrição em uma linha]
+Período do relatório: [ex. semana de 7 de julho]
 
-Sections (use exactly these, in order):
-1. Status: [On track / At risk / Blocked] — 1 sentence why.
-2. Completed this period: 3 bullets max.
-3. In progress: 3 bullets max, each with % done if known.
-4. Blockers: [list or 'None'] — for each blocker: what it is, who owns removing it.
-5. Next period goals: 3 bullets max.
+Seções (use exatamente estas, nesta ordem):
+1. Status: [No prazo / Em risco / Bloqueado] — 1 frase explicando por quê.
+2. Concluído neste período: no máximo 3 tópicos.
+3. Em andamento: no máximo 3 tópicos, cada um com o % concluído, se souber.
+4. Bloqueios: [lista ou 'Nenhum'] — para cada bloqueio: o que é e quem é responsável por removê-lo.
+5. Metas do próximo período: no máximo 3 tópicos.
 
-Constraints:
-- Total: <= 200 words.
-- No passive voice.
-- If data is missing, write '[TBD]' — do not fill in with estimates unless told to.`,
+Restrições:
+- Total: <= 200 palavras.
+- Sem voz passiva.
+- Se faltarem dados, escreva '[A DEFINIR]' — não preencha com estimativas, a menos que eu peça.`,
         },
       },
       {
-        title: { en: "Decision memo with criteria", es: "Memo de decisión con criterios", pt: "Decision memo with criteria" },
+        title: { en: "Decision memo with criteria", es: "Memo de decisión con criterios", pt: "Memorando de decisão com critérios" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -2364,43 +2364,43 @@ Formato de salida:
 4. Qué tendría que cambiar para reconsiderar (condición de cambio).
 
 Restricciones: <= 250 palabras. Sin rodeos en la recomendación — sé directo.`,
-          pt: `Write a decision memo.
+          pt: `Escreva um memorando de decisão.
 
-Decision to make: [describe what needs to be decided]
-Audience: [who will read and decide]
-Options being considered:
-- Option A: [brief description]
-- Option B: [brief description]
-Decision criteria (most important first):
-1. [criterion 1]
-2. [criterion 2]
-3. [criterion 3]
+Decisão a tomar: [descreva o que precisa ser decidido]
+Público: [quem vai ler e decidir]
+Opções em avaliação:
+- Opção A: [breve descrição]
+- Opção B: [breve descrição]
+Critérios de decisão (do mais importante para o menos):
+1. [critério 1]
+2. [critério 2]
+3. [critério 3]
 
-Output format:
-1. One-line recommendation (most important first).
-2. Why this option scores better on the top criteria.
-3. The main risk of this choice and how to mitigate it.
-4. What we'd need to change our minds (trigger condition).
+Formato de saída:
+1. Recomendação em uma linha (o mais importante primeiro).
+2. Por que esta opção se sai melhor nos critérios principais.
+3. O principal risco desta escolha e como mitigá-lo.
+4. O que nos faria mudar de ideia (condição de gatilho).
 
-Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
+Restrições: <= 250 palavras. Sem rodeios na recomendação — seja direto.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can I use these templates with any AI model?", es: "¿Puedo usar estos templates con cualquier modelo de IA?", pt: "Can I use these templates with any AI model?" },
+        q: { en: "Can I use these templates with any AI model?", es: "¿Puedo usar estos templates con cualquier modelo de IA?", pt: "Posso usar estes templates com qualquer modelo de IA?" },
         a: {
           en: "Yes. The structure works across GPT, Claude, Gemini, and Grok. For sensitive or confidential business content, check your organization's AI usage policy before pasting internal data into any model.",
           es: "Sí. La estructura funciona con GPT, Claude, Gemini y Grok. Para contenido empresarial sensible o confidencial, verificá la política de uso de IA de tu organización antes de pegar datos internos en cualquier modelo.",
-          pt: "Yes. The structure works across GPT, Claude, Gemini, and Grok. For sensitive or confidential business content, check your organization's AI usage policy before pasting internal data into any model.",
+          pt: "Sim. A estrutura funciona com GPT, Claude, Gemini e Grok. Para conteúdo de negócio sensível ou confidencial, consulte a política de uso de IA da sua organização antes de colar dados internos em qualquer modelo.",
         },
       },
       {
-        q: { en: "The model keeps adding sections I didn't ask for. How do I stop it?", es: "El modelo sigue agregando secciones que no pedí. ¿Cómo lo paro?", pt: "The model keeps adding sections I didn't ask for. How do I stop it?" },
+        q: { en: "The model keeps adding sections I didn't ask for. How do I stop it?", es: "El modelo sigue agregando secciones que no pedí. ¿Cómo lo paro?", pt: "O modelo continua acrescentando seções que eu não pedi. Como evito isso?" },
         a: {
           en: "Add an explicit closing instruction: 'Return ONLY the sections listed above, in that order. Do not add an introduction, conclusion, or any section not listed.' Listing what to exclude is often more effective than just listing what to include.",
           es: "Agregá una instrucción de cierre explícita: 'Devolvé SOLO las secciones listadas arriba, en ese orden. No agregues introducción, conclusión ni ninguna sección que no esté listada.' Listar qué excluir suele ser más efectivo que solo listar qué incluir.",
-          pt: "Add an explicit closing instruction: 'Return ONLY the sections listed above, in that order. Do not add an introduction, conclusion, or any section not listed.' Listing what to exclude is often more effective than just listing what to include.",
+          pt: "Acrescente uma instrução explícita no final: 'Retorne APENAS as seções listadas acima, nesta ordem. Não acrescente introdução, conclusão nem qualquer seção que não esteja na lista.' Listar o que excluir costuma ser mais eficaz do que só listar o que incluir.",
         },
       },
     ],
@@ -2410,16 +2410,16 @@ Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
     title: {
       en: "Prompts for DeepSeek: code, data extraction, and analytical reasoning",
       es: "Prompts para DeepSeek: código, extracción de datos y razonamiento analítico",
-      pt: "Prompts for DeepSeek: code, data extraction, and analytical reasoning",
+      pt: "Prompts para o DeepSeek: código, extração de dados e raciocínio",
     },
     description: {
       en: "How to write prompts that get precise, well-structured output from DeepSeek — including code tasks, strict JSON extraction, and multi-step analytical reasoning.",
       es: "Cómo escribir prompts que producen salidas precisas y estructuradas con DeepSeek — incluyendo tareas de código, extracción de JSON estricto y razonamiento analítico multi-paso.",
-      pt: "How to write prompts that get precise, well-structured output from DeepSeek — including code tasks, strict JSON extraction, and multi-step analytical reasoning.",
+      pt: "Como escrever prompts que tiram do DeepSeek respostas precisas e bem estruturadas — incluindo tarefas de código, extração em JSON estrito e raciocínio analítico em várias etapas.",
     },
     sections: [
       {
-        heading: { en: "What makes DeepSeek different", es: "Qué hace diferente a DeepSeek", pt: "What makes DeepSeek different" },
+        heading: { en: "What makes DeepSeek different", es: "Qué hace diferente a DeepSeek", pt: "O que torna o DeepSeek diferente" },
         bullets: {
           en: [
             "DeepSeek excels at analytical and reasoning-heavy tasks — it handles multi-step logic with high precision.",
@@ -2436,16 +2436,16 @@ Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
             "Responde mejor a tareas formuladas directamente que a prompts en estilo narrativo.",
           ],
           pt: [
-            "DeepSeek excels at analytical and reasoning-heavy tasks — it handles multi-step logic with high precision.",
-            "Strong code generation and debugging: it reads constraints carefully and tends to produce tighter, less padded code than general-purpose models.",
-            "Reliable JSON extraction: state the schema explicitly and it follows it closely, with fewer hallucinated fields.",
-            "Works well with numbered rules and explicit step-by-step instructions.",
-            "Responds better to direct task framing than to narrative-style prompts.",
+            "O DeepSeek se destaca em tarefas analíticas e com muito raciocínio — ele lida com lógica de várias etapas com alta precisão.",
+            "Gera e depura código muito bem: lê as restrições com atenção e tende a produzir código mais enxuto e menos inchado que os modelos de uso geral.",
+            "Extração em JSON confiável: declare o esquema de forma explícita e ele o segue de perto, com menos campos inventados.",
+            "Funciona bem com regras numeradas e instruções explícitas passo a passo.",
+            "Responde melhor a uma formulação direta da tarefa do que a prompts em estilo narrativo.",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with DeepSeek", es: "Patrones que funcionan bien con DeepSeek", pt: "Patterns that work well with DeepSeek" },
+        heading: { en: "Patterns that work well with DeepSeek", es: "Patrones que funcionan bien con DeepSeek", pt: "Padrões que funcionam bem com o DeepSeek" },
         bullets: {
           en: [
             "Number your steps: 'Step 1: analyze. Step 2: extract. Step 3: format as JSON.'",
@@ -2462,18 +2462,18 @@ Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
             "En razonamiento complejo: pedile que enuncie sus supuestos antes de sacar conclusiones.",
           ],
           pt: [
-            "Number your steps: 'Step 1: analyze. Step 2: extract. Step 3: format as JSON.'",
-            "For code: include the language, version, and constraints before the task.",
-            "For data: define the schema inline and add 'Return ONLY the JSON — no explanation, no markdown.'",
-            "Ask it to verify its own output: 'Before returning, check that all required fields are present and match the schema.'",
-            "On complex reasoning: ask it to state its assumptions before drawing conclusions.",
+            "Numere seus passos: 'Passo 1: analise. Passo 2: extraia. Passo 3: formate como JSON.'",
+            "Para código: inclua a linguagem, a versão e as restrições antes da tarefa.",
+            "Para dados: defina o esquema no próprio prompt e acrescente 'Retorne APENAS o JSON — sem explicação, sem markdown.'",
+            "Peça que ele verifique a própria saída: 'Antes de retornar, confira se todos os campos obrigatórios estão presentes e batem com o esquema.'",
+            "Em raciocínios complexos: peça que ele declare as suposições antes de tirar conclusões.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Code task with strict constraints", es: "Tarea de código con restricciones estrictas", pt: "Code task with strict constraints" },
+        title: { en: "Code task with strict constraints", es: "Tarea de código con restricciones estrictas", pt: "Tarefa de código com restrições rígidas" },
         purpose: "code",
         target: "deepseek",
         prompt: {
@@ -2503,23 +2503,23 @@ Devolvé:
 1. La implementación (solo código, sin markdown fence salvo que se pida).
 2. Una lista breve de casos límite cubiertos.
 3. Cualquier supuesto que hayas hecho que pueda afectar el output.`,
-          pt: `Language: [e.g. TypeScript / Python 3.12]
-Task: [what to implement or fix]
+          pt: `Linguagem: [ex. TypeScript / Python 3.12]
+Tarefa: [o que implementar ou corrigir]
 
-Constraints:
-- Do not use external libraries unless listed here: [list or 'none'].
-- Keep the solution under [N] lines.
-- Maintain the existing public API — only change internals.
-- Handle edge cases: [list, e.g. empty input, null, out-of-range].
+Restrições:
+- Não use bibliotecas externas, a menos que estejam listadas aqui: [lista ou 'nenhuma'].
+- Mantenha a solução com menos de [N] linhas.
+- Preserve a API pública existente — altere só a parte interna.
+- Trate os casos de borda: [lista, ex. entrada vazia, null, fora do intervalo].
 
-Return:
-1. The implementation (code only, no markdown fences unless asked).
-2. A brief list of edge cases covered.
-3. Any assumption you made that could affect the output.`,
+Retorne:
+1. A implementação (só o código, sem blocos de markdown, a menos que eu peça).
+2. Uma lista breve dos casos de borda cobertos.
+3. Qualquer suposição que você fez e que possa afetar o resultado.`,
         },
       },
       {
-        title: { en: "Analytical reasoning with explicit steps", es: "Razonamiento analítico con pasos explícitos", pt: "Analytical reasoning with explicit steps" },
+        title: { en: "Analytical reasoning with explicit steps", es: "Razonamiento analítico con pasos explícitos", pt: "Raciocínio analítico com passos explícitos" },
         purpose: "data",
         target: "deepseek",
         prompt: {
@@ -2559,42 +2559,42 @@ Confianza: [alta / media / baja] — [razón]
 Flags: [lista o 'Ninguno']
 
 Devolvé SOLO esta estructura. Sin preámbulo.`,
-          pt: `Analyze the following and return structured output.
+          pt: `Analise o conteúdo a seguir e retorne uma saída estruturada.
 
-Input:
-"""[paste your data or problem description]"""
+Entrada:
+"""[cole seus dados ou a descrição do problema]"""
 
-Step 1 — Parse: identify the key entities, numbers, and relationships.
-Step 2 — Reason: work through the logic step by step. State each inference.
-Step 3 — Conclude: state your conclusion and confidence level (high / medium / low).
-Step 4 — Flag: list anything that is ambiguous or requires additional input.
+Passo 1 — Interpretar: identifique as entidades, os números e as relações principais.
+Passo 2 — Raciocinar: desenvolva a lógica passo a passo. Declare cada inferência.
+Passo 3 — Concluir: declare sua conclusão e o nível de confiança (alta / média / baixa).
+Passo 4 — Sinalizar: liste tudo o que for ambíguo ou exigir informação adicional.
 
-Format:
-Entities: [bullet list]
-Reasoning: [numbered steps]
-Conclusion: [1-2 sentences]
-Confidence: [high / medium / low] — [reason]
-Flags: [list or 'None']
+Formato:
+Entidades: [lista em tópicos]
+Raciocínio: [passos numerados]
+Conclusão: [1-2 frases]
+Confiança: [alta / média / baixa] — [motivo]
+Alertas: [lista ou 'Nenhum']
 
-Return ONLY this structure. No preamble.`,
+Retorne APENAS esta estrutura. Sem introdução.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Is DeepSeek better than GPT or Claude for coding tasks?", es: "¿DeepSeek es mejor que GPT o Claude para tareas de código?", pt: "Is DeepSeek better than GPT or Claude for coding tasks?" },
+        q: { en: "Is DeepSeek better than GPT or Claude for coding tasks?", es: "¿DeepSeek es mejor que GPT o Claude para tareas de código?", pt: "O DeepSeek é melhor que o GPT ou o Claude para tarefas de código?" },
         a: {
           en: "It depends on the task. DeepSeek is particularly strong on analytical reasoning and code tasks with explicit constraints. For nuanced writing or long document Q&A, Claude and GPT tend to produce more polished results. Test on your specific use case.",
           es: "Depende de la tarea. DeepSeek es especialmente fuerte en razonamiento analítico y tareas de código con restricciones explícitas. Para escritura matizada o Q&A sobre documentos largos, Claude y GPT tienden a producir resultados más pulidos. Probalo en tu caso de uso específico.",
-          pt: "It depends on the task. DeepSeek is particularly strong on analytical reasoning and code tasks with explicit constraints. For nuanced writing or long document Q&A, Claude and GPT tend to produce more polished results. Test on your specific use case.",
+          pt: "Depende da tarefa. O DeepSeek é especialmente forte em raciocínio analítico e em tarefas de código com restrições explícitas. Para textos com nuances ou perguntas sobre documentos longos, o Claude e o GPT costumam entregar resultados mais refinados. Teste no seu caso de uso específico.",
         },
       },
       {
-        q: { en: "Do I need to change my prompts significantly to use DeepSeek?", es: "¿Necesito cambiar mucho mis prompts para usar DeepSeek?", pt: "Do I need to change my prompts significantly to use DeepSeek?" },
+        q: { en: "Do I need to change my prompts significantly to use DeepSeek?", es: "¿Necesito cambiar mucho mis prompts para usar DeepSeek?", pt: "Preciso mudar muito meus prompts para usar o DeepSeek?" },
         a: {
           en: "Not fundamentally. The core principles — clear task, explicit constraints, defined output format — work across all models. With DeepSeek, you get better results by being more explicit about steps and schema, and by avoiding narrative-style framing.",
           es: "No fundamentalmente. Los principios básicos — tarea clara, restricciones explícitas, formato de salida definido — funcionan en todos los modelos. Con DeepSeek, obtenés mejores resultados siendo más explícito sobre pasos y esquema, y evitando el estilo narrativo.",
-          pt: "Not fundamentally. The core principles — clear task, explicit constraints, defined output format — work across all models. With DeepSeek, you get better results by being more explicit about steps and schema, and by avoiding narrative-style framing.",
+          pt: "Não na essência. Os princípios centrais — tarefa clara, restrições explícitas, formato de saída definido — funcionam em todos os modelos. Com o DeepSeek, você tem resultados melhores sendo mais explícito sobre os passos e o esquema, e evitando a formulação em estilo narrativo.",
         },
       },
     ],
@@ -2604,16 +2604,16 @@ Return ONLY this structure. No preamble.`,
     title: {
       en: "Few-shot prompting: how to show examples instead of just explaining",
       es: "Few-shot prompting: cómo mostrar ejemplos en vez de solo explicar",
-      pt: "Few-shot prompting: how to show examples instead of just explaining",
+      pt: "Few-shot prompting: mostre exemplos em vez de só explicar",
     },
     description: {
       en: "Few-shot prompting uses examples inside the prompt to show the model exactly what you want — more reliable than verbal instructions alone for formatting, tone, and structure.",
       es: "El few-shot prompting usa ejemplos dentro del prompt para mostrarle al modelo exactamente qué querés — más confiable que solo instrucciones verbales para formato, tono y estructura.",
-      pt: "Few-shot prompting uses examples inside the prompt to show the model exactly what you want — more reliable than verbal instructions alone for formatting, tone, and structure.",
+      pt: "O few-shot prompting usa exemplos dentro do prompt para mostrar ao modelo exatamente o que você quer — mais confiável do que só instruções verbais para formato, tom e estrutura.",
     },
     sections: [
       {
-        heading: { en: "When few-shot beats plain instructions", es: "Cuándo few-shot supera a las instrucciones normales", pt: "When few-shot beats plain instructions" },
+        heading: { en: "When few-shot beats plain instructions", es: "Cuándo few-shot supera a las instrucciones normales", pt: "Quando o few-shot supera as instruções simples" },
         bullets: {
           en: [
             "When the format is hard to describe but easy to show: tables, structured labels, custom JSON shapes.",
@@ -2630,16 +2630,16 @@ Return ONLY this structure. No preamble.`,
             "Cuando el modelo sigue malinterpretando la instrucción a pesar de reescribirla.",
           ],
           pt: [
-            "When the format is hard to describe but easy to show: tables, structured labels, custom JSON shapes.",
-            "When tone needs to be precise: formal vs. casual, technical vs. plain — examples anchor the register.",
-            "When the task has unusual patterns the model hasn't seen in training (niche domains, internal formats).",
-            "When you've tried zero-shot and the output is inconsistent across runs.",
-            "When the model keeps misunderstanding the instruction despite rewording it.",
+            "Quando o formato é difícil de descrever, mas fácil de mostrar: tabelas, rótulos estruturados, formatos de JSON personalizados.",
+            "Quando o tom precisa ser preciso: formal ou casual, técnico ou simples — os exemplos fixam o registro.",
+            "Quando a tarefa tem padrões incomuns que o modelo não viu no treinamento (nichos, formatos internos).",
+            "Quando você já tentou zero-shot e a saída muda de uma execução para outra.",
+            "Quando o modelo continua entendendo errado a instrução, mesmo depois de você reformulá-la.",
           ],
         },
       },
       {
-        heading: { en: "How to write effective few-shot examples", es: "Cómo escribir ejemplos few-shot efectivos", pt: "How to write effective few-shot examples" },
+        heading: { en: "How to write effective few-shot examples", es: "Cómo escribir ejemplos few-shot efectivos", pt: "Como escrever exemplos few-shot eficazes" },
         bullets: {
           en: [
             "Use 2-5 examples — enough to show the pattern, not so many that you burn tokens.",
@@ -2656,18 +2656,18 @@ Return ONLY this structure. No preamble.`,
             "Poné los ejemplos antes de la tarea real, y marcá claramente el fin de los ejemplos.",
           ],
           pt: [
-            "Use 2-5 examples — enough to show the pattern, not so many that you burn tokens.",
-            "Keep examples diverse: cover different lengths, edge cases, or content types the task might encounter.",
-            "Show the exact input-output format you want — not a paraphrase of it.",
-            "Use consistent delimiter markers (e.g. Input: / Output: or --- Example --- blocks) so the model sees structure.",
-            "Place examples before the actual task, and mark the end of examples clearly.",
+            "Use de 2 a 5 exemplos — o suficiente para mostrar o padrão, sem gastar tokens demais.",
+            "Mantenha os exemplos variados: cubra diferentes tamanhos, casos de borda ou tipos de conteúdo que a tarefa pode encontrar.",
+            "Mostre exatamente o formato de entrada e saída que você quer — não uma paráfrase dele.",
+            "Use marcadores delimitadores consistentes (ex.: Entrada: / Saída: ou blocos --- Exemplo ---) para o modelo enxergar a estrutura.",
+            "Coloque os exemplos antes da tarefa real e marque com clareza onde eles terminam.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Classify text with examples", es: "Clasificar texto con ejemplos", pt: "Classify text with examples" },
+        title: { en: "Classify text with examples", es: "Clasificar texto con ejemplos", pt: "Classificar textos com exemplos" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -2715,32 +2715,32 @@ Entrada: "[texto 2]"
 Salida:
 
 Devolvé SOLO la etiqueta de clasificación para cada uno. Sin explicación.`,
-          pt: `Classify the sentiment of each text as: Positive, Negative, or Neutral.
+          pt: `Classifique o sentimento de cada texto como: Positivo, Negativo ou Neutro.
 
-Examples:
-Input: "The delivery was fast and the product works great."
-Output: Positive
+Exemplos:
+Entrada: "A entrega foi rápida e o produto funciona muito bem."
+Saída: Positivo
 
-Input: "Arrived damaged and customer support didn't help."
-Output: Negative
+Entrada: "Chegou danificado e o suporte não ajudou."
+Saída: Negativo
 
-Input: "Package arrived on Tuesday."
-Output: Neutral
+Entrada: "O pacote chegou na terça-feira."
+Saída: Neutro
 
 ---
 
-Now classify these:
-Input: "[text 1]"
-Output:
+Agora classifique estes:
+Entrada: "[texto 1]"
+Saída:
 
-Input: "[text 2]"
-Output:
+Entrada: "[texto 2]"
+Saída:
 
-Return ONLY the classification label for each. No explanation.`,
+Retorne APENAS o rótulo de classificação de cada um. Sem explicação.`,
         },
       },
       {
-        title: { en: "Rewrite in a specific style using examples", es: "Reescribir en un estilo específico con ejemplos", pt: "Rewrite in a specific style using examples" },
+        title: { en: "Rewrite in a specific style using examples", es: "Reescribir en un estilo específico con ejemplos", pt: "Reescrever em um estilo específico com exemplos" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -2778,41 +2778,41 @@ Reescrito: "Revisá estas tres cosas antes de empezar: [listalas]."
 
 Ahora reescribí este texto:
 """[pegá tu texto]"""`,
-          pt: `Rewrite the text in the style shown by the examples below.
+          pt: `Reescreva o texto no estilo mostrado pelos exemplos abaixo.
 
-Style characteristics shown in examples:
-- [e.g. short sentences, active voice, no jargon, direct address]
+Características de estilo mostradas nos exemplos:
+- [ex. frases curtas, voz ativa, sem jargão, falando diretamente com o leitor]
 
-Example 1:
-Original: "The implementation of the new feature requires coordination between multiple stakeholders."
-Rewritten: "This feature needs three teams to sync. Set up a kickoff this week."
+Exemplo 1:
+Original: "A implementação da nova funcionalidade requer coordenação entre múltiplas partes interessadas."
+Reescrito: "Esta funcionalidade precisa de três times alinhados. Marque um kickoff esta semana."
 
-Example 2:
-Original: "There are several considerations that must be taken into account before proceeding."
-Rewritten: "Check these three things before you start: [list them]."
+Exemplo 2:
+Original: "Há diversas considerações que devem ser levadas em conta antes de prosseguir."
+Reescrito: "Confira estas três coisas antes de começar: [liste-as]."
 
 ---
 
-Now rewrite this text:
-"""[paste your text]"""`,
+Agora reescreva este texto:
+"""[cole seu texto]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How many examples should I include?", es: "¿Cuántos ejemplos debo incluir?", pt: "How many examples should I include?" },
+        q: { en: "How many examples should I include?", es: "¿Cuántos ejemplos debo incluir?", pt: "Quantos exemplos devo incluir?" },
         a: {
           en: "2-3 examples cover most cases. More than 5 rarely improves results and burns token budget. The quality of examples matters more than quantity — diverse, representative examples beat many similar ones.",
           es: "2-3 ejemplos cubren la mayoría de los casos. Más de 5 raramente mejora los resultados y consume tokens. La calidad de los ejemplos importa más que la cantidad — ejemplos diversos y representativos son mejores que muchos similares.",
-          pt: "2-3 examples cover most cases. More than 5 rarely improves results and burns token budget. The quality of examples matters more than quantity — diverse, representative examples beat many similar ones.",
+          pt: "De 2 a 3 exemplos cobrem a maioria dos casos. Mais de 5 raramente melhora o resultado e consome o orçamento de tokens. A qualidade dos exemplos importa mais que a quantidade — exemplos variados e representativos superam muitos exemplos parecidos.",
         },
       },
       {
-        q: { en: "Can few-shot prompting fix hallucinations?", es: "¿El few-shot prompting corrige las alucinaciones?", pt: "Can few-shot prompting fix hallucinations?" },
+        q: { en: "Can few-shot prompting fix hallucinations?", es: "¿El few-shot prompting corrige las alucinaciones?", pt: "O few-shot prompting resolve alucinações?" },
         a: {
           en: "Not directly, but it helps with format hallucinations — cases where the model invents fields, adds extra text, or uses the wrong structure. For factual accuracy, you still need grounding (citing sources or providing reference data).",
           es: "No directamente, pero ayuda con alucinaciones de formato — casos donde el modelo inventa campos, agrega texto extra o usa la estructura incorrecta. Para precisión factual, igual necesitás grounding (citar fuentes o proveer datos de referencia).",
-          pt: "Not directly, but it helps with format hallucinations — cases where the model invents fields, adds extra text, or uses the wrong structure. For factual accuracy, you still need grounding (citing sources or providing reference data).",
+          pt: "Não diretamente, mas ajuda com as alucinações de formato — casos em que o modelo inventa campos, acrescenta texto extra ou usa a estrutura errada. Para a precisão factual, você ainda precisa de ancoragem (citar fontes ou fornecer dados de referência).",
         },
       },
     ],
@@ -2822,16 +2822,16 @@ Now rewrite this text:
     title: {
       en: "How to score and improve your prompt quality before sending it",
       es: "Cómo puntuar y mejorar la calidad de tu prompt antes de enviarlo",
-      pt: "How to score and improve your prompt quality before sending it",
+      pt: "Como pontuar e melhorar a qualidade do seu prompt antes de enviar",
     },
     description: {
       en: "A self-evaluation framework to score prompt quality before running it — covering goal clarity, context completeness, format constraints, and common failure modes.",
       es: "Un framework de autoevaluación para puntuar la calidad de un prompt antes de ejecutarlo — con claridad del objetivo, completitud del contexto, restricciones de formato y modos de falla comunes.",
-      pt: "A self-evaluation framework to score prompt quality before running it — covering goal clarity, context completeness, format constraints, and common failure modes.",
+      pt: "Um método de autoavaliação para pontuar a qualidade do prompt antes de rodá-lo — cobrindo clareza do objetivo, contexto completo, restrições de formato e falhas comuns.",
     },
     sections: [
       {
-        heading: { en: "The five dimensions of prompt quality", es: "Las cinco dimensiones de calidad de un prompt", pt: "The five dimensions of prompt quality" },
+        heading: { en: "The five dimensions of prompt quality", es: "Las cinco dimensiones de calidad de un prompt", pt: "As cinco dimensões da qualidade de um prompt" },
         bullets: {
           en: [
             "Goal clarity: is the success condition unambiguous? Could two people read this and expect the same output?",
@@ -2848,16 +2848,16 @@ Now rewrite this text:
             "Manejo de casos límite: ¿qué debería pasar con datos faltantes, ambigüedad o un pedido fuera de scope?",
           ],
           pt: [
-            "Goal clarity: is the success condition unambiguous? Could two people read this and expect the same output?",
-            "Context completeness: does the model have the minimum information needed to answer correctly?",
-            "Output format: is the structure, length, and format explicitly specified?",
-            "Constraint coverage: are the key 'do not' rules stated? Missing constraints are the most common source of unwanted output.",
-            "Edge case handling: what should happen on missing data, ambiguity, or an out-of-scope request?",
+            "Clareza do objetivo: a condição de sucesso é inequívoca? Duas pessoas que lessem o prompt esperariam a mesma saída?",
+            "Contexto completo: o modelo tem o mínimo de informação necessário para responder corretamente?",
+            "Formato de saída: a estrutura, o tamanho e o formato estão especificados de forma explícita?",
+            "Cobertura de restrições: as principais regras do tipo 'não faça' estão declaradas? Restrições ausentes são a fonte mais comum de saídas indesejadas.",
+            "Tratamento de casos de borda: o que deve acontecer quando faltam dados, há ambiguidade ou o pedido está fora do escopo?",
           ],
         },
       },
       {
-        heading: { en: "Common patterns that lower prompt scores", es: "Patrones comunes que bajan el score de un prompt", pt: "Common patterns that lower prompt scores" },
+        heading: { en: "Common patterns that lower prompt scores", es: "Patrones comunes que bajan el score de un prompt", pt: "Padrões comuns que baixam a pontuação de um prompt" },
         bullets: {
           en: [
             "No output format: 'Write a summary' without length or structure guidance.",
@@ -2874,18 +2874,18 @@ Now rewrite this text:
             "Scope vago: 'ayudame con mi proyecto' — ¿qué tipo de ayuda, qué restricciones del proyecto?",
           ],
           pt: [
-            "No output format: 'Write a summary' without length or structure guidance.",
-            "Conflicting instructions: 'Be concise' and 'cover everything in detail' in the same prompt.",
-            "Missing audience: the model can't calibrate depth or tone without knowing who will read the output.",
-            "Asking for 'the best' without criteria: the model picks criteria and the result feels arbitrary.",
-            "Vague scope: 'help me with my project' — what kind of help, what project constraints?",
+            "Nenhum formato de saída: 'Escreva um resumo' sem orientação de tamanho ou estrutura.",
+            "Instruções conflitantes: 'Seja conciso' e 'cubra tudo em detalhes' no mesmo prompt.",
+            "Público ausente: o modelo não consegue calibrar a profundidade nem o tom sem saber quem vai ler a saída.",
+            "Pedir 'o melhor' sem critérios: o modelo escolhe os critérios e o resultado parece arbitrário.",
+            "Escopo vago: 'me ajude com meu projeto' — que tipo de ajuda, quais restrições do projeto?",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Self-review checklist prompt", es: "Prompt de checklist de autorevisión", pt: "Self-review checklist prompt" },
+        title: { en: "Self-review checklist prompt", es: "Prompt de checklist de autorevisión", pt: "Prompt de checklist de autorrevisão" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -2919,25 +2919,25 @@ Puntúa cada dimensión:
 Score general: [promedio]
 Top 2 mejoras: [fixes específicos y accionables — sin consejos genéricos]
 Versión mejorada: [el prompt mejorado, listo para copiar-pegar]`,
-          pt: `Review this prompt and score it on a scale of 1-10 for each dimension below.
+          pt: `Revise este prompt e dê uma nota de 1 a 10 para cada dimensão abaixo.
 
-Prompt to review:
-"""[paste your prompt here]"""
+Prompt para revisar:
+"""[cole seu prompt aqui]"""
 
-Score each dimension:
-1. Goal clarity (1-10): [is the success condition unambiguous?]
-2. Context completeness (1-10): [does the model have what it needs?]
-3. Output format (1-10): [is structure/length/format specified?]
-4. Constraint coverage (1-10): [are 'do not' rules stated?]
-5. Edge case handling (1-10): [what happens on missing data or ambiguity?]
+Avalie cada dimensão:
+1. Clareza do objetivo (1-10): [a condição de sucesso é inequívoca?]
+2. Contexto completo (1-10): [o modelo tem o que precisa?]
+3. Formato de saída (1-10): [estrutura/tamanho/formato estão especificados?]
+4. Cobertura de restrições (1-10): [as regras do tipo 'não faça' estão declaradas?]
+5. Tratamento de casos de borda (1-10): [o que acontece quando faltam dados ou há ambiguidade?]
 
-Overall score: [average]
-Top 2 improvements: [specific, actionable fixes only — no generic advice]
-Rewritten version: [the improved prompt, ready to copy-paste]`,
+Pontuação geral: [média]
+2 melhorias principais: [só correções específicas e acionáveis — nada de conselhos genéricos]
+Versão reescrita: [o prompt melhorado, pronto para copiar e colar]`,
         },
       },
       {
-        title: { en: "Rapid prompt debug — find the weak spot", es: "Debug rápido de prompt — encontrá el punto débil", pt: "Rapid prompt debug — find the weak spot" },
+        title: { en: "Rapid prompt debug — find the weak spot", es: "Debug rápido de prompt — encontrá el punto débil", pt: "Depuração rápida de prompt — encontre o ponto fraco" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -2965,36 +2965,36 @@ Hacé esto:
 4. Agregá una restricción que prevendría el fallo más común.
 
 No des consejos genéricos de escritura. Enfocate en el problema estructural.`,
-          pt: `Diagnose what is wrong with this prompt. Be specific.
+          pt: `Diagnostique o que está errado com este prompt. Seja específico.
 
 Prompt:
-"""[paste prompt here]"""
+"""[cole o prompt aqui]"""
 
-Do this:
-1. Identify the single most likely cause of inconsistent or low-quality output.
-2. Quote the exact phrase or omission causing the problem.
-3. Rewrite only the problematic part (not the whole prompt).
-4. Add one constraint that would prevent the most common failure.
+Faça o seguinte:
+1. Identifique a causa mais provável de uma saída inconsistente ou de baixa qualidade.
+2. Cite a frase exata ou a omissão que está causando o problema.
+3. Reescreva só a parte problemática (não o prompt inteiro).
+4. Acrescente uma restrição que evitaria a falha mais comum.
 
-Do not give generic writing advice. Focus on the structural issue.`,
+Não dê conselhos genéricos de escrita. Concentre-se no problema estrutural.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can I use Promptea to score my prompts automatically?", es: "¿Puedo usar Promptea para puntuar mis prompts automáticamente?", pt: "Can I use Promptea to score my prompts automatically?" },
+        q: { en: "Can I use Promptea to score my prompts automatically?", es: "¿Puedo usar Promptea para puntuar mis prompts automáticamente?", pt: "Posso usar o Promptea para pontuar meus prompts automaticamente?" },
         a: {
           en: "Yes — that's what Promptea does. Paste your prompt, select the AI model and task type, and Promptea scores it across multiple dimensions, flags specific issues, and generates an optimized version ready to copy-paste.",
           es: "Sí — eso es lo que hace Promptea. Pegá tu prompt, seleccioná el modelo de IA y tipo de tarea, y Promptea lo puntúa en múltiples dimensiones, señala problemas específicos y genera una versión optimizada lista para copiar-pegar.",
-          pt: "Yes — that's what Promptea does. Paste your prompt, select the AI model and task type, and Promptea scores it across multiple dimensions, flags specific issues, and generates an optimized version ready to copy-paste.",
+          pt: "Sim — é exatamente isso que o Promptea faz. Cole seu prompt, escolha o modelo de IA e o tipo de tarefa, e o Promptea dá uma pontuação em várias dimensões, aponta problemas específicos e gera uma versão otimizada pronta para copiar e colar.",
         },
       },
       {
-        q: { en: "Is a higher score always better?", es: "¿Un score más alto siempre es mejor?", pt: "Is a higher score always better?" },
+        q: { en: "Is a higher score always better?", es: "¿Un score más alto siempre es mejor?", pt: "Uma pontuação mais alta é sempre melhor?" },
         a: {
           en: "Not always. Simple tasks don't need long, structured prompts — a lean prompt that fits the task scores better in practice than an over-specified one. The goal is the minimum prompt that gets consistent, correct output. Use the score as a diagnostic, not a target to maximize.",
           es: "No siempre. Las tareas simples no necesitan prompts largos y estructurados — un prompt ajustado que encaja con la tarea funciona mejor en práctica que uno sobre-especificado. El objetivo es el prompt mínimo que produce output consistente y correcto. Usá el score como diagnóstico, no como objetivo a maximizar.",
-          pt: "Not always. Simple tasks don't need long, structured prompts — a lean prompt that fits the task scores better in practice than an over-specified one. The goal is the minimum prompt that gets consistent, correct output. Use the score as a diagnostic, not a target to maximize.",
+          pt: "Nem sempre. Tarefas simples não precisam de prompts longos e estruturados — na prática, um prompt enxuto que se encaixa na tarefa funciona melhor que um especificado demais. O objetivo é o menor prompt que gere uma saída consistente e correta. Use a pontuação como diagnóstico, não como uma meta a maximizar.",
         },
       },
     ],
@@ -3004,16 +3004,16 @@ Do not give generic writing advice. Focus on the structural issue.`,
     title: {
       en: "System prompts: how to set persistent instructions for ChatGPT, Claude, and Gemini",
       es: "System prompts: cómo configurar instrucciones persistentes para ChatGPT, Claude y Gemini",
-      pt: "System prompts: how to set persistent instructions for ChatGPT, Claude, and Gemini",
+      pt: "System prompts: instruções persistentes para ChatGPT, Claude e Gemini",
     },
     description: {
       en: "How to write system prompts (custom instructions) that shape every response without repeating yourself — covering persona, constraints, output format, and escalation rules.",
       es: "Cómo escribir system prompts (instrucciones personalizadas) que moldean cada respuesta sin repetirse — con persona, restricciones, formato de salida y reglas de escalado.",
-      pt: "How to write system prompts (custom instructions) that shape every response without repeating yourself — covering persona, constraints, output format, and escalation rules.",
+      pt: "Como escrever system prompts (instruções personalizadas) que moldam cada resposta sem você precisar se repetir — com persona, restrições, formato de saída e regras de escalonamento.",
     },
     sections: [
       {
-        heading: { en: "What system prompts are and when to use them", es: "Qué son los system prompts y cuándo usarlos", pt: "What system prompts are and when to use them" },
+        heading: { en: "What system prompts are and when to use them", es: "Qué son los system prompts y cuándo usarlos", pt: "O que são system prompts e quando usar" },
         bullets: {
           en: [
             "A system prompt is persistent context that runs before every user message — it shapes tone, persona, constraints, and behavior across the whole conversation.",
@@ -3028,15 +3028,15 @@ Do not give generic writing advice. Focus on the structural issue.`,
             "Los system prompts están disponibles nativamente en ChatGPT (Custom Instructions o system prompt de GPT), Claude (parámetro system) y Gemini (system instruction).",
           ],
           pt: [
-            "A system prompt is persistent context that runs before every user message — it shapes tone, persona, constraints, and behavior across the whole conversation.",
-            "Use system prompts when you need consistent behavior across many interactions: a support bot, a writing assistant, a code reviewer, an internal tool.",
-            "Without a system prompt, each request starts from scratch — you lose consistent tone, format, and safety rules between turns.",
-            "System prompts are available natively in ChatGPT (Custom Instructions or GPT system prompt), Claude (system parameter), and Gemini (system instruction).",
+            "Um system prompt é um contexto persistente que vale antes de cada mensagem do usuário — ele molda o tom, a persona, as restrições e o comportamento em toda a conversa.",
+            "Use system prompts quando você precisar de um comportamento consistente em muitas interações: um bot de suporte, um assistente de escrita, um revisor de código, uma ferramenta interna.",
+            "Sem um system prompt, cada pedido começa do zero — você perde a consistência de tom, formato e regras de segurança entre os turnos.",
+            "Os system prompts estão disponíveis nativamente no ChatGPT (Instruções personalizadas ou o system prompt de um GPT), no Claude (parâmetro system) e no Gemini (system instruction).",
           ],
         },
       },
       {
-        heading: { en: "What to put in a system prompt", es: "Qué poner en un system prompt", pt: "What to put in a system prompt" },
+        heading: { en: "What to put in a system prompt", es: "Qué poner en un system prompt", pt: "O que colocar em um system prompt" },
         bullets: {
           en: [
             "Persona: who the model is, what domain it knows, and how it communicates (tone, formality, length defaults).",
@@ -3053,16 +3053,16 @@ Do not give generic writing advice. Focus on the structural issue.`,
             "Restricciones de seguridad: qué afirmaciones evitar, qué disclaimers agregar, qué temas requieren cuidado.",
           ],
           pt: [
-            "Persona: who the model is, what domain it knows, and how it communicates (tone, formality, length defaults).",
-            "Scope: what it helps with and — equally important — what it does not help with.",
-            "Output format defaults: if every answer should use bullets, a specific structure, or a length limit, state it here so you don't repeat it each turn.",
-            "Escalation rules: what to do when a request is out of scope, ambiguous, or requires information the model doesn't have.",
-            "Safety constraints: what claims to avoid, what disclaimers to add, what topics require caution.",
+            "Persona: quem o modelo é, qual área ele domina e como se comunica (tom, formalidade, tamanho padrão).",
+            "Escopo: com o que ele ajuda e — igualmente importante — com o que ele não ajuda.",
+            "Formato de saída padrão: se toda resposta deve usar tópicos, uma estrutura específica ou um limite de tamanho, diga isso aqui para não repetir a cada turno.",
+            "Regras de escalonamento: o que fazer quando um pedido está fora do escopo, é ambíguo ou exige informação que o modelo não tem.",
+            "Restrições de segurança: quais afirmações evitar, quais avisos acrescentar, quais temas exigem cautela.",
           ],
         },
       },
       {
-        heading: { en: "Common system prompt mistakes", es: "Errores comunes en system prompts", pt: "Common system prompt mistakes" },
+        heading: { en: "Common system prompt mistakes", es: "Errores comunes en system prompts", pt: "Erros comuns em system prompts" },
         bullets: {
           en: [
             "Overloading with rules: a 2000-word system prompt buries the most important constraints. Keep it focused — prioritize the 5-7 rules that matter most.",
@@ -3077,17 +3077,17 @@ Do not give generic writing advice. Focus on the structural issue.`,
             "Persona vaga: 'sé útil y profesional' no le da al modelo nada que diferencie su comportamiento de una respuesta por defecto. Especificá dominio, audiencia y qué significa ser útil aquí.",
           ],
           pt: [
-            "Overloading with rules: a 2000-word system prompt buries the most important constraints. Keep it focused — prioritize the 5-7 rules that matter most.",
-            "Contradicting the user prompt: if the system prompt says 'be concise' and the user asks for exhaustive detail, the model will blend them unpredictably. Resolve conflicts in the system prompt explicitly.",
-            "Forgetting format defaults: not setting a default format means every response varies unless the user specifies one each time.",
-            "Vague persona: 'be helpful and professional' gives the model nothing to distinguish its behavior from a default response. Specify domain, audience, and what helpful means here.",
+            "Excesso de regras: um system prompt de 2.000 palavras enterra as restrições mais importantes. Mantenha o foco — priorize as 5-7 regras que mais importam.",
+            "Contradizer o prompt do usuário: se o system prompt diz 'seja conciso' e o usuário pede detalhes exaustivos, o modelo vai misturar as duas coisas de forma imprevisível. Resolva os conflitos no system prompt de forma explícita.",
+            "Esquecer o formato padrão: sem um formato padrão, cada resposta varia, a menos que o usuário especifique um toda vez.",
+            "Persona vaga: 'seja útil e profissional' não dá ao modelo nada que diferencie o comportamento dele de uma resposta padrão. Especifique a área, o público e o que significa ser útil nesse caso.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Customer support assistant system prompt", es: "System prompt para asistente de soporte al cliente", pt: "Customer support assistant system prompt" },
+        title: { en: "Customer support assistant system prompt", es: "System prompt para asistente de soporte al cliente", pt: "System prompt de assistente de suporte ao cliente" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -3141,35 +3141,35 @@ Formato de salida por defecto:
 - Mantené las respuestas en 3-5 oraciones salvo que el problema requiera más detalle.
 - Usá pasos numerados cuando expliques un proceso.
 - Terminá cada respuesta con una acción clara para el usuario.`,
-          pt: `You are a customer support assistant for [Company Name], a [brief description of the product/service].
+          pt: `Você é um assistente de suporte ao cliente da [Nome da empresa], [breve descrição do produto/serviço].
 
 Persona:
-- Tone: friendly, direct, and patient.
-- Domain: [product area, e.g. "SaaS billing and account management"].
-- Audience: [e.g. "paying customers who may not be technical"].
+- Tom: simpático, direto e paciente.
+- Área: [área do produto, ex. "cobrança e gestão de contas de um SaaS"].
+- Público: [ex. "clientes pagantes que podem não ter conhecimento técnico"].
 
-What you help with:
-- Answering questions about [specific topics].
-- Troubleshooting [specific issues].
-- Explaining pricing and plan details.
+Com o que você ajuda:
+- Responder a perguntas sobre [temas específicos].
+- Resolver [problemas específicos].
+- Explicar preços e detalhes dos planos.
 
-What you do NOT do:
-- Make promises about future features or timelines.
-- Process refunds or account changes directly — redirect to [e.g. "the billing team at billing@company.com"].
-- Give legal or financial advice.
+O que você NÃO faz:
+- Fazer promessas sobre funcionalidades ou prazos futuros.
+- Processar reembolsos ou alterações de conta diretamente — encaminhe para [ex. "o time de cobrança em billing@company.com"].
+- Dar orientação jurídica ou financeira.
 
-When you don't know the answer:
-- Say "I don't have that information, but I can connect you with someone who does."
-- Never invent facts or policies.
+Quando você não souber a resposta:
+- Diga "Não tenho essa informação, mas posso colocar você em contato com alguém que tem."
+- Nunca invente fatos ou políticas.
 
-Output format defaults:
-- Keep answers to 3-5 sentences unless the issue requires more detail.
-- Use numbered steps when explaining a process.
-- End every response with a clear next action for the user.`,
+Formato de saída padrão:
+- Limite as respostas a 3-5 frases, a menos que o problema exija mais detalhes.
+- Use passos numerados ao explicar um processo.
+- Termine toda resposta com uma próxima ação clara para o usuário.`,
         },
       },
       {
-        title: { en: "Writing assistant with style constraints", es: "Asistente de escritura con restricciones de estilo", pt: "Writing assistant with style constraints" },
+        title: { en: "Writing assistant with style constraints", es: "Asistente de escritura con restricciones de estilo", pt: "Assistente de escrita com restrições de estilo" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -3215,53 +3215,53 @@ Al escribir desde cero:
 Qué no hacés:
 - Escribir en un estilo que viole las restricciones anteriores, aunque se te pida.
 - Rellenar respuestas con elogios o resúmenes que nadie pidió.`,
-          pt: `You are a writing assistant. Your job is to help improve, edit, and write content.
+          pt: `Você é um assistente de escrita. Sua função é ajudar a melhorar, editar e escrever conteúdo.
 
-Style constraints (apply to every response):
-- Prefer short sentences (under 20 words each).
-- Active voice only — flag passive voice when you see it.
-- No filler words: remove "very", "just", "really", "basically", "essentially".
-- No hedge phrases: "it could be argued", "one might say", "in some ways".
-- Word count ceiling: unless asked otherwise, keep suggestions under 150 words.
+Restrições de estilo (valem para toda resposta):
+- Prefira frases curtas (menos de 20 palavras cada).
+- Só voz ativa — aponte a voz passiva quando encontrá-la.
+- Sem palavras de enchimento: remova "muito", "só", "realmente", "basicamente", "essencialmente".
+- Sem expressões evasivas: "pode-se argumentar", "alguns diriam", "de certa forma".
+- Teto de palavras: a menos que eu peça outra coisa, mantenha as sugestões abaixo de 150 palavras.
 
-When reviewing text:
-1. Quote the specific phrase that needs improvement.
-2. Explain the problem in one sentence.
-3. Provide a rewritten version.
+Ao revisar um texto:
+1. Cite a frase específica que precisa melhorar.
+2. Explique o problema em uma frase.
+3. Forneça uma versão reescrita.
 
-When writing from scratch:
-- Ask one clarifying question about audience and goal before starting.
-- Deliver 2 variants when the tone is ambiguous.
+Ao escrever do zero:
+- Faça uma pergunta de esclarecimento sobre o público e o objetivo antes de começar.
+- Entregue 2 variações quando o tom for ambíguo.
 
-What you do not do:
-- Write in a style that violates the constraints above, even if asked.
-- Pad responses with encouragement or summaries nobody asked for.`,
+O que você não faz:
+- Escrever em um estilo que viole as restrições acima, mesmo que peçam.
+- Encher as respostas com incentivos ou resumos que ninguém pediu.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Is a system prompt the same as a custom instruction in ChatGPT?", es: "¿Un system prompt es lo mismo que una instrucción personalizada en ChatGPT?", pt: "Is a system prompt the same as a custom instruction in ChatGPT?" },
+        q: { en: "Is a system prompt the same as a custom instruction in ChatGPT?", es: "¿Un system prompt es lo mismo que una instrucción personalizada en ChatGPT?", pt: "Um system prompt é o mesmo que as instruções personalizadas do ChatGPT?" },
         a: {
           en: "Functionally yes. ChatGPT's Custom Instructions are injected as a system-level message before each conversation. In the API, you pass it explicitly as the 'system' role message. In Claude and Gemini it's the 'system' parameter. Same concept, different surface.",
           es: "Funcionalmente sí. Las Custom Instructions de ChatGPT se inyectan como un mensaje de nivel sistema antes de cada conversación. En la API, lo pasás explícitamente como el mensaje de rol 'system'. En Claude y Gemini es el parámetro 'system'. El mismo concepto, diferente superficie.",
-          pt: "Functionally yes. ChatGPT's Custom Instructions are injected as a system-level message before each conversation. In the API, you pass it explicitly as the 'system' role message. In Claude and Gemini it's the 'system' parameter. Same concept, different surface.",
+          pt: "Na prática, sim. As Instruções personalizadas do ChatGPT são inseridas como uma mensagem de sistema antes de cada conversa. Na API, você o envia de forma explícita como a mensagem com o papel 'system'. No Claude e no Gemini, é o parâmetro 'system'. Mesmo conceito, interfaces diferentes.",
         },
       },
       {
-        q: { en: "Can a user override the system prompt in their message?", es: "¿Puede un usuario anular el system prompt en su mensaje?", pt: "Can a user override the system prompt in their message?" },
+        q: { en: "Can a user override the system prompt in their message?", es: "¿Puede un usuario anular el system prompt en su mensaje?", pt: "Um usuário pode sobrescrever o system prompt na mensagem dele?" },
         a: {
           en: "In most models, yes — a strong user instruction can override system-level guidance, especially if there's a direct conflict. To make a constraint stick, state it explicitly and repeat it near the end of the system prompt. For critical safety rules, test edge cases before deploying.",
           es: "En la mayoría de los modelos, sí — una instrucción fuerte del usuario puede anular la guía del sistema, especialmente si hay un conflicto directo. Para que una restricción se mantenga, enunciala explícitamente y repetila cerca del final del system prompt. Para reglas de seguridad críticas, probá casos límite antes de desplegar.",
-          pt: "In most models, yes — a strong user instruction can override system-level guidance, especially if there's a direct conflict. To make a constraint stick, state it explicitly and repeat it near the end of the system prompt. For critical safety rules, test edge cases before deploying.",
+          pt: "Na maioria dos modelos, sim — uma instrução forte do usuário pode se sobrepor às orientações de sistema, principalmente se houver um conflito direto. Para uma restrição se manter, declare-a de forma explícita e repita perto do fim do system prompt. Para regras de segurança críticas, teste os casos de borda antes de colocar em produção.",
         },
       },
       {
-        q: { en: "How long should a system prompt be?", es: "¿Qué tan largo debe ser un system prompt?", pt: "How long should a system prompt be?" },
+        q: { en: "How long should a system prompt be?", es: "¿Qué tan largo debe ser un system prompt?", pt: "Qual deve ser o tamanho de um system prompt?" },
         a: {
           en: "As short as it can be while covering what matters. A 200-400 word system prompt with 5-7 clear rules outperforms a 2000-word one where important constraints are buried. Add detail only when a rule is ambiguous enough that the model will interpret it differently without it.",
           es: "Lo más corto posible cubriendo lo que importa. Un system prompt de 200-400 palabras con 5-7 reglas claras supera a uno de 2000 palabras donde las restricciones importantes están enterradas. Agregá detalle solo cuando una regla es tan ambigua que el modelo la interpretará de forma diferente sin él.",
-          pt: "As short as it can be while covering what matters. A 200-400 word system prompt with 5-7 clear rules outperforms a 2000-word one where important constraints are buried. Add detail only when a rule is ambiguous enough that the model will interpret it differently without it.",
+          pt: "O mais curto possível, cobrindo o que importa. Um system prompt de 200-400 palavras com 5-7 regras claras funciona melhor que um de 2.000 palavras em que as restrições importantes ficam enterradas. Só acrescente detalhes quando uma regra for ambígua a ponto de o modelo interpretá-la de outro jeito sem eles.",
         },
       },
     ],
@@ -3271,16 +3271,16 @@ What you do not do:
     title: {
       en: "AI translation prompts that preserve meaning, tone, and register",
       es: "Prompts de traducción para IA que preservan significado, tono y registro",
-      pt: "AI translation prompts that preserve meaning, tone, and register",
+      pt: "Prompts de tradução com IA que preservam sentido, tom e registro",
     },
     description: {
       en: "Templates for translating content with AI — with tone matching, register controls, domain glossaries, and constraints to prevent common translation failures.",
       es: "Plantillas para traducir contenido con IA — con coincidencia de tono, controles de registro, glosarios de dominio y restricciones para evitar fallos comunes de traducción.",
-      pt: "Templates for translating content with AI — with tone matching, register controls, domain glossaries, and constraints to prevent common translation failures.",
+      pt: "Templates para traduzir conteúdo com IA — com ajuste de tom, controle de registro, glossários da área e restrições para evitar as falhas de tradução mais comuns.",
     },
     sections: [
       {
-        heading: { en: "Why AI translation fails without constraints", es: "Por qué la traducción con IA falla sin restricciones", pt: "Why AI translation fails without constraints" },
+        heading: { en: "Why AI translation fails without constraints", es: "Por qué la traducción con IA falla sin restricciones", pt: "Por que a tradução com IA falha sem restrições" },
         bullets: {
           en: [
             "No register guidance: a formal legal document and a casual marketing email require different registers — without guidance, the model picks one arbitrarily.",
@@ -3297,16 +3297,16 @@ What you do not do:
             "Deriva de longitud: las traducciones pueden ser 20-30% más largas o cortas que el fuente sin restricción de longitud — esto importa para strings de UI, subtítulos e impresión.",
           ],
           pt: [
-            "No register guidance: a formal legal document and a casual marketing email require different registers — without guidance, the model picks one arbitrarily.",
-            "Missing domain glossary: industry terms (legal, medical, technical) often have established translations the model may not default to. Provide the glossary explicitly.",
-            "No handling rules for untranslatable terms: brand names, product names, acronyms, and proper nouns often should not be translated — state what to preserve.",
-            "No format preservation constraint: line breaks, bullet points, and HTML tags in the source often get mangled without an explicit 'preserve formatting' instruction.",
-            "Length drift: translations can be 20-30% longer or shorter than the source without a length constraint — this matters for UI strings, subtitles, and print.",
+            "Nenhuma orientação de registro: um documento jurídico formal e um e-mail de marketing casual exigem registros diferentes — sem orientação, o modelo escolhe um de forma arbitrária.",
+            "Falta um glossário da área: termos do setor (jurídico, médico, técnico) costumam ter traduções consagradas que o modelo pode não usar por padrão. Forneça o glossário de forma explícita.",
+            "Nenhuma regra para termos intraduzíveis: nomes de marcas, nomes de produtos, siglas e nomes próprios muitas vezes não devem ser traduzidos — diga o que preservar.",
+            "Nenhuma restrição para preservar o formato: quebras de linha, tópicos e tags HTML do original costumam ser desfigurados sem uma instrução explícita de 'preservar a formatação'.",
+            "Variação de tamanho: sem uma restrição de tamanho, as traduções podem ficar 20-30% mais longas ou mais curtas que o original — isso importa em textos de interface, legendas e material impresso.",
           ],
         },
       },
       {
-        heading: { en: "Controls that improve translation quality", es: "Controles que mejoran la calidad de la traducción", pt: "Controls that improve translation quality" },
+        heading: { en: "Controls that improve translation quality", es: "Controles que mejoran la calidad de la traducción", pt: "Controles que melhoram a qualidade da tradução" },
         bullets: {
           en: [
             "Name the target language and region variant: 'Spanish (Mexico)' vs 'Spanish (Spain)' produce different vocabulary and formality conventions.",
@@ -3323,18 +3323,18 @@ What you do not do:
             "Pedí una nota de confianza: 'Marcá cualquier frase donde el significado sea ambiguo o no haya equivalente directo.'",
           ],
           pt: [
-            "Name the target language and region variant: 'Spanish (Mexico)' vs 'Spanish (Spain)' produce different vocabulary and formality conventions.",
-            "Specify register: formal / informal / technical / conversational — one word adds significant consistency.",
-            "Give a domain glossary for 3-10 key terms — it prevents the most common errors without overloading the prompt.",
-            "State what not to translate: brand names, code snippets, proper nouns, and UI labels often must stay in the source language.",
-            "Ask for a confidence note: 'Flag any phrase where the meaning is ambiguous or there is no direct equivalent.'",
+            "Diga o idioma de destino e a variante regional: 'português (Brasil)' e 'português (Portugal)' geram vocabulário e convenções de formalidade diferentes.",
+            "Especifique o registro: formal / informal / técnico / conversacional — uma palavra só já traz muito mais consistência.",
+            "Dê um glossário da área com 3-10 termos-chave — ele evita os erros mais comuns sem sobrecarregar o prompt.",
+            "Diga o que não traduzir: nomes de marcas, trechos de código, nomes próprios e rótulos de interface muitas vezes precisam ficar no idioma original.",
+            "Peça uma nota de confiança: 'Sinalize qualquer frase cujo sentido seja ambíguo ou que não tenha um equivalente direto.'",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Document translation with register and glossary", es: "Traducción de documento con registro y glosario", pt: "Document translation with register and glossary" },
+        title: { en: "Document translation with register and glossary", es: "Traducción de documento con registro y glosario", pt: "Tradução de documento com registro e glossário" },
         purpose: "translation",
         target: "claude",
         prompt: {
@@ -3384,33 +3384,33 @@ Manejo de ambigüedad:
 
 Documento:
 """[pegá el documento fuente acá]"""`,
-          pt: `Translate the document below from [source language] to [target language, e.g. Spanish (Spain)].
+          pt: `Traduza o documento abaixo de [idioma de origem] para [idioma de destino, ex. português (Brasil)].
 
-Register: [formal / informal / technical — pick one]
-Audience: [who will read this, e.g. "legal professionals" / "general public"]
+Registro: [formal / informal / técnico — escolha um]
+Público: [quem vai ler, ex. "profissionais do direito" / "público geral"]
 
-Glossary (use these translations exactly):
-- [source term 1] → [target term 1]
-- [source term 2] → [target term 2]
+Glossário (use exatamente estas traduções):
+- [termo de origem 1] → [termo de destino 1]
+- [termo de origem 2] → [termo de destino 2]
 
-Do not translate:
-- Brand names and product names (keep as-is).
-- Proper nouns and place names (unless there is a standard established translation).
-- Acronyms: [list, e.g. "API, URL, SLA"].
+Não traduza:
+- Nomes de marcas e de produtos (mantenha como estão).
+- Nomes próprios e de lugares (a menos que exista uma tradução consagrada).
+- Siglas: [lista, ex. "API, URL, SLA"].
 
-Formatting rules:
-- Preserve all line breaks, bullet points, and heading structure.
-- Do not add or remove paragraphs.
+Regras de formatação:
+- Preserve todas as quebras de linha, os tópicos e a estrutura de títulos.
+- Não acrescente nem remova parágrafos.
 
-Ambiguity handling:
-- If a phrase has no direct equivalent, translate the meaning and add a footnote: [Translator note: ...].
+Tratamento de ambiguidades:
+- Se uma frase não tiver equivalente direto, traduza o sentido e acrescente uma nota: [Nota do tradutor: ...].
 
-Document:
-"""[paste source document here]"""`,
+Documento:
+"""[cole o documento original aqui]"""`,
         },
       },
       {
-        title: { en: "UI strings batch translation (short texts)", es: "Traducción en lote de strings de UI (textos cortos)", pt: "UI strings batch translation (short texts)" },
+        title: { en: "UI strings batch translation (short texts)", es: "Traducción en lote de strings de UI (textos cortos)", pt: "Tradução em lote de textos de interface (textos curtos)" },
         purpose: "translation",
         target: "gpt",
         prompt: {
@@ -3454,21 +3454,21 @@ Strings a traducir:
   { "key": "error_required", "original": "This field is required" },
   { "key": "label_email", "original": "Email address" }
 ]`,
-          pt: `Translate the following UI strings from English to [target language].
+          pt: `Traduza os seguintes textos de interface do inglês para [idioma de destino].
 
-Rules:
-1. Each string must be translated individually — do not merge or reorder.
-2. Keep translations short: UI labels must fit the same space as the original.
-3. Do not translate: variables in {curly_braces}, HTML tags, and brand names.
-4. Preserve capitalization style: if the source is Title Case, the translation should match it.
-5. Register: [formal / informal].
+Regras:
+1. Cada texto deve ser traduzido individualmente — não junte nem reordene.
+2. Mantenha as traduções curtas: os rótulos da interface precisam caber no mesmo espaço do original.
+3. Não traduza: variáveis entre {chaves}, tags HTML e nomes de marcas.
+4. Preserve o estilo de maiúsculas: se o original estiver em Title Case, a tradução deve acompanhar.
+5. Registro: [formal / informal].
 
-Return format (JSON array, same order as input):
+Formato de retorno (array JSON, na mesma ordem da entrada):
 [
-  { "key": "source_key", "original": "source string", "translation": "translated string" }
+  { "key": "source_key", "original": "source string", "translation": "texto traduzido" }
 ]
 
-Strings to translate:
+Textos para traduzir:
 [
   { "key": "btn_save", "original": "Save changes" },
   { "key": "error_required", "original": "This field is required" },
@@ -3479,19 +3479,19 @@ Strings to translate:
     ],
     faq: [
       {
-        q: { en: "Is AI translation good enough for professional use?", es: "¿La traducción con IA es suficientemente buena para uso profesional?", pt: "Is AI translation good enough for professional use?" },
+        q: { en: "Is AI translation good enough for professional use?", es: "¿La traducción con IA es suficientemente buena para uso profesional?", pt: "A tradução com IA é boa o bastante para uso profissional?" },
         a: {
           en: "It depends on the domain and risk level. For internal documents, UI strings, and low-stakes content, well-constrained AI translation is fast and accurate. For legal contracts, medical content, or published materials, use AI as a first draft and have a professional translator review it. The templates above reduce errors significantly but don't eliminate the need for human review on high-stakes text.",
           es: "Depende del dominio y el nivel de riesgo. Para documentos internos, strings de UI y contenido de bajo riesgo, la traducción con IA bien restringida es rápida y precisa. Para contratos legales, contenido médico o materiales publicados, usá la IA como primer borrador y hacé que un traductor profesional lo revise. Las plantillas anteriores reducen errores significativamente pero no eliminan la necesidad de revisión humana en textos de alto riesgo.",
-          pt: "It depends on the domain and risk level. For internal documents, UI strings, and low-stakes content, well-constrained AI translation is fast and accurate. For legal contracts, medical content, or published materials, use AI as a first draft and have a professional translator review it. The templates above reduce errors significantly but don't eliminate the need for human review on high-stakes text.",
+          pt: "Depende da área e do nível de risco. Para documentos internos, textos de interface e conteúdo de baixo risco, a tradução com IA bem restringida é rápida e precisa. Para contratos, conteúdo médico ou material publicado, use a IA como primeiro rascunho e peça a revisão de um tradutor profissional. Os templates acima reduzem bastante os erros, mas não eliminam a necessidade de revisão humana em textos de alto risco.",
         },
       },
       {
-        q: { en: "Which model is best for translation tasks?", es: "¿Qué modelo es mejor para tareas de traducción?", pt: "Which model is best for translation tasks?" },
+        q: { en: "Which model is best for translation tasks?", es: "¿Qué modelo es mejor para tareas de traducción?", pt: "Qual modelo é o melhor para tarefas de tradução?" },
         a: {
           en: "There is no single winner: the current GPT, Claude and Gemini models (for example GPT-6 Astra, Claude Opus 5.5 or Sonnet 5.5, Gemini 3.8 Flash) all handle common language pairs well, and results vary by language pair, domain and how strict your glossary is. Claude tends to respect register and glossary rules when they are spelled out; models with a native structured-output mode make batch translation of UI strings easier to parse. Pick two candidates, translate the same sample (including your hardest terms and a regional variant if you need one), and have a fluent reviewer compare them before committing.",
           es: "No hay un ganador único: los modelos actuales de GPT, Claude y Gemini (por ejemplo GPT-6 Astra, Claude Opus 5.5 o Sonnet 5.5, Gemini 3.8 Flash) manejan bien los pares de idiomas comunes, y el resultado cambia según el par de idiomas, el dominio y qué tan estricto es tu glosario. Claude tiende a respetar reglas de registro y glosario cuando están explícitas; los modelos con modo nativo de salida estructurada facilitan procesar traducciones en lote de strings de UI. Elegí dos candidatos, traducí la misma muestra (con tus términos más difíciles y una variante regional si la necesitás) y que una persona con dominio del idioma compare antes de decidir.",
-          pt: "There is no single winner: the current GPT, Claude and Gemini models (for example GPT-6 Astra, Claude Opus 5.5 or Sonnet 5.5, Gemini 3.8 Flash) all handle common language pairs well, and results vary by language pair, domain and how strict your glossary is. Claude tends to respect register and glossary rules when they are spelled out; models with a native structured-output mode make batch translation of UI strings easier to parse. Pick two candidates, translate the same sample (including your hardest terms and a regional variant if you need one), and have a fluent reviewer compare them before committing.",
+          pt: "Não existe um único vencedor: os modelos atuais de GPT, Claude e Gemini (por exemplo, GPT-6 Astra, Claude Opus 5.5 ou Sonnet 5.5, Gemini 3.8 Flash) lidam bem com os pares de idiomas mais comuns, e os resultados variam conforme o par de idiomas, a área e o rigor do seu glossário. O Claude tende a respeitar as regras de registro e de glossário quando elas estão explícitas; modelos com um modo nativo de saída estruturada facilitam a leitura de traduções em lote de textos de interface. Escolha dois candidatos, traduza a mesma amostra (incluindo seus termos mais difíceis e uma variante regional, se você precisar) e peça a um revisor fluente que compare os dois antes de decidir.",
         },
       },
     ],
