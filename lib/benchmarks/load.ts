@@ -18,6 +18,8 @@
 
 import { EnvelopeSchema } from "./schema";
 import { buildSnapshot, type BenchmarksSnapshot } from "./normalize";
+import { getBenchmarkDef } from "./catalog";
+import { LANGS, type Lang } from "@/lib/domain";
 
 export const OPENROUTER_BENCHMARKS_URL = "https://openrouter.ai/api/v1/benchmarks";
 export const FETCH_TIMEOUT_MS = 8_000;
@@ -117,13 +119,45 @@ export async function loadBenchmarks(deps: LoadDeps): Promise<BenchmarksResult> 
   log("benchmarks_fetch_failed", { reason: live.reason, status: live.status ?? null });
   if (deps.store) {
     try {
-      const snapshot = await deps.store.read();
+      const stored = await deps.store.read();
+      const snapshot = stored ? rehydrateSnapshot(stored) : null;
       if (snapshot && snapshot.tables.length > 0) return { status: "stale", snapshot, reason: live.reason };
     } catch {
       log("benchmarks_snapshot_read_failed", {});
     }
   }
   return { status: "unavailable", reason: live.reason };
+}
+
+/**
+ * v1.8.2 — a stored snapshot carries a COPY of each benchmark's texts (label,
+ * metric, what it measures, limitations) as they were when it was saved. A
+ * snapshot saved before a language existed has no text in it: read back under
+ * /pt it gave `undefined` labels and crashed the markdown twin
+ * (`/md/pt/benchmarks`) at build time, on any deployment that has the database
+ * but not the upstream key.
+ *
+ * The catalog is the source of truth for those texts, so they are taken from it
+ * again on read (by benchmark key). A key the catalog no longer knows keeps its
+ * stored texts, with any missing language filled from English, so a text is
+ * never `undefined`. Numbers, rows and dates are never touched.
+ */
+export function rehydrateSnapshot(snapshot: BenchmarksSnapshot): BenchmarksSnapshot {
+  const fill = (text: Partial<Record<Lang, string>> | undefined): Record<Lang, string> => {
+    const base = text?.en ?? text?.es ?? "";
+    return Object.fromEntries(LANGS.map((l) => [l, text?.[l] ?? base])) as Record<Lang, string>;
+  };
+  return {
+    ...snapshot,
+    tables: (snapshot.tables ?? []).map((table) => {
+      const stored = table.def;
+      const current = getBenchmarkDef(stored.key, { metric: stored.metric === "f1" ? "f1_by_item" : "accuracy" });
+      const def = current
+        ? { ...stored, label: current.label, metricLabel: current.metricLabel, measures: current.measures, limitations: current.limitations }
+        : { ...stored, label: fill(stored.label), metricLabel: fill(stored.metricLabel), measures: fill(stored.measures), limitations: fill(stored.limitations) };
+      return { ...table, def };
+    }),
+  };
 }
 
 /** Age of a snapshot in whole hours (for "data from N hours ago"). */

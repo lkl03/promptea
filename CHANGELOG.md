@@ -27,6 +27,9 @@ All notable changes to Promptea are documented here.
 - **Version history before v1.8.0** is shown in English under `/pt`, with a notice.
 - The product tour video under `/pt/how-it-works` is the English recording.
 
+### Fixed
+- **Benchmarks from a stored snapshot in a new language.** The "last valid snapshot" kept in the database carried a copy of each benchmark's texts in the languages that existed when it was saved. On a deployment with the database but without the upstream key, `/md/pt/benchmarks` read an undefined text and the build failed. Stored snapshots now take their texts from the catalog again when they are read (`rehydrateSnapshot()`); numbers, rows and dates are untouched.
+
 ### Notes
 - `/es` and `/en` keep their URLs, canonicals and behaviour; they gain the Portuguese alternate on pages that exist in Portuguese. The 80 Spanish/English calibration cases of the engine did not move.
 - The Portuguese text was written by AI and has not been reviewed by a native speaker.
