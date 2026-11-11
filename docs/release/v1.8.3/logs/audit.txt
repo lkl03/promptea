@@ -1,0 +1,1165 @@
+ok  /pt · aqua/light · wide  cls=0 overflow=0
+ok  /es · aqua/light · wide  cls=0.002 overflow=0
+ok  /en · aqua/light · wide  cls=0 overflow=0
+ok  /pt/how-it-works · aqua/light · wide  cls=0 overflow=0
+ok  /pt/analyzer · aqua/light · wide  cls=0 overflow=0
+ok  /pt/best-ai · aqua/light · wide  cls=0 overflow=0
+ok  /pt/blog · aqua/light · wide  cls=0.001 overflow=0
+ok  /pt/blog/weekly · aqua/light · wide  cls=0 overflow=0
+ok  /pt/benchmarks · aqua/light · wide  cls=0 overflow=0
+ok  /pt/guides · aqua/light · wide  cls=0 overflow=0
+ok  /pt/guides/json-output · aqua/light · wide  cls=0 overflow=0
+ok  /pt/models · aqua/light · wide  cls=0 overflow=0
+ok  /pt/models/claude · aqua/light · wide  cls=0 overflow=0
+ok  /pt/glossary · aqua/light · wide  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · aqua/light · wide  cls=0 overflow=0
+ok  /pt/prompts · aqua/light · wide  cls=0 overflow=0
+ok  /pt/prompts/data · aqua/light · wide  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · aqua/light · wide  cls=0 overflow=0
+ok  /pt/library · aqua/light · wide  cls=0 overflow=0
+ok  /pt/share · aqua/light · wide  cls=0 overflow=0
+ok  /pt/about · aqua/light · wide  cls=0 overflow=0
+ok  /pt/methodology · aqua/light · wide  cls=0 overflow=0
+ok  /pt/changelog · aqua/light · wide  cls=0 overflow=0
+ok  /pt/privacy · aqua/light · wide  cls=0 overflow=0
+ok  /es/prompts/data · aqua/light · wide  cls=0 overflow=0
+ok  /en/prompts/data · aqua/light · wide  cls=0 overflow=0
+ok  /es/analyzer · aqua/light · wide  cls=0 overflow=0
+ok  /en/benchmarks · aqua/light · wide  cls=0 overflow=0
+ok  /es/blog · aqua/light · wide  cls=0.001 overflow=0
+ok  /pt · glass/light · wide  cls=0 overflow=0
+ok  /es · glass/light · wide  cls=0.001 overflow=0
+ok  /en · glass/light · wide  cls=0.001 overflow=0
+ok  /pt/how-it-works · glass/light · wide  cls=0 overflow=0
+ok  /pt/analyzer · glass/light · wide  cls=0 overflow=0
+ok  /pt/best-ai · glass/light · wide  cls=0 overflow=0
+ok  /pt/blog · glass/light · wide  cls=0.002 overflow=0
+ok  /pt/blog/weekly · glass/light · wide  cls=0 overflow=0
+ok  /pt/benchmarks · glass/light · wide  cls=0 overflow=0
+ok  /pt/guides · glass/light · wide  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/light · wide  cls=0 overflow=0
+ok  /pt/models · glass/light · wide  cls=0 overflow=0
+ok  /pt/models/claude · glass/light · wide  cls=0 overflow=0
+ok  /pt/glossary · glass/light · wide  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/light · wide  cls=0 overflow=0
+ok  /pt/prompts · glass/light · wide  cls=0 overflow=0
+ok  /pt/prompts/data · glass/light · wide  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/light · wide  cls=0 overflow=0
+ok  /pt/library · glass/light · wide  cls=0 overflow=0
+ok  /pt/share · glass/light · wide  cls=0 overflow=0
+ok  /pt/about · glass/light · wide  cls=0 overflow=0
+ok  /pt/methodology · glass/light · wide  cls=0 overflow=0
+ok  /pt/changelog · glass/light · wide  cls=0 overflow=0
+ok  /pt/privacy · glass/light · wide  cls=0 overflow=0
+ok  /es/prompts/data · glass/light · wide  cls=0 overflow=0
+ok  /en/prompts/data · glass/light · wide  cls=0 overflow=0
+ok  /es/analyzer · glass/light · wide  cls=0 overflow=0
+ok  /en/benchmarks · glass/light · wide  cls=0 overflow=0
+ok  /es/blog · glass/light · wide  cls=0 overflow=0
+ok  /pt · metro/dark · wide  cls=0.001 overflow=0
+ok  /es · metro/dark · wide  cls=0.001 overflow=0
+ok  /en · metro/dark · wide  cls=0 overflow=0
+ok  /pt/how-it-works · metro/dark · wide  cls=0 overflow=0
+ok  /pt/analyzer · metro/dark · wide  cls=0 overflow=0
+ok  /pt/best-ai · metro/dark · wide  cls=0 overflow=0
+ok  /pt/blog · metro/dark · wide  cls=0.001 overflow=0
+ok  /pt/blog/weekly · metro/dark · wide  cls=0 overflow=0
+ok  /pt/benchmarks · metro/dark · wide  cls=0 overflow=0
+ok  /pt/guides · metro/dark · wide  cls=0 overflow=0
+ok  /pt/guides/json-output · metro/dark · wide  cls=0 overflow=0
+ok  /pt/models · metro/dark · wide  cls=0 overflow=0
+ok  /pt/models/claude · metro/dark · wide  cls=0 overflow=0
+ok  /pt/glossary · metro/dark · wide  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · metro/dark · wide  cls=0 overflow=0
+ok  /pt/prompts · metro/dark · wide  cls=0 overflow=0
+ok  /pt/prompts/data · metro/dark · wide  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · metro/dark · wide  cls=0 overflow=0
+ok  /pt/library · metro/dark · wide  cls=0 overflow=0
+ok  /pt/share · metro/dark · wide  cls=0 overflow=0
+ok  /pt/about · metro/dark · wide  cls=0 overflow=0
+ok  /pt/methodology · metro/dark · wide  cls=0 overflow=0
+ok  /pt/changelog · metro/dark · wide  cls=0 overflow=0
+ok  /pt/privacy · metro/dark · wide  cls=0 overflow=0
+ok  /es/prompts/data · metro/dark · wide  cls=0 overflow=0
+ok  /en/prompts/data · metro/dark · wide  cls=0 overflow=0
+ok  /es/analyzer · metro/dark · wide  cls=0 overflow=0
+ok  /en/benchmarks · metro/dark · wide  cls=0 overflow=0
+ok  /es/blog · metro/dark · wide  cls=0.001 overflow=0
+ok  /pt · glass/dark · wide  cls=0.001 overflow=0
+ok  /es · glass/dark · wide  cls=0.001 overflow=0
+ok  /en · glass/dark · wide  cls=0.001 overflow=0
+ok  /pt/how-it-works · glass/dark · wide  cls=0 overflow=0
+ok  /pt/analyzer · glass/dark · wide  cls=0 overflow=0
+ok  /pt/best-ai · glass/dark · wide  cls=0 overflow=0
+ok  /pt/blog · glass/dark · wide  cls=0 overflow=0
+ok  /pt/blog/weekly · glass/dark · wide  cls=0 overflow=0
+ok  /pt/benchmarks · glass/dark · wide  cls=0 overflow=0
+ok  /pt/guides · glass/dark · wide  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/dark · wide  cls=0 overflow=0
+ok  /pt/models · glass/dark · wide  cls=0 overflow=0
+ok  /pt/models/claude · glass/dark · wide  cls=0 overflow=0
+ok  /pt/glossary · glass/dark · wide  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/dark · wide  cls=0 overflow=0
+ok  /pt/prompts · glass/dark · wide  cls=0 overflow=0
+ok  /pt/prompts/data · glass/dark · wide  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/dark · wide  cls=0 overflow=0
+ok  /pt/library · glass/dark · wide  cls=0 overflow=0
+ok  /pt/share · glass/dark · wide  cls=0 overflow=0
+ok  /pt/about · glass/dark · wide  cls=0 overflow=0
+ok  /pt/methodology · glass/dark · wide  cls=0 overflow=0
+ok  /pt/changelog · glass/dark · wide  cls=0 overflow=0
+ok  /pt/privacy · glass/dark · wide  cls=0 overflow=0
+ok  /es/prompts/data · glass/dark · wide  cls=0 overflow=0
+ok  /en/prompts/data · glass/dark · wide  cls=0 overflow=0
+ok  /es/analyzer · glass/dark · wide  cls=0 overflow=0
+ok  /en/benchmarks · glass/dark · wide  cls=0 overflow=0
+ok  /es/blog · glass/dark · wide  cls=0.002 overflow=0
+ok  /pt · aqua/light · desktop  cls=0.001 overflow=0
+ok  /es · aqua/light · desktop  cls=0 overflow=0
+ok  /en · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/how-it-works · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/analyzer · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/best-ai · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/blog · aqua/light · desktop  cls=0.001 overflow=0
+ok  /pt/blog/weekly · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/benchmarks · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/guides · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/guides/json-output · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/models · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/models/claude · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/glossary · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/prompts · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/prompts/data · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/library · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/share · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/about · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/methodology · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/changelog · aqua/light · desktop  cls=0 overflow=0
+ok  /pt/privacy · aqua/light · desktop  cls=0 overflow=0
+ok  /es/prompts/data · aqua/light · desktop  cls=0 overflow=0
+ok  /en/prompts/data · aqua/light · desktop  cls=0 overflow=0
+ok  /es/analyzer · aqua/light · desktop  cls=0 overflow=0
+ok  /en/benchmarks · aqua/light · desktop  cls=0 overflow=0
+ok  /es/blog · aqua/light · desktop  cls=0.003 overflow=0
+ok  /pt · glass/light · desktop  cls=0.001 overflow=0
+ok  /es · glass/light · desktop  cls=0 overflow=0
+ok  /en · glass/light · desktop  cls=0 overflow=0
+ok  /pt/how-it-works · glass/light · desktop  cls=0 overflow=0
+ok  /pt/analyzer · glass/light · desktop  cls=0 overflow=0
+ok  /pt/best-ai · glass/light · desktop  cls=0 overflow=0
+ok  /pt/blog · glass/light · desktop  cls=0.003 overflow=0
+ok  /pt/blog/weekly · glass/light · desktop  cls=0 overflow=0
+ok  /pt/benchmarks · glass/light · desktop  cls=0 overflow=0
+ok  /pt/guides · glass/light · desktop  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/light · desktop  cls=0 overflow=0
+ok  /pt/models · glass/light · desktop  cls=0 overflow=0
+ok  /pt/models/claude · glass/light · desktop  cls=0 overflow=0
+ok  /pt/glossary · glass/light · desktop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/light · desktop  cls=0 overflow=0
+ok  /pt/prompts · glass/light · desktop  cls=0 overflow=0
+ok  /pt/prompts/data · glass/light · desktop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/light · desktop  cls=0 overflow=0
+ok  /pt/library · glass/light · desktop  cls=0 overflow=0
+ok  /pt/share · glass/light · desktop  cls=0 overflow=0
+ok  /pt/about · glass/light · desktop  cls=0 overflow=0
+ok  /pt/methodology · glass/light · desktop  cls=0 overflow=0
+ok  /pt/changelog · glass/light · desktop  cls=0 overflow=0
+ok  /pt/privacy · glass/light · desktop  cls=0 overflow=0
+ok  /es/prompts/data · glass/light · desktop  cls=0 overflow=0
+ok  /en/prompts/data · glass/light · desktop  cls=0 overflow=0
+ok  /es/analyzer · glass/light · desktop  cls=0 overflow=0
+ok  /en/benchmarks · glass/light · desktop  cls=0 overflow=0
+ok  /es/blog · glass/light · desktop  cls=0.001 overflow=0
+ok  /pt · metro/dark · desktop  cls=0 overflow=0
+ok  /es · metro/dark · desktop  cls=0 overflow=0
+ok  /en · metro/dark · desktop  cls=0.001 overflow=0
+ok  /pt/how-it-works · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/analyzer · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/best-ai · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/blog · metro/dark · desktop  cls=0.001 overflow=0
+ok  /pt/blog/weekly · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/benchmarks · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/guides · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/guides/json-output · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/models · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/models/claude · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/glossary · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/prompts · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/prompts/data · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/library · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/share · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/about · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/methodology · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/changelog · metro/dark · desktop  cls=0 overflow=0
+ok  /pt/privacy · metro/dark · desktop  cls=0 overflow=0
+ok  /es/prompts/data · metro/dark · desktop  cls=0 overflow=0
+ok  /en/prompts/data · metro/dark · desktop  cls=0 overflow=0
+ok  /es/analyzer · metro/dark · desktop  cls=0 overflow=0
+ok  /en/benchmarks · metro/dark · desktop  cls=0 overflow=0
+ok  /es/blog · metro/dark · desktop  cls=0.001 overflow=0
+ok  /pt · glass/dark · desktop  cls=0 overflow=0
+ok  /es · glass/dark · desktop  cls=0 overflow=0
+ok  /en · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/how-it-works · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/analyzer · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/best-ai · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/blog · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/blog/weekly · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/benchmarks · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/guides · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/models · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/models/claude · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/glossary · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/prompts · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/prompts/data · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/library · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/share · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/about · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/methodology · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/changelog · glass/dark · desktop  cls=0 overflow=0
+ok  /pt/privacy · glass/dark · desktop  cls=0 overflow=0
+ok  /es/prompts/data · glass/dark · desktop  cls=0 overflow=0
+ok  /en/prompts/data · glass/dark · desktop  cls=0 overflow=0
+ok  /es/analyzer · glass/dark · desktop  cls=0 overflow=0
+ok  /en/benchmarks · glass/dark · desktop  cls=0 overflow=0
+ok  /es/blog · glass/dark · desktop  cls=0.001 overflow=0
+ok  /pt · aqua/light · laptop  cls=0 overflow=0
+ok  /es · aqua/light · laptop  cls=0 overflow=0
+ok  /en · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/how-it-works · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/analyzer · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/best-ai · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/blog · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/blog/weekly · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/benchmarks · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/guides · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/guides/json-output · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/models · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/models/claude · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/glossary · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/prompts · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/prompts/data · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/library · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/share · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/about · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/methodology · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/changelog · aqua/light · laptop  cls=0 overflow=0
+ok  /pt/privacy · aqua/light · laptop  cls=0 overflow=0
+ok  /es/prompts/data · aqua/light · laptop  cls=0 overflow=0
+ok  /en/prompts/data · aqua/light · laptop  cls=0 overflow=0
+ok  /es/analyzer · aqua/light · laptop  cls=0 overflow=0
+ok  /en/benchmarks · aqua/light · laptop  cls=0 overflow=0
+ok  /es/blog · aqua/light · laptop  cls=0.001 overflow=0
+ok  /pt · glass/light · laptop  cls=0 overflow=0
+ok  /es · glass/light · laptop  cls=0 overflow=0
+ok  /en · glass/light · laptop  cls=0 overflow=0
+ok  /pt/how-it-works · glass/light · laptop  cls=0 overflow=0
+ok  /pt/analyzer · glass/light · laptop  cls=0 overflow=0
+ok  /pt/best-ai · glass/light · laptop  cls=0 overflow=0
+ok  /pt/blog · glass/light · laptop  cls=0.005 overflow=0
+ok  /pt/blog/weekly · glass/light · laptop  cls=0 overflow=0
+ok  /pt/benchmarks · glass/light · laptop  cls=0 overflow=0
+ok  /pt/guides · glass/light · laptop  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/light · laptop  cls=0 overflow=0
+ok  /pt/models · glass/light · laptop  cls=0 overflow=0
+ok  /pt/models/claude · glass/light · laptop  cls=0 overflow=0
+ok  /pt/glossary · glass/light · laptop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/light · laptop  cls=0 overflow=0
+ok  /pt/prompts · glass/light · laptop  cls=0 overflow=0
+ok  /pt/prompts/data · glass/light · laptop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/light · laptop  cls=0 overflow=0
+ok  /pt/library · glass/light · laptop  cls=0 overflow=0
+ok  /pt/share · glass/light · laptop  cls=0 overflow=0
+ok  /pt/about · glass/light · laptop  cls=0 overflow=0
+ok  /pt/methodology · glass/light · laptop  cls=0 overflow=0
+ok  /pt/changelog · glass/light · laptop  cls=0 overflow=0
+ok  /pt/privacy · glass/light · laptop  cls=0 overflow=0
+ok  /es/prompts/data · glass/light · laptop  cls=0 overflow=0
+ok  /en/prompts/data · glass/light · laptop  cls=0 overflow=0
+ok  /es/analyzer · glass/light · laptop  cls=0 overflow=0
+ok  /en/benchmarks · glass/light · laptop  cls=0 overflow=0
+ok  /es/blog · glass/light · laptop  cls=0.003 overflow=0
+ok  /pt · metro/dark · laptop  cls=0 overflow=0
+ok  /es · metro/dark · laptop  cls=0 overflow=0
+ok  /en · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/how-it-works · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/analyzer · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/best-ai · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/blog · metro/dark · laptop  cls=0.001 overflow=0
+ok  /pt/blog/weekly · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/benchmarks · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/guides · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/guides/json-output · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/models · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/models/claude · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/glossary · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/prompts · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/prompts/data · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/library · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/share · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/about · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/methodology · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/changelog · metro/dark · laptop  cls=0 overflow=0
+ok  /pt/privacy · metro/dark · laptop  cls=0 overflow=0
+ok  /es/prompts/data · metro/dark · laptop  cls=0 overflow=0
+ok  /en/prompts/data · metro/dark · laptop  cls=0 overflow=0
+ok  /es/analyzer · metro/dark · laptop  cls=0 overflow=0
+ok  /en/benchmarks · metro/dark · laptop  cls=0 overflow=0
+ok  /es/blog · metro/dark · laptop  cls=0.004 overflow=0
+ok  /pt · glass/dark · laptop  cls=0 overflow=0
+ok  /es · glass/dark · laptop  cls=0 overflow=0
+ok  /en · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/how-it-works · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/analyzer · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/best-ai · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/blog · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/blog/weekly · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/benchmarks · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/guides · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/models · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/models/claude · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/glossary · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/prompts · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/prompts/data · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/library · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/share · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/about · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/methodology · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/changelog · glass/dark · laptop  cls=0 overflow=0
+ok  /pt/privacy · glass/dark · laptop  cls=0 overflow=0
+ok  /es/prompts/data · glass/dark · laptop  cls=0 overflow=0
+ok  /en/prompts/data · glass/dark · laptop  cls=0 overflow=0
+ok  /es/analyzer · glass/dark · laptop  cls=0 overflow=0
+ok  /en/benchmarks · glass/dark · laptop  cls=0 overflow=0
+ok  /es/blog · glass/dark · laptop  cls=0 overflow=0
+ok  /pt · aqua/light · tablet  cls=0 overflow=0
+ok  /es · aqua/light · tablet  cls=0 overflow=0
+ok  /en · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/how-it-works · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/analyzer · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/best-ai · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/blog · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/blog/weekly · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/benchmarks · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/guides · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/guides/json-output · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/models · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/models/claude · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/glossary · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/prompts · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/prompts/data · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/library · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/share · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/about · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/methodology · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/changelog · aqua/light · tablet  cls=0 overflow=0
+ok  /pt/privacy · aqua/light · tablet  cls=0 overflow=0
+ok  /es/prompts/data · aqua/light · tablet  cls=0 overflow=0
+ok  /en/prompts/data · aqua/light · tablet  cls=0 overflow=0
+ok  /es/analyzer · aqua/light · tablet  cls=0 overflow=0
+ok  /en/benchmarks · aqua/light · tablet  cls=0 overflow=0
+ok  /es/blog · aqua/light · tablet  cls=0 overflow=0
+ok  /pt · glass/light · tablet  cls=0 overflow=0
+ok  /es · glass/light · tablet  cls=0 overflow=0
+ok  /en · glass/light · tablet  cls=0 overflow=0
+ok  /pt/how-it-works · glass/light · tablet  cls=0 overflow=0
+ok  /pt/analyzer · glass/light · tablet  cls=0 overflow=0
+ok  /pt/best-ai · glass/light · tablet  cls=0 overflow=0
+ok  /pt/blog · glass/light · tablet  cls=0 overflow=0
+ok  /pt/blog/weekly · glass/light · tablet  cls=0 overflow=0
+ok  /pt/benchmarks · glass/light · tablet  cls=0 overflow=0
+ok  /pt/guides · glass/light · tablet  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/light · tablet  cls=0 overflow=0
+ok  /pt/models · glass/light · tablet  cls=0 overflow=0
+ok  /pt/models/claude · glass/light · tablet  cls=0 overflow=0
+ok  /pt/glossary · glass/light · tablet  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/light · tablet  cls=0 overflow=0
+ok  /pt/prompts · glass/light · tablet  cls=0 overflow=0
+ok  /pt/prompts/data · glass/light · tablet  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/light · tablet  cls=0 overflow=0
+ok  /pt/library · glass/light · tablet  cls=0 overflow=0
+ok  /pt/share · glass/light · tablet  cls=0 overflow=0
+ok  /pt/about · glass/light · tablet  cls=0 overflow=0
+ok  /pt/methodology · glass/light · tablet  cls=0 overflow=0
+ok  /pt/changelog · glass/light · tablet  cls=0 overflow=0
+ok  /pt/privacy · glass/light · tablet  cls=0 overflow=0
+ok  /es/prompts/data · glass/light · tablet  cls=0 overflow=0
+ok  /en/prompts/data · glass/light · tablet  cls=0 overflow=0
+ok  /es/analyzer · glass/light · tablet  cls=0 overflow=0
+ok  /en/benchmarks · glass/light · tablet  cls=0 overflow=0
+ok  /es/blog · glass/light · tablet  cls=0 overflow=0
+ok  /pt · metro/dark · tablet  cls=0 overflow=0
+ok  /es · metro/dark · tablet  cls=0 overflow=0
+ok  /en · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/how-it-works · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/analyzer · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/best-ai · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/blog · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/blog/weekly · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/benchmarks · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/guides · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/guides/json-output · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/models · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/models/claude · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/glossary · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/prompts · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/prompts/data · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/library · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/share · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/about · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/methodology · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/changelog · metro/dark · tablet  cls=0 overflow=0
+ok  /pt/privacy · metro/dark · tablet  cls=0 overflow=0
+ok  /es/prompts/data · metro/dark · tablet  cls=0 overflow=0
+ok  /en/prompts/data · metro/dark · tablet  cls=0 overflow=0
+ok  /es/analyzer · metro/dark · tablet  cls=0 overflow=0
+ok  /en/benchmarks · metro/dark · tablet  cls=0 overflow=0
+ok  /es/blog · metro/dark · tablet  cls=0 overflow=0
+ok  /pt · glass/dark · tablet  cls=0 overflow=0
+ok  /es · glass/dark · tablet  cls=0 overflow=0
+ok  /en · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/how-it-works · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/analyzer · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/best-ai · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/blog · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/blog/weekly · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/benchmarks · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/guides · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/models · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/models/claude · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/glossary · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/prompts · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/prompts/data · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/library · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/share · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/about · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/methodology · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/changelog · glass/dark · tablet  cls=0 overflow=0
+ok  /pt/privacy · glass/dark · tablet  cls=0 overflow=0
+ok  /es/prompts/data · glass/dark · tablet  cls=0 overflow=0
+ok  /en/prompts/data · glass/dark · tablet  cls=0 overflow=0
+ok  /es/analyzer · glass/dark · tablet  cls=0 overflow=0
+ok  /en/benchmarks · glass/dark · tablet  cls=0 overflow=0
+ok  /es/blog · glass/dark · tablet  cls=0 overflow=0
+ok  /pt · aqua/light · mobile  cls=0 overflow=0
+ok  /es · aqua/light · mobile  cls=0 overflow=0
+ok  /en · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/how-it-works · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/analyzer · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/best-ai · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/blog · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/blog/weekly · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/benchmarks · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/guides · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/guides/json-output · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/models · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/models/claude · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/glossary · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/prompts · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/prompts/data · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/library · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/share · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/about · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/methodology · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/changelog · aqua/light · mobile  cls=0 overflow=0
+ok  /pt/privacy · aqua/light · mobile  cls=0 overflow=0
+ok  /es/prompts/data · aqua/light · mobile  cls=0 overflow=0
+ok  /en/prompts/data · aqua/light · mobile  cls=0 overflow=0
+ok  /es/analyzer · aqua/light · mobile  cls=0 overflow=0
+ok  /en/benchmarks · aqua/light · mobile  cls=0 overflow=0
+ok  /es/blog · aqua/light · mobile  cls=0 overflow=0
+ok  /pt · glass/light · mobile  cls=0 overflow=0
+ok  /es · glass/light · mobile  cls=0 overflow=0
+ok  /en · glass/light · mobile  cls=0 overflow=0
+ok  /pt/how-it-works · glass/light · mobile  cls=0 overflow=0
+ok  /pt/analyzer · glass/light · mobile  cls=0 overflow=0
+ok  /pt/best-ai · glass/light · mobile  cls=0 overflow=0
+ok  /pt/blog · glass/light · mobile  cls=0 overflow=0
+ok  /pt/blog/weekly · glass/light · mobile  cls=0 overflow=0
+ok  /pt/benchmarks · glass/light · mobile  cls=0 overflow=0
+ok  /pt/guides · glass/light · mobile  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/light · mobile  cls=0 overflow=0
+ok  /pt/models · glass/light · mobile  cls=0 overflow=0
+ok  /pt/models/claude · glass/light · mobile  cls=0 overflow=0
+ok  /pt/glossary · glass/light · mobile  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/light · mobile  cls=0 overflow=0
+ok  /pt/prompts · glass/light · mobile  cls=0 overflow=0
+ok  /pt/prompts/data · glass/light · mobile  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/light · mobile  cls=0 overflow=0
+ok  /pt/library · glass/light · mobile  cls=0 overflow=0
+ok  /pt/share · glass/light · mobile  cls=0 overflow=0
+ok  /pt/about · glass/light · mobile  cls=0 overflow=0
+ok  /pt/methodology · glass/light · mobile  cls=0 overflow=0
+ok  /pt/changelog · glass/light · mobile  cls=0 overflow=0
+ok  /pt/privacy · glass/light · mobile  cls=0 overflow=0
+ok  /es/prompts/data · glass/light · mobile  cls=0 overflow=0
+ok  /en/prompts/data · glass/light · mobile  cls=0 overflow=0
+ok  /es/analyzer · glass/light · mobile  cls=0 overflow=0
+ok  /en/benchmarks · glass/light · mobile  cls=0 overflow=0
+ok  /es/blog · glass/light · mobile  cls=0 overflow=0
+ok  /pt · metro/dark · mobile  cls=0 overflow=0
+ok  /es · metro/dark · mobile  cls=0 overflow=0
+ok  /en · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/how-it-works · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/analyzer · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/best-ai · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/blog · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/blog/weekly · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/benchmarks · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/guides · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/guides/json-output · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/models · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/models/claude · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/glossary · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/prompts · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/prompts/data · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/library · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/share · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/about · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/methodology · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/changelog · metro/dark · mobile  cls=0 overflow=0
+ok  /pt/privacy · metro/dark · mobile  cls=0 overflow=0
+ok  /es/prompts/data · metro/dark · mobile  cls=0 overflow=0
+ok  /en/prompts/data · metro/dark · mobile  cls=0 overflow=0
+ok  /es/analyzer · metro/dark · mobile  cls=0 overflow=0
+ok  /en/benchmarks · metro/dark · mobile  cls=0 overflow=0
+ok  /es/blog · metro/dark · mobile  cls=0 overflow=0
+ok  /pt · glass/dark · mobile  cls=0 overflow=0
+ok  /es · glass/dark · mobile  cls=0 overflow=0
+ok  /en · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/how-it-works · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/analyzer · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/best-ai · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/blog · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/blog/weekly · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/benchmarks · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/guides · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/guides/json-output · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/models · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/models/claude · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/glossary · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/glossary/system-prompt · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/prompts · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/prompts/data · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/landing/prompt-analyzer · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/library · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/share · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/about · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/methodology · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/changelog · glass/dark · mobile  cls=0 overflow=0
+ok  /pt/privacy · glass/dark · mobile  cls=0 overflow=0
+ok  /es/prompts/data · glass/dark · mobile  cls=0 overflow=0
+ok  /en/prompts/data · glass/dark · mobile  cls=0 overflow=0
+ok  /es/analyzer · glass/dark · mobile  cls=0 overflow=0
+ok  /en/benchmarks · glass/dark · mobile  cls=0 overflow=0
+ok  /es/blog · glass/dark · mobile  cls=0 overflow=0
+
+580 page loads
+
+580 finding(s):
+ - /pt · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · aqua/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/light · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · metro/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/dark · wide: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · aqua/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/light · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · metro/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/dark · desktop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · aqua/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/light · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · metro/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/dark · laptop: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · aqua/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/light · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · metro/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/dark · tablet: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · aqua/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/light · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · metro/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/how-it-works · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/analyzer · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/best-ai · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/blog/weekly · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/benchmarks · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/guides/json-output · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/models/claude · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/glossary/system-prompt · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/prompts/data · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/landing/prompt-analyzer · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/library · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/share · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/about · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/methodology · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/changelog · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /pt/privacy · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/prompts/data · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/prompts/data · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/analyzer · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /en/benchmarks · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+ - /es/blog · glass/dark · mobile: console.error: Refused to execute script from 'http://localhost:3182/_vercel/insights/script.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+exit 1

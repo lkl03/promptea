@@ -193,7 +193,7 @@ Costo del widget de X: ≈ 164 KB iniciales. Costo de las animaciones: 0 layouts
 | `npm run build` | OK |
 | `npm run seo:check` (build local) | 785/785 |
 | `BASE_URL=https://www.promptea.me npm run seo:check` | 1.095/1.095 |
-| `audit.mjs` (build local) | ver nota al final de la sección 8 |
+| `audit.mjs` (build local) | 580 cargas, 0 hallazgos (nota al final de la sección 9) |
 
 Tests nuevos: `rateLimit.test.ts`, `api-rate-limit.spec.ts` (límites y headers), `i18n.pt-content.test.ts`, `engine.parity-v183.test.ts`, y los casos de `seo.routes.test.ts` para Q-5.
 
@@ -247,4 +247,4 @@ node scripts/release/benchmarks-layout.mjs --base=https://www.promptea.me   # so
 
 En Git Bash un argumento que empieza con `/` se convierte en ruta de Windows: usar `MSYS_NO_PATHCONV=1` con `--match=/…` y `--pages=/…`.
 
-**Nota sobre `audit.mjs`:** AUDIT_NOTE
+**Nota sobre `audit.mjs`:** corrida completa sobre el build local con los cambios de este PR: **580 cargas (29 páginas × 5 anchos × Aqua claro, Glass claro, Glass oscuro y Metro), 0 hallazgos**: sin desborde horizontal, CLS ≤ 0,002, un `<h1>`, un canonical, sin errores de página. La salida cruda (`logs/audit.txt`) lista 580 entradas de consola, todas la misma y todas ajenas al sitio: con el header nuevo `X-Content-Type-Options: nosniff`, Chrome informa "Refused to execute script" para `/_vercel/insights/script.js`, el script de Vercel Analytics, que solo existe en Vercel (en local responde 404). El script ya trataba ese 404 como esperado y ahora también ignora este mensaje; con el filtro, 0 hallazgos. Dos cosas del propio script se corrigieron en el camino: esperaba "red inactiva", que en páginas prerenderizadas no llega nunca en una segunda visita (Chrome responde desde su caché los prefetch repetidos del router y DevTools no los da por terminados; dentro de la página sí terminan: 49 de 49 en ≤ 16 ms, y las navegaciones cliente tardan 46–117 ms), así que la primera corrida avanzaba a una carga cada 30 s; ahora espera `load` más una pausa fija.
