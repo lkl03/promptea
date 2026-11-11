@@ -40,6 +40,9 @@ export const CONTENT_UPDATED = {
   models: "2026-11-09",
   landings: "2026-11-09",
   changelog: "2026-11-11",
+  /** v1.8.3: /blog/tech (the Tech index; its sitemap date follows its newest story) and /sources. */
+  blogTech: "2026-11-11",
+  sources: "2026-11-11",
   privacy: "2026-11-10",
   benchmarks: "2026-11-10",
   /** Bumped when the AI Daily index / weekly archive layout changes, not per article. */

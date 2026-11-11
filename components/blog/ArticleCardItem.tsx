@@ -67,11 +67,14 @@ export default function ArticleCardItem({
   lang,
   dict,
   featured = false,
+  hideEdition = false,
 }: {
   card: ArticleCard;
   lang: Lang;
   dict: ArticleCardDict;
   featured?: boolean;
+  /** v1.8.3 — true in an index of a single edition (Tech), where the chip would repeat the page title on every row. */
+  hideEdition?: boolean;
 }) {
   const date = cardDisplayDate(card);
   const displayDate = formatEditorialDate(date, lang);
@@ -88,7 +91,7 @@ export default function ArticleCardItem({
   // The daily card is unchanged: "daily" is the default cadence. The two weekly
   // editions get a chip so the feed never mixes them up with same-day news.
   const editionLabel =
-    card.edition === "daily" ? null : (dict.edition?.[card.edition] ?? card.edition);
+    hideEdition || card.edition === "daily" ? null : (dict.edition?.[card.edition] ?? card.edition);
 
   if (featured) {
     const tags = card.tags.slice(0, 3);

@@ -4,7 +4,7 @@
 // markdown routes all read from here, so a page added once shows up in all of
 // them with the same title, description, date and priority.
 //
-// How to extend (e.g. the AI Daily "Tech" edition planned for v1.8.1):
+// How to extend (the AI Daily "Tech" edition of v1.8.3 was added exactly this way):
 //   - A new kind of article (another `edition` value, another category) needs
 //     nothing here: articles are enumerated from the blog store whatever their
 //     edition, and llms.txt groups them by `edition` using `editionHeading()`,
@@ -231,6 +231,21 @@ export const CORE_PAGES: readonly CorePage[] = [
     priority: 0.8,
   },
   {
+    // v1.8.3 — the Tech section of AI Daily.
+    id: "blog-tech",
+    slug: "blog/tech",
+    section: "ai-daily",
+    title: { en: "AI Daily Tech", es: "IA al Día Tech", pt: "AI Daily Tech" },
+    description: {
+      en: "One verified technology story a day — cloud platforms, web frameworks, developer tools, hardware — told through what it changes for AI and for people who build software.",
+      es: "Una nota de tecnología verificada por día (nube, frameworks web, herramientas para desarrollar, hardware), contada por lo que cambia para la IA y para quienes desarrollan software.",
+      pt: "Uma notícia de tecnologia verificada por dia (nuvem, frameworks web, ferramentas de desenvolvimento, hardware), contada pelo que muda para a IA e para quem desenvolve software.",
+    },
+    updated: CONTENT_UPDATED.blogTech,
+    changeFrequency: "daily",
+    priority: 0.7,
+  },
+  {
     id: "weekly",
     slug: "blog/weekly",
     section: "ai-daily",
@@ -450,6 +465,8 @@ export const EDITION_HEADINGS: ReadonlyArray<{ edition: string; title: L }> = [
   { edition: "daily-morning", title: { en: "AI Daily — morning edition", es: "IA al Día — edición de la mañana", pt: "AI Daily — edição da manhã" } },
   { edition: "weekly-recap", title: { en: "AI Daily — week in review", es: "IA al Día — resumen de la semana", pt: "AI Daily — resumo da semana" } },
   { edition: "week-ahead", title: { en: "AI Daily — week ahead", es: "IA al Día — la semana que viene", pt: "AI Daily — a semana que vem" } },
+  // v1.8.3 — the Tech edition (one technology story a day, tied to AI and software development).
+  { edition: "tech-daily", title: { en: "AI Daily Tech — latest stories", es: "IA al Día Tech — últimas notas", pt: "AI Daily Tech — últimas notícias" } },
 ];
 
 export function editionHeading(edition: string, lang: Locale): string {

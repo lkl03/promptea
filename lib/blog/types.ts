@@ -20,6 +20,8 @@ import {
   BLOG_EDITIONS,
   BLOG_IMPORTANCE,
   BLOG_SOURCE_TYPES,
+  RESERVED_BLOG_SLUGS,
+  isStoryEdition,
 } from "@/lib/domain";
 import type {
   BlogCategory,
@@ -246,13 +248,14 @@ export const PublishPayloadSchema = z
     }
 
     // --- edition-specific coverage window ------------------------------------
-    const isDailyEdition = v.edition === "daily" || v.edition === "daily-morning";
+    // v1.8.3: one list (STORY_EDITIONS) decides this — the two AI slots and the Tech story.
+    const isDailyEdition = isStoryEdition(v.edition);
     if (isDailyEdition) {
       if (v.coveredFrom || v.coveredTo) {
         ctx.addIssue({
           code: "custom",
           path: ["coveredFrom"],
-          message: "a daily story covers one event and must not declare a coverage window",
+          message: "a daily story (AI or Tech) covers one event and must not declare a coverage window",
         });
       }
     } else {
@@ -277,7 +280,7 @@ export const PublishPayloadSchema = z
 
     // --- backdating requires a stated, disclosable reason ---------------------
     if (v.allowBackdate) {
-      if (v.edition !== "daily" && v.edition !== "daily-morning") {
+      if (!isDailyEdition) {
         ctx.addIssue({
           code: "custom",
           path: ["allowBackdate"],
@@ -298,6 +301,20 @@ export const PublishPayloadSchema = z
         path: ["allowBackdate"],
         message: "backdateReason was supplied without allowBackdate",
       });
+    }
+
+    // --- a slug must not shadow a page of the blog itself (v1.8.3) -----------
+    // /{lang}/blog/tech and /{lang}/blog/weekly are pages; an article published
+    // with one of those slugs would be unreachable.
+    const reserved = RESERVED_BLOG_SLUGS as readonly string[];
+    for (const [path, slug] of [
+      [["canonicalSlug"], v.canonicalSlug],
+      [["locales", "en", "slug"], v.locales.en.slug],
+      [["locales", "es", "slug"], v.locales.es.slug],
+    ] as const) {
+      if (reserved.includes(slug)) {
+        ctx.addIssue({ code: "custom", path: [...path], message: `"${slug}" is a page of the blog and cannot be an article slug` });
+      }
     }
 
     // --- both locales must describe the SAME story --------------------------

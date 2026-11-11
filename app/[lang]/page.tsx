@@ -50,6 +50,7 @@ import SubscribeForm from "@/components/newsletter/SubscribeForm";
 import JsonLd from "@/components/seo/JsonLd";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import { selectMarqueeItems, type MarqueeItem } from "@/lib/blog/marquee";
+import { HOME_LATEST_COUNT, hasTechStory, selectHomeLatest } from "@/lib/blog/latest";
 import { getBenchmarks } from "@/lib/benchmarks/server";
 import { buildTeaser, type Teaser } from "@/lib/benchmarks/teaser";
 import { getXLinks, getXWidgetId } from "@/lib/social";
@@ -61,8 +62,12 @@ import { type Lang, toLang, INTL_LOCALE, contentLangFor } from "@/lib/domain";
 
 export const revalidate = 300;
 
-/** How many stories the "Latest in AI Daily" block shows: one lead + three in a row. */
-const LATEST_COUNT = 4;
+/**
+ * How many stories the "Latest in AI Daily" block shows: one lead + three in a
+ * row. v1.8.3: which ones — an AI lead, then the newest of both sections with at
+ * most one Tech story — is decided in lib/blog/latest.ts (the reasons are there).
+ */
+const LATEST_COUNT = HOME_LATEST_COUNT;
 
 /** How many recent stories are read to pick the marquee's last-72-hours headlines from. */
 const NEWS_WINDOW = 30;
@@ -72,11 +77,11 @@ const NEWS_WINDOW = 30;
  * strip and empties the latest-stories block, which then falls back to the plain
  * AI Daily card. One query feeds both.
  */
-async function loadNews(lang: Lang): Promise<{ marquee: MarqueeItem[]; latest: LatestArticle[] }> {
+async function loadNews(lang: Lang): Promise<{ marquee: MarqueeItem[]; latest: LatestArticle[]; hasTech: boolean }> {
   try {
     // AI Daily is written in es/en; /pt shows the English headlines (and says so).
     const articles = await listAllPublishedArticles(contentLangFor(lang), NEWS_WINDOW);
-    const latest = articles.slice(0, LATEST_COUNT).map((a) => ({
+    const latest = selectHomeLatest(articles, LATEST_COUNT).map((a) => ({
       slug: a.slug,
       title: a.title,
       deck: a.deck,
@@ -86,9 +91,9 @@ async function loadNews(lang: Lang): Promise<{ marquee: MarqueeItem[]; latest: L
       eventDate: a.eventDate,
       publishedAt: a.publishedAt,
     }));
-    return { marquee: selectMarqueeItems(articles, new Date()), latest };
+    return { marquee: selectMarqueeItems(articles, new Date()), latest, hasTech: hasTechStory(articles) };
   } catch {
-    return { marquee: [], latest: [] };
+    return { marquee: [], latest: [], hasTech: false };
   }
 }
 
@@ -143,7 +148,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const dict = await getDictionary(l);
   const t = dict.hub;
   const doc = homeAboutDoc(l);
-  const [{ marquee, latest }, teaser] = await Promise.all([loadNews(l), loadTeaser()]);
+  const [{ marquee, latest, hasTech }, teaser] = await Promise.all([loadNews(l), loadTeaser()]);
   const x = getXLinks();
   const xWidgetId = getXWidgetId();
 
@@ -226,6 +231,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             editions={dict.blog.edition}
             readingTime={dict.blog.readingTime}
             fallback={t.cards.daily}
+            showTech={hasTech}
           />
 
           {/* Phones and tablets: the newsletter right after the stories (the side column carries it from lg up). */}

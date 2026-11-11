@@ -12,8 +12,8 @@
 // bounded window of published articles and filters it in memory — see
 // FILTER_WINDOW for the ceiling and what happens beyond it.
 
-import { BLOG_CATEGORIES, BLOG_EDITIONS } from "@/lib/domain";
-import type { BlogCategory, BlogEdition } from "@/lib/domain";
+import { BLOG_CATEGORIES, BLOG_EDITIONS, editionsOfSection, sectionOfEdition } from "@/lib/domain";
+import type { BlogCategory, BlogEdition, BlogSection } from "@/lib/domain";
 import { isEditorialDate } from "@/lib/blog/dates";
 import type { ArticleCard } from "@/lib/blog/types";
 
@@ -71,8 +71,11 @@ function firstParam(v: string | string[] | undefined): string | null {
  * a hand-edited URL should degrade to the unfiltered feed, never to a 500.
  */
 export function parseFilters(
-  searchParams: Record<string, string | string[] | undefined>
+  searchParams: Record<string, string | string[] | undefined>,
+  /** v1.8.3 — the index being filtered: `?edition=` only accepts that section's editions. */
+  section?: BlogSection
 ): BlogFilterState {
+  const allowedEditions: readonly string[] = section ? editionsOfSection(section) : BLOG_EDITIONS;
   const q = firstParam(searchParams.q);
   const company = firstParam(searchParams.company);
   const editionRaw = firstParam(searchParams.edition);
@@ -85,7 +88,7 @@ export function parseFilters(
     // Cap the query so a pathological URL cannot drive a huge scan.
     q: q ? q.slice(0, 120) : null,
     company: company ? company.slice(0, 60) : null,
-    edition: (BLOG_EDITIONS as readonly string[]).includes(editionRaw ?? "")
+    edition: allowedEditions.includes(editionRaw ?? "")
       ? (editionRaw as BlogEdition)
       : null,
     category: (BLOG_CATEGORIES as readonly string[]).includes(categoryRaw ?? "")
@@ -95,6 +98,21 @@ export function parseFilters(
     to: to && isEditorialDate(to) ? to : null,
     sort: sortRaw === "oldest" ? "oldest" : "newest",
   };
+}
+
+/**
+ * v1.8.3 — the cards of one section (`ai`: both daily slots and the weekly
+ * editions; `tech`: the Tech story). Order is preserved. A card whose edition
+ * this build does not know reads as `ai` (see sectionOfEdition).
+ */
+export function cardsOfSection<T extends { edition: BlogEdition | string }>(cards: readonly T[], section: BlogSection): T[] {
+  return cards.filter((c) => sectionOfEdition(c.edition) === section);
+}
+
+/** Distinct editions present in the window, in canonical order, for the edition dropdown. */
+export function collectEditions(cards: readonly Pick<ArticleCard, "edition">[]): BlogEdition[] {
+  const seen = new Set<string>(cards.map((c) => c.edition));
+  return BLOG_EDITIONS.filter((e) => seen.has(e));
 }
 
 /** True when any filter narrows the feed (sort alone does not count as narrowing). */

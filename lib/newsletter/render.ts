@@ -55,6 +55,7 @@ export function renderNewsletterHtml(edition: NewsletterEdition, lang: ContentLa
 
   const topStoriesLabel = es ? "Esta semana en IA" : "This week in AI";
   const toolsLabel = es ? "Herramientas y lanzamientos" : "Tools and launches";
+  const techLabel = es ? "Tech de la semana" : "Tech this week";
   const editorialLabel = es ? "Algo para pensar" : "One thing worth thinking about";
   const weeklyUrl = `${site}${weeklyEditionPath(lang, edition.editionId)}`;
   const privacyUrl = `${site}/${lang}/privacy`;
@@ -83,6 +84,30 @@ export function renderNewsletterHtml(edition: NewsletterEdition, lang: ContentLa
     </td></tr>`
     )
     .join("");
+
+  // v1.8.3 — the Tech block. Editions built before v1.8.3 have no techStories:
+  // the block is then an empty string and the email is exactly what it was.
+  const techStories = content.techStories ?? [];
+  const techHtml = techStories
+    .map((story) => {
+      const articleUrl = `${site}/${lang}/blog/${encodeURIComponent(story.articleSlug)}`;
+      return `
+    <tr><td style="padding: 12px 0; border-bottom: 1px solid #e5e5e5;">
+      <a href="${articleUrl}" style="color: #111; text-decoration: none; font-size: 15px; font-weight: 600; line-height: 21px;">${escHtml(story.headline)}</a>
+      <p style="margin: 6px 0 0; font-size: 14px; line-height: 21px; color: #444;">${escHtml(story.summary)}</p>
+      <a href="${articleUrl}" style="display: inline-block; margin-top: 6px; font-size: 13px; color: #2563eb; text-decoration: none;">${readMore}</a>
+    </td></tr>`;
+    })
+    .join("");
+  const techBlock = techStories.length
+    ? `
+<tr><td style="padding: 24px 24px 0;">
+  <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 8px;">${escHtml(techLabel)}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+    ${techHtml}
+  </table>
+</td></tr>`
+    : "";
 
   const toolsBlock = content.tools.length
     ? `
@@ -136,7 +161,7 @@ export function renderNewsletterHtml(edition: NewsletterEdition, lang: ContentLa
     ${storiesHtml}
   </table>
 </td></tr>
-${toolsBlock}
+${techBlock}${toolsBlock}
 ${editorialBlock}
 ${sponsorBlock}
 
@@ -174,6 +199,11 @@ export function renderNewsletterText(edition: NewsletterEdition, lang: ContentLa
   ];
   for (const s of content.topStories) {
     lines.push("", `• ${s.headline}`, `  ${s.summary}`, `  ${s.whyItMatters}`, `  ${site}/${lang}/blog/${encodeURIComponent(s.articleSlug)}`);
+  }
+  const techStories = content.techStories ?? [];
+  if (techStories.length) {
+    lines.push("", es ? "TECH DE LA SEMANA" : "TECH THIS WEEK");
+    for (const s of techStories) lines.push("", `• ${s.headline}`, `  ${s.summary}`, `  ${site}/${lang}/blog/${encodeURIComponent(s.articleSlug)}`);
   }
   if (content.tools.length) {
     lines.push("", es ? "HERRAMIENTAS Y LANZAMIENTOS" : "TOOLS AND LAUNCHES");

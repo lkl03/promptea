@@ -22,7 +22,7 @@ import { loadArticles, loadBenchmarksAsOf, loadEditions } from "@/lib/seo/dynami
 import { articleUrl, editionUrl, latestUpdated } from "@/lib/seo/dynamicUrls";
 import { newest, toDate } from "@/lib/seo/dates";
 import { staticSeoUrls, type SeoUrl } from "@/lib/seo/registry";
-import { CONTENT_LANGS, isContentLang } from "@/lib/domain";
+import { CONTENT_LANGS, isContentLang, sectionOfEdition } from "@/lib/domain";
 import { HREFLANG, LOCALES, X_DEFAULT_LOCALE, absUrl, swapLocale, type Locale } from "@/lib/seo/site";
 
 /**
@@ -69,11 +69,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const editionUrls = isContentLang(lang) ? editions.map((e) => editionUrl(e, lang)) : [];
     const newestArticle = latestUpdated(articleUrls);
     const newestEdition = latestUpdated(editionUrls);
+    // v1.8.3: each index is dated by its own section's newest story.
+    const newestAi = latestUpdated(articles.filter((a) => sectionOfEdition(a.edition) === "ai").map(articleUrl));
+    const newestTech = latestUpdated(articles.filter((a) => sectionOfEdition(a.edition) === "tech").map(articleUrl));
 
     const urls = staticSeoUrls(lang).map((u): SeoUrl => {
       // Pages whose content is driven by data take the data's date.
       if (u.path === `/${lang}`) return { ...u, updated: newest(u.updated, newestArticle) ?? u.updated };
-      if (u.path === `/${lang}/blog`) return { ...u, updated: newest(u.updated, newestArticle) ?? u.updated };
+      if (u.path === `/${lang}/blog`) return { ...u, updated: newest(u.updated, newestAi) ?? u.updated };
+      if (u.path === `/${lang}/blog/tech`) return { ...u, updated: newest(u.updated, newestTech) ?? u.updated };
       if (u.path === `/${lang}/blog/weekly`) return { ...u, updated: newest(u.updated, newestEdition) ?? u.updated };
       if (u.path === `/${lang}/benchmarks` && benchmarksAsOf) return { ...u, updated: benchmarksAsOf };
       return u;
