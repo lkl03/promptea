@@ -50,9 +50,10 @@ for (const profile of PROFILES) {
     });
     await page.setRequestInterception(true);
     page.on("request", (r) => (LOCAL || r.method() === "GET" ? r.continue() : r.abort()));
-    await page.evaluateOnNewDocument(() => {
+    // v1.8.3: --theme=aqua|metro|glass (default glass, the heaviest: it is the only theme that loads the web fonts).
+    await page.evaluateOnNewDocument((theme) => {
       try {
-        localStorage.setItem("theme", "glass");
+        localStorage.setItem("theme", theme);
       } catch {}
       window.__m = { lcp: 0, cls: 0, long: 0 };
       try {
@@ -66,7 +67,7 @@ for (const profile of PROFILES) {
           for (const e of l.getEntries()) window.__m.long += Math.max(0, e.duration - 50);
         }).observe({ type: "longtask", buffered: true });
       } catch {}
-    });
+    }, args.theme ?? "glass");
     try {
       const res = await page.goto(BASE + path, { waitUntil: "networkidle2", timeout: 90_000 });
       const html = (await res.text()).length;

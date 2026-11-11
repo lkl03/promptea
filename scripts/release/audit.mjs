@@ -88,8 +88,12 @@ async function main() {
           vercelInsights404 = 0;
           const label = `${path} · ${theme}/${scheme} · ${vp.name}`;
           try {
-            await page.goto(BASE + path, { waitUntil: "networkidle2", timeout: 45_000 });
-            await new Promise((r) => setTimeout(r, 700));
+            // v1.8.3: "load" + a fixed pause instead of "networkidle2". With most pages now
+            // prerendered, Chrome answers the router's repeated prefetches from its HTTP cache
+            // and DevTools never reports them as finished, so "network idle" took the whole
+            // timeout on every load after the first (the requests do finish, in milliseconds).
+            await page.goto(BASE + path, { waitUntil: "load", timeout: 45_000 });
+            await new Promise((r) => setTimeout(r, 1800));
             const m = await page.evaluate(() => ({
               h1: document.querySelectorAll("h1").length,
               canonicals: document.querySelectorAll('link[rel="canonical"]').length,

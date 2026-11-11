@@ -18,3 +18,13 @@ T"
   ✗ /pt/glossary/negative-prompting @1440: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
   ✗ /pt/glossary/negative-prompting @768: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
   ✗ /pt/glossary/negative-prompting @375: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
+  ✗ /pt/glossary/tokens @768: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
+  ✗ /pt/glossary/zero-shot @1440: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
+  ✗ /pt/prompts/data @375: viewport 410px
+  ✗ /pt/prompts/data @375: overflow 35px — div.surface.p-4.space-y-3 right=410 "Extrator de JSON estrito (sem "; div.text-sm.font-medium right=393 "Extrator de JSON estrito (sem "; pre.surface-soft.p-3.text-xs right=393 "Aja como um parser estrito.
+
+T"
+  ✗ /pt/prompts/image @1440: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
+
+534 page loads checked, 18 finding(s)
+exit 1

@@ -379,9 +379,9 @@ Sem afirmações falsas.`,
         {examples.map((ex) => {
           const href = buildOpenLink(l, ex.purpose, ex.target, ex.prompt);
           return (
-            <div key={ex.title} className="surface p-4 space-y-3">
+            <div key={ex.title} className="surface min-w-0 p-4 space-y-3">
               <div className="text-sm font-medium">{ex.title}</div>
-              <pre className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{ex.prompt}</pre>
+              <pre className="surface-soft p-3 text-xs whitespace-pre-wrap break-words [overflow-wrap:anywhere] max-h-56 overflow-auto">{ex.prompt}</pre>
 
               <div className="flex items-center justify-between gap-3">
                 <div className="text-xs opacity-70">

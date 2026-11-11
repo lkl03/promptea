@@ -23,7 +23,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 import LanguageSwitcher from "./LanguageSwitcher";
 import BrandLogo from "./BrandLogo";
@@ -73,7 +73,10 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
   const pathname = usePathname() ?? "";
   const isHome = pathname === `/${lang}` || pathname === `/${lang}/`;
   const [open, setOpen] = useState(false);
-  const panelId = useId();
+  // v1.8.3: a fixed id (there is exactly one site header per page). useId() depends on the
+  // position in the React tree, and under load in development the server and client trees
+  // disagreed on it ("a tree hydrated but some attributes… didn't match": aria-controls / id).
+  const panelId = "site-nav-panel";
   const rootRef = useRef<HTMLElement | null>(null);
   const btnRef = useRef<HTMLButtonElement | null>(null);
 

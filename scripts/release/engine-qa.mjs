@@ -91,10 +91,16 @@ const ok = (group, name, pass, detail = "") => {
   console.log(`${pass ? "ok  " : "FAIL"} [${group}] ${name}${detail ? " — " + detail : ""}`);
 };
 
+// /api/analyze allows 30 requests a minute per client (v1.8.3) and this script sends
+// ~100. Locally the client address is whatever x-forwarded-for says, so each call
+// presents its own (documentation-range) address; in production the platform sets
+// that header, so a real client cannot do this.
+let calls = 0;
 async function analyze(prompt, lang, purpose) {
+  calls++;
   const res = await fetch(`${BASE}/api/analyze`, {
     method: "POST",
-    headers: { "content-type": "application/json", "x-ui-lang": lang },
+    headers: { "content-type": "application/json", "x-ui-lang": lang, "x-forwarded-for": `203.0.113.${calls % 250}` },
     body: JSON.stringify({ prompt, lang, purpose, target: "claude", sessionId: "engine-qa-release-check" }),
   });
   const body = await res.json().catch(() => null);

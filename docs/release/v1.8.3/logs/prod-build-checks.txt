@@ -1,0 +1,35 @@
+== headers /en
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+x-nextjs-cache: HIT
+Cache-Control: s-maxage=300, stale-while-revalidate=31535700
+== headers /api/share/card
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+cache-control: public, max-age=86400, s-maxage=31536000, immutable
+content-type: image/png
+== fixtures in a production build started WITH BLOG_DEV_FIXTURE=1 BENCHMARKS_DEV_FIXTURE=1
+/en -> 200, 'Demo Labs|Demo Kite' occurrences: 0
+/en/blog -> 200, 'Demo Labs|Demo Kite' occurrences: 0
+/en/benchmarks -> 200, 'Demo Labs|Demo Kite' occurrences: 0
+/en/blog/demo-labs-prices-its-listing -> 404, 'Demo Labs|Demo Kite' occurrences: 0
+/en/blog/feed.xml -> 200, 'Demo Labs|Demo Kite' occurrences: 0
+/sitemap.xml -> 200, 'Demo Labs|Demo Kite' occurrences: 0
+/en/llms-full.txt -> 200, 'Demo Labs|Demo Kite' occurrences: 0
+== degradation without credentials (status)
+200 /pt
+200 /pt/blog
+200 /pt/blog/weekly
+200 /pt/benchmarks
+200 /pt/benchmarks.md
+200 /pt/guides/json-output.md
+200 /pt.md
+404 /en/blog/nope.md
+200 /pt/library
+200 /pt/share
+200 /pt/changelog
+200 /pt/privacy
+404 /pt/does-not-exist
+200 /api/benchmarks

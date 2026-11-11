@@ -1,0 +1,29 @@
+seo:check against http://localhost:3182
+
+== robots.txt
+  ✓ robots.txt: 43 passed
+
+== sitemap.xml
+  ✓ sitemap.xml: 13 passed
+
+== llms.txt / llms-full.txt
+  ✓ llms.txt / llms-full.txt: 81 passed
+
+== markdown twins
+  ✓ markdown twins: 297 passed
+
+== pages (every sitemap URL)
+  ✓ pages (every sitemap URL): 343 passed
+
+== language entry (proxy)
+  ✓ language entry (proxy): 5 passed
+
+== /pt views of content without a Portuguese version
+    (every guide is translated to Portuguese: no guide view to check)
+  ✓ /pt views of content without a Portuguese version: 3 passed
+
+============================================================
+seo:check — 785 passed, 0 failed, 0 warning(s)  [785 checks]
+
+RESULT: PASS
+exit 0
