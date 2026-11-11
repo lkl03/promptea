@@ -3501,16 +3501,16 @@ Textos para traduzir:
     title: {
       en: "Image generation prompts: structure, style, and composition for better AI images",
       es: "Prompts de generación de imágenes: estructura, estilo y composición para mejores imágenes de IA",
-      pt: "Image generation prompts: structure, style, and composition for better AI images",
+      pt: "Prompts para gerar imagens: estrutura, estilo e composição",
     },
     description: {
       en: "How to write image prompts that get consistent, intentional results — covering subject, style, composition, lighting, and negative constraints for DALL-E, Gemini Imagen, and similar models.",
       es: "Cómo escribir prompts de imagen que producen resultados consistentes e intencionales — con sujeto, estilo, composición, iluminación y restricciones negativas para DALL-E, Gemini Imagen y modelos similares.",
-      pt: "How to write image prompts that get consistent, intentional results — covering subject, style, composition, lighting, and negative constraints for DALL-E, Gemini Imagen, and similar models.",
+      pt: "Como escrever prompts de imagem que geram resultados consistentes e intencionais — com assunto, estilo, composição, iluminação e restrições negativas para DALL-E, Gemini Imagen e modelos parecidos.",
     },
     sections: [
       {
-        heading: { en: "The anatomy of an effective image prompt", es: "La anatomía de un prompt de imagen efectivo", pt: "The anatomy of an effective image prompt" },
+        heading: { en: "The anatomy of an effective image prompt", es: "La anatomía de un prompt de imagen efectivo", pt: "A anatomia de um prompt de imagem eficaz" },
         bullets: {
           en: [
             "Subject: who or what is in the scene — be specific (not 'a person' but 'a woman in her 30s reading at a café table').",
@@ -3529,17 +3529,17 @@ Textos para traduzir:
             "Restricciones negativas: qué excluir — 'sin texto', 'sin marcas de agua', 'sin extremidades extra', 'sin fondo recargado'.",
           ],
           pt: [
-            "Subject: who or what is in the scene — be specific (not 'a person' but 'a woman in her 30s reading at a café table').",
-            "Style: the visual look — photography, illustration, oil painting, flat design, 3D render, watercolor, line art.",
-            "Composition: where things are placed — close-up, wide shot, overhead, rule of thirds, centered.",
-            "Lighting: the mood and time of day — soft morning light, dramatic side lighting, overcast, golden hour, studio lighting.",
-            "Color palette: restrict or guide the colors — muted earth tones, high contrast black and white, pastel, vivid primaries.",
-            "Negative constraints: what to exclude — 'no text', 'no watermarks', 'no extra limbs', 'no cluttered background'.",
+            "Assunto: quem ou o que está na cena — seja específico (não 'uma pessoa', mas 'uma mulher de uns 30 anos lendo em uma mesa de café').",
+            "Estilo: o visual — fotografia, ilustração, pintura a óleo, flat design, render 3D, aquarela, desenho em traço.",
+            "Composição: onde cada coisa fica — close-up, plano aberto, vista de cima, regra dos terços, centralizado.",
+            "Iluminação: o clima e a hora do dia — luz suave da manhã, luz lateral dramática, céu nublado, hora dourada, luz de estúdio.",
+            "Paleta de cores: restrinja ou oriente as cores — tons terrosos suaves, preto e branco de alto contraste, tons pastel, cores primárias vivas.",
+            "Restrições negativas: o que excluir — 'sem texto', 'sem marca d'água', 'sem membros a mais', 'sem fundo poluído'.",
           ],
         },
       },
       {
-        heading: { en: "Common image prompt mistakes", es: "Errores comunes en prompts de imagen", pt: "Common image prompt mistakes" },
+        heading: { en: "Common image prompt mistakes", es: "Errores comunes en prompts de imagen", pt: "Erros comuns em prompts de imagem" },
         bullets: {
           en: [
             "Too vague: 'a nice landscape' gives you a random result every time. Describe the scene, season, time of day, and mood.",
@@ -3556,18 +3556,18 @@ Textos para traduzir:
             "Prompt demasiado largo: los elementos más importantes deben ir primero — los modelos de imagen ponderan más los tokens al inicio.",
           ],
           pt: [
-            "Too vague: 'a nice landscape' gives you a random result every time. Describe the scene, season, time of day, and mood.",
-            "Conflicting style cues: mixing 'photorealistic' with 'cartoon' confuses the model — pick one primary style.",
-            "No composition guidance: without it, the subject placement is random. Add 'centered', 'rule of thirds', or a framing hint.",
-            "Missing negative constraints: asking for 'a clean background' works better than hoping the model avoids clutter by default.",
-            "Prompt too long: the most important elements should come first — image models weight earlier tokens more heavily.",
+            "Vago demais: 'uma paisagem bonita' dá um resultado aleatório a cada vez. Descreva a cena, a estação, a hora do dia e o clima.",
+            "Pistas de estilo conflitantes: misturar 'fotorrealista' com 'desenho animado' confunde o modelo — escolha um estilo principal.",
+            "Nenhuma orientação de composição: sem ela, a posição do assunto é aleatória. Acrescente 'centralizado', 'regra dos terços' ou uma indicação de enquadramento.",
+            "Faltam restrições negativas: pedir 'um fundo limpo' funciona melhor do que torcer para o modelo evitar a poluição visual por conta própria.",
+            "Prompt longo demais: os elementos mais importantes devem vir primeiro — os modelos de imagem dão mais peso aos primeiros tokens.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Photorealistic product image prompt", es: "Prompt para imagen de producto fotorrealista", pt: "Photorealistic product image prompt" },
+        title: { en: "Photorealistic product image prompt", es: "Prompt para imagen de producto fotorrealista", pt: "Prompt de imagem de produto fotorrealista" },
         purpose: "image",
         target: "gpt",
         prompt: {
@@ -3597,23 +3597,23 @@ Detalles adicionales:
 - [texturas o materiales específicos a enfatizar]
 
 Excluir: marcas de agua, texto superpuesto, sombras sobre fondo blanco, objetos extra no listados arriba.`,
-          pt: `Photorealistic product photography of [product name and brief description].
+          pt: `Fotografia de produto fotorrealista de [nome e breve descrição do produto].
 
-Setting: [e.g. clean white studio background / wooden table surface / outdoor natural setting]
-Lighting: [e.g. soft diffused studio lighting / natural window light from the left / dramatic side lighting]
-Composition: [e.g. centered, slight 3/4 angle / overhead flat lay / close-up on the main feature]
-Color palette: [e.g. neutral whites and grays / warm earth tones / brand colors: navy and gold]
-Camera style: [e.g. macro lens for fine detail / wide product shot / lifestyle context shot]
+Cenário: [ex. fundo de estúdio branco e limpo / superfície de mesa de madeira / ambiente externo natural]
+Iluminação: [ex. luz de estúdio suave e difusa / luz natural de janela vindo da esquerda / luz lateral dramática]
+Composição: [ex. centralizado, leve ângulo de 3/4 / flat lay visto de cima / close-up no recurso principal]
+Paleta de cores: [ex. brancos e cinzas neutros / tons terrosos quentes / cores da marca: azul-marinho e dourado]
+Estilo de câmera: [ex. lente macro para detalhes finos / foto aberta do produto / foto de contexto lifestyle]
 
-Additional details:
-- [any props or context elements to include, or 'none']
-- [specific textures or materials to emphasize]
+Detalhes adicionais:
+- [objetos de cena ou elementos de contexto para incluir, ou 'nenhum']
+- [texturas ou materiais específicos a destacar]
 
-Exclude: watermarks, text overlays, shadows on white background, extra objects not listed above.`,
+Excluir: marcas d'água, textos sobrepostos, sombras no fundo branco, objetos extras que não estejam listados acima.`,
         },
       },
       {
-        title: { en: "Illustrated explainer diagram prompt", es: "Prompt para diagrama explicativo ilustrado", pt: "Illustrated explainer diagram prompt" },
+        title: { en: "Illustrated explainer diagram prompt", es: "Prompt para diagrama explicativo ilustrado", pt: "Prompt de diagrama explicativo ilustrado" },
         purpose: "image",
         target: "gemini",
         prompt: {
@@ -3637,34 +3637,34 @@ Texto en imagen: [ej. incluir etiquetas cortas en cada paso (máx 3 palabras cad
 Fondo: sólido [color] o transparente.
 
 Excluir: degradados, sombras, efectos 3D, bordes decorativos, marcas de agua, elementos fotográficos.`,
-          pt: `Flat design illustration explaining [concept or process in 1 sentence].
+          pt: `Ilustração em flat design que explica [conceito ou processo em 1 frase].
 
-Style: clean flat design, minimal detail, bold readable icons.
-Color palette: [e.g. 3-4 colors maximum: blue, white, light gray, and one accent color]
-Layout: [e.g. left-to-right flow with 4 steps / circular diagram / comparison: before vs after]
-Text in image: [e.g. include short labels on each step (max 3 words each) / no text — labels will be added later]
-Icons: simple geometric shapes, no photorealism, consistent line weight.
-Background: solid [color] or transparent.
+Estilo: flat design limpo, poucos detalhes, ícones fortes e legíveis.
+Paleta de cores: [ex. no máximo 3-4 cores: azul, branco, cinza-claro e uma cor de destaque]
+Layout: [ex. fluxo da esquerda para a direita com 4 etapas / diagrama circular / comparação: antes vs. depois]
+Texto na imagem: [ex. incluir rótulos curtos em cada etapa (no máximo 3 palavras cada) / sem texto — os rótulos serão acrescentados depois]
+Ícones: formas geométricas simples, sem fotorrealismo, espessura de linha consistente.
+Fundo: [cor] sólida ou transparente.
 
-Exclude: gradients, drop shadows, 3D effects, decorative borders, watermarks, photographic elements.`,
+Excluir: degradês, sombras projetadas, efeitos 3D, bordas decorativas, marcas d'água, elementos fotográficos.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Do these templates work with Midjourney and Stable Diffusion, or only DALL-E and Gemini?", es: "¿Estos templates funcionan con Midjourney y Stable Diffusion, o solo con DALL-E y Gemini?", pt: "Do these templates work with Midjourney and Stable Diffusion, or only DALL-E and Gemini?" },
+        q: { en: "Do these templates work with Midjourney and Stable Diffusion, or only DALL-E and Gemini?", es: "¿Estos templates funcionan con Midjourney y Stable Diffusion, o solo con DALL-E y Gemini?", pt: "Estes templates funcionam com o Midjourney e o Stable Diffusion, ou só com o DALL-E e o Gemini?" },
         a: {
           en: "The core structure — subject, style, composition, lighting, negative constraints — works across all image generation models. Syntax differs: Midjourney uses parameters like --style, --ar, and --no; Stable Diffusion uses separate positive and negative prompt fields. Adapt the structure to the model's expected format, but the concepts are universal.",
           es: "La estructura base — sujeto, estilo, composición, iluminación, restricciones negativas — funciona en todos los modelos de generación de imágenes. La sintaxis difiere: Midjourney usa parámetros como --style, --ar y --no; Stable Diffusion usa campos separados de prompt positivo y negativo. Adaptá la estructura al formato esperado del modelo, pero los conceptos son universales.",
-          pt: "The core structure — subject, style, composition, lighting, negative constraints — works across all image generation models. Syntax differs: Midjourney uses parameters like --style, --ar, and --no; Stable Diffusion uses separate positive and negative prompt fields. Adapt the structure to the model's expected format, but the concepts are universal.",
+          pt: "A estrutura central — assunto, estilo, composição, iluminação, restrições negativas — funciona em todos os modelos de geração de imagem. A sintaxe muda: o Midjourney usa parâmetros como --style, --ar e --no; o Stable Diffusion usa campos separados para o prompt positivo e o negativo. Adapte a estrutura ao formato que o modelo espera, mas os conceitos são universais.",
         },
       },
       {
-        q: { en: "How do I get consistent results across multiple image generations?", es: "¿Cómo logro resultados consistentes en múltiples generaciones de imágenes?", pt: "How do I get consistent results across multiple image generations?" },
+        q: { en: "How do I get consistent results across multiple image generations?", es: "¿Cómo logro resultados consistentes en múltiples generaciones de imágenes?", pt: "Como consigo resultados consistentes em várias gerações de imagem?" },
         a: {
           en: "Consistency comes from locking the variables that matter most: style, color palette, and composition. Save your prompt exactly as-is when you get a good result and reuse it. For character or product consistency across multiple images, some models support reference images or seed locking — check the model's documentation for this feature.",
           es: "La consistencia viene de fijar las variables que más importan: estilo, paleta de colores y composición. Guardá tu prompt exactamente tal cual cuando obtenés un buen resultado y reutilizalo. Para consistencia de personaje o producto en múltiples imágenes, algunos modelos soportan imágenes de referencia o fijación de seed — revisá la documentación del modelo para esta función.",
-          pt: "Consistency comes from locking the variables that matter most: style, color palette, and composition. Save your prompt exactly as-is when you get a good result and reuse it. For character or product consistency across multiple images, some models support reference images or seed locking — check the model's documentation for this feature.",
+          pt: "A consistência vem de fixar as variáveis que mais importam: estilo, paleta de cores e composição. Quando tiver um bom resultado, salve o prompt exatamente como está e reutilize. Para manter um personagem ou produto consistente em várias imagens, alguns modelos aceitam imagens de referência ou fixar a seed — consulte a documentação do modelo para ver esse recurso.",
         },
       },
     ],
@@ -3674,16 +3674,16 @@ Exclude: gradients, drop shadows, 3D effects, decorative borders, watermarks, ph
     title: {
       en: "Prompt chaining: how to break complex tasks into sequential AI steps",
       es: "Encadenamiento de prompts: cómo dividir tareas complejas en pasos secuenciales",
-      pt: "Prompt chaining: how to break complex tasks into sequential AI steps",
+      pt: "Encadeamento de prompts: divida tarefas complexas em etapas",
     },
     description: {
       en: "Prompt chaining feeds the output of one prompt as input to the next, handling tasks too complex for a single round-trip. Learn the core patterns and where they fail.",
       es: "El encadenamiento de prompts usa la salida de un prompt como entrada del siguiente, para tareas demasiado complejas para una sola consulta. Aprendé los patrones clave y dónde fallan.",
-      pt: "Prompt chaining feeds the output of one prompt as input to the next, handling tasks too complex for a single round-trip. Learn the core patterns and where they fail.",
+      pt: "O encadeamento de prompts usa a saída de um prompt como entrada do próximo e resolve tarefas complexas demais para uma única ida e volta. Conheça os padrões principais e onde eles falham.",
     },
     sections: [
       {
-        heading: { en: "What prompt chaining is and when to use it", es: "Qué es el encadenamiento de prompts y cuándo usarlo", pt: "What prompt chaining is and when to use it" },
+        heading: { en: "What prompt chaining is and when to use it", es: "Qué es el encadenamiento de prompts y cuándo usarlo", pt: "O que é encadeamento de prompts e quando usar" },
         bullets: {
           en: [
             "A prompt chain is a sequence of prompts where each output becomes part of the next prompt's input.",
@@ -3700,16 +3700,16 @@ Exclude: gradients, drop shadows, 3D effects, decorative borders, watermarks, ph
             "Evitala para tareas simples — el encadenamiento agrega complejidad y latencia que no se justifica si la tarea no requiere razonamiento secuencial real.",
           ],
           pt: [
-            "A prompt chain is a sequence of prompts where each output becomes part of the next prompt's input.",
-            "Use it when a task has distinct phases that benefit from separate focus: research → outline → draft → edit.",
-            "Use it when a single prompt would exceed the model's useful context or require too many competing instructions.",
-            "Use it when you need to validate or transform data between steps before passing it downstream.",
-            "Avoid it for simple tasks — chaining adds complexity and latency that isn't justified unless the task genuinely requires sequential reasoning.",
+            "Uma cadeia de prompts é uma sequência de prompts em que cada saída passa a fazer parte da entrada do prompt seguinte.",
+            "Use quando uma tarefa tem fases distintas que ganham com foco separado: pesquisa → estrutura → rascunho → edição.",
+            "Use quando um único prompt ultrapassaria o contexto útil do modelo ou exigiria instruções demais competindo entre si.",
+            "Use quando você precisa validar ou transformar os dados entre as etapas antes de passá-los adiante.",
+            "Evite em tarefas simples — o encadeamento acrescenta complexidade e latência que só se justificam quando a tarefa realmente exige raciocínio sequencial.",
           ],
         },
       },
       {
-        heading: { en: "Three chaining patterns", es: "Tres patrones de encadenamiento", pt: "Three chaining patterns" },
+        heading: { en: "Three chaining patterns", es: "Tres patrones de encadenamiento", pt: "Três padrões de encadeamento" },
         bullets: {
           en: [
             "Sequential: Step A → Step B → Step C. Each step consumes only the prior step's output. Good for linear workflows like extract → validate → format.",
@@ -3724,15 +3724,15 @@ Exclude: gradients, drop shadows, 3D effects, decorative borders, watermarks, ph
             "Combiná patrones según sea necesario — una cadena secuencial puede tener un paso ramificado adentro.",
           ],
           pt: [
-            "Sequential: Step A → Step B → Step C. Each step consumes only the prior step's output. Good for linear workflows like extract → validate → format.",
-            "Branching: one input generates multiple outputs in parallel, then a final step synthesizes them. Good for competitive drafts or multi-perspective research.",
-            "Looping: a step runs repeatedly until a quality condition is met (e.g., a reviewer prompt judges the output and requests a rewrite until passing). Use with a hard iteration cap.",
-            "Mix patterns when needed — a sequential chain can have a branching step inside it.",
+            "Sequencial: Etapa A → Etapa B → Etapa C. Cada etapa consome só a saída da anterior. Bom para fluxos lineares, como extrair → validar → formatar.",
+            "Ramificado: uma entrada gera várias saídas em paralelo e uma etapa final as sintetiza. Bom para rascunhos concorrentes ou pesquisa com várias perspectivas.",
+            "Em loop: uma etapa roda repetidamente até que uma condição de qualidade seja atendida (ex.: um prompt revisor avalia a saída e pede uma reescrita até ela ser aprovada). Use com um limite rígido de iterações.",
+            "Combine padrões quando precisar — uma cadeia sequencial pode ter uma etapa ramificada no meio.",
           ],
         },
       },
       {
-        heading: { en: "Common prompt chaining mistakes", es: "Errores comunes en el encadenamiento de prompts", pt: "Common prompt chaining mistakes" },
+        heading: { en: "Common prompt chaining mistakes", es: "Errores comunes en el encadenamiento de prompts", pt: "Erros comuns no encadeamento de prompts" },
         bullets: {
           en: [
             "Passing unvalidated output: if Step A can produce malformed JSON or incomplete data, Step B inherits that problem. Validate or clean outputs between steps.",
@@ -3747,17 +3747,17 @@ Exclude: gradients, drop shadows, 3D effects, decorative borders, watermarks, ph
             "Saltar la verificación intermedia: en cadenas críticas, agregá un paso de revisión rápida entre transformaciones pesadas en lugar de descubrir errores al final.",
           ],
           pt: [
-            "Passing unvalidated output: if Step A can produce malformed JSON or incomplete data, Step B inherits that problem. Validate or clean outputs between steps.",
-            "Accumulating too much context: pasting entire prior outputs into every step bloats the context. Pass only what the next step actually needs.",
-            "No stopping condition on loops: always define what 'done' looks like and cap iterations. Without it, a looping chain can run indefinitely.",
-            "Skipping intermediate verification: for high-stakes chains, add a quick review step between heavy transforms instead of discovering errors at the final step.",
+            "Passar saídas sem validar: se a Etapa A pode gerar um JSON malformado ou dados incompletos, a Etapa B herda o problema. Valide ou limpe as saídas entre as etapas.",
+            "Acumular contexto demais: colar saídas anteriores inteiras em todas as etapas incha o contexto. Passe só o que a próxima etapa realmente precisa.",
+            "Loops sem condição de parada: sempre defina como é o 'pronto' e limite as iterações. Sem isso, uma cadeia em loop pode rodar indefinidamente.",
+            "Pular a verificação intermediária: em cadeias de alto risco, acrescente uma revisão rápida entre as transformações pesadas em vez de descobrir os erros só na etapa final.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Data extraction pipeline: extract → validate → format", es: "Pipeline de extracción de datos: extraer → validar → formatear", pt: "Data extraction pipeline: extract → validate → format" },
+        title: { en: "Data extraction pipeline: extract → validate → format", es: "Pipeline de extracción de datos: extraer → validar → formatear", pt: "Pipeline de extração de dados: extrair → validar → formatar" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -3813,36 +3813,36 @@ Ordená por Total de línea de mayor a menor.
 
 valid_items:
 """[pegá los valid_items del Paso 2 aquí]"""`,
-          pt: `STEP 1 — EXTRACT
-From the raw text below, extract all invoice line items.
-Return ONLY JSON: {"items": [{"description": "string", "quantity": number, "unit_price": number}]}
-If a field is missing, use null. Do not invent values.
+          pt: `ETAPA 1 — EXTRAIR
+Do texto bruto abaixo, extraia todos os itens da nota fiscal.
+Retorne APENAS JSON: {"items": [{"description": "string", "quantity": number, "unit_price": number}]}
+Se um campo estiver faltando, use null. Não invente valores.
 
-Raw text:
-"""[paste invoice text here]"""
-
----
-STEP 2 — VALIDATE (send Step 1 output here)
-Review the JSON below for correctness.
-- Flag any items where quantity or unit_price is null.
-- Flag any descriptions that look like headers or totals, not line items.
-- Return: {"valid_items": [...], "flagged": [...], "issues": ["string"]}
-
-JSON from Step 1:
-"""[paste Step 1 output here]"""
+Texto bruto:
+"""[cole o texto da nota fiscal aqui]"""
 
 ---
-STEP 3 — FORMAT (send Step 2 valid_items here)
-Convert the validated items below into a Markdown table with columns: Description | Quantity | Unit Price | Line Total.
-Calculate Line Total = quantity × unit_price. If either is null, show "—".
-Sort by Line Total descending.
+ETAPA 2 — VALIDAR (envie aqui a saída da Etapa 1)
+Revise o JSON abaixo para conferir se está correto.
+- Sinalize os itens em que quantity ou unit_price sejam null.
+- Sinalize as descrições que pareçam cabeçalhos ou totais, e não itens.
+- Retorne: {"valid_items": [...], "flagged": [...], "issues": ["string"]}
+
+JSON da Etapa 1:
+"""[cole aqui a saída da Etapa 1]"""
+
+---
+ETAPA 3 — FORMATAR (envie aqui os valid_items da Etapa 2)
+Converta os itens validados abaixo em uma tabela Markdown com as colunas: Descrição | Quantidade | Preço unitário | Total da linha.
+Calcule Total da linha = quantity × unit_price. Se algum dos dois for null, mostre "—".
+Ordene por Total da linha, do maior para o menor.
 
 valid_items:
-"""[paste valid_items from Step 2 here]"""`,
+"""[cole aqui os valid_items da Etapa 2]"""`,
         },
       },
       {
-        title: { en: "Research-to-report chain: gather → outline → draft", es: "Cadena investigación-a-informe: recopilar → esquema → borrador", pt: "Research-to-report chain: gather → outline → draft" },
+        title: { en: "Research-to-report chain: gather → outline → draft", es: "Cadena investigación-a-informe: recopilar → esquema → borrador", pt: "Cadeia da pesquisa ao relatório: reunir → estruturar → redigir" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -3904,53 +3904,53 @@ Restricciones:
 
 Esquema:
 """[pegá el esquema del Paso 2 aquí]"""`,
-          pt: `STEP 1 — GATHER KEY POINTS
-Topic: [your topic]
-Audience: [who will read this]
+          pt: `ETAPA 1 — REUNIR OS PONTOS PRINCIPAIS
+Tema: [seu tema]
+Público: [quem vai ler]
 
-List the 5–7 most important things someone in this audience needs to understand about this topic.
-For each point, note: (a) why it matters to this audience, (b) a concrete example or evidence.
-Format: numbered list. Be direct — no filler sentences.
-
----
-STEP 2 — OUTLINE (send Step 1 output here)
-Using the key points below, create a structured outline for a [blog post / report / briefing] of approximately [word count] words.
-Each section must map to one or more key points.
-Format: ## Section title → bullet list of what each paragraph will cover.
-
-Key points from Step 1:
-"""[paste Step 1 output here]"""
+Liste as 5–7 coisas mais importantes que alguém deste público precisa entender sobre este tema.
+Para cada ponto, anote: (a) por que importa para este público, (b) um exemplo concreto ou uma evidência.
+Formato: lista numerada. Seja direto — sem frases de enchimento.
 
 ---
-STEP 3 — DRAFT (send Step 2 outline here)
-Write the full [blog post / report / briefing] following the outline below.
-Tone: [professional / conversational / technical]
-Constraints:
-- Stay within [word count] words (±10%).
-- Do not add sections not in the outline.
-- Do not use filler phrases like "In today's world" or "It's important to note".
-- End with a clear takeaway or next step.
+ETAPA 2 — ESTRUTURAR (envie aqui a saída da Etapa 1)
+Com base nos pontos principais abaixo, crie uma estrutura para um [post de blog / relatório / briefing] de aproximadamente [número de palavras] palavras.
+Cada seção precisa corresponder a um ou mais pontos principais.
+Formato: ## Título da seção → lista em tópicos do que cada parágrafo vai cobrir.
 
-Outline:
-"""[paste Step 2 outline here]"""`,
+Pontos principais da Etapa 1:
+"""[cole aqui a saída da Etapa 1]"""
+
+---
+ETAPA 3 — REDIGIR (envie aqui a estrutura da Etapa 2)
+Escreva o [post de blog / relatório / briefing] completo seguindo a estrutura abaixo.
+Tom: [profissional / conversacional / técnico]
+Restrições:
+- Fique dentro de [número de palavras] palavras (±10%).
+- Não acrescente seções que não estejam na estrutura.
+- Não use frases de enchimento como "No mundo de hoje" ou "Vale ressaltar que".
+- Termine com uma conclusão ou um próximo passo claro.
+
+Estrutura:
+"""[cole aqui a estrutura da Etapa 2]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How many steps is too many in a prompt chain?", es: "¿Cuántos pasos son demasiados en una cadena de prompts?", pt: "How many steps is too many in a prompt chain?" },
+        q: { en: "How many steps is too many in a prompt chain?", es: "¿Cuántos pasos son demasiados en una cadena de prompts?", pt: "Quantas etapas são demais em uma cadeia de prompts?" },
         a: {
           en: "There is no fixed maximum, but each step adds latency, cost, and a new failure point. In practice, most tasks resolve well with 2–4 steps. If your chain exceeds 6 steps, reconsider whether some steps can be merged or whether the task should be split into independent sub-tasks with separate chains.",
           es: "No hay un máximo fijo, pero cada paso agrega latencia, costo y un nuevo punto de falla. En la práctica, la mayoría de las tareas se resuelven bien con 2–4 pasos. Si tu cadena supera los 6 pasos, reconsiderá si algunos pueden fusionarse o si la tarea debería dividirse en subtareas independientes con cadenas separadas.",
-          pt: "There is no fixed maximum, but each step adds latency, cost, and a new failure point. In practice, most tasks resolve well with 2–4 steps. If your chain exceeds 6 steps, reconsider whether some steps can be merged or whether the task should be split into independent sub-tasks with separate chains.",
+          pt: "Não existe um máximo fixo, mas cada etapa acrescenta latência, custo e um novo ponto de falha. Na prática, a maioria das tarefas se resolve bem com 2–4 etapas. Se a sua cadeia passar de 6 etapas, reavalie se algumas podem ser unidas ou se a tarefa deveria ser dividida em subtarefas independentes, com cadeias separadas.",
         },
       },
       {
-        q: { en: "Do I need to send all previous outputs to every subsequent step?", es: "¿Necesito enviar todas las salidas previas a cada paso siguiente?", pt: "Do I need to send all previous outputs to every subsequent step?" },
+        q: { en: "Do I need to send all previous outputs to every subsequent step?", es: "¿Necesito enviar todas las salidas previas a cada paso siguiente?", pt: "Preciso enviar todas as saídas anteriores para cada etapa seguinte?" },
         a: {
           en: "No — and you usually should not. Send only what the next step needs to do its job. Passing the full history of every prior step inflates the context, increases cost, and can confuse the model by giving it irrelevant prior reasoning to 'consider'. Extract and pass the relevant subset.",
           es: "No — y generalmente no deberías. Enviá solo lo que el siguiente paso necesita para hacer su trabajo. Pasar el historial completo de todos los pasos anteriores infla el contexto, aumenta el costo y puede confundir al modelo dándole razonamiento previo irrelevante para 'considerar'. Extraé y pasá solo el subconjunto relevante.",
-          pt: "No — and you usually should not. Send only what the next step needs to do its job. Passing the full history of every prior step inflates the context, increases cost, and can confuse the model by giving it irrelevant prior reasoning to 'consider'. Extract and pass the relevant subset.",
+          pt: "Não — e normalmente não deveria. Envie só o que a próxima etapa precisa para fazer o trabalho dela. Passar o histórico completo de todas as etapas anteriores incha o contexto, aumenta o custo e pode confundir o modelo, dando a ele raciocínios anteriores irrelevantes para 'considerar'. Extraia e passe só o subconjunto relevante.",
         },
       },
     ],
@@ -3960,16 +3960,16 @@ Outline:
     title: {
       en: "AI writing prompts for blogs, emails, and creative content",
       es: "Prompts de redacción con IA para blogs, emails y contenido creativo",
-      pt: "AI writing prompts for blogs, emails, and creative content",
+      pt: "Prompts de escrita com IA para blogs, e-mails e conteúdo criativo",
     },
     description: {
       en: "Writing prompts that produce structured, on-brand content — with tone, audience, format, and length controls built in. No generic filler.",
       es: "Prompts de escritura que generan contenido estructurado y alineado con tu voz — con controles de tono, audiencia, formato y extensión. Sin relleno genérico.",
-      pt: "Writing prompts that produce structured, on-brand content — with tone, audience, format, and length controls built in. No generic filler.",
+      pt: "Prompts de escrita que geram conteúdo estruturado e alinhado à marca — com controles de tom, público, formato e tamanho embutidos. Sem enchimento genérico.",
     },
     sections: [
       {
-        heading: { en: "What a writing prompt needs beyond the topic", es: "Qué necesita un prompt de escritura más allá del tema", pt: "What a writing prompt needs beyond the topic" },
+        heading: { en: "What a writing prompt needs beyond the topic", es: "Qué necesita un prompt de escritura más allá del tema", pt: "O que um prompt de escrita precisa além do tema" },
         bullets: {
           en: [
             "Audience: who is reading, what they already know, and what they care about. 'Write about productivity' gives you a generic output; 'write for senior engineers who are skeptical of new tools' gives you something useful.",
@@ -3986,16 +3986,16 @@ Outline:
             "Qué evitar: aperturas genéricas ('En el mundo digital actual'), palabras de jerga corporativa, afirmaciones sin respaldo, voz pasiva cuando querés activa.",
           ],
           pt: [
-            "Audience: who is reading, what they already know, and what they care about. 'Write about productivity' gives you a generic output; 'write for senior engineers who are skeptical of new tools' gives you something useful.",
-            "Tone and register: professional, conversational, direct, empathetic. Mixing 'be authoritative' with 'be approachable' without examples leads to inconsistency.",
-            "Format: prose, bullet list, numbered steps, Q&A, table. Specify it explicitly or the model picks whatever is convenient.",
-            "Length or scope: a target word count (or range) and the number of key ideas to cover. Without this, AI writing tends to pad.",
-            "What to avoid: generic openers ('In today's digital world'), corporate buzzwords, unsupported claims, passive voice when you want active.",
+            "Público: quem vai ler, o que já sabe e com o que se importa. 'Escreva sobre produtividade' gera um texto genérico; 'escreva para engenheiros sêniores que desconfiam de ferramentas novas' gera algo útil.",
+            "Tom e registro: profissional, conversacional, direto, empático. Misturar 'seja assertivo' com 'seja acessível' sem exemplos leva à inconsistência.",
+            "Formato: texto corrido, lista em tópicos, passos numerados, perguntas e respostas, tabela. Especifique de forma explícita, senão o modelo escolhe o que for mais conveniente.",
+            "Tamanho ou escopo: um número de palavras (ou uma faixa) e a quantidade de ideias principais a cobrir. Sem isso, a escrita com IA tende a encher linguiça.",
+            "O que evitar: aberturas genéricas ('No mundo digital de hoje'), jargão corporativo, afirmações sem fundamento, voz passiva quando você quer voz ativa.",
           ],
         },
       },
       {
-        heading: { en: "Tone and voice control", es: "Control de tono y voz", pt: "Tone and voice control" },
+        heading: { en: "Tone and voice control", es: "Control de tono y voz", pt: "Controle de tom e de voz" },
         bullets: {
           en: [
             "Give examples of the tone, not just labels. 'Tone: like a knowledgeable friend, not a textbook' is more useful than 'tone: informal'.",
@@ -4010,15 +4010,15 @@ Outline:
             "Para consistencia de voz de marca en múltiples piezas: describí 3–5 características definitorias y pegálas al inicio de cada prompt de escritura.",
           ],
           pt: [
-            "Give examples of the tone, not just labels. 'Tone: like a knowledgeable friend, not a textbook' is more useful than 'tone: informal'.",
-            "Specify what the tone is NOT: 'avoid corporate jargon', 'no rhetorical questions', 'don't start sentences with I'.",
-            "If you have existing content that matches the voice you want, paste 2–3 sentences and ask the model to match that style.",
-            "For brand voice consistency across multiple pieces: describe 3–5 defining characteristics and paste them at the top of every writing prompt.",
+            "Dê exemplos do tom, não só rótulos. 'Tom: como um amigo que entende do assunto, não um livro didático' é mais útil que 'tom: informal'.",
+            "Diga o que o tom NÃO é: 'evite jargão corporativo', 'sem perguntas retóricas', 'não comece frases com eu'.",
+            "Se você já tem um conteúdo com a voz que procura, cole 2–3 frases e peça ao modelo para imitar esse estilo.",
+            "Para manter a voz da marca em várias peças: descreva 3–5 características marcantes e cole no início de todo prompt de escrita.",
           ],
         },
       },
       {
-        heading: { en: "Common writing prompt mistakes", es: "Errores comunes en prompts de escritura", pt: "Common writing prompt mistakes" },
+        heading: { en: "Common writing prompt mistakes", es: "Errores comunes en prompts de escritura", pt: "Erros comuns em prompts de escrita" },
         bullets: {
           en: [
             "Topic without angle: 'write about remote work' gives the model nothing to stand on. Add your specific angle: 'write about why async-first remote teams outperform real-time-first ones for creative work'.",
@@ -4033,17 +4033,17 @@ Outline:
             "Pedir 'creatividad' sin decir qué significa para vos: puede ser analogías inesperadas, estructura narrativa, humor o formato inusual — especificalo.",
           ],
           pt: [
-            "Topic without angle: 'write about remote work' gives the model nothing to stand on. Add your specific angle: 'write about why async-first remote teams outperform real-time-first ones for creative work'.",
-            "No format constraint: without one, the model defaults to whatever structure feels natural, which changes between runs.",
-            "Conflicting length signals: 'be concise but cover everything' is a contradiction. Pick one or set a word count.",
-            "Asking for 'creative' without saying what creative means to you: it could mean unexpected analogies, narrative structure, humor, or unusual formatting — specify.",
+            "Tema sem ângulo: 'escreva sobre trabalho remoto' não dá ao modelo nada em que se apoiar. Acrescente seu ângulo específico: 'escreva sobre por que times remotos que priorizam o assíncrono rendem mais em trabalho criativo do que os que priorizam o tempo real'.",
+            "Nenhuma restrição de formato: sem ela, o modelo usa a estrutura que parecer natural, e ela muda de uma execução para outra.",
+            "Sinais de tamanho conflitantes: 'seja conciso, mas cubra tudo' é uma contradição. Escolha um ou defina um número de palavras.",
+            "Pedir algo 'criativo' sem dizer o que criativo significa para você: pode ser analogias inesperadas, estrutura narrativa, humor ou formatação incomum — especifique.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Blog post outline with audience and tone", es: "Esquema de post de blog con audiencia y tono", pt: "Blog post outline with audience and tone" },
+        title: { en: "Blog post outline with audience and tone", es: "Esquema de post de blog con audiencia y tono", pt: "Estrutura de post de blog com público e tom" },
         purpose: "marketing",
         target: "gpt",
         prompt: {
@@ -4079,26 +4079,26 @@ Requisitos:
 - No incluyas introducción o conclusión genérica — hacé que cada sección se justifique.
 
 Evitar: [palabra], [buzzword], [frase a excluir]`,
-          pt: `Create a detailed outline for a blog post on the following topic.
+          pt: `Crie uma estrutura detalhada para um post de blog sobre o tema a seguir.
 
-Topic: [your topic]
-Target audience: [describe the reader — role, experience level, main concern]
-Angle / thesis: [the specific position or insight this post will argue]
-Tone: [e.g. direct and opinionated, not neutral / conversational, like a practitioner talking to peers]
-Target length: [word count] words
-Format for each section: ## Heading → 3–5 bullet points describing what each paragraph will say
+Tema: [seu tema]
+Público-alvo: [descreva o leitor — cargo, nível de experiência, principal preocupação]
+Ângulo / tese: [a posição ou o insight específico que este post vai defender]
+Tom: [ex. direto e opinativo, não neutro / conversacional, como um profissional falando com colegas]
+Tamanho-alvo: [número de palavras] palavras
+Formato de cada seção: ## Título → 3–5 tópicos descrevendo o que cada parágrafo vai dizer
 
-Requirements:
-- Start with a hook that states the problem or tension directly (no "In today's world" openers).
-- Each section must connect to the thesis, not just be loosely related to the topic.
-- End with a clear takeaway or call to action — one sentence max.
-- Do not include a generic introduction or conclusion — make every section earn its place.
+Requisitos:
+- Comece com um gancho que apresente o problema ou a tensão de forma direta (nada de aberturas como "No mundo de hoje").
+- Cada seção precisa se conectar à tese, e não apenas ter uma relação vaga com o tema.
+- Termine com uma conclusão clara ou uma chamada para ação — no máximo uma frase.
+- Não inclua uma introdução ou conclusão genérica — cada seção precisa justificar seu lugar.
 
-Do not avoid: [word], [buzzword], [phrase to exclude]`,
+Evitar: [palavra], [buzzword], [frase a excluir]`,
         },
       },
       {
-        title: { en: "Professional email from bullet notes", es: "Email profesional a partir de notas en bullets", pt: "Professional email from bullet notes" },
+        title: { en: "Professional email from bullet notes", es: "Email profesional a partir de notas en bullets", pt: "E-mail profissional a partir de anotações" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -4138,42 +4138,42 @@ Restricciones:
 - Extensión: máximo 3–5 párrafos cortos.
 - Terminá con una única solicitud clara o próximo paso, no una lista de opciones.
 - Ajustá el tono al nivel de seniority del destinatario.`,
-          pt: `Write a professional email from the notes below.
+          pt: `Escreva um e-mail profissional a partir das anotações abaixo.
 
-Sender context: [your role and relationship to the recipient]
-Recipient: [their role and what they care about]
-Goal of this email: [what you need them to do or understand after reading]
-Tone: [e.g. collegial and direct / formal and diplomatic / warm but concise]
+Contexto do remetente: [seu cargo e sua relação com o destinatário]
+Destinatário: [cargo dele e com o que se importa]
+Objetivo deste e-mail: [o que você precisa que a pessoa faça ou entenda depois de ler]
+Tom: [ex. cordial e direto / formal e diplomático / caloroso, mas conciso]
 
-Notes (unordered — use your judgment on what to include):
-- [note 1]
-- [note 2]
-- [note 3]
+Anotações (sem ordem — use seu critério sobre o que incluir):
+- [anotação 1]
+- [anotação 2]
+- [anotação 3]
 
-Constraints:
-- Subject line: one sentence, action-oriented, under 60 characters.
-- Body: no filler phrases like "I hope this email finds you well" or "Please don't hesitate to reach out."
-- Length: 3–5 short paragraphs maximum.
-- End with a clear single ask or next step, not a list of options.
-- Match the tone to the recipient's seniority level.`,
+Restrições:
+- Assunto: uma frase, orientada à ação, com menos de 60 caracteres.
+- Corpo: sem frases de enchimento como "Espero que este e-mail o encontre bem" ou "Fico à disposição para qualquer dúvida."
+- Tamanho: no máximo 3–5 parágrafos curtos.
+- Termine com um único pedido ou próximo passo claro, não com uma lista de opções.
+- Ajuste o tom ao nível hierárquico do destinatário.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How do I stop AI writing from sounding generic?", es: "¿Cómo evito que la escritura de IA suene genérica?", pt: "How do I stop AI writing from sounding generic?" },
+        q: { en: "How do I stop AI writing from sounding generic?", es: "¿Cómo evito que la escritura de IA suene genérica?", pt: "Como evito que a escrita com IA soe genérica?" },
         a: {
           en: "Generic output usually comes from under-specified prompts. Add a specific angle (not just a topic), a named audience with a concrete concern, explicit tone examples, and a list of things to avoid. The more constraints you give, the less the model fills gaps with defaults. Pasting 2–3 sentences of your own writing and asking it to match the style also helps significantly.",
           es: "Las salidas genéricas suelen venir de prompts poco especificados. Agregá un ángulo específico (no solo un tema), una audiencia nombrada con una preocupación concreta, ejemplos de tono explícitos y una lista de cosas a evitar. Cuantas más restricciones des, menos el modelo llenará vacíos con valores por defecto. Pegar 2–3 oraciones de tu propia escritura y pedirle que iguale el estilo también ayuda significativamente.",
-          pt: "Generic output usually comes from under-specified prompts. Add a specific angle (not just a topic), a named audience with a concrete concern, explicit tone examples, and a list of things to avoid. The more constraints you give, the less the model fills gaps with defaults. Pasting 2–3 sentences of your own writing and asking it to match the style also helps significantly.",
+          pt: "Um texto genérico costuma vir de prompts pouco especificados. Acrescente um ângulo específico (não só um tema), um público definido com uma preocupação concreta, exemplos explícitos de tom e uma lista do que evitar. Quanto mais restrições você der, menos o modelo preenche as lacunas com o padrão. Colar 2–3 frases escritas por você e pedir que ele imite o estilo também ajuda bastante.",
         },
       },
       {
-        q: { en: "Can I get consistent voice across multiple pieces?", es: "¿Puedo lograr voz consistente en múltiples piezas?", pt: "Can I get consistent voice across multiple pieces?" },
+        q: { en: "Can I get consistent voice across multiple pieces?", es: "¿Puedo lograr voz consistente en múltiples piezas?", pt: "Consigo manter a mesma voz em várias peças?" },
         a: {
           en: "Yes, with a reusable voice block. Define 3–5 characteristics of your brand voice (e.g. 'direct without being blunt', 'uses concrete examples before abstract claims', 'avoids exclamation marks and buzzwords') and paste them at the start of every writing prompt. Keep this block in a text file and update it as you refine your voice.",
           es: "Sí, con un bloque de voz reutilizable. Definí 3–5 características de tu voz de marca (ej. 'directo sin ser brusco', 'usa ejemplos concretos antes de afirmaciones abstractas', 'evita signos de exclamación y buzzwords') y pegálas al inicio de cada prompt de escritura. Guardá este bloque en un archivo de texto y actualizalo a medida que refinás tu voz.",
-          pt: "Yes, with a reusable voice block. Define 3–5 characteristics of your brand voice (e.g. 'direct without being blunt', 'uses concrete examples before abstract claims', 'avoids exclamation marks and buzzwords') and paste them at the start of every writing prompt. Keep this block in a text file and update it as you refine your voice.",
+          pt: "Sim, com um bloco de voz reutilizável. Defina 3–5 características da voz da sua marca (ex.: 'direto sem ser ríspido', 'usa exemplos concretos antes de afirmações abstratas', 'evita pontos de exclamação e buzzwords') e cole no início de todo prompt de escrita. Guarde esse bloco em um arquivo de texto e atualize conforme você refina a voz.",
         },
       },
     ],
@@ -4183,16 +4183,16 @@ Constraints:
     title: {
       en: "How to write prompts for AI with image and file inputs (multimodal)",
       es: "Cómo escribir prompts para IA con imágenes y archivos (multimodal)",
-      pt: "How to write prompts for AI with image and file inputs (multimodal)",
+      pt: "Como escrever prompts para IA com imagens e arquivos (multimodal)",
     },
     description: {
       en: "Multimodal prompts combine text instructions with images, PDFs, or screenshots. Learn how to direct AI attention to what matters and extract structured output reliably.",
       es: "Los prompts multimodales combinan instrucciones de texto con imágenes, PDFs o capturas de pantalla. Aprendé a dirigir la atención de la IA a lo que importa y extraer salida estructurada de forma confiable.",
-      pt: "Multimodal prompts combine text instructions with images, PDFs, or screenshots. Learn how to direct AI attention to what matters and extract structured output reliably.",
+      pt: "Prompts multimodais combinam instruções em texto com imagens, PDFs ou capturas de tela. Aprenda a direcionar a atenção da IA para o que importa e a extrair saídas estruturadas de forma confiável.",
     },
     sections: [
       {
-        heading: { en: "What multimodal AI models can and cannot do", es: "Qué pueden y no pueden hacer los modelos de IA multimodal", pt: "What multimodal AI models can and cannot do" },
+        heading: { en: "What multimodal AI models can and cannot do", es: "Qué pueden y no pueden hacer los modelos de IA multimodal", pt: "O que os modelos de IA multimodais conseguem e não conseguem fazer" },
         bullets: {
           en: [
             "They can: describe image content, read text in images (OCR-like), extract data from tables and forms, analyze charts and diagrams, compare multiple images, and answer questions grounded in what they see.",
@@ -4207,15 +4207,15 @@ Constraints:
             "Para PDFs: algunas APIs los aceptan directamente; otras requieren convertir páginas a imágenes primero. Revisá la documentación de tu modelo.",
           ],
           pt: [
-            "They can: describe image content, read text in images (OCR-like), extract data from tables and forms, analyze charts and diagrams, compare multiple images, and answer questions grounded in what they see.",
-            "They cannot: reliably read very small text in low-resolution images, count objects precisely in dense scenes, or guarantee pixel-level accuracy on complex diagrams.",
-            "Quality of output depends heavily on image resolution and clarity. Blurry or low-contrast images produce vague descriptions.",
-            "For PDFs: some APIs accept PDFs directly; others require converting pages to images first. Check your model's documentation.",
+            "Eles conseguem: descrever o conteúdo de uma imagem, ler textos em imagens (algo parecido com OCR), extrair dados de tabelas e formulários, analisar gráficos e diagramas, comparar várias imagens e responder a perguntas com base no que veem.",
+            "Eles não conseguem: ler com confiabilidade textos muito pequenos em imagens de baixa resolução, contar objetos com precisão em cenas cheias nem garantir precisão no nível do pixel em diagramas complexos.",
+            "A qualidade da saída depende muito da resolução e da nitidez da imagem. Imagens borradas ou com pouco contraste geram descrições vagas.",
+            "Para PDFs: algumas APIs aceitam PDFs diretamente; outras exigem converter as páginas em imagens antes. Consulte a documentação do seu modelo.",
           ],
         },
       },
       {
-        heading: { en: "How to direct AI attention in images", es: "Cómo dirigir la atención de la IA en imágenes", pt: "How to direct AI attention in images" },
+        heading: { en: "How to direct AI attention in images", es: "Cómo dirigir la atención de la IA en imágenes", pt: "Como direcionar a atenção da IA em imagens" },
         bullets: {
           en: [
             "Name what you want analyzed: 'Focus on the bar chart in the top-right corner' is clearer than 'analyze this image'.",
@@ -4232,16 +4232,16 @@ Constraints:
             "Si la imagen tiene múltiples elementos, decile al modelo qué priorizar primero y qué omitir.",
           ],
           pt: [
-            "Name what you want analyzed: 'Focus on the bar chart in the top-right corner' is clearer than 'analyze this image'.",
-            "Describe what the image contains if the model might not recognize the context: 'This is a screenshot of a warehouse management dashboard showing inventory levels.'",
-            "For documents and forms, specify which fields matter: 'Extract only the vendor name, invoice number, date, and total amount. Ignore line items.'",
-            "Use spatial anchors: 'the table in the second column', 'the highlighted row', 'the legend at the bottom'.",
-            "If the image has multiple elements, tell the model what to prioritize first and what to skip.",
+            "Diga o que você quer analisado: 'Concentre-se no gráfico de barras no canto superior direito' é mais claro que 'analise esta imagem'.",
+            "Descreva o que a imagem contém se o modelo puder não reconhecer o contexto: 'Esta é uma captura de tela de um painel de gestão de estoque que mostra os níveis de inventário.'",
+            "Em documentos e formulários, especifique quais campos importam: 'Extraia só o nome do fornecedor, o número da nota fiscal, a data e o valor total. Ignore os itens.'",
+            "Use referências espaciais: 'a tabela na segunda coluna', 'a linha destacada', 'a legenda na parte de baixo'.",
+            "Se a imagem tiver vários elementos, diga ao modelo o que priorizar primeiro e o que pular.",
           ],
         },
       },
       {
-        heading: { en: "Common multimodal prompt mistakes", es: "Errores comunes en prompts multimodales", pt: "Common multimodal prompt mistakes" },
+        heading: { en: "Common multimodal prompt mistakes", es: "Errores comunes en prompts multimodales", pt: "Erros comuns em prompts multimodais" },
         bullets: {
           en: [
             "No image description: asking 'what does this show?' without context forces the model to guess the purpose. Tell it what kind of document or image you're sending.",
@@ -4256,17 +4256,17 @@ Constraints:
             "Asumir que lee todo el texto: los modelos procesan imágenes como patrones visuales. Texto muy pequeño, rotado o sobre fondos complejos puede ser omitido o mal leído.",
           ],
           pt: [
-            "No image description: asking 'what does this show?' without context forces the model to guess the purpose. Tell it what kind of document or image you're sending.",
-            "Expecting precision on messy inputs: a photo of a handwritten note taken at an angle in dim lighting will produce uncertain results — scan or crop before prompting.",
-            "No output format specified: without one, the model might describe the image in prose when you needed JSON, or give you a table when you needed a summary.",
-            "Assuming it reads all text: models process images as visual patterns. Very small text, rotated text, or text on complex backgrounds may be missed or misread.",
+            "Nenhuma descrição da imagem: perguntar 'o que isto mostra?' sem contexto obriga o modelo a adivinhar o propósito. Diga que tipo de documento ou imagem você está enviando.",
+            "Esperar precisão de entradas bagunçadas: a foto de um bilhete escrito à mão, tirada em ângulo e com pouca luz, vai gerar resultados incertos — digitalize ou recorte antes de mandar o prompt.",
+            "Nenhum formato de saída especificado: sem ele, o modelo pode descrever a imagem em texto corrido quando você precisava de JSON, ou entregar uma tabela quando você precisava de um resumo.",
+            "Supor que ele lê todo o texto: os modelos processam imagens como padrões visuais. Textos muito pequenos, girados ou sobre fundos complexos podem passar despercebidos ou ser lidos errado.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Visual data extraction from an image or screenshot", es: "Extracción de datos visuales de una imagen o captura de pantalla", pt: "Visual data extraction from an image or screenshot" },
+        title: { en: "Visual data extraction from an image or screenshot", es: "Extracción de datos visuales de una imagen o captura de pantalla", pt: "Extração de dados visuais de uma imagem ou captura de tela" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -4312,31 +4312,31 @@ Reglas:
 - Usá null para cualquier campo que no puedas leer claramente.
 - No adivines ni infieras valores no visibles en la imagen.
 - Agregá una nota en notas_extraccion si algún campo fue difícil de leer.`,
-          pt: `I'm sending you [a screenshot of a dashboard / a photo of a form / a chart image].
+          pt: `Estou enviando [uma captura de tela de um painel / a foto de um formulário / a imagem de um gráfico].
 
-Context: [describe what the image contains and where it comes from — e.g. "This is a weekly sales report screenshot from our internal reporting tool."]
+Contexto: [descreva o que a imagem contém e de onde vem — ex. "Esta é uma captura de tela do relatório semanal de vendas da nossa ferramenta interna de relatórios."]
 
-Extract the following fields:
-- [Field 1]: [what it looks like or where it appears]
-- [Field 2]: [what it looks like or where it appears]
-- [Field 3]: [what it looks like or where it appears]
+Extraia os seguintes campos:
+- [Campo 1]: [como ele é ou onde aparece]
+- [Campo 2]: [como ele é ou onde aparece]
+- [Campo 3]: [como ele é ou onde aparece]
 
-Return ONLY JSON:
+Retorne APENAS JSON:
 {
-  "field_1": "value or null",
-  "field_2": "value or null",
-  "field_3": "value or null",
-  "extraction_notes": "any uncertainty or ambiguity noted"
+  "field_1": "valor ou null",
+  "field_2": "valor ou null",
+  "field_3": "valor ou null",
+  "extraction_notes": "qualquer incerteza ou ambiguidade observada"
 }
 
-Rules:
-- Use null for any field you cannot read clearly.
-- Do not guess or infer values not visible in the image.
-- Add a note in extraction_notes if any field was difficult to read.`,
+Regras:
+- Use null para qualquer campo que você não consiga ler com clareza.
+- Não adivinhe nem deduza valores que não estejam visíveis na imagem.
+- Acrescente uma nota em extraction_notes se algum campo tiver sido difícil de ler.`,
         },
       },
       {
-        title: { en: "Document Q&A with source citation", es: "Preguntas y respuestas sobre un documento con cita de fuente", pt: "Document Q&A with source citation" },
+        title: { en: "Document Q&A with source citation", es: "Preguntas y respuestas sobre un documento con cita de fuente", pt: "Perguntas e respostas sobre um documento, com citação da fonte" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -4376,42 +4376,42 @@ Formato:
 **P1:** [replanteá la pregunta]
 **Respuesta:** [tu respuesta]
 **Fuente:** "[cita textual del documento]" (Página X / Sección Y si es identificable)`,
-          pt: `I'm sending you [a PDF / a set of document images / a scanned contract].
+          pt: `Estou enviando [um PDF / um conjunto de imagens de um documento / um contrato digitalizado].
 
-Context: [briefly describe what the document is — e.g. "This is a vendor contract for software licensing, approximately 12 pages."]
+Contexto: [descreva brevemente o que é o documento — ex. "Este é um contrato de licenciamento de software com um fornecedor, de cerca de 12 páginas."]
 
-Answer the following questions based ONLY on the content visible in the document:
-1. [Your question 1]
-2. [Your question 2]
-3. [Your question 3]
+Responda às perguntas a seguir com base APENAS no conteúdo visível no documento:
+1. [Sua pergunta 1]
+2. [Sua pergunta 2]
+3. [Sua pergunta 3]
 
-For each answer:
-- Quote the exact sentence or section that supports your answer.
-- If the document does not contain the answer, say "Not found in the document" — do not infer.
-- If the answer is ambiguous, explain why and quote the relevant passage.
+Para cada resposta:
+- Cite a frase ou a seção exata que sustenta sua resposta.
+- Se o documento não contiver a resposta, diga "Não encontrado no documento" — não deduza.
+- Se a resposta for ambígua, explique por quê e cite o trecho relevante.
 
-Format:
-**Q1:** [restate the question]
-**Answer:** [your answer]
-**Source:** "[exact quote from document]" (Page X / Section Y if identifiable)`,
+Formato:
+**P1:** [reformule a pergunta]
+**Resposta:** [sua resposta]
+**Fonte:** "[citação exata do documento]" (Página X / Seção Y, se for possível identificar)`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which AI models support image inputs?", es: "¿Qué modelos de IA soportan entradas de imagen?", pt: "Which AI models support image inputs?" },
+        q: { en: "Which AI models support image inputs?", es: "¿Qué modelos de IA soportan entradas de imagen?", pt: "Quais modelos de IA aceitam imagens como entrada?" },
         a: {
           en: "Most current models do. In Promptea's model registry (checked against provider docs in September and October 2026), image input is listed for GPT-6 Astra, GPT-6.1 Sol and GPT-6 Luna; Claude Opus 5.5, Fable 5.1, Sonnet 5.5 and Haiku 5.5 (which also read PDFs); the Gemini 3.x Flash models (which also take audio, video and PDF); Grok 4.7 and Grok 4.3; DeepSeek Flash; and Kimi K3 (also video). DeepSeek V4 Pro and Perplexity's Agent API presets are text-only there. Support can differ between the chat app and the API and changes over time, so confirm in the provider's current documentation.",
           es: "La mayoría de los modelos actuales. En el registro de modelos de Promptea (verificado contra la documentación de cada proveedor en septiembre y octubre de 2026), figuran con entrada de imagen GPT-6 Astra, GPT-6.1 Sol y GPT-6 Luna; Claude Opus 5.5, Fable 5.1, Sonnet 5.5 y Haiku 5.5 (que además leen PDF); los modelos Gemini 3.x Flash (que además aceptan audio, video y PDF); Grok 4.7 y Grok 4.3; DeepSeek Flash; y Kimi K3 (también video). DeepSeek V4 Pro y los presets de la Agent API de Perplexity figuran solo con texto. El soporte puede variar entre la app de chat y la API y cambia con el tiempo, así que confirmalo en la documentación actual del proveedor.",
-          pt: "Most current models do. In Promptea's model registry (checked against provider docs in September and October 2026), image input is listed for GPT-6 Astra, GPT-6.1 Sol and GPT-6 Luna; Claude Opus 5.5, Fable 5.1, Sonnet 5.5 and Haiku 5.5 (which also read PDFs); the Gemini 3.x Flash models (which also take audio, video and PDF); Grok 4.7 and Grok 4.3; DeepSeek Flash; and Kimi K3 (also video). DeepSeek V4 Pro and Perplexity's Agent API presets are text-only there. Support can differ between the chat app and the API and changes over time, so confirm in the provider's current documentation.",
+          pt: "A maioria dos modelos atuais. No registro de modelos do Promptea (conferido com a documentação dos provedores em setembro e outubro de 2026), a entrada de imagem aparece para GPT-6 Astra, GPT-6.1 Sol e GPT-6 Luna; Claude Opus 5.5, Fable 5.1, Sonnet 5.5 e Haiku 5.5 (que também leem PDFs); os modelos Gemini 3.x Flash (que também aceitam áudio, vídeo e PDF); Grok 4.7 e Grok 4.3; DeepSeek Flash; e Kimi K3 (também vídeo). DeepSeek V4 Pro e os presets da Agent API da Perplexity aparecem ali como só texto. O suporte pode ser diferente entre o app de chat e a API e muda com o tempo, então confirme na documentação atual do provedor.",
         },
       },
       {
-        q: { en: "How do I extract a table from a PDF using AI?", es: "¿Cómo extraigo una tabla de un PDF usando IA?", pt: "How do I extract a table from a PDF using AI?" },
+        q: { en: "How do I extract a table from a PDF using AI?", es: "¿Cómo extraigo una tabla de un PDF usando IA?", pt: "Como extraio uma tabela de um PDF usando IA?" },
         a: {
           en: "The most reliable approach: convert the PDF page containing the table to a high-resolution image (300 DPI or higher), then send it with a prompt that specifies the table location, the columns you need, and the output format (JSON or Markdown table). Ask the model to flag cells it cannot read clearly. For native-digital PDFs where text is selectable, copy-paste the table text directly into your prompt instead — text extraction is more reliable than visual OCR.",
           es: "El enfoque más confiable: convertí la página del PDF que contiene la tabla a una imagen de alta resolución (300 DPI o superior), luego enviala con un prompt que especifique la ubicación de la tabla, las columnas que necesitás y el formato de salida (JSON o tabla Markdown). Pedí al modelo que marque las celdas que no puede leer claramente. Para PDFs nativos digitales donde el texto es seleccionable, copiá y pegá el texto de la tabla directamente en tu prompt — la extracción de texto es más confiable que el OCR visual.",
-          pt: "The most reliable approach: convert the PDF page containing the table to a high-resolution image (300 DPI or higher), then send it with a prompt that specifies the table location, the columns you need, and the output format (JSON or Markdown table). Ask the model to flag cells it cannot read clearly. For native-digital PDFs where text is selectable, copy-paste the table text directly into your prompt instead — text extraction is more reliable than visual OCR.",
+          pt: "O caminho mais confiável: converta a página do PDF que contém a tabela em uma imagem de alta resolução (300 DPI ou mais) e envie com um prompt que especifique onde está a tabela, as colunas de que você precisa e o formato de saída (JSON ou tabela Markdown). Peça ao modelo para sinalizar as células que ele não consegue ler com clareza. Em PDFs nativamente digitais, em que o texto pode ser selecionado, copie e cole o texto da tabela diretamente no prompt — a extração de texto é mais confiável que o OCR visual.",
         },
       },
     ],
@@ -4421,16 +4421,16 @@ Format:
     title: {
       en: "Zero-shot prompting: how to get reliable results without providing examples",
       es: "Zero-shot prompting: cómo obtener resultados confiables sin dar ejemplos",
-      pt: "Zero-shot prompting: how to get reliable results without providing examples",
+      pt: "Zero-shot prompting: resultados confiáveis sem dar exemplos",
     },
     description: {
       en: "Zero-shot prompting asks the model to solve a task from instructions alone — no examples included. Learn when it works, when to add examples, and the constraints that make zero-shot reliable.",
       es: "El zero-shot prompting le pide al modelo que resuelva una tarea solo con instrucciones — sin ejemplos incluidos. Aprendé cuándo funciona, cuándo agregar ejemplos y las restricciones que lo hacen confiable.",
-      pt: "Zero-shot prompting asks the model to solve a task from instructions alone — no examples included. Learn when it works, when to add examples, and the constraints that make zero-shot reliable.",
+      pt: "O zero-shot prompting pede ao modelo que resolva uma tarefa só com instruções — sem exemplos. Aprenda quando funciona, quando acrescentar exemplos e quais restrições tornam o zero-shot confiável.",
     },
     sections: [
       {
-        heading: { en: "What zero-shot prompting is and when it works", es: "Qué es el zero-shot prompting y cuándo funciona", pt: "What zero-shot prompting is and when it works" },
+        heading: { en: "What zero-shot prompting is and when it works", es: "Qué es el zero-shot prompting y cuándo funciona", pt: "O que é zero-shot prompting e quando funciona" },
         bullets: {
           en: [
             "Zero-shot means no examples in the prompt — the model uses only the instruction and its training knowledge to produce the output.",
@@ -4447,16 +4447,16 @@ Format:
             "La regla práctica: probá zero-shot primero. Agregá ejemplos solo cuando obtengas resultados inconsistentes entre ejecuciones.",
           ],
           pt: [
-            "Zero-shot means no examples in the prompt — the model uses only the instruction and its training knowledge to produce the output.",
-            "It works well for tasks the model has seen many times in training: summarization, translation, classification with clear categories, simple rewrites.",
-            "It also works when you can fully specify the output in words: 'a three-column table with columns X, Y, Z' is often enough without a concrete example.",
-            "Zero-shot fails when the output pattern is unusual, when format precision is critical, or when the task involves a niche domain the model is unlikely to have seen often.",
-            "The practical rule: try zero-shot first. Add examples only when you get inconsistent results across runs.",
+            "Zero-shot significa nenhum exemplo no prompt — o modelo usa só a instrução e o que aprendeu no treinamento para produzir a saída.",
+            "Funciona bem em tarefas que o modelo viu muitas vezes no treinamento: resumo, tradução, classificação com categorias claras, reescritas simples.",
+            "Também funciona quando você consegue especificar a saída inteira em palavras: 'uma tabela de três colunas com as colunas X, Y, Z' muitas vezes basta, sem um exemplo concreto.",
+            "O zero-shot falha quando o padrão de saída é incomum, quando a precisão do formato é crítica ou quando a tarefa envolve um nicho que o modelo provavelmente viu pouco.",
+            "A regra prática: tente zero-shot primeiro. Acrescente exemplos só quando os resultados variarem de uma execução para outra.",
           ],
         },
       },
       {
-        heading: { en: "Why zero-shot fails and how to fix it without adding examples", es: "Por qué falla el zero-shot y cómo arreglarlo sin agregar ejemplos", pt: "Why zero-shot fails and how to fix it without adding examples" },
+        heading: { en: "Why zero-shot fails and how to fix it without adding examples", es: "Por qué falla el zero-shot y cómo arreglarlo sin agregar ejemplos", pt: "Por que o zero-shot falha e como corrigir sem acrescentar exemplos" },
         bullets: {
           en: [
             "Format ambiguity: 'list the main points' can mean bullets, numbered steps, or prose. Add 'as a numbered list, one item per line' to lock it.",
@@ -4473,18 +4473,18 @@ Format:
             "Si el zero-shot sigue produciendo resultados inconsistentes después de agregar restricciones de formato, longitud y casos límite — esa es la señal para cambiar a few-shot con 2–3 ejemplos dirigidos.",
           ],
           pt: [
-            "Format ambiguity: 'list the main points' can mean bullets, numbered steps, or prose. Add 'as a numbered list, one item per line' to lock it.",
-            "No output length constraint: without one, the model calibrates to what it thinks is appropriate — which varies between runs. Add a hard limit.",
-            "Missing decision rules for edge cases: if the input has missing data, ambiguous content, or out-of-scope requests, the model will guess. State what to do explicitly.",
-            "Vague task framing: 'analyze this text' is under-specified. Replace vague verbs with specific ones: extract, classify, score, rank, summarize to N sentences.",
-            "If zero-shot still produces inconsistent results after adding format, length, and edge-case constraints — that's the signal to switch to few-shot with 2–3 targeted examples.",
+            "Ambiguidade de formato: 'liste os pontos principais' pode significar tópicos, passos numerados ou texto corrido. Acrescente 'como lista numerada, um item por linha' para fixar.",
+            "Nenhuma restrição de tamanho: sem ela, o modelo se calibra pelo que acha adequado — e isso varia de uma execução para outra. Acrescente um limite rígido.",
+            "Faltam regras de decisão para casos de borda: se a entrada tiver dados ausentes, conteúdo ambíguo ou pedidos fora do escopo, o modelo vai chutar. Diga de forma explícita o que fazer.",
+            "Formulação vaga da tarefa: 'analise este texto' está subespecificado. Troque verbos vagos por verbos específicos: extrair, classificar, pontuar, ordenar, resumir em N frases.",
+            "Se o zero-shot continuar gerando resultados inconsistentes depois de você acrescentar restrições de formato, tamanho e casos de borda — esse é o sinal para passar ao few-shot com 2–3 exemplos bem escolhidos.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Zero-shot task with format and constraints", es: "Tarea zero-shot con formato y restricciones", pt: "Zero-shot task with format and constraints" },
+        title: { en: "Zero-shot task with format and constraints", es: "Tarea zero-shot con formato y restricciones", pt: "Tarefa zero-shot com formato e restrições" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -4518,25 +4518,25 @@ Reglas:
 - Si el input no tiene [caso límite], [qué hacer: "saltalo" / "marcalo" / "escribí N/A"]
 
 Devolvé SOLO el output. Sin preámbulo, sin comentarios.`,
-          pt: `[Action verb]: [what you want — be specific]
+          pt: `[Verbo de ação]: [o que você quer — seja específico]
 
-Input:
-"""[paste your content here]"""
+Entrada:
+"""[cole seu conteúdo aqui]"""
 
-Output format:
-- [exact structure: numbered list / table with columns X, Y / 3-sentence paragraph]
-- Length: [hard limit, e.g. "3 bullets max" or "<= 100 words"]
+Formato de saída:
+- [estrutura exata: lista numerada / tabela com as colunas X, Y / parágrafo de 3 frases]
+- Tamanho: [limite rígido, ex. "no máximo 3 tópicos" ou "<= 100 palavras"]
 
-Rules:
-- [constraint 1, e.g. "preserve all numbers and proper nouns"]
-- [constraint 2, e.g. "do not add information not present in the input"]
-- If the input is missing [edge case], [what to do: "skip it" / "flag it" / "write N/A"]
+Regras:
+- [restrição 1, ex. "preserve todos os números e nomes próprios"]
+- [restrição 2, ex. "não acrescente informações que não estejam na entrada"]
+- Se faltar [caso de borda] na entrada, [o que fazer: "pule" / "sinalize" / "escreva N/A"]
 
-Return ONLY the output. No preamble, no commentary.`,
+Retorne APENAS a saída. Sem introdução, sem comentários.`,
         },
       },
       {
-        title: { en: "Zero-shot classification with decision rules", es: "Clasificación zero-shot con reglas de decisión", pt: "Zero-shot classification with decision rules" },
+        title: { en: "Zero-shot classification with decision rules", es: "Clasificación zero-shot con reglas de decisión", pt: "Classificação zero-shot com regras de decisão" },
         purpose: "data",
         target: "claude",
         prompt: {
@@ -4576,42 +4576,42 @@ Formato de respuesta — una fila por ítem, exactamente:
 - [ítem 3]
 
 Sin explicación fuera de la tabla.`,
-          pt: `Classify each item below into one of the categories: [Category A / Category B / Category C].
+          pt: `Classifique cada item abaixo em uma das categorias: [Categoria A / Categoria B / Categoria C].
 
-Classification rules:
-- Category A: [define exactly what belongs here]
-- Category B: [define exactly what belongs here]
-- Category C: [define exactly what belongs here]
-- If an item could belong to more than one category, assign it to [priority category] and add a note.
-- If an item clearly fits no category, label it "Uncategorized" and note why.
+Regras de classificação:
+- Categoria A: [defina exatamente o que entra aqui]
+- Categoria B: [defina exatamente o que entra aqui]
+- Categoria C: [defina exatamente o que entra aqui]
+- Se um item puder pertencer a mais de uma categoria, atribua a [categoria prioritária] e acrescente uma nota.
+- Se um item claramente não se encaixar em nenhuma categoria, rotule como "Sem categoria" e anote por quê.
 
-Return format — one row per item, exactly:
-[Item] | [Category] | [Note or "—"]
+Formato de retorno — uma linha por item, exatamente:
+[Item] | [Categoria] | [Nota ou "—"]
 
-Items to classify:
+Itens para classificar:
 - [item 1]
 - [item 2]
 - [item 3]
 
-No explanation outside the table.`,
+Nenhuma explicação fora da tabela.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "What is the difference between zero-shot and few-shot prompting?", es: "¿Cuál es la diferencia entre zero-shot y few-shot prompting?", pt: "What is the difference between zero-shot and few-shot prompting?" },
+        q: { en: "What is the difference between zero-shot and few-shot prompting?", es: "¿Cuál es la diferencia entre zero-shot y few-shot prompting?", pt: "Qual é a diferença entre zero-shot e few-shot prompting?" },
         a: {
           en: "Zero-shot includes only the instruction; the model produces output without seeing any examples. Few-shot includes 2–5 input/output examples before the real task, showing the model exactly what you want. Zero-shot is faster to write and cheaper in tokens; few-shot produces more consistent format and style. Use zero-shot for well-understood tasks, few-shot when the output pattern is unusual or you're getting inconsistent results.",
           es: "El zero-shot incluye solo la instrucción; el modelo produce output sin ver ejemplos. El few-shot incluye 2–5 ejemplos de input/output antes de la tarea real, mostrándole al modelo exactamente qué querés. El zero-shot es más rápido de escribir y más barato en tokens; el few-shot produce formato y estilo más consistentes. Usá zero-shot para tareas bien comprendidas, few-shot cuando el patrón de output es inusual o estás obteniendo resultados inconsistentes.",
-          pt: "Zero-shot includes only the instruction; the model produces output without seeing any examples. Few-shot includes 2–5 input/output examples before the real task, showing the model exactly what you want. Zero-shot is faster to write and cheaper in tokens; few-shot produces more consistent format and style. Use zero-shot for well-understood tasks, few-shot when the output pattern is unusual or you're getting inconsistent results.",
+          pt: "O zero-shot inclui só a instrução; o modelo produz a saída sem ver nenhum exemplo. O few-shot inclui 2–5 exemplos de entrada e saída antes da tarefa real, mostrando ao modelo exatamente o que você quer. O zero-shot é mais rápido de escrever e gasta menos tokens; o few-shot gera formato e estilo mais consistentes. Use zero-shot em tarefas bem conhecidas e few-shot quando o padrão de saída for incomum ou os resultados estiverem inconsistentes.",
         },
       },
       {
-        q: { en: "Can zero-shot prompting handle complex tasks?", es: "¿El zero-shot prompting puede manejar tareas complejas?", pt: "Can zero-shot prompting handle complex tasks?" },
+        q: { en: "Can zero-shot prompting handle complex tasks?", es: "¿El zero-shot prompting puede manejar tareas complejas?", pt: "O zero-shot prompting dá conta de tarefas complexas?" },
         a: {
           en: "Yes, for tasks where complexity is in the logic rather than the output format — like multi-step analysis, decision trees, or long-form reasoning. The key is breaking the task into explicit steps inside the prompt ('First: X. Then: Y. Finally: Z.') rather than asking for everything at once. For complex formatting or style, few-shot examples work better than trying to describe the pattern in words.",
           es: "Sí, para tareas donde la complejidad está en la lógica y no en el formato de salida — como análisis multi-paso, árboles de decisión o razonamiento de forma larga. La clave es descomponer la tarea en pasos explícitos dentro del prompt ('Primero: X. Luego: Y. Finalmente: Z.') en vez de pedir todo de una vez. Para formateo o estilo complejo, los ejemplos few-shot funcionan mejor que intentar describir el patrón con palabras.",
-          pt: "Yes, for tasks where complexity is in the logic rather than the output format — like multi-step analysis, decision trees, or long-form reasoning. The key is breaking the task into explicit steps inside the prompt ('First: X. Then: Y. Finally: Z.') rather than asking for everything at once. For complex formatting or style, few-shot examples work better than trying to describe the pattern in words.",
+          pt: "Sim, em tarefas em que a complexidade está na lógica e não no formato de saída — como análises em várias etapas, árvores de decisão ou raciocínios longos. O segredo é dividir a tarefa em passos explícitos dentro do prompt ('Primeiro: X. Depois: Y. Por fim: Z.') em vez de pedir tudo de uma vez. Para formatação ou estilo complexos, exemplos few-shot funcionam melhor do que tentar descrever o padrão em palavras.",
         },
       },
     ],
@@ -4621,16 +4621,16 @@ No explanation outside the table.`,
     title: {
       en: "Prompts for GPT: how to get structured, reliable output from ChatGPT",
       es: "Prompts para GPT: cómo obtener salida estructurada y confiable de ChatGPT",
-      pt: "Prompts for GPT: how to get structured, reliable output from ChatGPT",
+      pt: "Prompts para GPT: saídas estruturadas e confiáveis no ChatGPT",
     },
     description: {
       en: "How to write prompts that get consistent, well-structured output from GPT models — using format templates, output constraints, and instruction placement to reduce variation.",
       es: "Cómo escribir prompts que producen salida consistente y bien estructurada con modelos GPT — usando plantillas de formato, restricciones de salida y posicionamiento de instrucciones para reducir la variación.",
-      pt: "How to write prompts that get consistent, well-structured output from GPT models — using format templates, output constraints, and instruction placement to reduce variation.",
+      pt: "Como escrever prompts que tiram dos modelos GPT saídas consistentes e bem estruturadas — usando templates de formato, restrições de saída e a posição certa das instruções para reduzir a variação.",
     },
     sections: [
       {
-        heading: { en: "What makes GPT respond reliably", es: "Qué hace que GPT responda de forma confiable", pt: "What makes GPT respond reliably" },
+        heading: { en: "What makes GPT respond reliably", es: "Qué hace que GPT responda de forma confiable", pt: "O que faz o GPT responder de forma confiável" },
         bullets: {
           en: [
             "GPT models follow clear imperative instructions well: start with an action verb ('Write', 'Extract', 'Classify', 'List') rather than a description of what you want.",
@@ -4647,16 +4647,16 @@ No explanation outside the table.`,
             "GPT sigue bien las listas de reglas numeradas — si tenés múltiples restricciones, listalas como 1, 2, 3 en vez de mezclarlas en un párrafo.",
           ],
           pt: [
-            "GPT models follow clear imperative instructions well: start with an action verb ('Write', 'Extract', 'Classify', 'List') rather than a description of what you want.",
-            "They respond to explicit format specifications — showing the exact structure you want (e.g. a labeled template) reduces format variation more than describing it in prose.",
-            "GPT tends to add helpful context and preamble unless you constrain it: 'Return ONLY the output — no explanation' removes commentary reliably.",
-            "Instruction placement matters: for most tasks, put the main instruction before the content. For long documents, placing the question at the end (after the context) often improves accuracy.",
-            "GPT follows numbered rule lists well — if you have multiple constraints, list them as 1, 2, 3 rather than mixing them into a paragraph.",
+            "Os modelos GPT seguem bem instruções claras no imperativo: comece com um verbo de ação ('Escreva', 'Extraia', 'Classifique', 'Liste') em vez de uma descrição do que você quer.",
+            "Eles respondem a especificações de formato explícitas — mostrar a estrutura exata que você quer (ex.: um template com rótulos) reduz mais a variação de formato do que descrevê-la em texto.",
+            "O GPT tende a acrescentar contexto e introduções 'úteis', a menos que você o restrinja: 'Retorne APENAS a saída — sem explicação' elimina os comentários de forma confiável.",
+            "A posição das instruções importa: na maioria das tarefas, coloque a instrução principal antes do conteúdo. Em documentos longos, colocar a pergunta no final (depois do contexto) costuma melhorar a precisão.",
+            "O GPT segue bem listas numeradas de regras — se você tiver várias restrições, liste como 1, 2, 3 em vez de misturá-las em um parágrafo.",
           ],
         },
       },
       {
-        heading: { en: "Patterns that consistently work with GPT models", es: "Patrones que funcionan de forma consistente con modelos GPT", pt: "Patterns that consistently work with GPT models" },
+        heading: { en: "Patterns that consistently work with GPT models", es: "Patrones que funcionan de forma consistente con modelos GPT", pt: "Padrões que funcionam de forma consistente com os modelos GPT" },
         bullets: {
           en: [
             "Show a format template: instead of 'provide a summary with key points', write 'Format: Summary: [1 sentence]. Key points: [3 bullets max].' GPT will follow the labels.",
@@ -4673,18 +4673,18 @@ No explanation outside the table.`,
             "Para tareas abiertas, limitá el alcance explícitamente: 'Enfocate en [aspecto específico]. No cubras [área fuera de scope].' Sin un scope, GPT por defecto busca cobertura comprehensiva.",
           ],
           pt: [
-            "Show a format template: instead of 'provide a summary with key points', write 'Format: Summary: [1 sentence]. Key points: [3 bullets max].' GPT will follow the labels.",
-            "Use a constraint block: group all rules under a 'Rules:' or 'Constraints:' header so they're easy to scan and enforce.",
-            "Repeat the most important constraint at the end of the prompt — it gets higher weight in GPT's processing and reduces the chance of being overridden by a long context block.",
-            "Ask GPT to check its own work before responding: 'Before returning, verify that all fields are present and match the format.' This catches most structural errors.",
-            "For open-ended tasks, narrow the scope explicitly: 'Focus on [specific aspect]. Do not cover [out-of-scope area].' Without a scope, GPT defaults to comprehensive coverage.",
+            "Mostre um template de formato: em vez de 'forneça um resumo com os pontos principais', escreva 'Formato: Resumo: [1 frase]. Pontos principais: [no máximo 3 tópicos].' O GPT vai seguir os rótulos.",
+            "Use um bloco de restrições: agrupe todas as regras sob um cabeçalho 'Regras:' ou 'Restrições:' para que fiquem fáceis de ler e de cumprir.",
+            "Repita a restrição mais importante no fim do prompt — ela ganha mais peso no processamento do GPT e diminui a chance de ser sobreposta por um bloco de contexto longo.",
+            "Peça que o GPT confira o próprio trabalho antes de responder: 'Antes de retornar, verifique se todos os campos estão presentes e seguem o formato.' Isso pega a maioria dos erros de estrutura.",
+            "Em tarefas abertas, restrinja o escopo de forma explícita: 'Concentre-se em [aspecto específico]. Não cubra [área fora do escopo].' Sem um escopo, o GPT tende a cobrir tudo.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Structured task with a labeled format template", es: "Tarea estructurada con plantilla de formato etiquetado", pt: "Structured task with a labeled format template" },
+        title: { en: "Structured task with a labeled format template", es: "Tarea estructurada con plantilla de formato etiquetado", pt: "Tarefa estruturada com template de formato com rótulos" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -4730,31 +4730,31 @@ Reglas:
 3. Si un campo no puede completarse con el contexto provisto, escribí "Información insuficiente."
 
 Devolvé SOLO el output formateado de arriba.`,
-          pt: `[Task — start with an action verb]: [what you need in one sentence]
+          pt: `[Tarefa — comece com um verbo de ação]: [o que você precisa, em uma frase]
 
-Context:
-[Audience]: [who will read or use this]
-[Background]: [minimum context the model needs — 2-3 sentences max]
+Contexto:
+[Público]: [quem vai ler ou usar isto]
+[Histórico]: [o contexto mínimo de que o modelo precisa — no máximo 2-3 frases]
 
-Output format (use these labels and structure exactly):
-Overview: [1 sentence]
-Key points:
-- [point 1]
-- [point 2]
-- [point 3]
-Recommendation: [1 sentence, direct]
-Open questions: [list, or "None"]
+Formato de saída (use exatamente estes rótulos e esta estrutura):
+Visão geral: [1 frase]
+Pontos principais:
+- [ponto 1]
+- [ponto 2]
+- [ponto 3]
+Recomendação: [1 frase, direta]
+Perguntas em aberto: [lista, ou "Nenhuma"]
 
-Rules:
-1. Keep total output under [N] words.
-2. Do not add sections not listed above.
-3. If a field cannot be filled from the context provided, write "Insufficient information."
+Regras:
+1. Mantenha a saída total abaixo de [N] palavras.
+2. Não acrescente seções que não estejam listadas acima.
+3. Se um campo não puder ser preenchido com o contexto fornecido, escreva "Informação insuficiente."
 
-Return ONLY the formatted output above.`,
+Retorne APENAS a saída formatada acima.`,
         },
       },
       {
-        title: { en: "Constrained data extraction", es: "Extracción de datos con restricciones", pt: "Constrained data extraction" },
+        title: { en: "Constrained data extraction", es: "Extracción de datos con restricciones", pt: "Extração de dados com restrições" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -4794,42 +4794,42 @@ Devolvé SOLO la lista de campos de arriba, sin texto adicional.
 
 Texto:
 """[pegá tu texto acá]"""`,
-          pt: `Extract the following fields from the text below.
+          pt: `Extraia os seguintes campos do texto abaixo.
 
-Fields to extract:
-- Name: [person's full name, or "Not found"]
-- Date: [date in YYYY-MM-DD format, or "Not found"]
-- Amount: [number with currency, or "Not found"]
-- Action required: [what needs to happen next, 1 sentence, or "Not stated"]
+Campos para extrair:
+- Nome: [nome completo da pessoa, ou "Não encontrado"]
+- Data: [data no formato YYYY-MM-DD, ou "Não encontrado"]
+- Valor: [número com a moeda, ou "Não encontrado"]
+- Ação necessária: [o que precisa acontecer em seguida, 1 frase, ou "Não informado"]
 
-Rules:
-1. Use the exact values from the text — do not rephrase or infer.
-2. If a field is ambiguous (multiple possible values), list all of them separated by " / ".
-3. If a field is missing, write "Not found" — do not guess.
-4. Before returning, check that every field has a value (even if "Not found").
+Regras:
+1. Use os valores exatos do texto — não reformule nem deduza.
+2. Se um campo for ambíguo (vários valores possíveis), liste todos separados por " / ".
+3. Se um campo estiver faltando, escreva "Não encontrado" — não chute.
+4. Antes de retornar, confira se todos os campos têm um valor (mesmo que seja "Não encontrado").
 
-Return ONLY the field list above, no additional text.
+Retorne APENAS a lista de campos acima, sem texto adicional.
 
-Text:
-"""[paste your text here]"""`,
+Texto:
+"""[cole seu texto aqui]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Does prompt placement matter for GPT — should instructions go first or last?", es: "¿Importa la posición del prompt en GPT — las instrucciones van primero o al final?", pt: "Does prompt placement matter for GPT — should instructions go first or last?" },
+        q: { en: "Does prompt placement matter for GPT — should instructions go first or last?", es: "¿Importa la posición del prompt en GPT — las instrucciones van primero o al final?", pt: "A posição do prompt importa no GPT — as instruções vão no começo ou no fim?" },
         a: {
           en: "For short prompts, it rarely matters. For long prompts where you paste a large document, placing the question or task at the end (after the content) often improves accuracy — GPT pays more attention to context that directly precedes what it needs to generate. The main instruction should still appear first as a brief header, with the full document in the middle and the specific question repeated at the end.",
           es: "Para prompts cortos, rara vez importa. Para prompts largos donde pegás un documento grande, colocar la pregunta o tarea al final (después del contenido) suele mejorar la precisión — GPT presta más atención al contexto que precede directamente lo que necesita generar. La instrucción principal igual debe aparecer primero como un encabezado breve, con el documento completo en el medio y la pregunta específica repetida al final.",
-          pt: "For short prompts, it rarely matters. For long prompts where you paste a large document, placing the question or task at the end (after the content) often improves accuracy — GPT pays more attention to context that directly precedes what it needs to generate. The main instruction should still appear first as a brief header, with the full document in the middle and the specific question repeated at the end.",
+          pt: "Em prompts curtos, raramente importa. Em prompts longos, em que você cola um documento grande, colocar a pergunta ou a tarefa no final (depois do conteúdo) costuma melhorar a precisão — o GPT presta mais atenção ao contexto que vem logo antes do que ele precisa gerar. A instrução principal ainda deve aparecer primeiro, como um cabeçalho breve, com o documento completo no meio e a pergunta específica repetida no final.",
         },
       },
       {
-        q: { en: "How is prompting for GPT different from prompting for Claude or Gemini?", es: "¿En qué se diferencia hacer prompts para GPT de hacerlos para Claude o Gemini?", pt: "How is prompting for GPT different from prompting for Claude or Gemini?" },
+        q: { en: "How is prompting for GPT different from prompting for Claude or Gemini?", es: "¿En qué se diferencia hacer prompts para GPT de hacerlos para Claude o Gemini?", pt: "Em que escrever prompts para o GPT é diferente de escrever para o Claude ou o Gemini?" },
         a: {
           en: "GPT tends to follow numbered rule lists and labeled format templates very reliably. Claude responds particularly well to XML tags for separating context from instructions. Gemini benefits from seeing a concrete output template — even a short one — rather than a description of the format. The core principles (clear task, explicit constraints, defined output format) apply to all three; the syntax and emphasis differ slightly per model.",
           es: "GPT tiende a seguir listas de reglas numeradas y plantillas de formato etiquetado de forma muy confiable. Claude responde particularmente bien a XML tags para separar contexto de instrucciones. Gemini se beneficia de ver una plantilla de output concreta — aunque sea corta — en vez de una descripción del formato. Los principios básicos (tarea clara, restricciones explícitas, formato de salida definido) aplican a los tres; la sintaxis y el énfasis difieren ligeramente por modelo.",
-          pt: "GPT tends to follow numbered rule lists and labeled format templates very reliably. Claude responds particularly well to XML tags for separating context from instructions. Gemini benefits from seeing a concrete output template — even a short one — rather than a description of the format. The core principles (clear task, explicit constraints, defined output format) apply to all three; the syntax and emphasis differ slightly per model.",
+          pt: "O GPT tende a seguir de forma muito confiável listas numeradas de regras e templates de formato com rótulos. O Claude responde especialmente bem a tags XML para separar o contexto das instruções. O Gemini se beneficia de ver um template de saída concreto — mesmo que curto — em vez de uma descrição do formato. Os princípios centrais (tarefa clara, restrições explícitas, formato de saída definido) valem para os três; a sintaxe e a ênfase mudam um pouco de um modelo para outro.",
         },
       },
     ],
