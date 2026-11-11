@@ -1,0 +1,310 @@
+{
+  "base": "http://localhost:3181",
+  "at": "2026-11-11T17:41:57.436Z",
+  "results": [
+    {
+      "name": "desktop: the server HTML does not include the widget script",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop: the server HTML links to the profile without the widget",
+      "pass": true,
+      "detail": "3 link(s)"
+    },
+    {
+      "name": "desktop: nothing is requested from Elfsight before the load event",
+      "pass": true,
+      "detail": "first third-party request at 796 ms; DOMContentLoaded 534 ms; load 570 ms; LCP 748 ms"
+    },
+    {
+      "name": "desktop: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "desktop: no layout shift",
+      "pass": true,
+      "detail": "CLS 0.0021"
+    },
+    {
+      "name": "desktop: the card ends with posts or the fallback, never an empty box",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "phone: no request to Elfsight while the card is far below the fold",
+      "pass": true,
+      "detail": "0 request(s)"
+    },
+    {
+      "name": "phone: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "phone: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "glass-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "metro-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "blocked: the fallback with the profile link is shown",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "blocked: the empty feed region is hidden from assistive tech",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "blocked: the box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "data failure: the fallback is shown instead of the widget's own error",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "data failure: the box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "no JS: the card is rendered with a link to the profile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no JS: the box does not say \"Loading\" forever",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "no JS: no request to a third party",
+      "pass": true,
+      "detail": "0"
+    }
+  ],
+  "rows": [
+    {
+      "case": "desktop 1440 (card in view)",
+      "firstThirdPartyMs": 796,
+      "dclMs": 534,
+      "loadMs": 570,
+      "lcpMs": 748,
+      "cls": 0.0021,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2949,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12614,
+        "core.service.elfsight.com": 3022,
+        "static.elfsight.com": 152042,
+        "widget-data.service.elfsight.com": 5154,
+        "phosphor.utils.elfsightcdn.com": 21043,
+        "storage.elfsight.com": 7296
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me Nov 10 Writing, coding, research, data: no single model wins them all. Tell Promptea your task and"
+    },
+    {
+      "case": "phone 375 (after scrolling to the card)",
+      "firstThirdPartyMs": 856,
+      "dclMs": 371,
+      "loadMs": 532,
+      "lcpMs": 408,
+      "cls": 0.0202,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2949,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12613,
+        "core.service.elfsight.com": 3024,
+        "static.elfsight.com": 152045,
+        "widget-data.service.elfsight.com": 5150,
+        "phosphor.utils.elfsightcdn.com": 21036,
+        "storage.elfsight.com": 7295
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me Nov 10 Writing, coding, research, data: no single model wins them all. Tell Promptea your task and"
+    },
+    {
+      "case": "desktop glass-dark",
+      "firstThirdPartyMs": 666,
+      "dclMs": 325,
+      "loadMs": 509,
+      "lcpMs": 500,
+      "cls": 0.0051,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2949,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12610,
+        "core.service.elfsight.com": 3025,
+        "static.elfsight.com": 152036,
+        "widget-data.service.elfsight.com": 5153,
+        "phosphor.utils.elfsightcdn.com": 21039,
+        "storage.elfsight.com": 7296
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me Nov 10 Writing, coding, research, data: no single model wins them all. Tell Promptea your task and"
+    },
+    {
+      "case": "desktop metro-dark",
+      "firstThirdPartyMs": 662,
+      "dclMs": 313,
+      "loadMs": 473,
+      "lcpMs": 324,
+      "cls": 0.0044,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2949,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12608,
+        "core.service.elfsight.com": 3024,
+        "static.elfsight.com": 152033,
+        "widget-data.service.elfsight.com": 5154,
+        "phosphor.utils.elfsightcdn.com": 21042,
+        "storage.elfsight.com": 7293
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me Nov 10 Writing, coding, research, data: no single model wins them all. Tell Promptea your task and"
+    },
+    {
+      "case": "blocked (ad blocker)",
+      "firstThirdPartyMs": 618,
+      "dclMs": 316,
+      "loadMs": 477,
+      "lcpMs": 340,
+      "cls": 0.0022,
+      "thirdPartyRequests": 1,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {},
+      "hosts": [
+        "elfsightcdn.com"
+      ],
+      "sample": ""
+    },
+    {
+      "case": "Elfsight data service failing",
+      "firstThirdPartyMs": 581,
+      "dclMs": 278,
+      "loadMs": 438,
+      "lcpMs": 312,
+      "cls": 0.0021,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 2759,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12605,
+        "core.service.elfsight.com": 3024,
+        "static.elfsight.com": 152043
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 "
+    },
+    {
+      "case": "JavaScript disabled",
+      "firstThirdPartyMs": null,
+      "dclMs": 0,
+      "loadMs": 0,
+      "lcpMs": 0,
+      "cls": 0,
+      "thirdPartyRequests": 0,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {},
+      "hosts": [],
+      "sample": ""
+    }
+  ]
+}

@@ -217,6 +217,9 @@ export function lintPrompt(
       "long",
       "detailed",
       "bullets",
+      // v1.8.3 (engine 2.4.1): "five bullet points" is a length/shape, exactly like
+      // "cinco viñetas" (es) and "cinco tópicos" (pt), which already counted.
+      "bullet point",
       "paragraph",
       "sections",
       "breve",
@@ -352,6 +355,9 @@ export function lintPrompt(
       "buyer",
       "audiencia",
       "cliente ideal",
+      // v1.8.3 (engine 2.4.1): "para clientes recurrentes" names the audience, as
+      // "customers" (en, matched by "customer") and "clientes" (pt) already did.
+      "clientes",
       "para founders",
       "para marketers",
       "para dueños",

@@ -1,0 +1,243 @@
+sweep: 177 page(s) × 1440/768/375 px, aqua-light, against http://localhost:3181
+  ✗ /pt/guides @768: not translated: "Templates" in «Templates para extrair e transformar dados em JSON estrito, »
+  ✗ /pt/guides @768: not translated: "Templates" in «Templates para copy de landing page e anúncios que evitam ex»
+  ✗ /pt/guides @768: not translated: "Templates" in «Templates para resumir textos longos mantendo o nível certo »
+  ✗ /pt/guides @1440: not translated: "Templates" in «Templates para extrair e transformar dados em JSON estrito, »
+  ✗ /pt/guides @1440: not translated: "Templates" in «Templates para copy de landing page e anúncios que evitam ex»
+  ✗ /pt/guides @1440: not translated: "Templates" in «Templates para resumir textos longos mantendo o nível certo »
+  ✗ /pt/guides @375: not translated: "Templates" in «Templates para extrair e transformar dados em JSON estrito, »
+  ✗ /pt/guides @375: not translated: "Templates" in «Templates para copy de landing page e anúncios que evitam ex»
+  ✗ /pt/guides @375: not translated: "Templates" in «Templates para resumir textos longos mantendo o nível certo »
+  ✗ /pt/guides/ai-prompt-templates-for-business @1440: not translated: "Templates" in «Templates de prompt de IA para empresas: planejamento, relat»
+  ✗ /pt/guides/ai-prompt-templates-for-business @1440: not translated: "Templates" in «Templates de prompt de IA prontos para usar em fluxos de tra»
+  ✗ /pt/guides/ai-prompt-templates-for-business @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompt-templates-for-business @768: not translated: "Templates" in «Templates de prompt de IA para empresas: planejamento, relat»
+  ✗ /pt/guides/ai-prompt-templates-for-business @768: not translated: "Templates" in «Templates de prompt de IA prontos para usar em fluxos de tra»
+  ✗ /pt/guides/ai-prompt-templates-for-business @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-competitor-analysis @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompt-templates-for-business @375: not translated: "Templates" in «Templates de prompt de IA para empresas: planejamento, relat»
+  ✗ /pt/guides/ai-prompt-templates-for-business @375: not translated: "Templates" in «Templates de prompt de IA prontos para usar em fluxos de tra»
+  ✗ /pt/guides/ai-prompt-templates-for-business @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-competitor-analysis @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-content-creators @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-competitor-analysis @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-content-creators @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-content-creators @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-customer-support @1440: not translated: "Templates" in «Templates de prompt para copiar e colar nas tarefas recorren»
+  ✗ /pt/guides/ai-prompts-for-customer-support @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-customer-support @375: not translated: "Templates" in «Templates de prompt para copiar e colar nas tarefas recorren»
+  ✗ /pt/guides/ai-prompts-for-customer-support @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-design @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-customer-support @768: not translated: "Templates" in «Templates de prompt para copiar e colar nas tarefas recorren»
+  ✗ /pt/guides/ai-prompts-for-customer-support @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-design @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-design @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-developers @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-developers @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-education @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-education @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-developers @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-education @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-email @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-email @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-finance @1440: not translated: "Templates" in «Templates práticos de prompt de IA para profissionais de fin»
+  ✗ /pt/guides/ai-prompts-for-finance @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-email @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-finance @768: not translated: "Templates" in «Templates práticos de prompt de IA para profissionais de fin»
+  ✗ /pt/guides/ai-prompts-for-finance @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-finance @375: not translated: "Templates" in «Templates práticos de prompt de IA para profissionais de fin»
+  ✗ /pt/guides/ai-prompts-for-finance @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-hr @768: not translated: "Templates" in «Templates práticos de prompt de IA para times de RH e recrut»
+  ✗ /pt/guides/ai-prompts-for-hr @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-hr @1440: not translated: "Templates" in «Templates práticos de prompt de IA para times de RH e recrut»
+  ✗ /pt/guides/ai-prompts-for-hr @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-learning @1440: not translated: "Templates" in «Templates de prompt que transformam a IA em um tutor pacient»
+  ✗ /pt/guides/ai-prompts-for-learning @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-hr @375: not translated: "Templates" in «Templates práticos de prompt de IA para times de RH e recrut»
+  ✗ /pt/guides/ai-prompts-for-hr @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-learning @375: not translated: "Templates" in «Templates de prompt que transformam a IA em um tutor pacient»
+  ✗ /pt/guides/ai-prompts-for-learning @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-learning @768: not translated: "Templates" in «Templates de prompt que transformam a IA em um tutor pacient»
+  ✗ /pt/guides/ai-prompts-for-learning @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-legal @1440: not translated: "Templates" in «Templates práticos de prompt de IA para advogados, paralegai»
+  ✗ /pt/guides/ai-prompts-for-legal @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-legal @768: not translated: "Templates" in «Templates práticos de prompt de IA para advogados, paralegai»
+  ✗ /pt/guides/ai-prompts-for-legal @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-legal @375: not translated: "Templates" in «Templates práticos de prompt de IA para advogados, paralegai»
+  ✗ /pt/guides/ai-prompts-for-legal @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-meetings @1440: not translated: "Templates" in «Templates de prompt para todo o ciclo de uma reunião: transf»
+  ✗ /pt/guides/ai-prompts-for-meetings @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-meetings @768: not translated: "Templates" in «Templates de prompt para todo o ciclo de uma reunião: transf»
+  ✗ /pt/guides/ai-prompts-for-meetings @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-presentations @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-meetings @375: not translated: "Templates" in «Templates de prompt para todo o ciclo de uma reunião: transf»
+  ✗ /pt/guides/ai-prompts-for-meetings @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-presentations @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-product-managers @1440: not translated: "Templates" in «Templates de prompt para copiar e colar nos fluxos recorrent»
+  ✗ /pt/guides/ai-prompts-for-product-managers @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-presentations @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-product-managers @375: not translated: "Templates" in «Templates de prompt para copiar e colar nos fluxos recorrent»
+  ✗ /pt/guides/ai-prompts-for-product-managers @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-product-managers @768: not translated: "Templates" in «Templates de prompt para copiar e colar nos fluxos recorrent»
+  ✗ /pt/guides/ai-prompts-for-product-managers @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-research @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-sales @1440: not translated: "Templates" in «Templates de prompt para copiar e colar nos fluxos de vendas»
+  ✗ /pt/guides/ai-prompts-for-sales @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-research @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-research @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-sales @768: not translated: "Templates" in «Templates de prompt para copiar e colar nos fluxos de vendas»
+  ✗ /pt/guides/ai-prompts-for-sales @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-sales @375: not translated: "Templates" in «Templates de prompt para copiar e colar nos fluxos de vendas»
+  ✗ /pt/guides/ai-prompts-for-sales @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-sops @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-sops @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-spreadsheets @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-spreadsheets @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-spreadsheets @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-sops @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-status-reports @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-status-reports @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-writing-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-prompts-for-status-reports @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-writing-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/better-prompts-for-claude @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/ai-writing-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/better-prompts-for-claude @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/better-prompts-for-claude @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/brainstorming-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/brainstorming-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/brainstorming-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/chain-of-thought @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/chain-of-thought @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/chatgpt-prompts-for-work @1440: not translated: "Templates" in «Templates de prompt reutilizáveis para o ChatGPT em tarefas »
+  ✗ /pt/guides/chatgpt-prompts-for-work @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/chain-of-thought @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/chatgpt-prompts-for-work @768: not translated: "Templates" in «Templates de prompt reutilizáveis para o ChatGPT em tarefas »
+  ✗ /pt/guides/chatgpt-prompts-for-work @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/claude-prompt-guide @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/claude-prompt-guide @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/chatgpt-prompts-for-work @375: not translated: "Templates" in «Templates de prompt reutilizáveis para o ChatGPT em tarefas »
+  ✗ /pt/guides/chatgpt-prompts-for-work @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/claude-prompt-guide @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/code-prompts-that-work @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/code-prompts-that-work @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/code-prompts-that-work @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/context-engineering @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/conversational-prompting @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/context-engineering @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/context-engineering @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/conversational-prompting @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/data-analysis-prompts @1440: not translated: "Templates" in «Templates de prompt para tarefas de análise de dados — gerar»
+  ✗ /pt/guides/data-analysis-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/data-analysis-prompts @768: not translated: "Templates" in «Templates de prompt para tarefas de análise de dados — gerar»
+  ✗ /pt/guides/data-analysis-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/conversational-prompting @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/deepseek-prompt-guide @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/deepseek-prompt-guide @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/data-analysis-prompts @375: not translated: "Templates" in «Templates de prompt para tarefas de análise de dados — gerar»
+  ✗ /pt/guides/data-analysis-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/deepseek-prompt-guide @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/few-shot-prompting @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/few-shot-prompting @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/gemini-prompt-guide @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/few-shot-prompting @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/gemini-prompt-guide @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/gpt-prompt-guide @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/gemini-prompt-guide @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/gpt-prompt-guide @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/grok-prompt-guide @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/gpt-prompt-guide @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/grok-prompt-guide @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/grok-prompt-guide @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/how-long-should-a-prompt-be @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/how-long-should-a-prompt-be @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/how-long-should-a-prompt-be @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/image-generation-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/image-generation-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/json-output @1440: not translated: "Templates" in «Templates para extrair e transformar dados em JSON estrito, »
+  ✗ /pt/guides/json-output @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/json-output @768: not translated: "Templates" in «Templates para extrair e transformar dados em JSON estrito, »
+  ✗ /pt/guides/json-output @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/image-generation-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/kimi-prompt-guide @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/json-output @375: not translated: "Templates" in «Templates para extrair e transformar dados em JSON estrito, »
+  ✗ /pt/guides/json-output @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/kimi-prompt-guide @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/kimi-prompt-guide @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/marketing-prompts-without-hype @1440: not translated: "Templates" in «Templates para copy de landing page e anúncios que evitam ex»
+  ✗ /pt/guides/marketing-prompts-without-hype @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/marketing-prompts-without-hype @768: not translated: "Templates" in «Templates para copy de landing page e anúncios que evitam ex»
+  ✗ /pt/guides/marketing-prompts-without-hype @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/marketing-prompts-without-hype @375: not translated: "Templates" in «Templates para copy de landing page e anúncios que evitam ex»
+  ✗ /pt/guides/marketing-prompts-without-hype @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/multimodal-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/multimodal-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/negative-prompting @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/multimodal-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/negative-prompting @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/negative-prompting @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/perplexity-prompt-guide @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/perplexity-prompt-guide @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/perplexity-prompt-guide @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-chaining @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-chaining @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-checklist @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-chaining @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-checklist @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-checklist @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-debugging @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-debugging @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-quality-scoring @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-quality-scoring @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-quality-scoring @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-debugging @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-rewriting @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-rewriting @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-templates-for-summarization @1440: not translated: "Templates" in «Templates de prompt para resumos: documentos, reuniões e pes»
+  ✗ /pt/guides/prompt-templates-for-summarization @1440: not translated: "Templates" in «Templates para copiar e colar e resumir documentos longos, n»
+  ✗ /pt/guides/prompt-templates-for-summarization @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-rewriting @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-templates-for-summarization @375: not translated: "Templates" in «Templates de prompt para resumos: documentos, reuniões e pes»
+  ✗ /pt/guides/prompt-templates-for-summarization @375: not translated: "Templates" in «Templates para copiar e colar e resumir documentos longos, n»
+  ✗ /pt/guides/prompt-templates-for-summarization @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/prompt-templates-for-summarization @768: not translated: "Templates" in «Templates de prompt para resumos: documentos, reuniões e pes»
+  ✗ /pt/guides/prompt-templates-for-summarization @768: not translated: "Templates" in «Templates para copiar e colar e resumir documentos longos, n»
+  ✗ /pt/guides/prompt-templates-for-summarization @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/reasoning-model-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/reasoning-model-prompts @768: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
+  ✗ /pt/guides/reasoning-model-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/reasoning-model-prompts @1440: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
+  ✗ /pt/guides/reasoning-model-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/role-prompting @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/role-prompting @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/role-prompting @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/structured-output-prompting @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/structured-output-prompting @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/structured-output-prompting @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/summarization-prompts @1440: not translated: "Templates" in «Templates para resumir textos longos mantendo o nível certo »
+  ✗ /pt/guides/summarization-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/summarization-prompts @768: not translated: "Templates" in «Templates para resumir textos longos mantendo o nível certo »
+  ✗ /pt/guides/summarization-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/system-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/system-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/summarization-prompts @375: not translated: "Templates" in «Templates para resumir textos longos mantendo o nível certo »
+  ✗ /pt/guides/summarization-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/team-prompt-library @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/team-prompt-library @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/team-prompt-library @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/system-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/test-prompt-across-models @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/test-prompt-across-models @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/translation-prompts @1440: not translated: "Templates" in «Templates para traduzir conteúdo com IA — com ajuste de tom,»
+  ✗ /pt/guides/translation-prompts @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/test-prompt-across-models @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/translation-prompts @768: not translated: "Templates" in «Templates para traduzir conteúdo com IA — com ajuste de tom,»
+  ✗ /pt/guides/translation-prompts @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/zero-shot-prompting @768: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/translation-prompts @375: not translated: "Templates" in «Templates para traduzir conteúdo com IA — com ajuste de tom,»
+  ✗ /pt/guides/translation-prompts @375: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/zero-shot-prompting @1440: not translated: "Templates" in «Templates»
+  ✗ /pt/guides/zero-shot-prompting @375: not translated: "Templates" in «Templates»
+
+531 page loads checked, 239 finding(s)
+exit 1

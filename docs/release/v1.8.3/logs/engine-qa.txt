@@ -1,0 +1,73 @@
+ok   [same language] text/pt — score 57 → 57 (writing)
+ok   [idempotence] text/pt — 282 → 282 chars, re-score 57
+ok   [same language] text/es — score 57 → 57 (writing)
+ok   [idempotence] text/es — 260 → 260 chars, re-score 57
+ok   [same language] text/en — score 57 → 57 (writing)
+ok   [idempotence] text/en — 234 → 234 chars, re-score 57
+ok   [cross interface] text: pt prompt from /es — score 57 (pt UI: 57)
+ok   [cross interface] text: pt prompt from /en — score 57 (pt UI: 57)
+ok   [same language] study/pt — score 46 → 46 (study)
+ok   [idempotence] study/pt — 271 → 271 chars, re-score 46
+ok   [same language] study/es — score 46 → 46 (study)
+ok   [idempotence] study/es — 253 → 253 chars, re-score 46
+ok   [same language] study/en — score 46 → 46 (study)
+ok   [idempotence] study/en — 238 → 238 chars, re-score 46
+ok   [cross interface] study: pt prompt from /es — score 46 (pt UI: 46)
+ok   [cross interface] study: pt prompt from /en — score 46 (pt UI: 46)
+ok   [same language] code/pt — score 41 → 41 (coding)
+ok   [idempotence] code/pt — 284 → 284 chars, re-score 41
+ok   [same language] code/es — score 38 → 38 (coding)
+ok   [idempotence] code/es — 272 → 272 chars, re-score 38
+ok   [same language] code/en — score 41 → 41 (coding)
+ok   [idempotence] code/en — 257 → 257 chars, re-score 41
+ok   [cross interface] code: pt prompt from /es — score 41 (pt UI: 41)
+ok   [cross interface] code: pt prompt from /en — score 41 (pt UI: 41)
+ok   [same language] data/pt — score 66 → 69 (data_extraction)
+ok   [idempotence] data/pt — 500 → 500 chars, re-score 69
+ok   [same language] data/es — score 66 → 69 (data_extraction)
+ok   [idempotence] data/es — 480 → 480 chars, re-score 69
+ok   [same language] data/en — score 66 → 69 (data_extraction)
+ok   [idempotence] data/en — 465 → 465 chars, re-score 69
+FAIL [cross interface] data: pt prompt from /es — status 429
+FAIL [cross interface] data: pt prompt from /en — status 429
+FAIL [same language] image/pt — status 429
+FAIL [same language] image/es — status 429
+FAIL [same language] image/en — status 429
+FAIL [cross interface] image: pt prompt from /es — status 429
+FAIL [cross interface] image: pt prompt from /en — status 429
+FAIL [same language] marketing/pt — status 429
+FAIL [same language] marketing/es — status 429
+FAIL [same language] marketing/en — status 429
+FAIL [cross interface] marketing: pt prompt from /es — status 429
+FAIL [cross interface] marketing: pt prompt from /en — status 429
+FAIL [same language] translation/pt — status 429
+FAIL [same language] translation/es — status 429
+FAIL [same language] translation/en — status 429
+FAIL [cross interface] translation: pt prompt from /es — status 429
+FAIL [cross interface] translation: pt prompt from /en — status 429
+FAIL [same language] summarization/pt — status 429
+FAIL [same language] summarization/es — status 429
+FAIL [same language] summarization/en — status 429
+FAIL [cross interface] summarization: pt prompt from /es — status 429
+FAIL [cross interface] summarization: pt prompt from /en — status 429
+
+engine summary:
+┌─────────┬─────────┬──────┬───────┬───────┬───────────────────┬─────────────────────────────────────────────────────────────────────────┬─────────────────────┐
+│ (index) │ purpose │ lang │ score │ after │ taskType          │ findings                                                                │ optimizedPromptLang │
+├─────────┼─────────┼──────┼───────┼───────┼───────────────────┼─────────────────────────────────────────────────────────────────────────┼─────────────────────┤
+│ 0       │ 'text'  │ 'pt' │ 57    │ 57    │ 'writing'         │ 'missing_context'                                                       │ 'pt'                │
+│ 1       │ 'text'  │ 'es' │ 57    │ 57    │ 'writing'         │ 'missing_context'                                                       │ 'es'                │
+│ 2       │ 'text'  │ 'en' │ 57    │ 57    │ 'writing'         │ 'missing_context'                                                       │ 'en'                │
+│ 3       │ 'study' │ 'pt' │ 46    │ 46    │ 'study'           │ 'missing_context,missing_study_level'                                   │ 'pt'                │
+│ 4       │ 'study' │ 'es' │ 46    │ 46    │ 'study'           │ 'missing_context,missing_study_level'                                   │ 'es'                │
+│ 5       │ 'study' │ 'en' │ 46    │ 46    │ 'study'           │ 'missing_context,missing_study_level'                                   │ 'en'                │
+│ 6       │ 'code'  │ 'pt' │ 41    │ 41    │ 'coding'          │ 'missing_context,missing_constraints'                                   │ 'pt'                │
+│ 7       │ 'code'  │ 'es' │ 38    │ 38    │ 'coding'          │ 'missing_context,missing_constraints'                                   │ 'es'                │
+│ 8       │ 'code'  │ 'en' │ 41    │ 41    │ 'coding'          │ 'missing_context,missing_constraints'                                   │ 'en'                │
+│ 9       │ 'data'  │ 'pt' │ 66    │ 69    │ 'data_extraction' │ 'missing_context,missing_constraints,missing_input_data,missing_schema' │ 'pt'                │
+│ 10      │ 'data'  │ 'es' │ 66    │ 69    │ 'data_extraction' │ 'missing_context,missing_constraints,missing_input_data,missing_schema' │ 'es'                │
+│ 11      │ 'data'  │ 'en' │ 66    │ 69    │ 'data_extraction' │ 'missing_context,missing_constraints,missing_input_data,missing_schema' │ 'en'                │
+└─────────┴─────────┴──────┴───────┴───────┴───────────────────┴─────────────────────────────────────────────────────────────────────────┴─────────────────────┘
+
+30 passed, 22 failed
+exit 1

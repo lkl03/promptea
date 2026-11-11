@@ -22,7 +22,7 @@ import Link from "next/link";
 
 import { editorialDate, formatEditorialDate } from "@/lib/blog/dates";
 import type { ArticleCard } from "@/lib/blog/types";
-import { type Lang } from "@/lib/domain";
+import { LANG_TAG, type Lang } from "@/lib/domain";
 
 export type ArticleCardDict = {
   featured: string;
@@ -81,6 +81,9 @@ export default function ArticleCardItem({
   const categoryLabel = dict.category[card.category] ?? card.category;
   const reading = dict.readingTime.replace("{n}", String(card.readingMinutes));
   const href = `/${lang}/blog/${card.slug}`;
+  // v1.8.3: the card's text is in the language it was written in; under /pt that
+  // is English, and the markup says so (WCAG 3.1.2 "Language of Parts").
+  const contentLangTag = card.lang !== lang ? LANG_TAG[card.lang] : undefined;
 
   // The daily card is unchanged: "daily" is the default cadence. The two weekly
   // editions get a chip so the feed never mixes them up with same-day news.
@@ -99,11 +102,11 @@ export default function ArticleCardItem({
             <span className="badge badge-neutral">{categoryLabel}</span>
           </div>
 
-          <h2 className="blog-row-title font-title mt-4 text-2xl font-semibold leading-tight sm:text-[1.75rem]">
+          <h2 lang={contentLangTag} className="blog-row-title font-title mt-4 text-2xl font-semibold leading-tight sm:text-[1.75rem]">
             {card.title}
           </h2>
 
-          <p className="mt-3 line-clamp-3 max-w-[62ch] text-base leading-relaxed text-ink-muted">
+          <p lang={contentLangTag} className="mt-3 line-clamp-3 max-w-[62ch] text-base leading-relaxed text-ink-muted">
             {card.deck}
           </p>
 
@@ -155,11 +158,11 @@ export default function ArticleCardItem({
             {editionLabel ? <span className="badge badge-info">{editionLabel}</span> : null}
           </div>
 
-          <h3 className="blog-row-title font-title mt-2 text-lg font-semibold leading-snug sm:text-xl md:text-[1.375rem]">
+          <h3 lang={contentLangTag} className="blog-row-title font-title mt-2 text-lg font-semibold leading-snug sm:text-xl md:text-[1.375rem]">
             {card.title}
           </h3>
 
-          <p className="mt-2 line-clamp-2 max-w-[68ch] text-[0.9375rem] leading-relaxed text-ink-muted sm:text-base">
+          <p lang={contentLangTag} className="mt-2 line-clamp-2 max-w-[68ch] text-[0.9375rem] leading-relaxed text-ink-muted sm:text-base">
             {card.deck}
           </p>
 

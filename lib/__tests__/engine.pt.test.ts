@@ -64,8 +64,9 @@ function engineText(r: ReturnType<typeof analyzePrompt>, userPrompt: string): st
 
 describe("engine 2.4.0: version and languages", () => {
   test("the minor version was bumped for the new language", () => {
-    expect(ENGINE_VERSION).toBe("2.4.0");
-    expect(analyzePrompt("Escreva um e-mail curto", "gpt", "pt", "text").meta.engineVersion).toBe("2.4.0");
+    // 2.4.x: patch releases (2.4.1 in v1.8.3) keep the minor that introduced Portuguese.
+    expect(ENGINE_VERSION).toMatch(/^2\.4\.\d+$/);
+    expect(analyzePrompt("Escreva um e-mail curto", "gpt", "pt", "text").meta.engineVersion).toBe(ENGINE_VERSION);
   });
 
   test("meta.lang is the language asked for", () => {

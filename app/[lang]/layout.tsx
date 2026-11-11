@@ -16,7 +16,23 @@ import NewsletterNudges from "@/components/newsletter/NewsletterNudges";
 import JsonLd from "@/components/seo/JsonLd";
 import { siteGraph } from "@/lib/seo/jsonld";
 import { LOCALES, LOCALE_TAG, OG_LOCALE, getSiteUrl } from "@/lib/seo/site";
-import { toLang, type Lang } from "@/lib/domain";
+import { LANGS, toLang, type Lang } from "@/lib/domain";
+
+/**
+ * v1.8.3 — the locales are known at build time. Without this, every page under
+ * /[lang] that has no generateStaticParams of its own was rendered on EVERY
+ * request (Cache-Control: private, no-store; measured in production: the home
+ * took ~1.1 s to first byte against ~0.25 s for a prerendered guide), and its
+ * `export const revalidate` did nothing. With the locales enumerated here, pages
+ * that read no request data (the home, benchmarks, how it works, about,
+ * methodology, privacy, the hubs…) are prerendered and revalidated in the
+ * background (ISR); pages that read `searchParams` (AI Daily filters, the
+ * analyzer deep link, /share) stay dynamic on their own. An unknown locale
+ * still reaches notFound() below.
+ */
+export function generateStaticParams() {
+  return LANGS.map((lang) => ({ lang }));
+}
 
 const GOOGLE_ADS_ID = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID; // e.g. "AW-17937226636"
 
@@ -31,6 +47,10 @@ const titleFont = localFont({
   ],
   variable: "--font-title",
   display: "swap",
+  // v1.8.3: only the Glass theme uses this family (Aqua and Metro use system
+  // fonts). Preloading it made every visit download ~110 KB of fonts it never
+  // drew; without the preload the browser fetches it only where it is used.
+  preload: false,
 });
 
 const bodyFont = localFont({
@@ -41,6 +61,7 @@ const bodyFont = localFont({
   ],
   variable: "--font-body",
   display: "swap",
+  preload: false, // Glass only — see titleFont.
 });
 
 const monoFont = localFont({

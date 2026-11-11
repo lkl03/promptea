@@ -33,6 +33,8 @@ export type AnalyzerDict = {
   analyzingSteps: string[];
   promptLoaded: string;
   genericError: string;
+  /** v1.8.3: shown when /api/analyze answers 429. */
+  rateLimited: string;
   editorLabel: string;
 };
 

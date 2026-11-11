@@ -1,0 +1,138 @@
+
+> prompt-evaluator@1.8.2 build
+> next build
+
+⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\Luca\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles: 
+   * C:\Users\Luca\OneDrive\Documents\PROYECTOS\REACT\NEXT\promptea\.claude\worktrees\strange-northcutt-db7eeb\package-lock.json
+   * C:\Users\Luca\OneDrive\Documents\PROYECTOS\REACT\NEXT\promptea\package-lock.json
+
+▲ Next.js 16.1.1 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 15.4s
+  Running TypeScript ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/609) ...
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+  Generating static pages using 11 workers (152/609) 
+  Generating static pages using 11 workers (304/609) 
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+  Generating static pages using 11 workers (456/609) 
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+✓ Generating static pages using 11 workers (609/609) in 11.0s
+  Finalizing page optimization ...
+
+Route (app)                              Revalidate  Expire
+┌ ○ /_not-found
+├ ƒ /[lang]
+├ ƒ /[lang]/about
+├ ƒ /[lang]/analyzer
+├ ƒ /[lang]/benchmarks
+├ ƒ /[lang]/best-ai
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/opengraph-image
+├ ƒ /[lang]/blog/feed.xml
+├ ƒ /[lang]/blog/weekly
+├ ƒ /[lang]/blog/weekly/[date]
+├ ƒ /[lang]/changelog
+├ ƒ /[lang]/glossary
+├ ● /[lang]/glossary/[slug]
+│ ├ /es/glossary/system-prompt
+│ ├ /es/glossary/few-shot
+│ ├ /es/glossary/delimiters
+│ └ [+57 more paths]
+├ ƒ /[lang]/guides
+├ ● /[lang]/guides/[slug]
+│ ├ /es/guides/prompt-checklist
+│ ├ /es/guides/json-output
+│ ├ /es/guides/code-prompts-that-work
+│ └ [+171 more paths]
+├ ƒ /[lang]/how-it-works
+├ ● /[lang]/landing/[slug]
+│ ├ /es/landing/prompt-analyzer
+│ ├ /en/landing/prompt-analyzer
+│ ├ /pt/landing/prompt-analyzer
+│ └ [+21 more paths]
+├ ƒ /[lang]/library
+├ ● /[lang]/llms-full.txt                        1h      1y
+│ ├ /es/llms-full.txt                            1h      1y
+│ ├ /en/llms-full.txt                            1h      1y
+│ └ /pt/llms-full.txt                            1h      1y
+├ ● /[lang]/llms.txt                             1h      1y
+│ ├ /es/llms.txt                                 1h      1y
+│ ├ /en/llms.txt                                 1h      1y
+│ └ /pt/llms.txt                                 1h      1y
+├ ƒ /[lang]/methodology
+├ ƒ /[lang]/models
+├ ● /[lang]/models/[slug]
+│ ├ /es/models/gpt
+│ ├ /es/models/claude
+│ ├ /es/models/gemini
+│ └ [+18 more paths]
+├ ● /[lang]/opengraph-image
+│ ├ /es/opengraph-image
+│ ├ /en/opengraph-image
+│ └ /pt/opengraph-image
+├ ƒ /[lang]/privacy
+├ ƒ /[lang]/prompts
+├ ƒ /[lang]/prompts/code
+├ ƒ /[lang]/prompts/data
+├ ƒ /[lang]/prompts/image
+├ ƒ /[lang]/prompts/marketing
+├ ƒ /[lang]/prompts/study
+├ ƒ /[lang]/prompts/text
+├ ƒ /[lang]/share
+├ ● /[lang]/twitter-image
+│ ├ /es/twitter-image
+│ ├ /en/twitter-image
+│ └ /pt/twitter-image
+├ ƒ /[lang]/weekly
+├ ƒ /api/analyze
+├ ƒ /api/analyze-llm
+├ ƒ /api/app-feedback
+├ ○ /api/benchmarks                              1h      1y
+├ ƒ /api/feedback
+├ ƒ /api/internal/blog/publish
+├ ƒ /api/internal/newsletter/run
+├ ƒ /api/match
+├ ƒ /api/newsletter/subscribe
+├ ƒ /api/newsletter/unsubscribe
+├ ƒ /api/share/card
+├ ƒ /api/telemetry
+├ ƒ /api/telemetry/app
+├ ƒ /api/telemetry/session
+├ ƒ /api/transcribe
+├ ○ /apple-icon.png
+├ ○ /icon.png
+├ ○ /llms-full.txt                               1h      1y
+├ ○ /llms.txt                                    1h      1y
+├ ○ /manifest.webmanifest
+├ ● /md/[lang]/[[...path]]                       5m      1y
+│ ├ /md/es                                       5m      1y
+│ ├ /md/es/how-it-works                          5m      1y
+│ ├ /md/es/about                                 5m      1y
+│ └ [+291 more paths]
+├ ○ /robots.txt
+└ ○ /sitemap.xml                                30m      1y
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

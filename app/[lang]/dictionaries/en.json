@@ -49,6 +49,7 @@
     ],
     "promptLoaded": "Prompt loaded",
     "genericError": "Something went wrong. Your prompt was kept — try again.",
+    "rateLimited": "Too many analyses in a row. Wait a minute and try again — your prompt was kept.",
     "editorLabel": "Your prompt"
   },
   "results": {
@@ -349,7 +350,8 @@
       "subtitle": "One verified story a day, with its sources.",
       "all": "See all stories",
       "weekly": "Weekly digest",
-      "lead": "Top story"
+      "lead": "Top story",
+      "langNote": "Stories are shown in English."
     },
     "teaser": {
       "title": "Benchmarks at a glance",

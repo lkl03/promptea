@@ -6,8 +6,33 @@ import { LANGS } from "./lib/domain";
 // Every locale, from the single list in lib/domain.ts: "es|en|pt".
 const LOCALE_ALT = LANGS.join("|");
 
+/**
+ * v1.8.3 — baseline security headers for every response (the platform only
+ * added Strict-Transport-Security). Deliberately NOT a Content-Security-Policy:
+ * the page loads third-party scripts whose origins change (the Elfsight X feed,
+ * optional Google Ads, Vercel Analytics) and a wrong policy breaks them
+ * silently; that needs its own rollout in report-only mode.
+ *   - nosniff: never let a browser reinterpret a response's type;
+ *   - SAMEORIGIN framing: no other site can frame Promptea (clickjacking);
+ *   - Referrer-Policy: other sites get the origin, never the path or query
+ *     (a legacy /analyzer?prompt=… link would otherwise leak the prompt);
+ *   - Permissions-Policy: the microphone stays available to this origin only
+ *     (voice dictation); camera, geolocation and the rest are off.
+ */
+export const SECURITY_HEADERS = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()" },
+];
+
 const nextConfig: NextConfig = {
   trailingSlash: false,
+  // Do not advertise the framework in every response.
+  poweredByHeader: false,
+  async headers() {
+    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+  },
   async redirects() {
     return [
       ...LANGS.map((l) => ({ source: `/${l}/`, destination: `/${l}`, permanent: true })),

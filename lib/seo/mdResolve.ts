@@ -27,6 +27,14 @@ export type ResolvedMarkdown = {
   htmlPath: string;
 };
 
+/** The store behind a twin could not be read. Never cached; see resolveMarkdown(). */
+export class MarkdownLookupError extends Error {
+  constructor(message: string, options?: { cause?: unknown }) {
+    super(message, options);
+    this.name = "MarkdownLookupError";
+  }
+}
+
 /** The `[...path]` segments that have a markdown twin, for static generation. */
 export function staticMarkdownPaths(): string[][] {
   return [
@@ -85,8 +93,18 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
     try {
       const a = await getArticleBySlug(lang, slug);
       return a ? { htmlPath, body: articleMarkdown(a, url, articleUpdated(a)) } : null;
-    } catch {
-      return null;
+    } catch (err) {
+      // No database configured (a build or a deployment without credentials):
+      // there is no AI Daily at all, so "not found" is the truth.
+      if (!process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) return null;
+      // v1.8.3: the database IS configured and the lookup failed (timeout, cold
+      // start, outage). Answering "not found" here was wrong twice over: the
+      // route is cached (ISR), and Next caches whatever status a route handler
+      // returns — so one failed lookup replaced a good twin with a 404 for the
+      // whole revalidation window, for every reader and crawler. Throwing makes
+      // the route fail instead: nothing is cached, the previous good copy keeps
+      // being served, and a first request gets a 500 a crawler will retry.
+      throw new MarkdownLookupError(`AI Daily lookup failed for ${htmlPath}`, { cause: err });
     }
   }
   return null;

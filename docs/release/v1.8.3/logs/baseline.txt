@@ -1,0 +1,24 @@
+
+> prompt-evaluator@1.8.2 lint
+> eslint
+
+[BABEL] Note: The code generator has deoptimised the styling of C:\Users\Luca\OneDrive\Documents\PROYECTOS\REACT\NEXT\promptea\.claude\worktrees\strange-northcutt-db7eeb\lib\seo\content\guides.ts as it exceeds the max of 500KB.
+LINT_EXIT 0
+
+> prompt-evaluator@1.8.2 typecheck
+> tsc --noEmit
+
+TSC_EXIT 0
+ [32m✓[39m lib/__tests__/social.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.guides.test.ts [2m([22m[2m60 tests[22m[2m)[22m[32m 283[2mms[22m[39m
+ [32m✓[39m lib/__tests__/prompts.daily.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.breadcrumbs.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m lib/__tests__/api-feedback-route.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m lib/__tests__/telemetry.newsletter.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m70 passed[39m[22m[90m (70)[39m
+[2m      Tests [22m [1m[32m1565 passed[39m[22m[90m (1565)[39m
+[2m   Start at [22m 14:05:20
+[2m   Duration [22m 13.92s[2m (transform 22.60s, setup 0ms, import 58.26s, tests 20.07s, environment 26ms)[22m
+
+TEST_EXIT 0

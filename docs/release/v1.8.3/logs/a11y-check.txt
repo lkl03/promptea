@@ -1,0 +1,81 @@
+ok   [header] /en: menu button is named and collapsed — {"expanded":"false","controls":"_R_1md9etb_","name":"Menu"}
+ok   [header] /en: Enter opens the menu — {"expanded":"true","visible":true,"links":9}
+ok   [header] /en: Tab moves into the menu links
+ok   [header] /en: Esc closes it and returns focus to the button — {"expanded":"false","focusBack":true}
+ok   [header] /en: no horizontal overflow at 375 — 0px
+ok   [header] /es/guides: menu button is named and collapsed — {"expanded":"false","controls":"_R_1md9etb_","name":"Menú"}
+ok   [header] /es/guides: Enter opens the menu — {"expanded":"true","visible":true,"links":9}
+ok   [header] /es/guides: Tab moves into the menu links
+ok   [header] /es/guides: Esc closes it and returns focus to the button — {"expanded":"false","focusBack":true}
+ok   [header] /es/guides: no horizontal overflow at 375 — 0px
+ok   [home] /en aqua: one <h1>, <html lang="en"> — {"h1":1,"lang":"en","navs":["Main navigation","Language","What you can do here","Footer navigation"]}
+ok   [home] /en aqua: header links, the two actions and "how it works" are reachable with Tab — /en/analyzer /en/best-ai /en/blog /en/benchmarks /en/prompts /en/guides /en/models /en/glossary /en/library /es /en /pt /en/blog/demo-labs-prices-its-listing /en/blog/demo-chips-opens-its-interconnect /en/blog/demo-labs-releases-demo-model-5 /en/blog/demo-week-ahead-infrastructure-earnings
+ok   [home] /en aqua: the prompt textarea is reachable with Tab
+ok   [home] /en aqua: every focused control paints a focus indicator
+ok   [names] /en aqua: no link or button without an accessible name
+ok   [home] /es glass: one <h1>, <html lang="es"> — {"h1":1,"lang":"es","navs":["Navegación principal","Idioma","Qué podés hacer acá","Pie de página"]}
+ok   [home] /es glass: header links, the two actions and "how it works" are reachable with Tab — /es/analyzer /es/best-ai /es/blog /es/benchmarks /es/prompts /es/guides /es/models /es/glossary /es/library /es /en /pt /es/blog/demo-labs-prices-its-listing /es/blog/demo-chips-opens-its-interconnect /es/blog/demo-labs-releases-demo-model-5 /es/blog/demo-week-ahead-infrastructure-earnings
+ok   [home] /es glass: the prompt textarea is reachable with Tab
+ok   [home] /es glass: every focused control paints a focus indicator
+ok   [names] /es glass: no link or button without an accessible name
+ok   [home] /en metro: one <h1>, <html lang="en"> — {"h1":1,"lang":"en","navs":["Main navigation","Language","What you can do here","Footer navigation"]}
+ok   [home] /en metro: header links, the two actions and "how it works" are reachable with Tab — /en/analyzer /en/best-ai /en/blog /en/benchmarks /en/prompts /en/guides /en/models /en/glossary /en/library /es /en /pt /en/blog/demo-labs-prices-its-listing /en/blog/demo-chips-opens-its-interconnect /en/blog/demo-labs-releases-demo-model-5 /en/blog/demo-week-ahead-infrastructure-earnings
+ok   [home] /en metro: the prompt textarea is reachable with Tab
+ok   [home] /en metro: every focused control paints a focus indicator
+ok   [names] /en metro: no link or button without an accessible name
+ok   [names] /en/how-it-works: named controls; role="img" graphics have a name and a description — unnamed=0 imgs=0
+ok   [names] /es/benchmarks: named controls; role="img" graphics have a name and a description — unnamed=0 imgs=2
+ok   [newsletter] nothing is shown before 5 s
+ok   [newsletter] first visit: the card opens by itself, full, with the form — {"variant":"full","role":"dialog","modal":"false","labelled":true,"closeName":"Close","form":true,"focusInside":false,"active":"<a class=\"rounded-sm transition
+ok   [newsletter] it is a named, non-modal dialog (no backdrop, no scroll lock)
+ok   [newsletter] it does not take focus — <a class="rounded-sm transition-opacity hover:opacity-80" ar
+ok   [newsletter] its close button has an accessible name
+ok   [newsletter] Esc collapses it to the pill — {"card":false,"pill":true}
+ok   [newsletter] the pill reopens it, and then focus moves into the form — {"open":true,"focusInside":true,"activeType":"email"}
+ok   [newsletter] next visit: only the pill, the card does not reopen by itself — {"card":false,"pill":true,"visible":true}
+ok   [newsletter] home: with the in-page form on screen the floating card stays away — {"inlineOnScreen":0,"floatingVisible":true}
+ok   [newsletter] phone: the self-opened card is the compact row (< 100 px tall, inside the viewport) — {"variant":"compact","height":63,"bottom":7,"overflow":0}
+ok   [newsletter] phone analyzer: no self-opened card, nothing over the text box — {"card":false,"overlapsTextarea":false}
+ok   [contrast] aqua/light: tagline 5.68:1 — 18px
+ok   [contrast] aqua/light: action title 14.84:1 — 16px
+ok   [contrast] aqua/light: action description 5.68:1 — 14px
+ok   [contrast] aqua/light: how-this-works button 5.68:1 — 14px
+ok   [contrast] aqua/light: prompt box explanation 5.74:1 — 14px
+ok   [contrast] aqua/light: prompt box hint 5.74:1 — 12px
+known [contrast] aqua/light: primary button label 4.02:1 (below 4.5:1; approved Aqua accent, see qa-report A11Y-1)
+ok   [contrast] aqua/light: nav link 5.68:1 — 14px
+ok   [contrast] aqua/light: newsletter body 5.74:1 — 14px
+ok   [contrast] aqua/light: footer link 14.84:1 — 12px
+ok   [contrast] glass/light: tagline 7.6:1 — 18px
+ok   [contrast] glass/light: action title 15.56:1 — 16px
+ok   [contrast] glass/light: action description 7.6:1 — 14px
+ok   [contrast] glass/light: how-this-works button 7.6:1 — 14px
+ok   [contrast] glass/light: prompt box explanation 7.6:1 — 14px
+ok   [contrast] glass/light: prompt box hint 7.6:1 — 12px
+ok   [contrast] glass/light: primary button label 5.35:1 — 14px
+ok   [contrast] glass/light: nav link 7.6:1 — 14px
+ok   [contrast] glass/light: newsletter body 7.6:1 — 14px
+ok   [contrast] glass/light: footer link 15.56:1 — 12px
+ok   [contrast] glass/dark: tagline 9.54:1 — 18px
+ok   [contrast] glass/dark: action title 17.31:1 — 16px
+ok   [contrast] glass/dark: action description 9.54:1 — 14px
+ok   [contrast] glass/dark: how-this-works button 9.54:1 — 14px
+ok   [contrast] glass/dark: prompt box explanation 9.54:1 — 14px
+ok   [contrast] glass/dark: prompt box hint 9.54:1 — 12px
+ok   [contrast] glass/dark: primary button label 9.99:1 — 14px
+ok   [contrast] glass/dark: nav link 9.54:1 — 14px
+ok   [contrast] glass/dark: newsletter body 9.54:1 — 14px
+ok   [contrast] glass/dark: footer link 17.31:1 — 12px
+ok   [contrast] metro/dark: tagline 7.15:1 — 18px
+ok   [contrast] metro/dark: action title 17.4:1 — 16px
+ok   [contrast] metro/dark: action description 7.15:1 — 14px
+ok   [contrast] metro/dark: how-this-works button 7.15:1 — 14px
+ok   [contrast] metro/dark: prompt box explanation 6.29:1 — 14px
+ok   [contrast] metro/dark: prompt box hint 6.29:1 — 12px
+ok   [contrast] metro/dark: primary button label 4.5:1 — 14px
+ok   [contrast] metro/dark: nav link 7.15:1 — 14px
+ok   [contrast] metro/dark: newsletter body 6.29:1 — 14px
+ok   [contrast] metro/dark: footer link 17.4:1 — 12px
+
+77 passed, 0 failed
+exit 0
