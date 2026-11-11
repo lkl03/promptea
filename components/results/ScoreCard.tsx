@@ -5,6 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { AnalyzeResponse } from "@/lib/analyzeClient";
 import { tpl } from "@/components/analyzer/format";
+import { pick, type Lang } from "@/lib/domain";
 
 type ResultsDict = Record<string, string>;
 
@@ -104,7 +105,7 @@ export default function ScoreCard({
   result,
 }: {
   dict: ResultsDict;
-  lang: "es" | "en";
+  lang: Lang;
   result: AnalyzeResponse;
 }) {
   const explainLines = (result.meta.scoreExplain ?? [])
@@ -136,7 +137,7 @@ export default function ScoreCard({
   const attachmentsCount = Number(result.meta.attachmentsCount ?? 0);
   const words = Number(result.stats?.words ?? 0);
   const tokens = Number(result.stats?.approxTokens ?? 0);
-  const wordsLabel = lang === "es" ? "palabras" : "words";
+  const wordsLabel = pick(lang, { es: "palabras", en: "words", pt: "palavras" });
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row items-center sm:gap-5">

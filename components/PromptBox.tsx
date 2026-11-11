@@ -15,7 +15,7 @@ import { getSessionId } from "@/lib/telemetry/session";
 import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
 import { isPurposeAttachmentEnabled, type AttachmentInput } from "@/lib/attachments";
 import { defaultModelIdForTarget, getModelsForTarget } from "@/lib/models";
-import { isPurpose, isTarget, type FormatChoice, type PromptPurpose, type TargetAI } from "@/lib/domain";
+import { isPurpose, isTarget, type FormatChoice, type PromptPurpose, type TargetAI, type Lang } from "@/lib/domain";
 import type { AnalyzeResponse } from "@/lib/analyzeClient";
 import TargetPicker from "./analyzer/TargetPicker";
 import PurposePicker from "./analyzer/PurposePicker";
@@ -30,7 +30,7 @@ import type { UiDict } from "@/lib/uiDict";
 type Dict = UiDict;
 
 /** Example prompt for each locale used by the "Try an example" helper */
-const EXAMPLE_PROMPT: Record<"es" | "en", { prompt: string; purpose: PromptPurpose; target: TargetAI }> = {
+const EXAMPLE_PROMPT: Record<Lang, { prompt: string; purpose: PromptPurpose; target: TargetAI }> = {
   es: {
     prompt: `Sos un experto en programación. Tengo el siguiente error en Next.js 14:
 
@@ -56,6 +56,20 @@ I need:
 1. Exactly why this happens
 2. How to prevent it (default value, guard clause, or Suspense)
 3. A snippet showing the applied fix`,
+    purpose: "code",
+    target: "claude",
+  },
+  pt: {
+    prompt: `Você é um engenheiro de software sênior. Estou recebendo este erro no Next.js 14:
+
+Error: "Cannot read properties of undefined (reading 'map')"
+
+Ele acontece no componente ProductList quando a prop products não é passada pelo servidor.
+
+Preciso de:
+1. Por que exatamente isso acontece
+2. Como evitar (valor padrão, guard clause ou Suspense)
+3. Um trecho de código com a correção aplicada`,
     purpose: "code",
     target: "claude",
   },
@@ -153,7 +167,7 @@ export default function PromptBox({
   handoff = false,
 }: {
   dict: Dict;
-  lang: "es" | "en";
+  lang: Lang;
   initialPrompt?: string;
   initialPurpose?: PromptPurpose;
   initialTarget?: TargetAI;

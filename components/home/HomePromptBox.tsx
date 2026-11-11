@@ -23,7 +23,7 @@
 import { useRouter } from "next/navigation";
 import { useId, useState, type FormEvent } from "react";
 import { HANDOFF_KEY } from "@/lib/matcher/handoff";
-import type { Lang } from "@/lib/domain";
+import { type Lang, INTL_LOCALE } from "@/lib/domain";
 
 type Dict = { title: string; explain: string; label: string; placeholder: string; submit: string; hint: string; tooLong: string };
 
@@ -86,7 +86,7 @@ export default function HomePromptBox({ lang, dict }: { lang: Lang; dict: Dict }
       />
       <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p id={`${id}-hint`} className="text-xs text-ink-muted" aria-live="polite">
-          {tooLong ? dict.tooLong.replace("{n}", new Intl.NumberFormat(lang === "es" ? "es-AR" : "en-US").format(HANDOFF_PROMPT_MAX)) : dict.hint}
+          {tooLong ? dict.tooLong.replace("{n}", new Intl.NumberFormat(INTL_LOCALE[lang]).format(HANDOFF_PROMPT_MAX)) : dict.hint}
         </p>
         <button type="submit" className="btn btn-primary h-10 shrink-0 px-5">
           {dict.submit} <span aria-hidden="true">→</span>

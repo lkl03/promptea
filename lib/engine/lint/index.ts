@@ -16,6 +16,26 @@ import { applyContradictions } from "./rules/contradictions";
 import { applyInjectionRules } from "./rules/injections";
 import { includesAny } from "./rules/utils";
 import { CODE_CONSTRAINT_RE, CODE_DELIVERABLE_RE, hasGoalSignal, hasImplicitOutputSpec, IMAGE_NEGATIVE_RE } from "../signals";
+import {
+  isPt,
+  PT_CODE_CONSTRAINT,
+  PT_CODE_DELIVERABLE,
+  PT_CONTEXT_CUES,
+  PT_GENERIC_CONSTRAINTS,
+  PT_IMAGE_NEGATIVE,
+  PT_INLINE_SOURCE,
+  PT_MARKETING_AUDIENCE,
+  PT_MARKETING_CTA,
+  PT_REGISTER,
+  PT_SOURCE_LABELS,
+  PT_STUDY_LEVEL,
+  PT_SUCCESS,
+  PT_SUMMARY_LENGTH,
+  PT_SUMMARY_SCOPE,
+  PT_TARGET_LANGUAGE,
+  PT_TASK_GOAL,
+  PT_WORK_MATERIAL,
+} from "../pt";
 
 function wordsCount(s: string) {
   return (s ?? "").trim().split(/\s+/).filter(Boolean).length;
@@ -99,7 +119,9 @@ export function lintPrompt(
   }
 
   // v1.8.0: the same detector the scorer uses (they used to disagree).
-  const hasGoal = hasGoalSignal(p, task) || detectGoal(low, task);
+  // v1.8.2: read with the Portuguese vocabulary too when the prompt reads as Portuguese.
+  const pt = isPt(p, lang);
+  const hasGoal = hasGoalSignal(p, task, lang) || detectGoal(low, task) || (pt && (PT_TASK_GOAL[task]?.test(p) ?? false));
   const isImage = task === "image";
 
   if (!hasGoal) {
@@ -107,12 +129,12 @@ export function lintPrompt(
     pushReco(recommendations, "add_goal", "high", lang);
   }
 
-  const outputFormat: OutputFormat | null | undefined = detectOutputFormat(p);
+  const outputFormat: OutputFormat | null | undefined = detectOutputFormat(p, lang);
 
   // v1.8.0: "3 headlines, max 30 characters" IS an output spec, and an
   // image's output is the image itself (medium/aspect are scored instead).
-  const codeDeliverable = (task === "coding" || task === "refactor") && CODE_DELIVERABLE_RE.test(p);
-  if (!outputFormat && !isImage && !codeDeliverable && !hasImplicitOutputSpec(p)) {
+  const codeDeliverable = (task === "coding" || task === "refactor") && (CODE_DELIVERABLE_RE.test(p) || (pt && PT_CODE_DELIVERABLE.test(p)));
+  if (!outputFormat && !isImage && !codeDeliverable && !hasImplicitOutputSpec(p, lang)) {
     pushFinding(findings, "missing_output_format", "high", lang);
     pushReco(recommendations, "define_output_format", "high", lang);
   }
@@ -120,20 +142,23 @@ export function lintPrompt(
   const hasGenericConstraints =
     /restric/.test(low) ||
     /constraints?/.test(low) ||
-    includesAny(low, ["máx", "max ", "sin ", "avoid", "tone", "tono", "largo", "length", "focus", "foco"]);
+    includesAny(low, ["máx", "max ", "sin ", "avoid", "tone", "tono", "largo", "length", "focus", "foco"]) ||
+    (pt && includesAny(low, PT_GENERIC_CONSTRAINTS));
 
   const hasSuccess =
     /criterio(s)? de éxito/.test(low) ||
     /success criteria/.test(low) ||
     /que incluya/.test(low) ||
-    /must include/.test(low);
+    /must include/.test(low) ||
+    (pt && PT_SUCCESS.test(p));
 
   if (!hasSuccess && task !== "summarization" && task !== "translation") {
     pushReco(recommendations, "add_success_criteria", "medium", lang);
   }
 
-  const contextCues =
-    lang === "es"
+  const contextCues = pt
+    ? PT_CONTEXT_CUES
+    : lang === "es"
       ? ["contexto", "escenario", "audiencia", "para quién", "para quien", "para qué", "para que", "uso", "entrada", "inputs"]
       : ["context", "scenario", "audience", "intended use", "input", "inputs"];
 
@@ -161,10 +186,11 @@ export function lintPrompt(
       "original text",
       "article:",
       "document:",
-    ]);
+    ]) ||
+    (pt && includesAny(low, PT_WORK_MATERIAL));
 
   // v1.8.0: a pinned stack ("Python 3.12 … con SQLAlchemy") IS technical context.
-  const codeSpec = (task === "coding" || task === "refactor") && CODE_CONSTRAINT_RE.test(p);
+  const codeSpec = (task === "coding" || task === "refactor") && (CODE_CONSTRAINT_RE.test(p) || (pt && PT_CODE_CONSTRAINT.test(p)));
   const looksContextPoor = !isImage && !codeSpec && !attachmentsPresent && !hasContextCues && !hasWorkMaterial && w >= 4 && w <= 120;
   if (looksContextPoor && task !== "summarization" && task !== "translation") {
     pushFinding(findings, "missing_context", "high", lang);
@@ -180,6 +206,7 @@ export function lintPrompt(
       QUOTED_SOURCE.test(p) ||
       INLINE_SOURCE.test(p) ||
       includesAny(low, ["texto:", "text:", "article:", "artículo:", "articulo:", "document:", "documento:", "archivo", "file"]) ||
+      (pt && (includesAny(low, PT_SOURCE_LABELS) || PT_INLINE_SOURCE.test(p))) ||
       /```/.test(p) ||
       w > 40;
 
@@ -201,7 +228,7 @@ export function lintPrompt(
       "párrafo",
       "parrafo",
       "secciones",
-    ]);
+    ]) || (pt && includesAny(low, PT_SUMMARY_LENGTH));
 
     const hasSummaryScope = includesAny(low, [
       "focus",
@@ -216,7 +243,7 @@ export function lintPrompt(
       "por secciones",
       "por temas",
       "lo más importante",
-    ]);
+    ]) || (pt && includesAny(low, PT_SUMMARY_SCOPE));
 
     if (!hasSourceMaterial) {
       addFinding("missing_input_data", "high");
@@ -236,6 +263,7 @@ export function lintPrompt(
       QUOTED_SOURCE.test(p) ||
       INLINE_SOURCE.test(p) ||
       includesAny(low, ["texto:", "text:", "source text", "original text", "archivo", "file"]) ||
+      (pt && (includesAny(low, PT_SOURCE_LABELS) || PT_INLINE_SOURCE.test(p))) ||
       /```/.test(p) ||
       w > 30;
 
@@ -256,7 +284,7 @@ export function lintPrompt(
       "idioma objetivo",
       "into ",
       "al ",
-    ]);
+    ]) || (pt && includesAny(low, PT_TARGET_LANGUAGE));
 
     const hasRegister = includesAny(low, [
       "formal",
@@ -279,7 +307,7 @@ export function lintPrompt(
       "natural",
       "literal",
       "casual",
-    ]);
+    ]) || (pt && includesAny(low, PT_REGISTER));
 
     if (!hasSourceText) {
       addFinding("missing_input_data", "high");
@@ -309,7 +337,7 @@ export function lintPrompt(
       "basico",
       "intermedio",
       "avanzado",
-    ]) || STUDY_LEVEL_EXTRA.test(p);
+    ]) || STUDY_LEVEL_EXTRA.test(p) || (pt && includesAny(low, PT_STUDY_LEVEL));
 
     if (!hasStudyLevel) {
       addFinding("missing_study_level", "medium");
@@ -327,7 +355,7 @@ export function lintPrompt(
       "para founders",
       "para marketers",
       "para dueños",
-    ]);
+    ]) || (pt && includesAny(low, PT_MARKETING_AUDIENCE));
 
     const hasCTA = includesAny(low, [
       "cta",
@@ -340,7 +368,7 @@ export function lintPrompt(
       "registrarse",
       "agendar demo",
       "suscribirse",
-    ]);
+    ]) || (pt && includesAny(low, PT_MARKETING_CTA));
 
     if (!hasAudience) {
       addFinding("missing_marketing_audience", "high");
@@ -351,7 +379,7 @@ export function lintPrompt(
       addReco("define_marketing_cta", "medium");
     }
   } else {
-    if (!hasGenericConstraints && !codeSpec && !(isImage && IMAGE_NEGATIVE_RE.test(p))) {
+    if (!hasGenericConstraints && !codeSpec && !(isImage && (IMAGE_NEGATIVE_RE.test(p) || (pt && PT_IMAGE_NEGATIVE.test(p))))) {
       addFinding("missing_constraints", "medium");
       addReco("add_constraints", "medium");
     }

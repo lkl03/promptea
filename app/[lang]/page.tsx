@@ -57,7 +57,7 @@ import { homeAboutDoc } from "@/lib/seo/content/sitePages";
 import { homeGraph } from "@/lib/seo/pageGraphs";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { pageMetadata } from "@/lib/seo/metadata";
-import type { Lang } from "@/lib/domain";
+import { type Lang, toLang, INTL_LOCALE, contentLangFor } from "@/lib/domain";
 
 export const revalidate = 300;
 
@@ -74,7 +74,8 @@ const NEWS_WINDOW = 30;
  */
 async function loadNews(lang: Lang): Promise<{ marquee: MarqueeItem[]; latest: LatestArticle[] }> {
   try {
-    const articles = await listAllPublishedArticles(lang, NEWS_WINDOW);
+    // AI Daily is written in es/en; /pt shows the English headlines (and says so).
+    const articles = await listAllPublishedArticles(contentLangFor(lang), NEWS_WINDOW);
     const latest = articles.slice(0, LATEST_COUNT).map((a) => ({
       slug: a.slug,
       title: a.title,
@@ -105,12 +106,12 @@ function fmtDate(iso: string | null, lang: Lang): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
-  return new Intl.DateTimeFormat(lang === "es" ? "es-AR" : "en-US", { dateStyle: "long", timeZone: "America/Argentina/Buenos_Aires" }).format(d);
+  return new Intl.DateTimeFormat(INTL_LOCALE[lang], { dateStyle: "long", timeZone: "America/Argentina/Buenos_Aires" }).format(d);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l: Lang = lang === "en" ? "en" : "es";
+  const l: Lang = toLang(lang);
   const doc = homeAboutDoc(l);
   // Search-intent title + description, canonical, hreflang (+ x-default), OG/Twitter
   // and the markdown twin: lib/seo/metadata.ts.

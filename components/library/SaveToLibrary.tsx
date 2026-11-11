@@ -15,6 +15,7 @@ import type { AnalyzeResponse } from "@/lib/analyzeClient";
 import { MAX_TEXT } from "@/lib/library/store";
 import { getLibraryServerSnapshot, getLibrarySnapshot, libraryActions, subscribeLibrary } from "@/lib/library/clientStore";
 import ShareButton, { type ShareDict } from "@/components/share/ShareButton";
+import { type Lang } from "@/lib/domain";
 
 type ResultsDict = Record<string, string>;
 
@@ -27,7 +28,7 @@ export default function SaveToLibrary({
 }: {
   result: AnalyzeResponse;
   originalPrompt: string;
-  lang: "es" | "en";
+  lang: Lang;
   dict: ResultsDict;
   shareDict: ShareDict;
 }) {

@@ -152,6 +152,15 @@ export default function OptimizedPromptPanel({
 
       <p className="text-xs text-ink-faint leading-relaxed">{dict.optimizedNote}</p>
 
+      {/* v1.8.2: the engine composed this prompt in another language than the
+          interface (a Portuguese image request → English art direction) and says
+          so. Not shown when the adaptive refiner rewrote it. */}
+      {result.meta.optimizedPromptLang && !isAdaptive ? (
+        <p role="note" data-optimized-lang-note className="text-xs text-ink-muted leading-relaxed">
+          {dict.optimizedInEnglish}
+        </p>
+      ) : null}
+
       {/* Improved / Original comparison */}
       {hasOriginal && (
         <div role="tablist" aria-label={dict.compareLabel} className="inline-flex items-center rounded-full border border-line bg-surface-soft p-0.5">

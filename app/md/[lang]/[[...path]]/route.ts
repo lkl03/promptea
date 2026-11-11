@@ -1,6 +1,6 @@
 // Markdown twins of the public pages: /{lang}/guides/x.md, /{lang}/about.md, /en.md …
 //
-// Not a public URL by itself: next.config.ts rewrites `/:lang(es|en)/:path*.md`
+// Not a public URL by itself: next.config.ts rewrites `/:lang(es|en|pt)/:path*.md`
 // here. The twin is generated from the same data as the HTML page
 // (lib/seo/markdown.ts) and declares the HTML page as its canonical.
 

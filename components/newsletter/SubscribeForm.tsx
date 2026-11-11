@@ -20,10 +20,13 @@
 import { FormEvent, useId, useState } from "react";
 import { nudgeActions } from "@/lib/newsletter/promptStore";
 import { trackAppEvent, type NewsletterSurface } from "@/lib/telemetry/appEvents.client";
+import { type Lang, CONTENT_LANGS, LANG_NAME, contentIsFallback, contentLangFor, type ContentLang } from "@/lib/domain";
 
 export type SubscribeFormDict = {
   emailPlaceholder: string;
   languageLabel: string;
+  /** Shown only when the interface language has no edition of its own (pt). */
+  languageHint: string;
   consentLabel: string;
   submit: string;
   submitting: string;
@@ -45,7 +48,7 @@ export default function SubscribeForm({
   onDone,
   surface = "inline",
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   dict: SubscribeFormDict;
   autoFocus?: boolean;
   onDone?: () => void;
@@ -54,7 +57,9 @@ export default function SubscribeForm({
 }) {
   const id = useId();
   const [email, setEmail] = useState("");
-  const [preferredLang, setPreferredLang] = useState<"en" | "es">(lang);
+  // The newsletter is written in Spanish and English: under /pt the form offers
+  // those two editions (English preselected) and says so.
+  const [preferredLang, setPreferredLang] = useState<ContentLang>(contentLangFor(lang));
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -73,7 +78,7 @@ export default function SubscribeForm({
       const res = await fetch("/api/newsletter/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, lang: preferredLang, consent: true }),
+        body: JSON.stringify({ email: trimmed, lang: preferredLang, uiLang: lang, consent: true }),
       });
       if (res.status === 429) {
         setStatus("error");
@@ -147,13 +152,22 @@ export default function SubscribeForm({
         <select
           id={`${id}-lang`}
           value={preferredLang}
-          onChange={(e) => setPreferredLang(e.target.value as "en" | "es")}
+          onChange={(e) => setPreferredLang(e.target.value as ContentLang)}
+          aria-describedby={contentIsFallback(lang) ? `${id}-lang-hint` : undefined}
           className="field h-8 px-2 text-xs"
         >
-          <option value="es">Español</option>
-          <option value="en">English</option>
+          {CONTENT_LANGS.map((cl) => (
+            <option key={cl} value={cl}>
+              {LANG_NAME[cl]}
+            </option>
+          ))}
         </select>
       </div>
+      {contentIsFallback(lang) ? (
+        <p id={`${id}-lang-hint`} data-newsletter-lang-hint className="text-xs leading-relaxed text-ink-muted">
+          {dict.languageHint}
+        </p>
+      ) : null}
 
       <label className="flex items-start gap-2 text-xs leading-relaxed text-ink-muted">
         <input

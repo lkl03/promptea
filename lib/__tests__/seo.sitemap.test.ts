@@ -18,7 +18,7 @@ vi.mock("@/lib/seo/dynamic", () => ({
 import sitemap from "@/app/sitemap";
 import { allStaticSeoUrls, staticSeoUrls } from "@/lib/seo/registry";
 import { LOCALES, X_DEFAULT_LOCALE, absUrl } from "@/lib/seo/site";
-import { guides } from "@/lib/seo/content/guides";
+import { getGuide, guideLocales, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
@@ -71,18 +71,37 @@ describe("sitemap.xml generator", () => {
     expect(entries).toHaveLength(allStaticSeoUrls().length);
   });
 
-  it("gives every URL es, en and x-default alternates that point back at itself", async () => {
+  it("gives every URL es, en, pt-BR + pt and x-default alternates that point back at itself", async () => {
     const entries = await sitemap();
+    const byUrl = new Map(entries.map((e) => [e.url, e]));
     for (const e of entries) {
       const l = langs(e);
-      expect(Object.keys(l).sort(), e.url).toEqual(["en", "es", "x-default"]);
+      // AI Daily exists in es/en only, and a guide not translated to Portuguese yet
+      // has no /pt page of its own: no Portuguese alternate is claimed for either.
+      const path = new URL(e.url).pathname;
+      const guide = /^\/[a-z]{2}\/guides\/([^/]+)$/.exec(path);
+      const editorial = /\/blog(\/|$)/.test(path) || Boolean(guide && guideLocales(getGuide(guide[1])!).length < LOCALES.length);
+      expect(Object.keys(l).sort(), e.url).toEqual(editorial ? ["en", "es", "x-default"] : ["en", "es", "pt", "pt-BR", "x-default"]);
       expect(Object.values(l), e.url).toContain(e.url);
       expect(l["x-default"], e.url).toBe(l[X_DEFAULT_LOCALE]);
-      // reciprocal: the alternate's own entry lists this URL
-      const other = entries.find((x) => x.url === (e.url.includes("/es") ? l.en : l.es));
-      expect(other, `${e.url} -> counterpart`).toBeDefined();
-      expect(Object.values(langs(other as Entry))).toContain(e.url);
+      if (!editorial) expect(l.pt, e.url).toBe(l["pt-BR"]);
+      // reciprocal: every alternate has its own entry, with the very same alternates
+      for (const alt of new Set(Object.values(l))) {
+        const other = byUrl.get(alt);
+        expect(other, `${e.url} -> ${alt}`).toBeDefined();
+        expect(langs(other as Entry), `${alt} mirrors ${e.url}`).toEqual(l);
+      }
     }
+  });
+
+  it("lists every static page in Portuguese, except AI Daily (shown under /pt as a view of the English original)", async () => {
+    const urls = (await sitemap()).map((e) => new URL(e.url).pathname);
+    expect(urls).toContain("/pt");
+    expect(urls).toContain("/pt/analyzer");
+    expect(urls).toContain("/pt/guides");
+    expect(urls.filter((u) => u.startsWith("/pt/blog"))).toEqual([]);
+    expect(urls).toContain("/en/blog");
+    expect(urls).toContain("/es/blog/weekly");
   });
 
   it("uses real lastmod dates: valid, in the past and not all 'now'", async () => {

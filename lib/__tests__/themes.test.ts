@@ -30,12 +30,13 @@ describe("theme registry (v1.7.0)", () => {
     expect(DARK_THEMES).toEqual(["metro"]);
   });
 
-  test("every theme + system has bilingual labels; Glass is labeled Glass; no Old version label", () => {
+  test("every theme + system has a label in every language; Glass is labeled Glass; no Old version label", () => {
     for (const key of [...THEMES, "system"] as const) {
       expect(THEME_LABELS[key].es.length).toBeGreaterThan(0);
       expect(THEME_LABELS[key].en.length).toBeGreaterThan(0);
+      expect(THEME_LABELS[key].pt.length).toBeGreaterThan(0);
     }
-    expect(THEME_LABELS.glass).toEqual({ es: "Glass", en: "Glass" });
+    expect(THEME_LABELS.glass).toEqual({ es: "Glass", en: "Glass", pt: "Glass" });
     expect(JSON.stringify(THEME_LABELS)).not.toMatch(/Old version|Versión anterior/);
   });
 

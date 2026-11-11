@@ -26,7 +26,7 @@ import type {
   BlogEdition,
   BlogImportance,
   BlogStatus,
-  Lang,
+  ContentLang,
 } from "@/lib/domain";
 import {
   editionIdempotencyKey,
@@ -399,7 +399,7 @@ export type BlogPost = {
   models: string[];
   author: string;
   editorialMethod: string;
-  locales: Record<Lang, LocaleContent>;
+  locales: Record<ContentLang, LocaleContent>;
   sources: Source[];
   image: BlogImage | null;
   digestItems: DigestItem[];
@@ -416,7 +416,7 @@ export type BlogPost = {
 export type PublicArticle = {
   canonicalSlug: string;
   slug: string;
-  lang: Lang;
+  lang: ContentLang;
   status: "published" | "corrected";
   title: string;
   deck: string;
@@ -447,7 +447,7 @@ export type PublicArticle = {
   correction: { note: string; correctedAt: string | null } | null;
   readingMinutes: number;
   /** The counterpart slug in the other locale, for correct hreflang alternates. */
-  alternateSlugs: Record<Lang, string>;
+  alternateSlugs: Record<ContentLang, string>;
 };
 
 /** Feed card projection — no body, so listing pages stay small. */

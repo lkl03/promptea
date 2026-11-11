@@ -10,6 +10,7 @@ import Link from "next/link";
 import type { DocBlock, PageDoc } from "@/lib/seo/content/sitePages";
 import { formatDay } from "@/lib/seo/dates";
 import type { Locale } from "@/lib/seo/site";
+import { pick } from "@/lib/domain";
 
 function isInternalPage(href: string): boolean {
   return href.startsWith("/") && !/\.(txt|xml|md)$/.test(href);
@@ -93,13 +94,12 @@ export default function DocSections({
 }) {
   const H = (headingLevel === 2 ? "h2" : "h3") as "h2" | "h3";
   const FaqH = (headingLevel === 2 ? "h2" : "h3") as "h2" | "h3";
-  const es = lang === "es";
 
   return (
     <>
       {showTldr ? (
         <p className="surface-soft mt-4 rounded-2xl p-4 text-sm leading-relaxed sm:text-base">
-          <strong className="font-semibold">{es ? "En breve: " : "In short: "}</strong>
+          <strong className="font-semibold">{pick(lang, { es: "En breve: ", en: "In short: ", pt: "Em resumo: " })}</strong>
           {doc.tldr}
         </p>
       ) : null}
@@ -121,7 +121,7 @@ export default function DocSections({
         {doc.faq.length > 0 ? (
           <section id={`${idPrefix}faq`} aria-labelledby={`${idPrefix}faq-title`} className="scroll-mt-24">
             <FaqH id={`${idPrefix}faq-title`} className="font-title text-xl font-semibold sm:text-2xl">
-              {es ? "Preguntas frecuentes" : "Frequently asked questions"}
+              {pick(lang, { es: "Preguntas frecuentes", en: "Frequently asked questions", pt: "Perguntas frequentes" })}
             </FaqH>
             <div className="mt-3 space-y-2">
               {doc.faq.map((f) => (
@@ -136,7 +136,7 @@ export default function DocSections({
       </div>
 
       <p className="mt-8 text-xs text-ink-faint">
-        {es ? "Última actualización: " : "Last updated: "}
+        {pick(lang, { es: "Última actualización: ", en: "Last updated: ", pt: "Última atualização: " })}
         <time dateTime={doc.updated}>{formatDay(doc.updated, lang)}</time>
       </p>
     </>

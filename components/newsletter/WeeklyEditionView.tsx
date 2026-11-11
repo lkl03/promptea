@@ -11,10 +11,11 @@
 
 import Link from "next/link";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
+import { type Lang, contentLangFor } from "@/lib/domain";
 
 type Props = {
   edition: NewsletterEdition;
-  lang: "es" | "en";
+  lang: Lang;
   dict: {
     heroLabel: string;
     topStoriesLabel: string;
@@ -29,7 +30,8 @@ type Props = {
 };
 
 export default function WeeklyEditionView({ edition, lang, dict, headingLevel = 2 }: Props) {
-  const content = edition.locales[lang];
+  // The edition exists in the content languages; /pt reads the English one.
+  const content = edition.locales[contentLangFor(lang)];
   const Hero = headingLevel === 1 ? "h1" : "h2";
 
   return (

@@ -2,16 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
-import { DEFAULT_LOCALE } from "./lib/seo/site";
+import { DEFAULT_LOCALE, LOCALES } from "./lib/seo/site";
 
-const locales = ["es", "en"] as const;
+// lib/domain.ts LANGS: es, en, pt. The matcher resolves regional tags to their
+// language, so pt-BR and pt-PT both land on /pt (and es-AR, es-MX on /es).
+const locales = LOCALES;
 /**
  * The language a visitor gets when nothing in Accept-Language matches (an
  * unsupported language, no header at all — which is what most crawlers send).
  * v1.8.0: this is lib/seo/site.ts's DEFAULT_LOCALE, the same locale that
  * hreflang="x-default" advertises, so what a search engine is told and what the
  * server does are one decision. English is the broader fallback; anyone whose
- * browser asks for Spanish still gets /es.
+ * browser asks for Spanish still gets /es, and for Portuguese /pt.
  */
 const defaultLocale = DEFAULT_LOCALE;
 

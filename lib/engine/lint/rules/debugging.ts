@@ -1,4 +1,5 @@
 import type { Lang, Impact, Severity, FindingId, RecommendationId, OutputFormat } from "../types";
+import { isPt, PT_REPRO_WORD } from "../../pt";
 import { hasEnvironmentHints, hasErrorSnippet, hasNumberedSteps, isDebugLike } from "./utils";
 
 type AddFinding = (id: FindingId, severity: Severity) => void;
@@ -23,7 +24,7 @@ export function applyDebuggingRules(opts: {
   }
 
   // Falta repro steps
-  if (!hasNumberedSteps(prompt) && !prompt.toLowerCase().includes("steps")) {
+  if (!hasNumberedSteps(prompt) && !prompt.toLowerCase().includes("steps") && !(isPt(prompt, lang) && PT_REPRO_WORD.test(prompt))) {
     addFinding("missing_repro_steps", "medium");
     addReco("add_repro_steps", "medium");
   }

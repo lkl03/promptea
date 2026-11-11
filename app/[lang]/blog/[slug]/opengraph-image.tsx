@@ -19,7 +19,7 @@
 // free of filesystem access at build time.
 
 import { ImageResponse } from "next/og";
-import { isLang } from "@/lib/domain";
+import { isLang, contentLangFor } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import { getArticleBySlug } from "@/lib/blog/server";
@@ -41,6 +41,10 @@ const FALLBACK: Record<Lang, { title: string; footer: string }> = {
   },
   en: {
     title: "The AI story of the day, verified.",
+    footer: "promptea.me",
+  },
+  pt: {
+    title: "A notícia de IA do dia, verificada.",
     footer: "promptea.me",
   },
 };
@@ -77,7 +81,7 @@ export default async function OpenGraphImage({
 
   if (isLang(lang)) {
     try {
-      const article = await getArticleBySlug(l, slug);
+      const article = await getArticleBySlug(contentLangFor(l), slug);
       if (article) {
         title = clampTitle(article.title);
         dateLabel = formatEditorialDate(article.eventDate, l);

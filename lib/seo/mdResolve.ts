@@ -9,7 +9,7 @@ import "server-only";
 
 import { getArticleBySlug } from "@/lib/blog/server";
 import { glossary } from "@/lib/seo/content/glossary";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { landings } from "@/lib/seo/content/landings";
 import { modelPages } from "@/lib/seo/content/models";
 import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "./content/sitePages";
@@ -19,6 +19,7 @@ import { articleUpdated } from "./dynamicUrls";
 import { articleMarkdown, benchmarksMarkdown, docMarkdown, glossaryMarkdown, guideMarkdown, landingMarkdown, modelMarkdown } from "./markdown";
 import { modelPageUpdated } from "./registry";
 import { absUrl, type Locale } from "./site";
+import { isContentLang } from "@/lib/domain";
 
 export type ResolvedMarkdown = {
   body: string;
@@ -62,6 +63,8 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
 
   if (kind === "guides") {
     const g = guides.find((x) => x.slug === slug);
+    // No twin for a guide that is not translated to this locale yet.
+    if (g && guideLang(g, lang) !== lang) return null;
     return g ? { htmlPath, body: guideMarkdown(g, lang, url, g.updated ?? CONTENT_UPDATED.guides) } : null;
   }
   if (kind === "glossary") {
@@ -77,6 +80,8 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
     return p ? { htmlPath, body: landingMarkdown(p, lang, url, CONTENT_UPDATED.landings) } : null;
   }
   if (kind === "blog") {
+    // Articles exist in the content languages only: no twin under /md/pt/blog.
+    if (!isContentLang(lang)) return null;
     try {
       const a = await getArticleBySlug(lang, slug);
       return a ? { htmlPath, body: articleMarkdown(a, url, articleUpdated(a)) } : null;

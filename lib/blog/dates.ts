@@ -14,6 +14,7 @@
 
 import { EDITION_KEY_PREFIX, EDITORIAL_TIMEZONE, MAX_BACKDATE_DAYS } from "@/lib/domain";
 import type { BlogEdition } from "@/lib/domain";
+import type { Lang } from "@/lib/domain";
 
 /** `YYYY-MM-DD` — the only date shape stored or compared anywhere in the blog. */
 export type EditorialDate = string;
@@ -205,10 +206,13 @@ export function weekAheadWindow(date: EditorialDate): { from: EditorialDate; to:
 
 /**
  * Human-readable publication date, matching the locale conventions already used
- * on the changelog page: ES writes `DD-MM-YYYY`, EN writes `YYYY-MM-DD`.
+ * on the changelog page: ES writes `DD-MM-YYYY`, EN writes `YYYY-MM-DD`, PT
+ * writes `DD/MM/YYYY` (the Brazilian convention). `lang` is the INTERFACE
+ * language: a date is chrome, not content.
  */
-export function formatEditorialDate(date: EditorialDate, lang: "es" | "en"): string {
+export function formatEditorialDate(date: EditorialDate, lang: Lang): string {
   if (!isEditorialDate(date)) return date;
   const [y, m, d] = date.split("-");
+  if (lang === "pt") return `${d}/${m}/${y}`;
   return lang === "es" ? `${d}-${m}-${y}` : `${y}-${m}-${d}`;
 }

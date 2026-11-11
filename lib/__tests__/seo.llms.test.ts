@@ -1,3 +1,4 @@
+import { LANG_NAME, contentLangFor } from "@/lib/domain";
 import { describe, expect, it } from "vitest";
 
 import { makeArticle, makeEdition, makeSnapshot } from "./seo.fixtures";
@@ -13,7 +14,7 @@ import {
   modelMarkdown,
 } from "@/lib/seo/markdown";
 import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "@/lib/seo/content/sitePages";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
@@ -42,11 +43,12 @@ describe("llms.txt", () => {
 
       it("has the expected sections", () => {
         for (const h of ["## Optional"]) expect(txt).toContain(h);
-        expect(txt).toMatch(lang === "es" ? /## Herramientas/ : /## Tools/);
-        expect(txt).toMatch(lang === "es" ? /## Guías de prompting/ : /## Prompting guides/);
-        expect(txt).toMatch(lang === "es" ? /## Glosario/ : /## Glossary/);
-        expect(txt).toMatch(lang === "es" ? /## Prompts por modelo/ : /## Prompts by model/);
-        expect(txt).toMatch(lang === "es" ? /### Cómo citar/ : /### How to cite/);
+        const h = {
+          es: ["## Herramientas", "## Guías de prompting", "## Glosario", "## Prompts por modelo", "### Cómo citar"],
+          en: ["## Tools", "## Prompting guides", "## Glossary", "## Prompts by model", "### How to cite"],
+          pt: ["## Ferramentas", "## Guias de prompting", "## Glossário", "## Prompts por modelo", "### Como citar"],
+        }[lang];
+        for (const heading of h) expect(txt).toContain(heading);
       });
 
       it("links every page of the registry exactly once (markdown twin when there is one)", () => {
@@ -100,7 +102,8 @@ describe("llms-full.txt", () => {
   for (const lang of LOCALES) {
     it(`${lang}: contains the title of every guide, glossary term, model page and landing`, () => {
       const txt = buildLlmsFullTxt(empty(lang));
-      for (const g of guides) expect(txt, g.slug).toContain(g.title[lang]);
+      // a guide not translated to this locale yet is not part of its full text (guideLang())
+      for (const g of guides) if (guideLang(g, lang) === lang) expect(txt, g.slug).toContain(g.title[lang]);
       for (const g of glossary) expect(txt, g.slug).toContain(g.title[lang]);
       for (const m of modelPages) expect(txt, m.slug).toContain(m.title[lang]);
       for (const p of landings) expect(txt, p.slug).toContain(p.h1[lang]);
@@ -129,7 +132,7 @@ describe("llms-full.txt", () => {
         makeArticle({
           slug: `big-${i}`,
           eventDate: `2026-10-${String(10 + i)}`,
-          lang,
+          lang: contentLangFor(lang),
           title: `Big story number ${i} headline`,
           body: Array.from({ length: 40 }, (_, k) => ({ type: "paragraph", text: `Paragraph ${k}. ` + "Lorem ipsum dolor sit amet. ".repeat(25) })) as never,
         }),
@@ -202,7 +205,7 @@ describe("markdown twins", () => {
       for (const md of docs) {
         expect(md.startsWith("# ")).toBe(true);
         expect(md).toContain(url);
-        expect(md).toContain(lang === "es" ? "Español" : "English");
+        expect(md).toContain(LANG_NAME[lang]);
         expect(md).not.toMatch(/<\/?(div|span|p|ul|li|script|style)\b/i);
         expect(withoutKnownProse(md)).not.toMatch(/undefined|\[object Object\]/);
         for (const l of links(md)) expect(() => new URL(l)).not.toThrow();

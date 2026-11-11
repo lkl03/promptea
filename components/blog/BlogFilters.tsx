@@ -35,7 +35,7 @@
 
 import Link from "next/link";
 
-import { BLOG_EDITIONS } from "@/lib/domain";
+import { BLOG_EDITIONS, type Lang } from "@/lib/domain";
 import type { BlogCategory, BlogEdition } from "@/lib/domain";
 import { filtersToQuery, hasActiveFilters } from "@/lib/blog/filters";
 import type { BlogFilterState } from "@/lib/blog/filters";
@@ -82,7 +82,7 @@ export default function BlogFilters({
   categories,
   dict,
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   filters: BlogFilterState;
   /** Distinct companies across the loaded window, already sorted. */
   companies: readonly string[];

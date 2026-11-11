@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { weeklyArchivePath } from "@/lib/newsletter/paths";
+import { type Lang } from "@/lib/domain";
 
 export type NewsletterMarqueeDict = {
   text: string;
@@ -10,7 +11,7 @@ export default function NewsletterMarquee({
   lang,
   dict,
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   dict: NewsletterMarqueeDict;
 }) {
   return (

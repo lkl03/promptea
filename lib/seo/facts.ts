@@ -27,50 +27,56 @@ type L = Record<Locale, string>;
 export const SCORE_DIMENSIONS: ReadonlyArray<{ key: "clarity" | "context" | "constraints" | "output" | "verifiability" | "safety"; label: L; measures: L }> = [
   {
     key: "clarity",
-    label: { en: "Clarity", es: "Claridad" },
+    label: { en: "Clarity", es: "Claridad", pt: "Clareza" },
     measures: {
       en: "Is there a stated goal and enough words to say what is wanted? Very short or goal-less requests score low.",
       es: "¿Hay un objetivo explícito y suficiente texto para decir qué se quiere? Los pedidos muy cortos o sin objetivo puntúan bajo.",
+      pt: "Há um objetivo declarado e palavras suficientes para dizer o que se quer? Pedidos muito curtos ou sem objetivo pontuam baixo.",
     },
   },
   {
     key: "context",
-    label: { en: "Context", es: "Contexto" },
+    label: { en: "Context", es: "Contexto", pt: "Contexto" },
     measures: {
       en: "Does the prompt include the material to work on (inputs), say who the answer is for (audience), or give examples?",
       es: "¿Incluye el material sobre el que trabajar (inputs), dice para quién es la respuesta (audiencia) o da ejemplos?",
+      pt: "O prompt inclui o material a ser trabalhado (insumos), diz para quem é a resposta (público) ou dá exemplos?",
     },
   },
   {
     key: "constraints",
-    label: { en: "Constraints", es: "Restricciones" },
+    label: { en: "Constraints", es: "Restricciones", pt: "Restrições" },
     measures: {
       en: "Are there explicit limits such as tone, length, timeframe, region or rules the answer must respect?",
       es: "¿Hay límites explícitos como tono, largo, plazo, región o reglas que la respuesta deba respetar?",
+      pt: "Há limites explícitos, como tom, tamanho, prazo, região ou regras que a resposta precisa respeitar?",
     },
   },
   {
     key: "output",
-    label: { en: "Output format", es: "Formato de salida" },
+    label: { en: "Output format", es: "Formato de salida", pt: "Formato de saída" },
     measures: {
       en: "Does it say what shape the answer must have (list, table, JSON, steps), and what a good answer looks like?",
       es: "¿Dice qué forma debe tener la respuesta (lista, tabla, JSON, pasos) y cómo se ve una buena respuesta?",
+      pt: "Ele diz que forma a resposta deve ter (lista, tabela, JSON, passos) e como é uma boa resposta?",
     },
   },
   {
     key: "verifiability",
-    label: { en: "Verifiability", es: "Verificabilidad" },
+    label: { en: "Verifiability", es: "Verificabilidad", pt: "Verificabilidade" },
     measures: {
       en: "Can the answer be checked? Success criteria, error details and reproduction steps count here; it weighs most for debugging and code.",
       es: "¿Se puede comprobar la respuesta? Cuentan los criterios de éxito, el detalle del error y los pasos para reproducirlo; pesa más en depuración y código.",
+      pt: "Dá para conferir a resposta? Aqui contam critérios de sucesso, detalhes do erro e passos para reproduzir; pesa mais em depuração e código.",
     },
   },
   {
     key: "safety",
-    label: { en: "Safety", es: "Seguridad" },
+    label: { en: "Safety", es: "Seguridad", pt: "Segurança" },
     measures: {
       en: "Starts at 100 and drops for text that looks like a prompt injection, for contradictory instructions and for a language mismatch with the request.",
       es: "Parte de 100 y baja si el texto parece una inyección de prompt, si hay instrucciones contradictorias o si el idioma no coincide con el pedido.",
+      pt: "Começa em 100 e cai quando há texto que parece injeção de prompt, instruções contraditórias ou um idioma que não bate com o do pedido.",
     },
   },
 ] as const;
@@ -147,21 +153,21 @@ export type ModelSummary = {
 };
 
 const LATENCY_LABEL: Record<"fast" | "balanced" | "slow", Record<Locale, string>> = {
-  fast: { en: "fast", es: "rápido" },
-  balanced: { en: "balanced", es: "equilibrado" },
-  slow: { en: "slower (deliberate)", es: "más lento (deliberado)" },
+  fast: { en: "fast", es: "rápido", pt: "rápido" },
+  balanced: { en: "balanced", es: "equilibrado", pt: "equilibrado" },
+  slow: { en: "slower (deliberate)", es: "más lento (deliberado)", pt: "mais lento (deliberado)" },
 };
 
 const STRENGTH_LABEL: Record<ModelEntry["strengths"][number], Record<Locale, string>> = {
-  reasoning: { en: "reasoning", es: "razonamiento" },
-  coding: { en: "coding", es: "código" },
-  writing: { en: "writing", es: "escritura" },
-  data: { en: "data", es: "datos" },
-  multimodal: { en: "multimodal", es: "multimodal" },
-  long_context: { en: "long context", es: "contexto largo" },
-  speed: { en: "speed", es: "velocidad" },
-  creativity: { en: "creativity", es: "creatividad" },
-  search: { en: "search", es: "búsqueda" },
+  reasoning: { en: "reasoning", es: "razonamiento", pt: "raciocínio" },
+  coding: { en: "coding", es: "código", pt: "programação" },
+  writing: { en: "writing", es: "escritura", pt: "escrita" },
+  data: { en: "data", es: "datos", pt: "dados" },
+  multimodal: { en: "multimodal", es: "multimodal", pt: "multimodal" },
+  long_context: { en: "long context", es: "contexto largo", pt: "contexto longo" },
+  speed: { en: "speed", es: "velocidad", pt: "velocidade" },
+  creativity: { en: "creativity", es: "creatividad", pt: "criatividade" },
+  search: { en: "search", es: "búsqueda", pt: "busca" },
 };
 
 /** Everything a page, the markdown twin and llms.txt may say about one registry entry. */

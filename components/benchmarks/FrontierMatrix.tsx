@@ -12,6 +12,7 @@ import type { FrontierMatrix as Matrix } from "@/lib/benchmarks/chart";
 import { PROVIDER_TO_PROMPTEA } from "@/lib/benchmarks/catalog";
 import { formatScore, FRONTIER_TOP_N } from "@/lib/benchmarks/normalize";
 import { providerColor } from "@/lib/benchmarks/chart";
+import { type Lang } from "@/lib/domain";
 
 export type MatrixCopy = {
   caption: string;
@@ -21,7 +22,7 @@ export type MatrixCopy = {
   guide: string;
 };
 
-export default function FrontierMatrix({ matrix, lang, copy }: { matrix: Matrix; lang: "es" | "en"; copy: MatrixCopy }) {
+export default function FrontierMatrix({ matrix, lang, copy }: { matrix: Matrix; lang: Lang; copy: MatrixCopy }) {
   return (
     <div className="surface-soft overflow-x-auto">
       <table className="w-full min-w-[560px] border-collapse text-left text-sm">

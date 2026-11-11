@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
+import { type Lang } from "@/lib/domain";
 
 type HowItWorksMode = "improve" | "best-ai";
 
@@ -14,7 +15,7 @@ type ModeCopy = {
   close: string;
 };
 
-const COPY: Record<HowItWorksMode, Record<"es" | "en", ModeCopy>> = {
+const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
   improve: {
     es: {
       button: "¿Nuevo? Mirá cómo funciona →",
@@ -82,6 +83,39 @@ const COPY: Record<HowItWorksMode, Record<"es" | "en", ModeCopy>> = {
         },
       ],
       close: "Close",
+    },
+    pt: {
+      button: "Primeira vez? Veja como funciona →",
+      title: "Como o Promptea funciona",
+      intro: "Cinco passos rápidos para transformar um prompt vago em uma versão otimizada para a IA que você usa.",
+      steps: [
+        {
+          title: "1. Escolha o modelo e o tipo de prompt",
+          body:
+            "Selecione a família de IA (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) e para que serve o prompt: texto, código, dados, marketing, estudo, imagem, tradução ou resumo.",
+        },
+        {
+          title: "2. Cole, escreva ou dite seu prompt",
+          body:
+            "Cole o texto, escreva ou dite com a voz usando o microfone. Se tiver contexto extra (logs, código, dados, anotações), anexe até 3 arquivos.",
+        },
+        {
+          title: "3. Revise a análise",
+          body:
+            "Veja a pontuação, os pontos a melhorar, as perguntas de acompanhamento e os riscos detectados. Corrija os problemas críticos e analise de novo.",
+        },
+        {
+          title: "4. Copie o prompt otimizado",
+          body:
+            "Com o prompt otimizado, copie e cole na sua IA preferida. A estrutura se adapta a cada modelo e a cada tipo de tarefa.",
+        },
+        {
+          title: "5. Escolha o formato de saída",
+          body:
+            "Modo Checklist: melhor para conversar no chat. Modo JSON puro: melhor para automações, APIs e fluxos de trabalho.",
+        },
+      ],
+      close: "Fechar",
     },
   },
   "best-ai": {
@@ -152,10 +186,43 @@ const COPY: Record<HowItWorksMode, Record<"es" | "en", ModeCopy>> = {
       ],
       close: "Close",
     },
+    pt: {
+      button: "Primeira vez? Veja como funciona →",
+      title: "Como funciona o Encontrar a melhor IA",
+      intro:
+        "Cole um prompt que você já tem e descubra qual IA combina mais com ele — sem precisar de jargão de IA.",
+      steps: [
+        {
+          title: "1. Cole ou dite seu prompt",
+          body: "Escreva, cole ou dite o prompt que você já tem. Não há mais nada para configurar.",
+        },
+        {
+          title: "2. Detectamos sinais no seu texto",
+          body:
+            "Procuramos pistas concretas: caminhos de código e comandos, pedidos de fontes ou de informação atual, dados em JSON, referências a imagens, traduções, resumos e mais.",
+        },
+        {
+          title: "3. Comparamos as IAs",
+          body:
+            "Esses sinais pontuam cada IA e ambiente (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Perplexity) com base em capacidades verificadas. O ranking é 100% determinístico: nenhuma IA decide por você.",
+        },
+        {
+          title: "4. Receba a recomendação",
+          body:
+            "Você vê a melhor opção com a pontuação e o nível de confiança, por que a escolhemos (citando o que encontramos no seu prompt) e até 3 alternativas com seus pontos de atenção. Se der empate, a gente avisa.",
+        },
+        {
+          title: "5. Melhore seu prompt para essa IA",
+          body:
+            "Um clique leva você ao Melhorar prompt com a IA, o modelo e o propósito recomendados já selecionados.",
+        },
+      ],
+      close: "Fechar",
+    },
   },
 };
 
-export default function HowItWorks({ lang, mode = "improve" }: { lang: "es" | "en"; mode?: HowItWorksMode }) {
+export default function HowItWorks({ lang, mode = "improve" }: { lang: Lang; mode?: HowItWorksMode }) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
   const descId = useId();

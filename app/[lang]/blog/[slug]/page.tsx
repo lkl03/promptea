@@ -29,11 +29,13 @@ import { getModelPage } from "@/lib/seo/content/models";
 import { absUrl, getSiteUrl } from "@/lib/seo/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
+import { LANG_TAG, contentLangFor, toLang, type ContentLang } from "@/lib/domain";
+import ContentLangNotice from "@/components/blog/ContentLangNotice";
 
 export const revalidate = 300;
 
 /** Firestore is never allowed to break the route: a failure reads as "no article". */
-async function loadArticle(lang: "es" | "en", slug: string): Promise<PublicArticle | null> {
+async function loadArticle(lang: ContentLang, slug: string): Promise<PublicArticle | null> {
   try {
     return await getArticleBySlug(lang, slug);
   } catch {
@@ -82,13 +84,16 @@ export async function generateMetadata({
   params: Promise<{ lang: string; slug: string }>;
 }): Promise<Metadata> {
   const { lang, slug } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
-  const article = await loadArticle(l, slug);
+  // The article's language: es/en have their own; /pt shows the English one.
+  const cl = contentLangFor(l);
+  const article = await loadArticle(cl, slug);
   if (!article) return {};
 
   return pageMetadata({
     lang: l,
+    contentLang: cl,
     path: `/${l}/blog/${article.slug}`,
     alternatePaths: {
       es: `/es/blog/${article.alternateSlugs.es}`,
@@ -100,7 +105,7 @@ export async function generateMetadata({
     publishedTime: article.publishedAt ?? article.eventDate,
     modifiedTime: article.updatedAt ?? article.publishedAt ?? article.eventDate,
     authors: [article.author],
-    markdownPath: markdownPathOf(`/${l}/blog/${article.slug}`),
+    markdownPath: markdownPathOf(`/${cl}/blog/${article.slug}`),
     // Without an explicit image the article's own generated cover
     // (opengraph-image.tsx next to this page) is used.
     ...(article.image ? { images: [{ url: article.image.url }] } : {}),
@@ -114,9 +119,10 @@ export default async function BlogArticlePage({
 }) {
   const { lang, slug } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
-  const article = await loadArticle(l, slug);
+  const cl = contentLangFor(l);
+  const article = await loadArticle(cl, slug);
   if (!article) notFound();
 
   const dict = await getDictionary(l);
@@ -144,7 +150,8 @@ export default async function BlogArticlePage({
           .replace("{to}", formatEditorialDate(article.coveredTo, l))
       : null;
 
-  const articleUrl = absUrl(blogArticlePath(l, article.slug));
+  // Structured data describes the canonical page: the original-language article.
+  const articleUrl = absUrl(blogArticlePath(cl, article.slug));
   const newsLd = newsArticleNode(article, {
     url: articleUrl,
     siteUrl: getSiteUrl(),
@@ -153,7 +160,7 @@ export default async function BlogArticlePage({
     imageUrl: `${articleUrl}/opengraph-image`,
   });
   const breadcrumbLd = blogBreadcrumbNode({
-    lang: l,
+    lang: cl,
     title: article.title,
     slug: article.slug,
     siteUrl: getSiteUrl(),
@@ -166,14 +173,14 @@ export default async function BlogArticlePage({
       <JsonLd
         data={graph(
           webPageNode({
-            lang: l,
+            lang: cl,
             url: articleUrl,
             name: article.title,
             description: article.metaDescription,
             datePublished: article.publishedAt ?? article.eventDate,
             dateModified: article.updatedAt ?? article.publishedAt ?? article.eventDate,
             hasBreadcrumb: true,
-            markdownUrl: absUrl(`${blogArticlePath(l, article.slug)}.md`),
+            markdownUrl: absUrl(`${blogArticlePath(cl, article.slug)}.md`),
           }),
           newsLd,
           editorialNode(getSiteUrl()),
@@ -191,7 +198,15 @@ export default async function BlogArticlePage({
             </Link>
           </div>
 
-          <article className="mt-4">
+          <ContentLangNotice
+            lang={l}
+            text={t.langNotice}
+            hrefs={{ es: blogArticlePath("es", article.alternateSlugs.es), en: blogArticlePath("en", article.alternateSlugs.en) }}
+            className="mt-4"
+          />
+
+          {/* The article is in its own language whatever the interface language is. */}
+          <article className="mt-4" lang={LANG_TAG[cl]}>
             <header className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
                 {editionLabel ? <span className="badge badge-info">{editionLabel}</span> : null}
@@ -305,7 +320,7 @@ export default async function BlogArticlePage({
                 <ul className="mt-3 space-y-2 text-sm opacity-90">
                   {article.digestItems.map((item, i) => (
                     <li key={i} className="flex flex-wrap items-baseline gap-2">
-                      <span>{l === "es" ? item.titleEs : item.titleEn}</span>
+                      <span>{cl === "es" ? item.titleEs : item.titleEn}</span>
                       <time dateTime={item.eventDate} className="text-xs opacity-70">
                         {formatEditorialDate(item.eventDate, l)}
                       </time>

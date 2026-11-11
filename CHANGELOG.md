@@ -4,6 +4,38 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.2 — 2026-11-11
+
+**Brazilian Portuguese (`/pt`, pt-BR) as a third language: selectable in the header, with a translated interface, translated product pages and an analysis engine that answers in Portuguese.** Where content does not exist in Portuguese, the page says so and points at the original instead of passing English off as a translation.
+
+### Added
+- **`/pt`**: every route exists under `/pt`. The language switch in the header is now ES | EN | PT (plain links, each named in its own language for screen readers).
+- **One list of locales**: `lib/domain.ts` `LANGS = es, en, pt`. The proxy, the dictionaries, `generateStaticParams`, the `.md` rewrites, the sitemap, hreflang, `og:locale`, `<html lang>`, JSON-LD `inLanguage`, validators and telemetry derive from it; a test fails if the union is spelled out by hand again.
+- **Language negotiation**: `pt`, `pt-BR` and `pt-PT` in `Accept-Language` land on `/pt`. The fallback for unsupported languages is still `/en`.
+- **hreflang**: `es`, `en`, `pt-BR` + `pt`, and the same `x-default` as before. `<html lang="pt-BR">`, `og:locale` `pt_BR`.
+- **Translated**: the dictionary (`pt.json`), header, footer, modals, the home page, the analyzer, Find the best AI, benchmarks (charts, calculator, tables), the library, share cards, privacy, how it works, about, methodology, the glossary (20 terms), the 7 model pages with the model registry notes, the 8 landings, the 58 guides, the 6 prompt packs, the prompt of the day, `llms.txt` / `llms-full.txt` and the markdown twins. Dates and numbers use `Intl` with `pt-BR`.
+- **Analysis engine 2.4.0 in Portuguese**: findings, recommendations, score explanation, strengths, follow-up questions, model notes, the optimized prompt (headings and guidance lines) and the JSON format come back in Portuguese. `lib/engine/pt.ts` holds the Portuguese vocabulary of the detectors and is consulted only when the prompt reads as Portuguese, so a prompt written in Portuguese gets the same task type, strategy, findings and score (±3) from `/es`, `/en` and `/pt`. 24 Portuguese calibration cases; Find the best AI and the refiner's model rules are translated too.
+- **Language detection for three languages** (`lib/refine/language.ts`), with Spanish/English results unchanged.
+- `docs/i18n/pt-glossary.md`: the terminology used across the Portuguese text.
+- `npm run seo:check` covers `/pt`: sitemap alternates, hreflang reciprocity across the three languages, `llms.txt`, markdown twins, `<html lang>`, the language entry and the `/pt` views described below.
+
+### Changed
+- **AI Daily, the weekly digest and the headlines under `/pt`** are shown in English (the content is written in Spanish and English) with a visible, translated notice and a link to each edition. Those pages are views of the original: canonical → `/en/…`, hreflang for `es`/`en` only, `og:locale` of the content, no entry in the sitemap, and `/pt/blog/feed.xml` redirects to the English feed. The publishing contract (`lib/blog/types.ts`) is unchanged.
+- **Guides under `/pt`**: all 58 guides are translated (title, description, sections, templates and FAQ), so each one is a Portuguese page in the sitemap, `llms.txt`, `llms-full.txt` and the markdown twins. Template prompts keep their placeholders in brackets, JSON keys and enum values, XML-style tags and technical identifiers. A guide added later without Portuguese text is still read in English under `/pt`, with a notice and canonical → `/en`, until its text is written (`guideLang()` in `lib/seo/content/guides.ts`). The explanatory part of the Portuguese `llms-full.txt` is ~320 KB, under the 360 KB the test allows.
+- **Newsletter form under `/pt`**: it offers the two editions that exist (English preselected, Spanish) and says the newsletter has no Portuguese edition. The subscriber's `lang` is still the edition (`es`/`en`); the interface language is stored next to it as an optional `uiLang`, so a Portuguese edition can be offered to those subscribers later. The unsubscribe page is shown in the language the person subscribed from.
+- **Image prompts requested in Portuguese** are composed in English around the user's own words, which are kept verbatim (`meta.optimizedPromptLang = "en"`, with a notice in the results). The rest of that analysis is in Portuguese.
+- **Version history before v1.8.0** is shown in English under `/pt`, with a notice.
+- The product tour video under `/pt/how-it-works` is the English recording.
+
+### Fixed
+- **Benchmarks from a stored snapshot in a new language.** The "last valid snapshot" kept in the database carried a copy of each benchmark's texts in the languages that existed when it was saved. On a deployment with the database but without the upstream key, `/md/pt/benchmarks` read an undefined text and the build failed. Stored snapshots now take their texts from the catalog again when they are read (`rehydrateSnapshot()`); numbers, rows and dates are untouched.
+
+### Notes
+- `/es` and `/en` keep their URLs, canonicals and behaviour; they gain the Portuguese alternate on pages that exist in Portuguese. The 80 Spanish/English calibration cases of the engine did not move.
+- The Portuguese text was written by AI and has not been reviewed by a native speaker.
+
+---
+
 ## v1.8.1 — 2026-11-10
 
 **Fixes for the visual defects of v1.8.0 that reached production, a home page rebuilt so that it explains itself in five seconds, a "How Promptea works" page that keeps the SEO content the home used to carry, one header for every page, a first-visit newsletter card, and a full QA pass.** Evidence, measurements and everything that could not be verified: [`docs/release/v1.8.1/qa-report.md`](./docs/release/v1.8.1/qa-report.md); before/after screenshots next to it.

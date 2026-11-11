@@ -1,25 +1,26 @@
 // app/[lang]/opengraph-image.tsx — v1.8.0. Default Open Graph image: the mascot
 // and wordmark over the soft mint/blue wash. Pages that need their own image
 // (articles, share cards) define theirs; everything else inherits this one.
-// Rendered at build time for both locales (generateStaticParams), so it never
+// Rendered at build time for every locale (generateStaticParams), so it never
 // runs on a request and the assets are read from the repo, not the network.
 
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { hasLocale } from "./dictionaries";
+import { LANGS, toLang } from "@/lib/domain";
 
 export const alt = "Promptea";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export function generateStaticParams() {
-  return [{ lang: "es" }, { lang: "en" }];
+  return LANGS.map((lang) => ({ lang }));
 }
 
 const COPY = {
   es: { tagline: "Analizá y optimizá tus prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
   en: { tagline: "Analyze and optimize your prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
+  pt: { tagline: "Analise e otimize seus prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
 } as const;
 
 async function dataUri(file: string): Promise<string> {
@@ -29,7 +30,7 @@ async function dataUri(file: string): Promise<string> {
 
 export default async function Image({ params }: { params: Promise<{ lang: string }> }) {
   const { lang: raw } = await params;
-  const lang = hasLocale(raw) && raw === "en" ? "en" : "es";
+  const lang = toLang(raw);
   const copy = COPY[lang];
   const [mascot, wordmark] = await Promise.all([dataUri("mascot-og.png"), dataUri("wordmark-og.png")]);
 

@@ -4,6 +4,7 @@
 // No database required — index is derived from the date so the same
 // prompt is shown to every visitor on the same calendar day.
 
+import type { Lang } from "@/lib/domain";
 import type { Locale } from "@/lib/seo/site";
 import type { Purpose, TargetModel } from "@/lib/seo/prefill";
 
@@ -11,8 +12,8 @@ export type DailyPrompt = {
   category: "coding" | "marketing" | "study" | "analysis" | "data" | "image" | "business" | "writing" | "creativity";
   purpose: Purpose;
   target: TargetModel;
-  title: { es: string; en: string };
-  prompt: { es: string; en: string };
+  title: Record<Lang, string>;
+  prompt: Record<Lang, string>;
 };
 
 // Curated to be specific, fun, and actionable. Each prompt should make
@@ -25,6 +26,7 @@ export const DAILY_PROMPTS: DailyPrompt[] = [
     title: {
       es: "Asesor de producto sin filtros",
       en: "Brutally honest product advisor",
+      pt: "Consultor de produto brutalmente honesto",
     },
     prompt: {
       es: `Actuá como un asesor de producto brutalmente honesto.
@@ -39,6 +41,12 @@ List 5 specific reasons, ordered by impact, and one actionable fix per reason.
 
 Landing idea:
 """[paste your idea here]"""`,
+      pt: `Aja como um consultor de produto brutalmente honesto.
+Analise esta ideia de landing page e me diga por que os usuários a ignorariam — sem dourar a pílula.
+Liste 5 motivos específicos, ordenados por impacto, e uma correção prática para cada um.
+
+Ideia de landing:
+"""[cole sua ideia aqui]"""`,
     },
   },
   {
@@ -48,6 +56,7 @@ Landing idea:
     title: {
       es: "Idea suelta → issue de GitHub listo para devs",
       en: "Messy idea → developer-ready GitHub issue",
+      pt: "Ideia bagunçada → issue do GitHub pronta para o dev",
     },
     prompt: {
       es: `Convertí esta idea de feature en un issue de GitHub listo para que un dev lo tome.
@@ -70,6 +79,16 @@ Include:
 
 Raw idea:
 """[paste the idea here]"""`,
+      pt: `Transforme esta ideia bagunçada de funcionalidade em uma issue do GitHub pronta para o desenvolvedor.
+Inclua:
+- Resumo de 1 a 2 linhas.
+- Critérios de aceitação claros (Dado/Quando/Então).
+- Casos de borda e como tratá-los.
+- Testes sugeridos (unitários + um de ponta a ponta).
+- Riscos e dependências.
+
+Ideia bruta:
+"""[cole a ideia aqui]"""`,
     },
   },
   {
@@ -79,6 +98,7 @@ Raw idea:
     title: {
       es: "Explicame esto al 80/20",
       en: "Explain this to me 80/20 style",
+      pt: "Explique para mim no estilo 80/20",
     },
     prompt: {
       es: `Explicame [tema] como si fuera inteligente pero impaciente.
@@ -93,6 +113,12 @@ I want:
 - One concrete example that makes it click.
 - One common trap to avoid.
 - One question I should be able to answer after reading you.`,
+      pt: `Explique [assunto] como se eu fosse inteligente, mas impaciente.
+Quero:
+- O 80/20 — só o que realmente importa.
+- Um exemplo concreto que faça a ficha cair.
+- Uma armadilha comum para evitar.
+- Uma pergunta que eu deveria conseguir responder depois de ler você.`,
     },
   },
   {
@@ -102,6 +128,7 @@ I want:
     title: {
       es: "Anti-vaguedad para prompts",
       en: "Anti-vagueness prompt rewrite",
+      pt: "Reescrita de prompt antivagueza",
     },
     prompt: {
       es: `Reescribí mi prompt para que una IA no pueda contestar de forma vaga ni inventar.
@@ -122,6 +149,15 @@ Return:
 
 My current prompt:
 """[paste your prompt here]"""`,
+      pt: `Reescreva meu prompt para que uma IA não consiga responder de forma vaga nem alucinar.
+Obrigue-a a fazer perguntas quando faltar contexto.
+Retorne:
+- O prompt reescrito.
+- 3 perguntas que a IA deveria fazer se o contexto for insuficiente.
+- 1 exemplo de resposta aceitável e 1 exemplo de resposta inaceitável.
+
+Meu prompt atual:
+"""[cole seu prompt aqui]"""`,
     },
   },
   {
@@ -131,6 +167,7 @@ My current prompt:
     title: {
       es: "Idea de negocio → plan de validación de 1 página",
       en: "Business idea → one-page validation plan",
+      pt: "Ideia de negócio → plano de validação de uma página",
     },
     prompt: {
       es: `Convertí esta idea de negocio en un plan de validación de 1 página.
@@ -153,6 +190,16 @@ Structure:
 
 Idea:
 """[paste the idea here]"""`,
+      pt: `Transforme esta ideia de negócio em um plano de validação de uma página.
+Estrutura:
+- Hipótese central e suposições arriscadas.
+- Público inicial e onde encontrá-lo.
+- 3 experimentos baratos para validar (cada um com custo, duração e métrica de sucesso).
+- Os 3 principais riscos.
+- Decisão clara: manter / pivotar / encerrar.
+
+Ideia:
+"""[cole a ideia aqui]"""`,
     },
   },
   {
@@ -162,6 +209,7 @@ Idea:
     title: {
       es: "Schema JSON con ejemplos buenos y malos",
       en: "JSON schema with good and bad examples",
+      pt: "JSON Schema com exemplos bons e ruins",
     },
     prompt: {
       es: `Generá un JSON Schema (draft 2020-12) para este workflow:
@@ -182,6 +230,15 @@ Return:
 - 1 invalid example with the exact reason it fails.
 
 Output in separate blocks, no extra text outside each block.`,
+      pt: `Gere um JSON Schema (draft 2020-12) para este fluxo de trabalho:
+"""[descreva o fluxo de trabalho]"""
+
+Retorne:
+- O schema completo e válido.
+- 3 exemplos válidos e variados.
+- 1 exemplo inválido com o motivo exato da falha.
+
+Entregue em blocos separados, sem texto extra fora de cada bloco.`,
     },
   },
   {
@@ -191,6 +248,7 @@ Output in separate blocks, no extra text outside each block.`,
     title: {
       es: "Prompt de imagen cinematográfico",
       en: "Cinematic image prompt",
+      pt: "Prompt de imagem cinematográfica",
     },
     prompt: {
       es: `Creá un prompt cinematográfico para este concepto:
@@ -219,6 +277,19 @@ Include:
 - Negatives (what should NOT appear).
 
 Return the prompt ready to copy-paste into a generative AI.`,
+      pt: `Crie um prompt de imagem cinematográfica para este conceito:
+"""[descreva o conceito]"""
+
+Inclua:
+- Sujeito principal e ação.
+- Estilo (lente, tipo de filme, referência visual).
+- Composição e enquadramento.
+- Iluminação (horário, direção, intensidade).
+- Clima / paleta.
+- Proporção sugerida.
+- Negativos (o que NÃO deve aparecer).
+
+Retorne o prompt pronto para copiar e colar em uma IA generativa.`,
     },
   },
   {
@@ -228,6 +299,7 @@ Return the prompt ready to copy-paste into a generative AI.`,
     title: {
       es: "Hook que detiene el scroll",
       en: "Scroll-stopping hook",
+      pt: "Gancho que faz parar de rolar a tela",
     },
     prompt: {
       es: `Generá 5 hooks que detengan el scroll para [producto/servicio] dirigido a [audiencia].
@@ -242,6 +314,12 @@ Rules:
 - Each hook must hit a specific pain point, not a generic one.
 - State which emotion each one triggers.
 - Final ranking from strongest to weakest with a 1-line justification.`,
+      pt: `Gere 5 ganchos que façam parar de rolar a tela para [produto/serviço], voltados para [público].
+Regras:
+- Sem clichês ("transforme sua vida", "o nº 1" etc.).
+- Cada gancho deve tocar em uma dor específica, não genérica.
+- Diga qual emoção cada um desperta.
+- Ranking final do mais forte ao mais fraco, com uma justificativa de 1 linha.`,
     },
   },
   {
@@ -251,6 +329,7 @@ Rules:
     title: {
       es: "Pre-mortem en 10 minutos",
       en: "10-minute pre-mortem",
+      pt: "Pre-mortem de 10 minutos",
     },
     prompt: {
       es: `Hacé un pre-mortem para este proyecto:
@@ -269,6 +348,14 @@ Return:
 - 5 plausible failure modes, ordered by likelihood.
 - For each: an early signal we could detect, and a concrete preventive action.
 - 1 project assumption that's probably broken but no one questions.`,
+      pt: `Faça um pre-mortem deste projeto:
+"""[descreva o projeto e o prazo]"""
+
+Imagine que ele já fracassou e reconstrua o porquê.
+Retorne:
+- 5 modos de falha plausíveis, ordenados por probabilidade.
+- Para cada um: um sinal precoce que poderíamos detectar e uma ação preventiva concreta.
+- 1 suposição do projeto que provavelmente está errada, mas ninguém questiona.`,
     },
   },
   {
@@ -278,6 +365,7 @@ Return:
     title: {
       es: "Reescritura con menos palabras y más impacto",
       en: "Rewrite with fewer words and more impact",
+      pt: "Reescreva com menos palavras e mais impacto",
     },
     prompt: {
       es: `Reescribí este texto con la mitad de palabras sin perder claridad.
@@ -298,6 +386,15 @@ Rules:
 
 Text:
 """[paste the text here]"""`,
+      pt: `Reescreva este texto usando metade das palavras, sem perder clareza.
+Regras:
+- Mantenha o sentido e os fatos intactos.
+- Corte enrolação, advérbios fracos e voz passiva desnecessária.
+- Retorne 2 versões: uma mais profissional e uma mais natural.
+- Termine com 3 pontos concretos que ainda podem melhorar.
+
+Texto:
+"""[cole o texto aqui]"""`,
     },
   },
   {
@@ -307,6 +404,7 @@ Text:
     title: {
       es: "Bug-hunt con tests primero",
       en: "Tests-first bug hunt",
+      pt: "Caça ao bug com testes primeiro",
     },
     prompt: {
       es: `Tengo un bug que no logro reproducir consistentemente:
@@ -325,6 +423,14 @@ Before proposing a fix:
 2. For each one, write a test (with code) that confirms or rules it out.
 3. Only then, propose the minimal fix assuming the most likely hypothesis.
 4. End with how to prevent a bug like this in the future.`,
+      pt: `Tenho um bug que não consigo reproduzir de forma consistente:
+"""[descrição do bug + ambiente]"""
+
+Antes de propor uma correção:
+1. Liste 5 hipóteses de causa raiz, ordenadas por probabilidade.
+2. Para cada uma, escreva um teste (com código) que a confirme ou descarte.
+3. Só então proponha a correção mínima, assumindo a hipótese mais provável.
+4. Termine dizendo como evitar um bug assim no futuro.`,
     },
   },
   {
@@ -334,6 +440,7 @@ Before proposing a fix:
     title: {
       es: "5 explicaciones para el mismo concepto",
       en: "5 explanations for the same concept",
+      pt: "5 explicações para o mesmo conceito",
     },
     prompt: {
       es: `Explicame [tema] de 5 formas distintas:
@@ -352,6 +459,14 @@ Cerrá diciendo cuál de las cinco entiende mejor el concepto y por qué.`,
 5. As a 3-sentence short story.
 
 End by saying which of the five captures the concept best, and why.`,
+      pt: `Explique [assunto] de 5 maneiras diferentes:
+1. Para uma criança de 10 anos.
+2. Como uma analogia esportiva.
+3. Como um meme.
+4. Como um parágrafo técnico para um especialista.
+5. Como um conto de 3 frases.
+
+Termine dizendo qual das cinco capta melhor o conceito e por quê.`,
     },
   },
 ];
@@ -372,16 +487,16 @@ export function getDailyPrompt(date: Date = new Date()): DailyPrompt {
 }
 
 export function categoryLabel(category: DailyPrompt["category"], lang: Locale): string {
-  const map: Record<DailyPrompt["category"], { es: string; en: string }> = {
-    coding: { es: "Código", en: "Coding" },
-    marketing: { es: "Marketing", en: "Marketing" },
-    study: { es: "Estudio", en: "Study" },
-    analysis: { es: "Análisis", en: "Analysis" },
-    data: { es: "Data / JSON", en: "Data / JSON" },
-    image: { es: "Imagen", en: "Image" },
-    business: { es: "Negocio", en: "Business" },
-    writing: { es: "Escritura", en: "Writing" },
-    creativity: { es: "Creatividad", en: "Creativity" },
+  const map: Record<DailyPrompt["category"], Record<Lang, string>> = {
+    coding: { es: "Código", en: "Coding", pt: "Programação" },
+    marketing: { es: "Marketing", en: "Marketing", pt: "Marketing" },
+    study: { es: "Estudio", en: "Study", pt: "Estudo" },
+    analysis: { es: "Análisis", en: "Analysis", pt: "Análise" },
+    data: { es: "Data / JSON", en: "Data / JSON", pt: "Dados / JSON" },
+    image: { es: "Imagen", en: "Image", pt: "Imagem" },
+    business: { es: "Negocio", en: "Business", pt: "Negócios" },
+    writing: { es: "Escritura", en: "Writing", pt: "Escrita" },
+    creativity: { es: "Creatividad", en: "Creativity", pt: "Criatividade" },
   };
   return map[category][lang];
 }

@@ -1,6 +1,6 @@
 // app/sitemap.ts
 //
-// sitemap.xml for both locales, built from the shared content index
+// sitemap.xml for every locale, built from the shared content index
 // (lib/seo/registry.ts) so it always agrees with llms.txt.
 //
 //   - <lastmod> is the real date of the content (hand-written copy: the
@@ -9,7 +9,10 @@
 //     editions: when they were sent; benchmarks: the snapshot's `asOf`). Never
 //     "now": a sitemap that claims everything changed today trains crawlers to
 //     ignore <lastmod>.
-//   - Every URL lists its alternates: `es`, `en` and `x-default` (hreflang).
+//   - Every URL lists its alternates: `es`, `en`, `pt-BR` + `pt` and `x-default`
+//     (hreflang). AI Daily and the weekly summary are written in Spanish and
+//     English only: their /pt views are canonicalised to the English original, so
+//     they are NOT listed and their alternates name es/en only.
 //   - AI Daily gains an article every day, so the sitemap revalidates; the
 //     database-backed parts degrade to "none yet" without Firestore.
 
@@ -19,7 +22,8 @@ import { loadArticles, loadBenchmarksAsOf, loadEditions } from "@/lib/seo/dynami
 import { articleUrl, editionUrl, latestUpdated } from "@/lib/seo/dynamicUrls";
 import { newest, toDate } from "@/lib/seo/dates";
 import { staticSeoUrls, type SeoUrl } from "@/lib/seo/registry";
-import { LOCALES, X_DEFAULT_LOCALE, absUrl, type Locale } from "@/lib/seo/site";
+import { CONTENT_LANGS, isContentLang } from "@/lib/domain";
+import { HREFLANG, LOCALES, X_DEFAULT_LOCALE, absUrl, swapLocale, type Locale } from "@/lib/seo/site";
 
 /**
  * Re-generated every thirty minutes so articles published after a deploy reach
@@ -29,12 +33,14 @@ export const revalidate = 1800;
 
 /** Path of the same page in `lang`: its own `alternates` entry, else the locale swapped. */
 function pathIn(u: SeoUrl, lang: Locale): string {
-  return u.alternates?.[lang] ?? u.path.replace(/^\/(es|en)(?=\/|$)/, `/${lang}`);
+  return u.alternates?.[lang] ?? swapLocale(u.path, lang);
 }
 
 function toEntry(u: SeoUrl, fallbackDate: Date): MetadataRoute.Sitemap[number] {
+  // Editorial content exists in the content languages only (see the header).
+  const locales: readonly Locale[] = u.locales ?? (u.section === "ai-daily" ? CONTENT_LANGS : LOCALES);
   const languages: Record<string, string> = {};
-  for (const l of LOCALES) languages[l] = absUrl(pathIn(u, l));
+  for (const l of locales) for (const tag of HREFLANG[l]) languages[tag] = absUrl(pathIn(u, l));
   languages["x-default"] = absUrl(pathIn(u, X_DEFAULT_LOCALE));
 
   return {
@@ -51,7 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const fallbackDate = new Date(0);
 
   const [articlesByLang, editions, benchmarksAsOf] = await Promise.all([
-    Promise.all(LOCALES.map(async (l) => [l, await loadArticles(l)] as const)),
+    Promise.all(LOCALES.map(async (l) => [l, isContentLang(l) ? await loadArticles(l) : []] as const)),
     loadEditions(),
     loadBenchmarksAsOf(),
   ]);
@@ -60,7 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const [lang, articles] of articlesByLang) {
     const articleUrls = articles.map(articleUrl);
-    const editionUrls = editions.map((e) => editionUrl(e, lang));
+    const editionUrls = isContentLang(lang) ? editions.map((e) => editionUrl(e, lang)) : [];
     const newestArticle = latestUpdated(articleUrls);
     const newestEdition = latestUpdated(editionUrls);
 

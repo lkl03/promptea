@@ -14,10 +14,11 @@ import { aboutDoc } from "@/lib/seo/content/sitePages";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { docPageGraph } from "@/lib/seo/pageGraphs";
+import { pick, toLang, type Lang } from "@/lib/domain";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const doc = aboutDoc(l);
   const path = `/${l}/about`;
   return pageMetadata({ lang: l, path, title: doc.title, description: doc.description, markdownPath: markdownPathOf(path), modifiedTime: doc.updated });
@@ -26,15 +27,15 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function AboutPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
   const doc = aboutDoc(l);
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 pb-12 pt-12">
       <JsonLd data={docPageGraph({ doc, lang: l, path: `/${l}/about`, kind: "about", label: doc.h1 })} />
-      <nav aria-label={l === "es" ? "Ruta de navegación" : "Breadcrumb"} className="text-xs opacity-70">
+      <nav aria-label={pick(l, { es: "Ruta de navegación", en: "Breadcrumb", pt: "Trilha de navegação" })} className="text-xs opacity-70">
         <Link href={`/${l}`} className="hover:underline underline-offset-2">
-          {l === "es" ? "Inicio" : "Home"}
+          {pick(l, { es: "Inicio", en: "Home", pt: "Início" })}
         </Link>
         <span aria-hidden="true"> / </span>
         <span>{doc.h1}</span>

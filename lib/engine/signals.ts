@@ -11,7 +11,8 @@
 // `/\bescribí\b/` never matched "escribí un…". Every pattern here uses
 // Unicode-aware letter lookarounds instead (see `words`).
 
-import type { TaskType } from "@/lib/domain";
+import type { Lang, TaskType } from "@/lib/domain";
+import { isPt, PT_COUNT_WITH_UNIT, PT_GOAL_LABEL, PT_GOAL_VERBS, PT_IMAGE_SPEC, PT_N_QUESTION, PT_OUTPUT_LABEL } from "./pt";
 
 const L = "\\p{L}\\p{N}_";
 
@@ -55,9 +56,11 @@ const GOAL_VERBS = words(
  * explicit goal marker, or — for image generation — a description of what to
  * depict (a noun phrase IS the goal of an image prompt).
  */
-export function hasGoalSignal(text: string, taskType?: TaskType | string): boolean {
+export function hasGoalSignal(text: string, taskType?: TaskType | string, lang?: Lang): boolean {
   const src = String(text ?? "");
   if (GOAL_VERBS.test(src)) return true;
+  // v1.8.2: Portuguese request verbs and labels, when the prompt reads as Portuguese.
+  if (isPt(src, lang) && (PT_GOAL_VERBS.test(src) || PT_GOAL_LABEL.test(src))) return true;
   if (/(?:^|\n)\s*(goal|objective|objetivo|meta|task|tarea)\s*:/i.test(src)) return true;
   if (String(taskType) === "image") {
     const n = src.trim().split(/\s+/).filter(Boolean).length;
@@ -87,9 +90,11 @@ const OUTPUT_LABEL = /(?:^|\n|\.\s)\s*(output|salida|formato|format|entregable|d
  * `Output:` label, or an N-question quiz. These are concrete deliverables and
  * must not be flagged `missing_output_format`.
  */
-export function hasImplicitOutputSpec(text: string): boolean {
+export function hasImplicitOutputSpec(text: string, lang?: Lang): boolean {
   const src = String(text ?? "");
-  return COUNT_WITH_UNIT.test(src) || N_QUESTION.test(src) || OUTPUT_LABEL.test(src);
+  if (COUNT_WITH_UNIT.test(src) || N_QUESTION.test(src) || OUTPUT_LABEL.test(src)) return true;
+  // v1.8.2: "3 títulos", "no máximo 120 palavras", "Saída: …".
+  return isPt(src, lang) && (PT_COUNT_WITH_UNIT.test(src) || PT_N_QUESTION.test(src) || PT_OUTPUT_LABEL.test(src));
 }
 
 // ---------------------------------------------------------------------------
@@ -111,8 +116,9 @@ const IMAGE_SPEC_RE = words(
 );
 
 /** An image prompt's "output format" is its medium/style or aspect ratio. */
-export function hasImageOutputSpec(text: string): boolean {
-  return IMAGE_SPEC_RE.test(String(text ?? ""));
+export function hasImageOutputSpec(text: string, lang?: Lang): boolean {
+  const src = String(text ?? "");
+  return IMAGE_SPEC_RE.test(src) || (isPt(src, lang) && PT_IMAGE_SPEC.test(src));
 }
 
 // ---------------------------------------------------------------------------

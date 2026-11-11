@@ -8,7 +8,7 @@
 import { useEffect, useRef, useState } from "react";
 import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
-import { APP_FEEDBACK_CATEGORIES, type AppFeedbackCategory, type AppMode } from "@/lib/domain";
+import { APP_FEEDBACK_CATEGORIES, type AppFeedbackCategory, type AppMode, type Lang } from "@/lib/domain";
 import type { AppFeedbackDict } from "@/lib/uiDict";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -49,7 +49,7 @@ export default function AppFeedbackButton({
   lang,
   dict,
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   dict: AppFeedbackDict;
 }) {
   const [open, setOpen] = useState(false);

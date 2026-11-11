@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { THEMES, THEME_LABELS, type ThemeName } from "@/lib/themes";
+import { pick, type Lang } from "@/lib/domain";
 
 function subscribeNoop() {
   return () => {};
@@ -58,7 +59,7 @@ function SwatchIcon({ theme, className }: { theme: ThemeName | "system"; classNa
   );
 }
 
-export default function ThemeToggle({ lang = "en" }: { lang?: "es" | "en" }) {
+export default function ThemeToggle({ lang = "en" }: { lang?: Lang }) {
   const { theme, setTheme } = useTheme();
   const mounted = useMounted();
   const [open, setOpen] = useState(false);
@@ -85,7 +86,7 @@ export default function ThemeToggle({ lang = "en" }: { lang?: "es" | "en" }) {
     };
   }, [open]);
 
-  const label = lang === "es" ? "Tema" : "Theme";
+  const label = pick(lang, { es: "Tema", en: "Theme", pt: "Tema" });
   const stored = (theme ?? "system") as ThemeName | "system";
   const current: ThemeName | "system" = stored === "system" || THEMES.includes(stored as ThemeName) ? stored : "system";
   const options: Array<ThemeName | "system"> = ["system", ...THEMES];

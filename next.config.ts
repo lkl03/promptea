@@ -1,15 +1,17 @@
 // next.config.ts
 import type { NextConfig } from "next";
 
+import { LANGS } from "./lib/domain";
+
+// Every locale, from the single list in lib/domain.ts: "es|en|pt".
+const LOCALE_ALT = LANGS.join("|");
+
 const nextConfig: NextConfig = {
   trailingSlash: false,
   async redirects() {
     return [
-      { source: "/es/", destination: "/es", permanent: true },
-      { source: "/en/", destination: "/en", permanent: true },
-
-      { source: "/es/:path+/", destination: "/es/:path+", permanent: true },
-      { source: "/en/:path+/", destination: "/en/:path+", permanent: true },
+      ...LANGS.map((l) => ({ source: `/${l}/`, destination: `/${l}`, permanent: true })),
+      ...LANGS.map((l) => ({ source: `/${l}/:path+/`, destination: `/${l}/:path+`, permanent: true })),
     ];
   },
   async rewrites() {
@@ -19,8 +21,8 @@ const nextConfig: NextConfig = {
     // path containing a dot, so these requests reach the rewrite untouched.
     return {
       beforeFiles: [
-        { source: "/:lang(es|en).md", destination: "/md/:lang" },
-        { source: "/:lang(es|en)/:path*.md", destination: "/md/:lang/:path*" },
+        { source: `/:lang(${LOCALE_ALT}).md`, destination: "/md/:lang" },
+        { source: `/:lang(${LOCALE_ALT})/:path*.md`, destination: "/md/:lang/:path*" },
       ],
     };
   },

@@ -16,7 +16,7 @@ NO guarda prompts reales de usuarios.
 - `optimizedScoreMin`: piso para `meta.optimizedScore` (el "después")
 
 Además:
-- cada propósito (`text, study, code, data, image, marketing, translation, summarization`) tiene un caso `good`, `bad` y `ambiguous` en ES y en EN;
+- cada propósito (`text, study, code, data, image, marketing, translation, summarization`) tiene un caso `good`, `bad` y `ambiguous` en ES, en EN y en PT (v1.8.2: 24 casos `pt-*-v182`, gemelos de los `es-*-v180`);
 - dentro de cada grupo (idioma, propósito) el score debe quedar **ordenado: good > ambiguous > bad**.
 
 ## Estructura
@@ -25,7 +25,7 @@ lib/engine/dataset/
   schema.ts
   load.ts
   cases/
-    es/  en/
+    es/  en/  pt/
       text.jsonl  study.jsonl  code.jsonl  data.jsonl  image.jsonl
       marketing.jsonl  translation.jsonl  summarization.jsonl   ← v1.8.0 (48 casos)
       general.jsonl  debugging.jsonl  data_extraction.jsonl        ← legacy (32 casos, corren bajo purpose "text")

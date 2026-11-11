@@ -1,3 +1,4 @@
+import type { Lang } from "@/lib/domain";
 // lib/llm/groq.ts
 //
 // Optional Groq API integration. The app fully works without it.
@@ -17,7 +18,7 @@ export type GroqHint = {
 
 export type GroqRequestArgs = {
   prompt: string;
-  language: "es" | "en";
+  language: Lang;
   taskType: string;
 };
 
@@ -48,12 +49,16 @@ export async function fetchGroqHints(args: GroqRequestArgs): Promise<GroqHint | 
   const sys =
     args.language === "es"
       ? "Sos un coach de prompts. Devolvé sólo JSON válido con la forma {\"followUp\":[...],\"rewrite\":\"...\"}. Máximo 4 preguntas concisas. La reescritura debe ser una mejora breve y accionable."
-      : "You are a prompt coach. Return ONLY valid JSON of the form {\"followUp\":[...],\"rewrite\":\"...\"}. At most 4 concise follow-up questions. The rewrite must be a short, actionable improvement.";
+      : args.language === "pt"
+        ? "Você é um coach de prompts. Retorne APENAS JSON válido no formato {\"followUp\":[...],\"rewrite\":\"...\"}. No máximo 4 perguntas concisas. A reescrita deve ser uma melhoria curta e acionável. Escreva em português do Brasil."
+        : "You are a prompt coach. Return ONLY valid JSON of the form {\"followUp\":[...],\"rewrite\":\"...\"}. At most 4 concise follow-up questions. The rewrite must be a short, actionable improvement.";
 
   const user =
     args.language === "es"
       ? `TaskType: ${args.taskType}\nPrompt original:\n${args.prompt}\n\nDevolvé sólo el JSON.`
-      : `TaskType: ${args.taskType}\nOriginal prompt:\n${args.prompt}\n\nReturn JSON only.`;
+      : args.language === "pt"
+        ? `TaskType: ${args.taskType}\nPrompt original:\n${args.prompt}\n\nRetorne apenas o JSON.`
+        : `TaskType: ${args.taskType}\nOriginal prompt:\n${args.prompt}\n\nReturn JSON only.`;
 
   try {
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {

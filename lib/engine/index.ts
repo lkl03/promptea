@@ -16,6 +16,7 @@ import { neutralizeInjection } from "./sanitize";
 import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
 import { classifyTaskDetailed } from "./classifier";
+import { isPt } from "./pt";
 import { selectStrategy, isImageGenerationRequest, type RoutingDecision } from "@/lib/refine/router";
 import { normalizePurpose } from "@/lib/domain";
 
@@ -97,9 +98,9 @@ function parseEmbeddedAttachments(raw: string): AttachmentContext[] {
 }
 
 
-function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
+function resolveTaskType(raw: string, purpose: PromptPurpose, lang: Lang): TaskType {
   const fallback = TASK_FROM_PURPOSE[purpose] ?? "text";
-  const detailed = classifyTaskDetailed(raw);
+  const detailed = classifyTaskDetailed(raw, lang);
   const classified = detailed.best;
 
   switch (purpose) {
@@ -111,7 +112,7 @@ function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
     case "text":
       // v1.6.0: an explicit request to GENERATE an image is an image task
       // even under the default purpose (vision/analysis asks are not).
-      if (isImageGenerationRequest(raw)) return "image";
+      if (isImageGenerationRequest(raw, lang)) return "image";
       // v1.2.0: detect the real task even when the user kept the default
       // "text" purpose — a JSON-extraction or debugging prompt typed under
       // "text" should be scored and structured as what it actually is.
@@ -135,7 +136,9 @@ function resolveTaskType(raw: string, purpose: PromptPurpose): TaskType {
       // ("improve my React CV" is a text task, not a coding task).
       if (
         (classified === "coding" || classified === "debugging") &&
-        /(fix|debug|implement|bug|error|write code|refactor|function|función|funcion|snippet|compile|compilar|deploy|```)/i.test(raw)
+        (/(fix|debug|implement|bug|error|write code|refactor|function|función|funcion|snippet|compile|compilar|deploy|```)/i.test(raw) ||
+          // v1.8.2: the same code-work intent written in Portuguese.
+          (isPt(raw, lang) && /(erro|corrij|corrig|depur|refator|c[óo]digo|fun[çc][ãa]o|implement)/i.test(raw)))
       ) {
         return classified;
       }
@@ -272,7 +275,7 @@ export function analyzePrompt(
   // v1.3.0: classify from the extracted core, not the raw scaffold — this is
   // what makes re-analysis of an optimized prompt land on the same task type
   // (and therefore the same shape) as the original pass.
-  const taskType: TaskType = resolveTaskType(cleanAnalysisInput, purpose);
+  const taskType: TaskType = resolveTaskType(cleanAnalysisInput, purpose, lang);
 
   const lint = softenLintWithAttachments(
     lintPrompt(cleanAnalysisInput, lang, taskType, {
@@ -325,6 +328,7 @@ export function analyzePrompt(
     taskType,
     purpose,
     attachmentsCount: effectiveAttachments.length,
+    lang,
   });
 
   // v1.3.0 idempotency without a header signature: rebuild from the
@@ -433,6 +437,9 @@ export function analyzePrompt(
       modelId,
       routing,
       alreadyOptimized,
+      // v1.8.2: a Portuguese image request gets its art-directed prompt in English
+      // (lib/engine/imagePrompt.pt.ts); the interface says so.
+      ...(lang === "pt" && routing.strategy === "image_generation" && !alreadyOptimized ? { optimizedPromptLang: "en" as const } : {}),
       scoreCriteria: feedback.scoreCriteria,
       strengths: feedback.strengths,
       criticalIssues: feedback.criticalIssues,

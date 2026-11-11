@@ -13,7 +13,7 @@ import { useMemo, useState, useSyncExternalStore } from "react";
 import { getLibraryServerSnapshot, getLibrarySnapshot, libraryActions, subscribeLibrary } from "@/lib/library/clientStore";
 import { scoreDelta, searchEntries, type LibraryEntry } from "@/lib/library/store";
 import { purposeLabel } from "@/lib/purposes";
-import { isPurpose } from "@/lib/domain";
+import { isPurpose, INTL_LOCALE, type Lang } from "@/lib/domain";
 import ShareButton, { type ShareDict } from "@/components/share/ShareButton";
 import { useToast } from "@/components/ToastProvider";
 
@@ -41,10 +41,10 @@ function TrashIcon() {
   );
 }
 
-function EntryCard({ entry, lang, t, shareDict }: { entry: LibraryEntry; lang: "es" | "en"; t: LibraryDict; shareDict: ShareDict }) {
+function EntryCard({ entry, lang, t, shareDict }: { entry: LibraryEntry; lang: Lang; t: LibraryDict; shareDict: ShareDict }) {
   const toast = useToast();
   const delta = scoreDelta(entry);
-  const date = new Intl.DateTimeFormat(lang === "es" ? "es-AR" : "en-US", { dateStyle: "medium", timeStyle: "short" }).format(entry.createdAt);
+  const date = new Intl.DateTimeFormat(INTL_LOCALE[lang], { dateStyle: "medium", timeStyle: "short" }).format(entry.createdAt);
 
   async function copy(text: string) {
     try {
@@ -137,7 +137,7 @@ function EntryCard({ entry, lang, t, shareDict }: { entry: LibraryEntry; lang: "
   );
 }
 
-export default function LibraryView({ lang, t, shareDict }: { lang: "es" | "en"; t: LibraryDict; shareDict: ShareDict }) {
+export default function LibraryView({ lang, t, shareDict }: { lang: Lang; t: LibraryDict; shareDict: ShareDict }) {
   const lib = useSyncExternalStore(subscribeLibrary, getLibrarySnapshot, getLibraryServerSnapshot);
   const [query, setQuery] = useState("");
   const [favoritesOnly, setFavoritesOnly] = useState(false);

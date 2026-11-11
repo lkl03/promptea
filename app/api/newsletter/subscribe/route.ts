@@ -108,6 +108,7 @@ export async function POST(req: NextRequest) {
     const result = await addSubscriber({
       email: parsed.data.email,
       lang: parsed.data.lang,
+      uiLang: parsed.data.uiLang,
     });
 
     return jsonResponse({ ok: true, outcome: result.outcome }, 200);

@@ -12,6 +12,7 @@
 import { useState } from "react";
 import { encodeCard, type BreakdownKey } from "@/lib/share/card";
 import { useToast } from "@/components/ToastProvider";
+import { type Lang } from "@/lib/domain";
 
 export type ShareDict = { button: string; copied: string; shareText: string; shareTextSingle: string };
 
@@ -40,7 +41,7 @@ function XIcon() {
   );
 }
 
-export function buildShare(lang: "es" | "en", input: ShareInput, dict: Pick<ShareDict, "shareText" | "shareTextSingle">, origin: string) {
+export function buildShare(lang: Lang, input: ShareInput, dict: Pick<ShareDict, "shareText" | "shareTextSingle">, origin: string) {
   const url = `${origin}/${lang}/share?${encodeCard(input)}`;
   const hasAfter = typeof input.optimizedScore === "number" && input.optimizedScore !== input.score;
   const text = hasAfter
@@ -49,7 +50,7 @@ export function buildShare(lang: "es" | "en", input: ShareInput, dict: Pick<Shar
   return { url, text, xIntent: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}` };
 }
 
-export default function ShareButton({ lang, input, dict, label, compact = false }: { lang: "es" | "en"; input: ShareInput; dict: ShareDict; label?: string; compact?: boolean }) {
+export default function ShareButton({ lang, input, dict, label, compact = false }: { lang: Lang; input: ShareInput; dict: ShareDict; label?: string; compact?: boolean }) {
   const toast = useToast();
   const [busy, setBusy] = useState(false);
   const text = label ?? dict.button;

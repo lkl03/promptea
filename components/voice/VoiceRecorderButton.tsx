@@ -9,6 +9,7 @@
 import { useId } from "react";
 import { useVoiceRecorder, MAX_RECORDING_SECONDS, type VoiceErrorKey } from "./useVoiceRecorder";
 import type { VoiceDict } from "@/lib/uiDict";
+import { type Lang } from "@/lib/domain";
 
 function formatTime(totalSeconds: number): string {
   const m = Math.floor(totalSeconds / 60);
@@ -67,7 +68,7 @@ function StopIcon({ className }: { className?: string }) {
 }
 
 export type VoiceRecorderButtonProps = {
-  lang: "es" | "en";
+  lang: Lang;
   dict: VoiceDict;
   disabled?: boolean;
   hasExistingText: boolean;

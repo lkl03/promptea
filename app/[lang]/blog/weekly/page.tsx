@@ -22,6 +22,8 @@ import { formatEditorialDate } from "@/lib/blog/dates";
 import { pageMetadata } from "@/lib/seo/metadata";
 import JsonLd from "@/components/seo/JsonLd";
 import { registryPageGraph } from "@/lib/seo/pageGraphs";
+import { contentIsFallback, contentLangFor, toLang, type Lang } from "@/lib/domain";
+import ContentLangNotice from "@/components/blog/ContentLangNotice";
 
 export const revalidate = 300;
 
@@ -35,13 +37,13 @@ async function loadArchive(): Promise<{ ok: true; editions: EditionSummary[] } |
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const dict = await getDictionary(l);
   const t = dict.weekly;
-  return pageMetadata({ lang: l, path: weeklyArchivePath(l), title: `${t.archiveTitle} — ${dict.blog.indexTitle}`, description: t.archiveIntro });
+  return pageMetadata({ lang: l, contentLang: contentLangFor(l), path: weeklyArchivePath(l), title: `${t.archiveTitle} — ${dict.blog.indexTitle}`, description: t.archiveIntro });
 }
 
-function weekRange(e: EditionSummary, l: "es" | "en", template: string) {
+function weekRange(e: EditionSummary, l: Lang, template: string) {
   return template
     .replace("{from}", formatEditorialDate(e.weekStart, l))
     .replace("{to}", formatEditorialDate(e.weekEnd, l));
@@ -50,7 +52,9 @@ function weekRange(e: EditionSummary, l: "es" | "en", template: string) {
 export default async function WeeklyArchivePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
+  // Editions exist in the content languages; /pt lists the English ones.
+  const cl = contentLangFor(l);
 
   const dict = await getDictionary(l);
   const t = dict.weekly;
@@ -58,13 +62,14 @@ export default async function WeeklyArchivePage({ params }: { params: Promise<{ 
   const editions = archive.ok ? archive.editions : [];
   const [latest, ...past] = editions;
 
-  const count = (e: EditionSummary) => (e.stories[l] === 1 ? t.storyCount : t.storiesCount.replace("{n}", String(e.stories[l])));
+  const count = (e: EditionSummary) => (e.stories[cl] === 1 ? t.storyCount : t.storiesCount.replace("{n}", String(e.stories[cl])));
   const badge = (e: EditionSummary) =>
     e.status === "sent" ? <span className="badge badge-accent">{t.sentBadge}</span> : <span className="badge badge-neutral">{t.publishedBadge}</span>;
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
-      <JsonLd data={registryPageGraph(lang, `/${lang}/blog/weekly`, { collection: true })} />
+      {/* A /pt view is canonicalised to the English archive, which carries the structured data. */}
+      {contentIsFallback(l) ? null : <JsonLd data={registryPageGraph(lang, `/${lang}/blog/weekly`, { collection: true })} />}
       <DailyTabs lang={l} active="weekly" dict={dict.dailyTabs} />
 
       <div className="mt-8 grid grid-cols-1 gap-10 sm:mt-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
@@ -72,6 +77,7 @@ export default async function WeeklyArchivePage({ params }: { params: Promise<{ 
           <header>
             <h1 className="font-title text-3xl font-semibold leading-tight sm:text-4xl">{t.archiveTitle}</h1>
             <p className="mt-3 max-w-xl text-base leading-relaxed text-ink-muted">{t.archiveIntro}</p>
+            <ContentLangNotice lang={l} text={dict.blog.langNotice} hrefs={{ es: weeklyArchivePath("es"), en: weeklyArchivePath("en") }} className="mt-4" />
           </header>
 
           {!archive.ok ? (
@@ -99,8 +105,8 @@ export default async function WeeklyArchivePage({ params }: { params: Promise<{ 
                     <span aria-hidden="true">·</span>
                     <span>{count(latest)}</span>
                   </div>
-                  <h3 className="blog-row-title font-title mt-3 text-2xl font-semibold leading-snug sm:text-3xl">{latest.headline[l]}</h3>
-                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-muted">{latest.deck[l]}</p>
+                  <h3 className="blog-row-title font-title mt-3 text-2xl font-semibold leading-snug sm:text-3xl">{latest.headline[cl]}</h3>
+                  <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-muted">{latest.deck[cl]}</p>
                   <p className="mt-5 text-sm font-medium text-accent">
                     {t.readEdition} <span aria-hidden="true" className="blog-row-arrow inline-block">→</span>
                   </p>
@@ -121,8 +127,8 @@ export default async function WeeklyArchivePage({ params }: { params: Promise<{ 
                             <span aria-hidden="true">·</span>
                             <span>{count(e)}</span>
                           </div>
-                          <h3 className="blog-row-title font-title mt-1.5 text-lg font-semibold leading-snug">{e.headline[l]}</h3>
-                          <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink-muted">{e.deck[l]}</p>
+                          <h3 className="blog-row-title font-title mt-1.5 text-lg font-semibold leading-snug">{e.headline[cl]}</h3>
+                          <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-ink-muted">{e.deck[cl]}</p>
                         </Link>
                       </li>
                     ))}

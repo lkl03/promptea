@@ -29,7 +29,7 @@
 //   edition, so the email always matches what the site shows.
 
 import { createHash } from "node:crypto";
-import type { Lang } from "@/lib/domain";
+import type { ContentLang } from "@/lib/domain";
 import type { PublicArticle } from "@/lib/blog/types";
 import { editorialDate, isEditorialDate, type EditorialDate } from "@/lib/blog/dates";
 import { APP_VERSION } from "@/lib/version";
@@ -60,7 +60,7 @@ export const NEWSLETTER_RUN_OUTCOMES = [
 ] as const;
 export type NewsletterRunOutcome = (typeof NEWSLETTER_RUN_OUTCOMES)[number];
 
-export type SubscriberRecord = { id: string; email: string; lang: Lang; unsubscribeToken: string };
+export type SubscriberRecord = { id: string; email: string; lang: ContentLang; unsubscribeToken: string };
 
 /**
  * claimed — this run owns the send; already_sent — delivered before;
@@ -119,7 +119,7 @@ export type NewsletterRunRecord = Omit<NewsletterRunResult, "preview" | "config"
 export type RunDeps = {
   store: NewsletterStore;
   mailer: Mailer | null;
-  loadArticles: (lang: Lang) => Promise<PublicArticle[]>;
+  loadArticles: (lang: ContentLang) => Promise<PublicArticle[]>;
   config: DeliveryConfig;
   now?: () => Date;
   sleep?: (ms: number) => Promise<void>;
@@ -287,7 +287,7 @@ export async function runWeeklyNewsletter(
   }
 
   const mailer = deps.mailer!;
-  const sendTo = async (to: string, lang: Lang, unsubscribeUrl: string, opts2: { subjectPrefix?: string; idempotencyKey?: string }) => {
+  const sendTo = async (to: string, lang: ContentLang, unsubscribeUrl: string, opts2: { subjectPrefix?: string; idempotencyKey?: string }) => {
     const content = edition!.locales[lang];
     return mailer.send({
       to,
@@ -304,7 +304,7 @@ export async function runWeeklyNewsletter(
   //     alternating so each locale can be checked. Nothing is stored.
   if (mode === "test") {
     for (const [i, address] of cfg.testRecipients.entries()) {
-      const lang: Lang = i % 2 === 0 ? "es" : "en";
+      const lang: ContentLang = i % 2 === 0 ? "es" : "en";
       const r = await sendTo(address, lang, `${cfg.siteUrl}${weeklyEditionPath(lang, edition!.editionId)}`, { subjectPrefix: "[TEST] " });
       if (r.ok) counts.testSent++;
       else counts.failed++;
@@ -325,7 +325,7 @@ export async function runWeeklyNewsletter(
     return finish("STORAGE_ERROR", "Could not store this week's edition; nothing was sent.");
   }
 
-  const deliver = async (recipientKey: string, to: string, lang: Lang, unsubscribeUrl: string): Promise<ClaimResult | "sent" | "failed"> => {
+  const deliver = async (recipientKey: string, to: string, lang: ContentLang, unsubscribeUrl: string): Promise<ClaimResult | "sent" | "failed"> => {
     const claim = await deps.store.claimDelivery(edition!.editionId, recipientKey, now());
     if (claim !== "claimed") return claim;
     const r = await sendTo(to, lang, unsubscribeUrl, { idempotencyKey: deliveryIdempotencyKey(edition!.editionId, recipientKey) });
@@ -344,7 +344,7 @@ export async function runWeeklyNewsletter(
   // stops the run before a single subscriber is contacted.
   try {
     for (const [i, address] of cfg.testRecipients.entries()) {
-      const lang: Lang = i % 2 === 0 ? "es" : "en";
+      const lang: ContentLang = i % 2 === 0 ? "es" : "en";
       const r = await deliver(testRecipientKey(address), address, lang, `${cfg.siteUrl}${weeklyEditionPath(lang, edition!.editionId)}`);
       if (r === "failed" || r === "rejected") return finish("CANARY_FAILED", "The canary send to the test recipients failed; no subscriber was contacted.");
       if (r === "sent" || r === "already_sent") counts.canarySent++;

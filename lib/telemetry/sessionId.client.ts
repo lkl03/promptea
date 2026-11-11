@@ -1,4 +1,5 @@
 "use client";
+import { type Lang } from "@/lib/domain";
 
 const KEY = "promptea_session_id";
 const DAY_KEY = "promptea_session_last_day";
@@ -24,7 +25,7 @@ export function getOrCreateSessionId() {
   }
 }
 
-export async function ensureSessionPing(lang: "es" | "en") {
+export async function ensureSessionPing(lang: Lang) {
   try {
     const sessionId = getOrCreateSessionId();
     const today = todayUTCKey();

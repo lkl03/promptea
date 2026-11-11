@@ -197,7 +197,105 @@ export function findingText(id: FindingId, lang: Lang) {
     },
   };
 
-  return lang === "es" ? es[id] : en[id];
+  const pt: Record<FindingId, { title: string; description: string; fix: string }> = {
+    too_short: {
+      title: "O prompt é curto demais",
+      description: "Com pouca informação, o modelo tende a adivinhar.",
+      fix: "Adicione um objetivo, um contexto mínimo e um formato de saída.",
+    },
+    missing_goal: {
+      title: "Falta o objetivo",
+      description: "Não está claro que resultado você quer.",
+      fix: "Diga o objetivo em uma frase clara.",
+    },
+    missing_context: {
+      title: "Falta contexto",
+      description: "O cenário, o uso pretendido ou a informação disponível não estão claros.",
+      fix: "Adicione um contexto mínimo, o uso pretendido e a informação disponível.",
+    },
+    missing_input_data: {
+      title: "Faltam os dados de entrada",
+      description: "Faltam o texto, os dados, os logs ou o código com que o modelo deve trabalhar.",
+      fix: "Cole o conteúdo ou anexe o material-fonte.",
+    },
+    missing_output_format: {
+      title: "Falta o formato de saída",
+      description: "Sem um formato, o modelo decide por conta própria e pode não atender ao que você precisa.",
+      fix: "Peça um formato concreto: tópicos, parágrafo, seções, tabela ou JSON.",
+    },
+    missing_constraints: {
+      title: "Faltam restrições",
+      description: "Sem limites de tom, tamanho ou foco, as respostas variam demais.",
+      fix: "Especifique tom, tamanho, foco e o que evitar.",
+    },
+    contradiction: {
+      title: "Instruções contraditórias",
+      description: "O prompt pede coisas incompatíveis.",
+      fix: "Escolha uma prioridade clara e ajuste o resto.",
+    },
+    prompt_injection: {
+      title: "Possível injeção de prompt",
+      description: "O prompt inclui instruções para burlar regras ou revelar conteúdo oculto do sistema.",
+      fix: "Remova essas frases e reformule o pedido de forma direta.",
+    },
+    missing_repro_steps: {
+      title: "Faltam os passos para reproduzir",
+      description: "Sem passos claros, fica difícil diagnosticar problemas técnicos.",
+      fix: "Adicione passos numerados para reproduzir o problema.",
+    },
+    missing_error_message: {
+      title: "Falta a mensagem de erro",
+      description: "Sem o erro exato ou os logs, o diagnóstico perde confiabilidade.",
+      fix: "Cole o erro completo e os logs relevantes.",
+    },
+    missing_environment: {
+      title: "Falta o ambiente",
+      description: "Versões, framework ou sistema operacional podem mudar a solução.",
+      fix: "Inclua versões, sistema operacional e a configuração relevante.",
+    },
+    missing_schema: {
+      title: "Falta o esquema",
+      description: "Você pede extração ou JSON, mas os campos esperados não estão definidos.",
+      fix: "Defina os campos, os tipos e um exemplo curto de saída.",
+    },
+    missing_summary_scope: {
+      title: "Falta o foco do resumo",
+      description: "Não está claro o que deve ser priorizado no material-fonte.",
+      fix: "Diga se você quer um resumo geral, por seções, por temas ou com um foco específico.",
+    },
+    missing_summary_length: {
+      title: "Falta o tamanho do resumo",
+      description: "O prompt não diz quão curto ou detalhado o resumo final deve ser.",
+      fix: "Defina o tamanho: 3 tópicos, 1 parágrafo, resumo curto etc.",
+    },
+    missing_translation_target: {
+      title: "Falta o idioma de destino",
+      description: "O idioma de destino não foi especificado.",
+      fix: "Informe o idioma de destino de forma explícita.",
+    },
+    missing_translation_register: {
+      title: "Falta o registro da tradução",
+      description: "Não está claro se você quer uma versão literal, natural, formal ou neutra.",
+      fix: "Defina o registro ou o grau de literalidade.",
+    },
+    missing_study_level: {
+      title: "Falta o nível de quem estuda",
+      description: "Não está claro para que nível de conhecimento a explicação deve ser feita.",
+      fix: "Especifique o nível: básico, ensino médio, faculdade, técnico etc.",
+    },
+    missing_marketing_audience: {
+      title: "Falta o público",
+      description: "Não está claro para quem é o texto.",
+      fix: "Defina o público-alvo de forma explícita.",
+    },
+    missing_marketing_cta: {
+      title: "Falta o CTA",
+      description: "Não está clara a ação desejada depois da leitura do texto.",
+      fix: "Informe com clareza a chamada para ação pretendida.",
+    },
+  };
+
+  return { es, en, pt }[lang][id];
 }
 
 export function recoText(id: RecommendationId, lang: Lang) {
@@ -243,5 +341,26 @@ export function recoText(id: RecommendationId, lang: Lang) {
     define_marketing_cta: { title: "Define the CTA", detail: "Specify the action the message should drive." },
   };
 
-  return lang === "es" ? es[id] : en[id];
+  const pt: Record<RecommendationId, { title: string; detail: string }> = {
+    add_goal: { title: "Defina o objetivo", detail: "Diga que resultado você quer em uma frase clara." },
+    add_context: { title: "Adicione um contexto mínimo", detail: "Inclua o cenário, a informação disponível e o uso pretendido." },
+    add_input_data: { title: "Adicione o material-fonte", detail: "Cole o texto, os dados, os logs ou o arquivo que o modelo deve usar." },
+    define_output_format: { title: "Defina o formato de saída", detail: "Peça tópicos, parágrafo, tabela, passos ou JSON." },
+    add_constraints: { title: "Adicione restrições", detail: "Especifique tom, tamanho, foco e o que evitar." },
+    add_success_criteria: { title: "Adicione critérios de sucesso", detail: "Diga o que uma boa resposta deve incluir." },
+    add_examples: { title: "Adicione um exemplo", detail: "Um exemplo de entrada/saída reduz a ambiguidade." },
+    add_schema: { title: "Defina campos e tipos", detail: "Para extração ou JSON: defina os campos, os tipos e um exemplo." },
+    add_repro_steps: { title: "Adicione os passos para reproduzir", detail: "Passos numerados para reproduzir o problema." },
+    add_error_message: { title: "Cole o erro completo", detail: "Os logs ou o stack trace exatos e o contexto de execução." },
+    add_environment: { title: "Informe o ambiente", detail: "Framework, runtime, sistema operacional e versões relevantes." },
+    define_summary_scope: { title: "Defina o foco do resumo", detail: "Diga que parte do conteúdo deve ser priorizada." },
+    define_summary_length: { title: "Defina o tamanho do resumo", detail: "Exemplo: 3 tópicos, 1 parágrafo, resumo curto." },
+    define_translation_target: { title: "Defina o idioma de destino", detail: "Informe o idioma de destino de forma explícita." },
+    define_translation_register: { title: "Defina o registro", detail: "Diga se você quer uma tradução literal, natural, formal ou neutra." },
+    define_study_level: { title: "Defina o nível", detail: "Especifique iniciante, ensino médio, faculdade etc." },
+    define_marketing_audience: { title: "Defina o público", detail: "Diga para quem é o texto." },
+    define_marketing_cta: { title: "Defina o CTA", detail: "Especifique a ação que a mensagem deve provocar." },
+  };
+
+  return { es, en, pt }[lang][id];
 }

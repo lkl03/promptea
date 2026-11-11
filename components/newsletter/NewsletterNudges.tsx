@@ -63,6 +63,7 @@ import {
   routeKind,
   scrollRatio,
 } from "@/lib/newsletter/prompts";
+import { type Lang } from "@/lib/domain";
 
 export type NudgeDict = {
   pill: string;
@@ -215,7 +216,7 @@ function useSmallViewport(): boolean {
   );
 }
 
-export default function NewsletterNudges({ lang, dict, formDict }: { lang: "es" | "en"; dict: NudgeDict; formDict: SubscribeFormDict }) {
+export default function NewsletterNudges({ lang, dict, formDict }: { lang: Lang; dict: NudgeDict; formDict: SubscribeFormDict }) {
   const pathname = usePathname() ?? "";
   const kind = routeKind(pathname);
   const tool = isToolRoute(pathname);

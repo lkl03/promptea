@@ -22,6 +22,7 @@ import Link from "next/link";
 
 import { editorialDate, formatEditorialDate } from "@/lib/blog/dates";
 import type { ArticleCard } from "@/lib/blog/types";
+import { type Lang } from "@/lib/domain";
 
 export type ArticleCardDict = {
   featured: string;
@@ -68,7 +69,7 @@ export default function ArticleCardItem({
   featured = false,
 }: {
   card: ArticleCard;
-  lang: "es" | "en";
+  lang: Lang;
   dict: ArticleCardDict;
   featured?: boolean;
 }) {

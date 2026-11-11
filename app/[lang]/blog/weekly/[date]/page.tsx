@@ -19,8 +19,10 @@ import { editionIdForMonday, weeklyArchivePath, weeklyEditionPath } from "@/lib/
 import { formatEditorialDate } from "@/lib/blog/dates";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
 import { clampTitle, pageMetadata } from "@/lib/seo/metadata";
+import ContentLangNotice from "@/components/blog/ContentLangNotice";
 import JsonLd from "@/components/seo/JsonLd";
 import { weeklyEditionGraph } from "@/lib/seo/pageGraphs";
+import { toLang, type Lang, contentLangFor } from "@/lib/domain";
 
 export const revalidate = 300;
 
@@ -38,14 +40,15 @@ async function load(date: string): Promise<NewsletterEdition | null | "unavailab
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { lang, date } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const edition = await load(date);
   if (!edition || edition === "unavailable") return { robots: { index: false, follow: true } };
-  const c = edition.locales[l];
+  const cl = contentLangFor(l);
+  const c = edition.locales[cl];
   return pageMetadata({
     lang: l,
+    contentLang: cl,
     path: weeklyEditionPath(l, edition.editionId),
-    alternatePaths: { es: weeklyEditionPath("es", edition.editionId), en: weeklyEditionPath("en", edition.editionId) },
     // The hero headline is editorial and often runs past 120 characters: the <title> is
     // clamped at a word boundary; social cards keep the full headline.
     title: clampTitle(c.heroHeadline),
@@ -60,7 +63,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 export default async function WeeklyEditionPage({ params }: { params: Params }) {
   const { lang, date } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
+  const cl = contentLangFor(l);
   const dict = await getDictionary(l);
   const t = dict.weekly;
 
@@ -85,7 +89,13 @@ export default async function WeeklyEditionPage({ params }: { params: Params }) 
             </section>
           ) : (
             <article className="mt-5">
-              <JsonLd data={weeklyEditionGraph(edition, l)} />
+              <ContentLangNotice
+                lang={l}
+                text={dict.blog.langNotice}
+                hrefs={{ es: weeklyEditionPath("es", edition.editionId), en: weeklyEditionPath("en", edition.editionId) }}
+                className="mb-6"
+              />
+              <JsonLd data={weeklyEditionGraph(edition, cl)} />
               <header>
                 <p className="text-xs font-medium uppercase tracking-[0.14em] text-accent">{dict.newsletter.title}</p>
                 <p className="mt-2 text-sm tabular-nums text-ink-muted">
@@ -96,7 +106,7 @@ export default async function WeeklyEditionPage({ params }: { params: Params }) 
                 <WeeklyEditionView edition={edition} lang={l} dict={dict.newsletter} headingLevel={1} />
               </div>
               <div className="mt-10 flex justify-center">
-                <ShareLink label={t.share} copied={t.copied} title={edition.locales[l].subject} />
+                <ShareLink label={t.share} copied={t.copied} title={edition.locales[cl].subject} />
               </div>
             </article>
           )}

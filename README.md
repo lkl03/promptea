@@ -7,9 +7,15 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 - **How Promptea works** (`/[lang]/how-it-works`, v1.8.1) — what it is, how a prompt is scored, supported AIs and prompt types, the FAQ and the product tour video. The long explanation that used to sit at the bottom of the home page, with its `HowTo` + `FAQPage` JSON-LD, a markdown twin and a place in `llms.txt`.
 - **Benchmarks** (`/[lang]/benchmarks`) — leaders per benchmark, frontier models, an explorable ranking table and what each benchmark measures, from OpenRouter's benchmarks API (server-side, cached, honest fallbacks).
 
-Bilingual (English / Spanish) with full feature parity. Voice dictation in both modes.
+Available in English, Spanish and Brazilian Portuguese (`/en`, `/es`, `/pt`; v1.8.2). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.1 (2026-11-10)
+## Latest update — v1.8.2 (2026-11-11)
+
+**Brazilian Portuguese (`/pt`) as a third language.** One list of locales (`lib/domain.ts` `LANGS`) drives routes, the proxy, hreflang (`pt-BR` + `pt`), the sitemap, `llms.txt` and the markdown twins. The interface, the static pages (how it works, about, methodology, privacy), the glossary, the model pages, the landings and the prompt packs are translated. The analysis engine (2.4.0) answers in Portuguese and reads prompts written in Portuguese from any interface. Content that has no Portuguese version says so instead of pretending: AI Daily and the weekly digest are shown in English under `/pt` (canonical → the English original), the newsletter form offers its two editions, a guide is read in English until it is translated, and image prompts are composed in English around the user's own words. Translations were written by AI: a native review is recommended (`docs/i18n/pt-glossary.md` fixes the terminology). Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.1 (2026-11-10) — the visual defects of v1.8.0 fixed, a rebuilt home page, one header for every page and the "How Promptea works" page._
+
+## v1.8.1 (2026-11-10)
 
 **The visual defects of v1.8.0 fixed (the Benchmarks ranking overlap first), a home page rebuilt to explain itself in five seconds, one header for every page, a "How Promptea works" page that keeps the SEO content the home used to carry, a first-visit newsletter card, a more visible ambient background, and a full QA pass.** Details in [CHANGELOG.md](./CHANGELOG.md); evidence and what could not be verified in [`docs/release/v1.8.1/qa-report.md`](./docs/release/v1.8.1/qa-report.md).
 
@@ -119,6 +125,7 @@ npm run build      # production build (works offline — fonts are local)
 
 - `node scripts/brand/build-brand-assets.mjs` — regenerates every brand raster (wordmark light/dark, mascot, favicons, apple-touch, manifest and OG artwork) from `public/brand/promptea-logo-mascot-source.png`.
 - `node scripts/release/audit.mjs --base=http://localhost:3182 [--shots] [--quick] [--out=dir]` — real-Chrome audit of 23 pages across 5 widths (1920, 1440, 1024, 768, 375) × themes × colour schemes: console/hydration errors, horizontal overflow, CLS, one `<h1>`, one canonical, and (with `--shots`) the feedback-modal fill and screenshots.
+- v1.8.2: `node scripts/release/i18n-qa.mjs --base=http://localhost:3181 [--shots=1]` walks 23 pages in the three languages at 1440 and 375 px with a real Chrome (overflow, clipped text, the language switcher, `<html lang>`, untranslated strings under `/pt`, and the analyzer with a prompt written in Portuguese). Localhost only.
 - v1.8.1 release checks, all with a real Chrome (`puppeteer-core`) and all read-only against anything that is not localhost:
   - `scripts/release/benchmarks-layout.mjs` — the "Ranking by benchmark" layout at 5 widths × every category: no overlap, no card wider than its list, no gap, no overflow.
   - `scripts/release/ambient-check.mjs` — how far the ambient background moves in a few seconds, frame rate, layouts, long tasks and CLS; Metro flat, reduced motion static.

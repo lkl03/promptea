@@ -30,6 +30,7 @@
 // external provider is down.
 
 import type { Lang } from "@/lib/domain";
+import { MEDIUM_NOUN_PT, PT_ACTION_RE, PT_ARTICLE_START, PT_LEAD_INS, PT_NEGATIVE_PREFIX, ptCues } from "./imagePrompt.pt";
 import { detectPromptLanguage } from "@/lib/refine/language";
 
 // ---------------------------------------------------------------------------
@@ -65,6 +66,13 @@ export type ImageBrief = {
   /** Head noun of the subject and (ES) its article — used for references in prose. */
   subjectNoun: string | null;
   subjectArticle: "el" | "la" | null;
+  /**
+   * v1.8.2: the subject with its Portuguese cue words rewritten in English
+   * ("um gato laranja" → "um cat orange"). Present only for Portuguese
+   * requests and used only to CLASSIFY (colour, hair, action); the prompt
+   * always carries `subject`, the user's own words.
+   */
+  subjectCue?: string;
   /** User segments we could not classify — kept verbatim as extra details. */
   extras: string[];
   medium: ImageMedium;
@@ -268,15 +276,29 @@ const MEDIUM_NOUN_EN =
 const MEDIUM_NOUN_ES =
   /^(?:(?:una?|la|el)\s+)?(imagen|foto|fotograf[ií]a|ilustraci[oó]n|render|renderizado|dibujo|pintura|p[oó]ster|logo|logotipo|[ií]cono|icono|fondo de pantalla|retrato|escena|boceto|gr[aá]fico)\s*((?:[\wáéíóúñü'’-]+\s+){0,3}?)(de|del|con|que muestre|mostrando|para)\s+/i;
 
-function stripLeadIns(text: string): { rest: string; mediumWords: string } {
+function stripLeadIns(text: string, pt = false): { rest: string; mediumWords: string } {
   let rest = text.trim();
   for (let pass = 0; pass < 3; pass++) {
     const before = rest;
     for (const re of LEAD_INS) rest = rest.replace(re, "").trim();
+    if (pt) for (const re of PT_LEAD_INS) rest = rest.replace(re, "").trim();
     if (rest === before) break;
   }
 
   let mediumWords = "";
+  // v1.8.2: "uma foto de …", "ilustração em aquarela de …" (Portuguese).
+  const ptm = pt ? rest.match(MEDIUM_NOUN_PT) : null;
+  if (ptm && ptm.index === 0) {
+    // Medium words are only ever classified, so they are kept as English cues.
+    mediumWords = ptCues(`${ptm[1]} ${ptm[2] ?? ""}`).trim();
+    const prep = ptm[3].toLowerCase();
+    const keepPrep = prep === "com" || prep === "para";
+    rest = (keepPrep ? `${ptm[3]} ` : "") + rest.slice(ptm[0].length);
+    // "foto do gato" = "de" + "o gato": give the article back to the subject.
+    const article = ({ do: "o", da: "a", dos: "os", das: "as" } as Record<string, string>)[prep];
+    if (article) rest = `${article} ${rest}`;
+    return { rest: rest.trim(), mediumWords };
+  }
   const en = rest.match(MEDIUM_NOUN_EN);
   if (en && en.index === 0) {
     mediumWords = `${en[1] ?? ""}${en[2]}`.trim();
@@ -403,7 +425,11 @@ function extractRequestedText(text: string): string | null {
 export function parseImageRequest(core: string, uiLang: Lang): ImageBrief {
   const raw = String(core ?? "").replace(/\s+/g, " ").trim();
   const lang = detectPromptLanguage(raw, uiLang).lang;
-  const { rest, mediumWords } = stripLeadIns(raw);
+  // v1.8.2: a Portuguese request is CLASSIFIED through its English cues
+  // (lib/engine/imagePrompt.pt.ts); the user's words are kept verbatim.
+  const pt = lang === "pt";
+  const cue = (t: string) => (pt ? ptCues(t) : t);
+  const { rest, mediumWords } = stripLeadIns(raw, pt);
 
   const segments = splitSegments(rest);
   let subject = "";
@@ -418,7 +444,7 @@ export function parseImageRequest(core: string, uiLang: Lang): ImageBrief {
   let generator: ImageBrief["generator"] = null;
 
   const isStyleSegment = (raw: string) => {
-    const s = fold(raw);
+    const s = fold(cue(raw));
     return (
     RE.photo.test(s) || RE.illustration.test(s) || RE.painting.test(s) || RE.threeD.test(s) || RE.graphic.test(s) || /\b(style|estilo|aesthetic|est[eé]tica|cinematic|cinematogr[aá]fic[ao])\b/i.test(s)
     );
@@ -431,7 +457,12 @@ export function parseImageRequest(core: string, uiLang: Lang): ImageBrief {
     const generatorOnly = /^(for |para |in |en |using |con |with )?(midjourney|stable diffusion|sdxl|dall[- ]?e|nano banana|gpt[- ]?image|flux|ideogram)$/i.test(seg);
     if (generatorOnly) return;
 
-    const fseg = fold(seg);
+    const fseg = fold(cue(seg));
+    if (pt && PT_NEGATIVE_PREFIX.test(seg)) {
+      // "sem texto" → "text": what to leave out is named in the prompt's language (English).
+      negatives.push(ptCues(seg.replace(PT_NEGATIVE_PREFIX, "").replace(/^\s*(de\s+)?/i, "")).trim());
+      return;
+    }
     if (NEGATIVE_SEG_RE.test(fseg)) {
       negatives.push(seg.replace(/^(no|sin|without|avoid|avoiding|evit[aá]r?|nada de|excepto|except|nothing)(?![\wáéíóúñ])\s*/i, "").replace(/^\s*(de\s+)?/i, "").trim());
       return;
@@ -468,8 +499,9 @@ export function parseImageRequest(core: string, uiLang: Lang): ImageBrief {
 
   if (!subject) subject = extras.shift() ?? rest ?? raw;
 
-  const all = `${mediumWords} ${raw}`;
-  const styleText = `${mediumWords} ${userStyle.join(" ")}`;
+  const all = cue(`${mediumWords} ${raw}`);
+  const styleText = cue(`${mediumWords} ${userStyle.join(" ")}`);
+  const subjectCue = cue(subject);
 
   // Medium: explicit words first (medium noun + style segments), then the
   // whole request, then the subject's nature.
@@ -482,11 +514,11 @@ export function parseImageRequest(core: string, uiLang: Lang): ImageBrief {
     if (RE.photo.test(t)) return "photo";
     return null;
   };
-  const { kind, noun, article } = kindOf(subject);
+  const { kind, noun, article } = kindOf(subjectCue);
   const medium: ImageMedium = pickMedium(styleText) ?? pickMedium(all) ?? (kind === "creature" ? "illustration" : "photo");
 
   const timeCue = detectTime(all);
-  let setting = detectSetting(`${subject} ${extras.join(" ")} ${mediumWords}`);
+  let setting = detectSetting(cue(`${subject} ${extras.join(" ")} ${mediumWords}`));
   if (setting === "none" && (kind === "product" || kind === "food") && medium === "photo") setting = "studio";
   if (setting === "none" && kind === "interior") setting = "interior";
   if (setting === "none" && kind === "landscape") setting = "nature";
@@ -504,8 +536,8 @@ export function parseImageRequest(core: string, uiLang: Lang): ImageBrief {
     setting,
     time: timeCue,
     weather: detectWeather(all),
-    gaze: GAZE_RE.test(fold(subject)),
-    motion: MOTION_RE.test(fold(subject)),
+    gaze: GAZE_RE.test(fold(subjectCue)),
+    motion: MOTION_RE.test(fold(subjectCue)),
     closeUp: CLOSEUP_RE.test(fold(all)),
     minimal: MINIMAL_RE.test(fold(all)),
     userStyle,
@@ -519,6 +551,7 @@ export function parseImageRequest(core: string, uiLang: Lang): ImageBrief {
     generator,
     subjectNoun: noun,
     subjectArticle: article,
+    ...(pt ? { subjectCue } : {}),
   };
 }
 
@@ -545,12 +578,18 @@ function T(ctx: Ctx, es: string, en: string): string {
   return ctx.es ? es : en;
 }
 
+/** The text to CLASSIFY for a brief: its English cues for a Portuguese request, itself otherwise. */
+function cueOf(b: ImageBrief, text: string = b.subject): string {
+  if (b.lang !== "pt") return text;
+  return text === b.subject && b.subjectCue ? b.subjectCue : ptCues(text);
+}
+
 function refFor(b: ImageBrief): { ref: string; poss: string; refObj: string; refDe: string } {
   const noun = b.subjectNoun;
   const article = b.subjectArticle;
   const es = b.lang === "es";
-  const female = /\b(woman|girl|lady|grandmother|mujer|chica|niña|señora|abuela|bailarina|cocinera|modelo)\b/i.test(b.subject);
-  const male = /\b(man|boy|gentleman|grandfather|hombre|chico|niño|señor|abuelo|bailarín|cocinero)\b/i.test(b.subject);
+  const female = /\b(woman|girl|lady|grandmother|mujer|chica|niña|señora|abuela|bailarina|cocinera|modelo)\b/i.test(cueOf(b));
+  const male = /\b(man|boy|gentleman|grandfather|hombre|chico|niño|señor|abuelo|bailarín|cocinero)\b/i.test(cueOf(b));
 
   if (es) {
     const n = noun && noun !== "retrato" ? noun : b.subjectKind === "person" ? "persona" : "sujeto";
@@ -580,6 +619,7 @@ function esColorMasculine(color: string): string {
 
 /** Whether the subject phrase carries an action ("reading", "corriendo"). */
 function hasAction(b: ImageBrief): boolean {
+  if (b.lang === "pt") return PT_ACTION_RE.test(b.subject);
   return b.lang === "es" ? /\b\w+(ando|iendo|endo)\b/i.test(b.subject) : /\b\w{3,}ing\b/i.test(b.subject);
 }
 
@@ -588,11 +628,11 @@ function capitalize(s: string): string {
 }
 
 function lowerArticle(s: string): string {
-  return ARTICLE_START.test(s) ? s[0].toLowerCase() + s.slice(1) : s;
+  return ARTICLE_START.test(s) || PT_ARTICLE_START.test(s) ? s[0].toLowerCase() + s.slice(1) : s;
 }
 
 function hairWord(b: ImageBrief): string | null {
-  const s = b.subject;
+  const s = cueOf(b);
   if (b.lang === "es") {
     if (/\brubi[ao]s?\b/i.test(s)) return "su pelo rubio";
     if (/\bpelirroj[ao]s?\b/i.test(s)) return "su pelo rojizo";
@@ -611,8 +651,8 @@ function hairWord(b: ImageBrief): string | null {
 
 function subjectColor(b: ImageBrief): string | null {
   const m = b.lang === "es"
-    ? b.subject.match(/\b(roj[ao]|azul|verde|amarill[ao]|negr[ao]|blanc[ao]|plateado|plateada|dorad[ao]|naranja|violeta|rosa|gris)\b/i)
-    : b.subject.match(/\b(red|blue|green|yellow|black|white|silver|gold|golden|orange|purple|pink|gray|grey|matte black)\b/i);
+    ? cueOf(b).match(/\b(roj[ao]|azul|verde|amarill[ao]|negr[ao]|blanc[ao]|plateado|plateada|dorad[ao]|naranja|violeta|rosa|gris)\b/i)
+    : cueOf(b).match(/\b(red|blue|green|yellow|black|white|silver|gold|golden|orange|purple|pink|gray|grey|matte black)\b/i);
   return m ? m[1].toLowerCase() : null;
 }
 
@@ -624,7 +664,7 @@ function leadIn(ctx: Ctx): string {
   const { b } = ctx;
   const subject = lowerArticle(b.subject);
   const join = (lead: string, conn: string) => {
-    if (/^(for|with|featuring|para|con)\b/i.test(subject)) return `${lead} ${subject}`;
+    if (/^(for|with|featuring|para|con|com)\b/i.test(subject)) return `${lead} ${subject}`;
     const glued = `${lead} ${conn} ${subject}`;
     return ctx.es ? glued.replace(/\bde el\b/g, "del") : glued;
   };
@@ -680,7 +720,7 @@ function leadIn(ctx: Ctx): string {
 
 function environmentLayers(ctx: Ctx): string | null {
   const { b } = ctx;
-  const s = fold(`${b.subject} ${b.extras.join(" ")}`);
+  const s = fold(cueOf(b, `${b.subject} ${b.extras.join(" ")}`));
   const L = (es: string, en: string) => T(ctx, es, en);
 
   if (b.setting === "studio") return null;
@@ -967,8 +1007,8 @@ function treatmentFor(ctx: Ctx): string {
       }
     case "3d":
       return L(
-        /\b(clay|plastilina|claymation)\b/i.test(b.userStyle.join(" ") + b.subject) ? "Materiales tipo arcilla mate y suave, iluminación global suave y oclusión ambiental sutil" : "Materiales físicamente correctos, iluminación global suave, oclusión ambiental sutil y geometría limpia",
-        /\b(clay|plastilina|claymation)\b/i.test(b.userStyle.join(" ") + b.subject) ? "Soft matte clay-like materials, gentle global illumination, and subtle ambient occlusion" : "Physically based materials, soft global illumination, subtle ambient occlusion, and clean geometry"
+        /\b(clay|plastilina|claymation)\b/i.test(cueOf(b, b.userStyle.join(" ") + b.subject)) ? "Materiales tipo arcilla mate y suave, iluminación global suave y oclusión ambiental sutil" : "Materiales físicamente correctos, iluminación global suave, oclusión ambiental sutil y geometría limpia",
+        /\b(clay|plastilina|claymation)\b/i.test(cueOf(b, b.userStyle.join(" ") + b.subject)) ? "Soft matte clay-like materials, gentle global illumination, and subtle ambient occlusion" : "Physically based materials, soft global illumination, subtle ambient occlusion, and clean geometry"
       );
     case "graphic":
       return b.graphicKind === "logo" || b.graphicKind === "icon"
@@ -983,7 +1023,7 @@ function moodFor(ctx: Ctx): string {
   const L = (es: string, en: string) => T(ctx, es, en);
   if (b.medium === "graphic") return L("Claro, directo y memorable", "Clear, direct, and memorable");
   if (b.illustrationStyle === "storybook") return L("Acogedor, curioso y tierno", "Cozy, curious, and gentle");
-  if (/\b(cute|adorable|kawaii|tiern[ao]|adorable|lind[ao])\b/i.test(b.subject)) return L("Juguetón y encantador", "Playful and charming");
+  if (/\b(cute|adorable|kawaii|tiern[ao]|adorable|lind[ao])\b/i.test(cueOf(b))) return L("Juguetón y encantador", "Playful and charming");
   if (b.subjectKind === "creature") return L("Mágico y acogedor", "Magical and inviting");
   if (b.subjectKind === "product") return L("Calmo, premium y minimalista", "Calm, premium, and minimal");
   if (b.subjectKind === "vehicle" && b.time === "night") return L("Elegante, enérgico y cinematográfico", "Sleek, energetic, and cinematic");
@@ -1026,7 +1066,7 @@ function avoidFor(ctx: Ctx): string[] {
   }
   switch (b.subjectKind) {
     case "person":
-      if (!/\b(couple|family|people|group|friends|pareja|familia|gente|grupo|amigos|amigas)\b/i.test(b.subject))
+      if (!/\b(couple|family|people|group|friends|pareja|familia|gente|grupo|amigos|amigas)\b/i.test(cueOf(b)))
         out.push(L("otras personas en cuadro", "extra people in the frame"));
       break;
     case "product":
@@ -1097,7 +1137,7 @@ export function composeImagePrompt(core: string, uiLang: Lang): ComposedImagePro
   const b = parseImageRequest(text, uiLang);
   const es = b.lang === "es";
   const { ref, poss, refObj, refDe } = refFor(b);
-  const ctx: Ctx = { b, es, ref, poss, refObj, refDe, mono: MONO_RE.test(fold(text)) };
+  const ctx: Ctx = { b, es, ref, poss, refObj, refDe, mono: MONO_RE.test(fold(b.lang === "pt" ? ptCues(text) : text)) };
 
   const lead = leadIn(ctx);
   const composition = compositionFor(ctx);
@@ -1125,8 +1165,8 @@ export function composeImagePrompt(core: string, uiLang: Lang): ComposedImagePro
   const wardrobe =
     b.subjectKind === "person" &&
     b.medium !== "graphic" &&
-    genericPerson.test(b.subject) &&
-    !/\b(wearing|dress|shirt|jacket|suit|coat|uniform|armor|armour|vestid[ao]|vestido|camisa|campera|traje|abrigo|uniforme|armadura|con ropa)\b/i.test(b.subject)
+    genericPerson.test(cueOf(b)) &&
+    !/\b(wearing|dress|shirt|jacket|suit|coat|uniform|armor|armour|vestid[ao]|vestido|camisa|campera|traje|abrigo|uniforme|armadura|con ropa)\b/i.test(cueOf(b))
       ? L("Ropa simple y sobria, en tonos neutros, que no compite con la escena", "Simple, understated clothing in neutral tones that doesn't compete with the scene")
       : "";
 

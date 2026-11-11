@@ -1,4 +1,6 @@
 import type { Lang, OutputFormat } from "../types";
+import { vocabularyLang } from "@/lib/refine/language";
+import { PT_DEBUG_WORDS, PT_ERROR_HANDLING, PT_EXTRACTION_WORDS, PT_INPUT_LABEL } from "../../pt";
 
 export function includesAny(low: string, list: string[]) {
   return list.some((x) => low.includes(x));
@@ -13,6 +15,8 @@ export function hasErrorSnippet(p: string) {
   const low = p.toLowerCase();
   return (
     low.includes("error") ||
+    // v1.8.2: "erro" / "exceção" (Portuguese). "erro" is also the stem of Spanish "erróneo": harmless here.
+    /\berro\b|exce[çc][ãa]o/.test(low) ||
     low.includes("exception") ||
     low.includes("traceback") ||
     low.includes("stacktrace") ||
@@ -58,6 +62,7 @@ export function hasInputDataForExtraction(p: string) {
     low.includes("texto:") ||
     low.includes("input:") ||
     low.includes("entrada:") ||
+    PT_INPUT_LABEL.test(p) ||
     /```[\s\S]*?```/.test(p) ||
     /"[^"]{10,}"/.test(p) ||
     // v1.8.0: a labeled data block ("Invoice:\n…", "csv: name,age") is input.
@@ -123,9 +128,11 @@ export function isExtractionLike(taskType: string | undefined, prompt: string, l
   const byTask = String(taskType ?? "").toLowerCase() === "data_extraction";
 
   const byWords =
-    lang === "es"
-      ? includesAny(low, ["extrae", "extraer", "extracción", "parsea", "parseá", "campos:", "claves:", "fields:"])
-      : includesAny(low, ["extract", "extraction", "parse", "fields:", "keys:"]);
+    vocabularyLang(prompt ?? "", lang) === "pt"
+      ? includesAny(low, PT_EXTRACTION_WORDS)
+      : lang === "es"
+        ? includesAny(low, ["extrae", "extraer", "extracción", "parsea", "parseá", "campos:", "claves:", "fields:"])
+        : includesAny(low, ["extract", "extraction", "parse", "fields:", "keys:"]);
 
   return byTask || byWords;
 }
@@ -133,13 +140,16 @@ export function isExtractionLike(taskType: string | undefined, prompt: string, l
 export function isDebugLike(taskType: string | undefined, prompt: string, lang: Lang) {
   // v1.8.0: "include error handling" / "manejo de errores" is an
   // implementation requirement, not a bug report.
-  const low = (prompt ?? "")
-    .toLowerCase()
-    .replace(/\b(error handling|handle errors?|handling errors?)\b|manej(o|ar|á) (de |los )?errores?|control de errores/g, " ");
+  const pt = vocabularyLang(prompt ?? "", lang) === "pt";
+  const low = (pt ? (prompt ?? "").toLowerCase().replace(PT_ERROR_HANDLING, " ") : (prompt ?? "").toLowerCase()).replace(
+    /\b(error handling|handle errors?|handling errors?)\b|manej(o|ar|á) (de |los )?errores?|control de errores/g,
+    " ",
+  );
   const byTask = String(taskType ?? "").toLowerCase() === "debugging";
 
-  const byWords =
-    lang === "es"
+  const byWords = pt
+    ? includesAny(low, PT_DEBUG_WORDS)
+    : lang === "es"
       ? includesAny(low, ["bug", "error", "crash", "no funciona", "rompe", "stacktrace", "traceback"])
       : includesAny(low, ["bug", "error", "crash", "doesn't work", "stacktrace", "traceback"]);
 

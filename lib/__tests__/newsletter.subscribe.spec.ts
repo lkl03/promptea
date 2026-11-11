@@ -143,3 +143,30 @@ describe("API /api/newsletter/subscribe", () => {
     expect(addSubscriberMock).toHaveBeenCalledTimes(5);
   });
 });
+
+// v1.8.2 — Portuguese interface. The newsletter is written in Spanish and
+// English: `lang` stays the EDITION (es|en) and the interface language travels
+// next to it as `uiLang`, so existing subscribers and the sender are untouched.
+describe("POST /api/newsletter/subscribe — Portuguese interface (v1.8.2)", () => {
+  beforeEach(() => {
+    addSubscriberMock.mockReset();
+    addSubscriberMock.mockResolvedValue({ outcome: "subscribed" });
+  });
+
+  test("a subscription from /pt carries the chosen edition and uiLang=pt", async () => {
+    const res = await POST(subscribeRequest({ ...VALID_BODY, lang: "en", uiLang: "pt" }));
+    expect(res.status).toBe(200);
+    expect(addSubscriberMock).toHaveBeenCalledWith(expect.objectContaining({ lang: "en", uiLang: "pt" }));
+  });
+
+  test("Portuguese is not an edition: lang=pt is rejected, as before", async () => {
+    const res = await POST(subscribeRequest({ ...VALID_BODY, lang: "pt" }));
+    expect(res.status).toBe(400);
+    expect(addSubscriberMock).not.toHaveBeenCalled();
+  });
+
+  test("uiLang is optional (older clients) and validated when present", async () => {
+    expect((await POST(subscribeRequest(VALID_BODY))).status).toBe(200);
+    expect((await POST(subscribeRequest({ ...VALID_BODY, uiLang: "fr" }))).status).toBe(400);
+  });
+});

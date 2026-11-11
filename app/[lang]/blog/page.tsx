@@ -34,7 +34,7 @@ import ArticleCardItem from "@/components/blog/ArticleCardItem";
 import BlogFilters from "@/components/blog/BlogFilters";
 import type { BlogFiltersDict } from "@/components/blog/BlogFilters";
 import JsonLd from "@/components/seo/JsonLd";
-import { blogFeedPath, blogIndexJsonLd } from "@/lib/blog/jsonld";
+import { blogFeedPath, blogIndexJsonLd, blogIndexPath } from "@/lib/blog/jsonld";
 import {
   FILTER_WINDOW,
   applyFilters,
@@ -54,6 +54,8 @@ import XFeed from "@/components/home/XFeed";
 import { getXLinks, getXWidgetId } from "@/lib/social";
 import DailyTabs from "@/components/blog/DailyTabs";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { pick, contentIsFallback, contentLangFor, toLang, type ContentLang } from "@/lib/domain";
+import ContentLangNotice from "@/components/blog/ContentLangNotice";
 
 export const revalidate = 300;
 
@@ -82,7 +84,7 @@ type SearchParams = Record<string, string | string[] | undefined>;
  * Never let a Firestore problem break the page — an empty feed is a valid
  * state, and `next build` runs without a service account by design.
  */
-async function loadCards(lang: "es" | "en"): Promise<ArticleCard[]> {
+async function loadCards(lang: ContentLang): Promise<ArticleCard[]> {
   try {
     const articles = await listAllPublishedArticles(lang, FILTER_WINDOW);
     return articles.map(toCard);
@@ -144,7 +146,7 @@ export async function generateMetadata({
   searchParams: Promise<SearchParams>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   const sp = await searchParams;
   const filters = parseFilters(sp);
@@ -156,12 +158,14 @@ export async function generateMetadata({
 
   // A narrowed view canonicalizes to the clean index; an unfiltered page N is
   // its own canonical so the archive stays crawlable page by page.
-  const canonical = narrowed || page === 1 ? `/${l}/blog` : `/${l}/blog?page=${page}`;
+  // Under /pt the feed is the English one, so the canonical is the English index.
+  const cl = contentLangFor(l);
+  const canonical = narrowed || page === 1 ? `/${cl}/blog` : `/${cl}/blog?page=${page}`;
   const title = `${t.indexTitle} — ${t.tagline}`;
 
   // Same head as every page (canonical, hreflang + x-default, OG/Twitter); the
   // canonical and robots rules above stay specific to this index.
-  const base = pageMetadata({ lang: l, path: `/${l}/blog`, title, description: t.indexDescription });
+  const base = pageMetadata({ lang: l, contentLang: cl, path: `/${l}/blog`, title, description: t.indexDescription });
   return {
     ...base,
     // Filter permutations are search results, not content: keeping them out of
@@ -173,7 +177,7 @@ export async function generateMetadata({
       canonical,
       // Emits <link rel="alternate" type="application/rss+xml"> so feed readers
       // and crawlers can discover the locale feed from the index.
-      types: { "application/rss+xml": blogFeedPath(l) },
+      types: { "application/rss+xml": blogFeedPath(cl) },
     },
     openGraph: { ...base.openGraph, url: canonical },
   };
@@ -188,7 +192,7 @@ export default async function BlogIndexPage({
 }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
   const sp = await searchParams;
   const filters = parseFilters(sp);
@@ -199,7 +203,7 @@ export default async function BlogIndexPage({
   const x = getXLinks();
   const t = dict.blog;
 
-  const all = await loadCards(l);
+  const all = await loadCards(contentLangFor(l));
   const filtered = applyFilters(all, filters);
   const { items, page, pages, total, hasPrev, hasNext } = paginate(
     filtered,
@@ -268,7 +272,8 @@ export default async function BlogIndexPage({
     // (~68ch) and the newsletter dock sticks in the side column; below `lg`
     // it is one column and the dock becomes a slim bottom bar.
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
-      <JsonLd data={indexLd} />
+      {/* A /pt view is canonicalised to the English index, which carries the structured data. */}
+      {contentIsFallback(l) ? null : <JsonLd data={indexLd} />}
 
       <DailyTabs lang={l} active="news" dict={dict.dailyTabs} />
 
@@ -285,6 +290,7 @@ export default async function BlogIndexPage({
             <p className="mt-2 max-w-xl text-base text-ink-muted sm:text-lg">
               {t.tagline}
             </p>
+            <ContentLangNotice lang={l} text={t.langNotice} hrefs={{ es: blogIndexPath("es"), en: blogIndexPath("en") }} className="mt-4" />
           </header>
 
           {all.length === 0 ? (
@@ -365,17 +371,17 @@ export default async function BlogIndexPage({
 
                   {pages > 1 ? (
                     <nav
-                      aria-label={l === "es" ? "Paginación" : "Pagination"}
+                      aria-label={pick(l, { es: "Paginación", en: "Pagination", pt: "Paginação" })}
                       className="mt-10 flex flex-wrap items-center justify-center gap-3 text-sm"
                     >
                       {hasPrev ? (
                         <Link href={hrefForPage(page - 1)} className="btn btn-secondary h-9 px-4">
-                          {l === "es" ? "← Notas más recientes" : "← Newer articles"}
+                          {pick(l, { es: "← Notas más recientes", en: "← Newer articles", pt: "← Notícias mais recentes" })}
                         </Link>
                       ) : null}
 
                       <span className="text-xs tabular-nums text-ink-muted">
-                        {l === "es" ? `Página ${page} de ${pages}` : `Page ${page} of ${pages}`}
+                        {pick(l, { es: `Página ${page} de ${pages}`, en: `Page ${page} of ${pages}`, pt: `Página ${page} de ${pages}` })}
                       </span>
 
                       {hasNext ? (

@@ -30,6 +30,7 @@ import ProviderShareDonut, { type ShareCopy } from "./ProviderShareDonut";
 import PriceScoreScatter, { type ScatterCopy } from "./PriceScoreScatter";
 import BenchmarkTableView, { type TableCopy } from "./BenchmarkTableView";
 import CostCalculator, { type CalcCopy } from "./CostCalculator";
+import { type Lang } from "@/lib/domain";
 
 export type DashboardCopy = {
   rankingTitle: string;
@@ -63,7 +64,7 @@ export default function BenchmarkDashboard({
 }: {
   /** Compact wire format (lib/benchmarks/compact.ts): keeps the HTML payload small. */
   tables: CompactTable[];
-  lang: "es" | "en";
+  lang: Lang;
   copy: DashboardCopy;
   dateLabel: string | null;
 }) {

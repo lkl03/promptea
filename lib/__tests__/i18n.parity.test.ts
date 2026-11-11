@@ -1,12 +1,14 @@
-// EN/ES dictionary parity: both locales expose exactly the same key tree, so
-// a key added in one language can never silently fall back or crash in the
-// other. Also checks the theme registry has labels for every theme.
+// Dictionary parity across every interface language (lib/domain.ts LANGS):
+// all of them expose exactly the same key tree, with no empty values, the same
+// `{placeholders}` and lists of the same length — so a key added in one
+// language can never silently fall back or crash in another. Also checks the
+// theme and purpose registries have labels for every language.
 
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { THEMES, THEME_LABELS } from "@/lib/themes";
-import { PURPOSES } from "@/lib/domain";
+import { LANGS, PURPOSES, type Lang } from "@/lib/domain";
 import { purposeOptions } from "@/lib/purposes";
 
 const dictDir = join(process.cwd(), "app", "[lang]", "dictionaries");
@@ -15,59 +17,80 @@ function loadDict(lang: string): Record<string, unknown> {
   return JSON.parse(readFileSync(join(dictDir, `${lang}.json`), "utf8"));
 }
 
-function flattenKeys(obj: unknown, prefix = ""): string[] {
-  if (Array.isArray(obj)) return [prefix.slice(0, -1)];
-  if (obj && typeof obj === "object") {
-    return Object.entries(obj as Record<string, unknown>).flatMap(([k, v]) => flattenKeys(v, `${prefix}${k}.`));
-  }
-  return [prefix.slice(0, -1)];
+/** Every leaf (strings, and each item of a list) keyed by its path. */
+function leaves(obj: unknown, path = "", out = new Map<string, string>()): Map<string, string> {
+  if (Array.isArray(obj)) obj.forEach((v, i) => leaves(v, `${path}[${i}]`, out));
+  else if (obj && typeof obj === "object") for (const [k, v] of Object.entries(obj as Record<string, unknown>)) leaves(v, path ? `${path}.${k}` : k, out);
+  else out.set(path, String(obj));
+  return out;
 }
 
-describe("i18n parity", () => {
-  const en = loadDict("en");
-  const es = loadDict("es");
+const placeholders = (s: string) => (s.match(/\{[a-zA-Z0-9_]+\}/g) ?? []).sort().join(" ");
 
-  test("en and es expose identical key trees", () => {
-    const enKeys = flattenKeys(en).sort();
-    const esKeys = flattenKeys(es).sort();
-    const missingInEs = enKeys.filter((k) => !esKeys.includes(k));
-    const missingInEn = esKeys.filter((k) => !enKeys.includes(k));
-    expect(missingInEs, `keys missing in es.json: ${missingInEs.join(", ")}`).toEqual([]);
-    expect(missingInEn, `keys missing in en.json: ${missingInEn.join(", ")}`).toEqual([]);
+describe("i18n parity", () => {
+  const dicts = Object.fromEntries(LANGS.map((l) => [l, loadDict(l)])) as Record<Lang, Record<string, unknown>>;
+  const flat = Object.fromEntries(LANGS.map((l) => [l, leaves(dicts[l])])) as Record<Lang, Map<string, string>>;
+  const reference: Lang = "en";
+
+  test("there is one dictionary per language", () => {
+    expect(Object.keys(dicts).sort()).toEqual([...LANGS].sort());
   });
 
-  test("no empty strings in either dictionary", () => {
-    for (const [lang, dict] of [["en", en], ["es", es]] as const) {
-      const check = (obj: unknown, path: string) => {
-        if (typeof obj === "string") {
-          expect(obj.trim().length, `${lang}:${path} is empty`).toBeGreaterThan(0);
-        } else if (Array.isArray(obj)) {
-          obj.forEach((v, i) => check(v, `${path}[${i}]`));
-        } else if (obj && typeof obj === "object") {
-          for (const [k, v] of Object.entries(obj as Record<string, unknown>)) check(v, `${path}.${k}`);
-        }
-      };
-      check(dict, lang);
+  test.each(LANGS.filter((l) => l !== reference))("%s exposes the same key tree as en (lists of the same length included)", (lang) => {
+    const a = [...flat[reference].keys()].sort();
+    const b = [...flat[lang].keys()].sort();
+    const missing = a.filter((k) => !flat[lang].has(k));
+    const extra = b.filter((k) => !flat[reference].has(k));
+    expect(missing, `keys missing in ${lang}.json: ${missing.join(", ")}`).toEqual([]);
+    expect(extra, `keys only in ${lang}.json: ${extra.join(", ")}`).toEqual([]);
+  });
+
+  test.each(LANGS)("%s has no empty value", (lang) => {
+    const empty = [...flat[lang]].filter(([, v]) => v.trim().length === 0).map(([k]) => k);
+    expect(empty).toEqual([]);
+  });
+
+  test.each(LANGS.filter((l) => l !== reference))("%s uses the same {placeholders} as en in every string", (lang) => {
+    const wrong: string[] = [];
+    for (const [key, value] of flat[reference]) {
+      const other = flat[lang].get(key);
+      if (other !== undefined && placeholders(other) !== placeholders(value)) wrong.push(`${key}: en {${placeholders(value)}} vs ${lang} {${placeholders(other)}}`);
     }
+    expect(wrong).toEqual([]);
+  });
+
+  // A dictionary that was copied and never translated passes every structural
+  // check above. This one catches it: a Portuguese (or Spanish) value may equal
+  // the English one only when the text is a name or a term that is not
+  // translated (docs/i18n/pt-glossary.md).
+  const SAME_AS_ENGLISH = /^(Promptea|AI Daily|Promptea Weekly|Blog|Tags|Benchmarks|Prompts|Menu|Feedback|Bug|Design|Checklist|JSON|Original|Top \{n\}|~\{n\} tokens|\{n\} h|\{provider\}: \{count\} \(\{pct\}\)|\{source\} · \{date\}|your@email\.com|General|Error|No|Marketing|Normal|Total|Global|Chat|Editorial|Sponsor|Copy)$/;
+
+  /** Values that predate this check and are left as they are on purpose (es keeps "Fix:" since v1.3). */
+  const KNOWN_SAME: Partial<Record<Lang, string[]>> = { es: ["results.fixLabel"] };
+
+  test.each(LANGS.filter((l) => l !== reference))("%s is translated: no value is left identical to English", (lang) => {
+    const untranslated = [...flat[reference]]
+      .filter(([key, value]) => flat[lang].get(key) === value && !SAME_AS_ENGLISH.test(value) && !KNOWN_SAME[lang]?.includes(key))
+      .map(([key, value]) => `${key} = ${value}`);
+    expect(untranslated).toEqual([]);
   });
 
   test("required sections exist", () => {
-    for (const dict of [en, es]) {
-      expect(dict).toHaveProperty("app");
-      expect(dict).toHaveProperty("analyzer");
-      expect(dict).toHaveProperty("results");
+    for (const lang of LANGS) {
+      expect(dicts[lang]).toHaveProperty("app");
+      expect(dicts[lang]).toHaveProperty("analyzer");
+      expect(dicts[lang]).toHaveProperty("results");
     }
   });
 
-  test("every theme has labels in both languages", () => {
+  test("every theme has a label in every language", () => {
     for (const theme of [...THEMES, "system"] as const) {
-      expect(THEME_LABELS[theme]?.es?.trim().length).toBeGreaterThan(0);
-      expect(THEME_LABELS[theme]?.en?.trim().length).toBeGreaterThan(0);
+      for (const lang of LANGS) expect(THEME_LABELS[theme]?.[lang]?.trim().length, `${theme}/${lang}`).toBeGreaterThan(0);
     }
   });
 
-  test("every purpose has UI labels in both languages", () => {
-    for (const lang of ["es", "en"] as const) {
+  test("every purpose has UI labels in every language", () => {
+    for (const lang of LANGS) {
       const options = purposeOptions(lang);
       expect(options.map((o) => o.value)).toEqual([...PURPOSES]);
       for (const o of options) expect(o.label.trim().length).toBeGreaterThan(0);

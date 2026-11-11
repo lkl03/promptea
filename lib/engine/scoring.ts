@@ -23,8 +23,8 @@ function clamp(n: number) {
   return Math.max(0, Math.min(100, Math.round(n)));
 }
 
-function t(lang: Lang, es: string, en: string) {
-  return lang === "es" ? es : en;
+function t(lang: Lang, es: string, en: string, pt: string) {
+  return { es, en, pt }[lang];
 }
 
 function getWeights(taskType: TaskType): Weights {
@@ -206,13 +206,14 @@ export function scorePrompt(
   const explain: string[] = [];
 
   if (score >= 85) {
-    explain.push(t(lang, "Muy buen prompt: está claro y bien guiado.", "Very good prompt: it is clear and well guided."));
+    explain.push(t(lang, "Muy buen prompt: está claro y bien guiado.", "Very good prompt: it is clear and well guided.", "Prompt muito bom: está claro e bem orientado."));
   } else if (score >= 70) {
     explain.push(
       t(
         lang,
         "Buen punto de partida: con pequeños ajustes puede mejorar mucho.",
-        "Good starting point: small refinements can improve it a lot."
+        "Good starting point: small refinements can improve it a lot.",
+        "Bom ponto de partida: pequenos ajustes podem melhorá-lo bastante."
       )
     );
   } else if (score >= 50) {
@@ -220,7 +221,8 @@ export function scorePrompt(
       t(
         lang,
         "El pedido es entendible, pero todavía le falta precisión para responder mejor.",
-        "The request is understandable, but it still lacks precision for better answers."
+        "The request is understandable, but it still lacks precision for better answers.",
+        "O pedido é compreensível, mas ainda falta precisão para respostas melhores."
       )
     );
   } else {
@@ -228,31 +230,32 @@ export function scorePrompt(
       t(
         lang,
         "Prompt flojo: faltan piezas importantes para obtener una respuesta consistente.",
-        "Weak prompt: important pieces are still missing for a consistent answer."
+        "Weak prompt: important pieces are still missing for a consistent answer.",
+        "Prompt fraco: ainda faltam peças importantes para uma resposta consistente."
       )
     );
   }
 
   if (taskType === "summarization") {
     if (!f.hasLengthHint) {
-      explain.push(t(lang, "Definí cuánto resumir: bullets, párrafo o resumen corto.", "Define summary length: bullets, paragraph, or short summary."));
+      explain.push(t(lang, "Definí cuánto resumir: bullets, párrafo o resumen corto.", "Define summary length: bullets, paragraph, or short summary.", "Defina o tamanho do resumo: tópicos, parágrafo ou resumo curto."));
     }
     if (!f.hasOutputFormat) {
-      explain.push(t(lang, "Pedí un formato final concreto para el resumen.", "Ask for a concrete final format for the summary."));
+      explain.push(t(lang, "Pedí un formato final concreto para el resumen.", "Ask for a concrete final format for the summary.", "Peça um formato final concreto para o resumo."));
     }
   }
 
   if (taskType === "translation") {
     if (!f.hasInputs) {
-      explain.push(t(lang, "Falta el texto fuente para traducir.", "The source text is missing."));
+      explain.push(t(lang, "Falta el texto fuente para traducir.", "The source text is missing.", "Falta o texto de origem."));
     }
     if (!f.hasConstraints) {
-      explain.push(t(lang, "Aclará idioma destino y registro de traducción.", "Clarify target language and translation register."));
+      explain.push(t(lang, "Aclará idioma destino y registro de traducción.", "Clarify target language and translation register.", "Esclareça o idioma de destino e o registro da tradução."));
     }
   }
 
   if ((taskType === "coding" || taskType === "debugging") && !f.hasInputs) {
-    explain.push(t(lang, "Falta contexto técnico concreto: código, logs o error.", "Concrete technical context is missing: code, logs, or error."));
+    explain.push(t(lang, "Falta contexto técnico concreto: código, logs o error.", "Concrete technical context is missing: code, logs, or error.", "Falta contexto técnico concreto: código, logs ou erro."));
   }
 
   if ((opts?.attachmentsCount ?? 0) > 0 && !f.hasGoal) {
@@ -260,7 +263,8 @@ export function scorePrompt(
       t(
         lang,
         "Los adjuntos ayudan con contexto, pero no reemplazan un pedido claro.",
-        "Attachments help with context, but they do not replace a clear request."
+        "Attachments help with context, but they do not replace a clear request.",
+        "Os anexos ajudam com o contexto, mas não substituem um pedido claro."
       )
     );
   }
@@ -270,7 +274,8 @@ export function scorePrompt(
       t(
         lang,
         "El score quedó capado porque todavía faltan insumos críticos para esta tarea.",
-        "The score was capped because critical inputs are still missing for this task."
+        "The score was capped because critical inputs are still missing for this task.",
+        "A pontuação foi limitada porque ainda faltam insumos críticos para esta tarefa."
       )
     );
   }

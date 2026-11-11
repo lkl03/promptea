@@ -4,8 +4,9 @@ import { hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
+import { pick, toLang, type Lang } from "@/lib/domain";
 
-function buildOpenLink(lang: "es" | "en", purpose: string, target: string, prompt: string) {
+function buildOpenLink(lang: Lang, purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
   qp.set("purpose", purpose);
   qp.set("target", target);
@@ -19,16 +20,22 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
 
   return pageMetadata({
     lang: l,
     path: `/${l}/prompts/code`,
-    title: l === "es" ? "Prompts para programar (debug + review)" : "Coding prompts (debug + review)",
+    title: pick(l, {
+      es: "Prompts para programar (debug + review)",
+      en: "Coding prompts (debug + review)",
+      pt: "Prompts para programar (debug + review)",
+    }),
     description:
-      l === "es"
-        ? "Plantillas para debugging, code review, refactors y tests. Abrilas en Promptea y optimizalas por IA."
-        : "Templates for debugging, code reviews, refactors and tests. Open in Promptea and optimize per AI.",
+      pick(l, {
+        es: "Plantillas para debugging, code review, refactors y tests. Abrilas en Promptea y optimizalas por IA.",
+        en: "Templates for debugging, code reviews, refactors and tests. Open in Promptea and optimize per AI.",
+        pt: "Templates para depuração, code review, refatorações e testes. Abra no Promptea e otimize para cada IA.",
+      }),
   });
 }
 
@@ -39,22 +46,28 @@ export default async function CodePromptPackPage({
 }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = (lang === "en" ? "en" : "es") as "es" | "en";
+  const l = toLang(lang);
 
-  const title = l === "es" ? "Prompts para código" : "Coding prompts";
+  const title = pick(l, { es: "Prompts para código", en: "Coding prompts", pt: "Prompts para código" });
   const subtitle =
-    l === "es"
-      ? "Debugging, review, refactors y tests. Elegí uno y abrilo en Promptea."
-      : "Debugging, reviews, refactors and tests. Pick one and open it in Promptea.";
+    pick(l, {
+      es: "Debugging, review, refactors y tests. Elegí uno y abrilo en Promptea.",
+      en: "Debugging, reviews, refactors and tests. Pick one and open it in Promptea.",
+      pt: "Depuração, review, refatorações e testes. Escolha um e abra no Promptea.",
+    });
 
   const examples = [
     {
-      title: l === "es" ? "Debugging con pasos reproducibles" : "Debugging with reproducible steps",
+      title: pick(l, {
+        es: "Debugging con pasos reproducibles",
+        en: "Debugging with reproducible steps",
+        pt: "Depuração com passos reproduzíveis",
+      }),
       target: "gpt",
       purpose: "code",
       prompt:
-        l === "es"
-          ? `Estoy teniendo este bug:
+        pick(l, {
+          es: `Estoy teniendo este bug:
 
 Contexto:
 - Stack: [Next.js / Node / Python / etc.]
@@ -73,8 +86,8 @@ Necesito:
 2) pasos para reproducir
 3) fix (con diff/snippet)
 4) edge cases
-Si falta algo, preguntame 1–3 cosas antes.`
-          : `I’m hitting this bug:
+Si falta algo, preguntame 1–3 cosas antes.`,
+          en: `I’m hitting this bug:
 
 Context:
 - Stack: [Next.js / Node / Python / etc.]
@@ -94,14 +107,35 @@ I need:
 3) fix (diff/snippet)
 4) edge cases
 If missing info, ask 1–3 questions first.`,
+          pt: `Estou com este bug:
+
+Contexto:
+- Stack: [Next.js / Node / Python / etc.]
+- Ambiente: [local/produção]
+- O que eu esperava:
+- O que acontece:
+
+Logs:
+[cole os logs]
+
+Código mínimo:
+[cole o trecho]
+
+Preciso de:
+1) a hipótese mais provável
+2) passos para reproduzir
+3) correção (com diff/trecho de código)
+4) casos de borda
+Se faltar informação, faça de 1 a 3 perguntas antes.`,
+        }),
     },
     {
-      title: l === "es" ? "Code review con criterios" : "Code review with criteria",
+      title: pick(l, { es: "Code review con criterios", en: "Code review with criteria", pt: "Code review com critérios" }),
       target: "claude",
       purpose: "code",
       prompt:
-        l === "es"
-          ? `Revisá este código:
+        pick(l, {
+          es: `Revisá este código:
 
 [pegá código]
 
@@ -115,8 +149,8 @@ Evaluá:
 Devolvé:
 - issues priorizados
 - fixes concretos (snippets)
-- checklist de tests`
-          : `Review this code:
+- checklist de tests`,
+          en: `Review this code:
 
 [paste code]
 
@@ -131,14 +165,34 @@ Return:
 - prioritized issues
 - concrete fixes (snippets)
 - test checklist`,
+          pt: `Revise este código:
+
+[cole o código]
+
+Avalie:
+- Correção
+- Segurança
+- Desempenho
+- Legibilidade
+- Testes que faltam
+
+Retorne:
+- problemas priorizados
+- correções concretas (trechos de código)
+- checklist de testes`,
+        }),
     },
     {
-      title: l === "es" ? "Diseño de feature (plan por pasos)" : "Feature design (step plan)",
+      title: pick(l, {
+        es: "Diseño de feature (plan por pasos)",
+        en: "Feature design (step plan)",
+        pt: "Design de funcionalidade (plano em passos)",
+      }),
       target: "gemini",
       purpose: "code",
       prompt:
-        l === "es"
-          ? `Quiero implementar: [feature]
+        pick(l, {
+          es: `Quiero implementar: [feature]
 Restricciones: [tiempo, stack, límites]
 Usuarios: [quién lo usa]
 
@@ -147,8 +201,8 @@ Proponé:
 - endpoints/módulos
 - modelo de datos
 - casos borde
-- plan por pasos`
-          : `I want to implement: [feature]
+- plan por pasos`,
+          en: `I want to implement: [feature]
 Constraints: [time, stack, limits]
 Users: [who uses it]
 
@@ -158,14 +212,29 @@ Propose:
 - data model
 - edge cases
 - step plan`,
+          pt: `Quero implementar: [funcionalidade]
+Restrições: [prazo, stack, limites]
+Usuários: [quem vai usar]
+
+Proponha:
+- arquitetura simples
+- endpoints/módulos
+- modelo de dados
+- casos de borda
+- plano em passos`,
+        }),
     },
     {
-      title: l === "es" ? "Refactor con objetivos claros" : "Refactor with clear goals",
+      title: pick(l, {
+        es: "Refactor con objetivos claros",
+        en: "Refactor with clear goals",
+        pt: "Refatoração com objetivos claros",
+      }),
       target: "deepseek",
       purpose: "code",
       prompt:
-        l === "es"
-          ? `Refactorizá este código con estos objetivos:
+        pick(l, {
+          es: `Refactorizá este código con estos objetivos:
 - reducir complejidad
 - mejorar nombres
 - separar responsabilidades
@@ -177,8 +246,8 @@ Código:
 Devolvé:
 - explicación breve
 - diff/snippets
-- tests sugeridos`
-          : `Refactor this code with goals:
+- tests sugeridos`,
+          en: `Refactor this code with goals:
 - reduce complexity
 - improve naming
 - separate responsibilities
@@ -191,14 +260,32 @@ Return:
 - brief explanation
 - diff/snippets
 - suggested tests`,
+          pt: `Refatore este código com os objetivos:
+- reduzir a complexidade
+- melhorar os nomes
+- separar responsabilidades
+- manter o comportamento (sem quebrar a API)
+
+Código:
+[cole o código]
+
+Retorne:
+- explicação breve
+- diff/trechos de código
+- testes sugeridos`,
+        }),
     },
     {
-      title: l === "es" ? "Escribir tests (unit + integration)" : "Write tests (unit + integration)",
+      title: pick(l, {
+        es: "Escribir tests (unit + integration)",
+        en: "Write tests (unit + integration)",
+        pt: "Escrever testes (unitários + integração)",
+      }),
       target: "gpt",
       purpose: "code",
       prompt:
-        l === "es"
-          ? `Necesito tests para este módulo:
+        pick(l, {
+          es: `Necesito tests para este módulo:
 
 Stack: [jest/vitest/etc.]
 Código:
@@ -208,8 +295,8 @@ Pedime:
 - qué casos cubrir (lista)
 - tests unitarios (snippets)
 - 1–2 tests de integración
-- cómo correrlos`
-          : `I need tests for this module:
+- cómo correrlos`,
+          en: `I need tests for this module:
 
 Stack: [jest/vitest/etc.]
 Code:
@@ -220,14 +307,30 @@ Provide:
 - unit tests (snippets)
 - 1–2 integration tests
 - how to run them`,
+          pt: `Preciso de testes para este módulo:
+
+Stack: [jest/vitest/etc.]
+Código:
+[cole o código]
+
+Entregue:
+- casos a cobrir (lista)
+- testes unitários (trechos de código)
+- 1 ou 2 testes de integração
+- como executá-los`,
+        }),
     },
     {
-      title: l === "es" ? "Performance: diagnóstico + optimización" : "Performance: diagnose + optimize",
+      title: pick(l, {
+        es: "Performance: diagnóstico + optimización",
+        en: "Performance: diagnose + optimize",
+        pt: "Desempenho: diagnosticar + otimizar",
+      }),
       target: "grok",
       purpose: "code",
       prompt:
-        l === "es"
-          ? `Tengo un problema de performance.
+        pick(l, {
+          es: `Tengo un problema de performance.
 
 Contexto:
 - app: [web/api]
@@ -240,8 +343,8 @@ Código/logs:
 Dame:
 - hipótesis por impacto
 - cómo medir (profiling)
-- fixes y tradeoffs`
-          : `I have a performance issue.
+- fixes y tradeoffs`,
+          en: `I have a performance issue.
 
 Context:
 - app: [web/api]
@@ -255,37 +358,68 @@ Give me:
 - hypotheses by impact
 - how to measure (profiling)
 - fixes and tradeoffs`,
+          pt: `Tenho um problema de desempenho.
+
+Contexto:
+- app: [web/api]
+- sintoma: [latência/CPU/memória]
+- métricas: [p95, RPS, etc.]
+
+Código/logs:
+[cole aqui]
+
+Quero:
+- hipóteses por impacto
+- como medir (profiling)
+- correções e trade-offs`,
+        }),
     },
   ];
 
   const faq = [
     {
-      q: l === "es" ? "¿Cómo uso estas plantillas?" : "How do I use these templates?",
+      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?" }),
       a:
-        l === "es"
-          ? "Elegí un ejemplo y tocá “Abrir en Promptea”. Se precarga el prompt, el objetivo (Code) y un modelo sugerido."
-          : "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Code), and a suggested model.",
+        pick(l, {
+          es: "Elegí un ejemplo y tocá “Abrir en Promptea”. Se precarga el prompt, el objetivo (Code) y un modelo sugerido.",
+          en: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Code), and a suggested model.",
+          pt: "Escolha um exemplo e clique em “Abrir no Promptea”. O prompt, o propósito (Código) e um modelo sugerido já vêm preenchidos.",
+        }),
     },
     {
-      q: l === "es" ? "¿Qué debería pegar (mínimo)?" : "What should I paste (minimum)?",
+      q: pick(l, {
+        es: "¿Qué debería pegar (mínimo)?",
+        en: "What should I paste (minimum)?",
+        pt: "O que devo colar (no mínimo)?",
+      }),
       a:
-        l === "es"
-          ? "Un snippet mínimo, logs relevantes y el comportamiento esperado vs real. Eso sube el score y mejora el output."
-          : "A minimal snippet, relevant logs, and expected vs actual behavior. That improves score and output quality.",
+        pick(l, {
+          es: "Un snippet mínimo, logs relevantes y el comportamiento esperado vs real. Eso sube el score y mejora el output.",
+          en: "A minimal snippet, relevant logs, and expected vs actual behavior. That improves score and output quality.",
+          pt: "Um trecho mínimo de código, os logs relevantes e o comportamento esperado vs. o real. Isso melhora a pontuação e a qualidade da resposta.",
+        }),
     },
     {
-      q: l === "es" ? "¿Cómo evito respuestas genéricas?" : "How do I avoid generic answers?",
+      q: pick(l, {
+        es: "¿Cómo evito respuestas genéricas?",
+        en: "How do I avoid generic answers?",
+        pt: "Como evito respostas genéricas?",
+      }),
       a:
-        l === "es"
-          ? "Pedí formato de salida (pasos, diff, checklist) y agregá restricciones (stack, versiones, límites)."
-          : "Request an output format (steps, diff, checklist) and add constraints (stack, versions, limits).",
+        pick(l, {
+          es: "Pedí formato de salida (pasos, diff, checklist) y agregá restricciones (stack, versiones, límites).",
+          en: "Request an output format (steps, diff, checklist) and add constraints (stack, versions, limits).",
+          pt: "Peça um formato de saída (passos, diff, checklist) e adicione restrições (stack, versões, limites).",
+        }),
     },
     {
-      q: l === "es" ? "¿Puedo cambiar el modelo?" : "Can I change the model?",
+      q: pick(l, { es: "¿Puedo cambiar el modelo?", en: "Can I change the model?", pt: "Posso trocar o modelo?" }),
       a:
-        l === "es"
-          ? "Sí. Si querés estructura fuerte, probá Claude/GPT. Si querés bullets rápidos, Grok puede servir."
-          : "Yes. For strong structure, try Claude/GPT. For quick bullets, Grok can work well.",
+        pick(l, {
+          es: "Sí. Si querés estructura fuerte, probá Claude/GPT. Si querés bullets rápidos, Grok puede servir.",
+          en: "Yes. For strong structure, try Claude/GPT. For quick bullets, Grok can work well.",
+          pt: "Sim. Para uma estrutura sólida, experimente Claude/GPT. Para tópicos rápidos, o Grok pode funcionar bem.",
+        }),
     },
   ];
 
@@ -309,10 +443,10 @@ Give me:
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {l === "es" ? "← Ver todos los packs" : "← View all packs"}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {l === "es" ? "Abrir analizador →" : "Open Analyzer →"}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →" })}
           </Link>
         </div>
       </div>
@@ -327,10 +461,14 @@ Give me:
 
               <div className="flex items-center justify-between gap-3">
                 <div className="text-xs opacity-70">
-                  {l === "es" ? "Se abre en el analizador con el prompt precargado." : "Opens the analyzer with the prompt prefilled."}
+                  {pick(l, {
+                    es: "Se abre en el analizador con el prompt precargado.",
+                    en: "Opens the analyzer with the prompt prefilled.",
+                    pt: "Abre o analisador com o prompt já preenchido.",
+                  })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {l === "es" ? "Abrir en Promptea" : "Open in Promptea"}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
                 </Link>
               </div>
             </div>
@@ -339,7 +477,7 @@ Give me:
       </div>
 
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{l === "es" ? "Preguntas frecuentes" : "FAQ"}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

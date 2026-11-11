@@ -5,7 +5,7 @@
 // weighted evidence per category. No LLM, no randomness.
 
 import type { Lang, MatchCategory } from "@/lib/domain";
-import { detectPromptLanguage } from "@/lib/refine/language";
+import { detectPromptLanguage, readsAsPortuguese } from "@/lib/refine/language";
 import type { AttachmentContext } from "@/lib/attachments";
 import {
   CHAT_BASELINE_EVIDENCE,
@@ -38,6 +38,7 @@ export function extractMatcherFeatures(args: ExtractArgs): MatcherFeatures {
     wordCount: wordCount(text),
     attachmentsCount: attachments.length,
     attachmentChars: attachments.reduce((sum, file) => sum + (file.text?.length ?? 0), 0),
+    pt: readsAsPortuguese(text, args.uiLang),
   };
 
   const signals: SignalHit[] = [];

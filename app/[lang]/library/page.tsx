@@ -7,23 +7,25 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale } from "../dictionaries";
 import LibraryView from "@/components/library/LibraryView";
+import { toLang, type Lang } from "@/lib/domain";
+import { languageAlternates } from "@/lib/seo/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const dict = await getDictionary(l);
   return {
     title: dict.library.metaTitle,
     description: dict.library.metaDescription,
     robots: { index: false, follow: true },
-    alternates: { canonical: `/${l}/library`, languages: { es: "/es/library", en: "/en/library" } },
+    alternates: { canonical: `/${l}/library`, languages: languageAlternates((x) => `/${x}/library`) },
   };
 }
 
 export default async function LibraryPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
   const dict = await getDictionary(l);
   const { metaTitle: _a, metaDescription: _b, ...t } = dict.library;
   void _a;

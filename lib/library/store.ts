@@ -11,6 +11,7 @@
 // MAX_FAVORITES) and MAX_TEXT characters per prompt. Every storage access is
 // try/catch — blocked storage means an empty library, never an exception.
 
+import { isLang, type Lang } from "@/lib/domain";
 export const LIBRARY_KEY = "promptea:library:v1";
 export const MAX_ENTRIES = 60;
 export const MAX_FAVORITES = 60;
@@ -22,7 +23,7 @@ export type LibraryEntry = {
   id: string;
   /** Epoch ms of the (latest) analysis. */
   createdAt: number;
-  lang: "es" | "en";
+  lang: Lang;
   purpose: string;
   target: string;
   /** First words of the original prompt (derived, kept so lists stay cheap). */
@@ -68,7 +69,7 @@ function parseEntry(raw: unknown): LibraryEntry | null {
   return {
     id: o.id.slice(0, 64),
     createdAt: typeof o.createdAt === "number" && Number.isFinite(o.createdAt) ? o.createdAt : 0,
-    lang: o.lang === "en" ? "en" : "es",
+    lang: isLang(o.lang) ? o.lang : "es",
     purpose: str(o.purpose, 24),
     target: str(o.target, 24),
     title: makeTitle(original),
@@ -126,7 +127,7 @@ export function prune(entries: LibraryEntry[]): LibraryEntry[] {
 }
 
 export type NewAnalysis = {
-  lang: "es" | "en";
+  lang: Lang;
   purpose: string;
   target: string;
   original: string;

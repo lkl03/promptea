@@ -24,11 +24,11 @@ import { howItWorksDoc } from "@/lib/seo/content/sitePages";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { docPageGraph } from "@/lib/seo/pageGraphs";
-import type { Lang } from "@/lib/domain";
+import { type Lang, toLang } from "@/lib/domain";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l: Lang = lang === "en" ? "en" : "es";
+  const l: Lang = toLang(lang);
   const doc = howItWorksDoc(l);
   const path = `/${l}/how-it-works`;
   return pageMetadata({ lang: l, path, title: doc.title, description: doc.description, markdownPath: markdownPathOf(path), modifiedTime: doc.updated });

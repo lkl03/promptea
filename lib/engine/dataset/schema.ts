@@ -1,9 +1,9 @@
 import type { TargetAI, TaskType } from "../../promptTemplates";
-import type { PromptPurpose, RefinementStrategy } from "@/lib/domain";
+import type { Lang, PromptPurpose, RefinementStrategy } from "@/lib/domain";
 
 export type DatasetCase = {
   id: string;
-  lang: "es" | "en";
+  lang: Lang;
   target: TargetAI;
   /** v1.8.0: purpose the case is analyzed under (defaults to "text"). */
   purpose?: PromptPurpose;

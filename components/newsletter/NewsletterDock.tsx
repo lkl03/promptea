@@ -28,6 +28,7 @@ import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
 import SubscribeForm, { type SubscribeFormDict } from "./SubscribeForm";
 import Portal from "@/components/Portal";
 import { useFocusTrap } from "@/lib/useFocusTrap";
+import { type Lang } from "@/lib/domain";
 
 type DockDict = { title: string; body: string; open: string; close: string };
 
@@ -46,7 +47,7 @@ export default function NewsletterDock({
   formDict,
   children,
 }: {
-  lang: "es" | "en";
+  lang: Lang;
   dict: DockDict;
   formDict: SubscribeFormDict;
   /** v1.8.1 — more cards for the desktop side column (e.g. the X feed), shown under the newsletter card. */

@@ -27,11 +27,11 @@ import { GET as llmsLocale, generateStaticParams as llmsParams } from "@/app/[la
 import { GET as llmsFullLocale } from "@/app/[lang]/llms-full.txt/route";
 import { GET as mdGet, generateStaticParams as mdParams } from "@/app/md/[lang]/[[...path]]/route";
 import { resolveMarkdown, staticMarkdownPaths } from "@/lib/seo/mdResolve";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
-import { absUrl } from "@/lib/seo/site";
+import { LOCALES, absUrl } from "@/lib/seo/site";
 
 const ctx = (lang: string) => ({ params: Promise.resolve({ lang }) });
 const mdCtx = (lang: string, path?: string[]) => ({ params: Promise.resolve({ lang, path }) });
@@ -94,8 +94,8 @@ describe("llms.txt routes", () => {
     expect(await (await llmsRoot()).text()).toContain("/blog/fresh-story");
   });
 
-  it("is statically generated for both locales only", () => {
-    expect(llmsParams()).toEqual([{ lang: "es" }, { lang: "en" }]);
+  it("is statically generated for every locale only", () => {
+    expect(llmsParams()).toEqual([{ lang: "es" }, { lang: "en" }, { lang: "pt" }]);
   });
 });
 
@@ -157,7 +157,7 @@ describe("markdown twin route", () => {
     expect((await mdGet(req, mdCtx("en", ["blog", "story"]))).status).toBe(404);
   });
 
-  it("every statically generated twin exists in both locales (no dead .md link from the sitemap/llms.txt)", async () => {
+  it("every statically generated twin exists in every locale (no dead .md link from the sitemap/llms.txt)", async () => {
     const paths = staticMarkdownPaths();
     expect(paths).toContainEqual([]);
     expect(paths).toContainEqual(["about"]);
@@ -166,13 +166,19 @@ describe("markdown twin route", () => {
     for (const g of glossary) expect(paths).toContainEqual(["glossary", g.slug]);
     for (const m of modelPages) expect(paths).toContainEqual(["models", m.slug]);
     for (const l of landings) expect(paths).toContainEqual(["landing", l.slug]);
-    for (const lang of ["es", "en"] as const) {
+    for (const lang of LOCALES) {
       for (const p of paths) {
         const r = await resolveMarkdown(lang, p);
+        // A guide not translated to this locale yet has no twin there (and no link points at one).
+        const g = p[0] === "guides" ? guides.find((x) => x.slug === p[1]) : undefined;
+        if (g && guideLang(g, lang) !== lang) {
+          expect(r, `${lang}/${p.join("/")}`).toBeNull();
+          continue;
+        }
         expect(r, `${lang}/${p.join("/")}`).not.toBeNull();
         expect(r!.htmlPath).toBe(`/${[lang, ...p].join("/")}`);
       }
     }
-    expect(mdParams()).toHaveLength(paths.length * 2);
+    expect(mdParams()).toHaveLength(paths.length * LOCALES.length);
   });
 });

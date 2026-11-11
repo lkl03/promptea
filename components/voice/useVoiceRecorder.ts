@@ -9,7 +9,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
-import { TRANSCRIBE_ERROR_REASONS, type TranscribeErrorReason } from "@/lib/domain";
+import { TRANSCRIBE_ERROR_REASONS, type TranscribeErrorReason, type Lang } from "@/lib/domain";
 
 export type VoiceState =
   | "idle"
@@ -86,7 +86,7 @@ function serverReasonToKey(reason: string): VoiceErrorKey {
   }
 }
 
-export function useVoiceRecorder({ lang }: { lang: "es" | "en" }) {
+export function useVoiceRecorder({ lang }: { lang: Lang }) {
   const [state, setState] = useState<VoiceState>("idle");
   const [errorKey, setErrorKey] = useState<VoiceErrorKey>("generic");
   const [elapsed, setElapsed] = useState(0);

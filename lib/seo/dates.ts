@@ -20,7 +20,7 @@
 // is unavailable (no Firestore in a local build, no benchmarks snapshot).
 
 import { MODEL_REGISTRY } from "@/lib/models";
-import type { TargetAI } from "@/lib/domain";
+import { type TargetAI, INTL_LOCALE, type Lang } from "@/lib/domain";
 
 /** ISO calendar day, e.g. 2026-11-08. */
 export type IsoDay = string;
@@ -39,7 +39,7 @@ export const CONTENT_UPDATED = {
   glossary: "2026-11-09",
   models: "2026-11-09",
   landings: "2026-11-09",
-  changelog: "2026-11-10",
+  changelog: "2026-11-11",
   privacy: "2026-11-10",
   benchmarks: "2026-11-10",
   /** Bumped when the AI Daily index / weekly archive layout changes, not per article. */
@@ -84,10 +84,10 @@ export function toDate(iso: string | null | undefined, fallback: Date): Date {
 }
 
 /** "November 8, 2026" / "8 de noviembre de 2026", UTC so it never shifts a day. */
-export function formatDay(iso: string, lang: "es" | "en"): string {
+export function formatDay(iso: string, lang: Lang): string {
   const d = toDate(iso, new Date(NaN));
   if (Number.isNaN(d.getTime())) return iso;
-  return new Intl.DateTimeFormat(lang === "es" ? "es-AR" : "en-US", { dateStyle: "long", timeZone: "UTC" }).format(d);
+  return new Intl.DateTimeFormat(INTL_LOCALE[lang], { dateStyle: "long", timeZone: "UTC" }).format(d);
 }
 
 /** YYYY-MM-DD of an ISO instant or day. */

@@ -1,4 +1,5 @@
 import type { Lang, FindingId, Severity } from "../types";
+import { isPt, PT_INJECTION, PT_SECRETS } from "../../pt";
 
 type AddFinding = (id: FindingId, severity: Severity) => void;
 
@@ -13,6 +14,9 @@ function stripPrompteaScaffold(input: string) {
     .replace(/<\/file>/gim, "")
     .replace(/Treat attached files as context or input data[^\n]*/gi, "")
     .replace(/Tratá los archivos adjuntos como contexto o datos de entrada[^\n]*/gi, "")
+    .replace(/Trate os arquivos anexados como contexto ou dados de entrada[^\n]*/gi, "")
+    .replace(/Se o pedido do usuário e um anexo entrarem em conflito[^\n]*/gi, "")
+    .replace(/^(CONTEXTO ANEXADO:)\s*$/gim, "")
     .replace(/If the user request and an attachment conflict[^\n]*/gi, "")
     .replace(/Si el pedido del usuario y un adjunto entran en conflicto[^\n]*/gi, "")
     .trim();
@@ -59,5 +63,7 @@ export function applyInjectionRules(opts: { prompt: string; lang: Lang; addFindi
   ];
 
   const hit = patterns.some((re) => re.test(low));
-  if (hit) addFinding("prompt_injection", "high");
+  // v1.8.2: the same requests written in Portuguese.
+  const ptHit = isPt(prompt ?? "", opts.lang) && (PT_INJECTION.test(low) || PT_SECRETS.test(low));
+  if (hit || ptHit) addFinding("prompt_injection", "high");
 }

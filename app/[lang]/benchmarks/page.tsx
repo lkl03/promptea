@@ -25,6 +25,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { benchmarksGraph } from "@/lib/seo/pageGraphs";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
+import { pick, toLang, INTL_LOCALE, type Lang } from "@/lib/domain";
 
 export const revalidate = 3600;
 
@@ -286,18 +287,145 @@ const COPY = {
     bestAiBody: "A benchmark doesn't know your use case. Describe what you want to do and we'll recommend an AI and model, with the reasoning.",
     bestAiCta: "Find the best AI",
   },
+  pt: {
+    metaTitle: "Benchmarks de modelos de IA",
+    metaDescription: "Rankings de modelos de IA por categoria — inteligência geral, programação, agentes, ciência, busca e design — com a fonte, a data e a métrica de cada benchmark.",
+    title: "Benchmarks de modelos de IA",
+    intro: "Quem lidera cada benchmark hoje, quais modelos estão na fronteira e o que cada teste mede. Cada ranking usa sua própria métrica: não existe uma pontuação universal.",
+    live: "Dados ao vivo da OpenRouter",
+    asOf: "atualizado em {date}",
+    fetched: "consultado em {date}",
+    staleTitle: "Mostrando o último snapshot válido",
+    staleBody: "Não foi possível atualizar os dados ({reason}). Estes rankings têm {age}.",
+    hours: "{n} h",
+    lessThanHour: "menos de uma hora",
+    emptyTitle: "Os rankings não estão disponíveis agora",
+    reasons: {
+      not_configured: "a conexão com a fonte de dados ainda não está configurada",
+      unauthorized: "a fonte rejeitou a credencial",
+      rate_limited: "a fonte está limitando as requisições temporariamente",
+      timeout: "a fonte demorou demais para responder",
+      upstream_error: "a fonte respondeu com um erro",
+      invalid_response: "a fonte retornou dados em um formato inesperado",
+      empty: "a fonte não retornou resultados",
+    } as Record<FetchFailure, string>,
+    emptyBody: "Motivo: {reason}. Preferimos não mostrar nada a mostrar rankings inventados ou desatualizados sem aviso.",
+    nav: { label: "Nesta página", ranking: "Ranking", value: "Custo vs. desempenho", frontier: "Modelos de fronteira", calculator: "Calculadora de custo", about: "O que cada um mede" },
+    dash: {
+      rankingTitle: "Ranking por benchmark",
+      rankingIntro: "Escolha uma categoria e um benchmark: o gráfico mostra os melhores modelos daquele teste. Cada benchmark tem sua própria métrica: compare apenas dentro do mesmo.",
+      category: "Categoria",
+      benchmarks: "Benchmarks desta categoria e seu líder",
+      leader: "Líder",
+      topN: "Número de modelos no gráfico",
+      topLabel: "Top {n}",
+      fullTable: "Ver a tabela completa ({n} modelos)",
+      valueTitle: "Custo vs. desempenho",
+      valueIntro: "Cada ponto é um modelo: quanto mais alto, melhor a pontuação; quanto mais à esquerda, mais barato (preço de entrada, escala logarítmica). A linha tracejada une os modelos que nenhum outro supera em preço e pontuação ao mesmo tempo.",
+      valueFor: "Benchmark: {benchmark}",
+      sourceLine: "{source} · {date}",
+      bars: {
+        title: "Top {n} · {benchmark}",
+        desc: "Gráfico de barras horizontais: os {n} melhores modelos de {benchmark} ({metric}). {items}.",
+        axisNote: "O eixo começa em {min}: o Elo não tem um zero com significado, então o comprimento das barras não é proporcional ao valor total.",
+        errorNote: "A linha fina sobre a barra é ± o desvio padrão entre execuções.",
+        showingOf: "mostrando {n} de {total} modelos"
+      },
+      scatter: {
+        title: "Pontuação vs. preço de entrada",
+        xAxis: "Preço de entrada (US$ por milhão de tokens, escala logarítmica)",
+        yAxis: "Pontuação",
+        efficientLegend: "Fronteira de custo/desempenho",
+        keys: "Com o teclado: coloque o foco no gráfico e use as setas ← → para percorrer os modelos do mais barato ao mais caro.",
+        excluded: "{n} modelos sem preço não aparecem no gráfico.",
+        empty: "Não há preços suficientes para montar o gráfico deste benchmark. A tabela completa acima continua disponível.",
+        desc: "Gráfico de dispersão: {n} modelos de {benchmark}, preço de entrada versus pontuação. {m} modelos formam a fronteira de custo/desempenho: {frontier}.",
+        score: "Pontuação",
+        inputPrice: "Entrada",
+        outputPrice: "Saída",
+        rank: "Posição",
+        efficientBadge: "Nenhum modelo o supera em preço e pontuação ao mesmo tempo",
+        perMillion: "por milhão de tokens"
+      },
+      table: {
+        search: "Buscar",
+        searchPlaceholder: "Modelo ou provedor…",
+        provider: "Provedor",
+        allProviders: "Todos",
+        sort: "Ordenar",
+        sortScore: "Maior pontuação primeiro",
+        sortScoreAsc: "Menor pontuação primeiro",
+        sortPrice: "Menor preço primeiro",
+        sortName: "Nome (A–Z)",
+        colRank: "#",
+        colModel: "Modelo",
+        colProvider: "Provedor",
+        colScore: "Pontuação",
+        colSource: "Benchmark / fonte",
+        colPrice: "Preço de entrada / saída",
+        priceHint: "Preço em US$ por milhão de tokens de entrada / saída, conforme informado pela fonte. “—” = sem dados.",
+        noMatch: "Nenhum modelo corresponde à sua busca.",
+        results: "{n} modelos",
+        guide: "Guia de prompts",
+        stddev: "Desvio padrão entre execuções"
+      },
+      calc: {
+        title: "Calculadora de custo",
+        intro: "Estime quanto o seu uso custaria em cada modelo do benchmark selecionado acima, pelo preço de tabela. “Melhor custo-benefício” ordena por dólares por ponto: quanto menor, mais longe vai cada dólar.",
+        inputTokens: "Tokens de entrada por requisição",
+        outputTokens: "Tokens de saída por requisição",
+        requests: "Número de requisições",
+        presets: "Exemplos",
+        presetChat: "Chat curto",
+        presetDoc: "Documento longo",
+        presetAgent: "Agente",
+        sortLabel: "Ordenar por",
+        sortValue: "Melhor custo-benefício",
+        sortCost: "Menor custo",
+        sortScore: "Maior pontuação",
+        colModel: "Modelo",
+        colScore: "Pontuação",
+        colCost: "Custo por requisição",
+        colPerPoint: "US$ por ponto",
+        colTotal: "Total ({n} requisições)",
+        summary: "{tokensIn} de entrada e {tokensOut} de saída por requisição, {n} requisições · {benchmark}",
+        excluded: "{n} modelos sem preço de entrada e de saída ficam de fora: não os contamos como gratuitos.",
+        empty: "Nenhum modelo deste benchmark tem os preços necessários para calcular um custo.",
+        estimate: "Estimativa com preços de tabela por milhão de tokens (sem cache, lotes ou descontos); o custo real pode ser diferente. As pontuações vêm do benchmark selecionado e não são comparáveis com as de outros.",
+        showAll: "Mostrar todos os {n} modelos",
+        showLess: "Mostrar menos",
+        bestAiTitle: "Não sabe qual combina com a sua tarefa? Um benchmark não conhece o seu caso de uso.",
+        bestAiCta: "Encontrar a melhor IA",
+        guide: "Guia"
+      },
+    },
+    matrix: {"caption":"Posição de cada modelo de fronteira em cada benchmark de capacidade geral","model":"Modelo","rankIn":"Posição em {benchmark}","notMeasured":"não medido","guide":"Guia"},
+    aboutSummary: "O que cada benchmark mede ({n})",
+    frontierTitle: "Modelos de fronteira",
+    frontierDef: `No Promptea, um modelo é “de fronteira” quando fica entre os ${FRONTIER_TOP_N} primeiros de pelo menos um benchmark de capacidade geral no snapshot atual: os índices Intelligence, Coding ou Agentic da Artificial Analysis, ou as execuções de GPQA Diamond e τ-bench da OpenRouter.`,
+    frontierWhy: "Usamos estes porque medem capacidade ampla — raciocínio, programação e trabalho agêntico. Os rankings especializados (configurações de busca, arenas de design) são exibidos, mas uma vitória pontual ali não basta para chamar um modelo de “fronteira”. A lista muda quando os dados mudam.",
+    frontierWhyLabel: "Por que estes benchmarks?",
+    matrixMore: "Mostrando {n} de {total} modelos de fronteira.",
+    context: "O que cada benchmark mede",
+    measures: "Mede",
+    limits: "Limitações",
+    source: "Fonte",
+    bestAiTitle: "Qual combina com a sua tarefa?",
+    bestAiBody: "Um benchmark não conhece o seu caso de uso. Descreva o que você quer fazer e recomendamos uma IA e um modelo, com a justificativa.",
+    bestAiCta: "Encontrar a melhor IA",
+  },
 };
 
-function fmtDate(iso: string | null, lang: "es" | "en"): string | null {
+function fmtDate(iso: string | null, lang: Lang): string | null {
   if (!iso) return null;
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return null;
-  return new Intl.DateTimeFormat(lang === "es" ? "es-AR" : "en-US", { dateStyle: "long", timeZone: "America/Argentina/Buenos_Aires" }).format(d);
+  return new Intl.DateTimeFormat(INTL_LOCALE[lang], { dateStyle: "long", timeZone: "America/Argentina/Buenos_Aires" }).format(d);
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
-  const l = lang === "en" ? "en" : "es";
+  const l = toLang(lang);
   const c = COPY[l];
   const path = `/${l}/benchmarks`;
   return pageMetadata({ lang: l, path, title: c.metaTitle, description: c.metaDescription, markdownPath: markdownPathOf(path) });
@@ -306,7 +434,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function BenchmarksPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
-  const l = lang as "es" | "en";
+  const l = lang as Lang;
   const c = COPY[l];
 
   const dict = await getDictionary(l);
@@ -366,7 +494,7 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
               {c.bestAiCta}
             </Link>
             <Link href={`/${l}/models`} className="btn btn-ghost h-9 px-4">
-              {l === "es" ? "Guías por modelo" : "Model guides"}
+              {pick(l, { es: "Guías por modelo", en: "Model guides", pt: "Guias de modelos" })}
             </Link>
           </div>
         </section>

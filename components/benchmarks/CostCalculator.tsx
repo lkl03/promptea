@@ -23,6 +23,7 @@ import type { BenchmarkTable } from "@/lib/benchmarks/normalize";
 import { PROVIDER_TO_PROMPTEA } from "@/lib/benchmarks/catalog";
 import { costRows, formatTokens, formatUsd, providerColor, sortCostRows, type CostSort } from "@/lib/benchmarks/chart";
 import { formatScore } from "@/lib/benchmarks/normalize";
+import { INTL_LOCALE, type Lang } from "@/lib/domain";
 
 export type CalcCopy = {
   title: string;
@@ -77,12 +78,12 @@ export default function CostCalculator({
   onHighlight,
 }: {
   table: BenchmarkTable;
-  lang: "es" | "en";
+  lang: Lang;
   copy: CalcCopy;
   highlightId: string | null;
   onHighlight: (id: string | null) => void;
 }) {
-  const locale = lang === "es" ? "es-AR" : "en-US";
+  const locale = INTL_LOCALE[lang];
   const [inTok, setInTok] = useState<number>(PRESETS.chat.input);
   const [outTok, setOutTok] = useState<number>(PRESETS.chat.output);
   const [requests, setRequests] = useState<number>(PRESETS.chat.requests);

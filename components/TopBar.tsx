@@ -34,6 +34,7 @@ export type NavDict = {
   home: string; // aria-label of the logo link
   menu: string;
   closeMenu: string;
+  language: string; // aria-label of the language switcher
   analyzer: string;
   bestAi: string;
   daily: string;
@@ -45,7 +46,7 @@ export type NavDict = {
   library: string;
 };
 
-type NavKey = Exclude<keyof NavDict, "main" | "home" | "menu" | "closeMenu">;
+type NavKey = Exclude<keyof NavDict, "main" | "home" | "menu" | "closeMenu" | "language">;
 
 /** Order and grouping of the navigation. `group` only draws the hairline between tools and resources. */
 export const NAV_LINKS: ReadonlyArray<{ key: NavKey; path: string; group: "tools" | "resources" }> = [
@@ -117,7 +118,8 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
             <span className="hidden lg:block" aria-hidden="true" />
           ) : (
             <Link href={`/${lang}`} className="rounded-sm transition-opacity hover:opacity-80" aria-label={dict.home}>
-              <BrandLogo height={26} />
+              {/* v1.8.2: a third language in the switcher — the logo is a little smaller below `sm` so both fit down to 320 px. */}
+              <BrandLogo height={20} smHeight={26} />
             </Link>
           )}
           {/* Below lg the menu button takes the left slot on the home page, so the row never looks empty. */}
@@ -159,7 +161,7 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
         </nav>
 
         {/* Right: language + theme (+ the menu button on internal pages below lg) */}
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center justify-end gap-1.5 sm:gap-2">
           {!isHome ? (
             <button
               ref={btnRef}
@@ -175,7 +177,7 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
               <MenuIcon open={open} />
             </button>
           ) : null}
-          <LanguageSwitcher lang={lang} />
+          <LanguageSwitcher lang={lang} label={dict.language} />
           <ThemeToggle lang={lang} />
         </div>
 

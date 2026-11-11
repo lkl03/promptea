@@ -81,6 +81,7 @@
     "modelNotesTitle": "Notes for this model",
     "optimizedTitle": "Optimized prompt",
     "optimizedNote": "Shaped around your task — copy it as is, or tweak anything you like.",
+    "optimizedInEnglish": "This image prompt is written in English, around your own words.",
     "copy": "Copy optimized prompt",
     "copied": "Copied!",
     "compareImproved": "Improved",
@@ -281,7 +282,8 @@
       "title": "AI Daily",
       "blurb": "One verified AI story a day, with its sources attached.",
       "cta": "Read today's edition"
-    }
+    },
+    "langNotice": "AI Daily is published in English and Spanish. You are reading the English edition."
   },
   "newsletter": {
     "title": "Promptea Weekly",
@@ -298,6 +300,7 @@
       "barCta": "Subscribe",
       "emailPlaceholder": "your@email.com",
       "languageLabel": "Language",
+      "languageHint": "The newsletter is written in English and Spanish.",
       "consentLabel": "I want to receive the Promptea Weekly newsletter.",
       "submit": "Subscribe",
       "submitting": "Subscribing…",
@@ -504,6 +507,7 @@
     "home": "Promptea — home",
     "menu": "Menu",
     "closeMenu": "Close menu",
+    "language": "Language",
     "analyzer": "Analyzer",
     "bestAi": "Best AI",
     "daily": "AI Daily",
@@ -529,6 +533,18 @@
     "about": "About Promptea"
   },
   "changelog": {
+    "olderNotice": "Versions before v1.8.0 are listed in English.",
+    "v182": {
+      "released": "Released: 2026-11-11",
+      "items": [
+        "Promptea now speaks Brazilian Portuguese: pick PT in the header. The interface, the product pages, the glossary, the model pages and the prompt packs are translated.",
+        "The analyzer answers in Portuguese: score, findings, recommendations and the optimized prompt. A prompt written in Portuguese is analyzed properly from any language of the site.",
+        "Find the best AI explains its recommendation in Portuguese too.",
+        "AI Daily and the newsletter are still written in English and Spanish: under PT they are shown in English, and the page says so.",
+        "The 58 prompting guides are translated into Portuguese too.",
+        "Image prompts requested in Portuguese are composed in English around your own words, which is what image generators understand best."
+      ]
+    },
     "v181": {
       "released": "Released: 2026-11-10",
       "items": [
@@ -553,5 +569,9 @@
         "Easier to find and cite: structured data on every page, llms.txt and a plain-text version of each guide for AI assistants."
       ]
     }
+  },
+  "guides": {
+    "langNotice": "This guide is not available in this language yet. You are reading the English version.",
+    "inEnglish": "in English"
   }
 }

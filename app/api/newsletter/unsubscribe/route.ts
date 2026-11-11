@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { removeSubscriber } from "@/lib/newsletter/server";
 import { APP_VERSION } from "@/lib/version";
+import { LANGS, LANG_TAG, type Lang } from "@/lib/domain";
 
 export const runtime = "nodejs";
 
@@ -15,11 +16,12 @@ export const runtime = "nodejs";
 // Language detection
 // ---------------------------------------------------------------------------
 
-function detectLang(req: NextRequest): "es" | "en" {
+function detectLang(req: NextRequest): Lang {
   const accept = req.headers.get("accept-language") ?? "";
-  // Check for Spanish variants before defaulting to English
-  if (/^es\b|,\s*es\b/i.test(accept)) return "es";
-  return "en";
+  // The first of our languages the browser lists; English otherwise.
+  const hits = LANGS.map((l) => ({ l, at: accept.search(new RegExp(`(^|,\\s*)${l}\\b`, "i")) })).filter((h) => h.at >= 0);
+  hits.sort((x, y) => x.at - y.at);
+  return hits[0]?.l ?? "en";
 }
 
 // ---------------------------------------------------------------------------
@@ -55,6 +57,20 @@ const COPY = {
     invalidBody: "Este enlace parece inválido o incompleto. Si lo recibiste en un correo, usá el enlace completo.",
     invalidLink: "Volver a Promptea",
   },
+  pt: {
+    title: "Inscrição cancelada — Promptea",
+    heading: "Sua inscrição foi cancelada",
+    body: "Você não vai mais receber os e-mails da Promptea Weekly.",
+    link: "Voltar para o Promptea",
+    errorTitle: "Algo deu errado — Promptea",
+    errorHeading: "Algo deu errado",
+    errorBody: "Não foi possível processar o cancelamento agora. Tente de novo mais tarde.",
+    errorLink: "Voltar para o Promptea",
+    invalidTitle: "Link inválido — Promptea",
+    invalidHeading: "Link de cancelamento inválido",
+    invalidBody: "Este link parece inválido ou incompleto. Se você o recebeu por e-mail, use o link completo.",
+    invalidLink: "Voltar para o Promptea",
+  },
 } as const;
 
 function htmlPage(opts: {
@@ -63,13 +79,13 @@ function htmlPage(opts: {
   body: string;
   link: string;
   success: boolean;
-  lang: "es" | "en";
+  lang: Lang;
 }): string {
   const accentColor = opts.success ? "#22c55e" : "#ef4444";
   const icon = opts.success ? "✓" : "!";
 
   return `<!DOCTYPE html>
-<html lang="${opts.lang}">
+<html lang="${LANG_TAG[opts.lang]}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -157,7 +173,7 @@ function htmlResponse(html: string, status: number): NextResponse {
 // Handler
 // ---------------------------------------------------------------------------
 
-function page(lang: "es" | "en", kind: "success" | "invalid" | "error"): string {
+function page(lang: Lang, kind: "success" | "invalid" | "error"): string {
   const copy = COPY[lang];
   if (kind === "success") {
     return htmlPage({ title: copy.title, heading: copy.heading, body: copy.body, link: copy.link, success: true, lang });

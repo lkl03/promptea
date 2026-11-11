@@ -14,6 +14,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { BREAKDOWN_ORDER, bandColor, decodeCard, qualityBand, targetLabel } from "@/lib/share/card";
 import { purposeLabel } from "@/lib/purposes";
+import { isLang } from "@/lib/domain";
 
 export const runtime = "nodejs";
 
@@ -37,6 +38,14 @@ const COPY = {
     bands: { weak: "Weak", fair: "Fair", good: "Good", excellent: "Excellent" },
     criteria: { clarity: "Clarity", context: "Context", constraints: "Constraints", output: "Output format", verifiability: "Verifiability", safety: "Safety" },
   },
+  pt: {
+    score: "Pontuação",
+    original: "Original",
+    optimized: "Otimizado",
+    tagline: "Analise e otimize seus prompts",
+    bands: { weak: "Fraco", fair: "Regular", good: "Bom", excellent: "Excelente" },
+    criteria: { clarity: "Clareza", context: "Contexto", constraints: "Restrições", output: "Formato de saída", verifiability: "Verificabilidade", safety: "Segurança" },
+  },
 } as const;
 
 async function pngDataUri(file: string): Promise<string | null> {
@@ -50,7 +59,8 @@ async function pngDataUri(file: string): Promise<string | null> {
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  const lang = url.searchParams.get("lang") === "en" ? "en" : "es";
+  const langParam = url.searchParams.get("lang");
+  const lang = isLang(langParam) ? langParam : "es";
   const c = COPY[lang];
   const data = decodeCard(url.searchParams);
   const [mascot, wordmark] = await Promise.all([pngDataUri("mascot-og.png"), pngDataUri("wordmark-og.png")]);

@@ -1,4 +1,5 @@
-export type Lang = "es" | "en";
+import type { Lang } from "@/lib/domain";
+export type { Lang };
 
 export type Severity = "low" | "medium" | "high";
 export type Impact = "low" | "medium" | "high";

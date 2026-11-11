@@ -14,6 +14,7 @@ import FeedbackBar from "./results/FeedbackBar";
 import SaveToLibrary from "./library/SaveToLibrary";
 
 import type { UiDict } from "@/lib/uiDict";
+import { type Lang } from "@/lib/domain";
 
 type Dict = UiDict;
 
@@ -60,7 +61,7 @@ export default function ResultsPanel({
   onReset,
 }: {
   dict: Dict;
-  lang: "es" | "en";
+  lang: Lang;
   result: AnalyzeResponse | null;
   originalPrompt: string;
   isLoading: boolean;
