@@ -17,7 +17,7 @@ import type { PublicArticle } from "@/lib/blog/types";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
 import type { BenchmarksSnapshot } from "@/lib/benchmarks/normalize";
 import { SOURCE_INFO } from "@/lib/benchmarks/catalog";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
@@ -351,7 +351,7 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   for (const g of glossary) out.push(demote(glossaryMarkdown(g, lang, absUrl(`/${lang}/glossary/${g.slug}`), g.updated ?? CONTENT_UPDATED.glossary, "prompts")), "---", "");
 
   out.push(sectionTitle(t("Prompting guides", "Guías de prompting", "Guias de prompting")));
-  for (const g of guides) out.push(demote(guideMarkdown(g, lang, absUrl(`/${lang}/guides/${g.slug}`), g.updated ?? CONTENT_UPDATED.guides, "titles")), "---", "");
+  for (const g of guides.filter((x) => guideLang(x, lang) === lang)) out.push(demote(guideMarkdown(g, lang, absUrl(`/${lang}/guides/${g.slug}`), g.updated ?? CONTENT_UPDATED.guides, "titles")), "---", "");
 
   out.push(sectionTitle(t("Landing pages", "Páginas de producto", "Landing pages")));
   for (const p of landings) out.push(demote(landingMarkdown(p, lang, absUrl(`/${lang}/landing/${p.slug}`), CONTENT_UPDATED.landings)), "---", "");

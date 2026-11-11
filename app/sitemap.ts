@@ -38,7 +38,7 @@ function pathIn(u: SeoUrl, lang: Locale): string {
 
 function toEntry(u: SeoUrl, fallbackDate: Date): MetadataRoute.Sitemap[number] {
   // Editorial content exists in the content languages only (see the header).
-  const locales: readonly Locale[] = u.section === "ai-daily" ? CONTENT_LANGS : LOCALES;
+  const locales: readonly Locale[] = u.locales ?? (u.section === "ai-daily" ? CONTENT_LANGS : LOCALES);
   const languages: Record<string, string> = {};
   for (const l of locales) for (const tag of HREFLANG[l]) languages[tag] = absUrl(pathIn(u, l));
   languages["x-default"] = absUrl(pathIn(u, X_DEFAULT_LOCALE));

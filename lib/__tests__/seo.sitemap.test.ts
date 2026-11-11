@@ -18,7 +18,7 @@ vi.mock("@/lib/seo/dynamic", () => ({
 import sitemap from "@/app/sitemap";
 import { allStaticSeoUrls, staticSeoUrls } from "@/lib/seo/registry";
 import { LOCALES, X_DEFAULT_LOCALE, absUrl } from "@/lib/seo/site";
-import { guides } from "@/lib/seo/content/guides";
+import { getGuide, guideLocales, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
@@ -76,8 +76,11 @@ describe("sitemap.xml generator", () => {
     const byUrl = new Map(entries.map((e) => [e.url, e]));
     for (const e of entries) {
       const l = langs(e);
-      // AI Daily exists in es/en only: no Portuguese alternate is claimed for it.
-      const editorial = /\/blog(\/|$)/.test(new URL(e.url).pathname);
+      // AI Daily exists in es/en only, and a guide not translated to Portuguese yet
+      // has no /pt page of its own: no Portuguese alternate is claimed for either.
+      const path = new URL(e.url).pathname;
+      const guide = /^\/[a-z]{2}\/guides\/([^/]+)$/.exec(path);
+      const editorial = /\/blog(\/|$)/.test(path) || Boolean(guide && guideLocales(getGuide(guide[1])!).length < LOCALES.length);
       expect(Object.keys(l).sort(), e.url).toEqual(editorial ? ["en", "es", "x-default"] : ["en", "es", "pt", "pt-BR", "x-default"]);
       expect(Object.values(l), e.url).toContain(e.url);
       expect(l["x-default"], e.url).toBe(l[X_DEFAULT_LOCALE]);

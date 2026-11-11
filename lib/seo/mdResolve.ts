@@ -9,7 +9,7 @@ import "server-only";
 
 import { getArticleBySlug } from "@/lib/blog/server";
 import { glossary } from "@/lib/seo/content/glossary";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { landings } from "@/lib/seo/content/landings";
 import { modelPages } from "@/lib/seo/content/models";
 import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "./content/sitePages";
@@ -63,6 +63,8 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
 
   if (kind === "guides") {
     const g = guides.find((x) => x.slug === slug);
+    // No twin for a guide that is not translated to this locale yet.
+    if (g && guideLang(g, lang) !== lang) return null;
     return g ? { htmlPath, body: guideMarkdown(g, lang, url, g.updated ?? CONTENT_UPDATED.guides) } : null;
   }
   if (kind === "glossary") {

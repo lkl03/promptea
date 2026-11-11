@@ -556,5 +556,9 @@
         "Easier to find and cite: structured data on every page, llms.txt and a plain-text version of each guide for AI assistants."
       ]
     }
+  },
+  "guides": {
+    "langNotice": "This guide is not available in this language yet. You are reading the English version.",
+    "inEnglish": "in English"
   }
 }

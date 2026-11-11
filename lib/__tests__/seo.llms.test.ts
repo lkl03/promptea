@@ -14,7 +14,7 @@ import {
   modelMarkdown,
 } from "@/lib/seo/markdown";
 import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "@/lib/seo/content/sitePages";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
@@ -102,7 +102,8 @@ describe("llms-full.txt", () => {
   for (const lang of LOCALES) {
     it(`${lang}: contains the title of every guide, glossary term, model page and landing`, () => {
       const txt = buildLlmsFullTxt(empty(lang));
-      for (const g of guides) expect(txt, g.slug).toContain(g.title[lang]);
+      // a guide not translated to this locale yet is not part of its full text (guideLang())
+      for (const g of guides) if (guideLang(g, lang) === lang) expect(txt, g.slug).toContain(g.title[lang]);
       for (const g of glossary) expect(txt, g.slug).toContain(g.title[lang]);
       for (const m of modelPages) expect(txt, m.slug).toContain(m.title[lang]);
       for (const p of landings) expect(txt, p.slug).toContain(p.h1[lang]);

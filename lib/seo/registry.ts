@@ -18,7 +18,7 @@
 
 import type { MetadataRoute } from "next";
 
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guideLocales, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
@@ -53,6 +53,11 @@ export type SeoUrl = {
   alternates?: Partial<Record<Locale, string>>;
   /** True when `<path>.md` serves a markdown twin. */
   markdown?: boolean;
+  /**
+   * The locales this page exists in, when that is not all of them (a guide not
+   * yet translated to Portuguese). hreflang lists only these.
+   */
+  locales?: readonly Locale[];
 };
 
 /** `/en/guides/x` → `/en/guides/x.md`; the locale home `/en` → `/en.md`. */
@@ -364,8 +369,12 @@ export function staticSeoUrls(lang: Locale): SeoUrl[] {
   const urls: SeoUrl[] = coreUrls(lang);
 
   for (const g of guides) {
+    // An untranslated guide is not part of this locale's index (see guideLang()).
+    if (guideLang(g, lang) !== lang) continue;
+    const locales = guideLocales(g);
     urls.push({
       lang,
+      ...(locales.length < LOCALES.length ? { locales } : {}),
       path: `/${lang}/guides/${g.slug}`,
       section: "guides",
       title: g.title[lang],

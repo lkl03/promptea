@@ -556,5 +556,9 @@
         "Más fácil de encontrar y citar: datos estructurados en todas las páginas, llms.txt y una versión en texto plano de cada guía para asistentes de IA."
       ]
     }
+  },
+  "guides": {
+    "langNotice": "Esta guía todavía no está disponible en este idioma. Estás leyendo la versión en inglés.",
+    "inEnglish": "en inglés"
   }
 }

@@ -27,7 +27,7 @@ import { GET as llmsLocale, generateStaticParams as llmsParams } from "@/app/[la
 import { GET as llmsFullLocale } from "@/app/[lang]/llms-full.txt/route";
 import { GET as mdGet, generateStaticParams as mdParams } from "@/app/md/[lang]/[[...path]]/route";
 import { resolveMarkdown, staticMarkdownPaths } from "@/lib/seo/mdResolve";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
@@ -169,6 +169,12 @@ describe("markdown twin route", () => {
     for (const lang of LOCALES) {
       for (const p of paths) {
         const r = await resolveMarkdown(lang, p);
+        // A guide not translated to this locale yet has no twin there (and no link points at one).
+        const g = p[0] === "guides" ? guides.find((x) => x.slug === p[1]) : undefined;
+        if (g && guideLang(g, lang) !== lang) {
+          expect(r, `${lang}/${p.join("/")}`).toBeNull();
+          continue;
+        }
         expect(r, `${lang}/${p.join("/")}`).not.toBeNull();
         expect(r!.htmlPath).toBe(`/${[lang, ...p].join("/")}`);
       }

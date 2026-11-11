@@ -2,13 +2,13 @@
 import JsonLd from "@/components/seo/JsonLd";
 import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import Link from "next/link";
-import { hasLocale } from "../dictionaries";
+import { getDictionary, hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { pick, toLang } from "@/lib/domain";
+import { LANG_TAG, pick, toLang } from "@/lib/domain";
 
 export async function generateMetadata({
   params,
@@ -39,6 +39,7 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
+  const dict = await getDictionary(l);
 
   const title = pick(l, { es: "Guías de prompting", en: "Prompting guides", pt: "Guias de prompting" });
   const subtitle =
@@ -98,8 +99,11 @@ export default async function GuidesIndexPage({ params }: { params: Promise<{ la
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {guides.map((g) => (
           <Link key={g.slug} href={`/${l}/guides/${g.slug}`} className="surface p-4 space-y-2">
-            <div className="text-sm font-medium">{g.title[l]}</div>
-            <div className="text-sm opacity-80">{g.description[l]}</div>
+            <div className="text-sm font-medium" lang={guideLang(g, l) === l ? undefined : LANG_TAG[guideLang(g, l)]}>
+              {g.title[guideLang(g, l)]}
+              {guideLang(g, l) === l ? null : <span className="badge badge-neutral ml-2 align-middle" lang={LANG_TAG[l]}>{dict.guides.inEnglish}</span>}
+            </div>
+            <div className="text-sm opacity-80" lang={guideLang(g, l) === l ? undefined : LANG_TAG[guideLang(g, l)]}>{g.description[guideLang(g, l)]}</div>
             <div className="text-xs opacity-70">{pick(l, { es: "Abrir guía →", en: "Open guide →", pt: "Abrir guia →" })}</div>
           </Link>
         ))}

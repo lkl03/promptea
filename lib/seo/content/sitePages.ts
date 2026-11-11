@@ -187,11 +187,11 @@ export function howItWorksDoc(lang: Locale): PageDoc {
   }).filter((x) => x.text);
 
   return {
-    title: t("How Promptea works: prompt scoring, AIs and FAQ", "Cómo funciona Promptea: puntaje, IAs y preguntas", "Como o Promptea funciona: pontuação de prompts, IAs e perguntas frequentes"),
+    title: t("How Promptea works: prompt scoring, AIs and FAQ", "Cómo funciona Promptea: puntaje, IAs y preguntas", "Como o Promptea funciona: pontuação, IAs e dúvidas"),
     description: t(
       "What Promptea is, how a prompt gets its 0–100 score on six criteria, how to use the analyzer, which AIs and prompt types it supports, and answers to common questions.",
       "Qué es Promptea, cómo se calcula el puntaje de 0 a 100 en seis criterios, cómo usar el analizador, qué IAs y tipos de prompt soporta, y respuestas a las preguntas frecuentes.",
-      "O que é o Promptea, como um prompt recebe sua pontuação de 0 a 100 em seis critérios, como usar o analisador, quais IAs e tipos de prompt são compatíveis e respostas para as dúvidas mais comuns.",
+      "O que é o Promptea, como um prompt recebe a pontuação de 0 a 100 em seis critérios, como usar o analisador, as IAs compatíveis e as dúvidas mais comuns.",
     ),
     h1: t("How Promptea works", "Cómo funciona Promptea", "Como o Promptea funciona"),
     tldr: prompteaTldr(lang),

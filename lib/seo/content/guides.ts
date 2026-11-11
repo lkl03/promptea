@@ -1,4 +1,4 @@
-import type { Locale } from "../site";
+import { LOCALES, type Locale } from "../site";
 import type { Purpose, TargetModel } from "../prefill";
 
 export type Guide = {
@@ -12853,6 +12853,25 @@ Rules:
     ],
   },
 ];
+
+/**
+ * v1.8.2 — the language a guide is READ in under `lang`.
+ *
+ * A guide is translated one at a time. Until its Portuguese text is written its
+ * `pt` fields still hold the English text (the title is the tell), and showing
+ * that under /pt as if it were Portuguese would be a lie to readers and to
+ * search engines. So an untranslated guide is shown in English under /pt, with a
+ * visible notice, canonical → /en, and it is left out of the Portuguese sitemap,
+ * llms.txt and markdown twins. Translating the guide flips it automatically.
+ */
+export function guideLang(g: Guide, lang: Locale): Locale {
+  return lang !== "en" && g.title[lang] === g.title.en ? "en" : lang;
+}
+
+/** The locales a guide has its own text in (always es and en; pt once translated). */
+export function guideLocales(g: Guide): Locale[] {
+  return LOCALES.filter((l) => guideLang(g, l) === l);
+}
 
 export function getGuide(slug: string): Guide | undefined {
   return guides.find((g) => g.slug === slug);
