@@ -564,6 +564,20 @@
   },
   "changelog": {
     "olderNotice": "As versões anteriores à v1.8.0 estão disponíveis apenas em inglês.",
+    "v183": {
+      "released": "Lançado em: 11/11/2026",
+      "items": [
+        "Novo: AI Daily Tech. Uma notícia de tecnologia por dia para quem constrói com IA (nuvem e plataformas, frameworks web, ferramentas de desenvolvimento, hardware), com as fontes, em uma seção própria e com um feed RSS próprio. As notícias são publicadas em inglês e espanhol.",
+        "O AI Daily agora tem três abas: IA, Tech e o resumo semanal. O resumo semanal ganha um bloco \"Tech da semana\".",
+        "Página nova: como escolhemos e verificamos as fontes. Os três níveis, o que uma notícia precisa para ser publicada e quem lemos.",
+        "A página inicial e a maioria das páginas carregam mais rápido: agora são preparadas com antecedência, em vez de serem montadas a cada visita.",
+        "O cartão do feed do X não mostra mais a mensagem de erro de um terceiro e só é carregado quando a página já está pronta.",
+        "Os pacotes de prompts não rolam mais para os lados no celular.",
+        "As mensagens de erro do analisador e de Melhor IA agora aparecem no seu idioma.",
+        "Em PT, a página inicial avisa que as manchetes estão em inglês.",
+        "Segurança: limites de uso nos endpoints de análise e cabeçalhos de resposta mais rígidos."
+      ]
+    },
     "v182": {
       "released": "Lançado em: 11/11/2026",
       "items": [

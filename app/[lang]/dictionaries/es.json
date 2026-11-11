@@ -564,6 +564,20 @@
   },
   "changelog": {
     "olderNotice": "Las versiones anteriores a la v1.8.0 se muestran en español.",
+    "v183": {
+      "released": "Lanzado: 11-11-2026",
+      "items": [
+        "Nuevo: IA al Día Tech. Una nota de tecnología por día para quienes construyen con IA (nube y plataformas, frameworks web, herramientas para desarrollar, hardware), con sus fuentes, en su propia sección y con su propio feed RSS.",
+        "IA al Día ahora tiene tres pestañas: IA, Tech y el resumen semanal. El resumen semanal suma un bloque \"Tech de la semana\".",
+        "Página nueva: cómo elegimos y verificamos las fuentes. Los tres niveles, qué necesita una nota para publicarse y a quién leemos.",
+        "La home y la mayoría de las páginas cargan más rápido: ahora se preparan de antemano en vez de armarse en cada visita.",
+        "La tarjeta del feed de X ya no muestra el mensaje de error de un tercero, y se carga cuando la página ya está lista.",
+        "Los packs de prompts ya no se desplazan hacia los costados en el celular.",
+        "Los mensajes de error del analizador y de Elegir IA ahora salen en tu idioma.",
+        "Bajo PT, la home avisa que los titulares están en inglés.",
+        "Seguridad: límites de uso en los endpoints de análisis y headers de respuesta más estrictos."
+      ]
+    },
     "v182": {
       "released": "Lanzado: 11-11-2026",
       "items": [

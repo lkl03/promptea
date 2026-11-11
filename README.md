@@ -9,7 +9,13 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 
 Available in English, Spanish and Brazilian Portuguese (`/en`, `/es`, `/pt`; v1.8.2). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.2 (2026-11-11)
+## Latest update — v1.8.3 (2026-11-11)
+
+**AI Daily Tech, a verified source registry, and a full QA pass.** AI Daily gains a second section, **Tech** (`/[lang]/blog/tech`): one technology story a day for people who build with AI — cloud and hosting platforms, web frameworks and runtimes, developer tools, hardware — under the same sourcing and same-day rules as the AI story, with its own RSS feed and a "Tech this week" block in the weekly digest. The sources both editions read are a registry in code (`lib/blog/sources.ts`: 140 sources in three tiers, every URL fetched and verified), explained to readers at `/[lang]/sources`. The release also carries the QA of v1.8.0–v1.8.2 and its fixes: the home page and most pages are now prerendered (they were rendered on every request), the X feed card no longer shows a third party's error, the analysis endpoints are rate-limited, and baseline security headers are set. Evidence: [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md). **The Tech routine is external and has to be created once** — see "AI Daily Tech" below. Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.2 (2026-11-11) — Brazilian Portuguese (`/pt`) as a third language._
+
+## v1.8.2 (2026-11-11)
 
 **Brazilian Portuguese (`/pt`) as a third language.** One list of locales (`lib/domain.ts` `LANGS`) drives routes, the proxy, hreflang (`pt-BR` + `pt`), the sitemap, `llms.txt` and the markdown twins. The interface, the static pages (how it works, about, methodology, privacy), the glossary, the model pages, the landings and the prompt packs are translated. The analysis engine (2.4.0) answers in Portuguese and reads prompts written in Portuguese from any interface. Content that has no Portuguese version says so instead of pretending: AI Daily and the weekly digest are shown in English under `/pt` (canonical → the English original), the newsletter form offers its two editions, a guide is read in English until it is translated, and image prompts are composed in English around the user's own words. Translations were written by AI: a native review is recommended (`docs/i18n/pt-glossary.md` fixes the terminology). Details in [CHANGELOG.md](./CHANGELOG.md).
 
@@ -39,9 +45,9 @@ Find the Best AI: prompt entry → signal extraction → deterministic scoring �
 
 ## AI Daily
 
-A bilingual editorial section — one story per day about what actually happened in AI — at `/[lang]/blog` (index) and `/[lang]/blog/[slug]` (article).
+A bilingual editorial section with two reader-facing sections, each with its own index and feed: **AI** — what actually happened in AI — at `/[lang]/blog`, and **Tech** (v1.8.3) — one technology story a day, tied to AI or software development — at `/[lang]/blog/tech`. Articles of both live at `/[lang]/blog/[slug]`.
 
-**Editions and cadence.** Three editions, fixed in `lib/domain.ts` (`BLOG_EDITIONS`): `daily` (the news story, any day), `weekly-recap` (Saturday — the week in review) and `week-ahead` (Sunday — what to watch). The weekly editions carry the range they cover (`coveredFrom`/`coveredTo`, computed by `recapWindow`/`weekAheadWindow`); the recap looks back over the preceding Sunday→Saturday, the look-ahead forward over Sunday→Saturday. Document ids and idempotency keys are keyed **per edition** (`editionDocId`, `editionIdempotencyKey`, prefixes in `EDITION_KEY_PREFIX`), not by date alone — so a Saturday can carry both the weekly recap and a breaking daily story without either overwriting the other, while a re-run of the *same* edition on the same date still resolves to the same document.
+**Editions and cadence.** Five editions, fixed in `lib/domain.ts` (`BLOG_EDITIONS`): `daily` and `daily-morning` (the AI stories of a day), `tech-daily` (the Tech story, v1.8.3), `weekly-recap` (Saturday — the week in review) and `week-ahead` (Sunday — what to watch). `STORY_EDITIONS` (`daily`, `daily-morning`, `tech-daily`) are single same-day stories; `WEEKLY_EDITIONS` carry a range; `SECTION_OF_EDITION` says which section an edition is listed in. The weekly editions carry the range they cover (`coveredFrom`/`coveredTo`, computed by `recapWindow`/`weekAheadWindow`); the recap looks back over the preceding Sunday→Saturday, the look-ahead forward over Sunday→Saturday. Document ids and idempotency keys are keyed **per edition** (`editionDocId`, `editionIdempotencyKey`, prefixes in `EDITION_KEY_PREFIX`), not by date alone — so a Saturday can carry both the weekly recap and a breaking daily story without either overwriting the other, while a re-run of the *same* edition on the same date still resolves to the same document.
 
 **Storage and serving.** Articles live in Firestore (collection `blog_posts`), one document per editorial day *and edition*, each carrying both locales. Pages read through `lib/blog/server.ts` (server-only) and are ISR-cached (`revalidate = 300`). Every read is wrapped so a Firestore outage degrades to an empty section instead of a broken route or a failed build.
 
@@ -71,6 +77,20 @@ A bilingual editorial section — one story per day about what actually happened
 | `RESEARCH_FAILED` | The research step could not gather usable candidates. | Check the routine's network and tool access, then re-run. |
 | `VERIFICATION_FAILED` | A candidate was found but its sources or event date did not hold up. | Correct behaviour — inspect the run log. Publish manually only if you can verify the story yourself. |
 | `PUBLICATION_FAILED` | The payload was rejected or the write failed (bad signature, clock skew, oversized payload, Firestore error). | Check that `BLOG_PUBLISH_SECRET` matches on both sides, that the routine host's clock is within ±5 minutes, and that Firestore is reachable; then re-run — retries are safe. |
+
+### AI Daily Tech (v1.8.3)
+
+Design and data model: [`docs/editorial/tech-daily-design.md`](./docs/editorial/tech-daily-design.md).
+
+- **What it is.** Edition `tech-daily`: at most one story a day, stored in its own document (`ai-tech_<date>`) next to that day's AI stories. Categories added for it (usable by any edition): `cloud`, `web-platform`, `hardware`.
+- **Where it shows.** `/[lang]/blog/tech` (index, search, filters, pagination), `/[lang]/blog/tech/feed.xml`, the tabs AI | Tech | Weekly digest, the home page's "Latest in AI Daily" (the lead is always an AI story; at most one Tech story in the row — `lib/blog/latest.ts`), the news marquee, the weekly digest's "Tech this week" block, the sitemap, `llms.txt` and the markdown twins. Under `/pt` it is shown in English with a notice, canonical → `/en/blog/tech`.
+- **Sources.** `lib/blog/sources.ts` is the curated registry (Tier 1 primary, Tier 2 trusted press, Tier 3 discovery only), explained to readers at `/[lang]/sources` and to maintainers in [`docs/editorial/sources.md`](./docs/editorial/sources.md). `node scripts/editorial/verify-sources.mjs` fetches every URL and rewrites [`docs/editorial/sources-verification.md`](./docs/editorial/sources-verification.md); a source that cannot be verified is not added.
+- **Setting up the routine (once).** Nothing publishes Tech stories until an external routine exists:
+  1. At https://claude.ai/code/routines create "Promptea AI Daily Tech" (suggested cron `0 15 * * *`, 12:00 in Buenos Aires).
+  2. Give it the **same** `BLOG_PUBLISH_SECRET` the AI Daily routine uses (the value in Vercel → Production). No new Vercel variable and no Firebase credentials.
+  3. Paste the prompt from [`docs/editorial/tech-daily-routine.md`](./docs/editorial/tech-daily-routine.md). It signs requests exactly like the AI Daily routine and always sends a `dryRun` before publishing.
+  Until then `/blog/tech` shows its empty state, the home shows no "Tech" button and the digest has no Tech block.
+- **Reviewing it locally.** `BLOG_DEV_FIXTURE=1` includes four clearly fictitious Tech stories.
 
 ## Promptea Weekly (newsletter)
 
@@ -134,7 +154,7 @@ npm run build      # production build (works offline — fonts are local)
   - `scripts/release/qa-local.mjs` — **localhost only**: the engine on the 8 purposes × es/en, the share card with hostile parameters, `noindex`, no-JavaScript and blocked-storage degradation, the home → analyzer hand-off.
   - `scripts/release/perf.mjs` — LCP, CLS, long tasks, HTML/JS/CSS bytes, DOM size and page height, desktop and throttled mobile.
   - `scripts/release/capture.mjs --set=before|after` — the before/after screenshots in `docs/release/`; `scripts/release/overflow.mjs` — which elements stick out of the viewport.
-- Development-only fixtures (unreachable in production builds), to review pages without credentials: `BENCHMARKS_DEV_FIXTURE=1` (a clearly fictitious benchmark dataset) and `BLOG_DEV_FIXTURE=1` (v1.8.1: six clearly fictitious AI Daily stories, including the two weekly editions). Example: `BENCHMARKS_DEV_FIXTURE=1 BLOG_DEV_FIXTURE=1 NEXT_PUBLIC_X_HANDLE=promptea_me npm run dev`.
+- Development-only fixtures (unreachable in production builds), to review pages without credentials: `BENCHMARKS_DEV_FIXTURE=1` (a clearly fictitious benchmark dataset) and `BLOG_DEV_FIXTURE=1` (v1.8.1: six clearly fictitious AI Daily stories, including the two weekly editions; v1.8.3: plus four Tech stories). Example: `BENCHMARKS_DEV_FIXTURE=1 BLOG_DEV_FIXTURE=1 NEXT_PUBLIC_X_HANDLE=promptea_me npm run dev`.
 
 ## Environment variables
 
@@ -142,7 +162,7 @@ npm run build      # production build (works offline — fonts are local)
 | --- | --- | --- |
 | `FIREBASE_SERVICE_ACCOUNT_BASE64` | prod only | Firestore telemetry/app feedback **and AI Daily articles** (server-only). Without it, writes fail gracefully and the blog renders empty. |
 | `FIREBASE_PROJECT_ID` | prod only | Firestore project id. |
-| `BLOG_PUBLISH_SECRET` | required to publish AI Daily | Shared secret for HMAC-SHA256 signing of `POST /api/internal/blog/publish`. Use ≥32 random characters. Set it in Vercel **and** in the publishing routine's configuration — the two must match. Never commit it. Reading the blog does not need it; without it, publishing is simply disabled. |
+| `BLOG_PUBLISH_SECRET` | required to publish AI Daily (AI and Tech) | Shared secret for HMAC-SHA256 signing of `POST /api/internal/blog/publish`. The AI Daily routine and the AI Daily Tech routine (v1.8.3) use the same value. Use ≥32 random characters. Set it in Vercel **and** in the publishing routine's configuration — the two must match. Never commit it. Reading the blog does not need it; without it, publishing is simply disabled. |
 | `GROQ_API_KEY` | optional | Enables the adaptive refiner AND voice transcription. Never exposed to the client. |
 | `GROQ_MODEL` | optional | Overrides the refiner model (default `llama-3.3-70b-versatile`). |
 | `GROQ_TRANSCRIPTION_MODEL` | optional | Overrides the speech-to-text model (default `whisper-large-v3-turbo`). |
@@ -180,11 +200,14 @@ AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PRO
 - `lib/blog/` — AI Daily module: `types.ts` (Zod schemas for posts, blocks, sources, publish payload), `dates.ts` (editorial timezone, freshness guard, idempotency key and document id), `render.ts` (inline markup parsing, plain-text, word count, reading time, XML escaping), `filters.ts` (pure search/filter/sort/paginate over article cards, plus facet collection), `server.ts` (server-only Firestore access: list, fetch by slug, publish, correct, run log).
 - `app/[lang]/blog/` — AI Daily index and article pages (server-rendered, ISR-cached, degrade to empty when Firestore is unavailable); `app/api/internal/blog/publish/` — the HMAC-signed publish endpoint.
 - `lib/benchmarks/` — v1.7.0 benchmarks: `schema.ts` (per-row Zod validation of the OpenRouter contract), `catalog.ts` (what each benchmark measures, metric, limitations), `normalize.ts` (one ranking per benchmark, prices per 1M tokens, frontier definition), `load.ts` (fetch → validate → live / last snapshot / unavailable), `server.ts` (key + Firestore snapshot); `app/api/benchmarks/` is a public status endpoint.
+- `lib/blog/sources.ts` — v1.8.3: the curated source registry (tiers, feed URLs, usage rules); `lib/blog/latest.ts` — which stories the home shows; `lib/blog/feed.ts` + `feedRoute.ts` — the RSS feed of each section; `components/blog/BlogIndexView.tsx` — the index shared by `/blog` and `/blog/tech`; `lib/seo/content/sourcesPage.ts` — the `/sources` document.
+- `lib/rateLimit.ts` — v1.8.3: per-instance fixed-window limiter used by `/api/analyze` (30/min per client) and `/api/analyze-llm` (6/min).
 - `lib/blog/marquee.ts` — homepage news marquee eligibility (published in the last 72 h by `publishedAt`, never rejuvenated by edits).
 - `scripts/showcase/` — records and encodes the product tour video shown on `/how-it-works` from the real app (see its README).
 - `components/analyzer/`, `components/results/` — decomposed feature modules; `PromptBox`/`ResultsPanel` orchestrate.
 - `app/globals.css` + `lib/themes.ts` — theme tokens (Aqua / Metro / Glass) and registry.
-- `app/[lang]/dictionaries/` — EN/ES copy (key parity is test-enforced).
+- `app/[lang]/dictionaries/` — EN/ES/PT copy (key parity is test-enforced).
+- `next.config.ts` — redirects, the markdown-twin rewrites and (v1.8.3) the baseline security headers. No environment variable was added in v1.8.3.
 
 ## Theme architecture
 

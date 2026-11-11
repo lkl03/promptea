@@ -169,7 +169,9 @@ const SEEDS: Seed[] = [
 ];
 
 export function blogDevFixture(lang: ContentLang, now: Date = new Date()): PublicArticle[] {
-  return SEEDS.map((s) => {
+  // Newest first, like every real read path (Firestore orders by publishedAt desc);
+  // same-day stories keep their order in SEEDS.
+  return [...SEEDS].sort((a, b) => a.daysAgo - b.daysAgo).map((s) => {
     const when = new Date(now.getTime() - s.daysAgo * 86_400_000);
     const eventDate = editorialDate(when);
     const weekly = s.edition === "weekly-recap" || s.edition === "week-ahead";

@@ -564,6 +564,20 @@
   },
   "changelog": {
     "olderNotice": "Versions before v1.8.0 are listed in English.",
+    "v183": {
+      "released": "Released: 2026-11-11",
+      "items": [
+        "New: AI Daily Tech. One technology story a day for people who build with AI — cloud platforms, web frameworks, developer tools, hardware — with its sources, in its own section and with its own RSS feed.",
+        "AI Daily now has three tabs: AI, Tech and the weekly digest. The weekly digest gains a \"Tech this week\" block.",
+        "New page: how we choose and verify sources — the three tiers, what a story needs before it is published and who we read.",
+        "The home page and most pages load faster: they are now prepared in advance instead of being built on every visit.",
+        "The X feed card no longer shows a third party's error message, and it loads after the page is ready.",
+        "Prompt packs no longer scroll sideways on phones.",
+        "Error messages in the analyzer and in Find the best AI are now shown in your language.",
+        "Under PT, the home page says that the headlines are in English.",
+        "Security: usage limits on the analysis endpoints and stricter response headers."
+      ]
+    },
     "v182": {
       "released": "Released: 2026-11-11",
       "items": [

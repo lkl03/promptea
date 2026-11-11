@@ -1,0 +1,4 @@
+sweep: 36 page(s) × 1440/768/375 px, aqua-light, against http://localhost:3181
+  ✗ /es/blog/demo-week-in-review @375: console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client
+
+108 page loads checked, 1 finding(s)

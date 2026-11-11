@@ -4,11 +4,41 @@ All notable changes to Promptea are documented here.
 
 ---
 
-## v1.8.3 (unreleased)
+## v1.8.3 — 2026-11-11
 
-**Part 1 of 2 — a full QA pass over v1.8.0–v1.8.2, with fixes. No new features.** What was tested, how, the results and everything that could not be verified: [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md). The version number is bumped by part 2 (AI Daily Tech).
+**AI Daily Tech — one technology story a day, in its own section, with a curated and verified source registry and a public page about how sources are chosen — on top of a full QA pass over v1.8.0–v1.8.2 with its fixes.** Two PRs: QA (#39) and AI Daily Tech (#40). What the QA tested, how, the results and everything that could not be verified: [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md). Design of the Tech edition: [`docs/editorial/tech-daily-design.md`](./docs/editorial/tech-daily-design.md).
 
-### Fixed
+**To switch it on:** the Tech routine is external and does not exist yet. Until it is created at https://claude.ai/code/routines with the prompt in [`docs/editorial/tech-daily-routine.md`](./docs/editorial/tech-daily-routine.md) (same `BLOG_PUBLISH_SECRET` as the AI Daily routine; no new Vercel variable), `/blog/tech` shows its empty state.
+
+### AI Daily Tech
+
+#### Added
+- **A new edition, `tech-daily`** (`lib/domain.ts`): one technology story a day — cloud and hosting platforms, web frameworks and runtimes, developer tools, hardware — always tied to AI or to software development. Its own document per day (`ai-tech_<date>`, idempotency key `ai-tech:<date>`), next to that day's AI stories, so none can overwrite another and a second run on the same day answers `already_published`. Same rules as the AI story: one primary source at least, a second source or a stated justification, same-day event, English and Spanish from the same facts.
+- **`/{lang}/blog/tech`**: the Tech section, with its own title, description, canonical, search, filters, pagination and RSS feed (`/{lang}/blog/tech/feed.xml`). Under `/pt` it shows the English stories with the translated notice and canonicalises to `/en/blog/tech` (the v1.8.2 rule); `/pt/blog/tech/feed.xml` redirects to the English feed.
+- **Tabs: AI | Tech | Weekly digest**, each a crawlable URL. The first tab was "News".
+- **Three categories**: `cloud`, `web-platform`, `hardware` (usable by any edition), with labels in the three languages.
+- **Curated source registry** (`lib/blog/sources.ts`): 140 sources in three tiers — 107 primary (official blogs, changelogs, release notes, docs, repositories, arXiv, public bodies), 24 trusted technical press in English and Spanish, 9 discovery-only (never cited) — each with its feed or changelog URL, type, language, topics, the editions it serves and its usage rule. **Every URL was fetched and answered 200 with the expected kind of document on 2026-11-11** (`scripts/editorial/verify-sources.mjs` → `docs/editorial/sources-verification.md`); candidates that could not be verified were left out and are listed in `docs/editorial/sources.md`.
+- **`/{lang}/sources`** (es, en, pt): "How we choose and verify sources" — the tiers, what a story needs before it is published, who we read, corrections and what the process does not guarantee. Computed from the registry; with JSON-LD (WebPage, breadcrumb, FAQ), a markdown twin, and entries in the sitemap and `llms.txt`. Linked from the footer, from both indexes and from every article.
+- **The routine prompt** (`docs/editorial/tech-daily-routine.md`), ready to paste, with a payload example that a test validates against the schema and against the publish endpoint in `dryRun`. Its signing recipe was run against a local server: 200 `validated`, 401 with a tampered request, 422 for an event dated yesterday.
+- **Weekly digest: a "Tech this week" block** with up to three Tech stories, in the email (HTML and text) and on the edition page. Optional: editions stored before v1.8.3 parse, render and re-send byte for byte as before (test-enforced).
+- Development fixture: four fictitious Tech stories next to the AI ones (`BLOG_DEV_FIXTURE=1`).
+- 88 tests: schema (valid and rejected payloads), ids and idempotency across editions, the same-day guard, the endpoint in `dryRun`, filters, feeds, the home selection, the marquee, the digest with and without Tech, structured data, sitemap / `llms.txt` / markdown twins, the source registry and its verification report.
+
+#### Changed
+- **Home, "Latest in AI Daily": mixed, not a second lane.** The lead is always an AI story; the row under it is the newest of both sections with at most one Tech story, labelled "Tech · category"; a "Tech" button appears once there is a Tech story. Reasons in `lib/blog/latest.ts`.
+- **The AI index and its feed carry AI stories only** (`/{lang}/blog`, `/{lang}/blog/feed.xml`): same URLs, same content as before, since no Tech story existed. Each index offers only the editions it has in its filter.
+- One list (`STORY_EDITIONS`) now answers "is this a same-day story?" for the schema, the freshness guard and the newsletter, instead of `edition === "daily" || edition === "daily-morning"` written three times.
+- Article slugs `tech`, `weekly` and `feed` are refused: they are pages of the blog.
+- The run log records which edition ran.
+- `npm run seo:check` audits `/blog/tech` and `/sources` in the three languages, the `/pt/blog/tech` view and the Tech feed redirect.
+
+#### Not verified
+- No real Tech story exists until the routine runs: everything was checked with the development fixture and tests.
+- The routine itself (its research, its judgement of what is a Tech story) can only be evaluated on its first runs.
+
+### QA pass over v1.8.0–v1.8.2
+
+#### Fixed
 - **The home page and about 25 other pages were rendered on every request.** Pages under `/[lang]` without their own `generateStaticParams` were fully dynamic (`Cache-Control: private, no-store`), so `export const revalidate` did nothing: in production the home took ~1.1 s to first byte and Benchmarks ~1.2 s, against ~0.25 s for a prerendered guide, and each visit to the home ran a database query. The locale list is now declared once at the layout, so every page that reads no request data is prerendered and refreshed in the background (the home every 5 minutes, Benchmarks every hour). AI Daily's filtered index, the article page, the analyzer and `/share` stay dynamic, as before.
 - **X feed card: the widget's own error was shown instead of the fallback.** When Elfsight could not read the account it printed "Failed to fetch user data…" (in English, in every language) plus its badge, and the card treated that as a rendered feed. The card now counts posts: anything else ends in the translated fallback with the link to the profile, and the widget stays invisible until it has posts. Seen in production on 2026-11-11.
 - **X feed card: third-party code no longer loads during the first render.** On desktop the card is on screen from the start, so ~165 KB of Elfsight code was requested while the page was still hydrating (measured in production: at 4.55 s, with LCP at 4.54 s). It now waits for the load event and an idle moment. Without JavaScript the box said "Loading the feed…" forever; it now shows the link to the profile.
@@ -20,20 +50,21 @@ All notable changes to Promptea are documented here.
 - `npm run seo:check` reported a false failure in two production runs out of two: one request out of ~1,100 lost at the network level, on a different healthy URL each time. Transport errors are now retried and reported as a warning; an HTTP status is never retried.
 - A hydration warning in development (the header menu's generated id differing between server and client under load): the id is now fixed.
 
-### Security
+#### Security
 - **`/api/analyze` and `/api/analyze-llm` are rate-limited** (30 and 6 requests a minute per client; `lib/rateLimit.ts`). Neither had any throttle, and with a provider key each call can trigger paid LLM requests; `/api/analyze-llm` is not called by any page. The limit is per server instance, like the existing ones for feedback, newsletter and transcription: it stops a loop, not a distributed attack. The analyzer shows a translated message on 429.
 - **Baseline security headers on every response**: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that keeps the microphone for voice dictation and turns the rest off; `X-Powered-By` is no longer sent. No Content-Security-Policy yet (it needs a report-only rollout because of the third-party scripts).
 
-### Changed
+#### Changed
 - The Glass theme's fonts are no longer preloaded on every page: Aqua and Metro use system fonts and never drew them (153 KB of fonts per visit in production). Glass still loads them, on demand.
 
-### Added
+#### Added
 - Release tooling: `scripts/release/engine-qa.mjs` (the engine through the API for the 8 purposes × pt/es/en: language of the output, cross-interface parity, idempotence), `sweep.mjs` (every sitemap URL of a family at several widths: overflow, clipped text, one `<h1>`, untranslated strings), `xfeed-check.mjs` (when the X widget loads, what it costs, and what the card shows when it is blocked, fails or has no JavaScript). `i18n-qa.mjs` takes `--widths`; `benchmarks-layout.mjs` is read-only against production.
 - Tests: Portuguese content guards (Spanish left in a Portuguese string, placeholders lost in a translated template, European-Portuguese vocabulary), detector parity across languages, the rate limiter and the routes that use it, the security headers.
 
-### Known limitations / follow-ups
+#### Known limitations / follow-ups
 - `npm audit --omit=dev` still reports 26 advisories (4 critical), the same set as v1.8.1; the direct ones are `next` 16.1.1 (fixed in 16.4.6) and `zod`. Not upgraded here: it is a framework upgrade across three minors and deserves its own PR and preview deploy.
 - The Portuguese text has still not been read by a native speaker.
+- A hydration warning still appears in development about once in a hundred page loads, only when many pages are loaded in parallel; it did not appear in any load of a production build.
 
 ---
 

@@ -196,9 +196,12 @@ export default function XFeed({ widgetId, handle, profileUrl, dict }: { widgetId
           role="region"
           aria-label={dict.title}
           hidden={state === "failed"}
-          // Invisible (and out of the accessibility tree) until there are posts: whatever
-          // the widget prints while loading or failing never shows through.
-          style={state === "ready" ? undefined : { visibility: "hidden" }}
+          // Invisible and inert until there are posts: whatever the widget prints while loading
+          // or failing never shows through. Opacity, not `visibility`: the widget's badge sets
+          // its own `visibility: visible`, which a hidden ancestor cannot override.
+          aria-hidden={state === "ready" ? undefined : true}
+          inert={state === "ready" ? undefined : true}
+          style={state === "ready" ? undefined : { opacity: 0, pointerEvents: "none" }}
         >
           {/* Elfsight renders into this element; React never owns its children. */}
           <div ref={hostRef} className={`elfsight-app-${widgetId}`} style={{ minHeight: 1 }} suppressHydrationWarning />
