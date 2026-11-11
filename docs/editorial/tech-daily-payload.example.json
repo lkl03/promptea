@@ -1,0 +1,86 @@
+{
+  "idempotencyKey": "ai-tech:2026-11-12",
+  "routineRunId": "tech-2026-11-12-0900",
+  "canonicalSlug": "example-cloud-agent-sandboxes-per-second-billing",
+  "status": "published",
+  "eventDate": "2026-11-12",
+  "edition": "tech-daily",
+  "importance": "P1",
+  "category": "cloud",
+  "tags": ["agents", "sandboxes", "serverless", "pricing"],
+  "companies": ["Example Cloud"],
+  "models": [],
+  "locales": {
+    "en": {
+      "slug": "example-cloud-agent-sandboxes-per-second-billing",
+      "title": "Example Cloud ships isolated sandboxes for AI agents, billed by the second",
+      "deck": "FORMAT EXAMPLE, NOT A REAL STORY. A fictitious platform adds a runtime for code written by agents; the fields show the shape a Tech story must have.",
+      "summary": "FORMAT EXAMPLE. Example Cloud (a made-up company) announced sandboxes that run agent-generated code in isolation and bill per second of use. This paragraph is the two or three sentences a reader gets in feeds and previews.",
+      "body": [
+        { "type": "paragraph", "text": "FORMAT EXAMPLE. The first paragraph says what happened, who did it and when, in plain language, and attributes it: \"Example Cloud announced today that…\"." },
+        { "type": "heading", "level": 2, "text": "What changes for people who build with it" },
+        { "type": "paragraph", "text": "The second block is the reason this is a Tech story at all: what a developer can now do, must now do, or will now pay. Numbers come from the primary source and are attributed to it." },
+        { "type": "list", "ordered": false, "items": ["One concrete change, with the number the source gives.", "A second concrete change.", "What is not available yet, or to whom."] },
+        { "type": "heading", "level": 2, "text": "What the announcement does not say" },
+        { "type": "paragraph", "text": "State the open questions honestly: limits not published, regions not listed, benchmarks run only by the vendor. If independent reporting adds something, attribute it by name." }
+      ],
+      "whyItMatters": [
+        "Why this matters to someone building AI features: one sentence, concrete.",
+        "Why it matters beyond this one vendor: one sentence."
+      ],
+      "keyTakeaways": [
+        "The single most important fact, with its number.",
+        "What it costs or what it replaces.",
+        "The limitation or open question."
+      ],
+      "seoTitle": "Example Cloud ships per-second sandboxes for AI agents",
+      "metaDescription": "Format example: a fictitious platform launches isolated sandboxes for agent-generated code, billed by the second. What changes for developers."
+    },
+    "es": {
+      "slug": "example-cloud-sandboxes-para-agentes-facturados-por-segundo",
+      "title": "Example Cloud lanza sandboxes aislados para agentes de IA, facturados por segundo",
+      "deck": "EJEMPLO DE FORMATO, NO ES UNA NOTA REAL. Una plataforma ficticia suma un runtime para código escrito por agentes; los campos muestran la forma que debe tener una nota Tech.",
+      "summary": "EJEMPLO DE FORMATO. Example Cloud (una empresa inventada) anunció sandboxes que ejecutan en aislamiento el código generado por agentes y cobran por segundo de uso. Este párrafo son las dos o tres oraciones que ve un lector en feeds y vistas previas.",
+      "body": [
+        { "type": "paragraph", "text": "EJEMPLO DE FORMATO. El primer párrafo dice qué pasó, quién lo hizo y cuándo, en lenguaje llano, y lo atribuye: \"Example Cloud anunció hoy que…\"." },
+        { "type": "heading", "level": 2, "text": "Qué cambia para quienes construyen con esto" },
+        { "type": "paragraph", "text": "El segundo bloque es la razón por la que esto es una nota Tech: qué puede hacer ahora un desarrollador, qué tiene que hacer o cuánto va a pagar. Los números salen de la fuente primaria y se le atribuyen." },
+        { "type": "list", "ordered": false, "items": ["Un cambio concreto, con el número que da la fuente.", "Un segundo cambio concreto.", "Qué no está disponible todavía, o para quién."] },
+        { "type": "heading", "level": 2, "text": "Qué no dice el anuncio" },
+        { "type": "paragraph", "text": "Contar con honestidad lo que queda abierto: límites no publicados, regiones no listadas, benchmarks corridos solo por el proveedor. Si la prensa independiente suma algo, atribuirlo por su nombre." }
+      ],
+      "whyItMatters": [
+        "Por qué le importa a alguien que construye funciones con IA: una oración, concreta.",
+        "Por qué importa más allá de este proveedor: una oración."
+      ],
+      "keyTakeaways": [
+        "El dato más importante, con su número.",
+        "Cuánto cuesta o qué reemplaza.",
+        "La limitación o la pregunta abierta."
+      ],
+      "seoTitle": "Example Cloud lanza sandboxes por segundo para agentes de IA",
+      "metaDescription": "Ejemplo de formato: una plataforma ficticia lanza sandboxes aislados para código generado por agentes, facturados por segundo. Qué cambia."
+    }
+  },
+  "sources": [
+    {
+      "title": "Example Cloud announces agent sandboxes (format example)",
+      "publisher": "Example Cloud",
+      "url": "https://example.com/blog/agent-sandboxes",
+      "sourceType": "announcement",
+      "primary": true,
+      "publishedAt": "2026-11-12",
+      "accessedAt": "2026-11-12"
+    },
+    {
+      "title": "Example Cloud changelog: sandboxes, pricing and limits (format example)",
+      "publisher": "Example Cloud",
+      "url": "https://example.com/changelog/agent-sandboxes",
+      "sourceType": "changelog",
+      "primary": true,
+      "publishedAt": "2026-11-12",
+      "accessedAt": "2026-11-12"
+    }
+  ],
+  "dryRun": true
+}

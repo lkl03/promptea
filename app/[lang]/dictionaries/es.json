@@ -544,7 +544,9 @@
     "guides": "Guías",
     "models": "Modelos",
     "glossary": "Glosario",
-    "library": "Biblioteca"
+    "library": "Biblioteca",
+    "footerTech": "Tech",
+    "footerSources": "Fuentes"
   },
   "howItWorksPage": {
     "breadcrumb": "Ruta de navegación",
@@ -601,5 +603,12 @@
   "guides": {
     "langNotice": "Esta guía todavía no está disponible en este idioma. Estás leyendo la versión en inglés.",
     "inEnglish": "en inglés"
+  },
+  "sourcesPage": {
+    "breadcrumb": "Ruta de navegación",
+    "home": "Inicio",
+    "toDaily": "Leer IA al Día",
+    "toTech": "Leer IA al Día Tech",
+    "toMethodology": "Cómo se puntúan los prompts"
   }
 }

@@ -544,7 +544,9 @@
     "guides": "Guides",
     "models": "Models",
     "glossary": "Glossary",
-    "library": "Library"
+    "library": "Library",
+    "footerTech": "Tech",
+    "footerSources": "Sources"
   },
   "howItWorksPage": {
     "breadcrumb": "Breadcrumb",
@@ -601,5 +603,12 @@
   "guides": {
     "langNotice": "This guide is not available in this language yet. You are reading the English version.",
     "inEnglish": "in English"
+  },
+  "sourcesPage": {
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "toDaily": "Read AI Daily",
+    "toTech": "Read AI Daily Tech",
+    "toMethodology": "How prompts are scored"
   }
 }

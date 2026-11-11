@@ -231,6 +231,22 @@ export const CORE_PAGES: readonly CorePage[] = [
     priority: 0.8,
   },
   {
+    // v1.8.3 — how AI Daily chooses and verifies its sources (all three locales).
+    id: "sources",
+    slug: "sources",
+    section: "about",
+    title: { en: "How we choose and verify sources", es: "Cómo elegimos y verificamos las fuentes", pt: "Como escolhemos e verificamos as fontes" },
+    description: {
+      en: "The three source tiers behind AI Daily and AI Daily Tech, what a story needs before it is published, who we read, and how corrections work.",
+      es: "Los tres niveles de fuentes de IA al Día e IA al Día Tech, qué necesita una nota para publicarse, a quién leemos y cómo funcionan las correcciones.",
+      pt: "Os três níveis de fontes do AI Daily e do AI Daily Tech, o que uma notícia precisa para ser publicada, quem lemos e como funcionam as correções.",
+    },
+    updated: CONTENT_UPDATED.sources,
+    changeFrequency: "monthly",
+    priority: 0.4,
+    markdown: true,
+  },
+  {
     // v1.8.3 — the Tech section of AI Daily.
     id: "blog-tech",
     slug: "blog/tech",

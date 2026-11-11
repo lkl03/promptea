@@ -544,7 +544,9 @@
     "guides": "Guias",
     "models": "Modelos",
     "glossary": "Glossário",
-    "library": "Biblioteca"
+    "library": "Biblioteca",
+    "footerTech": "Tech",
+    "footerSources": "Fontes"
   },
   "howItWorksPage": {
     "breadcrumb": "Trilha de navegação",
@@ -601,5 +603,12 @@
   "guides": {
     "langNotice": "Este guia ainda não foi traduzido para o português. Você está lendo a versão em inglês.",
     "inEnglish": "em inglês"
+  },
+  "sourcesPage": {
+    "breadcrumb": "Trilha de navegação",
+    "home": "Início",
+    "toDaily": "Ler o AI Daily",
+    "toTech": "Ler o AI Daily Tech",
+    "toMethodology": "Como os prompts são pontuados"
   }
 }

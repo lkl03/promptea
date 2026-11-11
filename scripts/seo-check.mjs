@@ -357,7 +357,8 @@ async function checkLlms(origin) {
 // pages: head tags, headings, JSON-LD
 // ---------------------------------------------------------------------------
 
-const KEY_PATHS = ["", "/how-it-works", "/about", "/methodology", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/weekly", "/analyzer", "/best-ai"];
+// v1.8.3: + /sources (every locale) and /blog/tech (the Tech section of AI Daily).
+const KEY_PATHS = ["", "/how-it-works", "/about", "/methodology", "/sources", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/tech", "/blog/weekly", "/analyzer", "/best-ai"];
 
 function pickKeyPages(urls, origin) {
   const picks = new Set();
@@ -367,7 +368,7 @@ function pickKeyPages(urls, origin) {
       const first = urls.find((u) => new URL(u.loc).pathname.startsWith(`/${l}/${section}/`));
       if (first) picks.add(first.loc);
     }
-    const article = urls.find((u) => new RegExp(`^/(${LOCALE_ALT})/blog/(?!weekly)[^/]+$`).test(new URL(u.loc).pathname) && new URL(u.loc).pathname !== `/${l}/blog`);
+    const article = urls.find((u) => new RegExp(`^/(${LOCALE_ALT})/blog/(?!weekly|tech$)[^/]+$`).test(new URL(u.loc).pathname) && new URL(u.loc).pathname !== `/${l}/blog`);
     if (article && new URL(article.loc).pathname.startsWith(`/${l}/`)) picks.add(article.loc);
   }
   return [...picks].filter((u) => urls.some((x) => x.loc === u));
@@ -500,7 +501,7 @@ async function checkEntry() {
  */
 async function checkPortugueseViews(origin, urls) {
   group("/pt views of content without a Portuguese version");
-  const views = [["/pt/blog", "/en/blog"], ["/pt/blog/weekly", "/en/blog/weekly"]];
+  const views = [["/pt/blog", "/en/blog"], ["/pt/blog/tech", "/en/blog/tech"], ["/pt/blog/weekly", "/en/blog/weekly"]];
   const listed = new Set(urls.map((u) => pathOf(u.loc)));
   const enGuide = urls.map((u) => pathOf(u.loc)).find((p) => p.startsWith("/en/guides/") && !listed.has(p.replace("/en/", "/pt/")));
   if (enGuide) views.push([enGuide.replace("/en/", "/pt/"), enGuide]);
@@ -523,6 +524,8 @@ async function checkPortugueseViews(origin, urls) {
   }
   const feed = await get("/pt/blog/feed.xml");
   record("/pt/blog/feed.xml redirects to the English feed", feed.status === 308 && /\/en\/blog\/feed\.xml$/.test(feed.headers.get("location") || ""), `status ${feed.status} → ${feed.headers.get("location") || "(none)"}`);
+  const techFeed = await get("/pt/blog/tech/feed.xml");
+  record("/pt/blog/tech/feed.xml redirects to the English Tech feed", techFeed.status === 308 && /\/en\/blog\/tech\/feed\.xml$/.test(techFeed.headers.get("location") || ""), `status ${techFeed.status} → ${techFeed.headers.get("location") || "(none)"}`);
   summaryOfGroup("/pt views of content without a Portuguese version");
 }
 

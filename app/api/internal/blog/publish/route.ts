@@ -193,6 +193,8 @@ export async function POST(req: NextRequest) {
   void recordRun({
     runId: payload.routineRunId,
     status: result.outcome === "already_published" ? "ALREADY_PUBLISHED" : "PUBLISHED",
+    // v1.8.3: which edition ran (the AI and Tech routines write to the same run log).
+    edition: payload.edition,
     selectedCategory: payload.category,
     selectedImportance: payload.importance,
     sourceCount: payload.sources.length,
