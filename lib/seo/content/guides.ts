@@ -483,15 +483,15 @@ Valide o JSON antes de retornar.`,
   {
     slug: "code-prompts-that-work",
     updated: "2026-11-09",
-    title: { en: "Code prompts that actually work (debug, refactor, tests)", es: "Prompts de código que funcionan (debug, refactor, tests)", pt: "Code prompts that actually work (debug, refactor, tests)" },
+    title: { en: "Code prompts that actually work (debug, refactor, tests)", es: "Prompts de código que funcionan (debug, refactor, tests)", pt: "Prompts de código que funcionam (depuração, refatoração, testes)" },
     description: {
       en: "How to stop getting generic answers: force diffs, constraints, and test checklists.",
       es: "Cómo dejar de recibir respuestas genéricas: forzá diff, restricciones y checklist de tests.",
-      pt: "How to stop getting generic answers: force diffs, constraints, and test checklists.",
+      pt: "Como parar de receber respostas genéricas: exija diffs, restrições e checklists de teste.",
     },
     sections: [
       {
-        heading: { en: "Make it concrete", es: "Hacelo concreto", pt: "Make it concrete" },
+        heading: { en: "Make it concrete", es: "Hacelo concreto", pt: "Seja concreto" },
         bullets: {
           en: [
             "Provide minimal reproducible snippet + expected vs actual.",
@@ -506,15 +506,15 @@ Valide o JSON antes de retornar.`,
             "Pedí casos límite + tests.",
           ],
           pt: [
-            "Provide minimal reproducible snippet + expected vs actual.",
-            "Demand an output structure (steps, diff, checklist).",
-            "Include environment/version constraints.",
-            "Ask for edge cases + tests.",
+            "Forneça um trecho mínimo que reproduza o problema + o esperado vs. o obtido.",
+            "Exija uma estrutura de saída (passos, diff, checklist).",
+            "Inclua restrições de ambiente e de versão.",
+            "Peça casos de borda + testes.",
           ],
         },
       },
       {
-        heading: { en: "Before → after: a debugging request", es: "Antes → después: un pedido de depuración", pt: "Before → after: a debugging request" },
+        heading: { en: "Before → after: a debugging request", es: "Antes → después: un pedido de depuración", pt: "Antes → depois: um pedido de depuração" },
         bullets: {
           en: [
             "Before: \"My function doesn't work, fix it.\" The model has to guess the language, the symptom and what 'works' means, so it rewrites the function in general terms.",
@@ -527,14 +527,14 @@ Valide o JSON antes de retornar.`,
             "Qué cambió: están dichos el síntoma, el entorno, esperado versus actual, una reproducción mínima y el entregable exacto.",
           ],
           pt: [
-            "Before: \"My function doesn't work, fix it.\" The model has to guess the language, the symptom and what 'works' means, so it rewrites the function in general terms.",
-            "After: \"Bug: the total is off by one when the list has one item. Environment: Node 20, TypeScript 5. Expected: 10. Actual: 9. Minimal reproduction below. Return the cause, the fix as a diff, and a test that fails before and passes after.\"",
-            "What changed: symptom, environment, expected versus actual, a minimal reproduction and the exact deliverable are all stated.",
+            "Antes: \"Minha função não funciona, conserte.\" O modelo precisa adivinhar a linguagem, o sintoma e o que significa 'funcionar', então reescreve a função de forma genérica.",
+            "Depois: \"Bug: o total sai com um a menos quando a lista tem um único item. Ambiente: Node 20, TypeScript 5. Esperado: 10. Obtido: 9. Reprodução mínima abaixo. Retorne a causa, a correção como diff e um teste que falhe antes e passe depois.\"",
+            "O que mudou: sintoma, ambiente, esperado versus obtido, uma reprodução mínima e a entrega exata agora estão declarados.",
           ],
         },
       },
       {
-        heading: { en: "Check the answer before you trust it", es: "Revisá la respuesta antes de confiar en ella", pt: "Check the answer before you trust it" },
+        heading: { en: "Check the answer before you trust it", es: "Revisá la respuesta antes de confiar en ella", pt: "Confira a resposta antes de confiar nela" },
         bullets: {
           en: [
             "Run the code and the tests it proposes. A confident explanation is not proof that the fix works.",
@@ -549,17 +549,17 @@ Valide o JSON antes de retornar.`,
             "Preguntale de qué no está seguro ('listá los supuestos que hiciste'): de los supuestos salen los arreglos equivocados.",
           ],
           pt: [
-            "Run the code and the tests it proposes. A confident explanation is not proof that the fix works.",
-            "Ask for a diff or only the changed parts, so you can review a small change instead of a rewritten file.",
-            "Change one thing per request. If you ask for a refactor, a new feature and a bug fix together, you cannot tell which change broke what.",
-            "Ask what it is unsure about ('list assumptions you made'): the assumptions are where wrong fixes come from.",
+            "Rode o código e os testes que ele propõe. Uma explicação confiante não prova que a correção funciona.",
+            "Peça um diff ou só as partes alteradas, para revisar uma mudança pequena em vez de um arquivo reescrito.",
+            "Mude uma coisa por pedido. Se você pedir uma refatoração, uma funcionalidade nova e uma correção de bug ao mesmo tempo, não vai saber qual mudança quebrou o quê.",
+            "Pergunte do que ele não tem certeza ('liste as suposições que você fez'): é das suposições que saem as correções erradas.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Refactor with invariants", es: "Refactor con invariantes", pt: "Refactor with invariants" },
+        title: { en: "Refactor with invariants", es: "Refactor con invariantes", pt: "Refatoração com invariantes" },
         purpose: "code",
         target: "claude",
         prompt: {
@@ -591,24 +591,24 @@ Devolvé:
 1) rationale breve
 2) diff/snippet (solo partes cambiadas)
 3) checklist de tests (qué cubrir)`,
-          pt: `Refactor this code while keeping behavior identical.
+          pt: `Refatore este código mantendo o comportamento idêntico.
 
-Constraints:
-- Do not change public API.
-- Keep runtime complexity <= current.
-- Prefer small functions + clearer names.
+Restrições:
+- Não altere a API pública.
+- Mantenha a complexidade de execução <= a atual.
+- Prefira funções pequenas + nomes mais claros.
 
-Code:
-"""[paste]"""
+Código:
+"""[cole aqui]"""
 
-Return:
-1) brief rationale
-2) diff/snippet (only changed parts)
-3) test checklist (what to cover)`,
+Retorne:
+1) justificativa breve
+2) diff/trecho (só as partes alteradas)
+3) checklist de testes (o que cobrir)`,
         },
       },
       {
-        title: { en: "Debug with expected vs actual", es: "Depurar con esperado vs actual", pt: "Debug with expected vs actual" },
+        title: { en: "Debug with expected vs actual", es: "Depurar con esperado vs actual", pt: "Depuração com esperado vs. obtido" },
         purpose: "code",
         target: "claude",
         prompt: {
@@ -638,45 +638,45 @@ Devolvé:
 2) el arreglo mínimo como diff (solo líneas cambiadas)
 3) un test que falle antes del arreglo y pase después
 4) los supuestos que hiciste, para que yo los revise`,
-          pt: `Bug: [one-line description]
-Environment: [language, runtime, framework versions]
-Expected: [what should happen]
-Actual: [what happens; paste the error or stack trace]
+          pt: `Bug: [descrição em uma linha]
+Ambiente: [linguagem, runtime, versões dos frameworks]
+Esperado: [o que deveria acontecer]
+Obtido: [o que acontece; cole o erro ou o stack trace]
 
-Minimal reproduction:
-"""[code]"""
+Reprodução mínima:
+"""[código]"""
 
-Return:
-1) the most likely cause, in two sentences
-2) the minimal fix as a diff (changed lines only)
-3) one test that fails before the fix and passes after
-4) the assumptions you made, so I can check them`,
+Retorne:
+1) a causa mais provável, em duas frases
+2) a correção mínima como diff (só as linhas alteradas)
+3) um teste que falhe antes da correção e passe depois
+4) as suposições que você fez, para eu poder conferir`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How do I get a real diff?", es: "¿Cómo logro un diff real?", pt: "How do I get a real diff?" },
+        q: { en: "How do I get a real diff?", es: "¿Cómo logro un diff real?", pt: "Como consigo um diff de verdade?" },
         a: {
           en: "Ask for 'only changed parts' and specify the file context. If possible, include filenames.",
           es: "Pedí 'solo partes cambiadas' y especificá contexto de archivo. Si podés, incluí nombres de archivos.",
-          pt: "Ask for 'only changed parts' and specify the file context. If possible, include filenames.",
+          pt: "Peça 'só as partes alteradas' e especifique o contexto do arquivo. Se possível, inclua os nomes dos arquivos.",
         },
       },
       {
-        q: { en: "Should I paste the whole file?", es: "¿Conviene pegar el archivo completo?", pt: "Should I paste the whole file?" },
+        q: { en: "Should I paste the whole file?", es: "¿Conviene pegar el archivo completo?", pt: "Devo colar o arquivo inteiro?" },
         a: {
           en: "Paste the smallest snippet that reproduces the problem plus the signatures it depends on. A whole file adds noise and can push the relevant lines out of focus.",
           es: "Pegá el fragmento más chico que reproduce el problema más las firmas de las que depende. Un archivo entero agrega ruido y puede sacar de foco las líneas relevantes.",
-          pt: "Paste the smallest snippet that reproduces the problem plus the signatures it depends on. A whole file adds noise and can push the relevant lines out of focus.",
+          pt: "Cole o menor trecho que reproduza o problema, mais as assinaturas das quais ele depende. Um arquivo inteiro acrescenta ruído e pode tirar o foco das linhas relevantes.",
         },
       },
       {
-        q: { en: "How do I stop it from rewriting everything?", es: "¿Cómo evito que reescriba todo?", pt: "How do I stop it from rewriting everything?" },
+        q: { en: "How do I stop it from rewriting everything?", es: "¿Cómo evito que reescriba todo?", pt: "Como evito que ele reescreva tudo?" },
         a: {
           en: "State the invariants ('do not change the public API') and ask for the minimal diff. Telling it what must stay the same works better than asking it to 'be careful'.",
           es: "Declará los invariantes ('no cambies la API pública') y pedí el diff mínimo. Decirle qué debe quedar igual funciona mejor que pedirle que 'tenga cuidado'.",
-          pt: "State the invariants ('do not change the public API') and ask for the minimal diff. Telling it what must stay the same works better than asking it to 'be careful'.",
+          pt: "Declare as invariantes ('não altere a API pública') e peça o diff mínimo. Dizer o que precisa continuar igual funciona melhor do que pedir que ele 'tome cuidado'.",
         },
       },
     ],
@@ -684,15 +684,15 @@ Return:
   {
     slug: "marketing-prompts-without-hype",
     updated: "2026-11-09",
-    title: { en: "Marketing prompts without hype (safe claims)", es: "Prompts de marketing sin humo (claims seguros)", pt: "Marketing prompts without hype (safe claims)" },
+    title: { en: "Marketing prompts without hype (safe claims)", es: "Prompts de marketing sin humo (claims seguros)", pt: "Prompts de marketing sem exagero (afirmações seguras)" },
     description: {
       en: "Templates for landing copy and ads that avoid exaggeration and keep claims realistic.",
       es: "Plantillas para landing y anuncios evitando exageraciones y promesas irreales.",
-      pt: "Templates for landing copy and ads that avoid exaggeration and keep claims realistic.",
+      pt: "Templates para copy de landing page e anúncios que evitam exageros e mantêm as afirmações realistas.",
     },
     sections: [
       {
-        heading: { en: "Avoid fake certainty", es: "Evitá la certeza falsa", pt: "Avoid fake certainty" },
+        heading: { en: "Avoid fake certainty", es: "Evitá la certeza falsa", pt: "Evite a falsa certeza" },
         bullets: {
           en: [
             "Give a list of allowed claims and forbidden claims.",
@@ -705,14 +705,14 @@ Return:
             "Pedí 3 variantes con distintos ángulos, mismos hechos.",
           ],
           pt: [
-            "Give a list of allowed claims and forbidden claims.",
-            "Specify compliance: no guarantees, no medical/financial promises.",
-            "Ask for 3 variants with different angles, same facts.",
+            "Forneça uma lista de afirmações permitidas e de afirmações proibidas.",
+            "Especifique a conformidade: sem garantias, sem promessas médicas ou financeiras.",
+            "Peça 3 variações com ângulos diferentes e os mesmos fatos.",
           ],
         },
       },
       {
-        heading: { en: "Before → after: copy you can defend", es: "Antes → después: un copy que podés defender", pt: "Before → after: copy you can defend" },
+        heading: { en: "Before → after: copy you can defend", es: "Antes → después: un copy que podés defender", pt: "Antes → depois: uma copy que você consegue defender" },
         bullets: {
           en: [
             "Before: \"Write an amazing headline for our app, make people love it.\" The model reaches for superlatives and promises.",
@@ -725,14 +725,14 @@ Return:
             "Qué cambió: hay un beneficio demostrable, un largo y una lista de claims permitidos y prohibidos, así que el modelo tiene espacio para persuadir sin prometer de más.",
           ],
           pt: [
-            "Before: \"Write an amazing headline for our app, make people love it.\" The model reaches for superlatives and promises.",
-            "After: \"Write 5 headlines for [app], audience [who], benefit we can show: [benefit]. Max 40 characters. Allowed claims: [list]. Forbidden: guarantees, 'best', 'revolutionary', results we cannot prove.\"",
-            "What changed: there is a provable benefit, a length, a list of allowed and forbidden claims, so the model has room to be persuasive without overpromising.",
+            "Antes: \"Escreva um título incrível para o nosso app, faça as pessoas amarem.\" O modelo recorre a superlativos e promessas.",
+            "Depois: \"Escreva 5 títulos para [app], público [quem], benefício que conseguimos demonstrar: [benefício]. Máximo de 40 caracteres. Afirmações permitidas: [lista]. Proibido: garantias, 'o melhor', 'revolucionário', resultados que não conseguimos provar.\"",
+            "O que mudou: há um benefício comprovável, um tamanho e uma lista de afirmações permitidas e proibidas, então o modelo tem espaço para ser persuasivo sem prometer demais.",
           ],
         },
       },
       {
-        heading: { en: "A review pass before publishing", es: "Una pasada de revisión antes de publicar", pt: "A review pass before publishing" },
+        heading: { en: "A review pass before publishing", es: "Una pasada de revisión antes de publicar", pt: "Uma revisão antes de publicar" },
         bullets: {
           en: [
             "Run a second prompt as a reviewer: 'List every claim in this copy and mark each as proven, unproven or risky, given only the facts below.'",
@@ -745,16 +745,16 @@ Return:
             "Dejá la decisión final en una persona: las reglas legales y de publicidad de cada plataforma varían según país y rubro, y un modelo no puede certificar el cumplimiento.",
           ],
           pt: [
-            "Run a second prompt as a reviewer: 'List every claim in this copy and mark each as proven, unproven or risky, given only the facts below.'",
-            "Replace any 'unproven' claim with a softer, accurate phrase or with the evidence itself (a number, a date, a customer count you can show).",
-            "Keep the final decision with a person: legal and platform advertising rules vary by country and industry, and a model cannot certify compliance.",
+            "Rode um segundo prompt como revisor: 'Liste cada afirmação desta copy e marque cada uma como comprovada, não comprovada ou arriscada, com base apenas nos fatos abaixo.'",
+            "Troque qualquer afirmação 'não comprovada' por uma frase mais branda e precisa, ou pela própria evidência (um número, uma data, uma quantidade de clientes que você consegue mostrar).",
+            "Deixe a decisão final com uma pessoa: as regras legais e das plataformas de anúncios variam conforme o país e o setor, e um modelo não pode certificar a conformidade.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Landing page hero (safe)", es: "Hero de landing (seguro)", pt: "Landing page hero (safe)" },
+        title: { en: "Landing page hero (safe)", es: "Hero de landing (seguro)", pt: "Hero de landing page (seguro)" },
         purpose: "marketing",
         target: "gpt",
         prompt: {
@@ -782,22 +782,22 @@ Reglas:
 - Sin garantías, sin claims exagerados.
 - Si la prueba es 'ninguna', usá lenguaje cuidadoso.
 - Salida: 5 headlines, 5 subheads, 6 bullets, 3 CTAs.`,
-          pt: `Write landing page hero copy.
+          pt: `Escreva a copy do hero de uma landing page.
 
-Product: [what it is]
-Audience: [who]
-Problem: [pain]
-Realistic benefit: [benefit you can prove]
-Proof: [evidence or 'none']
+Produto: [o que é]
+Público: [quem]
+Problema: [a dor]
+Benefício realista: [benefício que você consegue provar]
+Prova: [evidência ou 'nenhuma']
 
-Rules:
-- No guarantees, no exaggerated claims.
-- If proof is 'none', use cautious language.
-- Output: 5 headlines, 5 subheads, 6 bullets, 3 CTAs.`,
+Regras:
+- Sem garantias, sem afirmações exageradas.
+- Se a prova for 'nenhuma', use linguagem cautelosa.
+- Saída: 5 títulos, 5 subtítulos, 6 tópicos, 3 CTAs.`,
         },
       },
       {
-        title: { en: "Claim audit (reviewer pass)", es: "Auditoría de claims (pasada de revisión)", pt: "Claim audit (reviewer pass)" },
+        title: { en: "Claim audit (reviewer pass)", es: "Auditoría de claims (pasada de revisión)", pt: "Auditoria de afirmações (revisão)" },
         purpose: "marketing",
         target: "claude",
         prompt: {
@@ -821,34 +821,34 @@ Copy a revisar:
 
 Devolvé una tabla: Afirmación | Probada / No probada / Riesgosa | Por qué | Reescritura más segura.
 No agregues hechos que no estén en la lista de arriba.`,
-          pt: `Act as a careful reviewer of marketing copy.
+          pt: `Atue como um revisor cuidadoso de copy de marketing.
 
-Facts we can prove:
-"""[list of verified facts]"""
+Fatos que conseguimos provar:
+"""[lista de fatos verificados]"""
 
-Copy to review:
-"""[paste copy]"""
+Copy para revisar:
+"""[cole a copy]"""
 
-Return a table: Claim | Proven / Unproven / Risky | Why | Safer rewrite.
-Do not add facts that are not in the list above.`,
+Retorne uma tabela: Afirmação | Comprovada / Não comprovada / Arriscada | Por quê | Reescrita mais segura.
+Não acrescente fatos que não estejam na lista acima.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why is the model making big promises?", es: "¿Por qué inventa promesas grandes?", pt: "Why is the model making big promises?" },
+        q: { en: "Why is the model making big promises?", es: "¿Por qué inventa promesas grandes?", pt: "Por que o modelo faz promessas grandes?" },
         a: {
           en: "Because marketing prompts bias toward persuasion. You must explicitly forbid guarantees and require proof-based language.",
           es: "Porque marketing tiende a la persuasión. Tenés que prohibir garantías y exigir lenguaje basado en evidencia.",
-          pt: "Because marketing prompts bias toward persuasion. You must explicitly forbid guarantees and require proof-based language.",
+          pt: "Porque prompts de marketing puxam para a persuasão. Você precisa proibir garantias de forma explícita e exigir linguagem baseada em provas.",
         },
       },
       {
-        q: { en: "How do I keep the tone persuasive without hype?", es: "¿Cómo mantengo el tono persuasivo sin hype?", pt: "How do I keep the tone persuasive without hype?" },
+        q: { en: "How do I keep the tone persuasive without hype?", es: "¿Cómo mantengo el tono persuasivo sin hype?", pt: "Como mantenho o tom persuasivo sem exagero?" },
         a: {
           en: "Persuade with specifics: a concrete benefit, a number you can show, a clear next step. Ask for plain language and say which words to avoid.",
           es: "Persuadí con datos concretos: un beneficio puntual, un número que puedas mostrar, un próximo paso claro. Pedí lenguaje simple y decí qué palabras evitar.",
-          pt: "Persuade with specifics: a concrete benefit, a number you can show, a clear next step. Ask for plain language and say which words to avoid.",
+          pt: "Persuada com detalhes concretos: um benefício específico, um número que você consegue mostrar, um próximo passo claro. Peça linguagem simples e diga quais palavras evitar.",
         },
       },
     ],
@@ -859,16 +859,16 @@ Do not add facts that are not in the list above.`,
     title: {
       en: "Chain-of-thought prompting: make the model show its reasoning",
       es: "Chain-of-thought: hacé que el modelo muestre su razonamiento",
-      pt: "Chain-of-thought prompting: make the model show its reasoning",
+      pt: "Chain-of-thought: faça o modelo mostrar o raciocínio",
     },
     description: {
       en: "How to elicit step-by-step reasoning to improve accuracy on complex tasks.",
       es: "Cómo obtener razonamiento paso a paso para mejorar la precisión en tareas complejas.",
-      pt: "How to elicit step-by-step reasoning to improve accuracy on complex tasks.",
+      pt: "Como induzir um raciocínio passo a passo para melhorar a precisão em tarefas complexas.",
     },
     sections: [
       {
-        heading: { en: "When it helps", es: "Cuándo ayuda", pt: "When it helps" },
+        heading: { en: "When it helps", es: "Cuándo ayuda", pt: "Quando ajuda" },
         bullets: {
           en: [
             "Multi-step math, logic, or planning where errors compound.",
@@ -881,14 +881,14 @@ Do not add facts that are not in the list above.`,
             "Debuguear decisiones: ver la cadena te permite detectar exactamente dónde falló el razonamiento.",
           ],
           pt: [
-            "Multi-step math, logic, or planning where errors compound.",
-            "Any task where intermediate steps matter, not just the final answer.",
-            "Debugging decisions: seeing the chain lets you spot exactly where reasoning broke.",
+            "Matemática, lógica ou planejamento em várias etapas, em que os erros se acumulam.",
+            "Qualquer tarefa em que as etapas intermediárias importam, não só a resposta final.",
+            "Depurar decisões: ver a cadeia permite identificar exatamente onde o raciocínio quebrou.",
           ],
         },
       },
       {
-        heading: { en: "How to trigger it", es: "Cómo dispararlo", pt: "How to trigger it" },
+        heading: { en: "How to trigger it", es: "Cómo dispararlo", pt: "Como ativar" },
         bullets: {
           en: [
             "Add 'Think step by step before answering.' to any prompt.",
@@ -903,15 +903,15 @@ Do not add facts that are not in the list above.`,
             "Pedile que revise su propio razonamiento antes de confirmar la respuesta.",
           ],
           pt: [
-            "Add 'Think step by step before answering.' to any prompt.",
-            "Or ask for a scratchpad: 'First, reason through it. Then give the final answer.'",
-            "For structured output, separate the reasoning block from the answer block with tags.",
-            "Ask it to check its own reasoning before committing to the answer.",
+            "Acrescente 'Pense passo a passo antes de responder.' a qualquer prompt.",
+            "Ou peça um rascunho: 'Primeiro, raciocine sobre o problema. Depois, dê a resposta final.'",
+            "Para saída estruturada, separe o bloco de raciocínio do bloco de resposta com tags.",
+            "Peça que ele confira o próprio raciocínio antes de se comprometer com a resposta.",
           ],
         },
       },
       {
-        heading: { en: "Before → after: a multi-step problem", es: "Antes → después: un problema de varios pasos", pt: "Before → after: a multi-step problem" },
+        heading: { en: "Before → after: a multi-step problem", es: "Antes → después: un problema de varios pasos", pt: "Antes → depois: um problema de várias etapas" },
         bullets: {
           en: [
             "Before: \"A subscription costs 12 per month with a 25% discount on annual billing. Is annual cheaper over 18 months?\" The model may answer in one hop and slip on the arithmetic.",
@@ -924,14 +924,14 @@ Do not add facts that are not in the list above.`,
             "Qué cambió: las cantidades intermedias se calculan de forma explícita y la respuesta queda separada del desarrollo, así los errores se ven y la respuesta es fácil de leer.",
           ],
           pt: [
-            "Before: \"A subscription costs 12 per month with a 25% discount on annual billing. Is annual cheaper over 18 months?\" The model may answer in one hop and slip on the arithmetic.",
-            "After: \"...Work through it step by step inside <reasoning>: price per month, annual price after discount, cost of each option over 18 months. Then give only the comparison inside <answer>. Re-check the arithmetic before answering.\"",
-            "What changed: the intermediate quantities are computed explicitly and the answer is kept apart from the working, so errors are visible and the answer is easy to read.",
+            "Antes: \"Uma assinatura custa 12 por mês, com 25% de desconto no plano anual. O anual sai mais barato em 18 meses?\" O modelo pode responder de uma vez só e errar a conta.",
+            "Depois: \"...Resolva passo a passo dentro de <reasoning>: preço por mês, preço anual com desconto, custo de cada opção em 18 meses. Depois, dê só a comparação dentro de <answer>. Confira a conta de novo antes de responder.\"",
+            "O que mudou: as quantidades intermediárias são calculadas de forma explícita e a resposta fica separada das contas, então os erros ficam visíveis e a resposta fica fácil de ler.",
           ],
         },
       },
       {
-        heading: { en: "When not to use it", es: "Cuándo no usarlo", pt: "When not to use it" },
+        heading: { en: "When not to use it", es: "Cuándo no usarlo", pt: "Quando não usar" },
         bullets: {
           en: [
             "Simple lookups, classification and rewriting rarely benefit: the steps add length and cost without improving the answer.",
@@ -944,16 +944,16 @@ Do not add facts that are not in the list above.`,
             "No tomes el razonamiento escrito como un registro fiel de lo que el modelo calculó. Sirve para detectar errores, no es una garantía de corrección: verificá la respuesta final por tu cuenta cuando importe.",
           ],
           pt: [
-            "Simple lookups, classification and rewriting rarely benefit: the steps add length and cost without improving the answer.",
-            "Models that reason internally often need no 'think step by step' instruction, and heavy process instructions can interfere. Check the provider's guidance and the guide on reasoning models.",
-            "Do not treat the written reasoning as a faithful trace of what the model computed. It is useful for spotting mistakes, not a guarantee of correctness: verify the final answer independently when it matters.",
+            "Consultas simples, classificação e reescrita raramente ganham algo: as etapas aumentam o tamanho e o custo sem melhorar a resposta.",
+            "Modelos que raciocinam internamente muitas vezes dispensam a instrução 'pense passo a passo', e instruções pesadas sobre o processo podem atrapalhar. Consulte a orientação do provedor e o guia sobre modelos de raciocínio.",
+            "Não trate o raciocínio escrito como um registro fiel do que o modelo calculou. Ele serve para encontrar erros, não garante que a resposta esteja correta: quando for importante, verifique a resposta final por conta própria.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Step-by-step reasoning (general)", es: "Razonamiento paso a paso (general)", pt: "Step-by-step reasoning (general)" },
+        title: { en: "Step-by-step reasoning (general)", es: "Razonamiento paso a paso (general)", pt: "Raciocínio passo a passo (geral)" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -987,25 +987,25 @@ Formato:
 <respuesta>
 [respuesta final solamente]
 </respuesta>`,
-          pt: `Problem: [describe the task or question]
+          pt: `Problema: [descreva a tarefa ou a pergunta]
 
-Think step by step:
-1. Restate what is being asked.
-2. Identify what information is known vs. what is missing.
-3. Work through the logic in small steps.
-4. State your conclusion.
+Pense passo a passo:
+1. Reformule o que está sendo pedido.
+2. Identifique quais informações são conhecidas e quais estão faltando.
+3. Desenvolva a lógica em passos pequenos.
+4. Declare sua conclusão.
 
-Format:
+Formato:
 <reasoning>
-[steps here]
+[passos aqui]
 </reasoning>
 <answer>
-[final answer only]
+[só a resposta final]
 </answer>`,
         },
       },
       {
-        title: { en: "Decision audit (spot the error)", es: "Auditoría de decisión (encontrá el error)", pt: "Decision audit (spot the error)" },
+        title: { en: "Decision audit (spot the error)", es: "Auditoría de decisión (encontrá el error)", pt: "Auditoria de decisão (encontre o erro)" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -1027,49 +1027,49 @@ Hacé esto:
 1. Reformulá cada paso en una oración.
 2. Marcá el primer paso que creés incorrecto o sin respaldo.
 3. Explicá por qué y proponé un fix.`,
-          pt: `Review this decision chain and find the first point where the reasoning breaks down.
+          pt: `Revise esta cadeia de decisão e encontre o primeiro ponto em que o raciocínio falha.
 
-Decision:
-"""[paste reasoning or plan]"""
+Decisão:
+"""[cole o raciocínio ou o plano]"""
 
-Do this:
-1. Restate each step in one sentence.
-2. Mark the first step you believe is wrong or unsupported.
-3. Explain why and propose a fix.`,
+Faça o seguinte:
+1. Reformule cada passo em uma frase.
+2. Marque o primeiro passo que você considera errado ou sem fundamento.
+3. Explique por quê e proponha uma correção.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Does chain-of-thought always help?", es: "¿El chain-of-thought siempre ayuda?", pt: "Does chain-of-thought always help?" },
+        q: { en: "Does chain-of-thought always help?", es: "¿El chain-of-thought siempre ayuda?", pt: "Chain-of-thought sempre ajuda?" },
         a: {
           en: "No. For simple tasks it adds noise and wastes tokens. Use it for tasks with multiple logical steps where order matters.",
           es: "No. En tareas simples agrega ruido y desperdicia tokens. Usalo en tareas con múltiples pasos lógicos donde el orden importa.",
-          pt: "No. For simple tasks it adds noise and wastes tokens. Use it for tasks with multiple logical steps where order matters.",
+          pt: "Não. Em tarefas simples, ele acrescenta ruído e desperdiça tokens. Use em tarefas com várias etapas lógicas em que a ordem importa.",
         },
       },
       {
-        q: { en: "What if I need a short final answer?", es: "¿Qué pasa si necesito una respuesta final corta?", pt: "What if I need a short final answer?" },
+        q: { en: "What if I need a short final answer?", es: "¿Qué pasa si necesito una respuesta final corta?", pt: "E se eu precisar de uma resposta final curta?" },
         a: {
           en: "Separate reasoning from the answer with tags or sections. Ask for the reasoning first, then a single-sentence conclusion.",
           es: "Separás razonamiento y respuesta con tags o secciones. Pedís el razonamiento primero, luego conclusión en una frase.",
-          pt: "Separate reasoning from the answer with tags or sections. Ask for the reasoning first, then a single-sentence conclusion.",
+          pt: "Separe o raciocínio da resposta com tags ou seções. Peça primeiro o raciocínio e depois uma conclusão de uma frase.",
         },
       },
       {
-        q: { en: "Should I show the reasoning to my users?", es: "¿Debería mostrarle el razonamiento a mis usuarios?", pt: "Should I show the reasoning to my users?" },
+        q: { en: "Should I show the reasoning to my users?", es: "¿Debería mostrarle el razonamiento a mis usuarios?", pt: "Devo mostrar o raciocínio para os meus usuários?" },
         a: {
           en: "Usually not. Keep reasoning and answer in separate blocks, show only the answer, and use the reasoning for debugging and review.",
           es: "Por lo general no. Mantené razonamiento y respuesta en bloques separados, mostrá solo la respuesta y usá el razonamiento para depurar y revisar.",
-          pt: "Usually not. Keep reasoning and answer in separate blocks, show only the answer, and use the reasoning for debugging and review.",
+          pt: "Normalmente não. Mantenha raciocínio e resposta em blocos separados, mostre só a resposta e use o raciocínio para depuração e revisão.",
         },
       },
       {
-        q: { en: "Is chain-of-thought the same as prompt chaining?", es: "¿Chain-of-thought es lo mismo que encadenar prompts?", pt: "Is chain-of-thought the same as prompt chaining?" },
+        q: { en: "Is chain-of-thought the same as prompt chaining?", es: "¿Chain-of-thought es lo mismo que encadenar prompts?", pt: "Chain-of-thought é o mesmo que encadeamento de prompts?" },
         a: {
           en: "No. Chain-of-thought happens inside one response; prompt chaining splits a task across several requests that you control. See the prompt chaining guide.",
           es: "No. Chain-of-thought ocurre dentro de una sola respuesta; el encadenado de prompts reparte una tarea en varias solicitudes que controlás vos. Mirá la guía de prompt chaining.",
-          pt: "No. Chain-of-thought happens inside one response; prompt chaining splits a task across several requests that you control. See the prompt chaining guide.",
+          pt: "Não. O chain-of-thought acontece dentro de uma única resposta; o encadeamento de prompts divide uma tarefa em vários pedidos controlados por você. Veja o guia de encadeamento de prompts.",
         },
       },
     ],
@@ -1080,16 +1080,16 @@ Do this:
     title: {
       en: "Summarization prompts that preserve meaning (not just reduce length)",
       es: "Prompts de resumen que preservan el significado (no solo reducen longitud)",
-      pt: "Summarization prompts that preserve meaning (not just reduce length)",
+      pt: "Prompts de resumo que preservam o sentido (não só encurtam)",
     },
     description: {
       en: "Templates to summarize long texts while keeping the right level of detail, key facts, and tone.",
       es: "Plantillas para resumir textos largos conservando el nivel de detalle, hechos clave y tono correcto.",
-      pt: "Templates to summarize long texts while keeping the right level of detail, key facts, and tone.",
+      pt: "Templates para resumir textos longos mantendo o nível certo de detalhe, os fatos principais e o tom.",
     },
     sections: [
       {
-        heading: { en: "What makes summaries fail", es: "Por qué fallan los resúmenes", pt: "What makes summaries fail" },
+        heading: { en: "What makes summaries fail", es: "Por qué fallan los resúmenes", pt: "Por que os resumos falham" },
         bullets: {
           en: [
             "Not specifying the audience: the model guesses who needs the summary.",
@@ -1104,15 +1104,15 @@ Do this:
             "Sin guía de tono: un reporte formal y un mensaje casual de Slack son muy distintos.",
           ],
           pt: [
-            "Not specifying the audience: the model guesses who needs the summary.",
-            "No output length constraint: it either over-compresses or barely cuts.",
-            "Missing 'what to preserve': key facts, decisions, open questions.",
-            "No tone guidance: a formal report and a casual Slack message differ significantly.",
+            "Não especificar o público: o modelo adivinha quem precisa do resumo.",
+            "Nenhuma restrição de tamanho: ou ele comprime demais ou quase não corta.",
+            "Falta dizer 'o que preservar': fatos principais, decisões, perguntas em aberto.",
+            "Nenhuma orientação de tom: um relatório formal e uma mensagem casual no Slack são bem diferentes.",
           ],
         },
       },
       {
-        heading: { en: "Controls that work", es: "Controles que funcionan", pt: "Controls that work" },
+        heading: { en: "Controls that work", es: "Controles que funcionan", pt: "Controles que funcionam" },
         bullets: {
           en: [
             "Set a word or sentence limit and make it a hard constraint.",
@@ -1127,15 +1127,15 @@ Do this:
             "Pedí salida estructurada: TL;DR + puntos clave + acciones.",
           ],
           pt: [
-            "Set a word or sentence limit and make it a hard constraint.",
-            "Name the audience and their goal ('a PM who needs to decide quickly').",
-            "List what must be preserved ('all numbers, deadlines, open decisions').",
-            "Ask for a structured output: TL;DR + key points + action items.",
+            "Defina um limite de palavras ou frases e trate como restrição rígida.",
+            "Diga quem é o público e qual é o objetivo dele ('um PM que precisa decidir rápido').",
+            "Liste o que precisa ser preservado ('todos os números, prazos e decisões pendentes').",
+            "Peça uma saída estruturada: TL;DR + pontos principais + itens de ação.",
           ],
         },
       },
       {
-        heading: { en: "Before → after: a summary you can act on", es: "Antes → después: un resumen sobre el que se puede actuar", pt: "Before → after: a summary you can act on" },
+        heading: { en: "Before → after: a summary you can act on", es: "Antes → después: un resumen sobre el que se puede actuar", pt: "Antes → depois: um resumo que serve para agir" },
         bullets: {
           en: [
             "Before: \"Summarize this meeting transcript.\" Result: a generic paragraph that mixes small talk with decisions and drops the deadlines.",
@@ -1148,14 +1148,14 @@ Do this:
             "Qué cambió: están dichos la audiencia, el largo, qué conservar y la estructura, así que el resumen es más corto y además más útil.",
           ],
           pt: [
-            "Before: \"Summarize this meeting transcript.\" Result: a generic paragraph that mixes small talk with decisions and drops the deadlines.",
-            "After: \"Summarize this transcript for a project manager who missed the meeting. Max 150 words. Preserve all decisions, owners and deadlines. Format: TL;DR (one sentence), Decisions, Action items (owner, due date), Open questions.\"",
-            "What changed: audience, length, what must be preserved and the structure are stated, so the summary is shorter and also more useful.",
+            "Antes: \"Resuma a transcrição desta reunião.\" Resultado: um parágrafo genérico que mistura conversa fiada com decisões e deixa os prazos de fora.",
+            "Depois: \"Resuma esta transcrição para um gerente de projeto que perdeu a reunião. Máximo de 150 palavras. Preserve todas as decisões, responsáveis e prazos. Formato: TL;DR (uma frase), Decisões, Itens de ação (responsável, data de entrega), Perguntas em aberto.\"",
+            "O que mudou: o público, o tamanho, o que precisa ser preservado e a estrutura estão declarados, então o resumo fica mais curto e também mais útil.",
           ],
         },
       },
       {
-        heading: { en: "Check that the summary is faithful", es: "Controlá que el resumen sea fiel", pt: "Check that the summary is faithful" },
+        heading: { en: "Check that the summary is faithful", es: "Controlá que el resumen sea fiel", pt: "Confira se o resumo é fiel" },
         bullets: {
           en: [
             "Tell the model to use only the supplied text and not to add facts or interpretations that are not in it.",
@@ -1170,17 +1170,17 @@ Do this:
             "Decí qué hacer ante la duda: 'si algo no está claro en el texto, listalo en Preguntas abiertas en vez de resolverlo'.",
           ],
           pt: [
-            "Tell the model to use only the supplied text and not to add facts or interpretations that are not in it.",
-            "Ask for the supporting quote for each number, name and date, then spot-check a few against the source.",
-            "For very long inputs, summarize in parts (one section at a time) and then summarize the summaries; the full text may not fit, or the middle may get less attention.",
-            "State what to do with uncertainty: 'if something is unclear in the text, list it under Open questions instead of resolving it'.",
+            "Diga ao modelo para usar só o texto fornecido e não acrescentar fatos ou interpretações que não estejam nele.",
+            "Peça a citação que sustenta cada número, nome e data e depois confira alguns por amostragem com a fonte.",
+            "Para entradas muito longas, resuma por partes (uma seção de cada vez) e depois resuma os resumos; o texto completo pode não caber, ou o meio pode receber menos atenção.",
+            "Diga o que fazer com a incerteza: 'se algo estiver pouco claro no texto, coloque em Perguntas em aberto em vez de resolver por conta própria'.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Structured document summary", es: "Resumen estructurado de documento", pt: "Structured document summary" },
+        title: { en: "Structured document summary", es: "Resumen estructurado de documento", pt: "Resumo estruturado de documento" },
         purpose: "summarization",
         target: "claude",
         prompt: {
@@ -1204,20 +1204,20 @@ Restricciones:
 
 Documento:
 """[pegá]"""`,
-          pt: `Summarize the document below for [audience: e.g. busy executive / junior developer].
+          pt: `Resuma o documento abaixo para [público: ex. executivo sem tempo / desenvolvedor júnior].
 
-Constraints:
-- TL;DR: <= 2 sentences.
-- Key points: <= 5 bullets (preserve all numbers, dates, and named decisions).
-- Open questions: list anything that needs follow-up.
-- Tone: [formal / casual / technical].
+Restrições:
+- TL;DR: <= 2 frases.
+- Pontos principais: <= 5 tópicos (preserve todos os números, datas e decisões nomeadas).
+- Perguntas em aberto: liste tudo o que precisa de acompanhamento.
+- Tom: [formal / casual / técnico].
 
-Document:
-"""[paste]"""`,
+Documento:
+"""[cole aqui]"""`,
         },
       },
       {
-        title: { en: "Meeting notes → action items", es: "Notas de reunión → acciones", pt: "Meeting notes → action items" },
+        title: { en: "Meeting notes → action items", es: "Notas de reunión → acciones", pt: "Notas de reunião → itens de ação" },
         purpose: "summarization",
         target: "gpt",
         prompt: {
@@ -1241,50 +1241,50 @@ Salida:
 
 Notas:
 """[pegá]"""`,
-          pt: `Extract a structured summary from these meeting notes.
+          pt: `Extraia um resumo estruturado destas notas de reunião.
 
-Output:
-1. Decision log: [decision] (owner, if mentioned)
-2. Action items: [action] — [owner] — [deadline or 'no deadline']
-3. Blocked items: [what is stuck and why]
-4. TL;DR: <= 3 sentences
+Saída:
+1. Registro de decisões: [decisão] (responsável, se mencionado)
+2. Itens de ação: [ação] — [responsável] — [prazo ou 'sem prazo']
+3. Itens bloqueados: [o que está travado e por quê]
+4. TL;DR: <= 3 frases
 
-Notes:
-"""[paste]"""`,
+Notas:
+"""[cole aqui]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How do I avoid hallucinated facts in summaries?", es: "¿Cómo evito hechos inventados en los resúmenes?", pt: "How do I avoid hallucinated facts in summaries?" },
+        q: { en: "How do I avoid hallucinated facts in summaries?", es: "¿Cómo evito hechos inventados en los resúmenes?", pt: "Como evito fatos inventados nos resumos?" },
         a: {
           en: "Tell it to preserve only what is in the text and mark anything uncertain. Add: 'If a fact is not stated, omit it.'",
           es: "Decile que preserve solo lo que está en el texto y que marque lo incierto. Sumá: 'Si un hecho no está escrito, omitilo.'",
-          pt: "Tell it to preserve only what is in the text and mark anything uncertain. Add: 'If a fact is not stated, omit it.'",
+          pt: "Diga para preservar só o que está no texto e marcar tudo o que for incerto. Acrescente: 'Se um fato não estiver declarado, omita.'",
         },
       },
       {
-        q: { en: "What if the document is too long?", es: "¿Qué hago si el documento es muy largo?", pt: "What if the document is too long?" },
+        q: { en: "What if the document is too long?", es: "¿Qué hago si el documento es muy largo?", pt: "E se o documento for longo demais?" },
         a: {
           en: "Split it into sections and summarize each one. Then summarize the summaries. Specify the priority order if sections differ in importance.",
           es: "Dividilo en secciones y resumí cada una. Luego resumís los resúmenes. Especificá el orden de prioridad si las secciones difieren en importancia.",
-          pt: "Split it into sections and summarize each one. Then summarize the summaries. Specify the priority order if sections differ in importance.",
+          pt: "Divida em seções e resuma cada uma. Depois, resuma os resumos. Indique a ordem de prioridade se as seções tiverem importâncias diferentes.",
         },
       },
       {
-        q: { en: "How long should a summary be?", es: "¿Qué tan largo debe ser un resumen?", pt: "How long should a summary be?" },
+        q: { en: "How long should a summary be?", es: "¿Qué tan largo debe ser un resumen?", pt: "Qual deve ser o tamanho de um resumo?" },
         a: {
           en: "Set the limit from the use: a one-sentence TL;DR for a glance, 100–150 words for a briefing, longer only if the reader will act on the details. Make the limit a hard constraint.",
           es: "Fijá el límite según el uso: un TL;DR de una frase para un vistazo, 100–150 palabras para un briefing, más largo solo si quien lee va a actuar sobre los detalles. Hacé del límite una restricción dura.",
-          pt: "Set the limit from the use: a one-sentence TL;DR for a glance, 100–150 words for a briefing, longer only if the reader will act on the details. Make the limit a hard constraint.",
+          pt: "Defina o limite pelo uso: um TL;DR de uma frase para uma olhada rápida, 100–150 palavras para um briefing, e mais longo só se o leitor for agir com base nos detalhes. Trate o limite como restrição rígida.",
         },
       },
       {
-        q: { en: "How do I summarize a document that does not fit in one prompt?", es: "¿Cómo resumo un documento que no entra en un solo prompt?", pt: "How do I summarize a document that does not fit in one prompt?" },
+        q: { en: "How do I summarize a document that does not fit in one prompt?", es: "¿Cómo resumo un documento que no entra en un solo prompt?", pt: "Como resumo um documento que não cabe em um único prompt?" },
         a: {
           en: "Split it into sections, summarize each with the same instructions, then ask for a summary of those summaries. Keep the same preserve-list in every step so nothing important is dropped.",
           es: "Dividilo en secciones, resumí cada una con las mismas instrucciones y después pedí un resumen de esos resúmenes. Mantené la misma lista de qué conservar en cada paso para no perder nada importante.",
-          pt: "Split it into sections, summarize each with the same instructions, then ask for a summary of those summaries. Keep the same preserve-list in every step so nothing important is dropped.",
+          pt: "Divida em seções, resuma cada uma com as mesmas instruções e depois peça um resumo desses resumos. Mantenha a mesma lista do que preservar em todas as etapas para que nada importante se perca.",
         },
       },
     ],
@@ -1294,16 +1294,16 @@ Notes:
     title: {
       en: "Role prompting: how to assign personas for better AI outputs",
       es: "Role prompting: cómo asignar personas para mejores respuestas de la IA",
-      pt: "Role prompting: how to assign personas for better AI outputs",
+      pt: "Role prompting: papéis que melhoram as respostas da IA",
     },
     description: {
       en: "Use expert roles to unlock specialized behavior in any AI model — and avoid the common mistake of vague titles that change nothing.",
       es: "Usá roles de experto para obtener comportamientos especializados de cualquier modelo de IA — y evitá el error de títulos vagos que no cambian nada.",
-      pt: "Use expert roles to unlock specialized behavior in any AI model — and avoid the common mistake of vague titles that change nothing.",
+      pt: "Use papéis de especialista para ativar comportamentos específicos em qualquer modelo de IA — e evite o erro comum dos títulos vagos que não mudam nada.",
     },
     sections: [
       {
-        heading: { en: "When role prompting helps", es: "Cuándo ayuda el role prompting", pt: "When role prompting helps" },
+        heading: { en: "When role prompting helps", es: "Cuándo ayuda el role prompting", pt: "Quando o role prompting ajuda" },
         bullets: {
           en: [
             "When you need domain-specific language: legal, medical, engineering, finance.",
@@ -1318,15 +1318,15 @@ Notes:
             "Cuando querés que el modelo marque incertidumbre en vez de inventar respuestas.",
           ],
           pt: [
-            "When you need domain-specific language: legal, medical, engineering, finance.",
-            "When the default tone is too generic or too casual for your audience.",
-            "When you want consistent behavior across a multi-turn conversation.",
-            "When you want the model to flag uncertainty instead of inventing answers.",
+            "Quando você precisa de linguagem de uma área específica: jurídica, médica, de engenharia, de finanças.",
+            "Quando o tom padrão é genérico ou informal demais para o seu público.",
+            "Quando você quer um comportamento consistente ao longo de uma conversa com vários turnos.",
+            "Quando você quer que o modelo sinalize a incerteza em vez de inventar respostas.",
           ],
         },
       },
       {
-        heading: { en: "How to structure an effective role", es: "Cómo estructurar un rol efectivo", pt: "How to structure an effective role" },
+        heading: { en: "How to structure an effective role", es: "Cómo estructurar un rol efectivo", pt: "Como estruturar um papel eficaz" },
         bullets: {
           en: [
             "Define who the model is, what it knows, and how it communicates.",
@@ -1341,17 +1341,17 @@ Notes:
             "Probá el rol: dá una tarea y verificá si la persona es consistente en la respuesta.",
           ],
           pt: [
-            "Define who the model is, what it knows, and how it communicates.",
-            "Add constraints: what it won't do, what depth of detail it gives.",
-            "Avoid vague titles like 'expert' — specify the domain, years of experience, and context.",
-            "Test the role: give a task and check if the persona is consistent in the response.",
+            "Defina quem o modelo é, o que ele sabe e como se comunica.",
+            "Acrescente restrições: o que ele não vai fazer e qual nível de detalhe ele dá.",
+            "Evite títulos vagos como 'especialista' — especifique a área, os anos de experiência e o contexto.",
+            "Teste o papel: dê uma tarefa e confira se a persona se mantém consistente na resposta.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Domain expert advisor", es: "Asesor experto de dominio", pt: "Domain expert advisor" },
+        title: { en: "Domain expert advisor", es: "Asesor experto de dominio", pt: "Consultor especialista na área" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -1375,20 +1375,20 @@ Restricciones:
 
 Tarea:
 [tu pregunta o pedido]`,
-          pt: `Role: You are a senior [domain, e.g. software engineer / tax consultant / UX researcher] with 10+ years of experience working with [context, e.g. early-stage startups / regulated industries].
-Audience: [who you are advising]
-Style: [direct / formal / simplified — pick one]
-Constraints:
-- Avoid jargon unless I ask for it.
-- Flag when something is outside your domain instead of guessing.
-- If the question is unclear, ask one clarifying question before answering.
+          pt: `Papel: Você é um [área, ex. engenheiro de software / consultor tributário / pesquisador de UX] sênior com mais de 10 anos de experiência trabalhando com [contexto, ex. startups em estágio inicial / setores regulados].
+Público: [quem você está aconselhando]
+Estilo: [direto / formal / simplificado — escolha um]
+Restrições:
+- Evite jargão, a menos que eu peça.
+- Avise quando algo estiver fora da sua área em vez de chutar.
+- Se a pergunta não estiver clara, faça uma pergunta de esclarecimento antes de responder.
 
-Task:
-[your question or request]`,
+Tarefa:
+[sua pergunta ou pedido]`,
         },
       },
       {
-        title: { en: "Rigorous peer reviewer", es: "Revisor riguroso", pt: "Rigorous peer reviewer" },
+        title: { en: "Rigorous peer reviewer", es: "Revisor riguroso", pt: "Revisor rigoroso" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -1410,33 +1410,33 @@ Reglas:
 
 Contenido a revisar:
 """[pegá]"""`,
-          pt: `Role: You are a rigorous peer reviewer with deep expertise in [field].
-Your job: find weaknesses, gaps, and unsupported assumptions — not validate what already works.
-Rules:
-- Be specific: name the exact line, paragraph, or claim that fails.
-- No generic praise. If something is solid, skip it and move on.
-- End with three concrete changes that would make this stronger.
+          pt: `Papel: Você é um revisor rigoroso com profundo conhecimento em [área].
+Sua função: encontrar pontos fracos, lacunas e suposições sem fundamento — não validar o que já funciona.
+Regras:
+- Seja específico: aponte a linha, o parágrafo ou a afirmação exata que falha.
+- Nada de elogios genéricos. Se algo estiver sólido, pule e siga em frente.
+- Termine com três mudanças concretas que deixariam o conteúdo mais forte.
 
-Content to review:
-"""[paste]"""`,
+Conteúdo para revisar:
+"""[cole aqui]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Does adding a role actually change the output quality?", es: "¿Agregar un rol realmente cambia la calidad del output?", pt: "Does adding a role actually change the output quality?" },
+        q: { en: "Does adding a role actually change the output quality?", es: "¿Agregar un rol realmente cambia la calidad del output?", pt: "Atribuir um papel muda mesmo a qualidade da resposta?" },
         a: {
           en: "Only if the role adds real constraints. 'Act as an expert' without specifics gives the same output as no role. The specifics (domain, style, constraints) are what steer the model.",
           es: "Solo si el rol agrega restricciones reales. 'Actuá como experto' sin especificidades da el mismo output que sin rol. Los detalles (dominio, estilo, restricciones) son lo que guía al modelo.",
-          pt: "Only if the role adds real constraints. 'Act as an expert' without specifics gives the same output as no role. The specifics (domain, style, constraints) are what steer the model.",
+          pt: "Só se o papel trouxer restrições reais. 'Atue como especialista' sem detalhes gera a mesma resposta que nenhum papel. São os detalhes (área, estilo, restrições) que orientam o modelo.",
         },
       },
       {
-        q: { en: "Can I use roles for every task?", es: "¿Puedo usar roles para cualquier tarea?", pt: "Can I use roles for every task?" },
+        q: { en: "Can I use roles for every task?", es: "¿Puedo usar roles para cualquier tarea?", pt: "Posso usar papéis em todas as tarefas?" },
         a: {
           en: "Not always useful. Simple tasks like formatting or translation don't need a persona. Roles help most in advisory, review, or domain-specific writing tasks where tone and expertise matter.",
           es: "No siempre sirve. Tareas simples como formatear o traducir no necesitan persona. Los roles ayudan más en asesoría, revisión o escritura de dominio donde el tono y la experiencia importan.",
-          pt: "Not always useful. Simple tasks like formatting or translation don't need a persona. Roles help most in advisory, review, or domain-specific writing tasks where tone and expertise matter.",
+          pt: "Nem sempre vale a pena. Tarefas simples, como formatação ou tradução, não precisam de persona. Os papéis ajudam mais em tarefas de consultoria, revisão ou redação especializada, em que o tom e o conhecimento importam.",
         },
       },
     ],
@@ -1446,16 +1446,16 @@ Content to review:
     title: {
       en: "ChatGPT prompts for work: email, reports, and meeting templates",
       es: "Prompts de ChatGPT para el trabajo: email, reportes y reuniones",
-      pt: "ChatGPT prompts for work: email, reports, and meeting templates",
+      pt: "Prompts do ChatGPT para o trabalho: e-mails, relatórios e reuniões",
     },
     description: {
       en: "Reusable ChatGPT prompt templates for common workplace tasks — built to avoid the vague instructions that produce generic, padded output.",
       es: "Plantillas reutilizables para tareas laborales cotidianas con ChatGPT — diseñadas para evitar instrucciones vagas que producen output genérico.",
-      pt: "Reusable ChatGPT prompt templates for common workplace tasks — built to avoid the vague instructions that produce generic, padded output.",
+      pt: "Templates de prompt reutilizáveis para o ChatGPT em tarefas comuns do trabalho — feitos para evitar as instruções vagas que geram respostas genéricas e enroladas.",
     },
     sections: [
       {
-        heading: { en: "Why work prompts fail", es: "Por qué fallan los prompts de trabajo", pt: "Why work prompts fail" },
+        heading: { en: "Why work prompts fail", es: "Por qué fallan los prompts de trabajo", pt: "Por que os prompts de trabalho falham" },
         bullets: {
           en: [
             "Missing context: the model doesn't know your company, audience, or relationship with the recipient.",
@@ -1470,15 +1470,15 @@ Content to review:
             "Sin tope de longitud: sin uno, el modelo prioriza lo comprehensivo sobre lo útil.",
           ],
           pt: [
-            "Missing context: the model doesn't know your company, audience, or relationship with the recipient.",
-            "No format constraint: 'write an email' defaults to 300 words when you need 5 sentences.",
-            "No tone guidance: formal vs. casual vs. assertive produces very different output.",
-            "No length cap: without one, the model defaults to comprehensive over useful.",
+            "Falta de contexto: o modelo não conhece sua empresa, seu público nem sua relação com o destinatário.",
+            "Nenhuma restrição de formato: 'escreva um e-mail' vira 300 palavras quando você precisava de 5 frases.",
+            "Nenhuma orientação de tom: formal, casual ou assertivo geram respostas muito diferentes.",
+            "Nenhum limite de tamanho: sem ele, o modelo prefere o completo ao útil.",
           ],
         },
       },
       {
-        heading: { en: "Parameters that make work prompts consistent", es: "Parámetros que hacen los prompts de trabajo consistentes", pt: "Parameters that make work prompts consistent" },
+        heading: { en: "Parameters that make work prompts consistent", es: "Parámetros que hacen los prompts de trabajo consistentes", pt: "Parâmetros que deixam os prompts de trabalho consistentes" },
         bullets: {
           en: [
             "Recipient: who is reading and what do they care about most?",
@@ -1495,18 +1495,18 @@ Content to review:
             "Qué evitar: frases de relleno, voz pasiva, openers genéricos.",
           ],
           pt: [
-            "Recipient: who is reading and what do they care about most?",
-            "Goal: one clear action you want from the reader.",
-            "Tone: match the company culture and the relationship level.",
-            "Hard length limit: '3 paragraphs max', '5 bullets', '<= 150 words'.",
-            "What to avoid: filler phrases, passive voice, generic openers.",
+            "Destinatário: quem vai ler e com o que essa pessoa mais se importa?",
+            "Objetivo: uma ação clara que você quer de quem lê.",
+            "Tom: alinhado à cultura da empresa e ao nível de proximidade.",
+            "Limite rígido de tamanho: 'no máximo 3 parágrafos', '5 tópicos', '<= 150 palavras'.",
+            "O que evitar: frases de enchimento, voz passiva, aberturas genéricas.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Professional email draft", es: "Borrador de email profesional", pt: "Professional email draft" },
+        title: { en: "Professional email draft", es: "Borrador de email profesional", pt: "Rascunho de e-mail profissional" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -1534,22 +1534,22 @@ Tono: [formal / casual / asertivo]
 Largo: <= 150 palabras, 3 párrafos.
 Evitar: frases de relleno, voz pasiva, apertura genérica como "Espero que te encuentres bien."
 Asunto: sugerí uno.`,
-          pt: `Write a professional email.
+          pt: `Escreva um e-mail profissional.
 
-Recipient: [name / role / relationship, e.g. client I've worked with for 2 years]
-Goal: [one thing you want them to do]
-Key points (max 3):
-- [point 1]
-- [point 2]
-- [point 3]
-Tone: [formal / casual / assertive]
-Length: <= 150 words, 3 paragraphs.
-Avoid: filler phrases, passive voice, generic opener like "I hope this finds you well."
-Subject line: suggest one.`,
+Destinatário: [nome / cargo / relação, ex. cliente com quem trabalho há 2 anos]
+Objetivo: [uma coisa que você quer que a pessoa faça]
+Pontos principais (no máximo 3):
+- [ponto 1]
+- [ponto 2]
+- [ponto 3]
+Tom: [formal / casual / assertivo]
+Tamanho: <= 150 palavras, 3 parágrafos.
+Evite: frases de enchimento, voz passiva, aberturas genéricas como "Espero que esteja bem."
+Assunto: sugira um.`,
         },
       },
       {
-        title: { en: "Executive summary of a report", es: "Resumen ejecutivo de un reporte", pt: "Executive summary of a report" },
+        title: { en: "Executive summary of a report", es: "Resumen ejecutivo de un reporte", pt: "Resumo executivo de um relatório" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -1581,38 +1581,38 @@ Restricciones:
 
 Reporte:
 """[pegá]"""`,
-          pt: `Summarize this report for an executive audience.
+          pt: `Resuma este relatório para um público executivo.
 
-Output format:
-1. TL;DR: 1 sentence (single most important takeaway).
-2. Key findings: 3 bullets max — numbers and decisions only, no context padding.
-3. Recommended action: 1 concrete next step.
+Formato de saída:
+1. TL;DR: 1 frase (a conclusão mais importante).
+2. Principais achados: no máximo 3 tópicos — só números e decisões, sem contexto de enchimento.
+3. Ação recomendada: 1 próximo passo concreto.
 
-Constraints:
-- <= 120 words total.
-- No passive voice, no filler phrases ("it is important that", "in conclusion").
-- If data is missing from the report, say so — do not fill in gaps.
+Restrições:
+- <= 120 palavras no total.
+- Sem voz passiva, sem frases de enchimento ("é importante que", "em conclusão").
+- Se faltarem dados no relatório, diga isso — não preencha as lacunas.
 
-Report:
-"""[paste]"""`,
+Relatório:
+"""[cole aqui]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can I use these templates with Claude or Gemini instead of ChatGPT?", es: "¿Puedo usar estas plantillas con Claude o Gemini en vez de ChatGPT?", pt: "Can I use these templates with Claude or Gemini instead of ChatGPT?" },
+        q: { en: "Can I use these templates with Claude or Gemini instead of ChatGPT?", es: "¿Puedo usar estas plantillas con Claude o Gemini en vez de ChatGPT?", pt: "Posso usar estes templates com o Claude ou o Gemini em vez do ChatGPT?" },
         a: {
           en: "Yes. The structure works with any instruction-following model. ChatGPT handles professional tone well, but Claude and Gemini produce equally strong results for writing tasks.",
           es: "Sí. La estructura funciona con cualquier modelo que siga instrucciones. ChatGPT maneja bien el tono profesional, pero Claude y Gemini dan resultados igual de sólidos para tareas de escritura.",
-          pt: "Yes. The structure works with any instruction-following model. ChatGPT handles professional tone well, but Claude and Gemini produce equally strong results for writing tasks.",
+          pt: "Sim. A estrutura funciona com qualquer modelo que siga instruções. O ChatGPT lida bem com o tom profissional, mas o Claude e o Gemini entregam resultados igualmente bons em tarefas de escrita.",
         },
       },
       {
-        q: { en: "What if the output is still too long?", es: "¿Qué hago si el output sigue siendo muy largo?", pt: "What if the output is still too long?" },
+        q: { en: "What if the output is still too long?", es: "¿Qué hago si el output sigue siendo muy largo?", pt: "E se a resposta continuar longa demais?" },
         a: {
           en: "Make the length constraint a hard rule and add a consequence: 'If your output exceeds 150 words, cut it before returning.' Repeating the constraint at the end of the prompt reinforces it.",
           es: "Hacé la restricción de longitud una regla dura y agregá una consecuencia: 'Si tu output supera 150 palabras, recortalo antes de devolverlo.' Repetir la restricción al final del prompt la refuerza.",
-          pt: "Make the length constraint a hard rule and add a consequence: 'If your output exceeds 150 words, cut it before returning.' Repeating the constraint at the end of the prompt reinforces it.",
+          pt: "Transforme a restrição de tamanho em regra rígida e acrescente uma consequência: 'Se a sua resposta passar de 150 palavras, corte antes de enviar.' Repetir a restrição no fim do prompt a reforça.",
         },
       },
     ],
@@ -1622,16 +1622,16 @@ Report:
     title: {
       en: "Prompts for Claude: XML tags, extended context, and structured reasoning",
       es: "Prompts para Claude: XML tags, contexto extendido y razonamiento estructurado",
-      pt: "Prompts for Claude: XML tags, extended context, and structured reasoning",
+      pt: "Prompts para o Claude: tags XML, contexto longo e raciocínio",
     },
     description: {
       en: "How to write prompts that take advantage of Claude's XML tag support, large context window, and careful, citation-aware reasoning.",
       es: "Cómo escribir prompts que aprovechen el soporte de XML tags de Claude, su ventana de contexto extensa y su razonamiento cuidadoso.",
-      pt: "How to write prompts that take advantage of Claude's XML tag support, large context window, and careful, citation-aware reasoning.",
+      pt: "Como escrever prompts que aproveitam o suporte do Claude a tags XML, a grande janela de contexto e o raciocínio cuidadoso e atento às fontes.",
     },
     sections: [
       {
-        heading: { en: "What makes Claude different", es: "Qué hace diferente a Claude", pt: "What makes Claude different" },
+        heading: { en: "What makes Claude different", es: "Qué hace diferente a Claude", pt: "O que torna o Claude diferente" },
         bullets: {
           en: [
             "Claude responds well to XML tags for structure: <instructions>, <context>, <output>, <rules>.",
@@ -1646,15 +1646,15 @@ Report:
             "Sigue instrucciones matizadas: listas numeradas de reglas, precedencia entre reglas, excepciones.",
           ],
           pt: [
-            "Claude responds well to XML tags for structure: <instructions>, <context>, <output>, <rules>.",
-            "Large context window: you can paste long documents and ask questions at the end without truncation.",
-            "Tends to be careful about uncertainty — it flags when something is unclear rather than guessing.",
-            "Follows nuanced instructions well: numbered lists of rules, precedence between rules, exceptions.",
+            "O Claude responde bem a tags XML para estruturar: <instructions>, <context>, <output>, <rules>.",
+            "Grande janela de contexto: você pode colar documentos longos e fazer perguntas no final sem truncamento.",
+            "Costuma ser cuidadoso com a incerteza — ele avisa quando algo não está claro em vez de chutar.",
+            "Segue bem instruções com nuances: listas numeradas de regras, prioridade entre regras, exceções.",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with Claude", es: "Patrones que funcionan bien con Claude", pt: "Patterns that work well with Claude" },
+        heading: { en: "Patterns that work well with Claude", es: "Patrones que funcionan bien con Claude", pt: "Padrões que funcionam bem com o Claude" },
         bullets: {
           en: [
             "Use XML tags to separate context from instructions — this reduces confusion on long prompts.",
@@ -1671,18 +1671,18 @@ Report:
             "Pedí citas o fragmentos del documento pegado para anclar las respuestas en la fuente.",
           ],
           pt: [
-            "Use XML tags to separate context from instructions — this reduces confusion on long prompts.",
-            "Put the task at the end, after all context — Claude processes what it has before answering.",
-            "Number your rules (1, 2, 3...) and state which takes priority if they conflict.",
-            "Ask Claude to think step by step before giving a final answer on complex tasks.",
-            "Request citations or quotes from the pasted document to ground answers in the source.",
+            "Use tags XML para separar o contexto das instruções — isso reduz a confusão em prompts longos.",
+            "Coloque a tarefa no final, depois de todo o contexto — o Claude processa o que recebeu antes de responder.",
+            "Numere suas regras (1, 2, 3...) e diga qual tem prioridade se houver conflito.",
+            "Em tarefas complexas, peça que o Claude pense passo a passo antes de dar a resposta final.",
+            "Peça citações ou trechos do documento colado para basear as respostas na fonte.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Document Q&A with citations", es: "Preguntas sobre documento con citas", pt: "Document Q&A with citations" },
+        title: { en: "Document Q&A with citations", es: "Preguntas sobre documento con citas", pt: "Perguntas e respostas sobre um documento, com citações" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -1717,24 +1717,24 @@ Respondé preguntas sobre el documento de abajo. Seguí estas reglas:
 [tu pregunta]
 </pregunta>`,
           pt: `<instructions>
-Answer questions about the document below. Follow these rules:
-1. Base every answer strictly on the document — do not add outside knowledge.
-2. Quote the relevant passage (max 2 sentences) before each answer.
-3. If the answer is not in the document, say "Not found in document."
-4. If the question is ambiguous, ask one clarifying question before answering.
+Responda a perguntas sobre o documento abaixo. Siga estas regras:
+1. Baseie cada resposta estritamente no documento — não acrescente conhecimento externo.
+2. Cite o trecho relevante (no máximo 2 frases) antes de cada resposta.
+3. Se a resposta não estiver no documento, diga "Não encontrado no documento."
+4. Se a pergunta for ambígua, faça uma pergunta de esclarecimento antes de responder.
 </instructions>
 
 <document>
-[paste document here]
+[cole o documento aqui]
 </document>
 
 <question>
-[your question]
+[sua pergunta]
 </question>`,
         },
       },
       {
-        title: { en: "Structured analysis with competing viewpoints", es: "Análisis estructurado con perspectivas opuestas", pt: "Structured analysis with competing viewpoints" },
+        title: { en: "Structured analysis with competing viewpoints", es: "Análisis estructurado con perspectivas opuestas", pt: "Análise estruturada com pontos de vista opostos" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -1787,27 +1787,27 @@ Formato de salida: usá los XML tags de abajo.
 </hecho_clave>
 </formato_de_salida>`,
           pt: `<instructions>
-Analyze the topic below from two opposing perspectives.
-Rules:
-1. Steel-man both sides — represent each as its best advocate would.
-2. Do not express a personal preference.
-3. End with: the single most important fact a decision-maker needs.
-Output format: use the XML tags below.
+Analise o tema abaixo a partir de duas perspectivas opostas.
+Regras:
+1. Apresente a versão mais forte de cada lado — como o melhor defensor de cada posição faria.
+2. Não expresse uma preferência pessoal.
+3. Termine com: o fato mais importante de que alguém que precisa decidir precisa saber.
+Formato de saída: use as tags XML abaixo.
 </instructions>
 
 <topic>
-[describe the decision, question, or situation]
+[descreva a decisão, a pergunta ou a situação]
 </topic>
 
 <output_format>
 <perspective_a>
-[strongest case for position A]
+[o argumento mais forte a favor da posição A]
 </perspective_a>
 <perspective_b>
-[strongest case for position B]
+[o argumento mais forte a favor da posição B]
 </perspective_b>
 <key_fact>
-[the one thing that matters most]
+[a coisa que mais importa]
 </key_fact>
 </output_format>`,
         },
@@ -1815,19 +1815,19 @@ Output format: use the XML tags below.
     ],
     faq: [
       {
-        q: { en: "Do I need to use XML tags with Claude?", es: "¿Necesito usar XML tags con Claude?", pt: "Do I need to use XML tags with Claude?" },
+        q: { en: "Do I need to use XML tags with Claude?", es: "¿Necesito usar XML tags con Claude?", pt: "Preciso usar tags XML com o Claude?" },
         a: {
           en: "No, but they help on longer prompts. When context and instructions are mixed in plain text, Claude may blend them. XML tags create clear boundaries the model respects reliably.",
           es: "No, pero ayudan en prompts largos. Cuando el contexto y las instrucciones se mezclan en texto plano, Claude puede mezclarlos. Los XML tags crean límites claros que el modelo respeta de forma consistente.",
-          pt: "No, but they help on longer prompts. When context and instructions are mixed in plain text, Claude may blend them. XML tags create clear boundaries the model respects reliably.",
+          pt: "Não, mas elas ajudam em prompts mais longos. Quando contexto e instruções estão misturados em texto corrido, o Claude pode confundi-los. As tags XML criam limites claros que o modelo respeita de forma confiável.",
         },
       },
       {
-        q: { en: "How long a document can I paste into a Claude prompt?", es: "¿Qué tan largo puede ser el documento que pego en un prompt de Claude?", pt: "How long a document can I paste into a Claude prompt?" },
+        q: { en: "How long a document can I paste into a Claude prompt?", es: "¿Qué tan largo puede ser el documento que pego en un prompt de Claude?", pt: "Qual o tamanho do documento que posso colar em um prompt do Claude?" },
         a: {
           en: "Claude's context window supports hundreds of pages. For practical accuracy on Q&A, shorter focused documents work better than dumping an entire book. If you have a large document, extract the relevant sections first.",
           es: "La ventana de contexto de Claude soporta cientos de páginas. Para precisión práctica en Q&A, documentos cortos y enfocados funcionan mejor que un libro completo. Si el documento es largo, extraé primero las secciones relevantes.",
-          pt: "Claude's context window supports hundreds of pages. For practical accuracy on Q&A, shorter focused documents work better than dumping an entire book. If you have a large document, extract the relevant sections first.",
+          pt: "A janela de contexto do Claude comporta centenas de páginas. Para ter precisão nas perguntas e respostas, documentos mais curtos e focados funcionam melhor do que despejar um livro inteiro. Se o documento for grande, extraia antes as seções relevantes.",
         },
       },
     ],
@@ -1837,16 +1837,16 @@ Output format: use the XML tags below.
     title: {
       en: "Prompts for Gemini: format control, grounding, and structured output",
       es: "Prompts para Gemini: control de formato, grounding y salida estructurada",
-      pt: "Prompts for Gemini: format control, grounding, and structured output",
+      pt: "Prompts para o Gemini: formato, ancoragem e saída estruturada",
     },
     description: {
       en: "How to write prompts that get consistent, well-structured output from Gemini — including format examples, grounding constraints, and multimodal tips.",
       es: "Cómo escribir prompts que producen salidas consistentes y estructuradas con Gemini — con ejemplos de formato, restricciones de grounding y tips multimodal.",
-      pt: "How to write prompts that get consistent, well-structured output from Gemini — including format examples, grounding constraints, and multimodal tips.",
+      pt: "Como escrever prompts que tiram do Gemini respostas consistentes e bem estruturadas — com exemplos de formato, restrições de ancoragem na fonte e dicas multimodais.",
     },
     sections: [
       {
-        heading: { en: "What makes Gemini different", es: "Qué hace diferente a Gemini", pt: "What makes Gemini different" },
+        heading: { en: "What makes Gemini different", es: "Qué hace diferente a Gemini", pt: "O que torna o Gemini diferente" },
         bullets: {
           en: [
             "Gemini responds well to a visible output template — showing the exact format you expect reduces variation.",
@@ -1863,16 +1863,16 @@ Output format: use the XML tags below.
             "Para prompts multimodal (imagen + texto), aclarás qué rol cumple la imagen antes de la pregunta.",
           ],
           pt: [
-            "Gemini responds well to a visible output template — showing the exact format you expect reduces variation.",
-            "It benefits from an explicit example of the final structure, even a short one.",
-            "For grounded tasks, specify the source: 'Base your answer only on the text below — do not add outside knowledge.'",
-            "Gemini tends to be verbose; set a hard word or sentence limit to prevent padding.",
-            "For multimodal prompts (image + text), state what role the image plays before the question.",
+            "O Gemini responde bem a um template de saída visível — mostrar o formato exato que você espera reduz a variação.",
+            "Ele se beneficia de um exemplo explícito da estrutura final, mesmo que curto.",
+            "Em tarefas ancoradas em uma fonte, especifique qual é: 'Baseie sua resposta apenas no texto abaixo — não acrescente conhecimento externo.'",
+            "O Gemini tende a se estender; defina um limite rígido de palavras ou frases para evitar enchimento.",
+            "Em prompts multimodais (imagem + texto), diga qual papel a imagem cumpre antes da pergunta.",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with Gemini", es: "Patrones que funcionan bien con Gemini", pt: "Patterns that work well with Gemini" },
+        heading: { en: "Patterns that work well with Gemini", es: "Patrones que funcionan bien con Gemini", pt: "Padrões que funcionam bem com o Gemini" },
         bullets: {
           en: [
             "Show a mini template: 'Return your answer in this format: [field]: [value]'.",
@@ -1889,18 +1889,18 @@ Output format: use the XML tags below.
             "Si necesitás JSON, definí el esquema inline y agregá 'Devolvé SOLO JSON válido, sin explicación'.",
           ],
           pt: [
-            "Show a mini template: 'Return your answer in this format: [field]: [value]'.",
-            "Separate context from instruction with a header line (e.g., '--- Context ---', '--- Task ---').",
-            "Ask it to list assumptions before the final answer on ambiguous tasks.",
-            "For long inputs, use a priority hint: 'Focus on the sections marked [PRIORITY]'.",
-            "If you need JSON, define the schema inline and add 'Return ONLY valid JSON, no explanation'.",
+            "Mostre um mini template: 'Retorne sua resposta neste formato: [campo]: [valor]'.",
+            "Separe o contexto da instrução com uma linha de cabeçalho (ex.: '--- Contexto ---', '--- Tarefa ---').",
+            "Em tarefas ambíguas, peça que ele liste as suposições antes da resposta final.",
+            "Para entradas longas, dê uma indicação de prioridade: 'Concentre-se nas seções marcadas com [PRIORIDADE]'.",
+            "Se você precisa de JSON, defina o esquema no próprio prompt e acrescente 'Retorne APENAS JSON válido, sem explicação'.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Structured analysis with format template", es: "Análisis estructurado con plantilla de formato", pt: "Structured analysis with format template" },
+        title: { en: "Structured analysis with format template", es: "Análisis estructurado con plantilla de formato", pt: "Análise estruturada com template de formato" },
         purpose: "text",
         target: "gemini",
         prompt: {
@@ -1936,26 +1936,26 @@ Confianza: [alta / media / baja] — [razón en 1 oración]
 Restricciones:
 - Máximo 200 palabras en total.
 - Si no podés completar un campo, escribí 'N/A' — no lo omitas.`,
-          pt: `Analyze the topic below and return your answer in the exact format shown.
+          pt: `Analise o tema abaixo e retorne sua resposta exatamente no formato mostrado.
 
-Topic: [describe the topic or question]
+Tema: [descreva o tema ou a pergunta]
 
-Format (use exactly this structure):
-Summary: [1 sentence]
-Key points:
-- [point 1]
-- [point 2]
-- [point 3]
-Assumptions I'm making: [list any assumptions]
-Confidence: [high / medium / low] — [reason in 1 sentence]
+Formato (use exatamente esta estrutura):
+Resumo: [1 frase]
+Pontos principais:
+- [ponto 1]
+- [ponto 2]
+- [ponto 3]
+Suposições que estou fazendo: [liste as suposições]
+Confiança: [alta / média / baixa] — [motivo em 1 frase]
 
-Constraints:
-- Max 200 words total.
-- If a field cannot be filled, write 'N/A' — do not omit it.`,
+Restrições:
+- No máximo 200 palavras no total.
+- Se um campo não puder ser preenchido, escreva 'N/A' — não o omita.`,
         },
       },
       {
-        title: { en: "Grounded Q&A (source-only answers)", es: "Q&A con grounding (respuestas solo de la fuente)", pt: "Grounded Q&A (source-only answers)" },
+        title: { en: "Grounded Q&A (source-only answers)", es: "Q&A con grounding (respuestas solo de la fuente)", pt: "Perguntas e respostas ancoradas (só com base na fonte)" },
         purpose: "text",
         target: "gemini",
         prompt: {
@@ -1985,37 +1985,37 @@ Reglas:
 --- Fin de la fuente ---
 
 Pregunta: [tu pregunta]`,
-          pt: `Answer the question below using ONLY the source text provided.
+          pt: `Responda à pergunta abaixo usando APENAS o texto-fonte fornecido.
 
-Rules:
-1. Do not add facts from outside the source.
-2. If the answer is not in the source, say: "Not found in source."
-3. Quote the relevant sentence (max 1 sentence) before your answer.
-4. Keep the answer to 2-3 sentences.
+Regras:
+1. Não acrescente fatos de fora da fonte.
+2. Se a resposta não estiver na fonte, diga: "Não encontrado na fonte."
+3. Cite a frase relevante (no máximo 1 frase) antes da sua resposta.
+4. Limite a resposta a 2-3 frases.
 
---- Source ---
-[paste source text here]
---- End source ---
+--- Fonte ---
+[cole o texto-fonte aqui]
+--- Fim da fonte ---
 
-Question: [your question]`,
+Pergunta: [sua pergunta]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why does Gemini ignore my format instructions?", es: "¿Por qué Gemini ignora mis instrucciones de formato?", pt: "Why does Gemini ignore my format instructions?" },
+        q: { en: "Why does Gemini ignore my format instructions?", es: "¿Por qué Gemini ignora mis instrucciones de formato?", pt: "Por que o Gemini ignora minhas instruções de formato?" },
         a: {
           en: "Usually because the format was described in words but not shown. Add a literal template — even a 2-line example — and Gemini follows it much more reliably.",
           es: "Generalmente porque el formato fue descrito con palabras pero no mostrado. Agregá una plantilla literal — incluso de 2 líneas — y Gemini lo sigue mucho más consistentemente.",
-          pt: "Usually because the format was described in words but not shown. Add a literal template — even a 2-line example — and Gemini follows it much more reliably.",
+          pt: "Normalmente porque o formato foi descrito em palavras, mas não mostrado. Acrescente um template literal — mesmo um exemplo de 2 linhas — e o Gemini passa a segui-lo de forma muito mais confiável.",
         },
       },
       {
-        q: { en: "How do I stop Gemini from adding extra commentary?", es: "¿Cómo evito que Gemini agregue comentarios extra?", pt: "How do I stop Gemini from adding extra commentary?" },
+        q: { en: "How do I stop Gemini from adding extra commentary?", es: "¿Cómo evito que Gemini agregue comentarios extra?", pt: "Como evito que o Gemini acrescente comentários extras?" },
         a: {
           en: "End the prompt with an explicit constraint: 'Return ONLY the structured output above — no extra text, no preamble.' Repeating it at the end reinforces it.",
           es: "Terminá el prompt con una restricción explícita: 'Devolvé SOLO la salida estructurada de arriba — sin texto extra, sin preámbulo.' Repetirla al final la refuerza.",
-          pt: "End the prompt with an explicit constraint: 'Return ONLY the structured output above — no extra text, no preamble.' Repeating it at the end reinforces it.",
+          pt: "Termine o prompt com uma restrição explícita: 'Retorne APENAS a saída estruturada acima — sem texto extra, sem introdução.' Repetir isso no final reforça a instrução.",
         },
       },
     ],
