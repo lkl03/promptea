@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { analyzePrompt } from "@/lib/analyzePrompt";
 import { loadDatasetCases } from "@/lib/engine/dataset/load";
-import { PURPOSES } from "@/lib/domain";
+import { LANGS, PURPOSES } from "@/lib/domain";
 
 // v1.8.0: every expectation in the dataset is now enforced (findings and
 // optimized-prompt checks used to be silently ignored), cases run under
@@ -19,8 +19,8 @@ describe("Dataset calibration", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  test("every purpose has good, bad and ambiguous cases in both languages", () => {
-    for (const lang of ["es", "en"] as const) {
+  test("every purpose has good, bad and ambiguous cases in every language", () => {
+    for (const lang of LANGS) {
       for (const purpose of PURPOSES) {
         const kinds = new Set(cases.filter((c) => c.lang === lang && c.purpose === purpose).map((c) => c.kind));
         expect([...kinds].sort(), `${lang}/${purpose}`).toEqual(["ambiguous", "bad", "good"]);

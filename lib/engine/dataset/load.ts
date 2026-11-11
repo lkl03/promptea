@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { DatasetCase } from "./schema";
+import { LANGS } from "@/lib/domain";
 
 export function loadDatasetCases(): DatasetCase[] {
   const base = path.join(process.cwd(), "lib/engine/dataset/cases");
   const out: DatasetCase[] = [];
 
-  for (const lang of ["es", "en"] as const) {
+  for (const lang of LANGS) {
     const dir = path.join(base, lang);
     if (!fs.existsSync(dir)) continue;
 

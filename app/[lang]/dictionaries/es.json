@@ -81,6 +81,7 @@
     "modelNotesTitle": "Notas para este modelo",
     "optimizedTitle": "Prompt optimizado",
     "optimizedNote": "Adaptado a tu tarea — copialo tal cual o ajustá lo que quieras.",
+    "optimizedInEnglish": "Este prompt de imagen está escrito en inglés, con tus propias palabras.",
     "copy": "Copiar prompt optimizado",
     "copied": "¡Copiado!",
     "compareImproved": "Mejorado",

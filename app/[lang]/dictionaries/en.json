@@ -81,6 +81,7 @@
     "modelNotesTitle": "Notes for this model",
     "optimizedTitle": "Optimized prompt",
     "optimizedNote": "Shaped around your task — copy it as is, or tweak anything you like.",
+    "optimizedInEnglish": "This image prompt is written in English, around your own words.",
     "copy": "Copy optimized prompt",
     "copied": "Copied!",
     "compareImproved": "Improved",

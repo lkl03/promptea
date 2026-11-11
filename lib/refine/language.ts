@@ -33,7 +33,7 @@ const EDGE_R = "(?![\\p{L}\\p{N}_])";
  * read as Spanish or English too.
  */
 const PT_ONLY = new RegExp(
-  `${EDGE_L}(não|você|vocês|uma|um|com|sem|mais|isso|isto|esse|essa|esses|essas|aquele|aquela|quero|gostaria|ajude|ajudar|escreva|escrever|crie|criar|faça|gere|gerar|traduza|traduzir|melhore|melhorar|corrigir|seguinte|seguintes|arquivo|arquivos|deve|devem|deveria|também|função|funções|erro|erros|solução|pergunta|perguntas|resposta|respostas|meu|minha|meus|minhas|seu|sua|seus|suas|são|tem|têm|foi|muito|muita|muitos|muitas|onde|qual|quais|quando|então|já|até|ou|em|na|nas|ao|aos|às|das|pelo|pela|pelos|pelas|num|numa|dele|dela|e|é|à|olá|obrigado|obrigada|fazer|pode|podem|usuário|usuários|saída|tópicos|parágrafo|parágrafos|tamanho|prazo|público-alvo|português|inglês|espanhol)${EDGE_R}`,
+  `${EDGE_L}(não|você|vocês|uma|um|com|sem|mais|isso|isto|esse|essa|esses|essas|aquele|aquela|quero|gostaria|ajude|ajudar|escreva|escrever|crie|criar|faça|gere|gerar|traduza|traduzir|melhore|melhorar|corrigir|seguinte|seguintes|arquivo|arquivos|deve|devem|deveria|também|função|funções|erro|erros|solução|pergunta|perguntas|resposta|respostas|meu|minha|meus|minhas|seu|sua|seus|suas|são|tem|têm|foi|muito|muita|muitos|muitas|onde|qual|quais|quando|então|já|até|ou|em|na|nas|ao|aos|às|das|pelo|pela|pelos|pelas|num|numa|dele|dela|e|é|à|olá|obrigado|obrigada|fazer|pode|podem|usuário|usuários|saída|tópicos|parágrafo|parágrafos|tamanho|prazo|público-alvo|português|inglês|espanhol|os|deste|desta|destes|destas|neste|nesta|disso|nisso|daquele|daquela|pontos|principais|relatório|relatórios|artigo|artigos|resumo|anúncio|anúncios|reunião|equipe|orçamento|mensagem|mensagens|título do|notícias|empresa de)${EDGE_R}`,
   "giu",
 );
 
@@ -67,8 +67,13 @@ export function detectPromptLanguage(text: string, fallback: Lang = "en"): Detec
   const ptScore = ptOnlyHits + ptLetters * 2 + count(src, ROMANCE_SHARED) + sharedAccents * 2;
 
   if (ptOnlyHits + ptLetters > 0 && ptScore > esScore && ptScore > enScore) {
-    const runnerUp = Math.max(esScore, enScore);
-    return { lang: "pt", confidence: Math.min(1, (ptScore - runnerUp) / Math.max(4, ptScore + runnerUp)) };
+    // Confidence compares what is DISTINCTIVE of each language. Portuguese and
+    // Spanish share words and accents, and counting those on both sides would
+    // make every Portuguese text look like a near-tie.
+    const ptOwn = ptOnlyHits + ptLetters * 2;
+    const esOwn = spanishOwnSignal(src);
+    const rival = Math.max(esOwn, enScore);
+    return { lang: "pt", confidence: Math.min(1, Math.max(0, ptOwn - rival) / Math.max(4, ptOwn + rival)) };
   }
 
   const total = esScore + enScore;
@@ -106,9 +111,21 @@ export function languageMatches(rewritten: string, expected: Lang): boolean {
 export function vocabularyLang(prompt: string, uiLang: Lang): Lang {
   const d = detectPromptLanguage(prompt, uiLang);
   if (d.lang === "pt" && (uiLang === "pt" || d.confidence >= 0.35)) return "pt";
-  // A Portuguese interface with a prompt that clearly is Spanish or English.
-  if (uiLang === "pt") return d.confidence >= 0.35 ? d.lang : "pt";
+  if (uiLang === "pt") {
+    // A Portuguese interface with a prompt that clearly is Spanish or English.
+    // "Clearly Spanish" needs Spanish-ONLY signal: a short Portuguese sentence
+    // made of words both languages share ("Resuma o relatório") scores as
+    // Spanish on accents alone and must stay Portuguese here.
+    if (d.lang === "es") return d.confidence >= 0.35 && spanishOwnSignal(prompt) >= 2 ? "es" : "pt";
+    return d.confidence >= 0.35 ? d.lang : "pt";
+  }
   return uiLang;
+}
+
+/** How much of a text is Spanish and NOT also Portuguese: Spanish-only words, ñ, ¿, ¡. */
+function spanishOwnSignal(text: string): number {
+  const src = String(text ?? "");
+  return Math.max(0, count(src, ES_MARKERS) - count(src, ROMANCE_SHARED)) + count(src, /[ñ¿¡]/gi) * 2;
 }
 
 /** True when the prompt should also be read with the Portuguese vocabulary. */

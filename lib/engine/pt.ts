@@ -55,6 +55,7 @@ export function isPt(text: string, lang: Lang | undefined): boolean {
 export const PT_GOAL_VERBS = w(
   [
     "quero|queria|gostaria|preciso|busco|objetivo|meta|meu objetivo [ée]",
+    "tire|tirar|retire|retirar|pegue|pegar|separe|separar|organize|organizar|monte|simule|simular|continue|complete|completar",
     "escreva|escreve|escrever|redija|redigir|reescreva|reescreve|reescrever|crie|cria|criar|fa[çc]a|faz|fazer",
     "monte|montar|gere|gera|gerar|desenhe|desenhar|elabore|elaborar|produza|produzir|prepare|preparar",
     "me d[eê]|me diga|me conte|me mostre|me ajude|me ajuda|me explique|me explica|me ensine|ajude|ajudar",

@@ -81,6 +81,7 @@
     "modelNotesTitle": "Notas para este modelo",
     "optimizedTitle": "Prompt otimizado",
     "optimizedNote": "Feito sob medida para a sua tarefa — copie como está ou ajuste o que quiser.",
+    "optimizedInEnglish": "O prompt de imagem é montado em inglês, em volta das suas próprias palavras: os geradores de imagem costumam entender melhor o inglês.",
     "copy": "Copiar prompt otimizado",
     "copied": "Copiado!",
     "compareImproved": "Melhorado",

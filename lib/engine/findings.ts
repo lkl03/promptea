@@ -3,7 +3,6 @@ import type { Features, Finding } from "./types";
 import { pick } from "@/lib/domain";
 
 export function buildFindings(core: string, task: TaskType, lang: Lang, f: Features): Finding[] {
-  const es = lang === "es";
   const findings: Finding[] = [];
   const add = (x: Finding) => findings.push(x);
 

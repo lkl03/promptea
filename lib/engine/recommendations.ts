@@ -4,7 +4,6 @@ import type { Features, Recommendation } from "./types";
 import { pick } from "@/lib/domain";
 
 export function buildRecommendations(task: TaskType, lang: Lang, target: TargetAI, f: Features): Recommendation[] {
-  const es = lang === "es";
   const recs: Recommendation[] = [];
   const push = (r: Recommendation) => recs.push(r);
 

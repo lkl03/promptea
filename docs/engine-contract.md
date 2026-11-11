@@ -12,7 +12,7 @@ El motor recibe:
 
 - `prompt: string` (1..12000 caracteres)
 - `target: "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek"`
-- `lang: "es" | "en"`
+- `lang: "es" | "en" | "pt"` (v1.8.2 / engine 2.4.0 sumó portugués de Brasil)
 
 ### Output (AnalyzeResult)
 El motor devuelve:
@@ -81,6 +81,17 @@ Si `lang="es"`:
 - no aparecen strings en inglés en el output (títulos, descripciones, fixes, etc.)
 Si `lang="en"`:
 - no aparecen strings en español.
+Si `lang="pt"` (engine 2.4.0):
+- no aparecen strings en español ni en inglés: hallazgos, recomendaciones, explicación del score, fortalezas, preguntas de seguimiento, notas del modelo, encabezados y líneas del prompt optimizado, y el scaffold del formato JSON salen en portugués de Brasil.
+
+**Excepción documentada (única): prompts de imagen en portugués.** Con `lang="pt"` y estrategia `image_generation`, el prompt de imagen terminado se compone **en inglés** alrededor de las palabras del usuario, que se conservan textuales (`"Photorealistic photograph of um gato laranja dormindo…"`). El resultado lo declara con `meta.optimizedPromptLang = "en"` y la interfaz muestra un aviso traducido. Motivo: los generadores de imágenes están entrenados sobre todo con descripciones en inglés, y componer prosa portuguesa natural (género, contracciones `do/da`, `no/na`, `ao/à`) para las ~118 frases de dirección de arte es trabajo pendiente. Los hallazgos, recomendaciones y el resto del feedback de ese mismo análisis sí salen en portugués. `lib/engine/imagePrompt.pt.ts` solo permite *entender* el pedido (medio, sujeto, luz, negativos, relación de aspecto).
+
+**Idioma del prompt vs idioma de la interfaz (engine 2.4.0).** `lang` es el idioma de la interfaz y decide en qué idioma sale el texto del motor. Los detectores son por palabras clave; el vocabulario portugués (`lib/engine/pt.ts`) se consulta **solo** cuando el prompt se lee como portugués (`vocabularyLang()` en `lib/refine/language.ts`): interfaz en portugués, o prompt claramente en portugués desde `/es` o `/en`. Consecuencias que el contrato garantiza:
+- un prompt escrito en portugués da el mismo `taskType`, la misma estrategia, los mismos IDs de hallazgos y un score a ±3 puntos desde las tres interfaces (cambia solo el idioma del texto);
+- un prompt en español o inglés analizado desde `/es` o `/en` nunca llega a ese vocabulario: su score, hallazgos y tipo de tarea son los de engine 2.3.0 (los 80 casos es/en del dataset no se movieron);
+- un prompt en portugués no recibe penalización de "idioma mezclado".
+
+La capa adaptativa (LLM) mantiene sus instrucciones en inglés para `lang="pt"` y agrega una regla que obliga a devolver en portugués de Brasil los campos visibles (`summary`, `keyImprovements`, `assumptions`, `followUpQuestions`); el prompt mejorado sigue en el idioma del usuario.
 
 ### F) Robustez ante inputs arbitrarios
 Cualquier string válido debe producir resultado válido o error controlado.
@@ -119,7 +130,7 @@ Es puro y sin red (`scoreOptimizedPrompt`, `lib/engine/index.ts`). Re-analizar e
 
 - `engineVersion` sigue semver (`MAJOR.MINOR.PATCH`)
 - MAJOR: cambia IDs o reglas de contrato
-- MINOR: agrega heurísticas/findings/recs sin romper compatibilidad (ej. 2.3.0: re-score antes → después, detectores compartidos, fixes de clasificación; ningún ID renombrado)
+- MINOR: agrega heurísticas/findings/recs sin romper compatibilidad (ej. 2.3.0: re-score antes → después, detectores compartidos, fixes de clasificación; ningún ID renombrado. 2.4.0: tercer idioma `pt` — salida localizada, vocabulario portugués en los detectores, `meta.optimizedPromptLang`; ningún ID renombrado y resultados es/en sin cambios)
 - PATCH: fixes internos sin impacto visible
 
 ---
