@@ -8523,16 +8523,16 @@ Regras:
     title: {
       en: "AI prompts for software developers",
       es: "Prompts de IA para desarrolladores de software",
-      pt: "AI prompts for software developers",
+      pt: "Prompts de IA para desenvolvedores de software",
     },
     description: {
       en: "Practical AI prompts for software engineers: code review, PR descriptions, debugging, documentation, and architecture decisions.",
       es: "Prompts de IA prácticos para ingenieros de software: revisión de código, descripciones de PRs, debugging, documentación y decisiones de arquitectura.",
-      pt: "Practical AI prompts for software engineers: code review, PR descriptions, debugging, documentation, and architecture decisions.",
+      pt: "Prompts de IA práticos para engenheiros de software: code review, descrições de PR, depuração, documentação e decisões de arquitetura.",
     },
     sections: [
       {
-        heading: { en: "Where AI genuinely saves developer time", es: "Dónde la IA realmente ahorra tiempo a los desarrolladores", pt: "Where AI genuinely saves developer time" },
+        heading: { en: "Where AI genuinely saves developer time", es: "Dónde la IA realmente ahorra tiempo a los desarrolladores", pt: "Onde a IA realmente economiza tempo de quem desenvolve" },
         bullets: {
           en: [
             "Code review — catching logic errors, naming issues, missing edge cases, and security concerns in a draft before it reaches a human reviewer.",
@@ -8549,16 +8549,16 @@ Regras:
             "Explicar código desconocido — entender un módulo legacy, una biblioteca de terceros o un codebase que acabás de heredar.",
           ],
           pt: [
-            "Code review — catching logic errors, naming issues, missing edge cases, and security concerns in a draft before it reaches a human reviewer.",
-            "PR descriptions — turning a diff into a clear, structured summary that reviewers can scan in under a minute.",
-            "Debugging — reasoning through an error message with the relevant code to narrow down root cause before you start changing things.",
-            "Documentation — converting a function or module into inline docs, a README section, or an API reference from the actual code.",
-            "Explaining unfamiliar code — understanding a legacy module, a third-party library, or a codebase you just inherited.",
+            "Code review — pegar erros de lógica, problemas de nomenclatura, casos de borda esquecidos e questões de segurança em um rascunho antes que ele chegue a um revisor humano.",
+            "Descrições de PR — transformar um diff em um resumo claro e estruturado que os revisores consigam ler em menos de um minuto.",
+            "Depuração — raciocinar sobre uma mensagem de erro com o código relevante para estreitar a causa raiz antes de começar a mudar coisas.",
+            "Documentação — converter uma função ou um módulo em documentação inline, uma seção de README ou uma referência de API a partir do código real.",
+            "Explicar código desconhecido — entender um módulo legado, uma biblioteca de terceiros ou uma base de código que você acabou de herdar.",
           ],
         },
       },
       {
-        heading: { en: "What AI cannot reliably do in development", es: "Qué no puede hacer la IA de forma confiable en desarrollo", pt: "What AI cannot reliably do in development" },
+        heading: { en: "What AI cannot reliably do in development", es: "Qué no puede hacer la IA de forma confiable en desarrollo", pt: "O que a IA não faz de forma confiável no desenvolvimento" },
         bullets: {
           en: [
             "Guarantee correctness — AI-generated code must be read, tested, and reviewed like any other code. It can introduce subtle bugs.",
@@ -8573,15 +8573,15 @@ Regras:
             "Debuggear sin el código correcto — cuanto más código relevante y contexto de error proporcionés, mejor es el diagnóstico; snippets vagos dan respuestas vagas.",
           ],
           pt: [
-            "Guarantee correctness — AI-generated code must be read, tested, and reviewed like any other code. It can introduce subtle bugs.",
-            "Know your codebase — without context about your architecture, conventions, and constraints, suggestions may not fit.",
-            "Replace a code review — AI misses project-specific standards, team agreements, and the broader context a human reviewer brings.",
-            "Debug without the right code — the more relevant code and error context you provide, the better the diagnosis; vague snippets get vague answers.",
+            "Garantir a correção — o código gerado por IA precisa ser lido, testado e revisado como qualquer outro código. Ele pode introduzir bugs sutis.",
+            "Conhecer sua base de código — sem contexto sobre sua arquitetura, suas convenções e suas restrições, as sugestões podem não se encaixar.",
+            "Substituir um code review — a IA deixa passar os padrões específicos do projeto, os acordos do time e o contexto mais amplo que um revisor humano traz.",
+            "Depurar sem o código certo — quanto mais código relevante e contexto do erro você fornecer, melhor o diagnóstico; trechos vagos recebem respostas vagas.",
           ],
         },
       },
       {
-        heading: { en: "How to get useful output for code tasks", es: "Cómo obtener output útil en tareas de código", pt: "How to get useful output for code tasks" },
+        heading: { en: "How to get useful output for code tasks", es: "Cómo obtener output útil en tareas de código", pt: "Como obter uma saída útil em tarefas de código" },
         bullets: {
           en: [
             "Include the actual code, not a description of it — paste the relevant function, file, or diff rather than describing what it does.",
@@ -8598,18 +8598,18 @@ Regras:
             "Para debugging, incluí el mensaje de error completo y la línea exacta a la que apunta, no una paráfrasis.",
           ],
           pt: [
-            "Include the actual code, not a description of it — paste the relevant function, file, or diff rather than describing what it does.",
-            "State the language, framework, and version when they matter — 'TypeScript with React 19' changes what patterns are appropriate.",
-            "Specify what you want, not what you don't — 'write a unit test for this function' is clearer than 'help me with testing'.",
-            "For code review, list what to focus on — security, performance, readability, edge cases — so the model prioritizes.",
-            "For debugging, include the full error message and the exact line it points to, not a paraphrase.",
+            "Inclua o código real, não uma descrição dele — cole a função, o arquivo ou o diff relevante em vez de descrever o que ele faz.",
+            "Diga a linguagem, o framework e a versão quando isso importar — 'TypeScript com React 19' muda quais padrões são adequados.",
+            "Especifique o que você quer, não o que você não quer — 'escreva um teste unitário para esta função' é mais claro que 'me ajude com testes'.",
+            "Em code review, liste no que focar — segurança, desempenho, legibilidade, casos de borda — para o modelo priorizar.",
+            "Em depuração, inclua a mensagem de erro completa e a linha exata que ela aponta, não uma paráfrase.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Code review prompt", es: "Prompt de code review", pt: "Code review prompt" },
+        title: { en: "Code review prompt", es: "Prompt de code review", pt: "Prompt de code review" },
         purpose: "code",
         target: "claude",
         prompt: {
@@ -8641,24 +8641,24 @@ Contexto: [ej. Este es un server action que maneja uploads de archivos enviados 
 \`\`\`
 [Pegá el código acá]
 \`\`\``,
-          pt: `You are a senior software engineer doing a code review. Review the code below and give feedback in three sections:
+          pt: `Você é um engenheiro de software sênior fazendo um code review. Revise o código abaixo e dê feedback em três seções:
 
-**Correctness and logic** — bugs, off-by-one errors, null/undefined handling, edge cases.
-**Security** — injection risks, exposed secrets, insecure defaults, trust-boundary issues.
-**Clarity and maintainability** — naming, unnecessary complexity, missing comments where the code is non-obvious.
+**Correção e lógica** — bugs, erros de off-by-one, tratamento de null/undefined, casos de borda.
+**Segurança** — riscos de injeção, segredos expostos, padrões inseguros, problemas de fronteira de confiança.
+**Clareza e manutenibilidade** — nomenclatura, complexidade desnecessária, comentários que faltam onde o código não é óbvio.
 
-For each issue: state what it is, why it matters, and what the fix looks like. Skip sections where there is nothing to flag.
+Para cada problema: diga o que é, por que importa e como seria a correção. Pule as seções em que não houver nada a apontar.
 
-Language/framework: [e.g. TypeScript / Next.js 15]
-Context: [e.g. This is a server action that handles user-submitted file uploads]
+Linguagem/framework: [ex. TypeScript / Next.js 15]
+Contexto: [ex. Esta é uma server action que trata uploads de arquivos enviados pelos usuários]
 
 \`\`\`
-[Paste the code here]
+[Cole o código aqui]
 \`\`\``,
         },
       },
       {
-        title: { en: "PR description generator", es: "Generador de descripción de PR", pt: "PR description generator" },
+        title: { en: "PR description generator", es: "Generador de descripción de PR", pt: "Gerador de descrição de PR" },
         purpose: "code",
         target: "gpt",
         prompt: {
@@ -8684,35 +8684,35 @@ Estructuralo así:
 Contexto: [ej. Corrige un bug donde usuarios no autenticados podían acceder a posts en borrador]
 Diff o resumen de cambios:
 [Pegá el diff o una descripción de qué cambió]`,
-          pt: `Write a clear pull request description from the diff and context below.
+          pt: `Escreva uma descrição clara de pull request a partir do diff e do contexto abaixo.
 
-Structure it as:
-**What this PR does** — 2-3 sentences, plain language, no jargon.
-**Why** — the problem it solves or the requirement it addresses.
-**How to test** — the specific steps a reviewer should take to verify it works.
-**Notes** — anything the reviewer needs to know (breaking changes, follow-up tasks, known limitations).
+Estruture assim:
+**O que este PR faz** — 2-3 frases, em linguagem simples, sem jargão.
+**Por quê** — o problema que ele resolve ou o requisito que ele atende.
+**Como testar** — os passos específicos que um revisor deve seguir para verificar que funciona.
+**Notas** — tudo o que o revisor precisa saber (mudanças incompatíveis, tarefas de acompanhamento, limitações conhecidas).
 
-Context: [e.g. Fixes a bug where unauthenticated users could access draft posts]
-Diff or summary of changes:
-[Paste the diff or a description of what was changed]`,
+Contexto: [ex. Corrige um bug em que usuários não autenticados conseguiam acessar posts em rascunho]
+Diff ou resumo das mudanças:
+[Cole o diff ou uma descrição do que foi alterado]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Should I use AI for code review instead of a human reviewer?", es: "¿Debería usar IA para code review en lugar de un revisor humano?", pt: "Should I use AI for code review instead of a human reviewer?" },
+        q: { en: "Should I use AI for code review instead of a human reviewer?", es: "¿Debería usar IA para code review en lugar de un revisor humano?", pt: "Devo usar IA no code review em vez de um revisor humano?" },
         a: {
           en: "No — AI code review and human code review catch different things, and the two work best together. AI is fast at spotting common patterns: null handling, off-by-one errors, obvious security anti-patterns, inconsistent naming. Human reviewers catch things AI consistently misses: whether this change fits the team's architecture direction, whether the abstraction is the right one, whether a test is testing what the author thinks it is, and whether the change makes the system harder to understand for the team that will maintain it. Use AI as a pre-review step to clean up the obvious issues before a human reviewer sees the code.",
           es: "No — la code review por IA y la revisión humana detectan cosas distintas, y ambas funcionan mejor juntas. La IA es rápida detectando patrones comunes: manejo de null, errores de rango, anti-patrones de seguridad obvios, nombres inconsistentes. Los revisores humanos detectan cosas que la IA consistentemente no capta: si este cambio encaja con la dirección de arquitectura del equipo, si la abstracción es la correcta, si un test está testeando lo que el autor cree que testa, y si el cambio hace el sistema más difícil de entender para el equipo que lo va a mantener. Usá la IA como paso previo a la revisión para limpiar los problemas obvios antes de que un revisor humano vea el código.",
-          pt: "No — AI code review and human code review catch different things, and the two work best together. AI is fast at spotting common patterns: null handling, off-by-one errors, obvious security anti-patterns, inconsistent naming. Human reviewers catch things AI consistently misses: whether this change fits the team's architecture direction, whether the abstraction is the right one, whether a test is testing what the author thinks it is, and whether the change makes the system harder to understand for the team that will maintain it. Use AI as a pre-review step to clean up the obvious issues before a human reviewer sees the code.",
+          pt: "Não — o code review da IA e o humano pegam coisas diferentes, e os dois funcionam melhor juntos. A IA é rápida para identificar padrões comuns: tratamento de null, erros de off-by-one, antipadrões de segurança óbvios, nomenclatura inconsistente. Os revisores humanos pegam o que a IA sistematicamente deixa passar: se a mudança se encaixa na direção de arquitetura do time, se a abstração é a certa, se um teste está testando o que o autor acha que está e se a mudança deixa o sistema mais difícil de entender para o time que vai mantê-lo. Use a IA como uma etapa antes da revisão para limpar os problemas óbvios antes que um revisor humano veja o código.",
         },
       },
       {
-        q: { en: "How much code context should I paste into the prompt?", es: "¿Cuánto contexto de código debería pegar en el prompt?", pt: "How much code context should I paste into the prompt?" },
+        q: { en: "How much code context should I paste into the prompt?", es: "¿Cuánto contexto de código debería pegar en el prompt?", pt: "Quanto contexto de código devo colar no prompt?" },
         a: {
           en: "Enough for the model to understand what the code is doing without guessing, but not the entire codebase. For a bug or review, the relevant function plus any types or interfaces it depends on is usually sufficient. For a larger module, a summary of what it does plus the specific section you want reviewed is better than pasting everything. The key mistake is the opposite: pasting a function body without the types it uses, the error message without the relevant code, or a vague description instead of the actual code. AI diagnostic quality is proportional to the quality of the input.",
           es: "Suficiente para que el modelo entienda qué hace el código sin adivinar, pero no todo el codebase. Para un bug o una revisión, la función relevante más los tipos o interfaces de los que depende generalmente es suficiente. Para un módulo más grande, un resumen de qué hace más la sección específica que querés revisar es mejor que pegar todo. El error clave es el opuesto: pegar el cuerpo de una función sin los tipos que usa, el mensaje de error sin el código relevante, o una descripción vaga en lugar del código real. La calidad del diagnóstico de la IA es proporcional a la calidad del input.",
-          pt: "Enough for the model to understand what the code is doing without guessing, but not the entire codebase. For a bug or review, the relevant function plus any types or interfaces it depends on is usually sufficient. For a larger module, a summary of what it does plus the specific section you want reviewed is better than pasting everything. The key mistake is the opposite: pasting a function body without the types it uses, the error message without the relevant code, or a vague description instead of the actual code. AI diagnostic quality is proportional to the quality of the input.",
+          pt: "O suficiente para o modelo entender o que o código faz sem chutar, mas não a base de código inteira. Para um bug ou uma revisão, a função relevante mais os tipos ou interfaces de que ela depende costuma bastar. Para um módulo maior, um resumo do que ele faz mais a seção específica que você quer revisada é melhor do que colar tudo. O erro mais comum é o oposto: colar o corpo de uma função sem os tipos que ela usa, a mensagem de erro sem o código relevante ou uma descrição vaga em vez do código real. A qualidade do diagnóstico da IA é proporcional à qualidade da entrada.",
         },
       },
     ],
@@ -8722,16 +8722,16 @@ Diff or summary of changes:
     title: {
       en: "Negative prompting: how to tell AI what not to do",
       es: "Prompting negativo: cómo decirle a la IA qué no hacer",
-      pt: "Negative prompting: how to tell AI what not to do",
+      pt: "Negative prompting: como dizer à IA o que não fazer",
     },
     description: {
       en: "A practical guide to using negative constraints in AI prompts — what to exclude, what to avoid, and how to set boundaries that actually stick.",
       es: "Una guía práctica para usar restricciones negativas en prompts de IA — qué excluir, qué evitar y cómo establecer límites que realmente funcionen.",
-      pt: "A practical guide to using negative constraints in AI prompts — what to exclude, what to avoid, and how to set boundaries that actually stick.",
+      pt: "Um guia prático para usar restrições negativas em prompts de IA — o que excluir, o que evitar e como definir limites que realmente se mantêm.",
     },
     sections: [
       {
-        heading: { en: "Why negative constraints matter", es: "Por qué importan las restricciones negativas", pt: "Why negative constraints matter" },
+        heading: { en: "Why negative constraints matter", es: "Por qué importan las restricciones negativas", pt: "Por que as restrições negativas importam" },
         bullets: {
           en: [
             "AI models default to completeness — without constraints, they include caveats, disclaimers, alternatives, and elaborations that may not be needed.",
@@ -8746,15 +8746,15 @@ Diff or summary of changes:
             "Funcionan mejor junto con instrucciones positivas — 'escribí de forma concisa' más 'sin frases de relleno' supera a cualquiera de las dos por separado.",
           ],
           pt: [
-            "AI models default to completeness — without constraints, they include caveats, disclaimers, alternatives, and elaborations that may not be needed.",
-            "Some output problems are easier to describe as what you don't want than what you do — 'no bullet points' is clearer than describing the prose format you want.",
-            "Negative constraints prevent common defaults: filler phrases, generic advice, unnecessary hedging, repetition, overly formal tone.",
-            "They work best alongside positive instructions — 'write concisely' plus 'no filler phrases' outperforms either alone.",
+            "Os modelos de IA tendem por padrão à completude — sem restrições, eles incluem ressalvas, avisos, alternativas e elaborações que talvez não sejam necessárias.",
+            "Alguns problemas de saída são mais fáceis de descrever pelo que você não quer do que pelo que quer — 'sem tópicos' é mais claro do que descrever o formato de texto corrido que você deseja.",
+            "As restrições negativas evitam os padrões comuns: frases de enchimento, conselhos genéricos, rodeios desnecessários, repetição, tom formal demais.",
+            "Elas funcionam melhor junto com instruções positivas — 'escreva de forma concisa' mais 'sem frases de enchimento' rende mais que qualquer uma das duas sozinha.",
           ],
         },
       },
       {
-        heading: { en: "The most useful negative constraints", es: "Las restricciones negativas más útiles", pt: "The most useful negative constraints" },
+        heading: { en: "The most useful negative constraints", es: "Las restricciones negativas más útiles", pt: "As restrições negativas mais úteis" },
         bullets: {
           en: [
             "Format: 'No bullet points.', 'No headers.', 'No numbered lists.', 'No markdown formatting.' — for output that needs to be pasted into another system.",
@@ -8771,16 +8771,16 @@ Diff or summary of changes:
             "Tipo de output: 'No escribas código.', 'No sugieras alternativas — implementá lo que describí.', 'No hagas preguntas de aclaración — asumí algo razonable y declaralo.'",
           ],
           pt: [
-            "Format: 'No bullet points.', 'No headers.', 'No numbered lists.', 'No markdown formatting.' — for output that needs to be pasted into another system.",
-            "Tone and style: 'No corporate filler.', 'No phrases like \"certainly\" or \"of course\".', 'No excessive hedging.', 'No apologies or preambles.'",
-            "Content scope: 'Do not include general background.', 'Do not repeat information I gave you.', 'Do not add caveats unless the caveat is essential.'",
-            "Length: 'No padding to fill space.', 'Stop when the task is complete — do not summarize or add a closing remark.'",
-            "Output type: 'Do not write code.', 'Do not suggest alternatives — implement what I described.', 'Do not ask clarifying questions — make a reasonable assumption and state it.'",
+            "Formato: 'Sem tópicos.', 'Sem títulos.', 'Sem listas numeradas.', 'Sem formatação markdown.' — para saídas que precisam ser coladas em outro sistema.",
+            "Tom e estilo: 'Sem enchimento corporativo.', 'Sem frases como \"certamente\" ou \"claro\".', 'Sem rodeios excessivos.', 'Sem desculpas nem introduções.'",
+            "Escopo do conteúdo: 'Não inclua contexto geral.', 'Não repita informações que eu já dei.', 'Não acrescente ressalvas, a menos que a ressalva seja essencial.'",
+            "Tamanho: 'Não encha linguiça.', 'Pare quando a tarefa estiver concluída — não resuma nem acrescente um comentário de encerramento.'",
+            "Tipo de saída: 'Não escreva código.', 'Não sugira alternativas — implemente o que eu descrevi.', 'Não faça perguntas de esclarecimento — faça uma suposição razoável e declare-a.'",
           ],
         },
       },
       {
-        heading: { en: "How to write negative constraints that work", es: "Cómo escribir restricciones negativas que funcionen", pt: "How to write negative constraints that work" },
+        heading: { en: "How to write negative constraints that work", es: "Cómo escribir restricciones negativas que funcionen", pt: "Como escrever restrições negativas que funcionam" },
         bullets: {
           en: [
             "Be specific — 'no fluff' is vague; 'no closing summary paragraph' is actionable.",
@@ -8797,18 +8797,18 @@ Diff or summary of changes:
             "Testeá e iterá — si una restricción está siendo ignorada, reformulala de forma más específica o movela más arriba en el prompt.",
           ],
           pt: [
-            "Be specific — 'no fluff' is vague; 'no closing summary paragraph' is actionable.",
-            "State the constraint before the task, not after — models weight earlier instructions more heavily.",
-            "Pair negatives with positives — 'do not write in bullet points; write in short, direct prose instead' gives the model a clear alternative.",
-            "Limit the number of constraints — more than five or six prohibitions compete for attention and some get dropped. Prioritize the ones that matter most.",
-            "Test and iterate — if a constraint is being ignored, restate it more specifically or move it earlier in the prompt.",
+            "Seja específico — 'sem enrolação' é vago; 'sem parágrafo de resumo no final' é acionável.",
+            "Declare a restrição antes da tarefa, não depois — os modelos dão mais peso às instruções que vêm primeiro.",
+            "Combine negativas com positivas — 'não escreva em tópicos; escreva em texto curto e direto' dá ao modelo uma alternativa clara.",
+            "Limite o número de restrições — mais de cinco ou seis proibições competem pela atenção e algumas são deixadas de lado. Priorize as que mais importam.",
+            "Teste e ajuste — se uma restrição estiver sendo ignorada, reformule-a de forma mais específica ou leve-a para mais cedo no prompt.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Constrained rewrite prompt", es: "Prompt de reescritura con restricciones", pt: "Constrained rewrite prompt" },
+        title: { en: "Constrained rewrite prompt", es: "Prompt de reescritura con restricciones", pt: "Prompt de reescrita com restrições" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -8844,26 +8844,26 @@ Sí:
 
 Texto a reescribir:
 [Pegá tu texto acá]`,
-          pt: `Rewrite the text below. Follow these constraints exactly:
+          pt: `Reescreva o texto abaixo. Siga exatamente estas restrições:
 
-Do not:
-- Add bullet points, headers, or lists
-- Include a closing summary or sign-off
-- Add caveats or qualifications unless they are in the original
-- Use phrases like "certainly", "of course", "great question", or "I'd be happy to"
-- Pad the text to be longer than necessary
+Não:
+- Acrescente tópicos, títulos ou listas
+- Inclua um resumo ou uma despedida no final
+- Acrescente ressalvas ou qualificações, a menos que estejam no original
+- Use frases como "certamente", "claro", "ótima pergunta" ou "fico feliz em ajudar"
+- Encha o texto para que fique mais longo que o necessário
 
-Do:
-- Keep the same core information and tone
-- Make sentences direct and specific
-- Stop when the content is complete
+Faça:
+- Mantenha as mesmas informações centrais e o mesmo tom
+- Deixe as frases diretas e específicas
+- Pare quando o conteúdo estiver completo
 
-Text to rewrite:
-[Paste your text here]`,
+Texto para reescrever:
+[Cole seu texto aqui]`,
         },
       },
       {
-        title: { en: "Email with strict format constraints", es: "Email con restricciones de formato estrictas", pt: "Email with strict format constraints" },
+        title: { en: "Email with strict format constraints", es: "Email con restricciones de formato estrictas", pt: "E-mail com restrições rígidas de formato" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -8893,37 +8893,37 @@ Restricciones estrictas:
 Destinatario y propósito: [ej. Seguimiento a un cliente después de enviar una propuesta la semana pasada]
 Puntos clave a incluir: [ej. Preguntar por sus tiempos, confirmar que recibió el PDF, ofrecer una llamada de 20 minutos]
 Tono: [ej. Profesional y directo, no formal]`,
-          pt: `Write a professional email based on the details below.
+          pt: `Escreva um e-mail profissional com base nos detalhes abaixo.
 
-Strict constraints:
-- No more than 150 words
-- No bullet points or lists — prose only
-- No subject line (I will add it myself)
-- No greeting phrase like "I hope this finds you well" or similar filler
-- No closing pleasantries beyond a single sign-off line
-- Do not ask clarifying questions — write the best version from what I give you
+Restrições rígidas:
+- No máximo 150 palavras
+- Sem tópicos nem listas — só texto corrido
+- Sem linha de assunto (eu mesmo vou acrescentar)
+- Sem frases de saudação como "Espero que esteja bem" ou enchimentos parecidos
+- Sem cordialidades de encerramento além de uma única linha de despedida
+- Não faça perguntas de esclarecimento — escreva a melhor versão com o que eu der
 
-Recipient and purpose: [e.g. Follow-up to a client after a proposal was sent last week]
-Key points to include: [e.g. Ask for their timeline, confirm they received the PDF, offer a 20-minute call]
-Tone: [e.g. Professional and direct, not formal]`,
+Destinatário e propósito: [ex. Follow-up com um cliente depois de uma proposta enviada na semana passada]
+Pontos principais a incluir: [ex. Perguntar qual é o prazo dele, confirmar que recebeu o PDF, oferecer uma call de 20 minutos]
+Tom: [ex. Profissional e direto, não formal]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Do negative constraints actually work, or does the model ignore them?", es: "¿Las restricciones negativas realmente funcionan, o el modelo las ignora?", pt: "Do negative constraints actually work, or does the model ignore them?" },
+        q: { en: "Do negative constraints actually work, or does the model ignore them?", es: "¿Las restricciones negativas realmente funcionan, o el modelo las ignora?", pt: "As restrições negativas funcionam mesmo, ou o modelo as ignora?" },
         a: {
           en: "They work — but their reliability depends on how specific they are and where they appear in the prompt. A vague constraint like 'be concise' is easy for the model to interpret loosely; a specific one like 'no paragraph longer than two sentences' is harder to violate accidentally. Position matters too: constraints stated early in the prompt, before the task description, are followed more consistently than constraints buried at the end. If a model is repeatedly ignoring a constraint, the most effective fix is to make the constraint more specific and move it earlier.",
           es: "Funcionan — pero su confiabilidad depende de qué tan específicas son y dónde aparecen en el prompt. Una restricción vaga como 'sé conciso' es fácil de interpretar libremente para el modelo; una específica como 'ningún párrafo de más de dos oraciones' es más difícil de violar accidentalmente. La posición también importa: las restricciones declaradas al principio del prompt, antes de la descripción de la tarea, se siguen de forma más consistente que las que aparecen al final. Si un modelo está ignorando repetidamente una restricción, el fix más efectivo es hacerla más específica y moverla más arriba.",
-          pt: "They work — but their reliability depends on how specific they are and where they appear in the prompt. A vague constraint like 'be concise' is easy for the model to interpret loosely; a specific one like 'no paragraph longer than two sentences' is harder to violate accidentally. Position matters too: constraints stated early in the prompt, before the task description, are followed more consistently than constraints buried at the end. If a model is repeatedly ignoring a constraint, the most effective fix is to make the constraint more specific and move it earlier.",
+          pt: "Funcionam — mas a confiabilidade depende de quão específicas elas são e de onde aparecem no prompt. Uma restrição vaga como 'seja conciso' é fácil de o modelo interpretar de forma frouxa; uma específica como 'nenhum parágrafo com mais de duas frases' é mais difícil de violar sem querer. A posição também importa: restrições declaradas no início do prompt, antes da descrição da tarefa, são seguidas de forma mais consistente que restrições enterradas no fim. Se um modelo ignora repetidamente uma restrição, a correção mais eficaz é torná-la mais específica e levá-la para mais cedo.",
         },
       },
       {
-        q: { en: "Is there such a thing as too many negative constraints?", es: "¿Existe algo así como demasiadas restricciones negativas?", pt: "Is there such a thing as too many negative constraints?" },
+        q: { en: "Is there such a thing as too many negative constraints?", es: "¿Existe algo así como demasiadas restricciones negativas?", pt: "Existe restrição negativa demais?" },
         a: {
           en: "Yes. When a prompt contains more than five or six prohibitions, the model has to track a long list of things to avoid while also completing the main task, and some constraints get dropped — usually the later ones, or the ones that are hardest to follow simultaneously. If you find yourself writing many constraints, treat it as a signal: either the task description itself needs to be clearer, or you are describing the output format in two directions at once (do this, not that) where a single positive description would be tighter. Reserve negative constraints for things that are genuinely easier to state as prohibitions.",
           es: "Sí. Cuando un prompt contiene más de cinco o seis prohibiciones, el modelo tiene que rastrear una lista larga de cosas que evitar mientras también completa la tarea principal, y algunas restricciones se omiten — generalmente las últimas, o las más difíciles de seguir simultáneamente. Si te encontrás escribiendo muchas restricciones, tomalo como una señal: o la descripción de la tarea en sí necesita ser más clara, o estás describiendo el formato de output en dos direcciones a la vez (hacé esto, no aquello) donde una sola descripción positiva sería más precisa. Reservá las restricciones negativas para cosas que genuinamente son más fáciles de declarar como prohibiciones.",
-          pt: "Yes. When a prompt contains more than five or six prohibitions, the model has to track a long list of things to avoid while also completing the main task, and some constraints get dropped — usually the later ones, or the ones that are hardest to follow simultaneously. If you find yourself writing many constraints, treat it as a signal: either the task description itself needs to be clearer, or you are describing the output format in two directions at once (do this, not that) where a single positive description would be tighter. Reserve negative constraints for things that are genuinely easier to state as prohibitions.",
+          pt: "Sim. Quando um prompt tem mais de cinco ou seis proibições, o modelo precisa acompanhar uma lista longa de coisas a evitar enquanto conclui a tarefa principal, e algumas restrições são deixadas de lado — em geral as últimas, ou as mais difíceis de seguir ao mesmo tempo. Se você se pegar escrevendo muitas restrições, trate isso como um sinal: ou a própria descrição da tarefa precisa ficar mais clara, ou você está descrevendo o formato de saída em duas direções ao mesmo tempo (faça isto, não aquilo) quando uma única descrição positiva seria mais enxuta. Reserve as restrições negativas para o que é realmente mais fácil de dizer como proibição.",
         },
       },
     ],
@@ -8933,16 +8933,16 @@ Tone: [e.g. Professional and direct, not formal]`,
     title: {
       en: "AI prompts for content creators",
       es: "Prompts de IA para creadores de contenido",
-      pt: "AI prompts for content creators",
+      pt: "Prompts de IA para criadores de conteúdo",
     },
     description: {
       en: "AI prompts for YouTubers, bloggers, and social media creators: ideation, scripting, repurposing, and publishing workflows that save real production time.",
       es: "Prompts de IA para YouTubers, bloggers y creadores de redes sociales: ideación, guiones, reutilización de contenido y flujos de publicación que ahorran tiempo real de producción.",
-      pt: "AI prompts for YouTubers, bloggers, and social media creators: ideation, scripting, repurposing, and publishing workflows that save real production time.",
+      pt: "Prompts de IA para youtubers, blogueiros e criadores de redes sociais: ideias, roteiros, reaproveitamento e fluxos de publicação que economizam tempo real de produção.",
     },
     sections: [
       {
-        heading: { en: "Where AI fits in a content workflow", es: "Dónde encaja la IA en un flujo de contenido", pt: "Where AI fits in a content workflow" },
+        heading: { en: "Where AI fits in a content workflow", es: "Dónde encaja la IA en un flujo de contenido", pt: "Onde a IA entra em um fluxo de conteúdo" },
         bullets: {
           en: [
             "Ideation — generating angle variations, alternative titles, and related topic clusters from a single seed idea.",
@@ -8959,16 +8959,16 @@ Tone: [e.g. Professional and direct, not formal]`,
             "Primeros borradores — producir un borrador funcional de un blog post, descripción de video o post de comunidad a partir de un conjunto de notas en bruto.",
           ],
           pt: [
-            "Ideation — generating angle variations, alternative titles, and related topic clusters from a single seed idea.",
-            "Scripting and outlines — turning a topic and key points into a structured script, talking points, or section outline.",
-            "Repurposing — converting a video transcript, podcast episode, or long-form article into shorter formats: social posts, email newsletters, short clips, thread summaries.",
-            "SEO support — generating keyword-rich titles, meta descriptions, and tag suggestions from your existing content.",
-            "First drafts — producing a working draft of a blog post, video description, or community post from a rough set of notes.",
+            "Ideias — gerar variações de ângulo, títulos alternativos e grupos de temas relacionados a partir de uma única ideia-semente.",
+            "Roteiros e estruturas — transformar um tema e alguns pontos principais em um roteiro estruturado, tópicos de fala ou uma estrutura de seções.",
+            "Reaproveitamento — converter a transcrição de um vídeo, um episódio de podcast ou um artigo longo em formatos mais curtos: posts para redes sociais, newsletters por e-mail, clipes curtos, resumos em thread.",
+            "Apoio de SEO — gerar títulos ricos em palavras-chave, meta descriptions e sugestões de tags a partir do seu conteúdo existente.",
+            "Primeiros rascunhos — produzir um rascunho funcional de um post de blog, de uma descrição de vídeo ou de um post para a comunidade a partir de um conjunto de anotações soltas.",
           ],
         },
       },
       {
-        heading: { en: "How to preserve your voice when using AI", es: "Cómo preservar tu voz al usar IA", pt: "How to preserve your voice when using AI" },
+        heading: { en: "How to preserve your voice when using AI", es: "Cómo preservar tu voz al usar IA", pt: "Como preservar sua voz ao usar IA" },
         bullets: {
           en: [
             "Provide examples — paste 1-2 sentences from your existing content and ask AI to match that style rather than describing it abstractly.",
@@ -8985,16 +8985,16 @@ Tone: [e.g. Professional and direct, not formal]`,
             "Indicá qué conservar textualmente — si hay una frase, un running gag o un formato que tu audiencia espera, decíle al modelo explícitamente que lo preserve.",
           ],
           pt: [
-            "Provide examples — paste 1-2 sentences from your existing content and ask AI to match that style rather than describing it abstractly.",
-            "Describe what makes your voice distinctive — direct, casual, technical, narrative, irreverent, warm — and give the model something concrete to anchor to.",
-            "Edit AI output as a draft, not a finished product — the goal is to get to a working first draft faster, not to publish without review.",
-            "Use AI for structure and variations, your own judgment for the angle — AI can generate 10 title options, but you know which one fits your audience.",
-            "Flag what to keep verbatim — if there is a phrase, running gag, or format your audience expects, tell the model explicitly to preserve it.",
+            "Dê exemplos — cole 1-2 frases do seu conteúdo existente e peça à IA para imitar esse estilo em vez de descrevê-lo em abstrato.",
+            "Descreva o que torna sua voz única — direta, casual, técnica, narrativa, irreverente, calorosa — e dê ao modelo algo concreto em que se ancorar.",
+            "Edite a saída da IA como um rascunho, não como um produto pronto — o objetivo é chegar mais rápido a um primeiro rascunho funcional, não publicar sem revisão.",
+            "Use a IA para estrutura e variações e o seu julgamento para o ângulo — a IA pode gerar 10 opções de título, mas é você quem sabe qual combina com o seu público.",
+            "Sinalize o que manter ao pé da letra — se houver uma frase, uma piada recorrente ou um formato que o seu público espera, diga ao modelo de forma explícita para preservá-lo.",
           ],
         },
       },
       {
-        heading: { en: "Content types where AI saves the most time", es: "Tipos de contenido donde la IA ahorra más tiempo", pt: "Content types where AI saves the most time" },
+        heading: { en: "Content types where AI saves the most time", es: "Tipos de contenido donde la IA ahorra más tiempo", pt: "Tipos de conteúdo em que a IA mais economiza tempo" },
         bullets: {
           en: [
             "Video descriptions and timestamps — converting a transcript or rough outline into a structured description with linked sections.",
@@ -9011,18 +9011,18 @@ Tone: [e.g. Professional and direct, not formal]`,
             "Respuestas a preguntas de la comunidad — redactar respuestas a preguntas frecuentes usando tu voz y posición establecidas.",
           ],
           pt: [
-            "Video descriptions and timestamps — converting a transcript or rough outline into a structured description with linked sections.",
-            "Social captions — adapting the same content hook for Twitter/X, LinkedIn, and Instagram with the right length and tone for each.",
-            "Email subject line variations — generating 8-10 alternatives and asking you to pick the strongest.",
-            "Thumbnail and title testing — generating three to five title/hook variants to A/B test before publishing.",
-            "Community Q&A responses — drafting replies to frequent questions using your established voice and position.",
+            "Descrições e timestamps de vídeos — converter uma transcrição ou uma estrutura solta em uma descrição organizada com seções linkadas.",
+            "Legendas para redes sociais — adaptar o mesmo gancho de conteúdo para Twitter/X, LinkedIn e Instagram, com o tamanho e o tom certos para cada um.",
+            "Variações de assunto de e-mail — gerar 8-10 alternativas e deixar que você escolha a mais forte.",
+            "Testes de thumbnail e título — gerar de três a cinco variações de título/gancho para fazer um teste A/B antes de publicar.",
+            "Respostas para a comunidade — redigir respostas a perguntas frequentes usando a voz e as posições que você já tem.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Video script outline", es: "Esquema de guión de video", pt: "Video script outline" },
+        title: { en: "Video script outline", es: "Esquema de guión de video", pt: "Estrutura de roteiro de vídeo" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -9050,22 +9050,22 @@ Tono: [ej. Informativo pero conversacional, como hablarle a un amigo con conocim
 Audiencia objetivo: [ej. Diseñadores de producto en sus primeros años de carrera que usan Figma a diario]
 Tema: [ej. 5 atajos de Figma que ahorran 30 minutos por semana]
 Duración objetivo del video: [ej. 8-12 minutos]`,
-          pt: `Write a structured outline for a YouTube video on the topic below.
+          pt: `Escreva uma estrutura organizada para um vídeo do YouTube sobre o tema abaixo.
 
-Include:
-- Hook (first 30 seconds): what problem or question opens the video
-- Intro (1-2 minutes): what you will cover and why the viewer should stay
-- Main sections (3-5): each with a heading, the 2-3 key points to cover, and a transition to the next
-- Conclusion: what the viewer should do or think differently now, and the call to action
+Inclua:
+- Gancho (primeiros 30 segundos): qual problema ou pergunta abre o vídeo
+- Introdução (1-2 minutos): o que você vai cobrir e por que quem assiste deve ficar
+- Seções principais (3-5): cada uma com um título, os 2-3 pontos principais a cobrir e uma transição para a seguinte
+- Conclusão: o que quem assiste deve fazer ou pensar de forma diferente agora, e a chamada para ação
 
-Tone: [e.g. Informative but conversational, like talking to a knowledgeable friend]
-Target audience: [e.g. Early-career product designers who use Figma daily]
-Topic: [e.g. 5 Figma shortcuts that save 30 minutes a week]
-Video length target: [e.g. 8-12 minutes]`,
+Tom: [ex. Informativo, mas conversacional, como falar com um amigo que entende do assunto]
+Público-alvo: [ex. Product designers em início de carreira que usam o Figma todos os dias]
+Tema: [ex. 5 atalhos do Figma que economizam 30 minutos por semana]
+Duração-alvo do vídeo: [ex. 8-12 minutos]`,
         },
       },
       {
-        title: { en: "Content repurposing prompt", es: "Prompt de reutilización de contenido", pt: "Content repurposing prompt" },
+        title: { en: "Content repurposing prompt", es: "Prompt de reutilización de contenido", pt: "Prompt de reaproveitamento de conteúdo" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -9089,34 +9089,34 @@ Mi voz: [ej. Directa, práctica, sin lenguaje corporativo — escribo como hablo
 
 Contenido original:
 [Pegá tu artículo, sección de transcripción o notas acá]`,
-          pt: `Repurpose the content below into three formats. Keep the core ideas and my voice — do not add information that is not in the original.
+          pt: `Reaproveite o conteúdo abaixo em três formatos. Mantenha as ideias centrais e a minha voz — não acrescente informações que não estejam no original.
 
-Format 1 — LinkedIn post (200-250 words): professional tone, leads with the most interesting insight, ends with a question or call to action.
-Format 2 — Twitter/X thread (5-7 tweets): each tweet stands alone, hook in tweet 1, key point per tweet, brief CTA in the last.
-Format 3 — Email newsletter section (150-200 words): conversational, reads like a personal note, actionable takeaway at the end.
+Formato 1 — Post no LinkedIn (200-250 palavras): tom profissional, começa pelo insight mais interessante, termina com uma pergunta ou uma chamada para ação.
+Formato 2 — Thread no Twitter/X (5-7 tweets): cada tweet se sustenta sozinho, gancho no tweet 1, um ponto principal por tweet, CTA breve no último.
+Formato 3 — Seção de newsletter por e-mail (150-200 palavras): conversacional, como um bilhete pessoal, com uma lição prática no final.
 
-My voice: [e.g. Direct, practical, no corporate language — I write like I talk]
+Minha voz: [ex. Direta, prática, sem linguagem corporativa — escrevo como falo]
 
-Original content:
-[Paste your article, transcript section, or notes here]`,
+Conteúdo original:
+[Cole aqui seu artigo, um trecho da transcrição ou suas anotações]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Will AI-generated content hurt my SEO or get flagged as spam?", es: "¿El contenido generado por IA perjudicará mi SEO o será marcado como spam?", pt: "Will AI-generated content hurt my SEO or get flagged as spam?" },
+        q: { en: "Will AI-generated content hurt my SEO or get flagged as spam?", es: "¿El contenido generado por IA perjudicará mi SEO o será marcado como spam?", pt: "Conteúdo gerado por IA vai prejudicar meu SEO ou ser marcado como spam?" },
         a: {
           en: "Search engines rank content based on quality, relevance, and usefulness — not whether it was drafted with AI assistance. Content that is accurate, genuinely helpful, and well-edited performs well regardless of how the first draft was produced. The risks are different: thin content that adds no value, content that is factually wrong, and content that reads like a generic AI template with nothing specific to say — those perform poorly, whether AI was involved or not. Use AI to accelerate production of content that is worth producing, and edit the output until it reflects genuine expertise and a clear point of view.",
           es: "Los motores de búsqueda clasifican el contenido basándose en calidad, relevancia y utilidad — no en si fue redactado con asistencia de IA. El contenido que es preciso, genuinamente útil y bien editado funciona bien independientemente de cómo se produjo el primer borrador. Los riesgos son diferentes: el contenido delgado que no agrega valor, el contenido que es factualmente incorrecto y el contenido que se lee como una plantilla genérica de IA sin nada específico que decir — esos funcionan mal, independientemente de si participó la IA. Usá la IA para acelerar la producción de contenido que vale la pena producir, y editá el output hasta que refleje experiencia genuina y un punto de vista claro.",
-          pt: "Search engines rank content based on quality, relevance, and usefulness — not whether it was drafted with AI assistance. Content that is accurate, genuinely helpful, and well-edited performs well regardless of how the first draft was produced. The risks are different: thin content that adds no value, content that is factually wrong, and content that reads like a generic AI template with nothing specific to say — those perform poorly, whether AI was involved or not. Use AI to accelerate production of content that is worth producing, and edit the output until it reflects genuine expertise and a clear point of view.",
+          pt: "Os mecanismos de busca classificam o conteúdo pela qualidade, relevância e utilidade — não por ter sido rascunhado com ajuda de IA. Um conteúdo preciso, realmente útil e bem editado vai bem, não importa como o primeiro rascunho foi produzido. Os riscos são outros: conteúdo raso que não acrescenta valor, conteúdo factualmente errado e conteúdo que parece um template genérico de IA sem nada específico a dizer — esses vão mal, com ou sem IA envolvida. Use a IA para acelerar a produção de conteúdo que vale a pena produzir e edite a saída até ela refletir conhecimento real e um ponto de vista claro.",
         },
       },
       {
-        q: { en: "How do I use AI without losing what makes my content different?", es: "¿Cómo uso la IA sin perder lo que hace diferente a mi contenido?", pt: "How do I use AI without losing what makes my content different?" },
+        q: { en: "How do I use AI without losing what makes my content different?", es: "¿Cómo uso la IA sin perder lo que hace diferente a mi contenido?", pt: "Como uso IA sem perder o que torna meu conteúdo diferente?" },
         a: {
           en: "The answer is in the inputs, not the outputs. If you give AI a generic topic and ask for a video script, you get a generic video script. If you give it your perspective, your audience, an example of your existing style, and the specific angle you want to take, you get a draft that reflects your thinking — which you then edit to tighten. The creators who lose their voice to AI are the ones who skip the input work and publish the output with minimal changes. The ones who use it well treat AI as a production accelerator, not a replacement for having something original to say.",
           es: "La respuesta está en los inputs, no en los outputs. Si le das a la IA un tema genérico y pedís un guión de video, obtenés un guión genérico. Si le das tu perspectiva, tu audiencia, un ejemplo de tu estilo existente y el ángulo específico que querés tomar, obtenés un borrador que refleja tu pensamiento — que luego editás para afinarlo. Los creadores que pierden su voz ante la IA son los que omiten el trabajo de input y publican el output con cambios mínimos. Los que la usan bien tratan la IA como un acelerador de producción, no como un reemplazo de tener algo original que decir.",
-          pt: "The answer is in the inputs, not the outputs. If you give AI a generic topic and ask for a video script, you get a generic video script. If you give it your perspective, your audience, an example of your existing style, and the specific angle you want to take, you get a draft that reflects your thinking — which you then edit to tighten. The creators who lose their voice to AI are the ones who skip the input work and publish the output with minimal changes. The ones who use it well treat AI as a production accelerator, not a replacement for having something original to say.",
+          pt: "A resposta está nas entradas, não nas saídas. Se você dá à IA um tema genérico e pede um roteiro de vídeo, recebe um roteiro genérico. Se você dá a sua perspectiva, o seu público, um exemplo do seu estilo atual e o ângulo específico que quer adotar, recebe um rascunho que reflete o seu pensamento — e que depois você edita para deixar mais enxuto. Os criadores que perdem a voz para a IA são os que pulam o trabalho de entrada e publicam a saída com mudanças mínimas. Os que a usam bem tratam a IA como um acelerador de produção, não como um substituto para ter algo original a dizer.",
         },
       },
     ],
@@ -9126,16 +9126,16 @@ Original content:
     title: {
       en: "How to prompt reasoning models (GPT-6, Claude Opus 5.5, Gemini, Grok, DeepSeek)",
       es: "Cómo hacer prompts para modelos de razonamiento (GPT-6, Claude Opus 5.5, Gemini, Grok, DeepSeek)",
-      pt: "How to prompt reasoning models (GPT-6, Claude Opus 5.5, Gemini, Grok, DeepSeek)",
+      pt: "Como escrever prompts para modelos de raciocínio (GPT-6, Claude Opus 5.5, Gemini, Grok, DeepSeek)",
     },
     description: {
       en: "Practical patterns for prompting models that think before answering: what to specify, what to leave to the model, and how each current model sets reasoning depth with effort or thinking level instead of prompt wording.",
       es: "Patrones prácticos para modelos que piensan antes de responder: qué especificar, qué dejarle al modelo y cómo cada modelo actual regula la profundidad con effort o thinking level en vez de con frases en el prompt.",
-      pt: "Practical patterns for prompting models that think before answering: what to specify, what to leave to the model, and how each current model sets reasoning depth with effort or thinking level instead of prompt wording.",
+      pt: "Padrões práticos para escrever prompts para modelos que pensam antes de responder: o que especificar, o que deixar com o modelo e como cada modelo atual define a profundidade do raciocínio com effort ou thinking level, e não com a redação do prompt.",
     },
     sections: [
       {
-        heading: { en: "What makes reasoning models different", es: "Qué hace diferente a los modelos de razonamiento", pt: "What makes reasoning models different" },
+        heading: { en: "What makes reasoning models different", es: "Qué hace diferente a los modelos de razonamiento", pt: "O que torna os modelos de raciocínio diferentes" },
         bullets: {
           en: [
             "Reasoning models (GPT-6, Claude Opus 5.5, Gemini 3.x with thinking, Grok 4.7, DeepSeek in thinking mode) reason internally before producing output — they spend tokens exploring before they answer.",
@@ -9148,14 +9148,14 @@ Original content:
             "El prompting paso a paso explícito (como 'pensá paso a paso') suele ser redundante — el modelo ya lo hace internamente. Sobrecargar con instrucciones de proceso puede interferir con su propio razonamiento.",
           ],
           pt: [
-            "Reasoning models (GPT-6, Claude Opus 5.5, Gemini 3.x with thinking, Grok 4.7, DeepSeek in thinking mode) reason internally before producing output — they spend tokens exploring before they answer.",
-            "They handle ambiguous, multi-step tasks better than standard models, but require a different prompting style: less scaffolding from you, more clarity about what success looks like.",
-            "Explicit step-by-step prompting (like 'think step by step') is often redundant — the model already does this internally. Overloading it with process instructions can interfere with its own reasoning.",
+            "Os modelos de raciocínio (GPT-6, Claude Opus 5.5, Gemini 3.x com thinking, Grok 4.7, DeepSeek no modo thinking) raciocinam internamente antes de produzir a saída — eles gastam tokens explorando antes de responder.",
+            "Eles lidam melhor que os modelos padrão com tarefas ambíguas e de várias etapas, mas exigem outro estilo de prompt: menos andaime da sua parte e mais clareza sobre como é o sucesso.",
+            "Pedir explicitamente um passo a passo (como 'pense passo a passo') costuma ser redundante — o modelo já faz isso internamente. Sobrecarregá-lo com instruções sobre o processo pode atrapalhar o próprio raciocínio dele.",
           ],
         },
       },
       {
-        heading: { en: "What to specify and what to leave to the model", es: "Qué especificar y qué dejarle al modelo", pt: "What to specify and what to leave to the model" },
+        heading: { en: "What to specify and what to leave to the model", es: "Qué especificar y qué dejarle al modelo", pt: "O que especificar e o que deixar com o modelo" },
         bullets: {
           en: [
             "Specify: the goal, the constraints, the output format, and what counts as a correct answer. Give it enough grounding to evaluate its own work.",
@@ -9170,15 +9170,15 @@ Original content:
             "Para tareas matemáticas o lógicas: pedí una respuesta final con una justificación corta, no una narración de cada paso. Los pasos narrados pueden introducir errores en cadenas largas.",
           ],
           pt: [
-            "Specify: the goal, the constraints, the output format, and what counts as a correct answer. Give it enough grounding to evaluate its own work.",
-            "Leave to the model: the reasoning path, intermediate steps, and how to decompose the problem. It handles this better than you can prescribe.",
-            "For factual or research tasks: require citations or grounded claims. Reasoning models can still hallucinate — they reason better, but they are not immune to confabulation.",
-            "For mathematical or logical tasks: ask for a final answer with a short justification, not a full narration of every step. Narrated steps can introduce errors in long chains.",
+            "Especifique: o objetivo, as restrições, o formato de saída e o que conta como resposta correta. Dê base suficiente para ele avaliar o próprio trabalho.",
+            "Deixe com o modelo: o caminho do raciocínio, as etapas intermediárias e como decompor o problema. Ele faz isso melhor do que você consegue prescrever.",
+            "Em tarefas factuais ou de pesquisa: exija citações ou afirmações fundamentadas. Os modelos de raciocínio ainda podem alucinar — eles raciocinam melhor, mas não estão imunes à confabulação.",
+            "Em tarefas matemáticas ou lógicas: peça uma resposta final com uma justificativa curta, não a narração completa de cada passo. Passos narrados podem introduzir erros em cadeias longas.",
           ],
         },
       },
       {
-        heading: { en: "How current models set reasoning depth", es: "Cómo regulan la profundidad los modelos actuales", pt: "How current models set reasoning depth" },
+        heading: { en: "How current models set reasoning depth", es: "Cómo regulan la profundidad los modelos actuales", pt: "Como os modelos atuais definem a profundidade do raciocínio" },
         bullets: {
           en: [
             "Depth is a request setting, not a phrase. On current models you raise or lower reasoning with a parameter (effort, reasoning_effort or thinking_level). Writing 'think harder' in the prompt is not the control.",
@@ -9199,18 +9199,18 @@ Original content:
             "Estos valores por defecto salen de la documentación de cada proveedor según el último chequeo del registro de Promptea (2026-09-24). Los parámetros cambian: confirmalos en la documentación del proveedor antes de ajustar una integración en producción.",
           ],
           pt: [
-            "Depth is a request setting, not a phrase. On current models you raise or lower reasoning with a parameter (effort, reasoning_effort or thinking_level). Writing 'think harder' in the prompt is not the control.",
-            "Claude Opus 5.5 always thinks; effort sets how deeply (default medium). Drop 'think carefully' or 'double-check your work' lines and state the goal, context, constraints and what 'done' looks like in one complete request.",
-            "GPT-6 Astra needs less step-by-step instruction than earlier GPTs: give it the goal, constraints and permissions. It has no 'none' effort, so 'low' is the floor. GPT-6 Sol starts at medium effort and does better with tighter prompts: explicit steps and an exact format.",
-            "Gemini 3.8 Flash uses thinking_level (low, medium or high; default medium) and answers tersely by default, so ask for detail when you need it. Gemini 3.1 Pro defaults to high.",
-            "Grok 4.7 reasoning can't be turned off: reasoning_effort runs from low to xhigh (default high). Lower it for latency-sensitive work instead of asking for a 'quick answer' in prose.",
-            "DeepSeek Flash thinks by default (effort high). Drop to low or turn thinking off for quick tasks, and in tool loops pass reasoning_content back in full.",
-            "These defaults come from each provider's documentation as of Promptea's last registry check (2026-09-24). Parameters change, so confirm them in the provider's docs before you tune a production integration.",
+            "A profundidade é uma configuração da requisição, não uma frase. Nos modelos atuais, você aumenta ou diminui o raciocínio com um parâmetro (effort, reasoning_effort ou thinking_level). Escrever 'pense mais' no prompt não é o controle.",
+            "O Claude Opus 5.5 sempre pensa; o effort define a profundidade (padrão: medium). Tire linhas como 'pense com cuidado' ou 'confira seu trabalho' e declare o objetivo, o contexto, as restrições e como é o 'pronto' em um pedido completo.",
+            "O GPT-6 Astra precisa de menos instruções passo a passo que os GPTs anteriores: dê o objetivo, as restrições e as permissões. Ele não tem effort 'none', então 'low' é o mínimo. O GPT-6 Sol começa no effort medium e se sai melhor com prompts mais fechados: passos explícitos e um formato exato.",
+            "O Gemini 3.8 Flash usa thinking_level (low, medium ou high; padrão: medium) e responde de forma enxuta por padrão, então peça detalhes quando precisar. O Gemini 3.1 Pro usa high por padrão.",
+            "O raciocínio do Grok 4.7 não pode ser desligado: o reasoning_effort vai de low a xhigh (padrão: high). Diminua-o em trabalhos sensíveis à latência em vez de pedir uma 'resposta rápida' no texto.",
+            "O DeepSeek Flash pensa por padrão (effort high). Baixe para low ou desligue o thinking em tarefas rápidas e, em loops de ferramentas, devolva o reasoning_content completo.",
+            "Esses padrões vêm da documentação de cada provedor na última verificação do registro do Promptea (24/09/2026). Os parâmetros mudam, então confirme na documentação do provedor antes de ajustar uma integração em produção.",
           ],
         },
       },
       {
-        heading: { en: "Common mistakes", es: "Errores comunes", pt: "Common mistakes" },
+        heading: { en: "Common mistakes", es: "Errores comunes", pt: "Erros comuns" },
         bullets: {
           en: [
             "Over-scaffolding: adding 'First, list all options. Then, evaluate each. Finally, pick the best.' — the model already does this; your instructions can conflict with its own plan.",
@@ -9223,16 +9223,16 @@ Original content:
             "Ignorar el formato de salida: los modelos de razonamiento pueden producir respuestas largas y desestructuradas. Siempre especificá el formato que necesitás, o vas a perder tiempo parseando el resultado.",
           ],
           pt: [
-            "Over-scaffolding: adding 'First, list all options. Then, evaluate each. Finally, pick the best.' — the model already does this; your instructions can conflict with its own plan.",
-            "Under-specifying the goal: vague success criteria mean the model may reason well and still give you an unusable answer.",
-            "Ignoring output format: reasoning models can produce long, unstructured answers. Always specify the format you need, or you will spend time parsing the result.",
+            "Andaime demais: acrescentar 'Primeiro, liste todas as opções. Depois, avalie cada uma. Por fim, escolha a melhor.' — o modelo já faz isso; suas instruções podem entrar em conflito com o plano dele.",
+            "Objetivo pouco especificado: critérios de sucesso vagos fazem com que o modelo possa raciocinar bem e ainda assim entregar uma resposta inutilizável.",
+            "Ignorar o formato de saída: os modelos de raciocínio podem produzir respostas longas e sem estrutura. Sempre especifique o formato de que você precisa, senão vai gastar tempo interpretando o resultado.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Complex multi-step reasoning", es: "Razonamiento complejo de varios pasos", pt: "Complex multi-step reasoning" },
+        title: { en: "Complex multi-step reasoning", es: "Razonamiento complejo de varios pasos", pt: "Raciocínio complexo em várias etapas" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -9250,17 +9250,17 @@ Criterio de calidad:
 - Debe incluir: [ítems específicos]
 - Debe evitar: [claims o supuestos prohibidos]
 Si la respuesta requiere trade-offs, mencionálos explícitamente.`,
-          pt: `Goal: [what a correct answer looks like — one sentence]
-Context: [key facts, constraints, definitions]
-Output format: [bulleted recommendation / decision table / ranked list]
-Quality bar:
-- Must include: [specific items]
-- Must avoid: [forbidden claims or assumptions]
-If the answer requires trade-offs, state them explicitly.`,
+          pt: `Objetivo: [como é uma resposta correta — uma frase]
+Contexto: [fatos principais, restrições, definições]
+Formato de saída: [recomendação em tópicos / tabela de decisão / lista ordenada]
+Padrão de qualidade:
+- Deve incluir: [itens específicos]
+- Deve evitar: [afirmações ou suposições proibidas]
+Se a resposta envolver trade-offs, declare-os de forma explícita.`,
         },
       },
       {
-        title: { en: "Structured analysis with justification", es: "Análisis estructurado con justificación", pt: "Structured analysis with justification" },
+        title: { en: "Structured analysis with justification", es: "Análisis estructurado con justificación", pt: "Análise estruturada com justificativa" },
         purpose: "data",
         target: "claude",
         prompt: {
@@ -9282,41 +9282,41 @@ Datos:
 """[pegá]"""
 
 Restricciones: [ej. usá solo los datos provistos, sin supuestos externos]`,
-          pt: `Analyze the following and return:
-1. Final answer (1–2 sentences)
-2. Key reasoning (max 3 bullets — cite the data)
-3. Confidence: High / Medium / Low and why
+          pt: `Analise o conteúdo a seguir e retorne:
+1. Resposta final (1–2 frases)
+2. Raciocínio principal (no máximo 3 tópicos — cite os dados)
+3. Confiança: Alta / Média / Baixa e por quê
 
-Data:
-"""[paste]"""
+Dados:
+"""[cole aqui]"""
 
-Constraints: [e.g. use only the provided data, no external assumptions]`,
+Restrições: [ex. use só os dados fornecidos, sem suposições externas]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Should I still write 'think step by step' for reasoning models?", es: "¿Tengo que escribir 'pensá paso a paso' para modelos de razonamiento?", pt: "Should I still write 'think step by step' for reasoning models?" },
+        q: { en: "Should I still write 'think step by step' for reasoning models?", es: "¿Tengo que escribir 'pensá paso a paso' para modelos de razonamiento?", pt: "Ainda devo escrever 'pense passo a passo' para modelos de raciocínio?" },
         a: {
           en: "No. Reasoning models run an internal chain-of-thought automatically. Adding it is at best redundant and at worst disruptive. Focus on specifying the goal and output format clearly instead.",
           es: "No. Los modelos de razonamiento corren un chain-of-thought interno automáticamente. Agregarlo es, en el mejor caso, redundante y, en el peor, disruptivo. Enfocate en especificar bien el objetivo y el formato de salida.",
-          pt: "No. Reasoning models run an internal chain-of-thought automatically. Adding it is at best redundant and at worst disruptive. Focus on specifying the goal and output format clearly instead.",
+          pt: "Não. Os modelos de raciocínio rodam um chain-of-thought interno automaticamente. Acrescentar isso é, na melhor das hipóteses, redundante e, na pior, prejudicial. Concentre-se em especificar com clareza o objetivo e o formato de saída.",
         },
       },
       {
-        q: { en: "Are reasoning models more accurate for math and logic?", es: "¿Los modelos de razonamiento son más precisos en matemáticas y lógica?", pt: "Are reasoning models more accurate for math and logic?" },
+        q: { en: "Are reasoning models more accurate for math and logic?", es: "¿Los modelos de razonamiento son más precisos en matemáticas y lógica?", pt: "Os modelos de raciocínio são mais precisos em matemática e lógica?" },
         a: {
           en: "Generally yes for multi-step problems, but they still make arithmetic errors and can confabulate facts. Always verify numerical results and require citations for factual claims.",
           es: "En general sí para problemas de varios pasos, pero igual cometen errores aritméticos y pueden confabular datos. Siempre verificá resultados numéricos y pedí citas para afirmaciones factuales.",
-          pt: "Generally yes for multi-step problems, but they still make arithmetic errors and can confabulate facts. Always verify numerical results and require citations for factual claims.",
+          pt: "Em geral, sim, em problemas de várias etapas, mas eles ainda erram contas e podem confabular fatos. Sempre verifique os resultados numéricos e exija citações para afirmações factuais.",
         },
       },
       {
-        q: { en: "How do I make a reasoning model think more or less?", es: "¿Cómo hago que un modelo de razonamiento piense más o menos?", pt: "How do I make a reasoning model think more or less?" },
+        q: { en: "How do I make a reasoning model think more or less?", es: "¿Cómo hago que un modelo de razonamiento piense más o menos?", pt: "Como faço um modelo de raciocínio pensar mais ou menos?" },
         a: {
           en: "Use the model's reasoning setting, not prompt wording: effort on Claude Opus 5.5 and GPT-6, thinking_level on Gemini 3.x, reasoning_effort on Grok 4.7, and effort or thinking mode on DeepSeek. In chat apps this is usually the model or mode picker. Keep the prompt focused on the goal, constraints and output format.",
           es: "Usá el ajuste de razonamiento del modelo, no frases en el prompt: effort en Claude Opus 5.5 y GPT-6, thinking_level en Gemini 3.x, reasoning_effort en Grok 4.7, y effort o modo thinking en DeepSeek. En las apps de chat suele ser el selector de modelo o de modo. Mantené el prompt enfocado en el objetivo, las restricciones y el formato de salida.",
-          pt: "Use the model's reasoning setting, not prompt wording: effort on Claude Opus 5.5 and GPT-6, thinking_level on Gemini 3.x, reasoning_effort on Grok 4.7, and effort or thinking mode on DeepSeek. In chat apps this is usually the model or mode picker. Keep the prompt focused on the goal, constraints and output format.",
+          pt: "Use a configuração de raciocínio do modelo, não a redação do prompt: effort no Claude Opus 5.5 e no GPT-6, thinking_level no Gemini 3.x, reasoning_effort no Grok 4.7 e effort ou modo thinking no DeepSeek. Nos apps de chat, isso costuma ser o seletor de modelo ou de modo. Mantenha o prompt focado no objetivo, nas restrições e no formato de saída.",
         },
       },
     ],
@@ -9327,16 +9327,16 @@ Constraints: [e.g. use only the provided data, no external assumptions]`,
     title: {
       en: "AI prompts for teachers and educators",
       es: "Prompts de IA para docentes y educadores",
-      pt: "AI prompts for teachers and educators",
+      pt: "Prompts de IA para professores e educadores",
     },
     description: {
       en: "Where AI genuinely saves teacher preparation time — lesson plans, rubrics, student feedback, and differentiated content — and what always needs human review.",
       es: "Dónde la IA realmente ahorra tiempo de preparación docente — clases, rúbricas, feedback estudiantil y contenido diferenciado — y qué siempre requiere revisión humana.",
-      pt: "Where AI genuinely saves teacher preparation time — lesson plans, rubrics, student feedback, and differentiated content — and what always needs human review.",
+      pt: "Onde a IA realmente economiza tempo de preparação dos professores — planos de aula, rubricas, feedback para alunos e conteúdo diferenciado — e o que sempre precisa de revisão humana.",
     },
     sections: [
       {
-        heading: { en: "Where AI saves real preparation time", es: "Dónde la IA ahorra tiempo de preparación real", pt: "Where AI saves real preparation time" },
+        heading: { en: "Where AI saves real preparation time", es: "Dónde la IA ahorra tiempo de preparación real", pt: "Onde a IA economiza tempo real de preparação" },
         bullets: {
           en: [
             "Lesson plan outlines: structuring a topic into learning objectives, activities, and timing. AI produces a solid scaffold in seconds; you adjust it to your class's actual level and context.",
@@ -9353,16 +9353,16 @@ Constraints: [e.g. use only the provided data, no external assumptions]`,
             "Generación de ejercicios y preguntas: redactar preguntas de opción múltiple o respuesta corta para un tema. Verificá precisión factual antes de usar.",
           ],
           pt: [
-            "Lesson plan outlines: structuring a topic into learning objectives, activities, and timing. AI produces a solid scaffold in seconds; you adjust it to your class's actual level and context.",
-            "Assessment rubrics: converting a learning objective into a graded rubric with criteria and performance descriptors. This is tedious to write from scratch; AI handles the structure well.",
-            "Student feedback drafts: turning notes like 'needs to work on argumentation' into full written comments. Always review and personalize — AI cannot know the student.",
-            "Differentiated materials: generating a passage at multiple reading levels from the same source. Useful when a class has a wide skill range.",
-            "Exercise and quiz generation: drafting multiple-choice or short-answer questions for a topic. Verify factual accuracy before use.",
+            "Estruturas de planos de aula: organizar um tema em objetivos de aprendizagem, atividades e tempos. A IA produz uma base sólida em segundos; você ajusta ao nível e ao contexto reais da sua turma.",
+            "Rubricas de avaliação: converter um objetivo de aprendizagem em uma rubrica com critérios e descritores de desempenho. Isso é tedioso de escrever do zero; a IA lida bem com a estrutura.",
+            "Rascunhos de feedback para alunos: transformar anotações como 'precisa trabalhar a argumentação' em comentários escritos completos. Sempre revise e personalize — a IA não conhece o aluno.",
+            "Materiais diferenciados: gerar um texto em vários níveis de leitura a partir da mesma fonte. Útil quando a turma tem níveis de habilidade muito diferentes.",
+            "Geração de exercícios e quizzes: redigir perguntas de múltipla escolha ou de resposta curta sobre um tema. Verifique a precisão factual antes de usar.",
           ],
         },
       },
       {
-        heading: { en: "What AI cannot do in educational contexts", es: "Qué no puede hacer la IA en contextos educativos", pt: "What AI cannot do in educational contexts" },
+        heading: { en: "What AI cannot do in educational contexts", es: "Qué no puede hacer la IA en contextos educativos", pt: "O que a IA não pode fazer em contextos educacionais" },
         bullets: {
           en: [
             "Know the student: AI has no context about a student's history, challenges, or prior conversations. Generic feedback drafts must be personalized before sending.",
@@ -9377,17 +9377,17 @@ Constraints: [e.g. use only the provided data, no external assumptions]`,
             "Detectar problemas de integridad académica en trabajos estudiantiles: las herramientas de detección de IA tienen altas tasas de falsos positivos y no son confiables para decisiones disciplinarias.",
           ],
           pt: [
-            "Know the student: AI has no context about a student's history, challenges, or prior conversations. Generic feedback drafts must be personalized before sending.",
-            "Guarantee factual accuracy: verify any specific claims, dates, or examples AI includes in educational content — especially for history, science, and current events.",
-            "Replace pedagogical judgment: the sequence, pace, and depth of a unit still requires your knowledge of the class. AI produces material; you decide what and when to teach.",
-            "Detect academic integrity issues in student work: AI detection tools have high false positive rates and are not reliable for disciplinary decisions.",
+            "Conhecer o aluno: a IA não tem contexto sobre o histórico, as dificuldades ou as conversas anteriores de um aluno. Rascunhos genéricos de feedback precisam ser personalizados antes do envio.",
+            "Garantir a precisão factual: verifique qualquer afirmação, data ou exemplo específico que a IA inclua em um conteúdo educacional — principalmente em história, ciências e atualidades.",
+            "Substituir o julgamento pedagógico: a sequência, o ritmo e a profundidade de uma unidade ainda exigem o seu conhecimento da turma. A IA produz o material; você decide o que ensinar e quando.",
+            "Detectar problemas de integridade acadêmica nos trabalhos dos alunos: as ferramentas de detecção de IA têm taxas altas de falsos positivos e não são confiáveis para decisões disciplinares.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Lesson plan outline", es: "Esquema de clase", pt: "Lesson plan outline" },
+        title: { en: "Lesson plan outline", es: "Esquema de clase", pt: "Estrutura de plano de aula" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -9421,25 +9421,25 @@ Incluí:
 - Cierre + tarea (si aplica)
 
 Formato: esquema numerado. No inventés datos específicos de la materia.`,
-          pt: `Create a lesson plan outline for the following:
-Subject: [e.g. 9th-grade biology]
-Topic: [specific topic]
-Duration: [e.g. 60 minutes]
-Learning objectives (what students should be able to do by the end):
-- [objective 1]
-- [objective 2]
+          pt: `Crie uma estrutura de plano de aula para o seguinte:
+Disciplina: [ex. biologia do 9º ano]
+Tema: [tema específico]
+Duração: [ex. 60 minutos]
+Objetivos de aprendizagem (o que os alunos devem conseguir fazer no final):
+- [objetivo 1]
+- [objetivo 2]
 
-Include:
-- Warm-up activity (5–10 min)
-- Main activity with brief description
-- Check for understanding
-- Closing + homework (if applicable)
+Inclua:
+- Atividade de aquecimento (5–10 min)
+- Atividade principal com uma breve descrição
+- Verificação da compreensão
+- Encerramento + tarefa de casa (se for o caso)
 
-Format as a numbered outline. Do not invent subject-specific facts.`,
+Formate como uma estrutura numerada. Não invente fatos específicos da disciplina.`,
         },
       },
       {
-        title: { en: "Assessment rubric", es: "Rúbrica de evaluación", pt: "Assessment rubric" },
+        title: { en: "Assessment rubric", es: "Rúbrica de evaluación", pt: "Rubrica de avaliação" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -9465,35 +9465,35 @@ Devolvé una tabla con:
 - Un descriptor breve por celda (máx 1–2 frases)
 
 Usá lenguaje claro tanto para docentes como para alumnos.`,
-          pt: `Create an assessment rubric for the following task:
-Task: [describe what students must produce — e.g. a persuasive essay]
-Learning objective: [what this task measures]
-Grade level: [e.g. 10th grade]
+          pt: `Crie uma rubrica de avaliação para a seguinte tarefa:
+Tarefa: [descreva o que os alunos precisam produzir — ex. uma redação argumentativa]
+Objetivo de aprendizagem: [o que esta tarefa mede]
+Série: [ex. 1º ano do ensino médio]
 
-Return a table with:
-- 4 performance levels: Excellent / Proficient / Developing / Beginning
-- 3–5 criteria rows
-- A brief descriptor for each cell (1–2 sentences max)
+Retorne uma tabela com:
+- 4 níveis de desempenho: Excelente / Proficiente / Em desenvolvimento / Iniciante
+- 3–5 linhas de critérios
+- Um descritor breve para cada célula (no máximo 1–2 frases)
 
-Keep language clear for both teachers and students.`,
+Mantenha a linguagem clara tanto para professores quanto para alunos.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How do I prevent students from misusing AI on assignments?", es: "¿Cómo prevengo que los alumnos usen mal la IA en las tareas?", pt: "How do I prevent students from misusing AI on assignments?" },
+        q: { en: "How do I prevent students from misusing AI on assignments?", es: "¿Cómo prevengo que los alumnos usen mal la IA en las tareas?", pt: "Como evito que os alunos usem a IA de forma indevida nas tarefas?" },
         a: {
           en: "Design tasks that require personal reflection, specific class discussion references, or iterative drafts reviewed in class. AI is harder to misuse when the task requires something it cannot generate: the student's own experience, specific in-class evidence, or a process that is visible to you.",
           es: "Diseñá tareas que requieran reflexión personal, referencias específicas a discusiones de clase, o borradores iterativos revisados en clase. La IA es más difícil de usar mal cuando la tarea exige algo que no puede generar: la experiencia propia del alumno, evidencia específica de clase, o un proceso visible para vos.",
-          pt: "Design tasks that require personal reflection, specific class discussion references, or iterative drafts reviewed in class. AI is harder to misuse when the task requires something it cannot generate: the student's own experience, specific in-class evidence, or a process that is visible to you.",
+          pt: "Crie tarefas que exijam reflexão pessoal, referências específicas a discussões feitas em sala ou rascunhos sucessivos revisados em aula. A IA é mais difícil de usar de forma indevida quando a tarefa exige algo que ela não consegue gerar: a experiência do próprio aluno, evidências específicas da aula ou um processo visível para você.",
         },
       },
       {
-        q: { en: "How do I check an AI-written lesson plan or rubric before using it?", es: "¿Cómo reviso un plan de clase o una rúbrica escritos con IA antes de usarlos?", pt: "How do I check an AI-written lesson plan or rubric before using it?" },
+        q: { en: "How do I check an AI-written lesson plan or rubric before using it?", es: "¿Cómo reviso un plan de clase o una rúbrica escritos con IA antes de usarlos?", pt: "Como confiro um plano de aula ou uma rubrica escritos por IA antes de usar?" },
         a: {
           en: "Read it as you would a colleague's draft: check every fact and example against your sources, confirm the activities fit your time and group, and make sure each assessment criterion matches a stated learning objective. Treat the output as a first draft, not as the final material.",
           es: "Leelo como el borrador de un colega: contrastá cada dato y ejemplo con tus fuentes, confirmá que las actividades entran en tu tiempo y tu grupo, y verificá que cada criterio de evaluación responda a un objetivo de aprendizaje declarado. Tomá la salida como un primer borrador, no como el material final.",
-          pt: "Read it as you would a colleague's draft: check every fact and example against your sources, confirm the activities fit your time and group, and make sure each assessment criterion matches a stated learning objective. Treat the output as a first draft, not as the final material.",
+          pt: "Leia como você leria o rascunho de um colega: confira cada fato e exemplo nas suas fontes, confirme que as atividades cabem no seu tempo e na sua turma e verifique se cada critério de avaliação corresponde a um objetivo de aprendizagem declarado. Trate a saída como um primeiro rascunho, não como o material final.",
         },
       },
     ],
@@ -9503,16 +9503,16 @@ Keep language clear for both teachers and students.`,
     title: {
       en: "How to rewrite a prompt for better results",
       es: "Cómo reescribir un prompt para mejores resultados",
-      pt: "How to rewrite a prompt for better results",
+      pt: "Como reescrever um prompt para obter resultados melhores",
     },
     description: {
       en: "A practical rewriting process: how to identify what is missing, restructure for clarity, and iterate without starting from scratch.",
       es: "Un proceso práctico de reescritura: cómo identificar qué falta, reestructurar para claridad, e iterar sin empezar de cero.",
-      pt: "A practical rewriting process: how to identify what is missing, restructure for clarity, and iterate without starting from scratch.",
+      pt: "Um processo prático de reescrita: como identificar o que falta, reestruturar para ganhar clareza e iterar sem começar do zero.",
     },
     sections: [
       {
-        heading: { en: "The rewriting process", es: "El proceso de reescritura", pt: "The rewriting process" },
+        heading: { en: "The rewriting process", es: "El proceso de reescritura", pt: "O processo de reescrita" },
         bullets: {
           en: [
             "Step 1 — Diagnose before rewriting: identify the gap between what you got and what you wanted. Is the format wrong? Is information missing? Is the scope too broad? Rewriting without a diagnosis produces the same problems with different words.",
@@ -9529,16 +9529,16 @@ Keep language clear for both teachers and students.`,
             "Paso 5 — Agregá un ejemplo: si la consistencia de formato es el problema, mostrá un ejemplo del output deseado antes de la tarea. Esto supera cinco párrafos de instrucciones.",
           ],
           pt: [
-            "Step 1 — Diagnose before rewriting: identify the gap between what you got and what you wanted. Is the format wrong? Is information missing? Is the scope too broad? Rewriting without a diagnosis produces the same problems with different words.",
-            "Step 2 — One change at a time: change one element per iteration (the goal, the constraints, the format, an example). If you change everything at once, you cannot tell which change fixed the problem.",
-            "Step 3 — Make the goal explicit: most weak prompts leave the goal implicit. Write it as a one-sentence success criterion — what does the output look like when it is correct?",
-            "Step 4 — Add a negative constraint: if the model kept doing something wrong, explicitly forbid it. 'Do not include disclaimers' or 'No bullet points, only prose' are more reliable than hoping it will stop.",
-            "Step 5 — Add one example: if format consistency is the problem, show one example of the desired output before the task. This outperforms five paragraphs of instructions.",
+            "Passo 1 — Diagnostique antes de reescrever: identifique a distância entre o que você recebeu e o que queria. O formato está errado? Falta informação? O escopo está amplo demais? Reescrever sem diagnóstico produz os mesmos problemas com outras palavras.",
+            "Passo 2 — Uma mudança de cada vez: mude um elemento por iteração (o objetivo, as restrições, o formato, um exemplo). Se você mudar tudo de uma vez, não vai saber qual mudança resolveu o problema.",
+            "Passo 3 — Deixe o objetivo explícito: a maioria dos prompts fracos deixa o objetivo implícito. Escreva-o como um critério de sucesso em uma frase — como é a saída quando ela está correta?",
+            "Passo 4 — Acrescente uma restrição negativa: se o modelo continuou fazendo algo errado, proíba isso de forma explícita. 'Não inclua avisos' ou 'Sem tópicos, só texto corrido' são mais confiáveis do que torcer para ele parar.",
+            "Passo 5 — Acrescente um exemplo: se o problema for a consistência do formato, mostre um exemplo da saída desejada antes da tarefa. Isso rende mais que cinco parágrafos de instruções.",
           ],
         },
       },
       {
-        heading: { en: "What usually needs fixing", es: "Qué suele necesitar corrección", pt: "What usually needs fixing" },
+        heading: { en: "What usually needs fixing", es: "Qué suele necesitar corrección", pt: "O que normalmente precisa ser corrigido" },
         bullets: {
           en: [
             "Missing output format: the model has no idea what the result should look like and makes a reasonable guess — which often differs from what you wanted.",
@@ -9553,17 +9553,17 @@ Keep language clear for both teachers and students.`,
             "Instrucciones contradictorias: 'sé conciso' y 'sé exhaustivo' en el mismo prompt producen resultados inconsistentes y mediocres. Elegí uno o definí el trade-off explícitamente.",
           ],
           pt: [
-            "Missing output format: the model has no idea what the result should look like and makes a reasonable guess — which often differs from what you wanted.",
-            "Implicit audience: the model defaults to a general tone when you needed something specific to an audience, level, or role.",
-            "Missing context: the model fills gaps with generic content when it lacks the specific facts or constraints of your situation.",
-            "Conflicting instructions: 'be concise' and 'be thorough' in the same prompt produce inconsistent, mediocre results. Pick one or define the trade-off explicitly.",
+            "Falta o formato de saída: o modelo não faz ideia de como o resultado deve ser e dá um palpite razoável — que muitas vezes é diferente do que você queria.",
+            "Público implícito: o modelo usa por padrão um tom geral quando você precisava de algo específico para um público, um nível ou um cargo.",
+            "Falta contexto: o modelo preenche as lacunas com conteúdo genérico quando não tem os fatos ou as restrições específicos da sua situação.",
+            "Instruções conflitantes: 'seja conciso' e 'seja minucioso' no mesmo prompt geram resultados inconsistentes e medianos. Escolha um ou defina o trade-off de forma explícita.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Prompt self-critique and rewrite", es: "Autocrítica y reescritura de prompt", pt: "Prompt self-critique and rewrite" },
+        title: { en: "Prompt self-critique and rewrite", es: "Autocrítica y reescritura de prompt", pt: "Autocrítica e reescrita de prompt" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -9591,22 +9591,22 @@ Qué quería realmente:
 [describí el output ideal en 1–3 frases]
 
 Identificá qué falta o es poco claro en el prompt original y reescribílo para producir el output deseado. Solo cambiá lo necesario. Explicá qué cambiaste y por qué.`,
-          pt: `I have a prompt that is not producing the output I want.
+          pt: `Tenho um prompt que não está gerando a saída que eu quero.
 
-Original prompt:
-"""[paste your current prompt]"""
+Prompt original:
+"""[cole seu prompt atual]"""
 
-What I got (describe or paste):
-[describe what the model returned]
+O que eu recebi (descreva ou cole):
+[descreva o que o modelo retornou]
 
-What I actually wanted:
-[describe the ideal output in 1–3 sentences]
+O que eu realmente queria:
+[descreva a saída ideal em 1–3 frases]
 
-Identify what is missing or unclear in the original prompt and rewrite it to produce the desired output. Only change what is needed. Explain what you changed and why.`,
+Identifique o que falta ou não está claro no prompt original e reescreva-o para gerar a saída desejada. Mude só o necessário. Explique o que você mudou e por quê.`,
         },
       },
       {
-        title: { en: "Side-by-side output comparison", es: "Comparación lado a lado de outputs", pt: "Side-by-side output comparison" },
+        title: { en: "Side-by-side output comparison", es: "Comparación lado a lado de outputs", pt: "Comparação lado a lado de saídas" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -9640,39 +9640,39 @@ Devolvé:
 - Cuál versión es más sólida y por qué
 - La única cosa que la Versión B hace mejor
 - Brechas restantes en la Versión B`,
-          pt: `I want to understand why one prompt version works better than another.
+          pt: `Quero entender por que uma versão do prompt funciona melhor que outra.
 
-Version A (original):
-"""[paste version A]"""
+Versão A (original):
+"""[cole a versão A]"""
 
-Version B (revised):
-"""[paste version B]"""
+Versão B (revisada):
+"""[cole a versão B]"""
 
-Analyze the structural differences between the two prompts and predict which will produce more consistent, useful output for the goal below:
-Goal: [what success looks like]
+Analise as diferenças estruturais entre os dois prompts e preveja qual vai gerar uma saída mais consistente e útil para o objetivo abaixo:
+Objetivo: [como é o sucesso]
 
-Return:
-- Which version is stronger and why
-- The one thing Version B does better
-- Any remaining gaps in Version B`,
+Retorne:
+- Qual versão é mais forte e por quê
+- A coisa que a Versão B faz melhor
+- As lacunas que ainda restam na Versão B`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How many rewrites does it take before a prompt is good?", es: "¿Cuántas reescrituras se necesitan para que un prompt esté bien?", pt: "How many rewrites does it take before a prompt is good?" },
+        q: { en: "How many rewrites does it take before a prompt is good?", es: "¿Cuántas reescrituras se necesitan para que un prompt esté bien?", pt: "Quantas reescritas são necessárias até um prompt ficar bom?" },
         a: {
           en: "For most tasks, 2–3 targeted iterations. If you are still getting poor results after 5 rewrites, the problem is usually in the task definition, not the wording — clarify what success looks like before rewriting again.",
           es: "Para la mayoría de las tareas, 2–3 iteraciones dirigidas. Si seguís obteniendo malos resultados después de 5 reescrituras, el problema suele estar en la definición de la tarea, no en las palabras — clarificá cómo se ve el éxito antes de reescribir de nuevo.",
-          pt: "For most tasks, 2–3 targeted iterations. If you are still getting poor results after 5 rewrites, the problem is usually in the task definition, not the wording — clarify what success looks like before rewriting again.",
+          pt: "Na maioria das tarefas, 2–3 iterações direcionadas. Se você ainda estiver recebendo resultados ruins depois de 5 reescritas, o problema costuma estar na definição da tarefa, não na redação — esclareça como é o sucesso antes de reescrever de novo.",
         },
       },
       {
-        q: { en: "Should I start from scratch or rewrite incrementally?", es: "¿Arranco de cero o reescribo de forma incremental?", pt: "Should I start from scratch or rewrite incrementally?" },
+        q: { en: "Should I start from scratch or rewrite incrementally?", es: "¿Arranco de cero o reescribo de forma incremental?", pt: "Devo começar do zero ou reescrever aos poucos?" },
         a: {
           en: "Start incremental: identify the single biggest problem, fix it, and test. Starting from scratch discards what already works and makes it impossible to identify what changed. Only start over when the original prompt has fundamental structural problems (e.g., conflicting goals that cannot be resolved with additions).",
           es: "Arrancá incremental: identificá el único problema más grande, arreglalo y testeá. Arrancar de cero descarta lo que ya funciona y hace imposible identificar qué cambió. Solo arrancá de cero cuando el prompt original tiene problemas estructurales fundamentales (ej. objetivos contradictorios que no pueden resolverse con agregados).",
-          pt: "Start incremental: identify the single biggest problem, fix it, and test. Starting from scratch discards what already works and makes it impossible to identify what changed. Only start over when the original prompt has fundamental structural problems (e.g., conflicting goals that cannot be resolved with additions).",
+          pt: "Comece aos poucos: identifique o maior problema, corrija e teste. Começar do zero descarta o que já funciona e torna impossível identificar o que mudou. Só recomece quando o prompt original tiver problemas estruturais fundamentais (ex.: objetivos conflitantes que não podem ser resolvidos com acréscimos).",
         },
       },
     ],
