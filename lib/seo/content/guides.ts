@@ -10975,16 +10975,16 @@ Escreva uma mensagem de follow-up para [Slack / e-mail] para [público].
     title: {
       en: "AI prompts for Excel and Google Sheets formulas",
       es: "Prompts de IA para fórmulas de Excel y Google Sheets",
-      pt: "AI prompts for Excel and Google Sheets formulas",
+      pt: "Prompts de IA para fórmulas no Excel e no Google Sheets",
     },
     description: {
       en: "How to prompt ChatGPT, Claude or Gemini for spreadsheet formulas that work the first time: describe the layout, give sample rows and the expected result, name your app, and ask for edge cases. Includes templates for writing, explaining and fixing formulas.",
       es: "Cómo pedirle a ChatGPT, Claude o Gemini fórmulas de planilla que funcionen a la primera: describí la estructura, pasá filas de ejemplo y el resultado esperado, nombrá tu aplicación y pedí casos límite. Incluye plantillas para escribir, explicar y arreglar fórmulas.",
-      pt: "How to prompt ChatGPT, Claude or Gemini for spreadsheet formulas that work the first time: describe the layout, give sample rows and the expected result, name your app, and ask for edge cases. Includes templates for writing, explaining and fixing formulas.",
+      pt: "Como pedir ao ChatGPT, ao Claude ou ao Gemini fórmulas de planilha que funcionem de primeira: descreva o layout, dê linhas de exemplo e o resultado esperado, diga qual app você usa e peça os casos de borda. Inclui templates para escrever, explicar e corrigir fórmulas.",
     },
     sections: [
       {
-        heading: { en: "Why spreadsheet prompts fail", es: "Por qué fallan los prompts de planillas", pt: "Why spreadsheet prompts fail" },
+        heading: { en: "Why spreadsheet prompts fail", es: "Por qué fallan los prompts de planillas", pt: "Por que os prompts de planilha falham" },
         bullets: {
           en: [
             "The model can't see your sheet. 'Sum the sales for each region' gives a formula with guessed columns and ranges.",
@@ -10999,15 +10999,15 @@ Escreva uma mensagem de follow-up para [Slack / e-mail] para [público].
             "Sin un resultado esperado no podés saber si la fórmula está bien, solo si devuelve algo.",
           ],
           pt: [
-            "The model can't see your sheet. 'Sum the sales for each region' gives a formula with guessed columns and ranges.",
-            "Excel and Google Sheets differ: some functions exist in only one of them, and argument separators depend on your locale (comma vs semicolon).",
-            "Messy data breaks clean formulas: blank cells, numbers stored as text, extra spaces and inconsistent dates.",
-            "Without an expected result you can't tell whether the formula is right, only whether it returns something.",
+            "O modelo não vê a sua planilha. 'Some as vendas de cada região' gera uma fórmula com colunas e intervalos chutados.",
+            "Excel e Google Sheets são diferentes: algumas funções só existem em um deles, e o separador de argumentos depende da sua configuração regional (vírgula ou ponto e vírgula).",
+            "Dados bagunçados quebram fórmulas limpas: células vazias, números armazenados como texto, espaços extras e datas inconsistentes.",
+            "Sem um resultado esperado, você não consegue saber se a fórmula está certa, só se ela retorna alguma coisa.",
           ],
         },
       },
       {
-        heading: { en: "What to include in a formula prompt", es: "Qué incluir en un prompt de fórmula", pt: "What to include in a formula prompt" },
+        heading: { en: "What to include in a formula prompt", es: "Qué incluir en un prompt de fórmula", pt: "O que incluir em um prompt de fórmula" },
         bullets: {
           en: [
             "Your app and version or locale: 'Excel for Microsoft 365, Spanish locale' or 'Google Sheets, US locale'.",
@@ -11026,17 +11026,17 @@ Escreva uma mensagem de follow-up para [Slack / e-mail] para [público].
             "Si querés una sola fórmula o aceptás una columna auxiliar, que suele ser más fácil de mantener.",
           ],
           pt: [
-            "Your app and version or locale: 'Excel for Microsoft 365, Spanish locale' or 'Google Sheets, US locale'.",
-            "The layout: sheet names, which column holds what, the header row, and where the data starts and ends (or that it grows).",
-            "3–5 sample rows pasted as text, with the result you expect for them, including at least one awkward row.",
-            "Where the formula goes and whether it should spill or be filled down.",
-            "Edge cases and what to return for each: blanks, errors, no match, duplicates.",
-            "Whether you want one formula or are open to a helper column, which is often easier to maintain.",
+            "Seu app e a versão ou a configuração regional: 'Excel para Microsoft 365, em português do Brasil' ou 'Google Sheets, configuração dos EUA'.",
+            "O layout: nomes das abas, o que cada coluna contém, a linha de cabeçalho e onde os dados começam e terminam (ou se eles crescem).",
+            "3–5 linhas de exemplo coladas como texto, com o resultado que você espera para elas, incluindo pelo menos uma linha problemática.",
+            "Onde a fórmula vai e se ela deve se espalhar (spill) ou ser arrastada para baixo.",
+            "Os casos de borda e o que retornar em cada um: células vazias, erros, nenhuma correspondência, duplicados.",
+            "Se você quer uma única fórmula ou aceita uma coluna auxiliar, que muitas vezes é mais fácil de manter.",
           ],
         },
       },
       {
-        heading: { en: "How to check the answer", es: "Cómo verificar la respuesta", pt: "How to check the answer" },
+        heading: { en: "How to check the answer", es: "Cómo verificar la respuesta", pt: "Como conferir a resposta" },
         bullets: {
           en: [
             "Test the formula on the sample rows first and compare with the results you wrote down.",
@@ -11051,17 +11051,17 @@ Escreva uma mensagem de follow-up para [Slack / e-mail] para [público].
             "No pegues datos confidenciales. Reemplazá nombres y montos reales por valores ficticios realistas con el mismo formato.",
           ],
           pt: [
-            "Test the formula on the sample rows first and compare with the results you wrote down.",
-            "Ask the model to explain the formula piece by piece; if the explanation doesn't match your intent, the formula doesn't either.",
-            "Try the edge cases on purpose: an empty row, a text value in a number column, a lookup value that doesn't exist.",
-            "Don't paste confidential data. Replace real names and amounts with realistic fake values that keep the same format.",
+            "Teste a fórmula primeiro nas linhas de exemplo e compare com os resultados que você anotou.",
+            "Peça ao modelo para explicar a fórmula parte por parte; se a explicação não bater com a sua intenção, a fórmula também não bate.",
+            "Teste os casos de borda de propósito: uma linha vazia, um texto em uma coluna de números, um valor de busca que não existe.",
+            "Não cole dados confidenciais. Troque nomes e valores reais por valores fictícios realistas que mantenham o mesmo formato.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Write a formula from sample data", es: "Escribir una fórmula a partir de datos de ejemplo", pt: "Write a formula from sample data" },
+        title: { en: "Write a formula from sample data", es: "Escribir una fórmula a partir de datos de ejemplo", pt: "Escrever uma fórmula a partir de dados de exemplo" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -11101,28 +11101,28 @@ Devolvé:
 1. La fórmula, lista para pegar en [celda]
 2. Una explicación en lenguaje simple, una línea por parte
 3. Cualquier supuesto que hayas hecho sobre los datos`,
-          pt: `App: [Excel for Microsoft 365 / Google Sheets], [locale, e.g. US — comma separators]
+          pt: `App: [Excel para Microsoft 365 / Google Sheets], [configuração regional, ex. Brasil — separador ponto e vírgula]
 
 Layout:
-- Sheet "[name]": headers in row 1, data from row 2 down, grows weekly
-- Column A: [what it holds], Column B: [...], Column C: [...]
+- Aba "[nome]": cabeçalhos na linha 1, dados a partir da linha 2, cresce toda semana
+- Coluna A: [o que contém], Coluna B: [...], Coluna C: [...]
 
-Sample rows (as text):
-[paste 3–5 rows]
+Linhas de exemplo (como texto):
+[cole 3–5 linhas]
 
-Goal: in [cell or column], return [what you need].
-Expected results for the sample rows: [list them]
+Objetivo: em [célula ou coluna], retornar [o que você precisa].
+Resultados esperados para as linhas de exemplo: [liste-os]
 
-Edge cases: blank rows → [result]; no match → [result]; text in number columns → [result]
+Casos de borda: linhas vazias → [resultado]; nenhuma correspondência → [resultado]; texto em colunas de números → [resultado]
 
-Return:
-1. The formula, ready to paste into [cell]
-2. A plain-language explanation, one line per part
-3. Any assumption you made about the data`,
+Retorne:
+1. A fórmula, pronta para colar em [célula]
+2. Uma explicação em linguagem simples, uma linha por parte
+3. Qualquer suposição que você fez sobre os dados`,
         },
       },
       {
-        title: { en: "Explain or fix a formula", es: "Explicar o arreglar una fórmula", pt: "Explain or fix a formula" },
+        title: { en: "Explain or fix a formula", es: "Explicar o arreglar una fórmula", pt: "Explicar ou corrigir uma fórmula" },
         purpose: "data",
         target: "claude",
         prompt: {
@@ -11154,46 +11154,46 @@ Columnas relevantes: [qué contiene cada columna referenciada]
 1. Explicá qué hace la fórmula hoy, parte por parte.
 2. Identificá por qué falla para la fila de arriba.
 3. Dame una fórmula corregida y decí qué cambió. Mantené la misma estructura salvo que no se pueda arreglar sin reescribirla.`,
-          pt: `App: [Excel / Google Sheets], [locale]
+          pt: `App: [Excel / Google Sheets], [configuração regional]
 
-Formula in [cell]:
+Fórmula em [célula]:
 <formula>
-[paste formula]
+[cole a fórmula]
 </formula>
 
-What it should do: [one sentence]
-What happens instead: [error message or wrong result, with the input row that causes it]
-Relevant columns: [what each referenced column holds]
+O que ela deveria fazer: [uma frase]
+O que acontece em vez disso: [mensagem de erro ou resultado errado, com a linha de entrada que causa o problema]
+Colunas relevantes: [o que cada coluna referenciada contém]
 
-1. Explain what the formula does now, part by part.
-2. Identify why it fails for the row above.
-3. Give a corrected formula and say what changed. Keep the same structure unless it can't be fixed without rewriting.`,
+1. Explique o que a fórmula faz hoje, parte por parte.
+2. Identifique por que ela falha na linha acima.
+3. Dê uma fórmula corrigida e diga o que mudou. Mantenha a mesma estrutura, a menos que não dê para corrigir sem reescrever.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which AI is best for Excel and Google Sheets formulas?", es: "¿Qué IA es mejor para fórmulas de Excel y Google Sheets?", pt: "Which AI is best for Excel and Google Sheets formulas?" },
+        q: { en: "Which AI is best for Excel and Google Sheets formulas?", es: "¿Qué IA es mejor para fórmulas de Excel y Google Sheets?", pt: "Qual IA é a melhor para fórmulas no Excel e no Google Sheets?" },
         a: {
           en: "Current models from OpenAI, Anthropic and Google all write common formulas well. The prompt matters more than the model: name your app and locale, describe the layout and give sample rows with expected results. Promptea's Find the Best AI mode can recommend a model for a specific spreadsheet task.",
           es: "Los modelos actuales de OpenAI, Anthropic y Google escriben bien las fórmulas comunes. Importa más el prompt que el modelo: nombrá tu aplicación y configuración regional, describí la estructura y pasá filas de ejemplo con los resultados esperados. El modo Elegir la mejor IA de Promptea puede recomendarte un modelo para una tarea de planilla puntual.",
-          pt: "Current models from OpenAI, Anthropic and Google all write common formulas well. The prompt matters more than the model: name your app and locale, describe the layout and give sample rows with expected results. Promptea's Find the Best AI mode can recommend a model for a specific spreadsheet task.",
+          pt: "Os modelos atuais da OpenAI, da Anthropic e do Google escrevem bem as fórmulas comuns. O prompt importa mais que o modelo: diga o seu app e a configuração regional, descreva o layout e dê linhas de exemplo com os resultados esperados. O modo Encontrar a melhor IA do Promptea pode recomendar um modelo para uma tarefa de planilha específica.",
         },
       },
       {
-        q: { en: "Why does the formula show a parse error when I paste it?", es: "¿Por qué la fórmula da error de análisis cuando la pego?", pt: "Why does the formula show a parse error when I paste it?" },
+        q: { en: "Why does the formula show a parse error when I paste it?", es: "¿Por qué la fórmula da error de análisis cuando la pego?", pt: "Por que a fórmula dá erro de análise quando eu colo?" },
         a: {
           en: "Usually the argument separator: many non-English locales use semicolons instead of commas. Function names can also be localized in Excel. State your app and locale in the prompt, or ask the model to convert the formula to your locale.",
           es: "Casi siempre es el separador de argumentos: muchas configuraciones regionales en español usan punto y coma en vez de coma. En Excel, además, los nombres de las funciones pueden estar traducidos. Indicá tu aplicación y configuración regional en el prompt, o pedile al modelo que convierta la fórmula a tu configuración.",
-          pt: "Usually the argument separator: many non-English locales use semicolons instead of commas. Function names can also be localized in Excel. State your app and locale in the prompt, or ask the model to convert the formula to your locale.",
+          pt: "Normalmente é o separador de argumentos: muitas configurações regionais fora do inglês, como a do Brasil, usam ponto e vírgula em vez de vírgula. Os nomes das funções também podem estar traduzidos no Excel. Diga o seu app e a configuração regional no prompt, ou peça ao modelo para converter a fórmula para a sua configuração.",
         },
       },
       {
-        q: { en: "Should I ask for one big formula or several steps?", es: "¿Conviene pedir una fórmula grande o varios pasos?", pt: "Should I ask for one big formula or several steps?" },
+        q: { en: "Should I ask for one big formula or several steps?", es: "¿Conviene pedir una fórmula grande o varios pasos?", pt: "Devo pedir uma fórmula grande ou várias etapas?" },
         a: {
           en: "If other people will maintain the sheet, ask for helper columns or named steps. A single nested formula is compact but hard to debug. Tell the model which you prefer; otherwise it will choose for you.",
           es: "Si otras personas van a mantener la planilla, pedí columnas auxiliares o pasos con nombre. Una sola fórmula anidada es compacta pero difícil de depurar. Decile al modelo qué preferís; si no, elige por vos.",
-          pt: "If other people will maintain the sheet, ask for helper columns or named steps. A single nested formula is compact but hard to debug. Tell the model which you prefer; otherwise it will choose for you.",
+          pt: "Se outras pessoas forem manter a planilha, peça colunas auxiliares ou etapas nomeadas. Uma única fórmula aninhada é compacta, mas difícil de depurar. Diga ao modelo qual você prefere; senão ele vai escolher por você.",
         },
       },
     ],
@@ -11203,16 +11203,16 @@ Relevant columns: [what each referenced column holds]
     title: {
       en: "How long should a prompt be? Prompt length for ChatGPT, Claude and Gemini",
       es: "¿Qué tan largo tiene que ser un prompt? Longitud de prompt para ChatGPT, Claude y Gemini",
-      pt: "How long should a prompt be? Prompt length for ChatGPT, Claude and Gemini",
+      pt: "Qual deve ser o tamanho de um prompt? ChatGPT, Claude e Gemini",
     },
     description: {
       en: "There is no ideal word count. A prompt should be as long as the information the model needs to do the task the way you want, and no longer. How to tell when a prompt is too short or too long, what to cut, what to keep, and how to structure long prompts.",
       es: "No hay una cantidad ideal de palabras. Un prompt tiene que ser tan largo como la información que el modelo necesita para hacer la tarea como vos querés, y no más. Cómo darte cuenta si un prompt es demasiado corto o demasiado largo, qué recortar, qué conservar y cómo estructurar prompts largos.",
-      pt: "There is no ideal word count. A prompt should be as long as the information the model needs to do the task the way you want, and no longer. How to tell when a prompt is too short or too long, what to cut, what to keep, and how to structure long prompts.",
+      pt: "Não existe um número ideal de palavras. Um prompt deve ser tão longo quanto as informações de que o modelo precisa para fazer a tarefa do jeito que você quer, e nada além disso. Como saber quando um prompt está curto ou longo demais, o que cortar, o que manter e como estruturar prompts longos.",
     },
     sections: [
       {
-        heading: { en: "Length is a result, not a goal", es: "La longitud es un resultado, no un objetivo", pt: "Length is a result, not a goal" },
+        heading: { en: "Length is a result, not a goal", es: "La longitud es un resultado, no un objetivo", pt: "O tamanho é um resultado, não uma meta" },
         bullets: {
           en: [
             "A prompt is long enough when someone new to the task could do it from the prompt alone: goal, audience, inputs, constraints and the output format.",
@@ -11227,15 +11227,15 @@ Relevant columns: [what each referenced column holds]
             "Lo que perjudica no es la longitud en sí sino el contenido que no cambia la respuesta: instrucciones repetidas, elogios vagos ('sé increíble') o reglas que se contradicen.",
           ],
           pt: [
-            "A prompt is long enough when someone new to the task could do it from the prompt alone: goal, audience, inputs, constraints and the output format.",
-            "A one-line prompt is fine when the task is common and any reasonable answer works ('Translate this sentence into French').",
-            "A long prompt is fine when the task really depends on details: a style guide, a data schema, edge cases, a document to work from.",
-            "What hurts is not length itself but content that doesn't change the answer: repeated instructions, vague praise ('be amazing'), or rules that contradict each other.",
+            "Um prompt tem o tamanho certo quando alguém que não conhece a tarefa conseguiria fazê-la só com o prompt: objetivo, público, insumos, restrições e formato de saída.",
+            "Um prompt de uma linha basta quando a tarefa é comum e qualquer resposta razoável serve ('Traduza esta frase para o francês').",
+            "Um prompt longo também está certo quando a tarefa realmente depende de detalhes: um guia de estilo, um esquema de dados, casos de borda, um documento como base.",
+            "O que atrapalha não é o tamanho em si, mas o conteúdo que não muda a resposta: instruções repetidas, elogios vagos ('seja incrível') ou regras que se contradizem.",
           ],
         },
       },
       {
-        heading: { en: "Signs your prompt is too short", es: "Señales de que tu prompt es demasiado corto", pt: "Signs your prompt is too short" },
+        heading: { en: "Signs your prompt is too short", es: "Señales de que tu prompt es demasiado corto", pt: "Sinais de que o seu prompt está curto demais" },
         bullets: {
           en: [
             "The answer is generic: it could have been written for anyone, not for your situation.",
@@ -11250,15 +11250,15 @@ Relevant columns: [what each referenced column holds]
             "Cada vez sale una estructura muy distinta, porque nada en el prompt la fija.",
           ],
           pt: [
-            "The answer is generic: it could have been written for anyone, not for your situation.",
-            "The model asks clarifying questions, or answers a different question than the one you meant.",
-            "You keep fixing the same things in follow-ups: tone, length, format, who it's for.",
-            "Each run gives a very different structure, because nothing in the prompt fixes it.",
+            "A resposta é genérica: poderia ter sido escrita para qualquer pessoa, não para a sua situação.",
+            "O modelo faz perguntas de esclarecimento, ou responde a uma pergunta diferente da que você quis fazer.",
+            "Você vive corrigindo as mesmas coisas nas mensagens seguintes: tom, tamanho, formato, para quem é.",
+            "Cada execução traz uma estrutura muito diferente, porque nada no prompt a fixa.",
           ],
         },
       },
       {
-        heading: { en: "Signs your prompt is too long", es: "Señales de que tu prompt es demasiado largo", pt: "Signs your prompt is too long" },
+        heading: { en: "Signs your prompt is too long", es: "Señales de que tu prompt es demasiado largo", pt: "Sinais de que o seu prompt está longo demais" },
         bullets: {
           en: [
             "The model follows some rules and ignores others: there are too many competing instructions with no priority.",
@@ -11273,15 +11273,15 @@ Relevant columns: [what each referenced column holds]
             "No podés decir en una oración qué pide el prompt. Si vos no podés, el modelo tampoco.",
           ],
           pt: [
-            "The model follows some rules and ignores others: there are too many competing instructions with no priority.",
-            "The same instruction appears several times in different words, or two rules conflict ('be brief' and 'cover everything').",
-            "Large blocks of background that don't affect the answer: company history, the story of how the task came up.",
-            "You can't say in one sentence what the prompt asks for. If you can't, the model can't either.",
+            "O modelo segue algumas regras e ignora outras: há instruções demais competindo entre si, sem prioridade.",
+            "A mesma instrução aparece várias vezes com outras palavras, ou duas regras entram em conflito ('seja breve' e 'cubra tudo').",
+            "Blocos grandes de contexto que não afetam a resposta: a história da empresa, como a tarefa surgiu.",
+            "Você não consegue dizer em uma frase o que o prompt pede. Se você não consegue, o modelo também não.",
           ],
         },
       },
       {
-        heading: { en: "How to keep a long prompt readable", es: "Cómo mantener legible un prompt largo", pt: "How to keep a long prompt readable" },
+        heading: { en: "How to keep a long prompt readable", es: "Cómo mantener legible un prompt largo", pt: "Como manter um prompt longo legível" },
         bullets: {
           en: [
             "Put the task first in one sentence, then the details. The model and any human reviewer both read the goal before the rules.",
@@ -11298,16 +11298,16 @@ Relevant columns: [what each referenced column holds]
             "Material largo no es lo mismo que instrucciones largas: un documento de 20 páginas con tres instrucciones claras se sigue mejor que una página de reglas enredadas.",
           ],
           pt: [
-            "Put the task first in one sentence, then the details. The model and any human reviewer both read the goal before the rules.",
-            "Separate instructions from material: put documents, data or examples inside clear delimiters (tags such as <document> or a fenced block).",
-            "Group rules under short labels (Audience, Format, Constraints) instead of one long paragraph.",
-            "Say which rules matter most when they might conflict ('If you must choose, accuracy over brevity').",
-            "Long source material is not the same as long instructions: a 20-page document with three clear instructions is easier to follow than one page of tangled rules.",
+            "Coloque a tarefa primeiro, em uma frase, e depois os detalhes. O modelo e qualquer revisor humano leem o objetivo antes das regras.",
+            "Separe as instruções do material: coloque documentos, dados ou exemplos dentro de delimitadores claros (tags como <document> ou um bloco cercado).",
+            "Agrupe as regras sob rótulos curtos (Público, Formato, Restrições) em vez de um parágrafo longo.",
+            "Diga quais regras importam mais quando elas puderem entrar em conflito ('Se precisar escolher, precisão antes de brevidade').",
+            "Material de referência longo não é o mesmo que instruções longas: um documento de 20 páginas com três instruções claras é mais fácil de seguir que uma página de regras emaranhadas.",
           ],
         },
       },
       {
-        heading: { en: "Different models, same principle", es: "Distintos modelos, mismo principio", pt: "Different models, same principle" },
+        heading: { en: "Different models, same principle", es: "Distintos modelos, mismo principio", pt: "Modelos diferentes, mesmo princípio" },
         bullets: {
           en: [
             "Current ChatGPT, Claude and Gemini models accept very long inputs, so the limit is rarely the context window; it is how clearly the prompt says what matters.",
@@ -11322,17 +11322,17 @@ Relevant columns: [what each referenced column holds]
             "Si reutilizás un prompt en varios modelos, mantenelo estructurado y simple; el analizador de Promptea adapta el mismo prompt a cada modelo.",
           ],
           pt: [
-            "Current ChatGPT, Claude and Gemini models accept very long inputs, so the limit is rarely the context window; it is how clearly the prompt says what matters.",
-            "Providers' own prompting guides (OpenAI, Anthropic, Google) recommend being explicit and specific rather than short, and putting long documents in clearly marked sections.",
-            "Some models default to terse answers and others to thorough ones. Ask for the length you want instead of making the prompt longer to compensate.",
-            "If you reuse a prompt across models, keep it structured and plain; Promptea's analyzer adapts the same prompt to each target model.",
+            "Os modelos atuais do ChatGPT, do Claude e do Gemini aceitam entradas muito longas, então o limite raramente é a janela de contexto; é a clareza com que o prompt diz o que importa.",
+            "Os próprios guias de prompt dos provedores (OpenAI, Anthropic, Google) recomendam ser explícito e específico em vez de curto, e colocar os documentos longos em seções bem marcadas.",
+            "Alguns modelos respondem de forma enxuta por padrão e outros de forma minuciosa. Peça o tamanho que você quer em vez de alongar o prompt para compensar.",
+            "Se você reutiliza um prompt em vários modelos, mantenha-o estruturado e simples; o analisador do Promptea adapta o mesmo prompt a cada modelo de destino.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Expand a one-line prompt", es: "Ampliar un prompt de una línea", pt: "Expand a one-line prompt" },
+        title: { en: "Expand a one-line prompt", es: "Ampliar un prompt de una línea", pt: "Expandir um prompt de uma linha" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -11354,19 +11354,19 @@ Restricciones: [longitud, tono, cosas a evitar]
 Formato de salida: [bullets / tabla / email corto / JSON]
 
 Si falta algo de lo anterior y cambia la respuesta, haceme una sola pregunta antes de empezar.`,
-          pt: `Task: [your one-line request]
+          pt: `Tarefa: [seu pedido de uma linha]
 
-Goal: [what a good answer lets you do, in one sentence]
-Audience: [who will read or use the result]
-Inputs: [paste or describe the material the model should use]
-Constraints: [length, tone, things to avoid]
-Output format: [bullets / table / short email / JSON]
+Objetivo: [o que uma boa resposta permite que você faça, em uma frase]
+Público: [quem vai ler ou usar o resultado]
+Insumos: [cole ou descreva o material que o modelo deve usar]
+Restrições: [tamanho, tom, o que evitar]
+Formato de saída: [tópicos / tabela / e-mail curto / JSON]
 
-If any of the above is missing and it changes the answer, ask me one question before starting.`,
+Se faltar algum dos itens acima e isso mudar a resposta, me faça uma pergunta antes de começar.`,
         },
       },
       {
-        title: { en: "Trim a long prompt without losing what matters", es: "Recortar un prompt largo sin perder lo importante", pt: "Trim a long prompt without losing what matters" },
+        title: { en: "Trim a long prompt without losing what matters", es: "Recortar un prompt largo sin perder lo importante", pt: "Enxugar um prompt longo sem perder o que importa" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -11390,42 +11390,42 @@ If any of the above is missing and it changes the answer, ask me one question be
 2. Listá cada instrucción repetida, vaga o que contradice a otra, y decí qué harías con cada una (unir, cortar, hacerla específica).
 3. Devolvé el prompt reescrito: primero la tarea, después las reglas agrupadas (Audiencia, Formato, Restricciones) y por último el material entre delimitadores.
 4. Listá lo que sacaste y que podría seguir importando, para que yo decida.`,
-          pt: `Below is a prompt I use. Make it shorter and clearer without changing what it asks for.
+          pt: `Abaixo está um prompt que eu uso. Deixe-o mais curto e mais claro sem mudar o que ele pede.
 
 <prompt>
-[paste your prompt]
+[cole seu prompt]
 </prompt>
 
-1. State the task in one sentence.
-2. List every instruction that is repeated, vague or contradicts another, and say what you would do with each (merge, cut, make specific).
-3. Return the rewritten prompt: task first, then grouped rules (Audience, Format, Constraints), then any material in delimiters.
-4. List anything you removed that might still matter, so I can decide.`,
+1. Declare a tarefa em uma frase.
+2. Liste cada instrução repetida, vaga ou que contradiga outra, e diga o que você faria com cada uma (juntar, cortar, tornar específica).
+3. Retorne o prompt reescrito: a tarefa primeiro, depois as regras agrupadas (Público, Formato, Restrições) e por fim o material entre delimitadores.
+4. Liste tudo o que você removeu e que talvez ainda importe, para eu decidir.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Is there an ideal number of words for a prompt?", es: "¿Hay una cantidad ideal de palabras para un prompt?", pt: "Is there an ideal number of words for a prompt?" },
+        q: { en: "Is there an ideal number of words for a prompt?", es: "¿Hay una cantidad ideal de palabras para un prompt?", pt: "Existe um número ideal de palavras para um prompt?" },
         a: {
           en: "No. Any fixed number would be made up: the right length depends on the task. A good test is whether a capable person who knows nothing about your situation could do the task from the prompt alone. If they would need to ask questions, add those answers; if parts would not change what they do, cut them.",
           es: "No. Cualquier número fijo sería inventado: la longitud correcta depende de la tarea. Una buena prueba es si una persona capaz que no sabe nada de tu situación podría hacer la tarea solo con el prompt. Si necesitaría hacer preguntas, sumá esas respuestas; si hay partes que no cambiarían lo que hace, sacalas.",
-          pt: "No. Any fixed number would be made up: the right length depends on the task. A good test is whether a capable person who knows nothing about your situation could do the task from the prompt alone. If they would need to ask questions, add those answers; if parts would not change what they do, cut them.",
+          pt: "Não. Qualquer número fixo seria inventado: o tamanho certo depende da tarefa. Um bom teste é ver se uma pessoa capaz, que não sabe nada da sua situação, conseguiria fazer a tarefa só com o prompt. Se ela precisaria fazer perguntas, acrescente essas respostas; se algumas partes não mudariam o que ela faz, corte-as.",
         },
       },
       {
-        q: { en: "Do longer prompts cost more?", es: "¿Los prompts más largos cuestan más?", pt: "Do longer prompts cost more?" },
+        q: { en: "Do longer prompts cost more?", es: "¿Los prompts más largos cuestan más?", pt: "Prompts mais longos custam mais?" },
         a: {
           en: "In the API, yes: input is billed per token, so every word of a prompt you send thousands of times adds up. In chat apps you don't pay per token, but very long conversations can still hit usage limits sooner. Cutting repeated or irrelevant text saves cost without hurting quality.",
           es: "En la API, sí: la entrada se cobra por token, así que cada palabra de un prompt que mandás miles de veces suma. En las apps de chat no pagás por token, pero las conversaciones muy largas pueden llegar antes a los límites de uso. Recortar texto repetido o irrelevante ahorra costo sin bajar la calidad.",
-          pt: "In the API, yes: input is billed per token, so every word of a prompt you send thousands of times adds up. In chat apps you don't pay per token, but very long conversations can still hit usage limits sooner. Cutting repeated or irrelevant text saves cost without hurting quality.",
+          pt: "Na API, sim: a entrada é cobrada por token, então cada palavra de um prompt que você envia milhares de vezes se acumula. Nos apps de chat você não paga por token, mas conversas muito longas ainda podem atingir os limites de uso mais cedo. Cortar texto repetido ou irrelevante economiza custo sem prejudicar a qualidade.",
         },
       },
       {
-        q: { en: "Does Promptea's score reward longer prompts?", es: "¿El puntaje de Promptea premia los prompts más largos?", pt: "Does Promptea's score reward longer prompts?" },
+        q: { en: "Does Promptea's score reward longer prompts?", es: "¿El puntaje de Promptea premia los prompts más largos?", pt: "A pontuação do Promptea premia prompts mais longos?" },
         a: {
           en: "Only up to a point. Prompts of just a few words score lower on clarity because they rarely say enough, but past a few dozen words extra length adds nothing. Most of the score comes from whether the prompt states a goal, context, constraints and an output format, so a long prompt that misses those still scores poorly.",
           es: "Solo hasta cierto punto. Los prompts de pocas palabras puntúan más bajo en claridad porque casi nunca dicen lo suficiente, pero pasadas unas decenas de palabras, más longitud no suma nada. La mayor parte del puntaje depende de si el prompt dice el objetivo, el contexto, las restricciones y el formato de salida, así que un prompt largo que no cubre eso igual puntúa bajo.",
-          pt: "Only up to a point. Prompts of just a few words score lower on clarity because they rarely say enough, but past a few dozen words extra length adds nothing. Most of the score comes from whether the prompt states a goal, context, constraints and an output format, so a long prompt that misses those still scores poorly.",
+          pt: "Só até certo ponto. Prompts de poucas palavras pontuam menos em clareza porque raramente dizem o suficiente, mas depois de algumas dezenas de palavras o tamanho extra não acrescenta nada. A maior parte da pontuação vem de o prompt declarar um objetivo, o contexto, as restrições e um formato de saída, então um prompt longo que deixa isso de fora continua com pontuação baixa.",
         },
       },
     ],
@@ -11436,16 +11436,16 @@ If any of the above is missing and it changes the answer, ask me one question be
     title: {
       en: "AI prompts for presentations: slide outlines, speaker notes and decks from documents",
       es: "Prompts de IA para presentaciones: slides, notas del orador y decks desde documentos",
-      pt: "AI prompts for presentations: slide outlines, speaker notes and decks from documents",
+      pt: "Prompts de IA para apresentações: roteiro de slides, notas e decks a partir de documentos",
     },
     description: {
       en: "How to use ChatGPT, Claude or Gemini to plan a presentation: start from the audience and the one decision or idea you need, get a slide-by-slide outline, turn a long document into slides without inventing data, and write speaker notes. Includes copy-paste templates.",
       es: "Cómo usar ChatGPT, Claude o Gemini para planificar una presentación: empezá por la audiencia y la decisión o idea que necesitás, conseguí una estructura slide por slide, convertí un documento largo en slides sin inventar datos y escribí las notas del orador. Incluye plantillas para copiar y pegar.",
-      pt: "How to use ChatGPT, Claude or Gemini to plan a presentation: start from the audience and the one decision or idea you need, get a slide-by-slide outline, turn a long document into slides without inventing data, and write speaker notes. Includes copy-paste templates.",
+      pt: "Como usar o ChatGPT, o Claude ou o Gemini para planejar uma apresentação: comece pelo público e pela decisão ou ideia que você precisa transmitir, obtenha um roteiro slide a slide, transforme um documento longo em slides sem inventar dados e escreva as notas do apresentador. Inclui templates para copiar e colar.",
     },
     sections: [
       {
-        heading: { en: "Where AI helps with a presentation", es: "Dónde ayuda la IA en una presentación", pt: "Where AI helps with a presentation" },
+        heading: { en: "Where AI helps with a presentation", es: "Dónde ayuda la IA en una presentación", pt: "Onde a IA ajuda em uma apresentação" },
         bullets: {
           en: [
             "Structure: turning a goal and an audience into a slide-by-slide outline with one message per slide.",
@@ -11460,15 +11460,15 @@ If any of the above is missing and it changes the answer, ask me one question be
             "Ensayo: notas del orador, preguntas probables de la audiencia y una versión más corta por si te recortan el tiempo.",
           ],
           pt: [
-            "Structure: turning a goal and an audience into a slide-by-slide outline with one message per slide.",
-            "Condensing: pulling the key points out of a report, a spec or meeting notes you already have.",
-            "Wording: short slide titles that state the point ('Churn fell after the onboarding change') instead of topics ('Churn').",
-            "Rehearsal: speaker notes, likely questions from the audience and a shorter version for when time gets cut.",
+            "Estrutura: transformar um objetivo e um público em um roteiro slide a slide, com uma mensagem por slide.",
+            "Condensar: tirar os pontos principais de um relatório, uma especificação ou anotações de reunião que você já tem.",
+            "Redação: títulos de slide curtos que declaram o ponto ('O churn caiu depois da mudança no onboarding') em vez de temas ('Churn').",
+            "Ensaio: notas do apresentador, perguntas prováveis do público e uma versão mais curta para quando o tempo for cortado.",
           ],
         },
       },
       {
-        heading: { en: "What to tell the model first", es: "Qué contarle primero al modelo", pt: "What to tell the model first" },
+        heading: { en: "What to tell the model first", es: "Qué contarle primero al modelo", pt: "O que dizer ao modelo primeiro" },
         bullets: {
           en: [
             "The audience and what they already know: executives, a client, your team, a conference room.",
@@ -11485,16 +11485,16 @@ If any of the above is missing and it changes the answer, ask me one question be
             "Restricciones: las secciones de tu plantilla, palabras por slide, si se permiten gráficos, idioma y tono.",
           ],
           pt: [
-            "The audience and what they already know: executives, a client, your team, a conference room.",
-            "The outcome you need: a decision, approval, budget, or simply that people understand one idea.",
-            "Time and slide budget: '10 minutes, at most 8 slides'.",
-            "The source material, pasted inside delimiters, and a rule that every number must come from it.",
-            "Constraints: your template's sections, words per slide, whether charts are allowed, language and tone.",
+            "O público e o que ele já sabe: executivos, um cliente, o seu time, uma plateia de conferência.",
+            "O resultado de que você precisa: uma decisão, uma aprovação, orçamento ou simplesmente que as pessoas entendam uma ideia.",
+            "O orçamento de tempo e de slides: '10 minutos, no máximo 8 slides'.",
+            "O material de referência, colado entre delimitadores, e uma regra de que todo número precisa vir dele.",
+            "As restrições: as seções do seu template, palavras por slide, se gráficos são permitidos, idioma e tom.",
           ],
         },
       },
       {
-        heading: { en: "Common problems and how to prevent them", es: "Problemas comunes y cómo evitarlos", pt: "Common problems and how to prevent them" },
+        heading: { en: "Common problems and how to prevent them", es: "Problemas comunes y cómo evitarlos", pt: "Problemas comuns e como evitá-los" },
         bullets: {
           en: [
             "Invented figures: models fill gaps with plausible numbers. Ask for '[data needed]' placeholders instead and a list of every figure with where it came from.",
@@ -11511,18 +11511,18 @@ If any of the above is missing and it changes the answer, ask me one question be
             "Contenido confidencial: sacá nombres de clientes, datos financieros o personales antes de pegar, o usá una herramienta aprobada por tu empresa.",
           ],
           pt: [
-            "Invented figures: models fill gaps with plausible numbers. Ask for '[data needed]' placeholders instead and a list of every figure with where it came from.",
-            "Too much text: ask for at most a title plus three short lines per slide, with the detail moved to speaker notes.",
-            "A list of topics instead of an argument: ask for titles that are full sentences, and check that reading only the titles tells the story.",
-            "Generic visuals: ask what each chart should show (which data, which comparison), not for 'a nice image'.",
-            "Confidential content: remove client names, financials or personal data before pasting, or use a tool your company has approved.",
+            "Números inventados: os modelos preenchem lacunas com números plausíveis. Peça marcadores '[dado necessário]' no lugar e uma lista de todos os números com a origem de cada um.",
+            "Texto demais: peça no máximo um título mais três linhas curtas por slide, com os detalhes levados para as notas do apresentador.",
+            "Uma lista de temas em vez de um argumento: peça títulos que sejam frases completas e confira se ler só os títulos conta a história.",
+            "Visuais genéricos: pergunte o que cada gráfico deve mostrar (quais dados, qual comparação), não peça 'uma imagem bonita'.",
+            "Conteúdo confidencial: remova nomes de clientes, dados financeiros ou dados pessoais antes de colar, ou use uma ferramenta aprovada pela sua empresa.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Slide-by-slide outline from a goal", es: "Estructura slide por slide a partir de un objetivo", pt: "Slide-by-slide outline from a goal" },
+        title: { en: "Slide-by-slide outline from a goal", es: "Estructura slide por slide a partir de un objetivo", pt: "Roteiro slide a slide a partir de um objetivo" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -11554,24 +11554,24 @@ Reglas:
 - Leyendo solo los títulos en orden se tiene que entender todo el argumento.
 - No inventes números, nombres ni fechas. Donde haga falta un dato, escribí [dato necesario: cuál].
 - Terminá con una slide que diga explícitamente el pedido o la conclusión.`,
-          pt: `I need to present [topic] to [audience: role, what they already know].
-Outcome I need: [decision / approval / understanding of one idea]
-Time: [minutes]. Maximum slides: [number].
+          pt: `Preciso apresentar [tema] para [público: cargo, o que já sabe].
+Resultado de que preciso: [decisão / aprovação / entendimento de uma ideia]
+Tempo: [minutos]. Máximo de slides: [número].
 
-Create an outline. For each slide give:
-- Title: one full sentence that states the point
-- 2–3 short supporting lines (max 12 words each)
-- Speaker note: what I say, 2–3 sentences
-- Visual: what a chart or image should show, or "none"
+Crie um roteiro. Para cada slide, dê:
+- Título: uma frase completa que declare o ponto
+- 2–3 linhas curtas de apoio (no máximo 12 palavras cada)
+- Nota do apresentador: o que eu digo, 2–3 frases
+- Visual: o que um gráfico ou uma imagem deve mostrar, ou "nenhum"
 
-Rules:
-- Reading only the titles in order must tell the whole argument.
-- Don't invent numbers, names or dates. Where data is needed, write [data needed: what].
-- End with a slide that states the ask or the takeaway explicitly.`,
+Regras:
+- Ler só os títulos, na ordem, precisa contar o argumento inteiro.
+- Não invente números, nomes ou datas. Onde houver necessidade de dados, escreva [dado necessário: qual].
+- Termine com um slide que declare de forma explícita o pedido ou a mensagem final.`,
         },
       },
       {
-        title: { en: "Turn a document into slides", es: "Convertir un documento en slides", pt: "Turn a document into slides" },
+        title: { en: "Turn a document into slides", es: "Convertir un documento en slides", pt: "Transformar um documento em slides" },
         purpose: "summarization",
         target: "gemini",
         prompt: {
@@ -11599,22 +11599,22 @@ Reglas:
 - Usá solo información del documento. Si falta algo que la audiencia va a necesitar, agregalo a una lista de "Huecos" al final en lugar de completarlo.
 - Cada número que aparezca en una slide tiene que estar en el documento; después de las slides, listá cada número con la oración de la que salió.
 - Respetá la terminología del documento; no les cambies el nombre a productos, equipos ni métricas.`,
-          pt: `Turn the document below into a [number]-slide presentation for [audience].
+          pt: `Transforme o documento abaixo em uma apresentação de [número] slides para [público].
 
 <document>
-[paste the report, spec or notes]
+[cole o relatório, a especificação ou as anotações]
 </document>
 
-For each slide: a sentence title, up to 3 short lines, and a speaker note.
+Para cada slide: um título em forma de frase, até 3 linhas curtas e uma nota do apresentador.
 
-Rules:
-- Use only information from the document. If something the audience will need is missing, add it to a "Gaps" list at the end instead of filling it in.
-- Every number on a slide must appear in the document; after the slides, list each number with the sentence it came from.
-- Keep the document's terminology; don't rename products, teams or metrics.`,
+Regras:
+- Use só informações do documento. Se faltar algo de que o público vai precisar, acrescente a uma lista de "Lacunas" no final em vez de preencher.
+- Todo número em um slide precisa aparecer no documento; depois dos slides, liste cada número com a frase de onde ele veio.
+- Mantenha a terminologia do documento; não renomeie produtos, times ou métricas.`,
         },
       },
       {
-        title: { en: "Rehearse: likely questions and a short version", es: "Ensayo: preguntas probables y una versión corta", pt: "Rehearse: likely questions and a short version" },
+        title: { en: "Rehearse: likely questions and a short version", es: "Ensayo: preguntas probables y una versión corta", pt: "Ensaiar: perguntas prováveis e uma versão curta" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -11636,41 +11636,41 @@ Rules:
 1. Listá las 5 preguntas que más probablemente haga esta audiencia, de la más difícil a la más fácil, con una respuesta de 2 oraciones para cada una basada solo en la estructura. Si la estructura no permite responder alguna, decilo.
 2. Señalá la slide más débil y por qué.
 3. Dame una versión de 3 slides para cuando solo tenga [minutos] minutos, manteniendo el pedido.`,
-          pt: `Here is my presentation outline for [audience]:
+          pt: `Este é o roteiro da minha apresentação para [público]:
 
 <outline>
-[paste slide titles and notes]
+[cole os títulos e as notas dos slides]
 </outline>
 
-1. List the 5 questions this audience is most likely to ask, from hardest to easiest, and a 2-sentence answer for each based only on the outline. If the outline can't answer one, say so.
-2. Point out the weakest slide and why.
-3. Give a 3-slide version for when I only get [minutes] minutes, keeping the ask.`,
+1. Liste as 5 perguntas que este público tem mais chance de fazer, da mais difícil para a mais fácil, e uma resposta de 2 frases para cada uma, com base só no roteiro. Se o roteiro não responder a alguma, diga isso.
+2. Aponte o slide mais fraco e por quê.
+3. Dê uma versão de 3 slides para quando eu tiver só [minutos] minutos, mantendo o pedido.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can ChatGPT, Claude or Gemini make the slides themselves?", es: "¿ChatGPT, Claude o Gemini pueden hacer las slides directamente?", pt: "Can ChatGPT, Claude or Gemini make the slides themselves?" },
+        q: { en: "Can ChatGPT, Claude or Gemini make the slides themselves?", es: "¿ChatGPT, Claude o Gemini pueden hacer las slides directamente?", pt: "O ChatGPT, o Claude ou o Gemini conseguem fazer os slides sozinhos?" },
         a: {
           en: "Some of their apps and integrations can create slide files, and the features change often, so check what your plan offers. Either way, the outline is where the quality comes from: get the argument, titles and notes right first, then build or generate the slides from that.",
           es: "Algunas de sus apps e integraciones pueden crear archivos de slides, y esas funciones cambian seguido, así que fijate qué ofrece tu plan. En cualquier caso, la calidad sale de la estructura: primero dejá bien el argumento, los títulos y las notas, y después armá o generá las slides a partir de eso.",
-          pt: "Some of their apps and integrations can create slide files, and the features change often, so check what your plan offers. Either way, the outline is where the quality comes from: get the argument, titles and notes right first, then build or generate the slides from that.",
+          pt: "Alguns dos apps e integrações deles conseguem criar arquivos de slides, e os recursos mudam com frequência, então confira o que o seu plano oferece. De qualquer forma, a qualidade vem do roteiro: acerte primeiro o argumento, os títulos e as notas, e depois monte ou gere os slides a partir disso.",
         },
       },
       {
-        q: { en: "How many slides should I ask for?", es: "¿Cuántas slides le pido?", pt: "How many slides should I ask for?" },
+        q: { en: "How many slides should I ask for?", es: "¿Cuántas slides le pido?", pt: "Quantos slides devo pedir?" },
         a: {
           en: "Give the model your time limit and a maximum slide count rather than leaving it open; otherwise it tends to produce more slides than you can present. The right number depends on your audience and how much you speak per slide.",
           es: "Pasale al modelo tu límite de tiempo y una cantidad máxima de slides en lugar de dejarlo abierto; si no, tiende a generar más slides de las que podés presentar. El número correcto depende de tu audiencia y de cuánto hablás por slide.",
-          pt: "Give the model your time limit and a maximum slide count rather than leaving it open; otherwise it tends to produce more slides than you can present. The right number depends on your audience and how much you speak per slide.",
+          pt: "Dê ao modelo o seu limite de tempo e um número máximo de slides em vez de deixar em aberto; senão ele tende a produzir mais slides do que você consegue apresentar. O número certo depende do seu público e de quanto você fala por slide.",
         },
       },
       {
-        q: { en: "How do I stop the AI from inventing data on slides?", es: "¿Cómo evito que la IA invente datos en las slides?", pt: "How do I stop the AI from inventing data on slides?" },
+        q: { en: "How do I stop the AI from inventing data on slides?", es: "¿Cómo evito que la IA invente datos en las slides?", pt: "Como evito que a IA invente dados nos slides?" },
         a: {
           en: "Paste the source material, tell the model to use only that, ask for placeholders where data is missing, and ask for a list of every number with the sentence it came from. Then check that list against the source before you present.",
           es: "Pegá el material de origen, decile al modelo que use solo eso, pedí marcadores donde falten datos y pedí una lista de cada número con la oración de la que salió. Después compará esa lista con la fuente antes de presentar.",
-          pt: "Paste the source material, tell the model to use only that, ask for placeholders where data is missing, and ask for a list of every number with the sentence it came from. Then check that list against the source before you present.",
+          pt: "Cole o material de referência, diga ao modelo para usar só esse material, peça marcadores onde faltarem dados e peça uma lista de todos os números com a frase de onde cada um veio. Depois confira essa lista com a fonte antes de apresentar.",
         },
       },
     ],
@@ -11681,16 +11681,16 @@ Rules:
     title: {
       en: "How to test one prompt across ChatGPT, Claude, Gemini, Grok and DeepSeek",
       es: "Cómo probar un mismo prompt en ChatGPT, Claude, Gemini, Grok y DeepSeek",
-      pt: "How to test one prompt across ChatGPT, Claude, Gemini, Grok and DeepSeek",
+      pt: "Como testar um prompt no ChatGPT, Claude, Gemini, Grok e DeepSeek",
     },
     description: {
       en: "A practical method to compare AI models on your own task: fix the prompt and the inputs, write pass/fail criteria before reading answers, run a small sample and decide on evidence. Includes test-case and rubric templates.",
       es: "Un método práctico para comparar modelos de IA en tu propia tarea: fijá el prompt y los inputs, escribí criterios de aprobado/desaprobado antes de leer respuestas, corré una muestra chica y decidí con evidencia. Incluye plantillas de casos de prueba y rúbrica.",
-      pt: "A practical method to compare AI models on your own task: fix the prompt and the inputs, write pass/fail criteria before reading answers, run a small sample and decide on evidence. Includes test-case and rubric templates.",
+      pt: "Um método prático para comparar modelos de IA na sua própria tarefa: fixe o prompt e as entradas, escreva critérios de aprovação e reprovação antes de ler as respostas, rode uma amostra pequena e decida com base em evidências. Inclui templates de casos de teste e de critérios de avaliação.",
     },
     sections: [
       {
-        heading: { en: "Why public rankings aren't enough", es: "Por qué los rankings públicos no alcanzan", pt: "Why public rankings aren't enough" },
+        heading: { en: "Why public rankings aren't enough", es: "Por qué los rankings públicos no alcanzan", pt: "Por que os rankings públicos não bastam" },
         bullets: {
           en: [
             "Benchmarks measure specific tasks under specific conditions. Your task — your documents, your format, your language — may behave differently.",
@@ -11705,15 +11705,15 @@ Rules:
             "Usá los rankings para elegir 2–3 candidatos y después probalos con tus propios ejemplos.",
           ],
           pt: [
-            "Benchmarks measure specific tasks under specific conditions. Your task — your documents, your format, your language — may behave differently.",
-            "Models change: new versions ship and older ones are retired, so a comparison you ran months ago may no longer apply.",
-            "Cost and speed matter as much as quality for repeated work: a slightly weaker answer that is much faster may be the right choice.",
-            "Use rankings to pick 2–3 candidates, then test those candidates on your own examples.",
+            "Os benchmarks medem tarefas específicas em condições específicas. A sua tarefa — seus documentos, seu formato, seu idioma — pode se comportar de outro jeito.",
+            "Os modelos mudam: versões novas são lançadas e as antigas são aposentadas, então uma comparação que você fez há meses pode não valer mais.",
+            "Em trabalhos repetidos, custo e velocidade importam tanto quanto a qualidade: uma resposta um pouco mais fraca, mas muito mais rápida, pode ser a escolha certa.",
+            "Use os rankings para escolher 2–3 candidatos e depois teste esses candidatos nos seus próprios exemplos.",
           ],
         },
       },
       {
-        heading: { en: "Set up a fair test", es: "Armá una prueba justa", pt: "Set up a fair test" },
+        heading: { en: "Set up a fair test", es: "Armá una prueba justa", pt: "Monte um teste justo" },
         bullets: {
           en: [
             "Write the criteria before running anything: what a correct answer must contain, what it must not contain, and the required format.",
@@ -11730,16 +11730,16 @@ Rules:
             "Sacá los datos confidenciales de las entradas de prueba, o usá una herramienta aprobada por tu organización.",
           ],
           pt: [
-            "Write the criteria before running anything: what a correct answer must contain, what it must not contain, and the required format.",
-            "Collect 5–10 real inputs, including at least two hard ones (ambiguous request, missing data, very long input, the edge case that broke things before).",
-            "Keep the task and the inputs identical across models. If you adapt the wording per model, adapt only phrasing and structure — never the requirements.",
-            "Start each run in a fresh chat so earlier messages or memory don't leak into the result.",
-            "Remove confidential data from test inputs, or use a tool your organization has approved.",
+            "Escreva os critérios antes de rodar qualquer coisa: o que uma resposta correta precisa conter, o que não pode conter e o formato exigido.",
+            "Reúna 5–10 entradas reais, incluindo pelo menos duas difíceis (pedido ambíguo, dados faltando, entrada muito longa, o caso de borda que já quebrou as coisas antes).",
+            "Mantenha a tarefa e as entradas idênticas entre os modelos. Se você adaptar a redação para cada modelo, adapte só a formulação e a estrutura — nunca os requisitos.",
+            "Comece cada execução em um chat novo para que mensagens anteriores ou a memória não contaminem o resultado.",
+            "Remova dados confidenciais das entradas de teste, ou use uma ferramenta aprovada pela sua organização.",
           ],
         },
       },
       {
-        heading: { en: "Score the answers, not your impression", es: "Puntuá las respuestas, no tu impresión", pt: "Score the answers, not your impression" },
+        heading: { en: "Score the answers, not your impression", es: "Puntuá las respuestas, no tu impresión", pt: "Avalie as respostas, não a sua impressão" },
         bullets: {
           en: [
             "Grade each answer against the criteria with pass/fail per item, and note the reason for every fail.",
@@ -11756,16 +11756,16 @@ Rules:
             "Si todos los modelos fallan el mismo ítem, el problema suele ser el prompt: aclaralo y volvé a correr antes de culpar a los modelos.",
           ],
           pt: [
-            "Grade each answer against the criteria with pass/fail per item, and note the reason for every fail.",
-            "Hide which model wrote which answer while you grade, when you can; it reduces brand bias.",
-            "Run each input more than once if consistency matters: the same prompt can produce different answers.",
-            "Track failures by type (wrong fact, missing field, broken format, ignored rule). A pattern tells you whether to change the model or the prompt.",
-            "If every model fails the same item, the prompt is usually the problem: clarify it and re-run before blaming the models.",
+            "Avalie cada resposta em relação aos critérios, com aprovado/reprovado por item, e anote o motivo de cada reprovação.",
+            "Quando der, esconda qual modelo escreveu qual resposta enquanto avalia; isso reduz o viés de marca.",
+            "Rode cada entrada mais de uma vez se a consistência importar: o mesmo prompt pode gerar respostas diferentes.",
+            "Acompanhe as falhas por tipo (fato errado, campo faltando, formato quebrado, regra ignorada). Um padrão mostra se você deve trocar o modelo ou o prompt.",
+            "Se todos os modelos falham no mesmo item, o problema costuma ser o prompt: esclareça-o e rode de novo antes de culpar os modelos.",
           ],
         },
       },
       {
-        heading: { en: "Adapting the prompt per model without changing the test", es: "Adaptar el prompt a cada modelo sin cambiar la prueba", pt: "Adapting the prompt per model without changing the test" },
+        heading: { en: "Adapting the prompt per model without changing the test", es: "Adaptar el prompt a cada modelo sin cambiar la prueba", pt: "Adaptar o prompt a cada modelo sem mudar o teste" },
         bullets: {
           en: [
             "Claude responds well to clearly delimited material (for example XML-style tags) and explicit priorities.",
@@ -11780,17 +11780,17 @@ Rules:
             "El analizador de Promptea aplica estos ajustes por modelo por vos: elegí la IA destino y compará las versiones optimizadas manteniendo fijos tus requisitos.",
           ],
           pt: [
-            "Claude responds well to clearly delimited material (for example XML-style tags) and explicit priorities.",
-            "GPT and Gemini models follow numbered steps and an explicit output format reliably; state the format once, near the end.",
-            "Grok and DeepSeek benefit from the same basics: task first, constraints listed, an example of the expected output.",
-            "Promptea's analyzer applies these per-model adjustments for you: pick the target AI and compare the optimized versions while keeping your requirements fixed.",
+            "O Claude responde bem a material bem delimitado (por exemplo, tags no estilo XML) e a prioridades explícitas.",
+            "Os modelos GPT e Gemini seguem de forma confiável passos numerados e um formato de saída explícito; declare o formato uma vez, perto do final.",
+            "O Grok e o DeepSeek se beneficiam do mesmo básico: a tarefa primeiro, as restrições listadas e um exemplo da saída esperada.",
+            "O analisador do Promptea aplica esses ajustes por modelo para você: escolha a IA de destino e compare as versões otimizadas mantendo seus requisitos fixos.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Turn a task into test cases", es: "Convertir una tarea en casos de prueba", pt: "Turn a task into test cases" },
+        title: { en: "Turn a task into test cases", es: "Convertir una tarea en casos de prueba", pt: "Transformar uma tarefa em casos de teste" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -11818,22 +11818,22 @@ Ayudame a armar un set de prueba chico:
 3. Listá 2 cosas que cuenten como desaprobado automático (por ejemplo, una cifra inventada o un formato roto).
 
 No resuelvas la tarea. Preguntame si algo de la tarea no está claro.`,
-          pt: `I want to compare AI models on this task:
+          pt: `Quero comparar modelos de IA nesta tarefa:
 
 <task>
-[describe the task and paste the prompt you use today]
+[descreva a tarefa e cole o prompt que você usa hoje]
 </task>
 
-Help me build a small test set:
-1. List 6 test inputs: 3 typical, 3 hard (ambiguous, missing information, unusually long or an edge case). Describe each in one line; I will supply the real content.
-2. For each input, write 3–5 pass/fail criteria that a correct answer must meet.
-3. List 2 things that should count as an automatic fail (for example an invented figure or a broken format).
+Me ajude a montar um pequeno conjunto de testes:
+1. Liste 6 entradas de teste: 3 típicas e 3 difíceis (ambígua, com informação faltando, longa demais ou um caso de borda). Descreva cada uma em uma linha; eu vou fornecer o conteúdo real.
+2. Para cada entrada, escreva 3–5 critérios de aprovação/reprovação que uma resposta correta precisa cumprir.
+3. Liste 2 coisas que devem contar como reprovação automática (por exemplo, um número inventado ou um formato quebrado).
 
-Don't solve the task itself. Ask me if something about the task is unclear.`,
+Não resolva a tarefa em si. Me pergunte se algo sobre a tarefa não estiver claro.`,
         },
       },
       {
-        title: { en: "Grade one answer against a rubric", es: "Evaluar una respuesta con una rúbrica", pt: "Grade one answer against a rubric" },
+        title: { en: "Grade one answer against a rubric", es: "Evaluar una respuesta con una rúbrica", pt: "Avaliar uma resposta com base em critérios" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -11869,26 +11869,26 @@ Devolvé solo JSON:
 Reglas:
 - Juzgá solo lo que está en la respuesta; no des crédito por lo que podría haber querido decir.
 - Si un criterio no se puede verificar con la respuesta, marcá pass como false y explicá por qué.`,
-          pt: `Grade the answer below against the criteria. You are a strict reviewer.
+          pt: `Avalie a resposta abaixo com base nos critérios. Você é um revisor rigoroso.
 
 <criteria>
-[paste the pass/fail criteria]
+[cole os critérios de aprovação/reprovação]
 </criteria>
 
 <answer>
-[paste one model's answer, without saying which model wrote it]
+[cole a resposta de um modelo, sem dizer qual modelo a escreveu]
 </answer>
 
-Return JSON only:
-{"results": [{"criterion": "...", "pass": true, "reason": "one sentence quoting the answer"}], "auto_fail": false, "summary": "one sentence"}
+Retorne só JSON:
+{"results": [{"criterion": "...", "pass": true, "reason": "uma frase citando a resposta"}], "auto_fail": false, "summary": "uma frase"}
 
-Rules:
-- Judge only what is in the answer; don't give credit for what it might have meant.
-- If a criterion can't be checked from the answer, mark pass as false and say why.`,
+Regras:
+- Julgue só o que está na resposta; não dê crédito pelo que ela talvez quisesse dizer.
+- Se um critério não puder ser verificado a partir da resposta, marque pass como false e diga por quê.`,
         },
       },
       {
-        title: { en: "Side-by-side review of two answers", es: "Revisión lado a lado de dos respuestas", pt: "Side-by-side review of two answers" },
+        title: { en: "Side-by-side review of two answers", es: "Revisión lado a lado de dos respuestas", pt: "Revisão lado a lado de duas respostas" },
         purpose: "text",
         target: "gemini",
         prompt: {
@@ -11926,57 +11926,57 @@ Rules:
 1. Listá las diferencias de contenido entre A y B y decí cuál está respaldada por la entrada. Si ninguna lo está, decilo.
 2. Listá cualquier requisito del pedido que alguna de las dos no haya cumplido.
 3. Decí cuál respuesta publicarías tal como está, cuál necesita menos cambios y por qué, en 4 oraciones como máximo.`,
-          pt: `Compare two answers to the same request. They are labeled A and B; don't guess which model wrote them.
+          pt: `Compare duas respostas ao mesmo pedido. Elas estão rotuladas como A e B; não tente adivinhar qual modelo as escreveu.
 
 <request>
-[paste the original prompt and input]
+[cole o prompt original e a entrada]
 </request>
 
 <answer_a>
-[paste]
+[cole aqui]
 </answer_a>
 
 <answer_b>
-[paste]
+[cole aqui]
 </answer_b>
 
-1. List factual differences between A and B and say which one is supported by the input. If neither is, say so.
-2. List any requirement from the request that either answer missed.
-3. Say which answer you would ship as is, which one needs fewer edits, and why, in at most 4 sentences.`,
+1. Liste as diferenças factuais entre A e B e diga qual delas é sustentada pela entrada. Se nenhuma for, diga isso.
+2. Liste qualquer requisito do pedido que alguma das respostas deixou de cumprir.
+3. Diga qual resposta você publicaria como está, qual precisa de menos edições e por quê, em no máximo 4 frases.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How many test cases do I need to compare models?", es: "¿Cuántos casos de prueba necesito para comparar modelos?", pt: "How many test cases do I need to compare models?" },
+        q: { en: "How many test cases do I need to compare models?", es: "¿Cuántos casos de prueba necesito para comparar modelos?", pt: "De quantos casos de teste eu preciso para comparar modelos?" },
         a: {
           en: "For a personal or team decision, 5–10 real inputs with written criteria usually reveal clear differences, as long as a few of them are hard cases. If the decision is expensive or the task runs at scale, grow the set over time with every failure you find in real use.",
           es: "Para una decisión personal o de equipo, 5–10 entradas reales con criterios escritos suelen mostrar diferencias claras, siempre que algunas sean casos difíciles. Si la decisión es cara o la tarea corre a escala, agrandá el set con el tiempo sumando cada fallo que encuentres en el uso real.",
-          pt: "For a personal or team decision, 5–10 real inputs with written criteria usually reveal clear differences, as long as a few of them are hard cases. If the decision is expensive or the task runs at scale, grow the set over time with every failure you find in real use.",
+          pt: "Para uma decisão pessoal ou do time, 5–10 entradas reais com critérios escritos costumam revelar diferenças claras, desde que algumas delas sejam casos difíceis. Se a decisão for cara ou a tarefa rodar em escala, aumente o conjunto com o tempo, acrescentando cada falha que você encontrar no uso real.",
         },
       },
       {
-        q: { en: "Can I use an AI model to grade the answers?", es: "¿Puedo usar un modelo de IA para evaluar las respuestas?", pt: "Can I use an AI model to grade the answers?" },
+        q: { en: "Can I use an AI model to grade the answers?", es: "¿Puedo usar un modelo de IA para evaluar las respuestas?", pt: "Posso usar um modelo de IA para avaliar as respostas?" },
         a: {
           en: "Yes, as a first pass, if the criteria are concrete (contains X, follows format Y, doesn't invent figures). Hide which model wrote each answer, ask the grader to quote the answer for every verdict, and spot-check its grades yourself, since a model grader can also make mistakes.",
           es: "Sí, como primera pasada, si los criterios son concretos (contiene X, respeta el formato Y, no inventa cifras). Ocultá qué modelo escribió cada respuesta, pedile al evaluador que cite la respuesta en cada veredicto y revisá vos una parte de sus notas, porque un modelo evaluador también puede equivocarse.",
-          pt: "Yes, as a first pass, if the criteria are concrete (contains X, follows format Y, doesn't invent figures). Hide which model wrote each answer, ask the grader to quote the answer for every verdict, and spot-check its grades yourself, since a model grader can also make mistakes.",
+          pt: "Sim, como uma primeira passada, se os critérios forem concretos (contém X, segue o formato Y, não inventa números). Esconda qual modelo escreveu cada resposta, peça ao avaliador para citar a resposta em cada veredito e confira por amostragem as avaliações dele, já que um modelo avaliador também pode errar.",
         },
       },
       {
-        q: { en: "Should I use the exact same prompt for every model?", es: "¿Tengo que usar exactamente el mismo prompt en todos los modelos?", pt: "Should I use the exact same prompt for every model?" },
+        q: { en: "Should I use the exact same prompt for every model?", es: "¿Tengo que usar exactamente el mismo prompt en todos los modelos?", pt: "Devo usar exatamente o mesmo prompt em todos os modelos?" },
         a: {
           en: "Keep the task, the inputs and the requirements identical. Small per-model adjustments to structure (delimiters, where the format goes) are fine and often fair, because each provider documents its own prompting recommendations. What you must not do is give one model extra information or looser rules.",
           es: "Mantené idénticos la tarea, las entradas y los requisitos. Los ajustes chicos de estructura por modelo (delimitadores, dónde va el formato) están bien y suelen ser justos, porque cada proveedor documenta sus propias recomendaciones de prompting. Lo que no podés hacer es darle a un modelo información extra o reglas más laxas.",
-          pt: "Keep the task, the inputs and the requirements identical. Small per-model adjustments to structure (delimiters, where the format goes) are fine and often fair, because each provider documents its own prompting recommendations. What you must not do is give one model extra information or looser rules.",
+          pt: "Mantenha a tarefa, as entradas e os requisitos idênticos. Pequenos ajustes de estrutura por modelo (delimitadores, onde vai o formato) são aceitáveis e muitas vezes justos, porque cada provedor documenta as próprias recomendações de prompt. O que você não pode fazer é dar a um modelo informações extras ou regras mais frouxas.",
         },
       },
       {
-        q: { en: "Where do Promptea's Benchmarks fit in?", es: "¿Dónde entran los Benchmarks de Promptea?", pt: "Where do Promptea's Benchmarks fit in?" },
+        q: { en: "Where do Promptea's Benchmarks fit in?", es: "¿Dónde entran los Benchmarks de Promptea?", pt: "Onde entram os Benchmarks do Promptea?" },
         a: {
           en: "The Benchmarks page shows how models rank on public benchmarks, one ranking per benchmark. Use it to shortlist candidates, then run the test in this guide on your own task to make the final choice.",
           es: "La página de Benchmarks muestra cómo se ubican los modelos en benchmarks públicos, con un ranking por benchmark. Usala para armar la lista corta de candidatos y después corré la prueba de esta guía con tu propia tarea para decidir.",
-          pt: "The Benchmarks page shows how models rank on public benchmarks, one ranking per benchmark. Use it to shortlist candidates, then run the test in this guide on your own task to make the final choice.",
+          pt: "A página de Benchmarks mostra como os modelos se classificam em benchmarks públicos, com um ranking por benchmark. Use-a para fazer a lista curta de candidatos e depois rode o teste deste guia na sua própria tarefa para fazer a escolha final.",
         },
       },
     ],
@@ -11986,16 +11986,16 @@ Rules:
     title: {
       en: "AI prompts for status reports: weekly updates, project reports and executive summaries",
       es: "Prompts de IA para reportes de estado: actualizaciones semanales, informes de proyecto y resúmenes ejecutivos",
-      pt: "AI prompts for status reports: weekly updates, project reports and executive summaries",
+      pt: "Prompts de IA para relatórios de status: semanais, de projeto e resumos executivos",
     },
     description: {
       en: "How to use ChatGPT, Claude or Gemini to turn notes, tickets and meeting minutes into clear status reports: what to paste, how to separate progress from risks, how to avoid invented progress, and how to adapt one update for your team and for leadership. Copy-paste templates included.",
       es: "Cómo usar ChatGPT, Claude o Gemini para convertir notas, tickets y minutas en reportes de estado claros: qué pegar, cómo separar avances de riesgos, cómo evitar avances inventados y cómo adaptar una misma actualización para tu equipo y para la dirección. Incluye plantillas para copiar y pegar.",
-      pt: "How to use ChatGPT, Claude or Gemini to turn notes, tickets and meeting minutes into clear status reports: what to paste, how to separate progress from risks, how to avoid invented progress, and how to adapt one update for your team and for leadership. Copy-paste templates included.",
+      pt: "Como usar o ChatGPT, o Claude ou o Gemini para transformar anotações, tickets e atas de reunião em relatórios de status claros: o que colar, como separar o progresso dos riscos, como evitar progresso inventado e como adaptar uma mesma atualização para o seu time e para a liderança. Inclui templates para copiar e colar.",
     },
     sections: [
       {
-        heading: { en: "What a good status report answers", es: "Qué responde un buen reporte de estado", pt: "What a good status report answers" },
+        heading: { en: "What a good status report answers", es: "Qué responde un buen reporte de estado", pt: "O que um bom relatório de status responde" },
         bullets: {
           en: [
             "Where are we against the plan: on track, at risk or off track, with one sentence on why.",
@@ -12012,16 +12012,16 @@ Rules:
             "Qué sigue, limitado a los pocos ítems que importan para el próximo período.",
           ],
           pt: [
-            "Where are we against the plan: on track, at risk or off track, with one sentence on why.",
-            "What changed since the last update — finished work, not activity ('shipped X', not 'worked on X').",
-            "Risks and blockers, each with an owner and what is needed to unblock it.",
-            "Decisions or help needed from the reader, stated as explicit asks with a date.",
-            "What comes next, limited to the few items that matter for the next period.",
+            "Onde estamos em relação ao plano: no prazo, em risco ou fora do prazo, com uma frase sobre o motivo.",
+            "O que mudou desde a última atualização — trabalho concluído, não atividade ('entregamos X', não 'trabalhamos em X').",
+            "Riscos e bloqueios, cada um com um responsável e o que é necessário para desbloqueá-lo.",
+            "Decisões ou ajuda de que você precisa de quem lê, declaradas como pedidos explícitos com uma data.",
+            "O que vem a seguir, limitado aos poucos itens que importam para o próximo período.",
           ],
         },
       },
       {
-        heading: { en: "What to give the model", es: "Qué darle al modelo", pt: "What to give the model" },
+        heading: { en: "What to give the model", es: "Qué darle al modelo", pt: "O que dar ao modelo" },
         bullets: {
           en: [
             "Your raw material inside delimiters: notes, ticket titles and states, meeting minutes, the previous report.",
@@ -12038,16 +12038,16 @@ Rules:
             "Una regla de que el modelo solo puede reportar lo que aparece en el material, y tiene que marcar lo que no esté claro en lugar de suponer.",
           ],
           pt: [
-            "Your raw material inside delimiters: notes, ticket titles and states, meeting minutes, the previous report.",
-            "The reader: your team, a client, leadership. Each needs a different level of detail.",
-            "The plan or milestones you report against, so 'on track' means something.",
-            "Your format: the headings your organization already uses, length limit, and whether to use bullets.",
-            "A rule that the model may only report what appears in the material, and must flag anything unclear instead of guessing.",
+            "Seu material bruto entre delimitadores: anotações, títulos e status dos tickets, atas de reunião, o relatório anterior.",
+            "O leitor: seu time, um cliente, a liderança. Cada um precisa de um nível de detalhe diferente.",
+            "O plano ou os marcos em relação aos quais você reporta, para que 'no prazo' signifique alguma coisa.",
+            "Seu formato: os títulos que a sua organização já usa, o limite de tamanho e se é para usar tópicos.",
+            "Uma regra de que o modelo só pode reportar o que aparece no material e deve sinalizar tudo o que estiver pouco claro em vez de chutar.",
           ],
         },
       },
       {
-        heading: { en: "Mistakes to watch for", es: "Errores a vigilar", pt: "Mistakes to watch for" },
+        heading: { en: "Mistakes to watch for", es: "Errores a vigilar", pt: "Erros aos quais ficar atento" },
         bullets: {
           en: [
             "Invented progress: models tend to smooth over gaps. Ask for '[unclear: …]' markers and check every 'done' against the source.",
@@ -12064,18 +12064,18 @@ Rules:
             "Información sensible: sacá datos personales, temas de RR. HH. o detalles confidenciales de clientes antes de pegar, o usá una herramienta aprobada.",
           ],
           pt: [
-            "Invented progress: models tend to smooth over gaps. Ask for '[unclear: …]' markers and check every 'done' against the source.",
-            "Optimistic tone: ask for plain wording and an explicit status label instead of adjectives.",
-            "Hidden risks: a blocker mentioned once in the notes can disappear in a summary. Ask the model to list every risk it found before writing.",
-            "Too long: set a word or bullet limit per section, and move detail to an appendix or links.",
-            "Sensitive information: remove personal data, HR matters or confidential client details before pasting, or use an approved tool.",
+            "Progresso inventado: os modelos tendem a disfarçar as lacunas. Peça marcadores '[pouco claro: …]' e confira cada 'concluído' com a fonte.",
+            "Tom otimista: peça uma redação simples e um rótulo de status explícito em vez de adjetivos.",
+            "Riscos escondidos: um bloqueio mencionado uma única vez nas anotações pode desaparecer em um resumo. Peça ao modelo para listar todos os riscos que encontrou antes de escrever.",
+            "Longo demais: defina um limite de palavras ou de tópicos por seção e leve os detalhes para um anexo ou para links.",
+            "Informações sensíveis: remova dados pessoais, assuntos de RH ou detalhes confidenciais de clientes antes de colar, ou use uma ferramenta aprovada.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Weekly status update from raw notes", es: "Actualización semanal a partir de notas sueltas", pt: "Weekly status update from raw notes" },
+        title: { en: "Weekly status update from raw notes", es: "Actualización semanal a partir de notas sueltas", pt: "Atualização semanal de status a partir de anotações" },
         purpose: "summarization",
         target: "claude",
         prompt: {
@@ -12121,31 +12121,31 @@ Reglas:
 - Usá solo información de las notas. Si algo no está claro, escribí [no está claro: …] en lugar de suponer.
 - Antes de la actualización, listá todos los riesgos o bloqueos que encontraste en las notas, para que pueda verificar que no se perdió ninguno.
 - Lenguaje simple, sin adjetivos como "excelente" o "significativo".`,
-          pt: `Write this week's status update for [project] for [audience].
+          pt: `Escreva a atualização de status desta semana do [projeto] para [público].
 
 <plan>
-[milestones and dates]
+[marcos e datas]
 </plan>
 
 <notes>
-[paste notes, ticket titles with their status, meeting minutes]
+[cole anotações, títulos dos tickets com o status de cada um, atas de reunião]
 </notes>
 
-Format:
-- Status: On track / At risk / Off track — one sentence why
-- Done this week (max 5 bullets, finished work only)
-- Risks and blockers (owner, what's needed)
-- Asks (who, what, by when)
-- Next week (max 3 bullets)
+Formato:
+- Status: No prazo / Em risco / Fora do prazo — uma frase explicando por quê
+- Concluído nesta semana (no máximo 5 tópicos, só trabalho concluído)
+- Riscos e bloqueios (responsável, o que é necessário)
+- Pedidos (quem, o quê, até quando)
+- Próxima semana (no máximo 3 tópicos)
 
-Rules:
-- Use only information from the notes. If something is unclear, write [unclear: …] instead of guessing.
-- Before the update, list every risk or blocker you found in the notes, so I can check none was dropped.
-- Plain language, no adjectives like "great" or "significant".`,
+Regras:
+- Use só informações das anotações. Se algo estiver pouco claro, escreva [pouco claro: …] em vez de chutar.
+- Antes da atualização, liste todos os riscos ou bloqueios que você encontrou nas anotações, para eu conferir que nenhum ficou de fora.
+- Linguagem simples, sem adjetivos como "ótimo" ou "significativo".`,
         },
       },
       {
-        title: { en: "Executive summary of a longer report", es: "Resumen ejecutivo de un reporte más largo", pt: "Executive summary of a longer report" },
+        title: { en: "Executive summary of a longer report", es: "Resumen ejecutivo de un reporte más largo", pt: "Resumo executivo de um relatório mais longo" },
         purpose: "summarization",
         target: "gpt",
         prompt: {
@@ -12175,23 +12175,23 @@ Salida:
 4. Nada más — sin contexto ni lista de actividades.
 
 Cada número y fecha tiene que aparecer en el reporte. Si el reporte no dice qué decisión hace falta, escribí "No hace falta ninguna decisión en este período".`,
-          pt: `Turn the team report below into an executive summary for [leadership audience].
+          pt: `Transforme o relatório do time abaixo em um resumo executivo para [público da liderança].
 
 <report>
-[paste the detailed status report]
+[cole o relatório de status detalhado]
 </report>
 
-Output:
-1. One-line status with the reason.
-2. Up to 3 points leadership needs to know, each one sentence.
-3. Decisions needed from leadership, with the deadline and the consequence of not deciding.
-4. Nothing else — no background, no list of activities.
+Saída:
+1. Status em uma linha, com o motivo.
+2. Até 3 pontos que a liderança precisa saber, uma frase cada.
+3. Decisões necessárias da liderança, com o prazo e a consequência de não decidir.
+4. Nada além disso — sem contexto, sem lista de atividades.
 
-Every number and date must appear in the report. If the report doesn't say what decision is needed, write "No decision needed this period".`,
+Todo número e toda data precisam aparecer no relatório. Se o relatório não disser qual decisão é necessária, escreva "Nenhuma decisão necessária neste período".`,
         },
       },
       {
-        title: { en: "Check a draft report before sending", es: "Revisar un borrador de reporte antes de enviarlo", pt: "Check a draft report before sending" },
+        title: { en: "Check a draft report before sending", es: "Revisar un borrador de reporte antes de enviarlo", pt: "Conferir um rascunho de relatório antes de enviar" },
         purpose: "text",
         target: "gemini",
         prompt: {
@@ -12227,48 +12227,48 @@ Listá, en este orden:
 3. Oraciones que describen actividad en lugar de resultados, con una reescritura.
 4. Cualquier pedido que no tenga responsable o fecha.
 No reescribas el reporte completo.`,
-          pt: `Review my status report draft before I send it to [audience].
+          pt: `Revise o rascunho do meu relatório de status antes de eu enviá-lo para [público].
 
 <draft>
-[paste your draft]
+[cole seu rascunho]
 </draft>
 
 <source>
-[paste the notes or tickets it is based on]
+[cole as anotações ou os tickets em que ele se baseia]
 </source>
 
-List, in this order:
-1. Claims in the draft that the source doesn't support.
-2. Risks or blockers in the source that the draft leaves out.
-3. Sentences that describe activity instead of results, with a rewrite.
-4. Any ask that has no owner or date.
-Don't rewrite the whole report.`,
+Liste, nesta ordem:
+1. Afirmações do rascunho que a fonte não sustenta.
+2. Riscos ou bloqueios da fonte que o rascunho deixa de fora.
+3. Frases que descrevem atividade em vez de resultados, com uma reescrita.
+4. Qualquer pedido sem responsável ou sem data.
+Não reescreva o relatório inteiro.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can AI write my status report from Jira or other ticket data?", es: "¿La IA puede escribir mi reporte de estado a partir de Jira u otros tickets?", pt: "Can AI write my status report from Jira or other ticket data?" },
+        q: { en: "Can AI write my status report from Jira or other ticket data?", es: "¿La IA puede escribir mi reporte de estado a partir de Jira u otros tickets?", pt: "A IA consegue escrever meu relatório de status a partir do Jira ou de outros dados de tickets?" },
         a: {
           en: "Yes, if you give it the ticket titles, statuses and any comments that explain changes. Ticket data alone rarely explains why something slipped, so add a few lines of your own context, and check the result before sending. Some tools connect to ticket systems directly; check what your plan and your company allow.",
           es: "Sí, si le das los títulos, estados y los comentarios que explican cambios. Los tickets solos casi nunca explican por qué algo se atrasó, así que sumá unas líneas de contexto propio y revisá el resultado antes de enviarlo. Algunas herramientas se conectan directo a sistemas de tickets; fijate qué permiten tu plan y tu empresa.",
-          pt: "Yes, if you give it the ticket titles, statuses and any comments that explain changes. Ticket data alone rarely explains why something slipped, so add a few lines of your own context, and check the result before sending. Some tools connect to ticket systems directly; check what your plan and your company allow.",
+          pt: "Sim, se você der a ela os títulos dos tickets, os status e os comentários que explicam as mudanças. Os dados dos tickets sozinhos raramente explicam por que algo atrasou, então acrescente algumas linhas de contexto seu e confira o resultado antes de enviar. Algumas ferramentas se conectam diretamente aos sistemas de tickets; veja o que o seu plano e a sua empresa permitem.",
         },
       },
       {
-        q: { en: "How do I keep the same format every week?", es: "¿Cómo mantengo el mismo formato todas las semanas?", pt: "How do I keep the same format every week?" },
+        q: { en: "How do I keep the same format every week?", es: "¿Cómo mantengo el mismo formato todas las semanas?", pt: "Como mantenho o mesmo formato toda semana?" },
         a: {
           en: "Save the template with your headings and rules, paste last week's report as an example of the format, and tell the model to keep the same sections and order. A saved prompt in your team's library makes the reports comparable from week to week.",
           es: "Guardá la plantilla con tus títulos y reglas, pegá el reporte de la semana anterior como ejemplo del formato y pedile al modelo que mantenga las mismas secciones y el mismo orden. Un prompt guardado en la biblioteca de tu equipo hace que los reportes se puedan comparar semana a semana.",
-          pt: "Save the template with your headings and rules, paste last week's report as an example of the format, and tell the model to keep the same sections and order. A saved prompt in your team's library makes the reports comparable from week to week.",
+          pt: "Salve o template com os seus títulos e regras, cole o relatório da semana passada como exemplo do formato e diga ao modelo para manter as mesmas seções e a mesma ordem. Um prompt salvo na biblioteca do seu time deixa os relatórios comparáveis de uma semana para outra.",
         },
       },
       {
-        q: { en: "Should I tell readers the report was drafted with AI?", es: "¿Tengo que avisar que el reporte se redactó con IA?", pt: "Should I tell readers the report was drafted with AI?" },
+        q: { en: "Should I tell readers the report was drafted with AI?", es: "¿Tengo que avisar que el reporte se redactó con IA?", pt: "Devo avisar os leitores que o relatório foi rascunhado com IA?" },
         a: {
           en: "Follow your organization's policy. Either way, you are responsible for the content: verify every status, date and number against the source before you send it.",
           es: "Seguí la política de tu organización. En cualquier caso, el responsable del contenido sos vos: verificá cada estado, fecha y número contra la fuente antes de enviarlo.",
-          pt: "Follow your organization's policy. Either way, you are responsible for the content: verify every status, date and number against the source before you send it.",
+          pt: "Siga a política da sua organização. De qualquer forma, você é responsável pelo conteúdo: confira cada status, data e número com a fonte antes de enviar.",
         },
       },
     ],
@@ -12278,16 +12278,16 @@ Don't rewrite the whole report.`,
     title: {
       en: "AI prompts for competitor analysis: profiles, comparison tables and positioning",
       es: "Prompts de IA para análisis de competencia: perfiles, tablas comparativas y posicionamiento",
-      pt: "AI prompts for competitor analysis: profiles, comparison tables and positioning",
+      pt: "Prompts de IA para análise de concorrentes: perfis, comparações e posicionamento",
     },
     description: {
       en: "How to use ChatGPT, Claude, Gemini or Perplexity for competitor analysis without invented facts: what sources to give the model, how to keep every claim traceable, how to build a fair comparison table, and how to turn findings into positioning. Copy-paste templates included.",
       es: "Cómo usar ChatGPT, Claude, Gemini o Perplexity para analizar a la competencia sin datos inventados: qué fuentes darle al modelo, cómo hacer que cada afirmación se pueda rastrear, cómo armar una tabla comparativa justa y cómo convertir lo que encontraste en posicionamiento. Incluye plantillas para copiar y pegar.",
-      pt: "How to use ChatGPT, Claude, Gemini or Perplexity for competitor analysis without invented facts: what sources to give the model, how to keep every claim traceable, how to build a fair comparison table, and how to turn findings into positioning. Copy-paste templates included.",
+      pt: "Como usar o ChatGPT, o Claude, o Gemini ou o Perplexity para analisar concorrentes sem fatos inventados: quais fontes dar ao modelo, como manter cada afirmação rastreável, como montar uma tabela de comparação justa e como transformar os achados em posicionamento. Inclui templates para copiar e colar.",
     },
     sections: [
       {
-        heading: { en: "Where AI helps and where it doesn't", es: "Dónde ayuda la IA y dónde no", pt: "Where AI helps and where it doesn't" },
+        heading: { en: "Where AI helps and where it doesn't", es: "Dónde ayuda la IA y dónde no", pt: "Onde a IA ajuda e onde não ajuda" },
         bullets: {
           en: [
             "Helps: reading a lot of public material quickly (pricing pages, docs, release notes, reviews you collected) and organizing it into the same structure for every competitor.",
@@ -12302,15 +12302,15 @@ Don't rewrite the whole report.`,
             "No decide la estrategia: puede listar opciones y sus costos, pero en qué mercado competir es una decisión de negocio que tomás vos con la evidencia.",
           ],
           pt: [
-            "Helps: reading a lot of public material quickly (pricing pages, docs, release notes, reviews you collected) and organizing it into the same structure for every competitor.",
-            "Helps: spotting patterns across sources, such as repeated complaints in reviews or features every competitor now offers.",
-            "Doesn't replace sources: without web access or pasted material, a model answers from training data that may be outdated or wrong, and it can invent prices, features or customer names.",
-            "Doesn't decide strategy: it can list options and trade-offs, but which market to fight for is a business decision you make with the evidence.",
+            "Ajuda: ler rapidamente muito material público (páginas de preço, documentação, notas de versão, avaliações que você reuniu) e organizá-lo na mesma estrutura para cada concorrente.",
+            "Ajuda: identificar padrões entre as fontes, como reclamações repetidas nas avaliações ou funcionalidades que todos os concorrentes já oferecem.",
+            "Não substitui as fontes: sem acesso à web nem material colado, um modelo responde com dados de treinamento que podem estar desatualizados ou errados, e pode inventar preços, funcionalidades ou nomes de clientes.",
+            "Não decide a estratégia: ele pode listar opções e trade-offs, mas em qual mercado brigar é uma decisão de negócio que você toma com base nas evidências.",
           ],
         },
       },
       {
-        heading: { en: "Make every claim traceable", es: "Que cada afirmación se pueda rastrear", pt: "Make every claim traceable" },
+        heading: { en: "Make every claim traceable", es: "Que cada afirmación se pueda rastrear", pt: "Deixe cada afirmação rastreável" },
         bullets: {
           en: [
             "Paste the source material inside delimiters, one block per source, with the URL and the date you collected it.",
@@ -12327,16 +12327,16 @@ Don't rewrite the whole report.`,
             "Limitate a información pública. No pegues material obtenido bajo acuerdo de confidencialidad ni de sistemas privados de un competidor.",
           ],
           pt: [
-            "Paste the source material inside delimiters, one block per source, with the URL and the date you collected it.",
-            "Ask for a source next to every fact ('[source 3]'), and a separate list of anything the model could not find in the material.",
-            "If you use a tool with web search, ask it to link the page it read and check those links yourself; search results can be stale or mismatched.",
-            "Date the analysis. Prices and features change, so a table without a date becomes misleading quickly.",
-            "Keep it to public information. Don't paste material obtained under NDA or from a competitor's private systems.",
+            "Cole o material de referência entre delimitadores, um bloco por fonte, com a URL e a data em que você o coletou.",
+            "Peça uma fonte ao lado de cada fato ('[fonte 3]') e uma lista separada de tudo o que o modelo não encontrou no material.",
+            "Se você usa uma ferramenta com busca na web, peça que ela coloque o link da página que leu e confira esses links você mesmo; os resultados de busca podem estar desatualizados ou não corresponder ao que você pediu.",
+            "Coloque data na análise. Preços e funcionalidades mudam, então uma tabela sem data rapidamente passa a induzir ao erro.",
+            "Limite-se a informações públicas. Não cole material obtido sob NDA ou dos sistemas privados de um concorrente.",
           ],
         },
       },
       {
-        heading: { en: "Build a comparison that is actually fair", es: "Armá una comparación que sea justa de verdad", pt: "Build a comparison that is actually fair" },
+        heading: { en: "Build a comparison that is actually fair", es: "Armá una comparación que sea justa de verdad", pt: "Monte uma comparação realmente justa" },
         bullets: {
           en: [
             "Choose the comparison criteria before you look at the results, based on what your customers weigh when they decide.",
@@ -12351,17 +12351,17 @@ Don't rewrite the whole report.`,
             "Poné 'no encontrado' en lugar de 'no' cuando el material no menciona una función: que no aparezca no prueba que no exista.",
           ],
           pt: [
-            "Choose the comparison criteria before you look at the results, based on what your customers weigh when they decide.",
-            "Use the same criteria and the same type of source for every competitor, including your own product.",
-            "Separate facts (has SSO: yes/no, according to the docs) from judgments (onboarding feels easier); label judgments as such.",
-            "Mark 'not found' instead of 'no' when the material doesn't mention a feature; absence of evidence isn't evidence of absence.",
+            "Escolha os critérios de comparação antes de olhar os resultados, com base no que os seus clientes levam em conta na hora de decidir.",
+            "Use os mesmos critérios e o mesmo tipo de fonte para cada concorrente, incluindo o seu próprio produto.",
+            "Separe fatos (tem SSO: sim/não, segundo a documentação) de julgamentos (o onboarding parece mais fácil); identifique os julgamentos como tais.",
+            "Marque 'não encontrado' em vez de 'não' quando o material não mencionar uma funcionalidade; ausência de evidência não é evidência de ausência.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Competitor profile from pasted sources", es: "Perfil de un competidor a partir de fuentes pegadas", pt: "Competitor profile from pasted sources" },
+        title: { en: "Competitor profile from pasted sources", es: "Perfil de un competidor a partir de fuentes pegadas", pt: "Perfil de concorrente a partir de fontes coladas" },
         purpose: "summarization",
         target: "claude",
         prompt: {
@@ -12405,30 +12405,30 @@ Reglas:
 - Poné el id de la fuente después de cada dato, como [1].
 - Si una sección no tiene información en las fuentes, escribí "No está en las fuentes". No completes huecos de memoria.
 - Terminá con una lista de preguntas que las fuentes dejan abiertas.`,
-          pt: `Build a profile of [competitor] using only the sources below. Collected on [date].
+          pt: `Monte um perfil do [concorrente] usando só as fontes abaixo. Coletadas em [data].
 
 <source id="1" url="[url]">
-[paste pricing page, docs, release notes or reviews]
+[cole a página de preços, a documentação, as notas de versão ou as avaliações]
 </source>
 <source id="2" url="[url]">
-[paste]
+[cole aqui]
 </source>
 
-Sections:
-1. What they sell and to whom (2–3 sentences).
-2. Pricing and plans as stated.
-3. Key features relevant to [our category].
-4. Recent changes (with dates, if the sources give them).
-5. Strengths and complaints that appear in reviews, with how often each appears.
+Seções:
+1. O que vende e para quem (2–3 frases).
+2. Preços e planos como estão informados.
+3. Principais funcionalidades relevantes para [a nossa categoria].
+4. Mudanças recentes (com datas, se as fontes as informarem).
+5. Pontos fortes e reclamações que aparecem nas avaliações, com a frequência de cada um.
 
-Rules:
-- Put the source id after every fact, like [1].
-- If a section has no information in the sources, write "Not in sources". Don't fill gaps from memory.
-- End with a list of questions the sources leave open.`,
+Regras:
+- Coloque o id da fonte depois de cada fato, como [1].
+- Se uma seção não tiver informação nas fontes, escreva "Não consta nas fontes". Não preencha as lacunas de memória.
+- Termine com uma lista de perguntas que as fontes deixam em aberto.`,
         },
       },
       {
-        title: { en: "Feature comparison table (JSON)", es: "Tabla comparativa de funciones (JSON)", pt: "Feature comparison table (JSON)" },
+        title: { en: "Feature comparison table (JSON)", es: "Tabla comparativa de funciones (JSON)", pt: "Tabela de comparação de funcionalidades (JSON)" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -12466,27 +12466,27 @@ Reglas:
 - Usá "no encontrado" cuando un perfil no menciona el criterio; nunca asumas "no".
 - Marcá como "juicio" todo lo que sea opinión o impresión.
 - Los mismos criterios para cada producto, en el mismo orden.`,
-          pt: `Compare the products below on the criteria I give you, using only the profiles provided.
+          pt: `Compare os produtos abaixo com base nos critérios que eu der, usando só os perfis fornecidos.
 
 <criteria>
-[list 6–10 criteria your customers care about, e.g. SSO, API access, price of the entry plan]
+[liste 6–10 critérios que importam para os seus clientes, ex. SSO, acesso à API, preço do plano de entrada]
 </criteria>
 
 <profiles>
-[paste one profile per product, including ours, each with its sources]
+[cole um perfil por produto, incluindo o nosso, cada um com suas fontes]
 </profiles>
 
-Return JSON only:
-{"as_of": "[date]", "rows": [{"criterion": "...", "values": [{"product": "...", "value": "yes | no | not found | <short text>", "source": "...", "type": "fact | judgment"}]}]}
+Retorne só JSON:
+{"as_of": "[data]", "rows": [{"criterion": "...", "values": [{"product": "...", "value": "yes | no | not found | <texto curto>", "source": "...", "type": "fact | judgment"}]}]}
 
-Rules:
-- Use "not found" when a profile doesn't mention the criterion; never assume "no".
-- Mark anything that is an opinion or impression as "judgment".
-- Same criteria for every product, in the same order.`,
+Regras:
+- Use "not found" quando um perfil não mencionar o critério; nunca suponha "no".
+- Marque como "judgment" tudo o que for opinião ou impressão.
+- Os mesmos critérios para todos os produtos, na mesma ordem.`,
         },
       },
       {
-        title: { en: "Positioning options from the comparison", es: "Opciones de posicionamiento a partir de la comparación", pt: "Positioning options from the comparison" },
+        title: { en: "Positioning options from the comparison", es: "Opciones de posicionamiento a partir de la comparación", pt: "Opções de posicionamento a partir da comparação" },
         purpose: "marketing",
         target: "gemini",
         prompt: {
@@ -12520,47 +12520,47 @@ Reglas:
 - Basá cada opción en diferencias que aparecen en la comparación; no inventes ventajas.
 - Sin superlativos ("el mejor", "el único") salvo que la comparación lo muestre y puedas nombrar la evidencia.
 - No elijas una ganadora; decido yo.`,
-          pt: `Using the comparison below, suggest positioning options for [our product] aimed at [target customer].
+          pt: `Com base na comparação abaixo, sugira opções de posicionamento para [nosso produto] voltadas para [cliente-alvo].
 
 <comparison>
-[paste the comparison table or summary]
+[cole a tabela de comparação ou o resumo]
 </comparison>
 
-Give me 3 options. For each:
-- The one-sentence positioning statement.
-- Which rows of the comparison support it (quote them).
-- The main risk: what a competitor could say back, or what we would have to prove.
+Me dê 3 opções. Para cada uma:
+- A declaração de posicionamento em uma frase.
+- Quais linhas da comparação a sustentam (cite-as).
+- O principal risco: o que um concorrente poderia responder, ou o que teríamos de provar.
 
-Rules:
-- Base every option on differences that appear in the comparison; don't invent advantages.
-- No superlatives ("best", "only") unless the comparison shows it and you can name the evidence.
-- Don't pick a winner; I'll decide.`,
+Regras:
+- Baseie cada opção em diferenças que aparecem na comparação; não invente vantagens.
+- Sem superlativos ("o melhor", "o único"), a menos que a comparação mostre isso e você consiga indicar a evidência.
+- Não escolha um vencedor; eu vou decidir.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can ChatGPT or Claude research competitors on their own?", es: "¿ChatGPT o Claude pueden investigar a la competencia por su cuenta?", pt: "Can ChatGPT or Claude research competitors on their own?" },
+        q: { en: "Can ChatGPT or Claude research competitors on their own?", es: "¿ChatGPT o Claude pueden investigar a la competencia por su cuenta?", pt: "O ChatGPT ou o Claude conseguem pesquisar concorrentes sozinhos?" },
         a: {
           en: "Only when web search or browsing is enabled in the tool you use, and even then you should open the cited pages yourself. Without it, the model answers from training data with a cutoff date, which can miss recent pricing or product changes. For decisions, collect the sources first and ask the model to work only from them.",
           es: "Solo cuando la herramienta que usás tiene búsqueda o navegación web activada, y aun así conviene que abras vos las páginas citadas. Sin eso, el modelo responde con datos de entrenamiento que tienen fecha de corte y pueden no incluir cambios recientes de precios o de producto. Para tomar decisiones, juntá primero las fuentes y pedile al modelo que trabaje solo con ellas.",
-          pt: "Only when web search or browsing is enabled in the tool you use, and even then you should open the cited pages yourself. Without it, the model answers from training data with a cutoff date, which can miss recent pricing or product changes. For decisions, collect the sources first and ask the model to work only from them.",
+          pt: "Só quando a busca ou a navegação na web estiver ativada na ferramenta que você usa, e mesmo assim você deve abrir as páginas citadas por conta própria. Sem isso, o modelo responde com dados de treinamento que têm uma data de corte, o que pode deixar de fora mudanças recentes de preço ou de produto. Para tomar decisões, reúna as fontes primeiro e peça ao modelo para trabalhar só com elas.",
         },
       },
       {
-        q: { en: "How often should I update a competitor analysis?", es: "¿Cada cuánto conviene actualizar un análisis de competencia?", pt: "How often should I update a competitor analysis?" },
+        q: { en: "How often should I update a competitor analysis?", es: "¿Cada cuánto conviene actualizar un análisis de competencia?", pt: "Com que frequência devo atualizar uma análise de concorrentes?" },
         a: {
           en: "It depends on how fast your market moves. A practical approach is to keep the profiles and table as a living document with an 'as of' date, and refresh a competitor whenever they publish pricing changes or major release notes. Re-running the same saved prompts on the new sources keeps the format comparable.",
           es: "Depende de qué tan rápido se mueve tu mercado. Una forma práctica es mantener los perfiles y la tabla como un documento vivo con fecha de actualización, y renovar un competidor cada vez que publica cambios de precios o notas de versión importantes. Volver a correr los mismos prompts guardados sobre las fuentes nuevas mantiene el formato comparable.",
-          pt: "It depends on how fast your market moves. A practical approach is to keep the profiles and table as a living document with an 'as of' date, and refresh a competitor whenever they publish pricing changes or major release notes. Re-running the same saved prompts on the new sources keeps the format comparable.",
+          pt: "Depende da velocidade do seu mercado. Uma abordagem prática é manter os perfis e a tabela como um documento vivo com uma data de referência e atualizar um concorrente sempre que ele publicar mudanças de preço ou notas de versão importantes. Rodar de novo os mesmos prompts salvos com as fontes novas mantém o formato comparável.",
         },
       },
       {
-        q: { en: "Is it OK to paste competitor content into an AI tool?", es: "¿Está bien pegar contenido de la competencia en una herramienta de IA?", pt: "Is it OK to paste competitor content into an AI tool?" },
+        q: { en: "Is it OK to paste competitor content into an AI tool?", es: "¿Está bien pegar contenido de la competencia en una herramienta de IA?", pt: "Tudo bem colar conteúdo de concorrentes em uma ferramenta de IA?" },
         a: {
           en: "Public pages such as pricing, documentation and published reviews are generally what competitor analysis is built on. Avoid confidential material, and check your organization's policy on which AI tools may process company work. This is not legal advice; ask your legal team if you're unsure.",
           es: "Las páginas públicas como precios, documentación y reseñas publicadas son, en general, la base de un análisis de competencia. Evitá el material confidencial y revisá la política de tu organización sobre qué herramientas de IA pueden procesar trabajo de la empresa. Esto no es asesoramiento legal; si tenés dudas, consultá con tu equipo legal.",
-          pt: "Public pages such as pricing, documentation and published reviews are generally what competitor analysis is built on. Avoid confidential material, and check your organization's policy on which AI tools may process company work. This is not legal advice; ask your legal team if you're unsure.",
+          pt: "Páginas públicas, como preços, documentação e avaliações publicadas, são em geral a base de uma análise de concorrentes. Evite material confidencial e consulte a política da sua organização sobre quais ferramentas de IA podem processar trabalhos da empresa. Isto não é orientação jurídica; em caso de dúvida, pergunte ao seu time jurídico.",
         },
       },
     ],
@@ -12571,16 +12571,16 @@ Rules:
     title: {
       en: "AI prompts for SOPs: turn how-you-work into clear, testable procedures",
       es: "Prompts de IA para procedimientos (SOP): convertí cómo trabajás en pasos claros y verificables",
-      pt: "AI prompts for SOPs: turn how-you-work into clear, testable procedures",
+      pt: "Prompts de IA para POPs: transforme como você trabalha em procedimentos claros e testáveis",
     },
     description: {
       en: "How to use ChatGPT, Claude or Gemini to write SOPs from walkthroughs, notes or transcripts: what the model needs, concrete steps, finding gaps before someone follows it, and turning it into a checklist. Templates included.",
       es: "Cómo usar ChatGPT, Claude o Gemini para escribir SOP a partir de recorridos, notas o transcripciones: qué necesita el modelo, pasos concretos, cómo encontrar huecos antes de que alguien lo siga y cómo convertirlo en checklist. Incluye plantillas.",
-      pt: "How to use ChatGPT, Claude or Gemini to write SOPs from walkthroughs, notes or transcripts: what the model needs, concrete steps, finding gaps before someone follows it, and turning it into a checklist. Templates included.",
+      pt: "Como usar o ChatGPT, o Claude ou o Gemini para escrever procedimentos operacionais padrão (POPs) a partir de demonstrações, anotações ou transcrições: do que o modelo precisa, passos concretos, como encontrar lacunas antes que alguém siga o procedimento e como transformá-lo em checklist. Inclui templates.",
     },
     sections: [
       {
-        heading: { en: "What a usable SOP contains", es: "Qué tiene un SOP que se pueda usar", pt: "What a usable SOP contains" },
+        heading: { en: "What a usable SOP contains", es: "Qué tiene un SOP que se pueda usar", pt: "O que um POP utilizável contém" },
         bullets: {
           en: [
             "Purpose and scope: what the procedure achieves, when to use it and when not to.",
@@ -12597,16 +12597,16 @@ Rules:
             "Qué hacer si algo sale mal y a quién contactar.",
           ],
           pt: [
-            "Purpose and scope: what the procedure achieves, when to use it and when not to.",
-            "Who does it, and what they need before starting (access, tools, inputs).",
-            "Numbered steps, one action each, written as instructions ('Export the report as CSV', not 'The report is exported').",
-            "What 'done' looks like, and how to check it.",
-            "What to do when something goes wrong, and who to contact.",
+            "Propósito e escopo: o que o procedimento alcança, quando usá-lo e quando não usar.",
+            "Quem o executa e do que a pessoa precisa antes de começar (acessos, ferramentas, insumos).",
+            "Passos numerados, uma ação cada, escritos como instruções ('Exporte o relatório como CSV', não 'O relatório é exportado').",
+            "Como é o 'pronto' e como conferir.",
+            "O que fazer quando algo dá errado e com quem falar.",
           ],
         },
       },
       {
-        heading: { en: "Start from how the work is really done", es: "Partí de cómo se hace el trabajo de verdad", pt: "Start from how the work is really done" },
+        heading: { en: "Start from how the work is really done", es: "Partí de cómo se hace el trabajo de verdad", pt: "Comece pela forma como o trabalho é feito de verdade" },
         bullets: {
           en: [
             "The best raw material is a walkthrough: a transcript of someone doing the task and explaining it, or their step-by-step notes.",
@@ -12623,16 +12623,16 @@ Rules:
             "Sacá contraseñas, tokens de acceso y datos personales de las transcripciones antes de pegarlas.",
           ],
           pt: [
-            "The best raw material is a walkthrough: a transcript of someone doing the task and explaining it, or their step-by-step notes.",
-            "Paste existing documents too, but tell the model which source wins when they disagree (usually the most recent walkthrough).",
-            "Ask the model to list every decision point it found ('if the client is new…') so branches don't get flattened into one path.",
-            "Ask for '[missing: …]' markers instead of plausible-sounding steps the source doesn't contain.",
-            "Remove passwords, access tokens and personal data from transcripts before pasting.",
+            "O melhor material bruto é uma demonstração: a transcrição de alguém fazendo a tarefa e explicando, ou as anotações passo a passo dessa pessoa.",
+            "Cole também os documentos existentes, mas diga ao modelo qual fonte prevalece quando houver divergência (normalmente a demonstração mais recente).",
+            "Peça ao modelo para listar cada ponto de decisão que ele encontrou ('se o cliente for novo…') para que as ramificações não sejam achatadas em um único caminho.",
+            "Peça marcadores '[faltando: …]' em vez de passos que soam plausíveis, mas que a fonte não contém.",
+            "Remova senhas, tokens de acesso e dados pessoais das transcrições antes de colar.",
           ],
         },
       },
       {
-        heading: { en: "Test the SOP before you publish it", es: "Probá el SOP antes de publicarlo", pt: "Test the SOP before you publish it" },
+        heading: { en: "Test the SOP before you publish it", es: "Probá el SOP antes de publicarlo", pt: "Teste o POP antes de publicar" },
         bullets: {
           en: [
             "Ask a model to act as a new hire and list every step it couldn't perform with only the SOP in hand.",
@@ -12647,17 +12647,17 @@ Rules:
             "Agregá un responsable y una fecha de revisión para que el procedimiento no quede viejo sin que nadie lo note.",
           ],
           pt: [
-            "Ask a model to act as a new hire and list every step it couldn't perform with only the SOP in hand.",
-            "Have someone who didn't write it follow it once, and fix every place they had to ask a question.",
-            "Check that every tool, field and button name matches the current system; renamed screens are the most common reason SOPs fail.",
-            "Add an owner and a review date so the procedure doesn't silently go stale.",
+            "Peça a um modelo para agir como alguém recém-contratado e listar cada passo que não conseguiria executar só com o POP em mãos.",
+            "Peça a alguém que não o escreveu para segui-lo uma vez e corrija cada ponto em que essa pessoa precisou fazer uma pergunta.",
+            "Confira se cada nome de ferramenta, campo e botão corresponde ao sistema atual; telas renomeadas são o motivo mais comum de os POPs falharem.",
+            "Acrescente um responsável e uma data de revisão para que o procedimento não fique desatualizado sem ninguém perceber.",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Draft an SOP from a walkthrough transcript", es: "Redactar un SOP a partir de la transcripción de un recorrido", pt: "Draft an SOP from a walkthrough transcript" },
+        title: { en: "Draft an SOP from a walkthrough transcript", es: "Redactar un SOP a partir de la transcripción de un recorrido", pt: "Rascunhar um POP a partir da transcrição de uma demonstração" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -12705,32 +12705,32 @@ Después escribí el SOP:
 Reglas:
 - Incluí solo pasos que aparecen en las fuentes. Donde falte algo, escribí [falta: …].
 - Mantené los nombres exactos de herramientas, campos y botones tal como aparecen en las fuentes.`,
-          pt: `Write a standard operating procedure for [process] from the walkthrough below. The reader is [role], who has [level of experience].
+          pt: `Escreva um procedimento operacional padrão para [processo] a partir da demonstração abaixo. Quem vai ler é [cargo], com [nível de experiência].
 
 <walkthrough>
-[paste the transcript or step-by-step notes]
+[cole a transcrição ou as anotações passo a passo]
 </walkthrough>
 
 <existing_docs>
-[optional: paste older documentation; the walkthrough wins if they disagree]
+[opcional: cole a documentação antiga; a demonstração prevalece se houver divergência]
 </existing_docs>
 
-First, list every decision point you found (if/then situations) and every tool or system mentioned.
+Primeiro, liste cada ponto de decisão que você encontrou (situações do tipo se/então) e cada ferramenta ou sistema mencionado.
 
-Then write the SOP:
-1. Purpose and scope (when to use it, when not to).
-2. Before you start: access, tools and inputs needed.
-3. Steps: numbered, one action per step, imperative voice. Put branches as sub-steps ("If X: … / Otherwise: …").
-4. Done when: how to check the result.
-5. If something goes wrong: what to do and who to contact.
+Depois, escreva o POP:
+1. Propósito e escopo (quando usar, quando não usar).
+2. Antes de começar: acessos, ferramentas e insumos necessários.
+3. Passos: numerados, uma ação por passo, no imperativo. Coloque as ramificações como subpassos ("Se X: … / Caso contrário: …").
+4. Pronto quando: como conferir o resultado.
+5. Se algo der errado: o que fazer e com quem falar.
 
-Rules:
-- Only include steps that appear in the sources. Where something is missing, write [missing: …].
-- Keep exact names of tools, fields and buttons as they appear in the sources.`,
+Regras:
+- Inclua só os passos que aparecem nas fontes. Onde faltar algo, escreva [faltando: …].
+- Mantenha os nomes exatos de ferramentas, campos e botões como aparecem nas fontes.`,
         },
       },
       {
-        title: { en: "Find the gaps in an SOP (new-hire test)", es: "Encontrar los huecos de un SOP (prueba de recién ingresado)", pt: "Find the gaps in an SOP (new-hire test)" },
+        title: { en: "Find the gaps in an SOP (new-hire test)", es: "Encontrar los huecos de un SOP (prueba de recién ingresado)", pt: "Encontrar as lacunas de um POP (teste do recém-contratado)" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -12762,24 +12762,24 @@ Recorrelo paso a paso y listá, en una tabla (número de paso | problema | pregu
 - Lugares donde no podés saber si el paso funcionó.
 
 No reescribas el SOP. Solo listá problemas.`,
-          pt: `Act as a new [role] on your first week. You have only the SOP below and no one to ask.
+          pt: `Aja como um novo [cargo] na sua primeira semana. Você tem só o POP abaixo e ninguém a quem perguntar.
 
 <sop>
-[paste the SOP]
+[cole o POP]
 </sop>
 
-Go through it step by step and list, in a table (step number | problem | question you would ask):
-- Steps you couldn't perform because information is missing (access, location, values).
-- Steps that combine more than one action.
-- Terms or abbreviations that aren't explained.
-- Decisions the SOP expects you to make without criteria.
-- Places where you can't tell whether the step worked.
+Percorra-o passo a passo e liste, em uma tabela (número do passo | problema | pergunta que você faria):
+- Passos que você não conseguiu executar porque falta informação (acesso, local, valores).
+- Passos que combinam mais de uma ação.
+- Termos ou siglas que não são explicados.
+- Decisões que o POP espera que você tome sem critérios.
+- Pontos em que você não consegue saber se o passo funcionou.
 
-Don't rewrite the SOP. Only list problems.`,
+Não reescreva o POP. Só liste os problemas.`,
         },
       },
       {
-        title: { en: "Turn an SOP into a run checklist", es: "Convertir un SOP en un checklist de ejecución", pt: "Turn an SOP into a run checklist" },
+        title: { en: "Turn an SOP into a run checklist", es: "Convertir un SOP en un checklist de ejecución", pt: "Transformar um POP em um checklist de execução" },
         purpose: "summarization",
         target: "gemini",
         prompt: {
@@ -12809,45 +12809,45 @@ Reglas:
 - Agregá un control final "Terminado cuando" copiado del SOP.
 - Dejá afuera explicaciones y contexto; en su lugar, remití al número de sección del SOP.
 - No agregues pasos que no estén en el SOP.`,
-          pt: `Turn the SOP below into a checklist someone can tick off while doing the work.
+          pt: `Transforme o POP abaixo em um checklist que alguém possa ir marcando enquanto faz o trabalho.
 
 <sop>
-[paste the SOP]
+[cole o POP]
 </sop>
 
-Rules:
-- One checkbox per action, in the same order as the SOP, as "- [ ] …".
-- Keep decision points as short "If … → go to item N" lines.
-- Keep exact tool, field and button names.
-- Add a final "Done when" check copied from the SOP.
-- Leave out explanations and background; link back to the SOP section number instead.
-- Don't add steps that aren't in the SOP.`,
+Regras:
+- Uma caixa de seleção por ação, na mesma ordem do POP, no formato "- [ ] …".
+- Mantenha os pontos de decisão como linhas curtas do tipo "Se … → vá para o item N".
+- Mantenha os nomes exatos de ferramentas, campos e botões.
+- Acrescente uma verificação final "Pronto quando" copiada do POP.
+- Deixe de fora explicações e contexto; em vez disso, indique o número da seção do POP.
+- Não acrescente passos que não estejam no POP.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can AI write an SOP without a walkthrough?", es: "¿La IA puede escribir un SOP sin un recorrido?", pt: "Can AI write an SOP without a walkthrough?" },
+        q: { en: "Can AI write an SOP without a walkthrough?", es: "¿La IA puede escribir un SOP sin un recorrido?", pt: "A IA consegue escrever um POP sem uma demonstração?" },
         a: {
           en: "It can write a generic outline, but the steps that matter — your tools, your field names, your exceptions — only come from someone who does the work. Use a model-written outline as a starting structure, then fill it from a real walkthrough and mark anything unverified.",
           es: "Puede escribir un esquema genérico, pero los pasos que importan — tus herramientas, tus nombres de campos, tus excepciones — solo salen de alguien que hace el trabajo. Usá el esquema del modelo como estructura inicial, completalo con un recorrido real y marcá todo lo que no esté verificado.",
-          pt: "It can write a generic outline, but the steps that matter — your tools, your field names, your exceptions — only come from someone who does the work. Use a model-written outline as a starting structure, then fill it from a real walkthrough and mark anything unverified.",
+          pt: "Ela consegue escrever uma estrutura genérica, mas os passos que importam — suas ferramentas, os nomes dos seus campos, as suas exceções — só vêm de quem faz o trabalho. Use uma estrutura escrita pelo modelo como ponto de partida, preencha-a a partir de uma demonstração real e marque tudo o que não foi verificado.",
         },
       },
       {
-        q: { en: "Should SOPs be long and detailed or short?", es: "¿Los SOP tienen que ser largos y detallados o cortos?", pt: "Should SOPs be long and detailed or short?" },
+        q: { en: "Should SOPs be long and detailed or short?", es: "¿Los SOP tienen que ser largos y detallados o cortos?", pt: "Os POPs devem ser longos e detalhados ou curtos?" },
         a: {
           en: "As short as the reader can follow without asking. Experienced staff usually need a checklist; new hires need the full procedure with context. Many teams keep both: the full SOP and a checklist generated from it, updated together.",
           es: "Tan cortos como para que el lector los pueda seguir sin preguntar. El personal con experiencia suele necesitar un checklist; quien recién entra necesita el procedimiento completo con contexto. Muchos equipos mantienen las dos cosas: el SOP completo y un checklist generado a partir de él, actualizados juntos.",
-          pt: "As short as the reader can follow without asking. Experienced staff usually need a checklist; new hires need the full procedure with context. Many teams keep both: the full SOP and a checklist generated from it, updated together.",
+          pt: "Tão curtos quanto quem lê conseguir seguir sem perguntar. Pessoas experientes geralmente precisam de um checklist; quem acabou de chegar precisa do procedimento completo, com contexto. Muitos times mantêm os dois: o POP completo e um checklist gerado a partir dele, atualizados juntos.",
         },
       },
       {
-        q: { en: "How do I keep SOPs consistent across a team?", es: "¿Cómo mantengo los SOP consistentes en todo el equipo?", pt: "How do I keep SOPs consistent across a team?" },
+        q: { en: "How do I keep SOPs consistent across a team?", es: "¿Cómo mantengo los SOP consistentes en todo el equipo?", pt: "Como mantenho os POPs consistentes em um time?" },
         a: {
           en: "Save the drafting prompt with your section headings and rules in your team's prompt library, so every SOP comes out with the same structure. Running the prompt through Promptea's analyzer first helps catch missing format or constraint instructions before you share it.",
           es: "Guardá el prompt de redacción con tus secciones y reglas en la biblioteca de prompts de tu equipo, así cada SOP sale con la misma estructura. Pasar el prompt primero por el analizador de Promptea ayuda a detectar instrucciones de formato o restricciones que faltan antes de compartirlo.",
-          pt: "Save the drafting prompt with your section headings and rules in your team's prompt library, so every SOP comes out with the same structure. Running the prompt through Promptea's analyzer first helps catch missing format or constraint instructions before you share it.",
+          pt: "Salve o prompt de redação com os títulos das seções e as regras na biblioteca de prompts do seu time, para que todo POP saia com a mesma estrutura. Passar o prompt antes pelo analisador do Promptea ajuda a pegar instruções de formato ou de restrições que estejam faltando antes de compartilhá-lo.",
         },
       },
     ],
