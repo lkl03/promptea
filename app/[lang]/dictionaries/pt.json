@@ -541,7 +541,7 @@
         "O analisador responde em português: pontuação, achados, recomendações e prompt otimizado. Um prompt escrito em português é analisado corretamente a partir de qualquer idioma do site.",
         "O Encontrar a melhor IA também explica a recomendação em português.",
         "O AI Daily e a newsletter continuam sendo escritos em inglês e espanhol: em PT eles aparecem em inglês, e a página avisa.",
-        "Os guias são lidos em inglês em PT até que cada um seja traduzido, com um aviso.",
+        "Os 58 guias de prompting também estão traduzidos para o português.",
         "Os prompts de imagem pedidos em português são montados em inglês, em volta das suas próprias palavras, que é o que os geradores de imagem entendem melhor."
       ]
     },
