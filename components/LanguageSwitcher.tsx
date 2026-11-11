@@ -29,7 +29,7 @@ export default function LanguageSwitcher({ lang, label }: { lang: Lang; label: s
   const pathname = usePathname() ?? `/${lang}`;
 
   return (
-    <nav aria-label={label} data-language-switcher className="inline-flex h-9 shrink-0 items-center rounded-full border border-line bg-transparent p-1 text-xs">
+    <nav aria-label={label} data-language-switcher className="inline-flex h-9 shrink-0 items-center rounded-full border border-line bg-transparent p-0.5 text-xs sm:p-1">
       {LANGS.map((l) => {
         const active = l === lang;
         return (
@@ -42,7 +42,8 @@ export default function LanguageSwitcher({ lang, label }: { lang: Lang; label: s
             aria-current={active ? "true" : undefined}
             title={LANG_NAME[l]}
             className={[
-              "rounded-full px-2.5 py-1 transition sm:px-3",
+              // Three languages on a 375 px header: tighter on phones, the v1.8.1 size from `sm` up.
+              "rounded-full px-2 py-1 transition max-[340px]:px-1.5 sm:px-3",
               active ? "bg-ink text-canvas font-medium" : "text-ink-muted hover:text-ink",
             ].join(" ")}
           >

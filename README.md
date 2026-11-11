@@ -125,6 +125,7 @@ npm run build      # production build (works offline — fonts are local)
 
 - `node scripts/brand/build-brand-assets.mjs` — regenerates every brand raster (wordmark light/dark, mascot, favicons, apple-touch, manifest and OG artwork) from `public/brand/promptea-logo-mascot-source.png`.
 - `node scripts/release/audit.mjs --base=http://localhost:3182 [--shots] [--quick] [--out=dir]` — real-Chrome audit of 23 pages across 5 widths (1920, 1440, 1024, 768, 375) × themes × colour schemes: console/hydration errors, horizontal overflow, CLS, one `<h1>`, one canonical, and (with `--shots`) the feedback-modal fill and screenshots.
+- v1.8.2: `node scripts/release/i18n-qa.mjs --base=http://localhost:3181 [--shots=1]` walks 23 pages in the three languages at 1440 and 375 px with a real Chrome (overflow, clipped text, the language switcher, `<html lang>`, untranslated strings under `/pt`, and the analyzer with a prompt written in Portuguese). Localhost only.
 - v1.8.1 release checks, all with a real Chrome (`puppeteer-core`) and all read-only against anything that is not localhost:
   - `scripts/release/benchmarks-layout.mjs` — the "Ranking by benchmark" layout at 5 widths × every category: no overlap, no card wider than its list, no gap, no overflow.
   - `scripts/release/ambient-check.mjs` — how far the ambient background moves in a few seconds, frame rate, layouts, long tasks and CLS; Metro flat, reduced motion static.

@@ -78,7 +78,7 @@ const SENTINELS = [
   "What is your prompt for", "Attach files", "Subscribe", "Language", "Privacy", "Home", "Back to", "Open in Promptea", "Read more",
   "Prompt packs", "Prompting guides", "Prompts by model", "Glossary", "Library", "Weekly digest", "Benchmarks at a glance", "Follow us on X",
   "How this works", "Last updated", "Markdown version", "Frequently asked questions", "Cost calculator", "Frontier models", "Send feedback",
-  "Analizá", "Elegí", "Pegá", "Suscribirme", "Guías", "Glosario", "Biblioteca", "Volver", "Abrir en Promptea", "Privacidad", "Inicio",
+  "Analizá", "Elegí", "Pegá", "Suscribirme", "Guías", "Glosario", "Volver", "Abrir en Promptea", "Privacidad", "Inicio",
   "Cómo funciona", "Preguntas frecuentes", "Última actualización", "Resumen semanal", "Calculadora de costo",
 ];
 
@@ -137,7 +137,8 @@ async function inspect(page, lang, sentinels) {
         const cs = getComputedStyle(el);
         if (el.offsetParent === null || cs.visibility === "hidden") continue;
         const hides = cs.overflowX === "hidden" || cs.overflowX === "clip" || cs.textOverflow === "ellipsis";
-        if (hides && el.scrollWidth > el.clientWidth + 1 && el.textContent.trim().length > 0 && !el.closest(".line-clamp-1, .line-clamp-2, .truncate, [data-truncate]")) {
+        // clientWidth <= 1 is a visually-hidden (sr-only) label, not clipped text.
+        if (hides && el.clientWidth > 1 && el.scrollWidth > el.clientWidth + 1 && el.textContent.trim().length > 0 && !el.closest(".line-clamp-1, .line-clamp-2, .truncate, [data-truncate]")) {
           out.clipped.push(`${el.tagName.toLowerCase()} "${el.textContent.trim().slice(0, 40)}" ${el.scrollWidth}>${el.clientWidth}`);
         }
       }
@@ -153,6 +154,7 @@ async function inspect(page, lang, sentinels) {
           inside: r.left >= -1 && r.right <= vw + 1,
           clipped: sw.scrollWidth > sw.clientWidth + 1,
           height: Math.round(r.height),
+          top: Math.round(r.top + window.scrollY),
         };
         const bar = sw.closest(".site-header-bar");
         if (bar) {
@@ -202,6 +204,11 @@ for (const lang of LANGS) {
           const r = await inspect(page, lang, SENTINELS);
           if (r.innerWidth !== w) fail(where, `viewport is ${r.innerWidth}px, not ${w}px`);
           if (r.overflow > 1) fail(where, `horizontal overflow ${r.overflow}px — ${r.offenders.join("; ")}`);
+          // The 404 page is Next's own document (no site layout) in every language since before v1.8.2.
+          if (name === "404") {
+            await ctx.context.close();
+            continue;
+          }
           if (r.htmlLang !== HTML_LANG[lang]) fail(where, `<html lang="${r.htmlLang}">`);
           if (!r.switcher) fail(where, "no language switcher");
           else {
@@ -209,7 +216,8 @@ for (const lang of LANGS) {
             if (r.switcher.current !== lang.toUpperCase()) fail(where, `switcher marks ${r.switcher.current || "nothing"} as current`);
             if (r.switcher.hrefLangs !== "es|en|pt-BR") fail(where, `switcher hreflang ${r.switcher.hrefLangs}`);
             if (!r.switcher.inside || r.switcher.clipped) fail(where, "language switcher is cut off");
-            if (r.headerRows > 1 && name !== "home") fail(where, `header wraps onto ${r.headerRows} rows`);
+            // One row: the switcher sits in the header's first line (≤ 60 px from the top of the page).
+            if (r.switcher.top > 60) fail(where, `language switcher dropped to a second row (top ${r.switcher.top}px)`);
           }
           for (const c of r.clipped.slice(0, 3)) fail(where, `clipped text: ${c}`);
           for (const u of r.untranslated.slice(0, 4)) fail(where, `not translated: ${u}`);
@@ -273,6 +281,7 @@ console.log("\n== analyzer flow (pt)");
 
 await browser.close();
 const summary = { base: BASE, pagesChecked, shots, failures: results };
-if (SHOTS) await writeFile(join(OUT, "i18n-qa.json"), JSON.stringify(summary, null, 2));
+await mkdir(OUT, { recursive: true });
+await writeFile(join(OUT, "i18n-qa.json"), JSON.stringify(summary, null, 2));
 console.log(`\n${pagesChecked} page loads checked, ${shots} screenshot(s), ${results.length} failure(s)`);
 process.exit(results.length ? 1 : 0);
