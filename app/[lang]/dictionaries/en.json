@@ -534,6 +534,14 @@
   },
   "changelog": {
     "olderNotice": "Versions before v1.8.0 are listed in English.",
+    "v183": {
+      "released": "Released: 2026-11-12",
+      "items": [
+        "Two new guides: how to analyze customer feedback with AI (themes, quotes and priorities without invented percentages) and how to answer RFPs and write proposals only from your approved material.",
+        "Both guides come with templates that open in the analyzer, in English, Spanish and Portuguese.",
+        "Accessibility: the scrollable prompt boxes on guides, model pages and the glossary can now be focused and scrolled with the keyboard."
+      ]
+    },
     "v182": {
       "released": "Released: 2026-11-11",
       "items": [

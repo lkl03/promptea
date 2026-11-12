@@ -115,7 +115,16 @@ export default async function GuidePage({
             return (
               <article key={idx} className="surface p-4 space-y-3">
                 <h3 className="text-sm font-medium">{t.title[cl]}</h3>
-                <pre className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{t.prompt[cl]}</pre>
+                {/* v1.8.3: long templates scroll inside this box; tabIndex lets keyboard
+                    users focus it and scroll with the arrow keys (WCAG 2.1.1). */}
+                <pre
+                  className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto"
+                  tabIndex={0}
+                  role="group"
+                  aria-label={`${pick(l, { es: "Prompt de la plantilla", en: "Template prompt", pt: "Prompt do template" })}: ${t.title[cl]}`}
+                >
+                  {t.prompt[cl]}
+                </pre>
 
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-xs opacity-70">

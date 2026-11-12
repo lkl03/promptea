@@ -131,7 +131,15 @@ export default async function ModelPage({
             return (
               <article key={idx} className="surface p-4 space-y-3">
                 <div className="text-sm font-medium">{t.title[l]}</div>
-                <pre className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{t.prompt[l]}</pre>
+                {/* v1.8.3: focusable so the scrollable template can be scrolled from the keyboard (WCAG 2.1.1). */}
+                <pre
+                  className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto"
+                  tabIndex={0}
+                  role="group"
+                  aria-label={`${pick(l, { es: "Prompt de la plantilla", en: "Template prompt", pt: "Prompt do template" })}: ${t.title[l]}`}
+                >
+                  {t.prompt[l]}
+                </pre>
 
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-xs opacity-70">

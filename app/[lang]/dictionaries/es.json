@@ -534,6 +534,14 @@
   },
   "changelog": {
     "olderNotice": "Las versiones anteriores a la v1.8.0 se muestran en español.",
+    "v183": {
+      "released": "Lanzado: 12-11-2026",
+      "items": [
+        "Dos guías nuevas: cómo analizar feedback de clientes con IA (temas, citas y prioridades sin porcentajes inventados) y cómo responder licitaciones y escribir propuestas solo con tu material aprobado.",
+        "Las dos guías traen plantillas que se abren en el analizador y están en español, inglés y portugués.",
+        "Accesibilidad: los cuadros de prompt con scroll en guías, páginas de modelos y glosario ahora se pueden enfocar y desplazar con el teclado."
+      ]
+    },
     "v182": {
       "released": "Lanzado: 11-11-2026",
       "items": [

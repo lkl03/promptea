@@ -9,7 +9,13 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 
 Available in English, Spanish and Brazilian Portuguese (`/en`, `/es`, `/pt`; v1.8.2). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.2 (2026-11-11)
+## Latest update — v1.8.3 (2026-11-12)
+
+**Weekly update.** Two new evergreen guides, in Spanish, English and Portuguese: [AI prompts for customer feedback analysis](https://www.promptea.me/en/guides/ai-prompts-for-customer-feedback) and [AI prompts for proposals and RFP responses](https://www.promptea.me/en/guides/ai-prompts-for-proposals), each with templates that open in the analyzer. Accessibility fix: the scrollable prompt boxes on guide, model and glossary pages can now be focused and scrolled with the keyboard. Shipped in the weekly update PR; details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.2 (2026-11-11) — Brazilian Portuguese (`/pt`) as a third language._
+
+## v1.8.2 (2026-11-11)
 
 **Brazilian Portuguese (`/pt`) as a third language.** One list of locales (`lib/domain.ts` `LANGS`) drives routes, the proxy, hreflang (`pt-BR` + `pt`), the sitemap, `llms.txt` and the markdown twins. The interface, the static pages (how it works, about, methodology, privacy), the glossary, the model pages, the landings and the prompt packs are translated. The analysis engine (2.4.0) answers in Portuguese and reads prompts written in Portuguese from any interface. Content that has no Portuguese version says so instead of pretending: AI Daily and the weekly digest are shown in English under `/pt` (canonical → the English original), the newsletter form offers its two editions, a guide is read in English until it is translated, and image prompts are composed in English around the user's own words. Translations were written by AI: a native review is recommended (`docs/i18n/pt-glossary.md` fixes the terminology). Details in [CHANGELOG.md](./CHANGELOG.md).
 

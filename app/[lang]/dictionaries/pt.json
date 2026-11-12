@@ -534,6 +534,14 @@
   },
   "changelog": {
     "olderNotice": "As versões anteriores à v1.8.0 estão disponíveis apenas em inglês.",
+    "v183": {
+      "released": "Lançado em: 12/11/2026",
+      "items": [
+        "Dois guias novos: como analisar feedback de clientes com IA (temas, citações e prioridades sem porcentagens inventadas) e como responder a RFPs e escrever propostas só com o seu material aprovado.",
+        "Os dois guias trazem templates que abrem no analisador, em português, inglês e espanhol.",
+        "Acessibilidade: as caixas de prompt com rolagem nos guias, nas páginas de modelos e no glossário agora podem receber foco e ser roladas pelo teclado."
+      ]
+    },
     "v182": {
       "released": "Lançado em: 11/11/2026",
       "items": [

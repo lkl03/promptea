@@ -35,7 +35,7 @@ export const CONTENT_UPDATED = {
   bestAi: "2026-10-09",
   /** /prompts hub and the six purpose packs. */
   prompts: "2026-08-04",
-  guides: "2026-11-09",
+  guides: "2026-11-12",
   glossary: "2026-11-09",
   models: "2026-11-09",
   landings: "2026-11-09",

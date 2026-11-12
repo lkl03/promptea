@@ -4,6 +4,31 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.3 — 2026-11-12
+
+**Weekly update: two new evergreen business-workflow guides (in Spanish, English and Portuguese) and keyboard access to the scrollable prompt boxes on guide, model and glossary pages.**
+
+### Added
+- **Guide `/{lang}/guides/ai-prompts-for-customer-feedback`** — analyzing reviews, survey answers and support tickets with ChatGPT, Claude or Gemini: discover themes on a sample, fix a codebook, tag one row per comment with an exact quote, count outside the model, and rank by frequency and impact separately. Three templates (discover themes, tag with a fixed codebook, prioritized report) and a FAQ.
+- **Guide `/{lang}/guides/ai-prompts-for-proposals`** — answering RFPs and writing client proposals: extract every requirement with its RFP section, map requirements to approved material, draft section by section with `[needs input]` markers instead of invented claims, and run a compliance check before sending. Three templates (requirement checklist, section draft, compliance check) and a FAQ.
+- Both guides are written in all three languages, so they enter the `/es`, `/en` and `/pt` sitemaps, `llms.txt`, `llms-full.txt` and markdown twins automatically. Template links open `/{lang}/analyzer` prefilled (`buildPrefillHref`). They name model families only, no specific model versions. `CONTENT_UPDATED.guides` → 2026-11-12.
+- `lib/__tests__/a11y.scrollableTemplates.test.ts`: every scrollable `<pre>` on the guide, model and glossary pages must be focusable and named.
+
+### Fixed
+- **Scrollable prompt boxes could not be scrolled from the keyboard.** The template boxes on guide and model pages and the glossary example are capped at `max-h-56` and scroll inside, but were not focusable (WCAG 2.1.1, axe `scrollable-region-focusable`). They now take `tabIndex={0}` with `role="group"` and a localized `aria-label` (the template title), and use the site-wide `:focus-visible` ring.
+
+### Changed
+- Version 1.8.2 → 1.8.3 (`package.json`, `package-lock.json`, `lib/version.ts`, footer and every surface that reads `APP_VERSION`). The analysis engine stays at 2.4.0.
+
+### Validated
+- `npm run lint`, `npm run typecheck`, `npm test` and `npm run build` (results in the PR description).
+
+### Known limitations / follow-ups
+- The same scrollable `<pre>` pattern is still unfocusable on the six prompt-pack pages (`/{lang}/prompts/*`); left for a follow-up to keep this change small.
+- The Portuguese text of the new guides was written by AI and has not been reviewed by a native speaker.
+
+---
+
 ## v1.8.2 — 2026-11-11
 
 **Brazilian Portuguese (`/pt`, pt-BR) as a third language: selectable in the header, with a translated interface, translated product pages and an analysis engine that answers in Portuguese.** Where content does not exist in Portuguese, the page says so and points at the original instead of passing English off as a translation.
