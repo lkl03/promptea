@@ -86,7 +86,8 @@ describe("llms.txt", () => {
     );
     const tech = makeArticle({ slug: "tech-one", eventDate: "2026-11-01", edition: "tech" as never });
     const txt = buildLlmsTxt({ ...empty("en"), articles: [...many, tech] });
-    const articleLinks = links(txt).filter((l) => l.includes("/blog/") && !l.includes("/blog/weekly") && !l.endsWith("feed.xml"));
+    // "/blog/tech" is the index of the Tech section (v1.8.3), not an article.
+    const articleLinks = links(txt).filter((l) => l.includes("/blog/") && !l.includes("/blog/weekly") && !l.endsWith("/blog/tech") && !l.endsWith("feed.xml"));
     expect(articleLinks.length).toBeLessThanOrEqual(LLMS_MAX_ARTICLES);
     expect(txt).toContain("/blog/tech-one"); // listed under whatever heading, without a code change
   });

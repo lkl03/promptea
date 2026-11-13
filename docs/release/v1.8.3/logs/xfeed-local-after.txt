@@ -1,8 +1,8 @@
 ok   desktop: the server HTML does not include the widget script
 ok   desktop: the server HTML links to the profile without the widget — 3 link(s)
-ok   desktop: nothing is requested from Elfsight before the load event — first third-party request at 796 ms; DOMContentLoaded 534 ms; load 570 ms; LCP 748 ms
+ok   desktop: nothing is requested from Elfsight before the load event — first third-party request at 1554 ms; DOMContentLoaded 1321 ms; load 1354 ms; LCP 1516 ms
 ok   desktop: the feed box keeps its height — 460 → 460 px
-ok   desktop: no layout shift — CLS 0.0021
+ok   desktop: no layout shift — CLS 0.006
 ok   desktop: the card ends with posts or the fallback, never an empty box — posts
 ok   phone: no request to Elfsight while the card is far below the fold — 0 request(s)
 ok   phone: the feed box keeps its height — 460 → 460 px
@@ -20,12 +20,12 @@ ok   no JS: no request to a third party — 0
 ┌─────────┬───────────────────────────────────────────┬───────────────────┬───────┬────────┬───────┬────────┬────────────────────┬──────────────┬───────────────────────┬───────────┬──────────┬────────────┬──────────┬─────────────────────┬──────────────────┐
 │ (index) │ case                                      │ firstThirdPartyMs │ dclMs │ loadMs │ lcpMs │ cls    │ thirdPartyRequests │ thirdPartyKB │ longTaskMsAfterWidget │ boxBefore │ boxAfter │ state      │ hostText │ htmlHasWidgetScript │ htmlProfileLinks │
 ├─────────┼───────────────────────────────────────────┼───────────────────┼───────┼────────┼───────┼────────┼────────────────────┼──────────────┼───────────────────────┼───────────┼──────────┼────────────┼──────────┼─────────────────────┼──────────────────┤
-│ 0       │ 'desktop 1440 (card in view)'             │ 796               │ 534   │ 570    │ 748   │ 0.0021 │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
-│ 1       │ 'phone 375 (after scrolling to the card)' │ 856               │ 371   │ 532    │ 408   │ 0.0202 │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
-│ 2       │ 'desktop glass-dark'                      │ 666               │ 325   │ 509    │ 500   │ 0.0051 │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
-│ 3       │ 'desktop metro-dark'                      │ 662               │ 313   │ 473    │ 324   │ 0.0044 │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
-│ 4       │ 'blocked (ad blocker)'                    │ 618               │ 316   │ 477    │ 340   │ 0.0022 │ 1                  │ 0            │ 0                     │ 460       │ 460      │ 'fallback' │ 0        │ false               │ 3                │
-│ 5       │ 'Elfsight data service failing'           │ 581               │ 278   │ 438    │ 312   │ 0.0021 │ 6                  │ 164          │ 0                     │ 460       │ 460      │ 'fallback' │ 2759     │ false               │ 3                │
+│ 0       │ 'desktop 1440 (card in view)'             │ 1554              │ 1321  │ 1354   │ 1516  │ 0.006  │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
+│ 1       │ 'phone 375 (after scrolling to the card)' │ 927               │ 364   │ 563    │ 388   │ 0.0204 │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
+│ 2       │ 'desktop glass-dark'                      │ 993               │ 471   │ 710    │ 708   │ 0.0028 │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
+│ 3       │ 'desktop metro-dark'                      │ 800               │ 383   │ 604    │ 412   │ 0.0043 │ 22                 │ 196          │ 0                     │ 460       │ 460      │ 'posts'    │ 2949     │ false               │ 3                │
+│ 4       │ 'blocked (ad blocker)'                    │ 801               │ 394   │ 584    │ 424   │ 0.0024 │ 1                  │ 0            │ 0                     │ 460       │ 460      │ 'fallback' │ 0        │ false               │ 3                │
+│ 5       │ 'Elfsight data service failing'           │ 812               │ 399   │ 577    │ 424   │ 0.0024 │ 6                  │ 164          │ 0                     │ 460       │ 460      │ 'fallback' │ 2759     │ false               │ 3                │
 │ 6       │ 'JavaScript disabled'                     │ null              │ 0     │ 0      │ 0     │ 0      │ 0                  │ 0            │ 0                     │ 460       │ 460      │ 'fallback' │ 0        │ false               │ 3                │
 └─────────┴───────────────────────────────────────────┴───────────────────┴───────┴────────┴───────┴────────┴────────────────────┴──────────────┴───────────────────────┴───────────┴──────────┴────────────┴──────────┴─────────────────────┴──────────────────┘
 desktop 1440 (card in view): hosts elfsightcdn.com, core.service.elfsight.com, static.elfsight.com, widget-data.service.elfsight.com, phosphor.utils.elfsightcdn.com, storage.elfsight.com · sample «Promptea @Promptea_me Nov 10 Writing, coding, research, data: no single model wins them all. Tell Promptea your task and»

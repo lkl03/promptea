@@ -29,6 +29,8 @@ type Dict = {
   lead: string;
   /** v1.8.3: shown only where the stories are not in the interface language (/pt). */
   langNote: string;
+  /** v1.8.3: the link to the Tech index, shown once there is a Tech story to read. */
+  tech: string;
 };
 
 export type LatestArticle = Pick<PublicArticle, "slug" | "title" | "deck" | "category" | "edition" | "readingMinutes" | "eventDate" | "publishedAt">;
@@ -40,6 +42,9 @@ export type LatestArticle = Pick<PublicArticle, "slug" | "title" | "deck" | "cat
  */
 export function storyLabel(a: Pick<LatestArticle, "category" | "edition">, categories: Record<string, string>, editions: Record<string, string>): string {
   if (a.edition === "week-ahead" || a.edition === "weekly-recap") return editions[a.edition] ?? categories[a.category] ?? a.category;
+  // v1.8.3: a Tech story says so first ("Tech · Cloud & platforms"), because in this
+  // block it sits among AI stories and its topic alone would not tell them apart.
+  if (a.edition === "tech-daily") return `${editions[a.edition] ?? "Tech"} · ${categories[a.category] ?? a.category}`;
   return categories[a.category] ?? a.category;
 }
 
@@ -51,7 +56,10 @@ export default function LatestDaily({
   editions,
   readingTime,
   fallback,
+  showTech = false,
 }: {
+  /** v1.8.3 — true when AI Daily Tech has at least one recent story: the block then links to its index. */
+  showTech?: boolean;
   articles: LatestArticle[];
   lang: Lang;
   dict: Dict;
@@ -111,6 +119,11 @@ export default function LatestDaily({
           </p>
         </div>
         <p className="flex flex-wrap items-center gap-2">
+          {showTech ? (
+            <Link href={`/${lang}/blog/tech`} className="btn btn-ghost h-9 px-4">
+              {dict.tech}
+            </Link>
+          ) : null}
           <Link href={`/${lang}/blog/weekly`} className="btn btn-ghost h-9 px-4">
             {dict.weekly}
           </Link>

@@ -52,9 +52,9 @@ export function homeGraph(doc: PageDoc, lang: Locale): JsonLdNode {
   );
 }
 
-export type DocPageKind = "about" | "methodology" | "how-it-works";
+export type DocPageKind = "about" | "methodology" | "how-it-works" | "sources";
 
-/** /about, /methodology and /how-it-works (the last one carries the HowTo of its steps). */
+/** /about, /methodology, /how-it-works (which carries the HowTo of its steps) and /sources (v1.8.3: about the organization, like /about). */
 export function docPageGraph(i: { doc: PageDoc; lang: Locale; path: string; kind: DocPageKind; label: string }): JsonLdNode {
   const url = absUrl(i.path);
   return graph(
@@ -66,7 +66,7 @@ export function docPageGraph(i: { doc: PageDoc; lang: Locale; path: string; kind
       type: i.kind === "about" ? "AboutPage" : "WebPage",
       dateModified: i.doc.updated,
       hasBreadcrumb: true,
-      about: ref(i.kind === "about" ? entityIds().organization : entityIds().software),
+      about: ref(i.kind === "about" || i.kind === "sources" ? entityIds().organization : entityIds().software),
       markdownUrl: absUrl(markdownPathOf(i.path)),
     }),
     i.kind === "methodology"

@@ -24,6 +24,9 @@ type Props = {
     sponsorLabel: string;
     readMore: string;
     editionLabel: string;
+    /** v1.8.3 — heading and one-line intro of the "Tech" block (shown only when the edition has Tech stories). */
+    techLabel?: string;
+    techIntro?: string;
   };
   /** v1.7.0: the edition page makes the hero headline its <h1>. */
   headingLevel?: 1 | 2;
@@ -80,6 +83,29 @@ export default function WeeklyEditionView({ edition, lang, dict, headingLevel = 
           ))}
         </div>
       </section>
+
+      {/* ── Tech (v1.8.3) — absent in editions built before the Tech edition existed ── */}
+      {content.techStories && content.techStories.length > 0 ? (
+        <section aria-labelledby="weekly-tech-title">
+          <h2 id="weekly-tech-title" className="font-title text-lg font-semibold sm:text-xl">
+            {dict.techLabel ?? "Tech"}
+          </h2>
+          {dict.techIntro ? <p className="mt-1 text-sm text-ink-muted">{dict.techIntro}</p> : null}
+          <ul className="m-0 mt-4 list-none divide-y divide-line p-0">
+            {content.techStories.map((story) => (
+              <li key={story.articleSlug} className="py-4 first:pt-0 last:pb-0">
+                <Link href={`/${lang}/blog/${story.articleSlug}`} className="group block">
+                  <h3 className="font-title text-base font-semibold leading-snug transition-colors group-hover:text-accent">
+                    {story.headline}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{story.summary}</p>
+                  <p className="mt-2 text-xs font-medium text-accent">{dict.readMore}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* ── Tools and Launches ────────────────────────────────────────── */}
       {content.tools.length > 0 ? (

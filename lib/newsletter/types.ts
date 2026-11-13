@@ -69,6 +69,13 @@ export const NewsletterLocaleContentSchema = z.object({
   // 3 tools) forced padding with a placeholder story whose link 404ed.
   topStories: z.array(NewsletterStorySchema).min(1).max(6),
   tools: z.array(NewsletterToolSchema).min(0).max(5),
+  /**
+   * v1.8.3 — the "Tech" block: stories of the week from AI Daily Tech, each a
+   * published article like the top stories. OPTIONAL on purpose: every edition
+   * stored before v1.8.3 has no such field and must keep parsing, rendering and
+   * re-sending byte for byte as it was (an absent or empty list renders nothing).
+   */
+  techStories: z.array(NewsletterStorySchema).max(3).optional(),
   editorialTitle: trimmed(5, 200).nullable(),
   editorialBody: trimmed(20, 4_000).nullable(),
 });

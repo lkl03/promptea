@@ -103,7 +103,7 @@ export default async function WeeklyEditionPage({ params }: { params: Params }) 
                 </p>
               </header>
               <div className="mt-6">
-                <WeeklyEditionView edition={edition} lang={l} dict={dict.newsletter} headingLevel={1} />
+                <WeeklyEditionView edition={edition} lang={l} dict={{ ...dict.newsletter, techLabel: dict.weekly.techTitle, techIntro: dict.weekly.techIntro }} headingLevel={1} />
               </div>
               <div className="mt-10 flex justify-center">
                 <ShareLink label={t.share} copied={t.copied} title={edition.locales[cl].subject} />

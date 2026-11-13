@@ -9,21 +9,34 @@
 // Quiet weeks are sent as they are — no placeholder stories. (v1.5.0 padded
 // the list to four with a "placeholder" slug whose link 404ed.)
 
-import type { ContentLang } from "@/lib/domain";
+import { isWeeklyEdition, sectionOfEdition, type ContentLang } from "@/lib/domain";
 import type { PublicArticle } from "@/lib/blog/types";
 import type { NewsletterEdition, NewsletterLocaleContent, NewsletterStory, NewsletterTool } from "./types";
 import type { EditionWindow } from "./dates";
 
 const MAX_STORIES = 6;
 const MAX_TOOLS = 5;
+/** v1.8.3 — how many AI Daily Tech stories the "Tech" block of the digest carries. */
+export const MAX_TECH_STORIES = 3;
 const TOOL_CATEGORIES = new Set(["developer-tools", "product", "open-source", "agents"]);
 
-/** Daily stories inside the covered window (weekly editions are summaries, not stories). */
+/**
+ * AI stories inside the covered window. Weekly editions are summaries, not
+ * stories; Tech stories (v1.8.3) have their own block — see techCandidates —
+ * so the main list, the hero and the subject line stay what the digest has
+ * always been: the week in AI.
+ */
 export function weekCandidates(articles: PublicArticle[], window: EditionWindow): PublicArticle[] {
   return articles.filter((a) => {
-    if (a.edition === "weekly-recap" || a.edition === "week-ahead") return false;
+    if (isWeeklyEdition(a.edition)) return false;
+    if (sectionOfEdition(a.edition) !== "ai") return false;
     return a.eventDate >= window.weekStart && a.eventDate <= window.weekEnd;
   });
+}
+
+/** v1.8.3 — AI Daily Tech stories inside the covered window. */
+export function techCandidates(articles: PublicArticle[], window: EditionWindow): PublicArticle[] {
+  return articles.filter((a) => sectionOfEdition(a.edition) === "tech" && a.eventDate >= window.weekStart && a.eventDate <= window.weekEnd);
 }
 
 /** Importance first (P0 > P1 > P2), then newest event first, then slug for stability. */
@@ -67,7 +80,7 @@ function toTool(article: PublicArticle, siteUrl: string): NewsletterTool {
   };
 }
 
-function localeContent(articles: PublicArticle[], lang: ContentLang, window: EditionWindow, siteUrl: string): NewsletterLocaleContent {
+function localeContent(articles: PublicArticle[], tech: PublicArticle[], lang: ContentLang, window: EditionWindow, siteUrl: string): NewsletterLocaleContent {
   const ranked = rankArticles(articles);
   const hero = ranked[0];
   const stories = ranked.slice(0, MAX_STORIES);
@@ -92,6 +105,9 @@ function localeContent(articles: PublicArticle[], lang: ContentLang, window: Edi
     heroDeck: hero.deck.slice(0, 400),
     topStories: stories.map((a) => toStory(a, siteUrl)),
     tools: tools.map((a) => toTool(a, siteUrl)),
+    // v1.8.3 — the "Tech" block: the week's Tech stories by the same ranking.
+    // Empty in a week without Tech stories (the block is then not rendered).
+    techStories: rankArticles(tech).slice(0, MAX_TECH_STORIES).map((a) => toStory(a, siteUrl)),
     editorialTitle: null,
     editorialBody: null,
   };
@@ -111,7 +127,11 @@ export function buildEdition(input: {
 }): NewsletterEdition | null {
   const en = weekCandidates(input.en, input.window);
   const es = weekCandidates(input.es, input.window);
+  // A week with Tech stories but no AI story still produces no edition: the
+  // digest is the week in AI, and Tech is a block inside it, never the whole email.
   if (en.length === 0 && es.length === 0) return null;
+  const techEn = techCandidates(input.en, input.window);
+  const techEs = techCandidates(input.es, input.window);
 
   return {
     editionId: input.window.editionId,
@@ -119,8 +139,8 @@ export function buildEdition(input: {
     weekEnd: input.window.weekEnd,
     status: "draft",
     locales: {
-      en: localeContent(en.length ? en : es, "en", input.window, input.siteUrl),
-      es: localeContent(es.length ? es : en, "es", input.window, input.siteUrl),
+      en: localeContent(en.length ? en : es, techEn.length ? techEn : techEs, "en", input.window, input.siteUrl),
+      es: localeContent(es.length ? es : en, techEs.length ? techEs : techEn, "es", input.window, input.siteUrl),
     },
     sponsor: null,
     generatedAt: input.now.toISOString(),

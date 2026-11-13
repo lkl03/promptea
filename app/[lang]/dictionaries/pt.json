@@ -239,7 +239,10 @@
       "business": "Negócios",
       "energy": "Energia",
       "digest": "Resumo",
-      "other": "Outros"
+      "other": "Outros",
+      "cloud": "Nuvem e plataformas",
+      "web-platform": "Plataforma web",
+      "hardware": "Hardware"
     },
     "importance": {
       "P0": "Urgente",
@@ -250,7 +253,8 @@
       "daily": "Diária",
       "daily-morning": "Manhã",
       "weekly-recap": "Resumo da semana",
-      "week-ahead": "A semana que vem"
+      "week-ahead": "A semana que vem",
+      "tech-daily": "Tech"
     },
     "coveredRange": "Cobre de {from} a {to}",
     "backdateNotice": "Esta notícia trata de um fato de {event}, publicada em {published}.",
@@ -284,7 +288,25 @@
       "blurb": "Uma notícia de IA verificada por dia, com as fontes junto.",
       "cta": "Ler a edição de hoje"
     },
-    "langNotice": "O AI Daily ainda não tem edição em português: as notícias são publicadas em inglês e espanhol. Você está lendo a edição em inglês."
+    "langNotice": "O AI Daily ainda não tem edição em português: as notícias são publicadas em inglês e espanhol. Você está lendo a edição em inglês.",
+    "tech": {
+      "indexTitle": "AI Daily Tech",
+      "tagline": "Uma notícia tech por dia, para quem constrói com IA.",
+      "indexDescription": "Uma notícia de tecnologia verificada por dia (nuvem e plataformas, frameworks e runtimes web, ferramentas de desenvolvimento, hardware), sempre contada pelo que muda para a IA e para quem desenvolve software, com as fontes junto.",
+      "latest": "Últimas notícias tech",
+      "emptyTitle": "A primeira notícia Tech está a caminho",
+      "empty": "O AI Daily Tech publica uma notícia de tecnologia verificada por dia. Ainda não há nada por aqui — enquanto isso, leia as notícias de IA.",
+      "emptyCta": "Ver as notícias de IA",
+      "backToTech": "← Voltar para Tech",
+      "langNotice": "O AI Daily Tech ainda não tem edição em português: as notícias são publicadas em inglês e espanhol. Você está lendo a edição em inglês.",
+      "feedTitle": "AI Daily Tech"
+    },
+    "pagination": {
+      "label": "Paginação",
+      "newer": "← Notícias mais recentes",
+      "page": "Página {page} de {pages}"
+    },
+    "sourcesLink": "Como escolhemos e verificamos as fontes"
   },
   "newsletter": {
     "title": "Promptea Weekly",
@@ -351,7 +373,8 @@
       "all": "Ver todas as notícias",
       "weekly": "Resumo semanal",
       "lead": "Principal notícia",
-      "langNote": "As notícias aparecem em inglês."
+      "langNote": "As notícias aparecem em inglês.",
+      "tech": "Tech"
     },
     "teaser": {
       "title": "Benchmarks em um relance",
@@ -394,7 +417,8 @@
   },
   "dailyTabs": {
     "aria": "Seções do AI Daily",
-    "news": "Notícias",
+    "news": "IA",
+    "tech": "Tech",
     "weekly": "Resumo semanal"
   },
   "weekly": {
@@ -413,7 +437,9 @@
     "empty": "O resumo semanal sai às segundas-feiras. Enquanto isso, leia as notícias do dia.",
     "unavailable": "Não foi possível carregar o arquivo agora. Tente de novo em alguns minutos.",
     "share": "Compartilhar esta edição",
-    "copied": "Link copiado"
+    "copied": "Link copiado",
+    "techTitle": "Tech da semana",
+    "techIntro": "Do AI Daily Tech: o que mudou nas plataformas e ferramentas com que você constrói."
   },
   "newsletterDock": {
     "title": "Promptea Weekly",
@@ -518,7 +544,9 @@
     "guides": "Guias",
     "models": "Modelos",
     "glossary": "Glossário",
-    "library": "Biblioteca"
+    "library": "Biblioteca",
+    "footerTech": "Tech",
+    "footerSources": "Fontes"
   },
   "howItWorksPage": {
     "breadcrumb": "Trilha de navegação",
@@ -536,6 +564,20 @@
   },
   "changelog": {
     "olderNotice": "As versões anteriores à v1.8.0 estão disponíveis apenas em inglês.",
+    "v183": {
+      "released": "Lançado em: 11/11/2026",
+      "items": [
+        "Novo: AI Daily Tech. Uma notícia de tecnologia por dia para quem constrói com IA (nuvem e plataformas, frameworks web, ferramentas de desenvolvimento, hardware), com as fontes, em uma seção própria e com um feed RSS próprio. As notícias são publicadas em inglês e espanhol.",
+        "O AI Daily agora tem três abas: IA, Tech e o resumo semanal. O resumo semanal ganha um bloco \"Tech da semana\".",
+        "Página nova: como escolhemos e verificamos as fontes. Os três níveis, o que uma notícia precisa para ser publicada e quem lemos.",
+        "A página inicial e a maioria das páginas carregam mais rápido: agora são preparadas com antecedência, em vez de serem montadas a cada visita.",
+        "O cartão do feed do X não mostra mais a mensagem de erro de um terceiro e só é carregado quando a página já está pronta.",
+        "Os pacotes de prompts não rolam mais para os lados no celular.",
+        "As mensagens de erro do analisador e de Melhor IA agora aparecem no seu idioma.",
+        "Em PT, a página inicial avisa que as manchetes estão em inglês.",
+        "Segurança: limites de uso nos endpoints de análise e cabeçalhos de resposta mais rígidos."
+      ]
+    },
     "v182": {
       "released": "Lançado em: 11/11/2026",
       "items": [
@@ -575,5 +617,12 @@
   "guides": {
     "langNotice": "Este guia ainda não foi traduzido para o português. Você está lendo a versão em inglês.",
     "inEnglish": "em inglês"
+  },
+  "sourcesPage": {
+    "breadcrumb": "Trilha de navegação",
+    "home": "Início",
+    "toDaily": "Ler o AI Daily",
+    "toTech": "Ler o AI Daily Tech",
+    "toMethodology": "Como os prompts são pontuados"
   }
 }

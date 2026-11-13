@@ -20,7 +20,7 @@ import { getDictionary, hasLocale } from "../../dictionaries";
 import ArticleBody from "@/components/blog/ArticleBody";
 import SourceList from "@/components/blog/SourceList";
 import { editorialDate, formatEditorialDate } from "@/lib/blog/dates";
-import { blogArticlePath, blogBreadcrumbNode, newsArticleNode } from "@/lib/blog/jsonld";
+import { blogArticlePath, blogBreadcrumbNode, blogSectionIndexPath, newsArticleNode } from "@/lib/blog/jsonld";
 import JsonLd from "@/components/seo/JsonLd";
 import { editorialNode, graph, webPageNode } from "@/lib/seo/jsonld";
 import { getArticleBySlug } from "@/lib/blog/server";
@@ -29,7 +29,7 @@ import { getModelPage } from "@/lib/seo/content/models";
 import { absUrl, getSiteUrl } from "@/lib/seo/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
-import { LANG_TAG, contentLangFor, toLang, type ContentLang } from "@/lib/domain";
+import { LANG_TAG, contentLangFor, sectionOfEdition, toLang, type ContentLang } from "@/lib/domain";
 import ContentLangNotice from "@/components/blog/ContentLangNotice";
 
 export const revalidate = 300;
@@ -159,11 +159,15 @@ export default async function BlogArticlePage({
     // illustration, so structured data never points at third-party imagery.
     imageUrl: `${articleUrl}/opengraph-image`,
   });
+  // v1.8.3: a Tech story belongs to the Tech section — its breadcrumb and its
+  // "back" link lead to /blog/tech, not to the AI index.
+  const section = sectionOfEdition(article.edition);
   const breadcrumbLd = blogBreadcrumbNode({
     lang: cl,
     title: article.title,
     slug: article.slug,
     siteUrl: getSiteUrl(),
+    section,
   });
 
   return (
@@ -193,8 +197,8 @@ export default async function BlogArticlePage({
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
         <div className="mx-auto w-full min-w-0 max-w-3xl">
           <div className="text-xs opacity-70">
-            <Link href={`/${l}/blog`} className="hover:underline underline-offset-2">
-              {t.backToBlog}
+            <Link href={blogSectionIndexPath(l, section)} className="hover:underline underline-offset-2">
+              {section === "tech" ? t.tech.backToTech : t.backToBlog}
             </Link>
           </div>
 
@@ -336,6 +340,13 @@ export default async function BlogArticlePage({
                 lang={l}
                 dict={{ sources: t.sources, primarySource: t.primarySource }}
               />
+              {/* v1.8.3: how sources are chosen and verified, one click from every article. In the
+                  interface language (it is chrome, not part of the article). */}
+              <p className="mt-2 text-xs text-ink-muted" lang={LANG_TAG[l]}>
+                <Link href={`/${l}/sources`} className="underline underline-offset-2 hover:text-ink">
+                  {t.sourcesLink}
+                </Link>
+              </p>
             </div>
 
             {article.tags.length > 0 || article.companies.length > 0 || article.models.length > 0 ? (

@@ -109,10 +109,69 @@ const SEEDS: Seed[] = [
       es: "Investigadores de ejemplo informan números de ejemplo; esta entrada existe para completar el archivo.",
     },
   },
+  // ── v1.8.3: AI Daily Tech (edition "tech-daily"), equally fictitious ───────
+  {
+    slug: "demo-cloud-ships-agent-sandboxes",
+    daysAgo: 0,
+    edition: "tech-daily",
+    category: "cloud",
+    title: {
+      en: "Demo Cloud ships isolated sandboxes for AI agents, billed by the second",
+      es: "Demo Cloud lanza sandboxes aislados para agentes de IA, facturados por segundo",
+    },
+    deck: {
+      en: "A fictitious hosting platform adds a made-up runtime for agent-generated code. Every figure in this fixture is invented for local development.",
+      es: "Una plataforma de hosting ficticia suma un runtime inventado para código generado por agentes. Todas las cifras de este fixture son inventadas para desarrollo local.",
+    },
+  },
+  {
+    slug: "demo-framework-17-streaming-server-components",
+    daysAgo: 1,
+    edition: "tech-daily",
+    category: "web-platform",
+    title: {
+      en: "Demo Framework 17 makes streamed model output a first-class response type",
+      es: "Demo Framework 17 convierte la salida en streaming de un modelo en un tipo de respuesta nativo",
+    },
+    deck: {
+      en: "A placeholder release of a placeholder web framework, here to check how a Tech story sits next to AI stories.",
+      es: "Un lanzamiento de ejemplo de un framework web de ejemplo, para revisar cómo se ve una nota Tech junto a las de IA.",
+    },
+  },
+  {
+    slug: "demo-silicon-inference-card-for-workstations",
+    daysAgo: 2,
+    edition: "tech-daily",
+    category: "hardware",
+    title: {
+      en: "Demo Silicon announces an inference card for workstations",
+      es: "Demo Silicon anuncia una placa de inferencia para estaciones de trabajo",
+    },
+    deck: {
+      en: "An invented chip with invented numbers; the entry exists to exercise the hardware category.",
+      es: "Un chip inventado con números inventados; la entrada existe para ejercitar la categoría hardware.",
+    },
+  },
+  {
+    slug: "demo-hub-code-review-agents-general-availability",
+    daysAgo: 4,
+    edition: "tech-daily",
+    category: "developer-tools",
+    title: {
+      en: "Demo Hub opens its code-review agents to every repository",
+      es: "Demo Hub abre sus agentes de revisión de código a todos los repositorios",
+    },
+    deck: {
+      en: "A fictitious code host turns a fictitious preview into a general release. Nothing here describes a real product.",
+      es: "Un host de código ficticio convierte una vista previa ficticia en un lanzamiento general. Nada de esto describe un producto real.",
+    },
+  },
 ];
 
 export function blogDevFixture(lang: ContentLang, now: Date = new Date()): PublicArticle[] {
-  return SEEDS.map((s) => {
+  // Newest first, like every real read path (Firestore orders by publishedAt desc);
+  // same-day stories keep their order in SEEDS.
+  return [...SEEDS].sort((a, b) => a.daysAgo - b.daysAgo).map((s) => {
     const when = new Date(now.getTime() - s.daysAgo * 86_400_000);
     const eventDate = editorialDate(when);
     const weekly = s.edition === "weekly-recap" || s.edition === "week-ahead";

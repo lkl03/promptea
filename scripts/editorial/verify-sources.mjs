@@ -1,0 +1,116 @@
+#!/usr/bin/env node
+// scripts/editorial/verify-sources.mjs — v1.8.3.
+//
+// Fetches every URL of the editorial source registry (lib/blog/sources.ts) and
+// checks that it answers 200 with the kind of document the registry says it is
+// (an RSS/Atom feed, an HTML page, JSON). Writes the result to
+// docs/editorial/sources-verification.md, which is the evidence behind the
+// `verifiedAt` date of the registry and the date shown on /{lang}/sources.
+//
+//   node scripts/editorial/verify-sources.mjs            # verify and rewrite the report
+//   node scripts/editorial/verify-sources.mjs --check    # verify only (exit code), write nothing
+//
+// GET only, a generic User-Agent, no cookies, nothing about the project in the
+// request. Exit code 1 when a source fails: fix or remove the entry — a source
+// that cannot be verified does not belong in the registry.
+
+import { readFile, writeFile } from "node:fs/promises";
+
+const CHECK_ONLY = process.argv.includes("--check");
+const CONCURRENCY = 10;
+const TIMEOUT_MS = 30_000;
+const REGISTRY = "lib/blog/sources.ts";
+const REPORT = "docs/editorial/sources-verification.md";
+
+const source = await readFile(REGISTRY, "utf8");
+const declaredDate = /SOURCES_VERIFIED_AT = "(\d{4}-\d{2}-\d{2})"/.exec(source)?.[1] ?? "?";
+const entries = [...source.matchAll(/src\(\{([^\n]*)\}\)/g)].map((m) => {
+  const body = m[1];
+  const field = (name) => new RegExp(`${name}: "([^"]*)"`).exec(body)?.[1] ?? "";
+  return { id: field("id"), name: field("name"), publisher: field("publisher"), url: field("url"), format: field("format"), tier: Number(/tier: (\d)/.exec(body)?.[1] ?? 0), sourceType: field("sourceType") };
+});
+if (entries.length === 0) {
+  console.error(`No entries found in ${REGISTRY}`);
+  process.exit(2);
+}
+
+function kindOf(text, contentType) {
+  const head = text.slice(0, 2000).trimStart();
+  if (/^\s*[[{]/.test(head) && /json/i.test(contentType)) return "json";
+  if (/<rss[\s>]|<rdf:RDF[\s>]/i.test(head)) return "rss";
+  if (/<feed[\s>]/i.test(head)) return "atom";
+  if (/<!doctype html|<html[\s>]/i.test(head)) return "html";
+  // Some feeds put a long XML prolog/stylesheet first: look further in.
+  if (/<rss[\s>]|<rdf:RDF[\s>]/i.test(text.slice(0, 20000))) return "rss";
+  if (/<feed[\s>]/i.test(text.slice(0, 20000))) return "atom";
+  if (/<html[\s>]|<head[\s>]|<body[\s>]/i.test(text.slice(0, 20000))) return "html";
+  return "unknown";
+}
+
+/** rss and atom are both "a feed": several publishers serve Atom at an .rss URL and vice versa. */
+const compatible = (declared, found) => declared === found || (["rss", "atom"].includes(declared) && ["rss", "atom"].includes(found));
+
+async function verify(e) {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch(e.url, {
+        redirect: "follow",
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+        headers: { "user-agent": "Mozilla/5.0 (compatible; feed-check/1.0)", accept: "application/atom+xml,application/rss+xml,application/xml,application/json,text/html;q=0.9,*/*;q=0.8" },
+      });
+      const text = await res.text();
+      const contentType = (res.headers.get("content-type") ?? "").split(";")[0];
+      const found = kindOf(text, contentType);
+      const items = (text.match(/<item[\s>]|<entry[\s>]/gi) ?? []).length;
+      const ok = res.status === 200 && compatible(e.format, found) && (!["rss", "atom"].includes(e.format) || items > 0);
+      return { ...e, status: res.status, found, items, kb: Math.round(text.length / 1024), finalUrl: res.url, ok };
+    } catch (err) {
+      if (attempt === 1) return { ...e, status: 0, found: "error", items: 0, kb: 0, finalUrl: e.url, ok: false, error: `${err?.name ?? "Error"}: ${err?.message ?? err}` };
+      await new Promise((r) => setTimeout(r, 1500));
+    }
+  }
+}
+
+const results = new Array(entries.length);
+let next = 0;
+await Promise.all(
+  Array.from({ length: CONCURRENCY }, async () => {
+    while (next < entries.length) {
+      const i = next++;
+      results[i] = await verify(entries[i]);
+      const r = results[i];
+      console.log(`${r.ok ? "ok  " : "FAIL"} ${String(r.status).padStart(3)} ${r.found.padEnd(7)} ${String(r.items).padStart(4)} items  ${r.id}  ${r.url}${r.error ? `  (${r.error})` : ""}`);
+    }
+  }),
+);
+
+const failed = results.filter((r) => !r.ok);
+const today = new Date().toISOString().slice(0, 10);
+console.log(`\n${results.length - failed.length} of ${results.length} sources verified on ${today}${failed.length ? `; ${failed.length} FAILED` : ""}`);
+if (declaredDate !== today) console.log(`Note: the registry says SOURCES_VERIFIED_AT = "${declaredDate}". Update it to ${today} if this run is the new reference.`);
+
+if (!CHECK_ONLY) {
+  const tierName = { 1: "Tier 1 — primary", 2: "Tier 2 — trusted technical press", 3: "Tier 3 — discovery only" };
+  const lines = [
+    "# Source registry — verification report",
+    "",
+    `Generated by \`node scripts/editorial/verify-sources.mjs\` on **${today}** (UTC). Registry: \`${REGISTRY}\` (\`SOURCES_VERIFIED_AT = "${declaredDate}"\`).`,
+    "",
+    `**${results.length - failed.length} of ${results.length} sources answered 200 with the expected kind of document.**${failed.length ? ` ${failed.length} failed and must be fixed or removed.` : ""}`,
+    "",
+    "Each URL was fetched with GET, following redirects. \"Found\" is what the response body is (an RSS or Atom feed, an HTML page, JSON); for a feed, \"Items\" is how many `<item>`/`<entry>` elements it carried. \"Final URL\" is shown only when the request was redirected.",
+    "",
+  ];
+  for (const tier of [1, 2, 3]) {
+    const rows = results.filter((r) => r.tier === tier);
+    lines.push(`## ${tierName[tier]} (${rows.length})`, "", "| Source | Publisher | Type | URL | Status | Found | Items | Size |", "| --- | --- | --- | --- | --- | --- | --- | --- |");
+    for (const r of rows) {
+      const redirected = r.finalUrl && r.finalUrl !== r.url ? `<br>→ ${r.finalUrl}` : "";
+      lines.push(`| ${r.name} | ${r.publisher} | ${r.sourceType} | ${r.url}${redirected} | ${r.ok ? r.status : `**${r.status || "error"}**`} | ${r.found} | ${["rss", "atom"].includes(r.found) ? r.items : "—"} | ${r.kb} KB |`);
+    }
+    lines.push("");
+  }
+  await writeFile(REPORT, lines.join("\n"));
+  console.log(`wrote ${REPORT}`);
+}
+process.exit(failed.length ? 1 : 0);

@@ -381,7 +381,7 @@ export function isPubliclyVisible(status: unknown): status is PublicBlogStatus {
  * a range or a forward view, so "event date" for them simply means the day the
  * edition ran — they are not claiming a past event happened today.
  */
-export const BLOG_EDITIONS = ["daily", "daily-morning", "weekly-recap", "week-ahead"] as const;
+export const BLOG_EDITIONS = ["daily", "daily-morning", "weekly-recap", "week-ahead", "tech-daily"] as const;
 export type BlogEdition = (typeof BLOG_EDITIONS)[number];
 
 export function isBlogEdition(v: unknown): v is BlogEdition {
@@ -394,7 +394,74 @@ export const EDITION_KEY_PREFIX: Record<BlogEdition, string> = {
   "daily-morning": "ai-morning",
   "weekly-recap": "ai-weekly",
   "week-ahead": "ai-ahead",
+  // v1.8.3 — the Tech edition. Its own prefix, so the tech story of a day lives
+  // in its own document next to that day's AI story (ai-tech_2026-11-12 beside
+  // ai-daily_2026-11-12) and neither can overwrite the other.
+  "tech-daily": "ai-tech",
 };
+
+/**
+ * Editions that are ONE same-day story (v1.8.3: the single list every rule
+ * reads, instead of `edition === "daily" || edition === "daily-morning"` spelled
+ * out in the schema, the freshness guard and the newsletter). A story edition
+ * covers one event, declares no coverage window, must be dated today, and is the
+ * only kind a human may backdate. Everything else is a weekly edition.
+ */
+export const STORY_EDITIONS = ["daily", "daily-morning", "tech-daily"] as const satisfies readonly BlogEdition[];
+export type StoryEdition = (typeof STORY_EDITIONS)[number];
+
+export function isStoryEdition(v: unknown): v is StoryEdition {
+  return (STORY_EDITIONS as readonly unknown[]).includes(v);
+}
+
+/** Editions that summarise or preview a week and carry the range they cover. */
+export const WEEKLY_EDITIONS = ["weekly-recap", "week-ahead"] as const satisfies readonly BlogEdition[];
+export type WeeklyEdition = (typeof WEEKLY_EDITIONS)[number];
+
+export function isWeeklyEdition(v: unknown): v is WeeklyEdition {
+  return (WEEKLY_EDITIONS as readonly unknown[]).includes(v);
+}
+
+/**
+ * The two reader-facing sections of AI Daily (v1.8.3), each with its own index
+ * URL: `ai` at /{lang}/blog (the AI news desk: both daily slots and the two
+ * weekly editions) and `tech` at /{lang}/blog/tech (one tech story a day, always
+ * tied to AI or software development). Every edition belongs to exactly one.
+ */
+export const BLOG_SECTIONS = ["ai", "tech"] as const;
+export type BlogSection = (typeof BLOG_SECTIONS)[number];
+
+export function isBlogSection(v: unknown): v is BlogSection {
+  return BLOG_SECTIONS.includes(v as BlogSection);
+}
+
+export const SECTION_OF_EDITION: Record<BlogEdition, BlogSection> = {
+  daily: "ai",
+  "daily-morning": "ai",
+  "weekly-recap": "ai",
+  "week-ahead": "ai",
+  "tech-daily": "tech",
+};
+
+/**
+ * Section of an edition. Total on purpose: a document written by a newer
+ * deployment (an edition this build has never heard of) reads as `ai`, the
+ * section that existed first, instead of throwing or vanishing.
+ */
+export function sectionOfEdition(edition: unknown): BlogSection {
+  return isBlogEdition(edition) ? SECTION_OF_EDITION[edition] : "ai";
+}
+
+export function editionsOfSection(section: BlogSection): BlogEdition[] {
+  return BLOG_EDITIONS.filter((e) => SECTION_OF_EDITION[e] === section);
+}
+
+/**
+ * Path segments under /{lang}/blog/ that are pages of their own, so an article
+ * can never be published with one of them as its slug (it would be unreachable:
+ * the static route wins).
+ */
+export const RESERVED_BLOG_SLUGS = ["tech", "weekly", "feed"] as const;
 
 /** How far back a manually backdated post may reach, in days. */
 export const MAX_BACKDATE_DAYS = 14;
@@ -416,6 +483,11 @@ export const BLOG_CATEGORIES = [
   "energy",
   "digest",
   "other",
+  // v1.8.3 — added with the Tech edition (usable by any edition). Appended at
+  // the end, so the position of every existing category is untouched.
+  "cloud", // cloud and hosting platforms: Vercel, Cloudflare, Supabase, Netlify, AWS, GCP, Azure…
+  "web-platform", // browsers, web standards, frameworks and runtimes: Next.js, React, Node…
+  "hardware", // chips, accelerators, devices
 ] as const;
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 

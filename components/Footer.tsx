@@ -21,9 +21,12 @@ function XIcon({ className }: { className?: string }) {
 export default function Footer({
   lang,
   appFeedbackDict,
+  labels,
 }: {
   lang: Lang;
   appFeedbackDict: AppFeedbackDict;
+  /** v1.8.3 — labels of the links added with the Tech edition; they come from the dictionaries (dict.nav). */
+  labels: { tech: string; sources: string };
 }) {
   const year = new Date().getFullYear();
   const privacyLabel = pick(lang, { es: "Privacidad", en: "Privacy", pt: "Privacidade" });
@@ -108,6 +111,15 @@ export default function Footer({
 
         <Link href={`/${lang}/blog`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {blogLabel}
+        </Link>
+
+        {/* v1.8.3: the Tech section of AI Daily and the public page about its sources. */}
+        <Link href={`/${lang}/blog/tech`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {labels.tech}
+        </Link>
+
+        <Link href={`/${lang}/sources`} className="hover:underline underline-offset-2 transition-all ease-in-out">
+          {labels.sources}
         </Link>
 
         <Link href={weeklyArchivePath(lang)} className="hover:underline underline-offset-2 transition-all ease-in-out">

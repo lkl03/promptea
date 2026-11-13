@@ -109,7 +109,7 @@ async function run({ name, path, width, height, block = false, blockData = false
         hostTextLength: text.length,
         hostTextSample: text.slice(0, 120),
         posts: host ? host.querySelectorAll('[class*="posts-item"], a[href*="/status/"]').length : 0,
-        visible: host ? getComputedStyle(host.parentElement).visibility !== "hidden" : false,
+        visible: host ? getComputedStyle(host.parentElement).visibility !== "hidden" && getComputedStyle(host.parentElement).opacity !== "0" : false,
         images: host ? host.querySelectorAll("img").length : 0,
         // Only what is actually displayed counts (the "Loading…" line is hidden by <noscript> without JS).
         status: [...b.querySelectorAll("[role=status]")].filter((e) => e.offsetParent !== null).map((e) => e.innerText.trim().slice(0, 80))[0] ?? null,

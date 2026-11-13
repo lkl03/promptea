@@ -1,6 +1,6 @@
 {
   "base": "http://localhost:3181",
-  "at": "2026-11-11T17:41:57.436Z",
+  "at": "2026-11-11T19:24:56.299Z",
   "results": [
     {
       "name": "desktop: the server HTML does not include the widget script",
@@ -15,7 +15,7 @@
     {
       "name": "desktop: nothing is requested from Elfsight before the load event",
       "pass": true,
-      "detail": "first third-party request at 796 ms; DOMContentLoaded 534 ms; load 570 ms; LCP 748 ms"
+      "detail": "first third-party request at 1554 ms; DOMContentLoaded 1321 ms; load 1354 ms; LCP 1516 ms"
     },
     {
       "name": "desktop: the feed box keeps its height",
@@ -25,7 +25,7 @@
     {
       "name": "desktop: no layout shift",
       "pass": true,
-      "detail": "CLS 0.0021"
+      "detail": "CLS 0.006"
     },
     {
       "name": "desktop: the card ends with posts or the fallback, never an empty box",
@@ -101,11 +101,11 @@
   "rows": [
     {
       "case": "desktop 1440 (card in view)",
-      "firstThirdPartyMs": 796,
-      "dclMs": 534,
-      "loadMs": 570,
-      "lcpMs": 748,
-      "cls": 0.0021,
+      "firstThirdPartyMs": 1554,
+      "dclMs": 1321,
+      "loadMs": 1354,
+      "lcpMs": 1516,
+      "cls": 0.006,
       "thirdPartyRequests": 22,
       "thirdPartyKB": 196,
       "longTaskMsAfterWidget": 0,
@@ -116,12 +116,12 @@
       "htmlHasWidgetScript": false,
       "htmlProfileLinks": 3,
       "bytesByHost": {
-        "elfsightcdn.com": 12614,
-        "core.service.elfsight.com": 3022,
-        "static.elfsight.com": 152042,
+        "elfsightcdn.com": 12605,
+        "core.service.elfsight.com": 3019,
+        "static.elfsight.com": 151501,
         "widget-data.service.elfsight.com": 5154,
         "phosphor.utils.elfsightcdn.com": 21043,
-        "storage.elfsight.com": 7296
+        "storage.elfsight.com": 7297
       },
       "hosts": [
         "elfsightcdn.com",
@@ -135,11 +135,11 @@
     },
     {
       "case": "phone 375 (after scrolling to the card)",
-      "firstThirdPartyMs": 856,
-      "dclMs": 371,
-      "loadMs": 532,
-      "lcpMs": 408,
-      "cls": 0.0202,
+      "firstThirdPartyMs": 927,
+      "dclMs": 364,
+      "loadMs": 563,
+      "lcpMs": 388,
+      "cls": 0.0204,
       "thirdPartyRequests": 22,
       "thirdPartyKB": 196,
       "longTaskMsAfterWidget": 0,
@@ -150,12 +150,12 @@
       "htmlHasWidgetScript": false,
       "htmlProfileLinks": 3,
       "bytesByHost": {
-        "elfsightcdn.com": 12613,
-        "core.service.elfsight.com": 3024,
-        "static.elfsight.com": 152045,
-        "widget-data.service.elfsight.com": 5150,
-        "phosphor.utils.elfsightcdn.com": 21036,
-        "storage.elfsight.com": 7295
+        "elfsightcdn.com": 12607,
+        "core.service.elfsight.com": 3017,
+        "static.elfsight.com": 152003,
+        "widget-data.service.elfsight.com": 5149,
+        "phosphor.utils.elfsightcdn.com": 21050,
+        "storage.elfsight.com": 7294
       },
       "hosts": [
         "elfsightcdn.com",
@@ -169,11 +169,11 @@
     },
     {
       "case": "desktop glass-dark",
-      "firstThirdPartyMs": 666,
-      "dclMs": 325,
-      "loadMs": 509,
-      "lcpMs": 500,
-      "cls": 0.0051,
+      "firstThirdPartyMs": 993,
+      "dclMs": 471,
+      "loadMs": 710,
+      "lcpMs": 708,
+      "cls": 0.0028,
       "thirdPartyRequests": 22,
       "thirdPartyKB": 196,
       "longTaskMsAfterWidget": 0,
@@ -184,12 +184,12 @@
       "htmlHasWidgetScript": false,
       "htmlProfileLinks": 3,
       "bytesByHost": {
-        "elfsightcdn.com": 12610,
-        "core.service.elfsight.com": 3025,
-        "static.elfsight.com": 152036,
-        "widget-data.service.elfsight.com": 5153,
-        "phosphor.utils.elfsightcdn.com": 21039,
-        "storage.elfsight.com": 7296
+        "elfsightcdn.com": 12612,
+        "core.service.elfsight.com": 3017,
+        "static.elfsight.com": 152034,
+        "widget-data.service.elfsight.com": 5156,
+        "phosphor.utils.elfsightcdn.com": 21042,
+        "storage.elfsight.com": 7295
       },
       "hosts": [
         "elfsightcdn.com",
@@ -203,11 +203,11 @@
     },
     {
       "case": "desktop metro-dark",
-      "firstThirdPartyMs": 662,
-      "dclMs": 313,
-      "loadMs": 473,
-      "lcpMs": 324,
-      "cls": 0.0044,
+      "firstThirdPartyMs": 800,
+      "dclMs": 383,
+      "loadMs": 604,
+      "lcpMs": 412,
+      "cls": 0.0043,
       "thirdPartyRequests": 22,
       "thirdPartyKB": 196,
       "longTaskMsAfterWidget": 0,
@@ -218,12 +218,12 @@
       "htmlHasWidgetScript": false,
       "htmlProfileLinks": 3,
       "bytesByHost": {
-        "elfsightcdn.com": 12608,
-        "core.service.elfsight.com": 3024,
-        "static.elfsight.com": 152033,
+        "elfsightcdn.com": 12605,
+        "core.service.elfsight.com": 3018,
+        "static.elfsight.com": 152032,
         "widget-data.service.elfsight.com": 5154,
-        "phosphor.utils.elfsightcdn.com": 21042,
-        "storage.elfsight.com": 7293
+        "phosphor.utils.elfsightcdn.com": 21054,
+        "storage.elfsight.com": 7297
       },
       "hosts": [
         "elfsightcdn.com",
@@ -237,11 +237,11 @@
     },
     {
       "case": "blocked (ad blocker)",
-      "firstThirdPartyMs": 618,
-      "dclMs": 316,
-      "loadMs": 477,
-      "lcpMs": 340,
-      "cls": 0.0022,
+      "firstThirdPartyMs": 801,
+      "dclMs": 394,
+      "loadMs": 584,
+      "lcpMs": 424,
+      "cls": 0.0024,
       "thirdPartyRequests": 1,
       "thirdPartyKB": 0,
       "longTaskMsAfterWidget": 0,
@@ -259,11 +259,11 @@
     },
     {
       "case": "Elfsight data service failing",
-      "firstThirdPartyMs": 581,
-      "dclMs": 278,
-      "loadMs": 438,
-      "lcpMs": 312,
-      "cls": 0.0021,
+      "firstThirdPartyMs": 812,
+      "dclMs": 399,
+      "loadMs": 577,
+      "lcpMs": 424,
+      "cls": 0.0024,
       "thirdPartyRequests": 6,
       "thirdPartyKB": 164,
       "longTaskMsAfterWidget": 0,
@@ -274,9 +274,9 @@
       "htmlHasWidgetScript": false,
       "htmlProfileLinks": 3,
       "bytesByHost": {
-        "elfsightcdn.com": 12605,
-        "core.service.elfsight.com": 3024,
-        "static.elfsight.com": 152043
+        "elfsightcdn.com": 12604,
+        "core.service.elfsight.com": 3017,
+        "static.elfsight.com": 152035
       },
       "hosts": [
         "elfsightcdn.com",

@@ -239,7 +239,10 @@
       "business": "Negocios",
       "energy": "Energía",
       "digest": "Resumen del día",
-      "other": "Otros"
+      "other": "Otros",
+      "cloud": "Nube y plataformas",
+      "web-platform": "Plataforma web",
+      "hardware": "Hardware"
     },
     "importance": {
       "P0": "De último momento",
@@ -250,7 +253,8 @@
       "daily": "Diaria",
       "daily-morning": "Mañana",
       "weekly-recap": "Resumen de la semana",
-      "week-ahead": "La semana que viene"
+      "week-ahead": "La semana que viene",
+      "tech-daily": "Tech"
     },
     "coveredRange": "Cubre del {from} al {to}",
     "backdateNotice": "Esta nota cubre un hecho del {event}, publicada el {published}.",
@@ -284,7 +288,25 @@
       "blurb": "Una noticia de IA verificada por día, con sus fuentes a la vista.",
       "cta": "Leer la edición de hoy"
     },
-    "langNotice": "AI Daily se publica en inglés y español. Estás leyendo la edición en español."
+    "langNotice": "AI Daily se publica en inglés y español. Estás leyendo la edición en español.",
+    "tech": {
+      "indexTitle": "IA al Día Tech",
+      "tagline": "Una nota tech por día, para quienes construyen con IA.",
+      "indexDescription": "Una nota de tecnología verificada por día (nube y plataformas, frameworks y runtimes web, herramientas para desarrollar, hardware), siempre contada por lo que cambia para la IA y para quienes desarrollan software, con sus fuentes a la vista.",
+      "latest": "Últimas notas tech",
+      "emptyTitle": "La primera nota Tech está en camino",
+      "empty": "IA al Día Tech publica una nota de tecnología verificada por día. Todavía no hay nada acá: mientras tanto, mirá las noticias de IA.",
+      "emptyCta": "Ver las noticias de IA",
+      "backToTech": "← Volver a Tech",
+      "langNotice": "IA al Día Tech se publica en inglés y español. Estás leyendo la edición en español.",
+      "feedTitle": "IA al Día Tech"
+    },
+    "pagination": {
+      "label": "Paginación",
+      "newer": "← Notas más recientes",
+      "page": "Página {page} de {pages}"
+    },
+    "sourcesLink": "Cómo elegimos y verificamos las fuentes"
   },
   "newsletter": {
     "title": "Promptea Semanal",
@@ -351,7 +373,8 @@
       "all": "Ver todas las notas",
       "weekly": "Resumen semanal",
       "lead": "Nota principal",
-      "langNote": "Las notas se muestran en inglés."
+      "langNote": "Las notas se muestran en inglés.",
+      "tech": "Tech"
     },
     "teaser": {
       "title": "Benchmarks de un vistazo",
@@ -394,7 +417,8 @@
   },
   "dailyTabs": {
     "aria": "Secciones de IA al día",
-    "news": "Noticias",
+    "news": "IA",
+    "tech": "Tech",
     "weekly": "Resumen semanal"
   },
   "weekly": {
@@ -413,7 +437,9 @@
     "empty": "El resumen semanal se publica los lunes. Mientras tanto, leé las noticias diarias.",
     "unavailable": "No pudimos cargar el archivo en este momento. Probá de nuevo en unos minutos.",
     "share": "Compartir esta edición",
-    "copied": "Enlace copiado"
+    "copied": "Enlace copiado",
+    "techTitle": "Tech de la semana",
+    "techIntro": "De IA al Día Tech: qué cambió en las plataformas y herramientas con las que construís."
   },
   "newsletterDock": {
     "title": "Promptea Semanal",
@@ -518,7 +544,9 @@
     "guides": "Guías",
     "models": "Modelos",
     "glossary": "Glosario",
-    "library": "Biblioteca"
+    "library": "Biblioteca",
+    "footerTech": "Tech",
+    "footerSources": "Fuentes"
   },
   "howItWorksPage": {
     "breadcrumb": "Ruta de navegación",
@@ -536,6 +564,20 @@
   },
   "changelog": {
     "olderNotice": "Las versiones anteriores a la v1.8.0 se muestran en español.",
+    "v183": {
+      "released": "Lanzado: 11-11-2026",
+      "items": [
+        "Nuevo: IA al Día Tech. Una nota de tecnología por día para quienes construyen con IA (nube y plataformas, frameworks web, herramientas para desarrollar, hardware), con sus fuentes, en su propia sección y con su propio feed RSS.",
+        "IA al Día ahora tiene tres pestañas: IA, Tech y el resumen semanal. El resumen semanal suma un bloque \"Tech de la semana\".",
+        "Página nueva: cómo elegimos y verificamos las fuentes. Los tres niveles, qué necesita una nota para publicarse y a quién leemos.",
+        "La home y la mayoría de las páginas cargan más rápido: ahora se preparan de antemano en vez de armarse en cada visita.",
+        "La tarjeta del feed de X ya no muestra el mensaje de error de un tercero, y se carga cuando la página ya está lista.",
+        "Los packs de prompts ya no se desplazan hacia los costados en el celular.",
+        "Los mensajes de error del analizador y de Elegir IA ahora salen en tu idioma.",
+        "Bajo PT, la home avisa que los titulares están en inglés.",
+        "Seguridad: límites de uso en los endpoints de análisis y headers de respuesta más estrictos."
+      ]
+    },
     "v182": {
       "released": "Lanzado: 11-11-2026",
       "items": [
@@ -575,5 +617,12 @@
   "guides": {
     "langNotice": "Esta guía todavía no está disponible en este idioma. Estás leyendo la versión en inglés.",
     "inEnglish": "en inglés"
+  },
+  "sourcesPage": {
+    "breadcrumb": "Ruta de navegación",
+    "home": "Inicio",
+    "toDaily": "Leer IA al Día",
+    "toTech": "Leer IA al Día Tech",
+    "toMethodology": "Cómo se puntúan los prompts"
   }
 }

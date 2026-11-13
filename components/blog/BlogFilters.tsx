@@ -35,7 +35,7 @@
 
 import Link from "next/link";
 
-import { BLOG_EDITIONS, type Lang } from "@/lib/domain";
+import { editionsOfSection, type Lang } from "@/lib/domain";
 import type { BlogCategory, BlogEdition } from "@/lib/domain";
 import { filtersToQuery, hasActiveFilters } from "@/lib/blog/filters";
 import type { BlogFilterState } from "@/lib/blog/filters";
@@ -80,10 +80,21 @@ export default function BlogFilters({
   filters,
   companies,
   categories,
+  editions,
+  basePath,
   dict,
 }: {
   lang: Lang;
   filters: BlogFilterState;
+  /**
+   * v1.8.3 — the editions present in this index, in domain order. The chip row
+   * offers exactly these (it used to list every edition of the domain); with
+   * one edition or none — the Tech index — there is nothing to choose and the
+   * row is not rendered.
+   */
+  editions?: readonly BlogEdition[];
+  /** v1.8.3 — the index this bar filters: `/{lang}/blog` (default) or `/{lang}/blog/tech`. */
+  basePath?: string;
   /** Distinct companies across the loaded window, already sorted. */
   companies: readonly string[];
   /** Categories actually present in the window, in domain order. */
@@ -104,21 +115,26 @@ export default function BlogFilters({
   const anythingActive = hasActiveFilters(filters) || filters.sort !== "newest";
 
   /** Switching edition preserves every other facet and drops back to page 1. */
-  const editionHref = (edition: BlogEdition | null) =>
-    `/${lang}/blog${filtersToQuery({ ...filters, edition })}`;
+  const base = basePath ?? `/${lang}/blog`;
+  const editionHref = (edition: BlogEdition | null) => `${base}${filtersToQuery({ ...filters, edition })}`;
 
-  const editionChips: ReadonlyArray<{ value: BlogEdition | null; label: string }> = [
-    { value: null, label: dict.allEditions },
-    ...BLOG_EDITIONS.map((edition) => ({
-      value: edition,
-      label: dict.editionLabels[edition] ?? edition,
-    })),
-  ];
+  // Without the list (older callers) every AI edition is offered, as before v1.8.3.
+  const offered: readonly BlogEdition[] = editions ?? editionsOfSection("ai");
+  const editionChips: ReadonlyArray<{ value: BlogEdition | null; label: string }> =
+    offered.length > 1
+      ? [
+          { value: null, label: dict.allEditions },
+          ...offered.map((edition) => ({
+            value: edition,
+            label: dict.editionLabels[edition] ?? edition,
+          })),
+        ]
+      : [];
 
   return (
     <form
       method="GET"
-      action={`/${lang}/blog`}
+      action={base}
       role="search"
       aria-label={dict.heading}
       className="mt-7 sm:mt-8"
@@ -177,31 +193,29 @@ export default function BlogFilters({
           Edition first because it is the one facet that is always meaningful:
           four values, one line, each a crawlable URL. */}
       <div className="mt-4 flex w-full flex-wrap items-center gap-x-3 gap-y-2">
-        <div
-          role="group"
-          aria-label={dict.editionLabel}
-          className="flex min-w-0 flex-wrap items-center gap-1.5"
-        >
-          {editionChips.map((chip) => {
-            const active = filters.edition === chip.value;
-            return (
-              <Link
-                key={chip.value ?? "all"}
-                href={editionHref(chip.value)}
-                aria-current={active ? "page" : undefined}
-                className="pill h-9 px-3.5"
-              >
-                {chip.label}
-              </Link>
-            );
-          })}
-        </div>
+        {editionChips.length > 0 ? (
+          <div role="group" aria-label={dict.editionLabel} className="flex min-w-0 flex-wrap items-center gap-1.5">
+            {editionChips.map((chip) => {
+              const active = filters.edition === chip.value;
+              return (
+                <Link
+                  key={chip.value ?? "all"}
+                  href={editionHref(chip.value)}
+                  aria-current={active ? "page" : undefined}
+                  className="pill h-9 px-3.5"
+                >
+                  {chip.label}
+                </Link>
+              );
+            })}
+          </div>
+        ) : null}
 
         {/* A link, not a reset button: clearing must produce the clean URL so
             the reader lands on the canonical, indexable front page. */}
         {anythingActive ? (
           <Link
-            href={`/${lang}/blog`}
+            href={base}
             className="text-xs text-ink-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
           >
             {dict.clear}

@@ -21,7 +21,7 @@
 // <script type="application/ld+json"> tag — the one sanctioned use of
 // dangerouslySetInnerHTML in this codebase. Article prose never goes near it.
 
-import { pick, type Lang } from "@/lib/domain";
+import { pick, type BlogSection, type Lang } from "@/lib/domain";
 import { getSiteUrl } from "@/lib/seo/site";
 import { breadcrumbNode, entityIds, graph, pageId, ref, webPageNode } from "@/lib/seo/jsonld";
 import { newest } from "@/lib/seo/dates";
@@ -32,6 +32,16 @@ export const BLOG_SECTION_LABEL: Record<Lang, string> = {
   es: "AI Daily",
   en: "AI Daily",
   pt: "AI Daily",
+};
+
+/**
+ * Human label of the Tech section (v1.8.3), used in breadcrumbs and tabs. The
+ * same word in every locale, like the label of the section it belongs to.
+ */
+export const BLOG_TECH_LABEL: Record<Lang, string> = {
+  es: "Tech",
+  en: "Tech",
+  pt: "Tech",
 };
 
 /** JSON-LD is untyped by nature; this alias keeps the intent readable. */
@@ -52,6 +62,24 @@ export function blogArticlePath(lang: Lang, slug: string): string {
 
 export function blogFeedPath(lang: Lang): string {
   return `/${lang}/blog/feed.xml`;
+}
+
+/** v1.8.3 — the Tech section: its own index and its own feed. */
+export function blogTechIndexPath(lang: Lang): string {
+  return `/${lang}/blog/tech`;
+}
+
+export function blogTechFeedPath(lang: Lang): string {
+  return `/${lang}/blog/tech/feed.xml`;
+}
+
+/** The index of a section: /{lang}/blog for `ai`, /{lang}/blog/tech for `tech`. */
+export function blogSectionIndexPath(lang: Lang, section: BlogSection): string {
+  return section === "tech" ? blogTechIndexPath(lang) : blogIndexPath(lang);
+}
+
+export function blogSectionFeedPath(lang: Lang, section: BlogSection): string {
+  return section === "tech" ? blogTechFeedPath(lang) : blogFeedPath(lang);
 }
 
 function origin(siteUrl?: string): string {
@@ -186,39 +214,30 @@ export type BlogBreadcrumbInput = {
   slug: string;
   /** Absolute site origin; defaults to getSiteUrl(). */
   siteUrl?: string;
+  /** v1.8.3 — a Tech story sits one level deeper: Home > AI Daily > Tech > article. */
+  section?: BlogSection;
 };
 
 /**
- * Home > AI Daily > article. Mirrors the BreadcrumbList already emitted by
+ * Home > AI Daily > article (and Home > AI Daily > Tech > article for a Tech
+ * story). Mirrors the BreadcrumbList already emitted by
  * app/[lang]/guides/[slug]/page.tsx, with absolute `item` URLs so the graph is
  * unambiguous regardless of where the crawler resolved the page.
  */
 export function blogBreadcrumbNode(input: BlogBreadcrumbInput): JsonLd {
-  const { lang, title, slug, siteUrl } = input;
+  const { lang, title, slug, siteUrl, section = "ai" } = input;
+
+  const trail: Array<{ name: string; item: string }> = [
+    { name: pick(lang, { es: "Inicio", en: "Home", pt: "Início" }), item: abs(siteUrl, `/${lang}`) },
+    { name: BLOG_SECTION_LABEL[lang], item: abs(siteUrl, blogIndexPath(lang)) },
+    ...(section === "tech" ? [{ name: BLOG_TECH_LABEL[lang], item: abs(siteUrl, blogTechIndexPath(lang)) }] : []),
+    { name: truncateHeadline(title, 160), item: abs(siteUrl, blogArticlePath(lang, slug)) },
+  ];
 
   return {
     "@type": "BreadcrumbList",
     "@id": pageId(abs(siteUrl, blogArticlePath(lang, slug)), "breadcrumb"),
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: pick(lang, { es: "Inicio", en: "Home", pt: "Início" }),
-        item: abs(siteUrl, `/${lang}`),
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: BLOG_SECTION_LABEL[lang],
-        item: abs(siteUrl, blogIndexPath(lang)),
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: truncateHeadline(title, 160),
-        item: abs(siteUrl, blogArticlePath(lang, slug)),
-      },
-    ],
+    itemListElement: trail.map((t, i) => ({ "@type": "ListItem", position: i + 1, name: t.name, item: t.item })),
   };
 }
 
@@ -246,6 +265,8 @@ export type BlogIndexJsonLdInput = {
   /** The articles actually listed on the page. */
   items?: readonly BlogIndexItem[];
   siteUrl?: string;
+  /** v1.8.3 — which index this is. Defaults to the AI index (/{lang}/blog). */
+  section?: BlogSection;
 };
 
 /**
@@ -254,7 +275,8 @@ export type BlogIndexJsonLdInput = {
  * markup never claims more coverage than the page shows.
  */
 export function blogIndexJsonLd(input: BlogIndexJsonLdInput): JsonLd {
-  const url = abs(input.siteUrl, blogIndexPath(input.lang));
+  const section = input.section ?? "ai";
+  const url = abs(input.siteUrl, blogSectionIndexPath(input.lang, section));
   const ids = entityIds(input.siteUrl);
   const items = input.items ?? [];
   const home = pick(input.lang, { es: "Inicio", en: "Home", pt: "Início" });
@@ -296,9 +318,18 @@ export function blogIndexJsonLd(input: BlogIndexJsonLdInput): JsonLd {
       siteUrl: input.siteUrl,
     }),
     blog,
-    breadcrumbNode(url, [
-      { name: home, url: abs(input.siteUrl, `/${input.lang}`) },
-      { name: BLOG_SECTION_LABEL[input.lang], url },
-    ]),
+    breadcrumbNode(
+      url,
+      section === "tech"
+        ? [
+            { name: home, url: abs(input.siteUrl, `/${input.lang}`) },
+            { name: BLOG_SECTION_LABEL[input.lang], url: abs(input.siteUrl, blogIndexPath(input.lang)) },
+            { name: BLOG_TECH_LABEL[input.lang], url },
+          ]
+        : [
+            { name: home, url: abs(input.siteUrl, `/${input.lang}`) },
+            { name: BLOG_SECTION_LABEL[input.lang], url },
+          ],
+    ),
   );
 }

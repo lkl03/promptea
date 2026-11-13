@@ -12,7 +12,7 @@
 // Everything here is derived from Intl with an explicit timeZone, so it stays
 // correct without hardcoding the UTC-3 offset.
 
-import { EDITION_KEY_PREFIX, EDITORIAL_TIMEZONE, MAX_BACKDATE_DAYS } from "@/lib/domain";
+import { EDITION_KEY_PREFIX, EDITORIAL_TIMEZONE, MAX_BACKDATE_DAYS, isStoryEdition } from "@/lib/domain";
 import type { BlogEdition } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
 
@@ -131,9 +131,10 @@ export function checkFreshness(
   if (delta === 0) return { ok: true, today, backdated: false, daysStale: 0 };
 
   // Weekly editions carry the date they were published; they cannot be backdated.
-  // Both daily slots (morning and main) follow the same freshness and backdate rules.
+  // Every story edition (both AI slots and, since v1.8.3, the Tech story) follows
+  // the same freshness and backdate rules.
   const edition = o.edition ?? "daily";
-  if (edition !== "daily" && edition !== "daily-morning") return { ok: false, reason: "stale_event", today, daysStale: delta };
+  if (!isStoryEdition(edition)) return { ok: false, reason: "stale_event", today, daysStale: delta };
 
   if (!o.allowBackdate) return { ok: false, reason: "stale_event", today, daysStale: delta };
   if (delta > MAX_BACKDATE_DAYS) {

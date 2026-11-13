@@ -1,0 +1,18 @@
+{
+  "base": "http://localhost:3181",
+  "match": "/\\/sources|\\/blog|^\\/(es|en|pt)$/",
+  "widths": [
+    1440,
+    768,
+    375
+  ],
+  "theme": "aqua-light",
+  "pages": 36,
+  "loads": 108,
+  "findings": [
+    {
+      "where": "/es/blog/demo-week-in-review @375",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    }
+  ]
+}

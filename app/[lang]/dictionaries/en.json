@@ -239,7 +239,10 @@
       "business": "Business",
       "energy": "Energy",
       "digest": "Digest",
-      "other": "Other"
+      "other": "Other",
+      "cloud": "Cloud & platforms",
+      "web-platform": "Web platform",
+      "hardware": "Hardware"
     },
     "importance": {
       "P0": "Breaking",
@@ -250,7 +253,8 @@
       "daily": "Daily",
       "daily-morning": "Morning",
       "weekly-recap": "Week in review",
-      "week-ahead": "Week ahead"
+      "week-ahead": "Week ahead",
+      "tech-daily": "Tech"
     },
     "coveredRange": "Covers {from} – {to}",
     "backdateNotice": "This story covers an event from {event}, published on {published}.",
@@ -284,7 +288,25 @@
       "blurb": "One verified AI story a day, with its sources attached.",
       "cta": "Read today's edition"
     },
-    "langNotice": "AI Daily is published in English and Spanish. You are reading the English edition."
+    "langNotice": "AI Daily is published in English and Spanish. You are reading the English edition.",
+    "tech": {
+      "indexTitle": "AI Daily Tech",
+      "tagline": "One tech story a day, for people who build with AI.",
+      "indexDescription": "One verified technology story a day — cloud and hosting platforms, web frameworks and runtimes, developer tools, hardware — always told through what it changes for AI and for the people who build software, with its sources attached.",
+      "latest": "Latest tech stories",
+      "emptyTitle": "The first Tech story is on its way",
+      "empty": "AI Daily Tech publishes one verified technology story a day. There is nothing here yet — in the meantime, read the AI news.",
+      "emptyCta": "Read the AI news",
+      "backToTech": "← Back to Tech",
+      "langNotice": "AI Daily Tech is published in English and Spanish. You are reading the English edition.",
+      "feedTitle": "AI Daily Tech"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "newer": "← Newer articles",
+      "page": "Page {page} of {pages}"
+    },
+    "sourcesLink": "How we choose and verify sources"
   },
   "newsletter": {
     "title": "Promptea Weekly",
@@ -351,7 +373,8 @@
       "all": "See all stories",
       "weekly": "Weekly digest",
       "lead": "Top story",
-      "langNote": "Stories are shown in English."
+      "langNote": "Stories are shown in English.",
+      "tech": "Tech"
     },
     "teaser": {
       "title": "Benchmarks at a glance",
@@ -394,7 +417,8 @@
   },
   "dailyTabs": {
     "aria": "AI Daily sections",
-    "news": "News",
+    "news": "AI",
+    "tech": "Tech",
     "weekly": "Weekly digest"
   },
   "weekly": {
@@ -413,7 +437,9 @@
     "empty": "The weekly digest is published on Mondays. In the meantime, read the daily news.",
     "unavailable": "We couldn't load the archive right now. Please try again in a few minutes.",
     "share": "Share this edition",
-    "copied": "Link copied"
+    "copied": "Link copied",
+    "techTitle": "Tech this week",
+    "techIntro": "From AI Daily Tech: what changed in the platforms and tools you build with."
   },
   "newsletterDock": {
     "title": "Promptea Weekly",
@@ -518,7 +544,9 @@
     "guides": "Guides",
     "models": "Models",
     "glossary": "Glossary",
-    "library": "Library"
+    "library": "Library",
+    "footerTech": "Tech",
+    "footerSources": "Sources"
   },
   "howItWorksPage": {
     "breadcrumb": "Breadcrumb",
@@ -536,6 +564,20 @@
   },
   "changelog": {
     "olderNotice": "Versions before v1.8.0 are listed in English.",
+    "v183": {
+      "released": "Released: 2026-11-11",
+      "items": [
+        "New: AI Daily Tech. One technology story a day for people who build with AI — cloud platforms, web frameworks, developer tools, hardware — with its sources, in its own section and with its own RSS feed.",
+        "AI Daily now has three tabs: AI, Tech and the weekly digest. The weekly digest gains a \"Tech this week\" block.",
+        "New page: how we choose and verify sources — the three tiers, what a story needs before it is published and who we read.",
+        "The home page and most pages load faster: they are now prepared in advance instead of being built on every visit.",
+        "The X feed card no longer shows a third party's error message, and it loads after the page is ready.",
+        "Prompt packs no longer scroll sideways on phones.",
+        "Error messages in the analyzer and in Find the best AI are now shown in your language.",
+        "Under PT, the home page says that the headlines are in English.",
+        "Security: usage limits on the analysis endpoints and stricter response headers."
+      ]
+    },
     "v182": {
       "released": "Released: 2026-11-11",
       "items": [
@@ -575,5 +617,12 @@
   "guides": {
     "langNotice": "This guide is not available in this language yet. You are reading the English version.",
     "inEnglish": "in English"
+  },
+  "sourcesPage": {
+    "breadcrumb": "Breadcrumb",
+    "home": "Home",
+    "toDaily": "Read AI Daily",
+    "toTech": "Read AI Daily Tech",
+    "toMethodology": "How prompts are scored"
   }
 }

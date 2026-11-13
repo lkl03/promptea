@@ -63,7 +63,7 @@ describe("i18n parity", () => {
   // check above. This one catches it: a Portuguese (or Spanish) value may equal
   // the English one only when the text is a name or a term that is not
   // translated (docs/i18n/pt-glossary.md).
-  const SAME_AS_ENGLISH = /^(Promptea|AI Daily|Promptea Weekly|Blog|Tags|Benchmarks|Prompts|Menu|Feedback|Bug|Design|Checklist|JSON|Original|Top \{n\}|~\{n\} tokens|\{n\} h|\{provider\}: \{count\} \(\{pct\}\)|\{source\} · \{date\}|your@email\.com|General|Error|No|Marketing|Normal|Total|Global|Chat|Editorial|Sponsor|Copy)$/;
+  const SAME_AS_ENGLISH = /^(Promptea|AI Daily|AI Daily Tech|Tech|Hardware|Promptea Weekly|Blog|Tags|Benchmarks|Prompts|Menu|Feedback|Bug|Design|Checklist|JSON|Original|Top \{n\}|~\{n\} tokens|\{n\} h|\{provider\}: \{count\} \(\{pct\}\)|\{source\} · \{date\}|your@email\.com|General|Error|No|Marketing|Normal|Total|Global|Chat|Editorial|Sponsor|Copy)$/;
 
   /** Values that predate this check and are left as they are on purpose (es keeps "Fix:" since v1.3). */
   const KNOWN_SAME: Partial<Record<Lang, string[]>> = { es: ["results.fixLabel"] };
