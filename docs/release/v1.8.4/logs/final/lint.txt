@@ -1,0 +1,5 @@
+
+> prompt-evaluator@1.8.4 lint
+> eslint
+
+[BABEL] Note: The code generator has deoptimised the styling of C:\Users\Luca\OneDrive\Documents\PROYECTOS\REACT\NEXT\promptea\.claude\worktrees\dazzling-dewdney-f53484\lib\seo\content\guides.ts as it exceeds the max of 500KB.

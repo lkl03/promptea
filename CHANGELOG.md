@@ -4,6 +4,29 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.4 — 2026-11-13
+
+**Final QA after v1.8.3, with its fixes.** v1.8.3 was released by merging #39 (QA) and #40 (AI Daily Tech); the weekly bot's own v1.8.3 PR (#41) was closed without merging and its routine paused. What was tested, how, the results, what stays open and what could not be verified: [`docs/release/v1.8.4/qa-report.md`](./docs/release/v1.8.4/qa-report.md).
+
+### Fixed
+- **Scrollable prompt boxes could not be scrolled from the keyboard** (WCAG 2.1.1, axe `scrollable-region-focusable`). Every `<pre>` capped at `max-h-56` with `overflow-auto` — guide and model templates, the glossary example and, new here, the examples of the six prompt packs (`/{lang}/prompts/*`) — now takes `tabIndex={0}` and `role="group"` and is named by its card's visible title through `aria-labelledby` (no new strings, so the name is in the page's language). Taken from the closed bot PR #41, which had left the packs out. Test: `lib/__tests__/a11y.scrollableTemplates.test.ts`.
+- **The Tech index with no stories was offered to search engines.** With no Tech story published yet, `/{lang}/blog/tech` was `index, follow` and listed in `sitemap.xml` and `llms.txt`: an empty listing. It is now `noindex, follow` and left out of both until its first story, and comes back on its own (`withoutEmptySectionIndexes` in `lib/seo/registry.ts`). Its RSS feed and the page itself keep working. Tests: `blog.techEmptyIndex.test.ts` and cases in `seo.tech`, `seo.sitemap`, `seo.llms`.
+- **QA tooling: the X feed check failed against production for a reason of its own.** `scripts/release/xfeed-check.mjs` aborts every non-GET request outside localhost, and Elfsight sends a CORS preflight (`OPTIONS`) before each call to its data service, so the widget printed its own error on every production run. Preflights are let through now (they write nothing); with that, the production card shows real posts.
+- **`zod` 4.3.5 → 4.6.7** (`npm audit --omit=dev`: the high-severity `zod` advisory is gone; 25 advisories left, see Open).
+
+### Changed
+- **Model registry, checked against first-party docs on 2026-11-13** (`lib/models.ts`): **Claude Fable 5.2** (`claude-fable-5-2`, released 2026-11-09) is selectable and Claude Fable 5.1 becomes legacy pointing at it (Anthropic still serves 5.1; Fable 5 now points straight at 5.2). **Gemini 4 Argon** (`gemini-4-argon`) and **Gemini 4 Carbon** (`gemini-4-carbon`), both stable, are selectable; the default Gemini is unchanged. The Gemini 3.1 Pro note no longer says there is no newer Pro. **GPT-6 Astra Pro was not added**: OpenAI's documentation has no page for it (only third-party catalogs list it).
+- README: `TELEMETRY_TTL_DAYS` and `NEXT_PUBLIC_FIREBASE_PROJECT_ID` documented.
+
+### Open (owner decisions, see the report)
+- `next` 16.1.1 → 16.4.6 (4 critical advisories). 16.4.6 was published on 2026-11-09 and crosses three minors: recommended as its own PR with a preview deploy.
+- Aqua primary button contrast (4.02:1).
+- The two bot guides from #41 that were not ported (recoverable from `23181558`).
+
+### Tests and checks
+- `lint`, `typecheck`, `build` green; `npm test` 1,696 tests (1,678 at the start).
+- `seo:check`: local build 793/793; production 1,111/1,111.
+
 ## v1.8.3 — 2026-11-11
 
 **AI Daily Tech — one technology story a day, in its own section, with a curated and verified source registry and a public page about how sources are chosen — on top of a full QA pass over v1.8.0–v1.8.2 with its fixes.** Two PRs: QA (#39) and AI Daily Tech (#40). What the QA tested, how, the results and everything that could not be verified: [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md). Design of the Tech edition: [`docs/editorial/tech-daily-design.md`](./docs/editorial/tech-daily-design.md).

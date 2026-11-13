@@ -563,6 +563,15 @@
     "about": "Sobre o Promptea"
   },
   "changelog": {
+    "v184": {
+      "released": "Lançado em: 13/11/2026",
+      "items": [
+        "As caixas de prompt com rolagem dos guias, das páginas de modelos, do glossário e dos pacotes de prompts agora podem receber foco e ser roladas pelo teclado.",
+        "Catálogo de modelos atualizado com a documentação oficial: chegam o Claude Fable 5.2, o Gemini 4 Argon e o Gemini 4 Carbon. O Claude Fable 5.1 vira legado, e os links antigos continuam funcionando.",
+        "O AI Daily Tech não é oferecido aos buscadores até publicar a primeira notícia.",
+        "Atualização de segurança da biblioteca de validação."
+      ]
+    },
     "olderNotice": "As versões anteriores à v1.8.0 estão disponíveis apenas em inglês.",
     "v183": {
       "released": "Lançado em: 11/11/2026",

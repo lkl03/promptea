@@ -563,6 +563,15 @@
     "about": "About Promptea"
   },
   "changelog": {
+    "v184": {
+      "released": "Released: 2026-11-13",
+      "items": [
+        "The scrollable prompt boxes on guides, model pages, the glossary and the prompt packs can now be focused and scrolled with the keyboard.",
+        "Model catalog updated from official documentation: Claude Fable 5.2, Gemini 4 Argon and Gemini 4 Carbon join. Claude Fable 5.1 becomes legacy, and old links keep working.",
+        "AI Daily Tech is not offered to search engines until it publishes its first story.",
+        "Security update of the validation library."
+      ]
+    },
     "olderNotice": "Versions before v1.8.0 are listed in English.",
     "v183": {
       "released": "Released: 2026-11-11",
