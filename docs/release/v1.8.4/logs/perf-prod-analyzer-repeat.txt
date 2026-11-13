@@ -1,0 +1,12 @@
+ 'desktop'   '/en/analyzer'   1168    0            465  
+ 'desktop'   '/pt/analyzer'   704     0            466  
+ 'mobile'    '/en/analyzer'   940     444          387  
+ 'mobile'    '/pt/analyzer'   884     338          387  
+ 'desktop'   '/en/analyzer'   972     20           466  
+ 'desktop'   '/pt/analyzer'   584     0            466  
+ 'mobile'    '/en/analyzer'   912     357          387  
+ 'mobile'    '/pt/analyzer'   776     336          387  
+ 'desktop'   '/en/analyzer'   1068    0            466  
+ 'desktop'   '/pt/analyzer'   560     0            466  
+ 'mobile'    '/en/analyzer'   1164    650          387  
+ 'mobile'    '/pt/analyzer'   1024    368          387  

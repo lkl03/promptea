@@ -1,0 +1,608 @@
+{
+  "base": "http://localhost:3181",
+  "at": "2026-11-13T03:39:24.627Z",
+  "results": [
+    {
+      "group": "same language",
+      "name": "text/pt",
+      "pass": true,
+      "detail": "score 57 → 57 (writing)"
+    },
+    {
+      "group": "idempotence",
+      "name": "text/pt",
+      "pass": true,
+      "detail": "282 → 282 chars, re-score 57"
+    },
+    {
+      "group": "same language",
+      "name": "text/es",
+      "pass": true,
+      "detail": "score 57 → 57 (writing)"
+    },
+    {
+      "group": "idempotence",
+      "name": "text/es",
+      "pass": true,
+      "detail": "260 → 260 chars, re-score 57"
+    },
+    {
+      "group": "same language",
+      "name": "text/en",
+      "pass": true,
+      "detail": "score 57 → 57 (writing)"
+    },
+    {
+      "group": "idempotence",
+      "name": "text/en",
+      "pass": true,
+      "detail": "234 → 234 chars, re-score 57"
+    },
+    {
+      "group": "cross interface",
+      "name": "text: pt prompt from /es",
+      "pass": true,
+      "detail": "score 57 (pt UI: 57)"
+    },
+    {
+      "group": "cross interface",
+      "name": "text: pt prompt from /en",
+      "pass": true,
+      "detail": "score 57 (pt UI: 57)"
+    },
+    {
+      "group": "same language",
+      "name": "study/pt",
+      "pass": true,
+      "detail": "score 46 → 46 (study)"
+    },
+    {
+      "group": "idempotence",
+      "name": "study/pt",
+      "pass": true,
+      "detail": "271 → 271 chars, re-score 46"
+    },
+    {
+      "group": "same language",
+      "name": "study/es",
+      "pass": true,
+      "detail": "score 46 → 46 (study)"
+    },
+    {
+      "group": "idempotence",
+      "name": "study/es",
+      "pass": true,
+      "detail": "253 → 253 chars, re-score 46"
+    },
+    {
+      "group": "same language",
+      "name": "study/en",
+      "pass": true,
+      "detail": "score 46 → 46 (study)"
+    },
+    {
+      "group": "idempotence",
+      "name": "study/en",
+      "pass": true,
+      "detail": "238 → 238 chars, re-score 46"
+    },
+    {
+      "group": "cross interface",
+      "name": "study: pt prompt from /es",
+      "pass": true,
+      "detail": "score 46 (pt UI: 46)"
+    },
+    {
+      "group": "cross interface",
+      "name": "study: pt prompt from /en",
+      "pass": true,
+      "detail": "score 46 (pt UI: 46)"
+    },
+    {
+      "group": "same language",
+      "name": "code/pt",
+      "pass": true,
+      "detail": "score 41 → 41 (coding)"
+    },
+    {
+      "group": "idempotence",
+      "name": "code/pt",
+      "pass": true,
+      "detail": "284 → 284 chars, re-score 41"
+    },
+    {
+      "group": "same language",
+      "name": "code/es",
+      "pass": true,
+      "detail": "score 38 → 38 (coding)"
+    },
+    {
+      "group": "idempotence",
+      "name": "code/es",
+      "pass": true,
+      "detail": "272 → 272 chars, re-score 38"
+    },
+    {
+      "group": "same language",
+      "name": "code/en",
+      "pass": true,
+      "detail": "score 41 → 41 (coding)"
+    },
+    {
+      "group": "idempotence",
+      "name": "code/en",
+      "pass": true,
+      "detail": "257 → 257 chars, re-score 41"
+    },
+    {
+      "group": "cross interface",
+      "name": "code: pt prompt from /es",
+      "pass": true,
+      "detail": "score 41 (pt UI: 41)"
+    },
+    {
+      "group": "cross interface",
+      "name": "code: pt prompt from /en",
+      "pass": true,
+      "detail": "score 41 (pt UI: 41)"
+    },
+    {
+      "group": "same language",
+      "name": "data/pt",
+      "pass": true,
+      "detail": "score 66 → 69 (data_extraction)"
+    },
+    {
+      "group": "idempotence",
+      "name": "data/pt",
+      "pass": true,
+      "detail": "500 → 500 chars, re-score 69"
+    },
+    {
+      "group": "same language",
+      "name": "data/es",
+      "pass": true,
+      "detail": "score 66 → 69 (data_extraction)"
+    },
+    {
+      "group": "idempotence",
+      "name": "data/es",
+      "pass": true,
+      "detail": "480 → 480 chars, re-score 69"
+    },
+    {
+      "group": "same language",
+      "name": "data/en",
+      "pass": true,
+      "detail": "score 66 → 69 (data_extraction)"
+    },
+    {
+      "group": "idempotence",
+      "name": "data/en",
+      "pass": true,
+      "detail": "465 → 465 chars, re-score 69"
+    },
+    {
+      "group": "cross interface",
+      "name": "data: pt prompt from /es",
+      "pass": true,
+      "detail": "score 66 (pt UI: 66)"
+    },
+    {
+      "group": "cross interface",
+      "name": "data: pt prompt from /en",
+      "pass": true,
+      "detail": "score 66 (pt UI: 66)"
+    },
+    {
+      "group": "same language",
+      "name": "image/pt",
+      "pass": true,
+      "detail": "score 46 → 62 (image)"
+    },
+    {
+      "group": "idempotence",
+      "name": "image/pt",
+      "pass": true,
+      "detail": "632 → 632 chars, re-score 62"
+    },
+    {
+      "group": "same language",
+      "name": "image/es",
+      "pass": true,
+      "detail": "score 40 → 64 (image)"
+    },
+    {
+      "group": "idempotence",
+      "name": "image/es",
+      "pass": true,
+      "detail": "586 → 586 chars, re-score 64"
+    },
+    {
+      "group": "same language",
+      "name": "image/en",
+      "pass": true,
+      "detail": "score 40 → 64 (image)"
+    },
+    {
+      "group": "idempotence",
+      "name": "image/en",
+      "pass": true,
+      "detail": "584 → 584 chars, re-score 64"
+    },
+    {
+      "group": "cross interface",
+      "name": "image: pt prompt from /es",
+      "pass": true,
+      "detail": "score 46 (pt UI: 46)"
+    },
+    {
+      "group": "cross interface",
+      "name": "image: pt prompt from /en",
+      "pass": true,
+      "detail": "score 46 (pt UI: 46)"
+    },
+    {
+      "group": "same language",
+      "name": "marketing/pt",
+      "pass": true,
+      "detail": "score 49 → 49 (marketing)"
+    },
+    {
+      "group": "idempotence",
+      "name": "marketing/pt",
+      "pass": true,
+      "detail": "274 → 274 chars, re-score 49"
+    },
+    {
+      "group": "same language",
+      "name": "marketing/es",
+      "pass": true,
+      "detail": "score 41 → 41 (marketing)"
+    },
+    {
+      "group": "idempotence",
+      "name": "marketing/es",
+      "pass": true,
+      "detail": "265 → 265 chars, re-score 41"
+    },
+    {
+      "group": "same language",
+      "name": "marketing/en",
+      "pass": true,
+      "detail": "score 41 → 41 (marketing)"
+    },
+    {
+      "group": "idempotence",
+      "name": "marketing/en",
+      "pass": true,
+      "detail": "253 → 253 chars, re-score 41"
+    },
+    {
+      "group": "cross interface",
+      "name": "marketing: pt prompt from /es",
+      "pass": true,
+      "detail": "score 49 (pt UI: 49)"
+    },
+    {
+      "group": "cross interface",
+      "name": "marketing: pt prompt from /en",
+      "pass": true,
+      "detail": "score 49 (pt UI: 49)"
+    },
+    {
+      "group": "same language",
+      "name": "translation/pt",
+      "pass": true,
+      "detail": "score 48 → 48 (translation)"
+    },
+    {
+      "group": "idempotence",
+      "name": "translation/pt",
+      "pass": true,
+      "detail": "103 → 103 chars, re-score 48"
+    },
+    {
+      "group": "same language",
+      "name": "translation/es",
+      "pass": true,
+      "detail": "score 46 → 46 (translation)"
+    },
+    {
+      "group": "idempotence",
+      "name": "translation/es",
+      "pass": true,
+      "detail": "99 → 99 chars, re-score 46"
+    },
+    {
+      "group": "same language",
+      "name": "translation/en",
+      "pass": true,
+      "detail": "score 48 → 48 (translation)"
+    },
+    {
+      "group": "idempotence",
+      "name": "translation/en",
+      "pass": true,
+      "detail": "98 → 98 chars, re-score 48"
+    },
+    {
+      "group": "cross interface",
+      "name": "translation: pt prompt from /es",
+      "pass": true,
+      "detail": "score 48 (pt UI: 48)"
+    },
+    {
+      "group": "cross interface",
+      "name": "translation: pt prompt from /en",
+      "pass": true,
+      "detail": "score 48 (pt UI: 48)"
+    },
+    {
+      "group": "same language",
+      "name": "summarization/pt",
+      "pass": true,
+      "detail": "score 56 → 56 (summarization)"
+    },
+    {
+      "group": "idempotence",
+      "name": "summarization/pt",
+      "pass": true,
+      "detail": "84 → 84 chars, re-score 56"
+    },
+    {
+      "group": "same language",
+      "name": "summarization/es",
+      "pass": true,
+      "detail": "score 56 → 56 (summarization)"
+    },
+    {
+      "group": "idempotence",
+      "name": "summarization/es",
+      "pass": true,
+      "detail": "89 → 89 chars, re-score 56"
+    },
+    {
+      "group": "same language",
+      "name": "summarization/en",
+      "pass": true,
+      "detail": "score 56 → 56 (summarization)"
+    },
+    {
+      "group": "idempotence",
+      "name": "summarization/en",
+      "pass": true,
+      "detail": "86 → 86 chars, re-score 56"
+    },
+    {
+      "group": "cross interface",
+      "name": "summarization: pt prompt from /es",
+      "pass": true,
+      "detail": "score 56 (pt UI: 56)"
+    },
+    {
+      "group": "cross interface",
+      "name": "summarization: pt prompt from /en",
+      "pass": true,
+      "detail": "score 56 (pt UI: 56)"
+    }
+  ],
+  "rows": [
+    {
+      "purpose": "text",
+      "lang": "pt",
+      "score": 57,
+      "after": 57,
+      "taskType": "writing",
+      "findings": "missing_context",
+      "optimizedPromptLang": "pt"
+    },
+    {
+      "purpose": "text",
+      "lang": "es",
+      "score": 57,
+      "after": 57,
+      "taskType": "writing",
+      "findings": "missing_context",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "text",
+      "lang": "en",
+      "score": 57,
+      "after": 57,
+      "taskType": "writing",
+      "findings": "missing_context",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "study",
+      "lang": "pt",
+      "score": 46,
+      "after": 46,
+      "taskType": "study",
+      "findings": "missing_context,missing_study_level",
+      "optimizedPromptLang": "pt"
+    },
+    {
+      "purpose": "study",
+      "lang": "es",
+      "score": 46,
+      "after": 46,
+      "taskType": "study",
+      "findings": "missing_context,missing_study_level",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "study",
+      "lang": "en",
+      "score": 46,
+      "after": 46,
+      "taskType": "study",
+      "findings": "missing_context,missing_study_level",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "code",
+      "lang": "pt",
+      "score": 41,
+      "after": 41,
+      "taskType": "coding",
+      "findings": "missing_context,missing_constraints",
+      "optimizedPromptLang": "pt"
+    },
+    {
+      "purpose": "code",
+      "lang": "es",
+      "score": 38,
+      "after": 38,
+      "taskType": "coding",
+      "findings": "missing_context,missing_constraints",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "code",
+      "lang": "en",
+      "score": 41,
+      "after": 41,
+      "taskType": "coding",
+      "findings": "missing_context,missing_constraints",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "data",
+      "lang": "pt",
+      "score": 66,
+      "after": 69,
+      "taskType": "data_extraction",
+      "findings": "missing_context,missing_constraints,missing_input_data,missing_schema",
+      "optimizedPromptLang": "pt"
+    },
+    {
+      "purpose": "data",
+      "lang": "es",
+      "score": 66,
+      "after": 69,
+      "taskType": "data_extraction",
+      "findings": "missing_context,missing_constraints,missing_input_data,missing_schema",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "data",
+      "lang": "en",
+      "score": 66,
+      "after": 69,
+      "taskType": "data_extraction",
+      "findings": "missing_context,missing_constraints,missing_input_data,missing_schema",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "image",
+      "lang": "pt",
+      "score": 46,
+      "after": 62,
+      "taskType": "image",
+      "findings": "missing_constraints",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "image",
+      "lang": "es",
+      "score": 40,
+      "after": 64,
+      "taskType": "image",
+      "findings": "missing_constraints",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "image",
+      "lang": "en",
+      "score": 40,
+      "after": 64,
+      "taskType": "image",
+      "findings": "missing_constraints",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "marketing",
+      "lang": "pt",
+      "score": 49,
+      "after": 49,
+      "taskType": "marketing",
+      "findings": "missing_context,missing_marketing_cta",
+      "optimizedPromptLang": "pt"
+    },
+    {
+      "purpose": "marketing",
+      "lang": "es",
+      "score": 41,
+      "after": 41,
+      "taskType": "marketing",
+      "findings": "missing_context,missing_marketing_cta",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "marketing",
+      "lang": "en",
+      "score": 41,
+      "after": 41,
+      "taskType": "marketing",
+      "findings": "missing_context,missing_marketing_cta",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "translation",
+      "lang": "pt",
+      "score": 48,
+      "after": 48,
+      "taskType": "translation",
+      "findings": "missing_output_format,missing_input_data,missing_translation_register",
+      "optimizedPromptLang": "pt"
+    },
+    {
+      "purpose": "translation",
+      "lang": "es",
+      "score": 46,
+      "after": 46,
+      "taskType": "translation",
+      "findings": "missing_output_format,missing_input_data,missing_translation_register",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "translation",
+      "lang": "en",
+      "score": 48,
+      "after": 48,
+      "taskType": "translation",
+      "findings": "missing_output_format,missing_input_data,missing_translation_register",
+      "optimizedPromptLang": "en"
+    },
+    {
+      "purpose": "summarization",
+      "lang": "pt",
+      "score": 56,
+      "after": 56,
+      "taskType": "summarization",
+      "findings": "missing_input_data,missing_summary_scope",
+      "optimizedPromptLang": "pt"
+    },
+    {
+      "purpose": "summarization",
+      "lang": "es",
+      "score": 56,
+      "after": 56,
+      "taskType": "summarization",
+      "findings": "missing_input_data,missing_summary_scope",
+      "optimizedPromptLang": "es"
+    },
+    {
+      "purpose": "summarization",
+      "lang": "en",
+      "score": 56,
+      "after": 56,
+      "taskType": "summarization",
+      "findings": "missing_input_data,missing_summary_scope",
+      "optimizedPromptLang": "en"
+    }
+  ]
+}

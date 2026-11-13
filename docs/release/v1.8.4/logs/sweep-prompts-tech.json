@@ -1,0 +1,13 @@
+{
+  "base": "http://localhost:3181",
+  "match": "/\\/prompts/",
+  "widths": [
+    1440,
+    768,
+    375
+  ],
+  "theme": "aqua-light",
+  "pages": 29,
+  "loads": 87,
+  "findings": []
+}

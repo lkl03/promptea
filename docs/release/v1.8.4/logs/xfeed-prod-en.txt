@@ -1,0 +1,39 @@
+ok   desktop: the server HTML does not include the widget script
+ok   desktop: the server HTML links to the profile without the widget — 3 link(s)
+ok   desktop: nothing is requested from Elfsight before the load event — first third-party request at 1059 ms; DOMContentLoaded 461 ms; load 1027 ms; LCP 904 ms
+ok   desktop: the feed box keeps its height — 460 → 460 px
+ok   desktop: no layout shift — CLS 0.0021
+ok   desktop: the card ends with posts or the fallback, never an empty box — fallback
+ok   phone: no request to Elfsight while the card is far below the fold — 0 request(s)
+ok   phone: the feed box keeps its height — 460 → 460 px
+ok   phone: the card ends with posts or the fallback — fallback
+ok   glass-dark: the card ends with posts or the fallback — fallback
+ok   metro-dark: the card ends with posts or the fallback — fallback
+ok   blocked: the fallback with the profile link is shown — fallback
+ok   blocked: the empty feed region is hidden from assistive tech
+ok   blocked: the box keeps its height — 460 → 460 px
+ok   data failure: the fallback is shown instead of the widget's own error — fallback
+ok   data failure: the box keeps its height — 460 → 460 px
+ok   no JS: the card is rendered with a link to the profile
+ok   no JS: the box does not say "Loading" forever — fallback
+ok   no JS: no request to a third party — 0
+┌─────────┬───────────────────────────────────────────┬───────────────────┬───────┬────────┬───────┬────────┬────────────────────┬──────────────┬───────────────────────┬───────────┬──────────┬────────────┬──────────┬─────────────────────┬──────────────────┐
+│ (index) │ case                                      │ firstThirdPartyMs │ dclMs │ loadMs │ lcpMs │ cls    │ thirdPartyRequests │ thirdPartyKB │ longTaskMsAfterWidget │ boxBefore │ boxAfter │ state      │ hostText │ htmlHasWidgetScript │ htmlProfileLinks │
+├─────────┼───────────────────────────────────────────┼───────────────────┼───────┼────────┼───────┼────────┼────────────────────┼──────────────┼───────────────────────┼───────────┼──────────┼────────────┼──────────┼─────────────────────┼──────────────────┤
+│ 0       │ 'desktop 1440 (card in view)'             │ 1059              │ 461   │ 1027   │ 904   │ 0.0021 │ 6                  │ 163          │ 0                     │ 460       │ 460      │ 'fallback' │ 2759     │ false               │ 3                │
+│ 1       │ 'phone 375 (after scrolling to the card)' │ 1100              │ 264   │ 795    │ 388   │ 0      │ 6                  │ 164          │ 0                     │ 460       │ 460      │ 'fallback' │ 2759     │ false               │ 3                │
+│ 2       │ 'desktop glass-dark'                      │ 856               │ 272   │ 839    │ 636   │ 0.0019 │ 6                  │ 164          │ 0                     │ 460       │ 460      │ 'fallback' │ 2759     │ false               │ 3                │
+│ 3       │ 'desktop metro-dark'                      │ 902               │ 389   │ 885    │ 432   │ 0.0015 │ 6                  │ 164          │ 0                     │ 460       │ 460      │ 'fallback' │ 2759     │ false               │ 3                │
+│ 4       │ 'blocked (ad blocker)'                    │ 874               │ 276   │ 821    │ 388   │ 0.0021 │ 1                  │ 0            │ 0                     │ 460       │ 460      │ 'fallback' │ 0        │ false               │ 3                │
+│ 5       │ 'Elfsight data service failing'           │ 808               │ 272   │ 789    │ 468   │ 0.0021 │ 6                  │ 164          │ 0                     │ 460       │ 460      │ 'fallback' │ 2759     │ false               │ 3                │
+│ 6       │ 'JavaScript disabled'                     │ null              │ 0     │ 0      │ 0     │ 0      │ 0                  │ 0            │ 0                     │ 460       │ 460      │ 'fallback' │ 0        │ false               │ 3                │
+└─────────┴───────────────────────────────────────────┴───────────────────┴───────┴────────┴───────┴────────┴────────────────────┴──────────────┴───────────────────────┴───────────┴──────────┴────────────┴──────────┴─────────────────────┴──────────────────┘
+desktop 1440 (card in view): hosts elfsightcdn.com, core.service.elfsight.com, static.elfsight.com, widget-data.service.elfsight.com · sample «Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 »
+phone 375 (after scrolling to the card): hosts elfsightcdn.com, core.service.elfsight.com, static.elfsight.com, widget-data.service.elfsight.com · sample «Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 »
+desktop glass-dark: hosts elfsightcdn.com, core.service.elfsight.com, static.elfsight.com, widget-data.service.elfsight.com · sample «Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 »
+desktop metro-dark: hosts elfsightcdn.com, core.service.elfsight.com, static.elfsight.com, widget-data.service.elfsight.com · sample «Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 »
+blocked (ad blocker): hosts elfsightcdn.com · sample «»
+Elfsight data service failing: hosts elfsightcdn.com, core.service.elfsight.com, static.elfsight.com, widget-data.service.elfsight.com · sample «Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 »
+JavaScript disabled: hosts — · sample «»
+
+19 passed, 0 failed
