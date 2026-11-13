@@ -36,7 +36,7 @@ import {
   modelMarkdown,
 } from "./markdown";
 import { articleUpdated, articleUrl, editionUrl } from "./dynamicUrls";
-import { editionHeading, editionOrder, markdownPathOf, staticSeoUrls, modelPageUpdated, type SeoSection, type SeoUrl } from "./registry";
+import { editionHeading, editionOrder, markdownPathOf, staticSeoUrls, modelPageUpdated, withoutEmptySectionIndexes, type SeoSection, type SeoUrl } from "./registry";
 import { LOCALES, absUrl, type Locale } from "./site";
 
 export type LlmsInput = {
@@ -202,7 +202,8 @@ function aiDailySections(i: LlmsInput): string[] {
     ];
   }
 
-  const blog = staticSeoUrls(i.lang).filter((u) => u.section === "ai-daily");
+  // v1.8.4: an index with no stories yet (the Tech one) is not listed until its first story.
+  const blog = withoutEmptySectionIndexes(staticSeoUrls(i.lang), i.lang, i.articles).filter((u) => u.section === "ai-daily");
   out.push(`## ${t("AI Daily and weekly digest", "IA al Día y resumen semanal", "AI Daily e resumo semanal")}`, "", ...blog.map(link), "");
 
   // Newest first across editions, capped; then grouped by edition.

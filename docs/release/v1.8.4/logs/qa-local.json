@@ -1,0 +1,510 @@
+{
+  "base": "http://localhost:3182",
+  "at": "2026-11-13T03:32:53.026Z",
+  "results": [
+    {
+      "group": "engine",
+      "name": "text/es",
+      "pass": true,
+      "detail": "score 57 → 57"
+    },
+    {
+      "group": "engine",
+      "name": "text/en",
+      "pass": true,
+      "detail": "score 57 → 57"
+    },
+    {
+      "group": "engine",
+      "name": "study/es",
+      "pass": true,
+      "detail": "score 46 → 46"
+    },
+    {
+      "group": "engine",
+      "name": "study/en",
+      "pass": true,
+      "detail": "score 46 → 46"
+    },
+    {
+      "group": "engine",
+      "name": "code/es",
+      "pass": true,
+      "detail": "score 38 → 38"
+    },
+    {
+      "group": "engine",
+      "name": "code/en",
+      "pass": true,
+      "detail": "score 41 → 41"
+    },
+    {
+      "group": "engine",
+      "name": "data/es",
+      "pass": true,
+      "detail": "score 66 → 69"
+    },
+    {
+      "group": "engine",
+      "name": "data/en",
+      "pass": true,
+      "detail": "score 66 → 69"
+    },
+    {
+      "group": "engine",
+      "name": "image/es",
+      "pass": true,
+      "detail": "score 40 → 64"
+    },
+    {
+      "group": "engine",
+      "name": "image/en",
+      "pass": true,
+      "detail": "score 40 → 64"
+    },
+    {
+      "group": "engine",
+      "name": "marketing/es",
+      "pass": true,
+      "detail": "score 41 → 41"
+    },
+    {
+      "group": "engine",
+      "name": "marketing/en",
+      "pass": true,
+      "detail": "score 41 → 41"
+    },
+    {
+      "group": "engine",
+      "name": "translation/es",
+      "pass": true,
+      "detail": "score 46 → 46"
+    },
+    {
+      "group": "engine",
+      "name": "translation/en",
+      "pass": true,
+      "detail": "score 48 → 48"
+    },
+    {
+      "group": "engine",
+      "name": "summarization/es",
+      "pass": true,
+      "detail": "score 56 → 56"
+    },
+    {
+      "group": "engine",
+      "name": "summarization/en",
+      "pass": true,
+      "detail": "score 56 → 56"
+    },
+    {
+      "group": "engine",
+      "name": "same prompt, same score",
+      "pass": true,
+      "detail": "41 / 41"
+    },
+    {
+      "group": "engine",
+      "name": "invalid body is rejected with 4xx",
+      "pass": true,
+      "detail": "status 400"
+    },
+    {
+      "group": "share card",
+      "name": "valid",
+      "pass": true,
+      "detail": "status 200 image/png 276528 B"
+    },
+    {
+      "group": "share card",
+      "name": "no params",
+      "pass": true,
+      "detail": "status 200 image/png 322295 B"
+    },
+    {
+      "group": "share card",
+      "name": "score out of range",
+      "pass": true,
+      "detail": "status 200 image/png 311806 B"
+    },
+    {
+      "group": "share card",
+      "name": "non-numeric",
+      "pass": true,
+      "detail": "status 200 image/png 322295 B"
+    },
+    {
+      "group": "share card",
+      "name": "hostile strings",
+      "pass": true,
+      "detail": "status 200 image/png 271940 B"
+    },
+    {
+      "group": "share card",
+      "name": "very long value",
+      "pass": true,
+      "detail": "status 200 image/png 322295 B"
+    },
+    {
+      "group": "share page",
+      "name": "/es/share with hostile params",
+      "pass": true,
+      "detail": "status 200"
+    },
+    {
+      "group": "share page",
+      "name": "/es/share is noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "share page",
+      "name": "/en/share with hostile params",
+      "pass": true,
+      "detail": "status 200"
+    },
+    {
+      "group": "share page",
+      "name": "/en/share is noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "noindex",
+      "name": "/en/library is noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "noindex",
+      "name": "/es/library is noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "noindex",
+      "name": "/en is not noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "noindex",
+      "name": "/en/how-it-works is not noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "noindex",
+      "name": "/es/how-it-works is not noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "noindex",
+      "name": "/en/analyzer is not noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "noindex",
+      "name": "/en/benchmarks is not noindex",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en",
+      "pass": true,
+      "detail": "h1=1 words=261 links=37"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/es",
+      "pass": true,
+      "detail": "h1=1 words=273 links=37"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en/how-it-works",
+      "pass": true,
+      "detail": "h1=1 words=720 links=38"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en/analyzer",
+      "pass": true,
+      "detail": "h1=1 words=244 links=40"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en/best-ai",
+      "pass": true,
+      "detail": "h1=1 words=100 links=38"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en/benchmarks",
+      "pass": true,
+      "detail": "h1=1 words=134 links=38"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en/blog",
+      "pass": true,
+      "detail": "h1=1 words=126 links=38"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en/library",
+      "pass": true,
+      "detail": "h1=1 words=57 links=38"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "/en/guides/json-output",
+      "pass": true,
+      "detail": "h1=1 words=490 links=38"
+    },
+    {
+      "group": "no JavaScript",
+      "name": "home prompt box is a GET form with a 'prompt' field",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/es",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en/how-it-works",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en/analyzer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en/best-ai",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en/benchmarks",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en/blog",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en/library",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "/en/guides/json-output",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "group": "storage blocked",
+      "name": "home prompt box falls back to ?prompt=",
+      "pass": true,
+      "detail": "http://localhost:3182/en/analyzer?prompt=Write%20a%20haiku%20about%20rain"
+    },
+    {
+      "group": "hand-off",
+      "name": "home → analyzer keeps the prompt out of the URL",
+      "pass": true,
+      "detail": "http://localhost:3182/en/analyzer?handoff=1"
+    },
+    {
+      "group": "hand-off",
+      "name": "the analyzer opens with the prompt loaded",
+      "pass": true,
+      "detail": "Write a haiku about rain"
+    }
+  ],
+  "engineRows": [
+    {
+      "purpose": "text",
+      "lang": "es",
+      "score": 57,
+      "after": 57,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "writing"
+    },
+    {
+      "purpose": "text",
+      "lang": "en",
+      "score": 57,
+      "after": 57,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "writing"
+    },
+    {
+      "purpose": "study",
+      "lang": "es",
+      "score": 46,
+      "after": 46,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "study"
+    },
+    {
+      "purpose": "study",
+      "lang": "en",
+      "score": 46,
+      "after": 46,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "study"
+    },
+    {
+      "purpose": "code",
+      "lang": "es",
+      "score": 38,
+      "after": 38,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "coding"
+    },
+    {
+      "purpose": "code",
+      "lang": "en",
+      "score": 41,
+      "after": 41,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "coding"
+    },
+    {
+      "purpose": "data",
+      "lang": "es",
+      "score": 66,
+      "after": 69,
+      "delta": 3,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "data_extraction"
+    },
+    {
+      "purpose": "data",
+      "lang": "en",
+      "score": 66,
+      "after": 69,
+      "delta": 3,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "data_extraction"
+    },
+    {
+      "purpose": "image",
+      "lang": "es",
+      "score": 40,
+      "after": 64,
+      "delta": 24,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "image"
+    },
+    {
+      "purpose": "image",
+      "lang": "en",
+      "score": 40,
+      "after": 64,
+      "delta": 24,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "image"
+    },
+    {
+      "purpose": "marketing",
+      "lang": "es",
+      "score": 41,
+      "after": 41,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "marketing"
+    },
+    {
+      "purpose": "marketing",
+      "lang": "en",
+      "score": 41,
+      "after": 41,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "marketing"
+    },
+    {
+      "purpose": "translation",
+      "lang": "es",
+      "score": 46,
+      "after": 46,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "translation"
+    },
+    {
+      "purpose": "translation",
+      "lang": "en",
+      "score": 48,
+      "after": 48,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "translation"
+    },
+    {
+      "purpose": "summarization",
+      "lang": "es",
+      "score": 56,
+      "after": 56,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "summarization"
+    },
+    {
+      "purpose": "summarization",
+      "lang": "en",
+      "score": 56,
+      "after": 56,
+      "delta": 0,
+      "engine": "deterministic",
+      "fallbackReason": "disabled",
+      "taskType": "summarization"
+    }
+  ]
+}

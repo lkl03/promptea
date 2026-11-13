@@ -15,7 +15,8 @@
 //   - with every Elfsight / X host blocked (ad blocker): the fallback must show;
 //   - with JavaScript disabled: the card must still link to the profile, and the
 //     page's crawlable HTML must not depend on the widget.
-// READ-ONLY against anything that is not localhost (non-GET requests are aborted).
+// READ-ONLY against anything that is not localhost (non-GET requests are aborted, except
+// CORS preflights, which write nothing).
 // Exit code 1 when a case fails.
 
 import { writeFile } from "node:fs/promises";
@@ -74,7 +75,10 @@ async function run({ name, path, width, height, block = false, blockData = false
       // The widget's script loads but its data service fails: Elfsight then prints its own error.
       if (blockData && /widget-data\.service\.elfsight\.com/.test(host)) return r.abort("failed");
     }
-    if (!LOCAL && r.method() !== "GET") return r.abort();
+    // v1.8.4: a CORS preflight (OPTIONS) writes nothing. Elfsight sends one before every
+    // request to its data service; aborting it made the widget fail with its own error on
+    // every run against production, which looked like an Elfsight outage.
+    if (!LOCAL && r.method() !== "GET" && r.method() !== "OPTIONS") return r.abort();
     r.continue();
   });
   const bytes = {};

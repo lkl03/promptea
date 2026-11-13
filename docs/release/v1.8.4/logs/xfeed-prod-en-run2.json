@@ -1,0 +1,310 @@
+{
+  "base": "https://www.promptea.me",
+  "at": "2026-11-13T04:14:46.713Z",
+  "results": [
+    {
+      "name": "desktop: the server HTML does not include the widget script",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop: the server HTML links to the profile without the widget",
+      "pass": true,
+      "detail": "3 link(s)"
+    },
+    {
+      "name": "desktop: nothing is requested from Elfsight before the load event",
+      "pass": true,
+      "detail": "first third-party request at 877 ms; DOMContentLoaded 387 ms; load 864 ms; LCP 672 ms"
+    },
+    {
+      "name": "desktop: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "desktop: no layout shift",
+      "pass": true,
+      "detail": "CLS 0.0021"
+    },
+    {
+      "name": "desktop: the card ends with posts or the fallback, never an empty box",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "phone: no request to Elfsight while the card is far below the fold",
+      "pass": true,
+      "detail": "0 request(s)"
+    },
+    {
+      "name": "phone: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "phone: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "glass-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "metro-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "blocked: the fallback with the profile link is shown",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "blocked: the empty feed region is hidden from assistive tech",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "blocked: the box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "data failure: the fallback is shown instead of the widget's own error",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "data failure: the box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "no JS: the card is rendered with a link to the profile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no JS: the box does not say \"Loading\" forever",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "no JS: no request to a third party",
+      "pass": true,
+      "detail": "0"
+    }
+  ],
+  "rows": [
+    {
+      "case": "desktop 1440 (card in view)",
+      "firstThirdPartyMs": 877,
+      "dclMs": 387,
+      "loadMs": 864,
+      "lcpMs": 672,
+      "cls": 0.0021,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2911,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12608,
+        "core.service.elfsight.com": 3023,
+        "static.elfsight.com": 152045,
+        "widget-data.service.elfsight.com": 5051,
+        "phosphor.utils.elfsightcdn.com": 21144,
+        "storage.elfsight.com": 7325
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me 16 hours ago Skip the doomscroll. One verified AI story a day, plus a weekly recap if you missed a"
+    },
+    {
+      "case": "phone 375 (after scrolling to the card)",
+      "firstThirdPartyMs": 1116,
+      "dclMs": 350,
+      "loadMs": 811,
+      "lcpMs": 376,
+      "cls": 0.0231,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2911,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12605,
+        "core.service.elfsight.com": 3027,
+        "static.elfsight.com": 152034,
+        "widget-data.service.elfsight.com": 5056,
+        "phosphor.utils.elfsightcdn.com": 21135,
+        "storage.elfsight.com": 7328
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me 16 hours ago Skip the doomscroll. One verified AI story a day, plus a weekly recap if you missed a"
+    },
+    {
+      "case": "desktop glass-dark",
+      "firstThirdPartyMs": 791,
+      "dclMs": 332,
+      "loadMs": 775,
+      "lcpMs": 532,
+      "cls": 0.006,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2911,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12607,
+        "core.service.elfsight.com": 3026,
+        "static.elfsight.com": 152035,
+        "widget-data.service.elfsight.com": 5053,
+        "phosphor.utils.elfsightcdn.com": 21127,
+        "storage.elfsight.com": 7322
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me 16 hours ago Skip the doomscroll. One verified AI story a day, plus a weekly recap if you missed a"
+    },
+    {
+      "case": "desktop metro-dark",
+      "firstThirdPartyMs": 753,
+      "dclMs": 249,
+      "loadMs": 736,
+      "lcpMs": 348,
+      "cls": 0.0046,
+      "thirdPartyRequests": 22,
+      "thirdPartyKB": 196,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 2911,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12612,
+        "core.service.elfsight.com": 3021,
+        "static.elfsight.com": 151772,
+        "widget-data.service.elfsight.com": 5054,
+        "phosphor.utils.elfsightcdn.com": 21132,
+        "storage.elfsight.com": 7333
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com",
+        "phosphor.utils.elfsightcdn.com",
+        "storage.elfsight.com"
+      ],
+      "sample": "Promptea @Promptea_me 16 hours ago Skip the doomscroll. One verified AI story a day, plus a weekly recap if you missed a"
+    },
+    {
+      "case": "blocked (ad blocker)",
+      "firstThirdPartyMs": 785,
+      "dclMs": 256,
+      "loadMs": 776,
+      "lcpMs": 364,
+      "cls": 0.0021,
+      "thirdPartyRequests": 1,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {},
+      "hosts": [
+        "elfsightcdn.com"
+      ],
+      "sample": ""
+    },
+    {
+      "case": "Elfsight data service failing",
+      "firstThirdPartyMs": 771,
+      "dclMs": 347,
+      "loadMs": 756,
+      "lcpMs": 380,
+      "cls": 0.0021,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 2759,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12606,
+        "core.service.elfsight.com": 3025,
+        "static.elfsight.com": 152042
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 "
+    },
+    {
+      "case": "JavaScript disabled",
+      "firstThirdPartyMs": null,
+      "dclMs": 0,
+      "loadMs": 0,
+      "lcpMs": 0,
+      "cls": 0,
+      "thirdPartyRequests": 0,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {},
+      "hosts": [],
+      "sample": ""
+    }
+  ]
+}

@@ -1,0 +1,290 @@
+{
+  "base": "https://www.promptea.me",
+  "at": "2026-11-13T03:37:17.284Z",
+  "results": [
+    {
+      "name": "desktop: the server HTML does not include the widget script",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop: the server HTML links to the profile without the widget",
+      "pass": true,
+      "detail": "3 link(s)"
+    },
+    {
+      "name": "desktop: nothing is requested from Elfsight before the load event",
+      "pass": true,
+      "detail": "first third-party request at 1131 ms; DOMContentLoaded 490 ms; load 1100 ms; LCP 1040 ms"
+    },
+    {
+      "name": "desktop: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "desktop: no layout shift",
+      "pass": true,
+      "detail": "CLS 0.0021"
+    },
+    {
+      "name": "desktop: the card ends with posts or the fallback, never an empty box",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "phone: no request to Elfsight while the card is far below the fold",
+      "pass": true,
+      "detail": "0 request(s)"
+    },
+    {
+      "name": "phone: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "phone: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "glass-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "metro-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "blocked: the fallback with the profile link is shown",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "blocked: the empty feed region is hidden from assistive tech",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "blocked: the box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "data failure: the fallback is shown instead of the widget's own error",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "data failure: the box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "no JS: the card is rendered with a link to the profile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no JS: the box does not say \"Loading\" forever",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "no JS: no request to a third party",
+      "pass": true,
+      "detail": "0"
+    }
+  ],
+  "rows": [
+    {
+      "case": "desktop 1440 (card in view)",
+      "firstThirdPartyMs": 1131,
+      "dclMs": 490,
+      "loadMs": 1100,
+      "lcpMs": 1040,
+      "cls": 0.0021,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 2759,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12611,
+        "core.service.elfsight.com": 3023,
+        "static.elfsight.com": 151800
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 "
+    },
+    {
+      "case": "phone 375 (after scrolling to the card)",
+      "firstThirdPartyMs": 1638,
+      "dclMs": 256,
+      "loadMs": 1281,
+      "lcpMs": 900,
+      "cls": 0,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 2759,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12606,
+        "core.service.elfsight.com": 3025,
+        "static.elfsight.com": 152044
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 "
+    },
+    {
+      "case": "desktop glass-dark",
+      "firstThirdPartyMs": 921,
+      "dclMs": 337,
+      "loadMs": 905,
+      "lcpMs": 648,
+      "cls": 0.0766,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 2759,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12604,
+        "core.service.elfsight.com": 3021,
+        "static.elfsight.com": 152041
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 "
+    },
+    {
+      "case": "desktop metro-dark",
+      "firstThirdPartyMs": 871,
+      "dclMs": 392,
+      "loadMs": 852,
+      "lcpMs": 412,
+      "cls": 0.0015,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 2759,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12616,
+        "core.service.elfsight.com": 3025,
+        "static.elfsight.com": 152046
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 "
+    },
+    {
+      "case": "blocked (ad blocker)",
+      "firstThirdPartyMs": 889,
+      "dclMs": 381,
+      "loadMs": 869,
+      "lcpMs": 412,
+      "cls": 0.0021,
+      "thirdPartyRequests": 1,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {},
+      "hosts": [
+        "elfsightcdn.com"
+      ],
+      "sample": ""
+    },
+    {
+      "case": "Elfsight data service failing",
+      "firstThirdPartyMs": 864,
+      "dclMs": 395,
+      "loadMs": 846,
+      "lcpMs": 428,
+      "cls": 0.0021,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 2759,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {
+        "elfsightcdn.com": 12611,
+        "core.service.elfsight.com": 3023,
+        "static.elfsight.com": 152035
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user dataFailed to fetch timeline data: An error occurred while downloading posts #eapps-twitter-feed-1 "
+    },
+    {
+      "case": "JavaScript disabled",
+      "firstThirdPartyMs": null,
+      "dclMs": 0,
+      "loadMs": 0,
+      "lcpMs": 0,
+      "cls": 0,
+      "thirdPartyRequests": 0,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 3,
+      "bytesByHost": {},
+      "hosts": [],
+      "sample": ""
+    }
+  ]
+}

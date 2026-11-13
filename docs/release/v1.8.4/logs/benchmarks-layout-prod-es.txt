@@ -1,0 +1,33 @@
+ok  1920px · Inteligencia general (1 benchmark)  gap=16 overflow=0
+ok  1920px · Programación (1 benchmark)  gap=16 overflow=0
+ok  1920px · Agentes y herramientas (2 benchmarks)  gap=16 overflow=0
+ok  1920px · Razonamiento científico (1 benchmark)  gap=16 overflow=0
+ok  1920px · Búsqueda (4 benchmarks)  gap=16 overflow=0
+ok  1920px · Diseño y UI (14 benchmarks)  gap=16 overflow=0
+ok  1440px · Inteligencia general (1 benchmark)  gap=16 overflow=0
+ok  1440px · Programación (1 benchmark)  gap=16 overflow=0
+ok  1440px · Agentes y herramientas (2 benchmarks)  gap=16 overflow=0
+ok  1440px · Razonamiento científico (1 benchmark)  gap=16 overflow=0
+ok  1440px · Búsqueda (4 benchmarks)  gap=16 overflow=0
+ok  1440px · Diseño y UI (14 benchmarks)  gap=16 overflow=0
+ok  1024px · Inteligencia general (1 benchmark)  gap=16 overflow=0
+ok  1024px · Programación (1 benchmark)  gap=16 overflow=0
+ok  1024px · Agentes y herramientas (2 benchmarks)  gap=16 overflow=0
+ok  1024px · Razonamiento científico (1 benchmark)  gap=16 overflow=0
+ok  1024px · Búsqueda (4 benchmarks)  gap=16 overflow=0
+ok  1024px · Diseño y UI (14 benchmarks)  gap=16 overflow=0
+ok  768px · Inteligencia general (1 benchmark)  gap=16 overflow=0
+ok  768px · Programación (1 benchmark)  gap=16 overflow=0
+ok  768px · Agentes y herramientas (2 benchmarks)  gap=16 overflow=0
+ok  768px · Razonamiento científico (1 benchmark)  gap=16 overflow=0
+ok  768px · Búsqueda (4 benchmarks)  gap=16 overflow=0
+ok  768px · Diseño y UI (14 benchmarks)  gap=16 overflow=0
+ok  375px · Inteligencia general (1 benchmark)  gap=16 overflow=0
+ok  375px · Programación (1 benchmark)  gap=16 overflow=0
+ok  375px · Agentes y herramientas (2 benchmarks)  gap=16 overflow=0
+ok  375px · Razonamiento científico (1 benchmark)  gap=16 overflow=0
+ok  375px · Búsqueda (4 benchmarks)  gap=16 overflow=0
+ok  375px · Diseño y UI (14 benchmarks)  gap=16 overflow=0
+
+30 layout checks
+no findings

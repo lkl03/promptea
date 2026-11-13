@@ -130,8 +130,9 @@ export default async function ModelPage({
 
             return (
               <article key={idx} className="surface p-4 space-y-3">
-                <div className="text-sm font-medium">{t.title[l]}</div>
-                <pre className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{t.prompt[l]}</pre>
+                <div id={`template-${idx}-title`} className="text-sm font-medium">{t.title[l]}</div>
+                {/* v1.8.4: scrolls inside; focusable so it can be scrolled from the keyboard (WCAG 2.1.1). */}
+                <pre tabIndex={0} role="group" aria-labelledby={`template-${idx}-title`} className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{t.prompt[l]}</pre>
 
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-xs opacity-70">

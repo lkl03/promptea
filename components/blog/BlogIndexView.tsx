@@ -175,13 +175,18 @@ export async function blogIndexMetadata(lang: Lang, sp: BlogSearchParams, sectio
   const canonical = narrowed || page === 1 ? base : `${base}?page=${page}`;
   const title = `${copy.title} — ${copy.tagline}`;
 
+  // v1.8.4: the Tech index before its first story is an empty listing. It is
+  // noindex until then (and out of sitemap.xml and llms.txt, see
+  // withoutEmptySectionIndexes), and indexable again with the first story.
+  const empty = section === "tech" && (await loadCards(cl, section)).length === 0;
+
   const meta = pageMetadata({ lang, contentLang: cl, path: blogSectionIndexPath(lang, section), title, description: copy.description });
   return {
     ...meta,
     // Filter permutations are search results, not content: keeping them out of
     // the index avoids thin near-duplicates, while `follow` keeps every article
     // behind them discoverable.
-    ...(narrowed ? { robots: { index: false, follow: true } } : {}),
+    ...(narrowed || empty ? { robots: { index: false, follow: true } } : {}),
     alternates: {
       ...meta.alternates,
       canonical,

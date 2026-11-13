@@ -1,0 +1,852 @@
+
+> prompt-evaluator@1.8.4 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.17 [39m[90mC:/Users/Luca/OneDrive/Documents/PROYECTOS/REACT/NEXT/promptea/.claude/worktrees/dazzling-dewdney-f53484[39m
+
+ [32m✓[39m lib/__tests__/i18n.locales.test.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 285[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.sitemap.test.ts [2m([22m[2m11 tests[22m[2m)[22m[33m 668[2mms[22m[39m
+ [32m✓[39m lib/__tests__/benchmarks.locales.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 435[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.llms.test.ts [2m([22m[2m41 tests[22m[2m)[22m[33m 677[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.routes.test.ts [2m([22m[2m14 tests[22m[2m)[22m[33m 413[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.jsonld.test.ts [2m([22m[2m38 tests[22m[2m)[22m[33m 762[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.tech.test.ts [2m([22m[2m25 tests[22m[2m)[22m[33m 525[2mms[22m[39m
+ [32m✓[39m lib/__tests__/engine.v180.regressions.test.ts [2m([22m[2m32 tests[22m[2m)[22m[33m 349[2mms[22m[39m
+ [32m✓[39m lib/__tests__/refine.shapes.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 370[2mms[22m[39m
+ [32m✓[39m lib/__tests__/overlay.surfaces.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 215[2mms[22m[39m
+ [32m✓[39m lib/__tests__/refine.golden.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 290[2mms[22m[39m
+ [32m✓[39m lib/__tests__/dataset.calibration.test.ts [2m([22m[2m108 tests[22m[2m)[22m[33m 1312[2mms[22m[39m
+     [33m[2m✓[22m[39m pt-image-good-v182 [33m 481[2mms[22m[39m
+ [32m✓[39m lib/__tests__/engine.parity-v183.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 173[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.v181.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 267[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/refine.judge.test.ts[2m > [22m[2m/api/analyze with the judge[2m > [22m[2madds meta.judge for a low-confidence prompt and leaves score untouched
+[22m[39m[analyze] request {
+  analysisId: [32m'bdfa0c07-d5c8-481b-a722-1a9f52162481'[39m,
+  inferredLang: [32m'es'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'text'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'schema_mismatch'[39m,
+  score: [33m19[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/refine.judge.test.ts[2m > [22m[2m/api/analyze with the judge[2m > [22m[2mno flag → no meta.judge field
+[22m[39m[analyze] request {
+  analysisId: [32m'5868a268-28d0-48eb-9af9-0efc39b87a23'[39m,
+  inferredLang: [32m'es'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'text'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m19[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+ [32m✓[39m lib/__tests__/refine.judge.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 243[2mms[22m[39m
+ [32m✓[39m lib/__tests__/image.prompts.test.ts [2m([22m[2m22 tests[22m[2m)[22m[33m 525[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.guides.test.ts [2m([22m[2m60 tests[22m[2m)[22m[32m 138[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.content.test.ts [2m([22m[2m192 tests[22m[2m)[22m[32m 141[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/api-blog-publish-route.spec.ts[2m > [22m[2mAPI /api/internal/blog/publish[2m > [22m[2munset secret → 503 publishing_disabled, never 401 and never open
+[22m[39m[blog/publish] BLOG_PUBLISH_SECRET missing or too short
+
+[90mstdout[2m | lib/__tests__/api-blog-publish-route.spec.ts[2m > [22m[2mAPI /api/internal/blog/publish[2m > [22m[2ma too-short secret is treated as misconfiguration, not a weak key
+[22m[39m[blog/publish] BLOG_PUBLISH_SECRET missing or too short
+
+[90mstdout[2m | lib/__tests__/api-blog-publish-route.spec.ts[2m > [22m[2mAPI /api/internal/blog/publish[2m > [22m[2mFirestore failure → 503 unavailable, no crash
+[22m[39m[blog/publish] firestore unavailable { err: [32m'firestore down'[39m }
+
+ [32m✓[39m lib/__tests__/api-blog-publish-route.spec.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 113[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/engine.optimized-score.test.ts[2m > [22m[2m/api/analyze payload[2m > [22m[2mdeterministic path: optimizedScore/optimizedBreakdown present, original fields unchanged
+[22m[39m[analyze] request {
+  analysisId: [32m'3a22424b-2510-4deb-90ce-80394674fc99'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'data'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'data_extraction'[39m,
+  strategy: [32m'data_schema'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m16[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/engine.optimized-score.test.ts[2m > [22m[2m/api/analyze payload[2m > [22m[2madaptive path: the score is recomputed for the LLM rewrite actually returned
+[22m[39m[analyze] request {
+  analysisId: [32m'60ecc5f3-5db0-44ad-a6d5-4d1c250249d3'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'adaptive'[39m,
+  fallbackReason: [1mnull[22m,
+  score: [33m28[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/engine.optimized-score.test.ts[2m > [22m[2m/api/analyze payload[2m > [22m[2madaptive rewrite that scores far below the baseline is flagged score_regression (not rejected)
+[22m[39m[analyze] request {
+  analysisId: [32m'9e062c20-6e5a-487c-aeac-ac050b295ac7'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'summarization'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'summarization'[39m,
+  strategy: [32m'summarization'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'adaptive'[39m,
+  fallbackReason: [1mnull[22m,
+  score: [33m74[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+ [32m✓[39m lib/__tests__/engine.optimized-score.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 178[2mms[22m[39m
+ [32m✓[39m lib/__tests__/model.profiles.test.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 240[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2msuccessful English transcription returns the text (default turbo model)
+[22m[39m[transcribe] { status: [33m200[39m, ms: [33m0[39m, bytes: [33m4000[39m, mime: [32m'audio/webm'[39m, language: [32m'en'[39m }
+
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2msuccessful Spanish transcription passes language=es
+[22m[39m[transcribe] { status: [33m200[39m, ms: [33m0[39m, bytes: [33m4000[39m, mime: [32m'audio/webm'[39m, language: [32m'es'[39m }
+
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2mGROQ_TRANSCRIPTION_MODEL overrides the model
+[22m[39m[transcribe] {
+  status: [33m200[39m,
+  ms: [33m0[39m,
+  bytes: [33m4000[39m,
+  mime: [32m'audio/webm'[39m,
+  language: [32m'auto'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2mprovider rate limit → 429 rate_limited
+[22m[39m[transcribe] {
+  status: [33m429[39m,
+  ms: [33m0[39m,
+  bytes: [33m4000[39m,
+  mime: [32m'audio/webm'[39m,
+  language: [32m'auto'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2minvalid API key upstream → 503 invalid_api_key
+[22m[39m[transcribe] {
+  status: [33m401[39m,
+  ms: [33m1[39m,
+  bytes: [33m4000[39m,
+  mime: [32m'audio/webm'[39m,
+  language: [32m'auto'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2mmalformed provider response → 502 invalid_response
+[22m[39m[transcribe] {
+  status: [33m200[39m,
+  ms: [33m1[39m,
+  bytes: [33m4000[39m,
+  mime: [32m'audio/webm'[39m,
+  language: [32m'auto'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2mempty transcript → 422 no_speech
+[22m[39m[transcribe] {
+  status: [33m200[39m,
+  ms: [33m0[39m,
+  bytes: [33m4000[39m,
+  mime: [32m'audio/webm'[39m,
+  language: [32m'auto'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-transcribe-route.spec.ts[2m > [22m[2mAPI /api/transcribe[2m > [22m[2mrapid-fire uploads from the same source hit the cooldown
+[22m[39m[transcribe] {
+  status: [33m200[39m,
+  ms: [33m0[39m,
+  bytes: [33m4000[39m,
+  mime: [32m'audio/webm'[39m,
+  language: [32m'auto'[39m
+}
+
+ [32m✓[39m lib/__tests__/api-transcribe-route.spec.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 89[2mms[22m[39m
+ [32m✓[39m lib/__tests__/llm.providers.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 133[2mms[22m[39m
+ [32m✓[39m lib/__tests__/benchmarks.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 158[2mms[22m[39m
+ [32m✓[39m lib/__tests__/engine.pt.test.ts [2m([22m[2m63 tests[22m[2m)[22m[33m 1856[2mms[22m[39m
+     [33m[2m✓[22m[39m every finding and recommendation id has a Portuguese text, different from es and en [33m 1067[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.tech.test.ts [2m([22m[2m64 tests[22m[2m)[22m[32m 219[2mms[22m[39m
+ [32m✓[39m lib/__tests__/v1.1.3.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 95[2mms[22m[39m
+ [32m✓[39m lib/__tests__/builder.attachments.spec.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 99[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.run.test.ts [2m([22m[2m33 tests[22m[2m)[22m[32m 184[2mms[22m[39m
+ [32m✓[39m lib/__tests__/version.sync.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 92[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'2b77275e-6f2d-40ce-a008-0a6708643d4d'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'eb01e6e2-0c62-4f12-876d-85c5079574a7'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'0d5cf4eb-c107-4dcd-bfa6-e1d1cb731588'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'b39d5ecb-0947-47cf-829a-01c09fbdba79'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'f962d386-92a8-42f7-b58e-bfe20536d8aa'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'024032d1-71f3-444d-a1f2-265bc22586a5'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'dd5f56cb-b69b-4ec3-b341-5edd5a79810d'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'1cb9f8cf-4b7d-4cb5-a5e4-864ae4f11407'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'bd37c4e4-80d0-4759-895d-767a08ab6703'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'621f6f8d-43b8-4a06-9f5e-4caee1cc368b'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'be46d2d1-19d8-460e-afa4-63307b2f1a0f'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'41026abe-26dd-46f8-a537-f031e1149dc7'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'7eee3f00-03f7-49ba-93b7-984b01f9c346'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'95840523-3b64-4be8-833c-92e85e0937bf'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'309c1d4b-b6b1-4100-834d-a96edfde1bcf'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'35d1418a-78a8-4605-9445-86cbc56d6f75'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'8c7f8215-9c88-4522-9883-34734daef5c2'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'377f67fb-6d6b-4572-b2aa-d3419e140c39'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'65ca03e9-f544-497f-afbb-35c7d68ef6df'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'69663534-2873-4c4d-951e-3cf26a1196d0'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'2b21c37a-4823-42ad-89fe-70e953617052'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'5d273b61-168d-4830-adc4-b94cd8c95d8f'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'79f78f76-1c8b-4096-8106-5ca4e0af5078'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'b8869485-6a19-4a75-89e2-47f8462c3885'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'91caf066-6f7a-4445-961d-871dadc8ee47'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'f032ec1d-b11f-4ae2-9533-95ed1e1307ca'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'2782a165-f901-4f45-a030-b5023dcc5947'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'2fd58571-0a59-4ab7-abea-aec9da769f11'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'9ac71214-9f87-4c6b-aa80-decb8e6ebe10'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'2214897d-64e7-4004-81c8-730e7627b04b'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-rate-limit.spec.ts[2m > [22m[2m/api/analyze rate limit[2m > [22m[2ma client over the limit gets 429 with Retry-After; another client is unaffected
+[22m[39m[analyze] request {
+  analysisId: [32m'3a27d19f-f98b-4dc6-9098-84ba5c43a0cb'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'text'[39m,
+  attachmentsCount: [33m0[39m,
+  taskType: [32m'writing'[39m,
+  strategy: [32m'message_polish'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m21[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+ [32m✓[39m lib/__tests__/api-rate-limit.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 154[2mms[22m[39m
+ [32m✓[39m lib/__tests__/engine.idempotency.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 89[2mms[22m[39m
+ [32m✓[39m lib/__tests__/refine.pipeline.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 124[2mms[22m[39m
+ [32m✓[39m lib/__tests__/refine.adaptive.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 104[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.schema.test.ts [2m([22m[2m62 tests[22m[2m)[22m[32m 78[2mms[22m[39m
+ [32m✓[39m lib/__tests__/matcher.rubric.test.ts [2m([22m[2m43 tests[22m[2m)[22m[32m 112[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.editions.test.ts [2m([22m[2m61 tests[22m[2m)[22m[32m 179[2mms[22m[39m
+ [32m✓[39m lib/__tests__/engine.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 90[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/api-analyze-route.spec.ts[2m > [22m[2mAPI /api/analyze[2m > [22m[2mnormalizes purpose aliases before validation
+[22m[39m[analyze] request {
+  analysisId: [32m'8be2b9f3-cc62-43cb-90b4-67862f45ca90'[39m,
+  inferredLang: [32m'es'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'translation'[39m,
+  attachmentsCount: [33m1[39m,
+  taskType: [32m'translation'[39m,
+  strategy: [32m'translation'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m59[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-analyze-route.spec.ts[2m > [22m[2mAPI /api/analyze[2m > [22m[2msummarization with attachments should not return prompt_injection
+[22m[39m[analyze] request {
+  analysisId: [32m'52e1dd2c-cc9a-4779-b431-43ed88218a67'[39m,
+  inferredLang: [32m'es'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'summarization'[39m,
+  attachmentsCount: [33m1[39m,
+  taskType: [32m'summarization'[39m,
+  strategy: [32m'summarization'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m50[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+[90mstdout[2m | lib/__tests__/api-analyze-route.spec.ts[2m > [22m[2mAPI /api/analyze[2m > [22m[2mtelemetry still receives normalized purpose and score metadata
+[22m[39m[analyze] request {
+  analysisId: [32m'99305ee5-3cab-4a48-b7bb-77c1ea62c790'[39m,
+  inferredLang: [32m'en'[39m,
+  target: [32m'gpt'[39m,
+  purpose: [32m'summarization'[39m,
+  attachmentsCount: [33m1[39m,
+  taskType: [32m'summarization'[39m,
+  strategy: [32m'summarization'[39m,
+  complexity: [32m'simple'[39m,
+  refinementEngine: [32m'deterministic'[39m,
+  fallbackReason: [32m'disabled'[39m,
+  score: [33m71[39m,
+  engineVersion: [32m'2.4.1'[39m
+}
+
+ [32m✓[39m lib/__tests__/api-analyze-route.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 128[2mms[22m[39m
+ [32m✓[39m lib/__tests__/engine.json-output.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 177[2mms[22m[39m
+ [32m✓[39m lib/__tests__/rateLimit.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.filters.test.ts [2m([22m[2m80 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m lib/__tests__/proxy.redirects.spec.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32m✓[39m lib/__tests__/matcher.scoring.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.subscribe.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.marquee.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32m✓[39m lib/__tests__/benchmarks.v181.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 75[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.crawlers.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m lib/__tests__/benchmarks.charts.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.dates.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/api-app-feedback-route.spec.ts[2m > [22m[2mAPI /api/app-feedback[2m > [22m[2mmissing Firebase configuration → 503 unavailable, no crash
+[22m[39m[app-feedback] firestore unavailable { err: [32m'FIREBASE_SERVICE_ACCOUNT_BASE64 missing'[39m }
+
+[90mstdout[2m | lib/__tests__/api-app-feedback-route.spec.ts[2m > [22m[2mAPI /api/app-feedback[2m > [22m[2mFirestore write failure → 503 unavailable
+[22m[39m[app-feedback] firestore unavailable { err: [32m'firestore down'[39m }
+
+ [32m✓[39m lib/__tests__/api-app-feedback-route.spec.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.archive.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+[90mstdout[2m | lib/__tests__/newsletter.routes.spec.ts[2m > [22m[2mPOST /api/internal/newsletter/run[2m > [22m[2mrejects replayed nonces and unknown fields
+[22m[39m[newsletter] newsletter_run {
+  mode: [32m'dry_run'[39m,
+  outcome: [32m'NO_CONTENT'[39m,
+  editionId: [32m'promptea-weekly_2026-11-09'[39m,
+  sent: [33m0[39m,
+  failed: [33m0[39m,
+  remaining: [33m0[39m
+}
+
+[90mstdout[2m | lib/__tests__/newsletter.routes.spec.ts[2m > [22m[2mPOST /api/internal/newsletter/run[2m > [22m[2ma custom date is only accepted for previews, never for live
+[22m[39m[newsletter] newsletter_run {
+  mode: [32m'dry_run'[39m,
+  outcome: [32m'NO_CONTENT'[39m,
+  editionId: [32m'promptea-weekly_2026-09-28'[39m,
+  sent: [33m0[39m,
+  failed: [33m0[39m,
+  remaining: [33m0[39m
+}
+
+[90mstdout[2m | lib/__tests__/newsletter.routes.spec.ts[2m > [22m[2mPOST /api/internal/newsletter/run[2m > [22m[2ma signed live call with delivery switched off sends nothing and says why
+[22m[39m[newsletter] newsletter_run {
+  mode: [32m'live'[39m,
+  outcome: [32m'DELIVERY_DISABLED'[39m,
+  editionId: [32m'promptea-weekly_2026-11-09'[39m,
+  sent: [33m0[39m,
+  failed: [33m0[39m,
+  remaining: [33m0[39m
+}
+
+[90mstdout[2m | lib/__tests__/newsletter.routes.spec.ts[2m > [22m[2mPOST /api/internal/newsletter/run[2m > [22m[2mv1.7.0 publish: accepted with a date, never needs mail config, never writes deliveries
+[22m[39m[newsletter] newsletter_run {
+  mode: [32m'publish'[39m,
+  outcome: [32m'NO_CONTENT'[39m,
+  editionId: [32m'promptea-weekly_2026-09-28'[39m,
+  sent: [33m0[39m,
+  failed: [33m0[39m,
+  remaining: [33m0[39m
+}
+
+[90mstdout[2m | lib/__tests__/newsletter.routes.spec.ts[2m > [22m[2mPOST /api/internal/newsletter/run[2m > [22m[2mv1.7.0 publish: accepted with a date, never needs mail config, never writes deliveries
+[22m[39m[newsletter] newsletter_run {
+  mode: [32m'publish'[39m,
+  outcome: [32m'WEEK_NOT_CLOSED'[39m,
+  editionId: [32m'promptea-weekly_2099-01-05'[39m,
+  sent: [33m0[39m,
+  failed: [33m0[39m,
+  remaining: [33m0[39m
+}
+
+[90mstdout[2m | lib/__tests__/newsletter.routes.spec.ts[2m > [22m[2mPOST /api/internal/newsletter/run[2m > [22m[2ma signed dry run reports NO_CONTENT for an empty archive
+[22m[39m[newsletter] newsletter_run {
+  mode: [32m'dry_run'[39m,
+  outcome: [32m'NO_CONTENT'[39m,
+  editionId: [32m'promptea-weekly_2026-11-09'[39m,
+  sent: [33m0[39m,
+  failed: [33m0[39m,
+  remaining: [33m0[39m
+}
+
+ [32m✓[39m lib/__tests__/home.v181.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.routes.spec.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 111[2mms[22m[39m
+ [32m✓[39m lib/__tests__/models.registry.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.card.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.render.test.ts [2m([22m[2m51 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.techEmptyIndex.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m lib/__tests__/engine.pt.language.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.dates.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.types.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m lib/__tests__/library.share.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 24[2mms[22m[39m
+ [32m✓[39m lib/__tests__/i18n.pt-content.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m lib/__tests__/blog.server.spec.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.prompts.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m lib/__tests__/i18n.parity.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m lib/__tests__/prompts.daily.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m lib/__tests__/themes.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m lib/__tests__/api-feedback-route.spec.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m lib/__tests__/newsletter.edition-morning.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m lib/__tests__/a11y.scrollableTemplates.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+ [32m✓[39m lib/__tests__/social.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m lib/__tests__/benchmarks.teaser.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.dynamic.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m lib/__tests__/seo.breadcrumbs.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m lib/__tests__/api-analyze-attachments-telemetry.spec.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m lib/__tests__/telemetry.session.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m lib/__tests__/telemetry.newsletter.spec.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m78 passed[39m[22m[90m (78)[39m
+[2m      Tests [22m [1m[32m1696 passed[39m[22m[90m (1696)[39m
+[2m   Start at [22m 01:06:57
+[2m   Duration [22m 11.32s[2m (transform 29.68s, setup 0ms, import 61.61s, tests 13.73s, environment 35ms)[22m
+

@@ -91,6 +91,7 @@ describe("URL registry", () => {
 
 describe("sitemap.xml", () => {
   it("lists /blog/tech for es and en with es/en/x-default alternates, and never under /pt", async () => {
+    db.articles.mockImplementation(async (lang: string) => (lang === "pt" ? [] : [tech]));
     const entries = await sitemap();
     const byUrl = new Map(entries.map((e) => [e.url, e]));
     for (const lang of ["es", "en"]) {
@@ -99,6 +100,14 @@ describe("sitemap.xml", () => {
       expect(langsOf(e!)).toEqual(["en", "es", "x-default"]);
     }
     expect(byUrl.has(absUrl("/pt/blog/tech"))).toBe(false);
+  });
+
+  it("v1.8.4: leaves /blog/tech out while it has no stories, per language", async () => {
+    db.articles.mockImplementation(async (lang: string) => (lang === "en" ? [tech, ai] : [ai]));
+    const urls = (await sitemap()).map((e) => e.url);
+    expect(urls).toContain(absUrl("/en/blog/tech"));
+    expect(urls).not.toContain(absUrl("/es/blog/tech"));
+    expect(urls).toContain(absUrl("/es/blog"));
   });
 
   it("lists /sources in the three locales with reciprocal alternates", async () => {

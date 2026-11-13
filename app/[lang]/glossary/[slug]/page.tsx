@@ -148,10 +148,11 @@ export default async function GlossaryTermPage({
 
       {/* Ejemplo */}
       <section className="mt-10">
-        <div className="text-sm font-medium">{pick(l, { es: "Ejemplo copy-paste", en: "Copy-paste example", pt: "Exemplo pronto para copiar" })}</div>
+        <div id="example-title" className="text-sm font-medium">{pick(l, { es: "Ejemplo copy-paste", en: "Copy-paste example", pt: "Exemplo pronto para copiar" })}</div>
 
         <article className="mt-3 surface p-4 space-y-3">
-          <pre className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{term.example.prompt[l]}</pre>
+          {/* v1.8.4: scrolls inside; focusable so it can be scrolled from the keyboard (WCAG 2.1.1). */}
+          <pre tabIndex={0} role="group" aria-labelledby="example-title" className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-56 overflow-auto">{term.example.prompt[l]}</pre>
 
           <div className="flex items-center justify-between gap-3">
             <div className="text-xs opacity-70">

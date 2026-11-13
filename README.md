@@ -9,7 +9,13 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 
 Available in English, Spanish and Brazilian Portuguese (`/en`, `/es`, `/pt`; v1.8.2). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.3 (2026-11-11)
+## Latest update — v1.8.4 (2026-11-13)
+
+**Final QA after v1.8.3, with its fixes.** The scrollable prompt boxes on guides, model pages, the glossary and the six prompt packs can be scrolled from the keyboard; the AI Daily Tech index stays out of search engines, the sitemap and `llms.txt` until its first story; the model registry adds Claude Fable 5.2, Gemini 4 Argon and Gemini 4 Carbon, checked against each provider's documentation; `zod` is updated. Evidence and the owner's open decisions: [`docs/release/v1.8.4/qa-report.md`](./docs/release/v1.8.4/qa-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.3 (2026-11-11) — AI Daily Tech, a verified source registry, and a full QA pass._
+
+## v1.8.3 (2026-11-11)
 
 **AI Daily Tech, a verified source registry, and a full QA pass.** AI Daily gains a second section, **Tech** (`/[lang]/blog/tech`): one technology story a day for people who build with AI — cloud and hosting platforms, web frameworks and runtimes, developer tools, hardware — under the same sourcing and same-day rules as the AI story, with its own RSS feed and a "Tech this week" block in the weekly digest. The sources both editions read are a registry in code (`lib/blog/sources.ts`: 140 sources in three tiers, every URL fetched and verified), explained to readers at `/[lang]/sources`. The release also carries the QA of v1.8.0–v1.8.2 and its fixes: the home page and most pages are now prerendered (they were rendered on every request), the X feed card no longer shows a third party's error, the analysis endpoints are rate-limited, and baseline security headers are set. Evidence: [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md). **The Tech routine is external and has to be created once** — see "AI Daily Tech" below. Details in [CHANGELOG.md](./CHANGELOG.md).
 
@@ -178,6 +184,8 @@ npm run build      # production build (works offline — fonts are local)
 | `NEXT_PUBLIC_X_HANDLE` | optional | Promptea's X account (`promptea` or `@promptea`). Names the account on the X feed card and builds the footer link `https://x.com/<handle>`. If unset it is derived from `NEXT_PUBLIC_X_URL`. |
 | `NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID` | optional | v1.8.1. Id (UUID) of the Elfsight "Twitter Feed" widget shown by the X feed card (home side column and AI Daily). Defaults to Promptea's widget (`DEFAULT_X_WIDGET_ID` in `lib/social.ts`); `off` hides the card. The account, layout and number of posts are set in the Elfsight dashboard; the look comes from `app/globals.css` ("X feed (Elfsight)"). |
 | `NEXT_PUBLIC_X_URL` | optional | Profile URL for the footer link (default `https://x.com`). Also the fallback source of the handle. |
+| `TELEMETRY_TTL_DAYS` | optional | Sets `expiresAt` on anonymous telemetry documents (analysis, match and app events) to now + N days (default `90`). Firestore deletes them only where a TTL policy on `expiresAt` is configured. |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | optional | Public Firebase project id, sent with the anonymous once-a-day session event (`/api/telemetry/session`) to tell environments apart. Not needed for the site to work. |
 | `DEBUG_ANALYZE` | optional | Extra server logs for /api/analyze (operational metadata only — never prompt content). |
 | `NEWSLETTER_DELIVERY_ENABLED` | optional | Set to `true` to allow LIVE Promptea Weekly sends. Default `false` (live runs return `DELIVERY_DISABLED`). `promptea.me` is verified in Resend. |
 | `NEWSLETTER_SEND_SECRET` | for the weekly run | HMAC key shared with the weekly routine (≥32 random chars). Without it `POST /api/internal/newsletter/run` returns 503. Never commit it. |

@@ -23,7 +23,7 @@ import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
 import { CONTENT_UPDATED, modelsVerifiedAt } from "./dates";
-import { pick, contentIsFallback } from "@/lib/domain";
+import { pick, contentIsFallback, sectionOfEdition } from "@/lib/domain";
 import { LOCALES, type Locale } from "./site";
 
 export type ChangeFrequency = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
@@ -393,6 +393,19 @@ function coreUrls(lang: Locale): SeoUrl[] {
 export function modelPageUpdated(slug: string): string {
   const v = modelsVerifiedAt(slug as Parameters<typeof modelsVerifiedAt>[0]);
   return v > CONTENT_UPDATED.models ? v : CONTENT_UPDATED.models;
+}
+
+/**
+ * v1.8.4 — a section index with no stories yet (in practice /blog/tech, until
+ * the Tech routine publishes its first one) is an empty listing: it is served
+ * with noindex and left out of sitemap.xml and llms.txt. It comes back on its
+ * own with the first story. `articles` are the locale's published stories (any
+ * edition); for a locale without an edition of its own the list is empty and
+ * the index is not part of it anyway.
+ */
+export function withoutEmptySectionIndexes(urls: SeoUrl[], lang: Locale, articles: readonly { edition?: unknown }[]): SeoUrl[] {
+  const hasTech = articles.some((a) => sectionOfEdition(a.edition) === "tech");
+  return hasTech ? urls : urls.filter((u) => u.path !== `/${lang}/blog/tech`);
 }
 
 /** Every hand-written, always-present URL for one locale. */

@@ -358,12 +358,13 @@ Monte:
       </div>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
-        {examples.map((ex) => {
+        {examples.map((ex, idx) => {
           const href = buildOpenLink(l, ex.purpose, ex.target, ex.prompt);
           return (
             <div key={ex.title} className="surface min-w-0 p-4 space-y-3">
-              <div className="text-sm font-medium">{ex.title}</div>
-              <pre className="surface-soft p-3 text-xs whitespace-pre-wrap break-words [overflow-wrap:anywhere] max-h-56 overflow-auto">{ex.prompt}</pre>
+              <div id={`example-${idx}-title`} className="text-sm font-medium">{ex.title}</div>
+              {/* v1.8.4: scrolls inside; focusable so it can be scrolled from the keyboard (WCAG 2.1.1). */}
+              <pre tabIndex={0} role="group" aria-labelledby={`example-${idx}-title`} className="surface-soft p-3 text-xs whitespace-pre-wrap break-words [overflow-wrap:anywhere] max-h-56 overflow-auto">{ex.prompt}</pre>
 
               <div className="flex items-center justify-between gap-3">
                 <div className="text-xs opacity-70">

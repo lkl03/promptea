@@ -21,7 +21,7 @@ import type { MetadataRoute } from "next";
 import { loadArticles, loadBenchmarksAsOf, loadEditions } from "@/lib/seo/dynamic";
 import { articleUrl, editionUrl, latestUpdated } from "@/lib/seo/dynamicUrls";
 import { newest, toDate } from "@/lib/seo/dates";
-import { staticSeoUrls, type SeoUrl } from "@/lib/seo/registry";
+import { staticSeoUrls, withoutEmptySectionIndexes, type SeoUrl } from "@/lib/seo/registry";
 import { CONTENT_LANGS, isContentLang, sectionOfEdition } from "@/lib/domain";
 import { HREFLANG, LOCALES, X_DEFAULT_LOCALE, absUrl, swapLocale, type Locale } from "@/lib/seo/site";
 
@@ -73,7 +73,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const newestAi = latestUpdated(articles.filter((a) => sectionOfEdition(a.edition) === "ai").map(articleUrl));
     const newestTech = latestUpdated(articles.filter((a) => sectionOfEdition(a.edition) === "tech").map(articleUrl));
 
-    const urls = staticSeoUrls(lang).map((u): SeoUrl => {
+    // v1.8.4: an index with no stories yet (the Tech one) stays out until its first story.
+    const urls = withoutEmptySectionIndexes(staticSeoUrls(lang), lang, articles).map((u): SeoUrl => {
       // Pages whose content is driven by data take the data's date.
       if (u.path === `/${lang}`) return { ...u, updated: newest(u.updated, newestArticle) ?? u.updated };
       if (u.path === `/${lang}/blog`) return { ...u, updated: newest(u.updated, newestAi) ?? u.updated };

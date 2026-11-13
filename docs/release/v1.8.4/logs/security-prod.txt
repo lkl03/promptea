@@ -1,0 +1,40 @@
+# Seguridad básica contra producción (solo GET) — 2026-11-13T03:22:27Z
+## /api/share/card con parámetros hostiles
+200 image/png 321852B  <- score=87&lang=pt
+200 image/png 321852B  <- score=999&lang=pt
+200 image/png 322295B  <- score=-5
+200 image/png 322295B  <- score=abc&lang=xx
+200 image/png 322295B  <- score=50&title=%3Cscript%3Ealert(1)%3C%2Fscript%3E
+200 image/png 321852B  <- score=50&lang=pt&target=%22%3E%3Csvg%20onload%3Dalert(1)%3E
+(argumento demasiado largo para el shell; rehecho abajo)
+  <- score=50&t=Ascore=50&t=Ascore=50&t=Ascore=50&t=Ascore=50&t=Ascore=50&t
+## /{lang}/share con parámetros hostiles (status, robots, eco de markup)
+es 200 <meta name="robots" content="noindex, follow" echo=0  <- s=87
+es 200 <meta name="robots" content="noindex, follow" echo=1  <- s=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E
+es 200 <meta name="robots" content="noindex, follow" echo=0  <- score=%22%3E%3Cscript%3Ealert(1)%3C/script%3E&target=%3Cb%3Ex
+en 200 <meta name="robots" content="noindex, follow" echo=0  <- s=87
+en 200 <meta name="robots" content="noindex, follow" echo=1  <- s=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E
+en 200 <meta name="robots" content="noindex, follow" echo=0  <- score=%22%3E%3Cscript%3Ealert(1)%3C/script%3E&target=%3Cb%3Ex
+pt 200 <meta name="robots" content="noindex, follow" echo=0  <- s=87
+pt 200 <meta name="robots" content="noindex, follow" echo=1  <- s=%3Cimg%20src%3Dx%20onerror%3Dalert(1)%3E
+pt 200 <meta name="robots" content="noindex, follow" echo=0  <- score=%22%3E%3Cscript%3Ealert(1)%3C/script%3E&target=%3Cb%3Ex
+## Headers de /en
+Permissions-Policy: microphone=(self), camera=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+Referrer-Policy: strict-origin-when-cross-origin
+Strict-Transport-Security: max-age=63072000
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+## Fixtures de desarrollo en producción (deben ser 0 apariciones)
+/en/blog demo-labs=0
+/en/blog/tech demo-labs=0
+/en/benchmarks demo-labs=0
+/en demo-labs=0
+/api/benchmarks demo-labs=0
+## /api/internal/* sin firma (GET; deben rechazar)
+/api/internal/blog/publish 405
+/api/internal/newsletter/run 405
+## Rehechas (el shell había truncado/convertido rutas)
+200 image/png 322295B  <- t=6000xA
+/api/internal/blog/publish GET -> 405
+/api/internal/newsletter/run GET -> 405
+## Nota sobre echo=1 en /share: el valor aparece solo dentro del payload RSC de Next (string JSON con \u003c/\u003e escapados), no como markup; 0 apariciones de <img src=x> como etiqueta.
