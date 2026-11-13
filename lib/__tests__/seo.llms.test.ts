@@ -18,7 +18,7 @@ import { guideLang, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
 import { landings } from "@/lib/seo/content/landings";
-import { staticSeoUrls } from "@/lib/seo/registry";
+import { staticSeoUrls, withoutEmptySectionIndexes } from "@/lib/seo/registry";
 import { LOCALES, absUrl, type Locale } from "@/lib/seo/site";
 
 const empty = (lang: Locale): LlmsInput => ({ lang, articles: [], editions: [], benchmarks: null });
@@ -53,10 +53,15 @@ describe("llms.txt", () => {
 
       it("links every page of the registry exactly once (markdown twin when there is one)", () => {
         const all = links(txt);
-        for (const u of staticSeoUrls(lang)) {
+        // v1.8.4: with no stories, the empty Tech index is the one registry page left out.
+        for (const u of withoutEmptySectionIndexes(staticSeoUrls(lang), lang, [])) {
           const target = absUrl(u.markdown ? `${u.path}.md` : u.path);
           expect(all.filter((x) => x === target), target).toHaveLength(1);
         }
+      });
+
+      it("leaves out the Tech index while it has no stories (v1.8.4)", () => {
+        expect(links(txt)).not.toContain(absUrl(`/${lang}/blog/tech`));
       });
 
       it("only contains absolute links, with no placeholders", () => {

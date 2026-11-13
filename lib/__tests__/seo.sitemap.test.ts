@@ -16,7 +16,7 @@ vi.mock("@/lib/seo/dynamic", () => ({
 }));
 
 import sitemap from "@/app/sitemap";
-import { allStaticSeoUrls, staticSeoUrls } from "@/lib/seo/registry";
+import { allStaticSeoUrls, staticSeoUrls, withoutEmptySectionIndexes } from "@/lib/seo/registry";
 import { LOCALES, X_DEFAULT_LOCALE, absUrl } from "@/lib/seo/site";
 import { getGuide, guideLocales, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
@@ -66,9 +66,12 @@ describe("sitemap.xml generator", () => {
     const entries = await sitemap();
     const urls = entries.map((e) => e.url);
     expect(new Set(urls).size).toBe(urls.length);
-    for (const l of LOCALES) for (const u of staticSeoUrls(l)) expect(urls).toContain(absUrl(u.path));
+    // v1.8.4: no stories in this fixture, so the empty Tech index is left out.
+    const expected = LOCALES.flatMap((l) => withoutEmptySectionIndexes(staticSeoUrls(l), l, []));
+    for (const u of expected) expect(urls).toContain(absUrl(u.path));
     for (const u of urls) expect(u).toMatch(/^https?:\/\//);
-    expect(entries).toHaveLength(allStaticSeoUrls().length);
+    expect(entries).toHaveLength(expected.length);
+    expect(expected.length).toBe(allStaticSeoUrls().length - 2); // /es and /en/blog/tech
   });
 
   it("gives every URL es, en, pt-BR + pt and x-default alternates that point back at itself", async () => {
@@ -150,6 +153,7 @@ describe("sitemap.xml generator", () => {
     loaders.articles.mockResolvedValue([]);
     loaders.editions.mockResolvedValue([]);
     loaders.asOf.mockResolvedValue(null);
-    expect((await sitemap()).length).toBe(allStaticSeoUrls().length);
+    // Everything except the Tech index, which has no stories to show.
+    expect((await sitemap()).length).toBe(allStaticSeoUrls().length - 2);
   });
 });
