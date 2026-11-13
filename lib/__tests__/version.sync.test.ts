@@ -46,9 +46,19 @@ describe("version synchronization", () => {
   // v1.8.0 briefly tolerated an "## vX.Y.Z (unreleased)" heading while three
   // parallel branches were collected; v1.8.1 consolidated it into a dated
   // release and removed the tolerance: every "## vX.Y.Z" heading is a release.
-  test("newest CHANGELOG.md entry is APP_VERSION (history untouched)", () => {
+  //
+  // v1.8.3 is again built from two sequential PRs (QA, then AI Daily Tech), and
+  // only the second one bumps the version. Until it does, the first PR's notes
+  // live under ONE "## vX.Y.Z (unreleased)" heading at the top, for a version
+  // newer than APP_VERSION. RELEASE STEP: the PR that bumps the version turns
+  // that heading into a dated one and deletes this tolerance (UNRELEASED_OK).
+  const UNRELEASED_OK = true;
+  const releasedHeadings = (changelog: string) =>
+    [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)(?! \(unreleased\))/gm)].map((m) => m[1]);
+
+  test("newest released CHANGELOG.md entry is APP_VERSION (history untouched)", () => {
     const changelog = readFileSync(join(root, "CHANGELOG.md"), "utf8");
-    const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)/gm)].map((m) => m[1]);
+    const headings = releasedHeadings(changelog);
     expect(headings.length).toBeGreaterThan(0);
     expect(headings[0]).toBe(APP_VERSION);
     // Historical entries must never be rewritten to the current version.
@@ -69,9 +79,20 @@ describe("version synchronization", () => {
     expect(cards.slice(1)).not.toContain(APP_VERSION);
   });
 
-  test("no CHANGELOG.md heading is left as (unreleased)", () => {
+  test("at most one (unreleased) CHANGELOG.md heading, on top and newer than APP_VERSION", () => {
     const changelog = readFileSync(join(root, "CHANGELOG.md"), "utf8");
-    expect(changelog).not.toMatch(/^## v\d+\.\d+\.\d+ \(unreleased\)/m);
+    const unreleased = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+) \(unreleased\)/gm)].map((m) => m[1]);
+    if (!UNRELEASED_OK) {
+      expect(unreleased).toEqual([]);
+      return;
+    }
+    expect(unreleased.length).toBeLessThanOrEqual(1);
+    if (unreleased.length === 1) {
+      const all = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)/gm)].map((m) => m[1]);
+      expect(all[0]).toBe(unreleased[0]);
+      const num = (v: string) => v.split(".").map(Number).reduce((n, p) => n * 1000 + p, 0);
+      expect(num(unreleased[0])).toBeGreaterThan(num(APP_VERSION));
+    }
   });
 
   test("every CHANGELOG.md release also has a card on the public page", () => {
@@ -79,7 +100,8 @@ describe("version synchronization", () => {
     const changelog = readFileSync(join(root_, "CHANGELOG.md"), "utf8");
     const page = readFileSync(join(root_, "app", "[lang]", "changelog", "page.tsx"), "utf8");
 
-    const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)/gm)].map((m) => m[1]);
+    // An unreleased section has no card yet: it gets one when it is released.
+    const headings = [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)(?! \(unreleased\))/gm)].map((m) => m[1]);
     const cards = new Set(
       [...page.matchAll(/text-lg font-medium">v(\d+\.\d+\.\d+)</g)].map((m) => m[1])
     );

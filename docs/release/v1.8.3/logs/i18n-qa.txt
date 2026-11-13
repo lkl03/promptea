@@ -1,0 +1,14 @@
+
+== /pt
+
+== /es
+
+== /en
+
+== analyzer flow (pt)
+  ok  /pt/analyzer flow @1440
+  ok  /pt/analyzer flow @768
+  ok  /pt/analyzer flow @375
+
+297 page loads checked, 177 screenshot(s), 0 failure(s)
+exit 0

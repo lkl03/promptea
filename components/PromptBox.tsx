@@ -400,14 +400,22 @@ export default function PromptBox({
         signal: controller.signal,
       });
 
-      const data = (await res.json()) as AnalyzeResponse & { error?: string };
-      if (!res.ok) throw new Error(data?.error ?? dict.analyzer.genericError);
+      const data = (await res.json().catch(() => null)) as (AnalyzeResponse & { error?: string }) | null;
+      // v1.8.3: the server's `error` strings are English identifiers ("Validation
+      // error", "rate_limited"…) and were shown as-is in every language. The UI
+      // now speaks its own language: a specific message for the throttle, the
+      // generic one for everything else.
+      if (!res.ok || !data) {
+        setError(res.status === 429 ? dict.analyzer.rateLimited : dict.analyzer.genericError);
+        return;
+      }
 
       setResult(data);
       trackGoogleAnalyzeSuccess();
-    } catch (e) {
+    } catch {
       if (controller.signal.aborted) return; // superseded or reset — keep quiet
-      setError(e instanceof Error ? e.message : dict.analyzer.genericError);
+      // A network failure's own message ("Failed to fetch") is the browser's, in English.
+      setError(dict.analyzer.genericError);
     } finally {
       if (abortRef.current === controller) setIsPending(false);
     }

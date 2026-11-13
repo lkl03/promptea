@@ -10,10 +10,19 @@ import { judgePrompt, type JudgeResult } from "@/lib/refine/judge";
 import { modelNoteForTarget } from "@/lib/models";
 import type { RefinementResult } from "@/lib/refine/schema";
 import { APP_VERSION } from "@/lib/version";
+import { clientKey, createRateLimiter } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 
 const MAX_BODY_BYTES = 512 * 1024; // hard request-size ceiling
+
+// v1.8.3: this endpoint had no throttle at all, and with a provider key set each
+// call can trigger up to two paid LLM requests (refiner + judge) and one
+// telemetry write. 30 analyses a minute per client is far above what a person
+// does by hand (the UI sends one request per click) and stops a loop. Per
+// instance, best effort — see lib/rateLimit.ts.
+export const ANALYZE_RATE_LIMIT = { limit: 30, windowMs: 60_000 };
+const rateLimiter = createRateLimiter(ANALYZE_RATE_LIMIT);
 
 function inferLang(req: NextRequest, bodyLang: unknown): Lang {
   const h = req.headers.get("x-ui-lang");
@@ -22,6 +31,14 @@ function inferLang(req: NextRequest, bodyLang: unknown): Lang {
 }
 
 export async function POST(req: NextRequest) {
+  const gate = rateLimiter.check(clientKey(req.headers));
+  if (!gate.allowed) {
+    return NextResponse.json(
+      { error: "rate_limited", retryAfter: gate.retryAfterSec },
+      { status: 429, headers: { "Retry-After": String(gate.retryAfterSec), "Cache-Control": "no-store" } }
+    );
+  }
+
   const contentType = req.headers.get("content-type") || "";
   if (!contentType.includes("application/json")) {
     return NextResponse.json({ error: "Unsupported content-type" }, { status: 415 });

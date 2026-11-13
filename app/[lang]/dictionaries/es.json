@@ -49,6 +49,7 @@
     ],
     "promptLoaded": "Prompt cargado",
     "genericError": "Algo salió mal. Tu prompt se conservó — probá de nuevo.",
+    "rateLimited": "Demasiados análisis seguidos. Esperá un minuto y probá de nuevo: tu prompt se conservó.",
     "editorLabel": "Tu prompt"
   },
   "results": {
@@ -349,7 +350,8 @@
       "subtitle": "Una nota verificada por día, con sus fuentes.",
       "all": "Ver todas las notas",
       "weekly": "Resumen semanal",
-      "lead": "Nota principal"
+      "lead": "Nota principal",
+      "langNote": "Las notas se muestran en inglés."
     },
     "teaser": {
       "title": "Benchmarks de un vistazo",

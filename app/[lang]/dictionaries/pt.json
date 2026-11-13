@@ -49,6 +49,7 @@
     ],
     "promptLoaded": "Prompt carregado",
     "genericError": "Algo deu errado. Seu prompt foi mantido — tente de novo.",
+    "rateLimited": "Muitas análises seguidas. Espere um minuto e tente de novo — seu prompt foi mantido.",
     "editorLabel": "Seu prompt"
   },
   "results": {
@@ -349,7 +350,8 @@
       "subtitle": "Uma notícia verificada por dia, com as fontes.",
       "all": "Ver todas as notícias",
       "weekly": "Resumo semanal",
-      "lead": "Principal notícia"
+      "lead": "Principal notícia",
+      "langNote": "As notícias aparecem em inglês."
     },
     "teaser": {
       "title": "Benchmarks em um relance",

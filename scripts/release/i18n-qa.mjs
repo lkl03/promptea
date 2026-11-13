@@ -2,7 +2,7 @@
 // scripts/release/i18n-qa.mjs — v1.8.2. A real Chrome walks every key page in
 // every language and reports what a third language tends to break.
 //
-//   node scripts/release/i18n-qa.mjs --base=http://localhost:3181 [--out=docs/release/v1.8.2] [--shots=1]
+//   node scripts/release/i18n-qa.mjs --base=http://localhost:3181 [--out=docs/release/v1.8.3/i18n] [--shots=1] [--widths=1440,768,375]
 //
 // LOCALHOST ONLY by default (it submits the analyzer form). For each
 // language × page × viewport (1440 and 375) it checks:
@@ -24,7 +24,7 @@ import puppeteer from "puppeteer-core";
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/, "").split(/=(.*)/s).slice(0, 2)));
 const BASE = (args.base ?? "http://localhost:3181").replace(/\/+$/, "");
-const OUT = args.out ?? "docs/release/v1.8.2";
+const OUT = args.out ?? "docs/release/v1.8.3/i18n";
 const SHOTS = args.shots === "1";
 const CHROME = process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe";
 if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(BASE)) {
@@ -59,7 +59,8 @@ const PAGES = [
   ["privacy", "/privacy"],
   ["404", "/this-page-does-not-exist"],
 ];
-const VIEWPORTS = [1440, 375];
+// v1.8.3: --widths=1440,768,375 adds the tablet width (default: desktop and phone).
+const VIEWPORTS = (args.widths ?? "1440,375").split(",").map(Number);
 const THEMES = [
   ["aqua", "light"],
   ["aqua", "dark"],
@@ -192,7 +193,7 @@ for (const lang of LANGS) {
   console.log(`\n== /${lang}`);
   for (const [name, path] of PAGES) {
     for (const w of VIEWPORTS) {
-      const combos = ALL_THEMES.has(name) ? THEMES : [w === 1440 ? ["glass", "dark"] : ["aqua", "light"]];
+      const combos = ALL_THEMES.has(name) ? THEMES : [w === 1440 ? ["glass", "dark"] : w === 768 ? ["metro", "dark"] : ["aqua", "light"]];
       for (const [theme, scheme] of combos) {
         const where = `/${lang}${path || ""} @${w} ${theme}-${scheme}`;
         let ctx;

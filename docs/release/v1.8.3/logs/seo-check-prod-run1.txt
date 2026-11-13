@@ -1,0 +1,34 @@
+seo:check against https://www.promptea.me
+
+== robots.txt
+  ✓ robots.txt: 43 passed
+
+== sitemap.xml
+  ✗ every sitemap URL answers 200
+      0 https://www.promptea.me/pt/models/deepseek
+  ✗ sitemap.xml: 12 passed, 1 FAILED
+
+== llms.txt / llms-full.txt
+  ✓ llms.txt / llms-full.txt: 81 passed
+
+== markdown twins
+  ✓ markdown twins: 357 passed
+
+== pages (every sitemap URL)
+  ✓ pages (every sitemap URL): 593 passed
+
+== language entry (proxy)
+  ✓ language entry (proxy): 5 passed
+
+== /pt views of content without a Portuguese version
+    (every guide is translated to Portuguese: no guide view to check)
+  ✓ /pt views of content without a Portuguese version: 3 passed
+
+============================================================
+seo:check — 1094 passed, 1 failed, 0 warning(s)  [1095 checks]
+
+Failures:
+  - [sitemap.xml] every sitemap URL answers 200: 0 https://www.promptea.me/pt/models/deepseek
+
+RESULT: FAIL
+exit 1

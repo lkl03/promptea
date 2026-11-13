@@ -148,13 +148,28 @@ describe("markdown twin route", () => {
     expect(await res.text()).toContain("Alpha 1");
   });
 
-  it("serves an AI Daily article by slug and 404s when the store fails", async () => {
+  it("serves an AI Daily article by slug, and 404s without a database", async () => {
     db.bySlug.mockResolvedValue(makeArticle({ slug: "story", eventDate: "2026-11-08" }));
     const ok = await mdGet(req, mdCtx("en", ["blog", "story"]));
     expect(ok.status).toBe(200);
     expect(ok.headers.get("link")).toContain("/en/blog/story");
-    db.bySlug.mockRejectedValue(new Error("firestore down"));
+    // No credentials (local build, preview without secrets): there is no AI Daily, so 404 is true.
+    vi.stubEnv("FIREBASE_SERVICE_ACCOUNT_BASE64", "");
+    db.bySlug.mockRejectedValue(new Error("Missing env FIREBASE_SERVICE_ACCOUNT_BASE64"));
     expect((await mdGet(req, mdCtx("en", ["blog", "story"]))).status).toBe(404);
+    vi.unstubAllEnvs();
+  });
+
+  // v1.8.3: the route is ISR-cached and Next caches any status a route handler
+  // returns, so a 404 on a failed lookup hid a good twin for the whole window.
+  it("fails (never a cacheable 404) when the database is configured but the lookup fails", async () => {
+    vi.stubEnv("FIREBASE_SERVICE_ACCOUNT_BASE64", "configured");
+    db.bySlug.mockRejectedValue(new Error("DEADLINE_EXCEEDED"));
+    await expect(mdGet(req, mdCtx("en", ["blog", "story"]))).rejects.toThrow(/lookup failed/);
+    // A slug that really does not exist is still a plain 404.
+    db.bySlug.mockResolvedValue(null);
+    expect((await mdGet(req, mdCtx("en", ["blog", "nope"]))).status).toBe(404);
+    vi.unstubAllEnvs();
   });
 
   it("every statically generated twin exists in every locale (no dead .md link from the sitemap/llms.txt)", async () => {

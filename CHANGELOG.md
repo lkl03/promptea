@@ -4,6 +4,39 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.3 (unreleased)
+
+**Part 1 of 2 — a full QA pass over v1.8.0–v1.8.2, with fixes. No new features.** What was tested, how, the results and everything that could not be verified: [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md). The version number is bumped by part 2 (AI Daily Tech).
+
+### Fixed
+- **The home page and about 25 other pages were rendered on every request.** Pages under `/[lang]` without their own `generateStaticParams` were fully dynamic (`Cache-Control: private, no-store`), so `export const revalidate` did nothing: in production the home took ~1.1 s to first byte and Benchmarks ~1.2 s, against ~0.25 s for a prerendered guide, and each visit to the home ran a database query. The locale list is now declared once at the layout, so every page that reads no request data is prerendered and refreshed in the background (the home every 5 minutes, Benchmarks every hour). AI Daily's filtered index, the article page, the analyzer and `/share` stay dynamic, as before.
+- **X feed card: the widget's own error was shown instead of the fallback.** When Elfsight could not read the account it printed "Failed to fetch user data…" (in English, in every language) plus its badge, and the card treated that as a rendered feed. The card now counts posts: anything else ends in the translated fallback with the link to the profile, and the widget stays invisible until it has posts. Seen in production on 2026-11-11.
+- **X feed card: third-party code no longer loads during the first render.** On desktop the card is on screen from the start, so ~165 KB of Elfsight code was requested while the page was still hydrating (measured in production: at 4.55 s, with LCP at 4.54 s). It now waits for the load event and an idle moment. Without JavaScript the box said "Loading the feed…" forever; it now shows the link to the profile.
+- **Prompt packs on phones** (`/prompts/data` in the three languages, in production): a long unbreakable line inside a template made the page 20–35 px wider than the screen. Fixed in the six packs.
+- **A database hiccup could hide an AI Daily markdown twin for five minutes.** A failed lookup answered 404, and the route is cached, so the 404 replaced the good copy for the whole revalidation window. A failed lookup now fails the request (nothing is cached and the previous copy keeps being served); a slug that does not exist is still a plain 404.
+- **Errors in the analyzer and in Find the best AI were shown in English.** The interface displayed the server's identifier ("Validation error") or the browser's own message ("Failed to fetch") in every language. It now shows its translated message.
+- **The home under `/pt` did not say its headlines were in English.** "Latest in AI Daily" now says so, and the English text (there, in the news strip and on AI Daily cards) is marked with its language for screen readers and translation tools.
+- **Analysis engine 2.4.1** — two detectors whose word lists were not equivalent across languages: "five bullet points" now counts as a stated summary length in English (as "cinco viñetas" and "cinco tópicos" already did), and "para clientes recurrentes" names the audience of marketing copy in Spanish (as "returning customers" and "clientes recorrentes" already did). No finding id renamed; the calibration dataset did not move.
+- `npm run seo:check` reported a false failure in two production runs out of two: one request out of ~1,100 lost at the network level, on a different healthy URL each time. Transport errors are now retried and reported as a warning; an HTTP status is never retried.
+- A hydration warning in development (the header menu's generated id differing between server and client under load): the id is now fixed.
+
+### Security
+- **`/api/analyze` and `/api/analyze-llm` are rate-limited** (30 and 6 requests a minute per client; `lib/rateLimit.ts`). Neither had any throttle, and with a provider key each call can trigger paid LLM requests; `/api/analyze-llm` is not called by any page. The limit is per server instance, like the existing ones for feedback, newsletter and transcription: it stops a loop, not a distributed attack. The analyzer shows a translated message on 429.
+- **Baseline security headers on every response**: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, a `Permissions-Policy` that keeps the microphone for voice dictation and turns the rest off; `X-Powered-By` is no longer sent. No Content-Security-Policy yet (it needs a report-only rollout because of the third-party scripts).
+
+### Changed
+- The Glass theme's fonts are no longer preloaded on every page: Aqua and Metro use system fonts and never drew them (153 KB of fonts per visit in production). Glass still loads them, on demand.
+
+### Added
+- Release tooling: `scripts/release/engine-qa.mjs` (the engine through the API for the 8 purposes × pt/es/en: language of the output, cross-interface parity, idempotence), `sweep.mjs` (every sitemap URL of a family at several widths: overflow, clipped text, one `<h1>`, untranslated strings), `xfeed-check.mjs` (when the X widget loads, what it costs, and what the card shows when it is blocked, fails or has no JavaScript). `i18n-qa.mjs` takes `--widths`; `benchmarks-layout.mjs` is read-only against production.
+- Tests: Portuguese content guards (Spanish left in a Portuguese string, placeholders lost in a translated template, European-Portuguese vocabulary), detector parity across languages, the rate limiter and the routes that use it, the security headers.
+
+### Known limitations / follow-ups
+- `npm audit --omit=dev` still reports 26 advisories (4 critical), the same set as v1.8.1; the direct ones are `next` 16.1.1 (fixed in 16.4.6) and `zod`. Not upgraded here: it is a framework upgrade across three minors and deserves its own PR and preview deploy.
+- The Portuguese text has still not been read by a native speaker.
+
+---
+
 ## v1.8.2 — 2026-11-11
 
 **Brazilian Portuguese (`/pt`, pt-BR) as a third language: selectable in the header, with a translated interface, translated product pages and an analysis engine that answers in Portuguese.** Where content does not exist in Portuguese, the page says so and points at the original instead of passing English off as a translation.

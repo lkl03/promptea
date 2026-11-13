@@ -88,8 +88,12 @@ async function main() {
           vercelInsights404 = 0;
           const label = `${path} · ${theme}/${scheme} · ${vp.name}`;
           try {
-            await page.goto(BASE + path, { waitUntil: "networkidle2", timeout: 45_000 });
-            await new Promise((r) => setTimeout(r, 700));
+            // v1.8.3: "load" + a fixed pause instead of "networkidle2". With most pages now
+            // prerendered, Chrome answers the router's repeated prefetches from its HTTP cache
+            // and DevTools never reports them as finished, so "network idle" took the whole
+            // timeout on every load after the first (the requests do finish, in milliseconds).
+            await page.goto(BASE + path, { waitUntil: "load", timeout: 45_000 });
+            await new Promise((r) => setTimeout(r, 1800));
             const m = await page.evaluate(() => ({
               h1: document.querySelectorAll("h1").length,
               canonicals: document.querySelectorAll('link[rel="canonical"]').length,
@@ -104,7 +108,9 @@ async function main() {
             if (m.canonicals > 1) findings.push(`${label}: ${m.canonicals} canonical links`);
             if (m.cls > 0.1) findings.push(`${label}: CLS ${m.cls}`);
             // Dev-only noise that is not an app problem.
-            const real = errors.filter((e) => !/favicon|Download the React DevTools|Fast Refresh|\[HMR\]/.test(e) && !(path.includes("no-existe") && /404/.test(e)) && !(vercelInsights404 > 0 && /Failed to load resource.*404/.test(e)));
+            // v1.8.3: with `X-Content-Type-Options: nosniff` the missing analytics script (it only exists on
+            // Vercel) is reported as "Refused to execute script … /_vercel/insights/script.js": same non-finding.
+            const real = errors.filter((e) => !/favicon|Download the React DevTools|Fast Refresh|\[HMR\]|\/_vercel\/insights\//.test(e) && !(path.includes("no-existe") && /404/.test(e)) && !(vercelInsights404 > 0 && /Failed to load resource.*404/.test(e)));
             for (const e of real) findings.push(`${label}: ${e}`);
             if (SHOTS) await page.screenshot({ path: join(OUT, `${slug(path)}__${theme}-${scheme}__${vp.name}.jpg`), fullPage: false, type: "jpeg", quality: 78 });
             // The feedback modal (the v1.8.0 translucency bug): open it from the footer and capture it on the analyzer.

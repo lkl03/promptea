@@ -73,11 +73,18 @@ for (const c of CASES) {
       }).observe({ type: "longtask" });
     } catch {}
   }, c.theme);
-  if (!/^https?:\/\/(localhost|127\.0\.0\.1)/.test(BASE)) {
+  // v1.8.3: this check measures the ambient background, so the third-party X feed
+  // widget is kept out of it. Since v1.8.3 the widget loads after the load event,
+  // i.e. inside this measuring window, and rendering its posts costs ~100 layouts
+  // that have nothing to do with the animation (scripts/release/xfeed-check.mjs
+  // measures the widget on its own).
+  const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)/.test(BASE);
+  await page.setRequestInterception(true);
+  page.on("request", (r) => {
+    if (/elfsight|twimg\.com/.test(r.url())) return r.abort();
     // Read-only against anything that is not local: no telemetry or other writes leave the browser.
-    await page.setRequestInterception(true);
-    page.on("request", (r) => (r.method() === "GET" ? r.continue() : r.abort()));
-  }
+    return LOCAL || r.method() === "GET" ? r.continue() : r.abort();
+  });
   await page.goto(`${BASE}/en`, { waitUntil: "networkidle2", timeout: 60_000 });
   await new Promise((r) => setTimeout(r, 1500)); // let hydration settle
   const cdp = await page.createCDPSession();

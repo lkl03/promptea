@@ -131,7 +131,7 @@ Es puro y sin red (`scoreOptimizedPrompt`, `lib/engine/index.ts`). Re-analizar e
 - `engineVersion` sigue semver (`MAJOR.MINOR.PATCH`)
 - MAJOR: cambia IDs o reglas de contrato
 - MINOR: agrega heurísticas/findings/recs sin romper compatibilidad (ej. 2.3.0: re-score antes → después, detectores compartidos, fixes de clasificación; ningún ID renombrado. 2.4.0: tercer idioma `pt` — salida localizada, vocabulario portugués en los detectores, `meta.optimizedPromptLang`; ningún ID renombrado y resultados es/en sin cambios)
-- PATCH: fixes internos sin impacto visible
+- PATCH: fixes internos sin impacto visible, o correcciones de falsos positivos que igualan el comportamiento entre idiomas (ej. 2.4.1, v1.8.3: `missing_summary_length` ya no salta con "five bullet points" y `missing_marketing_audience` ya no salta con "para clientes recurrentes"; en ambos casos el equivalente en los otros dos idiomas ya contaba. Ningún ID renombrado, el dataset de calibración no se movió)
 
 ---
 

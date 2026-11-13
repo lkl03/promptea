@@ -1,0 +1,86 @@
+{
+  "base": "http://localhost:3181",
+  "match": "/^.(pt|es|en)(.(?!guides.).*)?$/",
+  "widths": [
+    1440,
+    768,
+    375
+  ],
+  "theme": "glass-dark",
+  "pages": 178,
+  "loads": 534,
+  "findings": [
+    {
+      "where": "/en/glossary/top-p @375",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    },
+    {
+      "where": "/en/prompts/data @375",
+      "what": "viewport 410px"
+    },
+    {
+      "where": "/en/prompts/data @375",
+      "what": "overflow 35px — div.surface.p-4.space-y-3 right=410 \"Strict JSON extractor (no fabr\"; div.text-sm.font-medium right=393 \"Strict JSON extractor (no fabr\"; pre.surface-soft.p-3.text-xs right=393 \"Act as a strict parser.\n\nSourc\""
+    },
+    {
+      "where": "/en/prompts @1440",
+      "what": "status 500"
+    },
+    {
+      "where": "/en/prompts @1440",
+      "what": "0 <h1>"
+    },
+    {
+      "where": "/en/prompts @1440",
+      "what": "<html lang=\"\">"
+    },
+    {
+      "where": "/en/prompts @1440",
+      "what": "console: SyntaxError: Unexpected end of JSON input\nJSON.parse (<anonymous>)\nloadManifest (file://C:\\Users\\Luca\\OneDrive\\Documents\\PROYECTOS\\REACT\\NEXT\\promptea\\.claude\\w"
+    },
+    {
+      "where": "/es/best-ai @768",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    },
+    {
+      "where": "/es/prompts/data @375",
+      "what": "viewport 397px"
+    },
+    {
+      "where": "/es/prompts/data @375",
+      "what": "overflow 22px — div.surface.p-4.space-y-3 right=397 \"Extractor estricto a JSON (sin\"; div.text-sm.font-medium right=380 \"Extractor estricto a JSON (sin\"; pre.surface-soft.p-3.text-xs right=380 \"Actuá como parser estricto.\n\nT\""
+    },
+    {
+      "where": "/pt/glossary/negative-prompting @1440",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    },
+    {
+      "where": "/pt/glossary/negative-prompting @768",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    },
+    {
+      "where": "/pt/glossary/negative-prompting @375",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    },
+    {
+      "where": "/pt/glossary/tokens @768",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    },
+    {
+      "where": "/pt/glossary/zero-shot @1440",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    },
+    {
+      "where": "/pt/prompts/data @375",
+      "what": "viewport 410px"
+    },
+    {
+      "where": "/pt/prompts/data @375",
+      "what": "overflow 35px — div.surface.p-4.space-y-3 right=410 \"Extrator de JSON estrito (sem \"; div.text-sm.font-medium right=393 \"Extrator de JSON estrito (sem \"; pre.surface-soft.p-3.text-xs right=393 \"Aja como um parser estrito.\n\nT\""
+    },
+    {
+      "where": "/pt/prompts/image @1440",
+      "what": "console: A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client"
+    }
+  ]
+}

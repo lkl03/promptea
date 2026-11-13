@@ -96,15 +96,34 @@ function summaryOfGroup(g) {
 // http
 // ---------------------------------------------------------------------------
 
+/**
+ * Requests that only answered after a retry. v1.8.3: two production runs of
+ * ~1,100 requests each lost exactly one request at the transport level (status
+ * 0: reset connection / timeout) on a different, otherwise healthy URL each
+ * time (a blog markdown twin, then a static model page; both answered 200 in
+ * 0.2 s on every later attempt). A transport error is the network's, not the
+ * page's, so it is retried; an HTTP status — 404, 500, a redirect — never is.
+ * Retried URLs are reported as a warning so real flakiness stays visible.
+ */
+const retried = [];
+const TRANSPORT_RETRIES = Number(process.env.SEO_CHECK_RETRIES || 2);
+
 async function get(path, init = {}) {
   const url = path.startsWith("http") ? path : `${BASE}${path}`;
-  try {
-    const res = await fetch(url, { redirect: "manual", signal: AbortSignal.timeout(TIMEOUT_MS), headers: { "user-agent": "promptea-seo-check/1.0" }, ...init });
-    const body = init.method === "HEAD" ? "" : await res.text();
-    return { url, status: res.status, headers: res.headers, body };
-  } catch (e) {
-    return { url, status: 0, headers: new Headers(), body: "", error: e?.message ?? String(e) };
+  let error = "";
+  for (let attempt = 0; attempt <= TRANSPORT_RETRIES; attempt++) {
+    if (attempt > 0) await new Promise((r) => setTimeout(r, 750 * attempt));
+    try {
+      const res = await fetch(url, { redirect: "manual", signal: AbortSignal.timeout(TIMEOUT_MS), headers: { "user-agent": "promptea-seo-check/1.0" }, ...init });
+      const body = init.method === "HEAD" ? "" : await res.text();
+      if (attempt > 0) retried.push(`${url} (attempt ${attempt + 1}; first error: ${error})`);
+      return { url, status: res.status, headers: res.headers, body };
+    } catch (e) {
+      const cause = e?.cause?.code || e?.cause?.message;
+      error ||= `${e?.name ?? "Error"}: ${e?.message ?? String(e)}${cause ? ` [${cause}]` : ""}`;
+    }
   }
+  return { url, status: 0, headers: new Headers(), body: "", error };
 }
 
 async function pool(items, fn, n = CONCURRENCY) {
@@ -522,6 +541,11 @@ async function main() {
   if (urls.length > 0) await checkPages(urls, origin);
   await checkEntry();
   if (urls.length > 0) await checkPortugueseViews(origin, urls);
+
+  if (retried.length) {
+    group("transport");
+    warn(`${retried.length} request(s) only answered after a retry`, `\n      ${retried.slice(0, 10).join("\n      ")}`);
+  }
 
   const failed = results.filter((r) => !r.ok);
   const warned = results.filter((r) => r.warn);

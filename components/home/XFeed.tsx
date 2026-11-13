@@ -19,9 +19,25 @@
 //     wait sometimes never fired (the widget stayed empty). One deferral, ours.
 //   - The feed box has a fixed height and scrolls inside, so loading it shifts
 //     nothing and the sticky side column keeps its size.
-//   - If nothing has rendered after LOAD_TIMEOUT_MS (script blocked by the
+//   - If no post has rendered after LOAD_TIMEOUT_MS (script blocked by the
 //     browser or an extension, Elfsight down, the plan's view limit reached),
 //     the box shows a link to the profile instead of staying empty.
+//
+// v1.8.3 (QA):
+//   - "Rendered" used to mean "Elfsight put anything in the box". When Elfsight
+//     cannot read the account it renders its own English error ("Failed to
+//     fetch user data…") plus its badge, which counted as rendered: the card
+//     showed a third party's error, in English, in every language, and never
+//     fell back. It now counts POSTS (hasPosts below); anything else ends in
+//     the translated fallback, and the widget stays invisible until it has posts
+//     so its error text never shows through the "Loading…" message.
+//   - On desktop the card is on screen from the first paint, so the script used
+//     to be requested during hydration (measured in production: 4.55 s, with LCP
+//     at 4.54 s and the load event at 4.65 s). It now waits for the load event
+//     and an idle moment, so ~165 KB of third-party code never competes with
+//     the page's own rendering.
+//   - Without JavaScript the box said "Loading the feed…" forever; it now shows
+//     the link to the profile (<noscript>).
 //
 // Which widget: lib/social.ts → getXWidgetId() (NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID,
 // with the Promptea widget as default). Its content (account, number of posts,
@@ -62,6 +78,39 @@ function loadPlatform(): Promise<void> {
 
 type State = "idle" | "loading" | "ready" | "failed";
 
+/**
+ * True when the widget rendered at least one post. Elfsight's Twitter Feed marks
+ * each post with a `…-posts-item` class and links it to its `/status/<id>` URL;
+ * either is enough (two signals, so a markup change on their side has to break
+ * both before a working feed is mistaken for a failed one).
+ */
+export function hasPosts(host: ParentNode): boolean {
+  return host.querySelector('[class*="posts-item"], a[href*="/status/"]') !== null;
+}
+
+/** Runs `fn` once the page has finished loading and the main thread is idle (or after `timeout` ms). */
+function whenIdleAfterLoad(fn: () => void, timeout = 2500): () => void {
+  let cancelled = false;
+  let idleId: number | undefined;
+  let timerId: number | undefined;
+  const run = () => {
+    if (!cancelled) fn();
+  };
+  const schedule = () => {
+    if (cancelled) return;
+    if (typeof window.requestIdleCallback === "function") idleId = window.requestIdleCallback(run, { timeout });
+    else timerId = window.setTimeout(run, 200);
+  };
+  if (document.readyState === "complete") schedule();
+  else window.addEventListener("load", schedule, { once: true });
+  return () => {
+    cancelled = true;
+    window.removeEventListener("load", schedule);
+    if (idleId !== undefined && typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleId);
+    window.clearTimeout(timerId);
+  };
+}
+
 function XIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
@@ -81,9 +130,10 @@ export default function XFeed({ widgetId, handle, profileUrl, dict }: { widgetId
     if (!box || !host) return;
     let timer: number | undefined;
     let cancelled = false;
+    let cancelIdle: (() => void) | undefined;
 
-    // "Ready" = Elfsight put real content into the host element.
-    const rendered = () => host.childElementCount > 0 && host.getBoundingClientRect().height > 40;
+    // "Ready" = Elfsight rendered posts (not just its badge or its own error message).
+    const rendered = () => hasPosts(host);
     const mo = new MutationObserver(() => {
       if (rendered()) {
         window.clearTimeout(timer);
@@ -106,7 +156,8 @@ export default function XFeed({ widgetId, handle, profileUrl, dict }: { widgetId
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
           io.disconnect();
-          start();
+          // Never during the first render: after the load event, when the main thread is idle.
+          cancelIdle = whenIdleAfterLoad(start);
         }
       },
       { rootMargin: "300px" }
@@ -115,6 +166,7 @@ export default function XFeed({ widgetId, handle, profileUrl, dict }: { widgetId
 
     return () => {
       cancelled = true;
+      cancelIdle?.();
       io.disconnect();
       mo.disconnect();
       window.clearTimeout(timer);
@@ -138,16 +190,36 @@ export default function XFeed({ widgetId, handle, profileUrl, dict }: { widgetId
 
       {/* Same height in every state: loading the feed shifts nothing. The posts scroll inside. */}
       <div ref={boxRef} className="x-feed-box relative mt-3 overflow-hidden rounded-xl border border-line" style={{ height: FEED_HEIGHT }}>
-        <div className="x-feed-scroll absolute inset-0 overflow-y-auto overscroll-contain" tabIndex={state === "ready" ? 0 : -1} role="region" aria-label={dict.title} hidden={state === "failed"}>
+        <div
+          className="x-feed-scroll absolute inset-0 overflow-y-auto overscroll-contain"
+          tabIndex={state === "ready" ? 0 : -1}
+          role="region"
+          aria-label={dict.title}
+          hidden={state === "failed"}
+          // Invisible (and out of the accessibility tree) until there are posts: whatever
+          // the widget prints while loading or failing never shows through.
+          style={state === "ready" ? undefined : { visibility: "hidden" }}
+        >
           {/* Elfsight renders into this element; React never owns its children. */}
           <div ref={hostRef} className={`elfsight-app-${widgetId}`} style={{ minHeight: 1 }} suppressHydrationWarning />
         </div>
 
         {state === "idle" || state === "loading" ? (
-          <p role="status" className="pointer-events-none absolute inset-0 flex items-center justify-center p-5 text-center text-sm text-ink-muted">
+          <p role="status" data-x-feed-loading className="pointer-events-none absolute inset-0 flex items-center justify-center p-5 text-center text-sm text-ink-muted">
             {dict.loading}
           </p>
         ) : null}
+
+        {/* Without JavaScript the widget can never load: show the way to the profile instead of "Loading…". */}
+        <noscript>
+          <style>{"[data-x-feed-loading]{display:none}"}</style>
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-5 text-center">
+            <p className="max-w-xs text-sm leading-relaxed text-ink-muted">{dict.fallback}</p>
+            <a href={profileUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary h-10 px-4 text-sm">
+              {handle ? dict.open.replace("{handle}", handle) : dict.follow}
+            </a>
+          </div>
+        </noscript>
 
         {state === "failed" ? (
           <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-5 text-center">

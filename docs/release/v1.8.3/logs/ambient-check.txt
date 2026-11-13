@@ -1,0 +1,7 @@
+aqua/light: blobs=5 max move=162px (11.2% vw) in 4000 ms | per blob px=[162, 102, 40, 29, 106] scale=[1.14, 0.82, 1.03, 0.98, 0.80] | fps=75 longtasks=0 layouts=0 recalcs=301 main-thread=321 ms cls=0.0000
+glass/light: blobs=5 max move=95px (6.6% vw) in 4000 ms | per blob px=[90, 66, 20, 95, 39] scale=[0.86, 0.89, 1.00, 1.09, 0.98] | fps=75 longtasks=0 layouts=0 recalcs=301 main-thread=300 ms cls=0.0000
+glass/dark: blobs=5 max move=95px (6.6% vw) in 4000 ms | per blob px=[90, 66, 20, 95, 39] scale=[0.86, 0.89, 1.00, 1.09, 0.98] | fps=75 longtasks=0 layouts=0 recalcs=301 main-thread=157 ms cls=0.0000
+metro/dark: blobs=0 max move=0px (0.0% vw) in 4000 ms | per blob px=[] scale=[] | fps=76 longtasks=0 layouts=0 recalcs=0 main-thread=55 ms cls=0.0000
+glass/dark (reduced motion): blobs=5 max move=0px (0.0% vw) in 4000 ms | per blob px=[0, 0, 0, 0, 0] scale=[1.00, 1.00, 1.00, 1.00, 1.00] | fps=76 longtasks=0 layouts=0 recalcs=0 main-thread=56 ms cls=0.0000
+
+no findings

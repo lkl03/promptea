@@ -1,0 +1,246 @@
+{
+  "base": "https://www.promptea.me",
+  "at": "2026-11-11T17:25:15.468Z",
+  "results": [
+    {
+      "name": "desktop: the server HTML does not include the widget script",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop: the server HTML links to the profile without the widget",
+      "pass": true,
+      "detail": "2 link(s)"
+    },
+    {
+      "name": "desktop: nothing is requested from Elfsight before the load event",
+      "pass": false,
+      "detail": "first third-party request at 4555 ms; DOMContentLoaded 4193 ms; load 4647 ms; LCP 4544 ms"
+    },
+    {
+      "name": "desktop: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "desktop: no layout shift",
+      "pass": true,
+      "detail": "CLS 0.0021"
+    },
+    {
+      "name": "desktop: the card ends with posts or the fallback, never an empty box",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "phone: no request to Elfsight while the card is far below the fold",
+      "pass": true,
+      "detail": "0 request(s)"
+    },
+    {
+      "name": "phone: the feed box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "phone: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "glass-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "metro-dark: the card ends with posts or the fallback",
+      "pass": true,
+      "detail": "posts"
+    },
+    {
+      "name": "blocked: the fallback with the profile link is shown",
+      "pass": true,
+      "detail": "fallback"
+    },
+    {
+      "name": "blocked: the empty feed region is hidden from assistive tech",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "blocked: the box keeps its height",
+      "pass": true,
+      "detail": "460 → 460 px"
+    },
+    {
+      "name": "no JS: the card is rendered with a link to the profile",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no JS: no request to a third party",
+      "pass": true,
+      "detail": "0"
+    }
+  ],
+  "rows": [
+    {
+      "case": "desktop 1440 (card in view)",
+      "firstThirdPartyMs": 4555,
+      "dclMs": 4193,
+      "loadMs": 4647,
+      "lcpMs": 4544,
+      "cls": 0.0021,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 123,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 2,
+      "bytesByHost": {
+        "elfsightcdn.com": 12608,
+        "core.service.elfsight.com": 3023,
+        "static.elfsight.com": 152036
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user data Failed to fetch timeline data: An error occurred while downloading posts Free Twitter Feed Wid"
+    },
+    {
+      "case": "phone 375 (after scrolling to the card)",
+      "firstThirdPartyMs": 2161,
+      "dclMs": 1123,
+      "loadMs": 1863,
+      "lcpMs": 1288,
+      "cls": 0.0001,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 163,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 123,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 2,
+      "bytesByHost": {
+        "elfsightcdn.com": 12609,
+        "core.service.elfsight.com": 3022,
+        "static.elfsight.com": 151655
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user data Failed to fetch timeline data: An error occurred while downloading posts Free Twitter Feed Wid"
+    },
+    {
+      "case": "desktop glass-dark",
+      "firstThirdPartyMs": 2634,
+      "dclMs": 2231,
+      "loadMs": 2868,
+      "lcpMs": 2524,
+      "cls": 0.002,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 123,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 2,
+      "bytesByHost": {
+        "elfsightcdn.com": 12611,
+        "core.service.elfsight.com": 3025,
+        "static.elfsight.com": 152033
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user data Failed to fetch timeline data: An error occurred while downloading posts Free Twitter Feed Wid"
+    },
+    {
+      "case": "desktop metro-dark",
+      "firstThirdPartyMs": 1830,
+      "dclMs": 1713,
+      "loadMs": 2212,
+      "lcpMs": 1744,
+      "cls": 0.0015,
+      "thirdPartyRequests": 6,
+      "thirdPartyKB": 164,
+      "longTaskMsAfterWidget": 52,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "posts",
+      "hostText": 123,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 2,
+      "bytesByHost": {
+        "elfsightcdn.com": 12604,
+        "core.service.elfsight.com": 3021,
+        "static.elfsight.com": 152032
+      },
+      "hosts": [
+        "elfsightcdn.com",
+        "core.service.elfsight.com",
+        "static.elfsight.com",
+        "widget-data.service.elfsight.com"
+      ],
+      "sample": "Failed to fetch user data Failed to fetch timeline data: An error occurred while downloading posts Free Twitter Feed Wid"
+    },
+    {
+      "case": "blocked (ad blocker)",
+      "firstThirdPartyMs": 1407,
+      "dclMs": 1244,
+      "loadMs": 1812,
+      "lcpMs": 1280,
+      "cls": 0.0021,
+      "thirdPartyRequests": 1,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 120,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "fallback",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 2,
+      "bytesByHost": {},
+      "hosts": [
+        "elfsightcdn.com"
+      ],
+      "sample": ""
+    },
+    {
+      "case": "JavaScript disabled",
+      "firstThirdPartyMs": null,
+      "dclMs": 0,
+      "loadMs": 0,
+      "lcpMs": 0,
+      "cls": 0,
+      "thirdPartyRequests": 0,
+      "thirdPartyKB": 0,
+      "longTaskMsAfterWidget": 0,
+      "boxBefore": 460,
+      "boxAfter": 460,
+      "state": "status: Loading the feed…",
+      "hostText": 0,
+      "htmlHasWidgetScript": false,
+      "htmlProfileLinks": 2,
+      "bytesByHost": {},
+      "hosts": [],
+      "sample": ""
+    }
+  ]
+}

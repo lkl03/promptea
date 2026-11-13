@@ -94,15 +94,19 @@ export default function MatcherBox({ dict, lang }: { dict: UiDict; lang: Lang })
         body: JSON.stringify({ prompt, lang, sessionId: getSessionId() }),
         signal: controller.signal,
       });
-      const data = (await res.json()) as MatchResult & { error?: string };
-      if (!res.ok) throw new Error(data?.error ?? dict.matcher.genericError);
+      const data = (await res.json().catch(() => null)) as (MatchResult & { error?: string }) | null;
+      // v1.8.3: never show the server's English error identifier; the UI speaks its own language.
+      if (!res.ok || !data) {
+        setError(dict.matcher.genericError);
+        return;
+      }
       setResult(data);
       requestAnimationFrame(() => {
         document.getElementById("matcher-results")?.scrollIntoView({ behavior: "smooth", block: "start" });
       });
-    } catch (e) {
+    } catch {
       if (controller.signal.aborted) return;
-      setError(e instanceof Error ? e.message : dict.matcher.genericError);
+      setError(dict.matcher.genericError);
     } finally {
       if (abortRef.current === controller) setIsPending(false);
     }

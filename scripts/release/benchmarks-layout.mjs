@@ -33,6 +33,11 @@ if (args.shots) await mkdir(args.shots, { recursive: true });
 for (const width of WIDTHS) {
   const page = await browser.newPage();
   await page.setViewport({ width, height: 900, deviceScaleFactor: 1, isMobile: width < 600, hasTouch: width < 600 });
+  // v1.8.3: read-only against anything that is not localhost, so production data can be checked without writing telemetry.
+  if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(BASE)) {
+    await page.setRequestInterception(true);
+    page.on("request", (r) => (r.method() === "GET" ? r.continue() : r.abort()));
+  }
   await page.evaluateOnNewDocument(() => {
     try {
       localStorage.setItem("theme", "glass");

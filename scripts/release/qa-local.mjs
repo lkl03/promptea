@@ -178,7 +178,12 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
     ok("storage blocked", path, served(res) && h1 === 1 && errors.length === 0, errors.slice(0, 2).join(" | "));
   }
   // The home hand-off falls back to the URL when sessionStorage is blocked.
-  await page.goto(`${BASE}/en`, { waitUntil: "networkidle2" });
+  // v1.8.3: "load" + a pause, not "networkidle2": on a prerendered page Chrome answers the
+  // router's duplicate prefetches from its HTTP cache and DevTools never reports them as
+  // finished, so "network idle" is never reached on a second visit (they do finish: the
+  // page's own Resource Timing shows every one completed within milliseconds).
+  await page.goto(`${BASE}/en`, { waitUntil: "load" });
+  await new Promise((r) => setTimeout(r, 1200));
   await page.type("textarea[name=prompt]", "Write a haiku about rain");
   await Promise.all([page.waitForNavigation({ waitUntil: "domcontentloaded", timeout: 30_000 }), page.click("form[action$='/analyzer'] button[type=submit]")]);
   ok("storage blocked", "home prompt box falls back to ?prompt=", /\/en\/analyzer\?prompt=/.test(page.url()), page.url().slice(0, 90));
@@ -187,7 +192,12 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true,
 {
   // Normal browser: the prompt travels through sessionStorage, not the URL.
   const page = await browser.newPage();
-  await page.goto(`${BASE}/en`, { waitUntil: "networkidle2" });
+  // v1.8.3: "load" + a pause, not "networkidle2": on a prerendered page Chrome answers the
+  // router's duplicate prefetches from its HTTP cache and DevTools never reports them as
+  // finished, so "network idle" is never reached on a second visit (they do finish: the
+  // page's own Resource Timing shows every one completed within milliseconds).
+  await page.goto(`${BASE}/en`, { waitUntil: "load" });
+  await new Promise((r) => setTimeout(r, 1200));
   await page.type("textarea[name=prompt]", "Write a haiku about rain");
   await Promise.all([page.waitForNavigation({ waitUntil: "domcontentloaded", timeout: 30_000 }), page.click("form[action$='/analyzer'] button[type=submit]")]);
   await page.waitForSelector("textarea", { timeout: 30_000 });
