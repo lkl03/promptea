@@ -74,9 +74,13 @@ describe("registry — 2026-09-24 provider sweep", () => {
     expect(getModelById("claude-opus-4.8")?.replacementId).toBe("claude-opus-5.5");
     expect(getModelById("claude-opus")?.replacementId).toBe("claude-opus-5.5");
     expect(getModelById("claude-fable-5")?.status).toBe("legacy");
-    expect(getModelById("claude-fable-5")?.replacementId).toBe("claude-fable-5.1");
-    expect(getModelById("claude-fable-5.1")?.apiModelId).toBe("claude-fable-5-1");
-    expect(getModelById("claude-fable-5.1")?.selectable).toBe(true);
+    // 2026-11-13: Claude Fable 5.2 replaced Fable 5.1 (both ids kept, pointing at 5.2).
+    expect(getModelById("claude-fable-5")?.replacementId).toBe("claude-fable-5.2");
+    expect(getModelById("claude-fable-5.1")?.status).toBe("legacy");
+    expect(getModelById("claude-fable-5.1")?.replacementId).toBe("claude-fable-5.2");
+    expect(getModelById("claude-fable-5.2")?.apiModelId).toBe("claude-fable-5-2");
+    expect(getModelById("claude-fable-5.2")?.selectable).toBe(true);
+    expect(resolveModelId("claude-fable-5.1")?.id).toBe("claude-fable-5.2");
     expect(resolveModelId("claude-opus-5")?.id).toBe("claude-opus-5.5");
   });
 
@@ -89,13 +93,29 @@ describe("registry — 2026-09-24 provider sweep", () => {
     // 2026-10-09: Claude Sonnet 5.5 / Haiku 5.5 replaced Sonnet 5 / Haiku 4.5 (ids kept as legacy).
     expect(getModelsForTarget("claude").map((m) => m.id)).toEqual([
       "claude-opus-5.5",
-      "claude-fable-5.1",
+      "claude-fable-5.2",
       "claude-sonnet-5.5",
       "claude-haiku-5.5",
     ]);
     expect(resolveModelId("claude-sonnet-5")?.id).toBe("claude-sonnet-5.5");
     expect(resolveModelId("claude-haiku-4.5")?.id).toBe("claude-haiku-5.5");
     expect(defaultModelIdForTarget("gemini")).toBe("gemini-3.8-flash");
+    // 2026-11-13: Gemini 4 Argon and Gemini 4 Carbon (stable, first-party docs), not defaults.
+    expect(getModelsForTarget("gemini").map((m) => m.id).slice(0, 3)).toEqual([
+      "gemini-3.8-flash",
+      "gemini-4-argon",
+      "gemini-4-carbon",
+    ]);
+    for (const id of ["gemini-4-argon", "gemini-4-carbon"]) {
+      const m = getModelById(id);
+      expect(m?.status).toBe("stable");
+      expect(m?.apiModelId).toBe(id);
+      expect(m?.capabilities?.contextWindowTokens).toBe(1048576);
+      expect(m?.capabilities?.maxOutputTokens).toBe(65536);
+      expect(m?.promptProfile).toBe("gemini-context-first");
+    }
+    // GPT-6 Astra Pro has no first-party OpenAI model page: not in the registry.
+    expect(getModelById("gpt-6-astra-pro")).toBeNull();
     expect(getModelById("gemini-3.5-flash")?.status).toBe("legacy");
     expect(getModelById("gemini-3.1-flash-lite")?.status).toBe("deprecated");
     expect(defaultModelIdForTarget("grok")).toBe("grok-4.7");
@@ -319,8 +339,8 @@ describe("Claude Opus 5.5 follows Anthropic's Opus 5.5 prompting guide", () => {
     expect(opus).not.toContain("If a requirement is ambiguous, ask before implementing.");
   });
 
-  test("Fable 5.1 keeps its own guidance: report pre-existing issues, don't fix them", () => {
-    const out = analyzePrompt(REPO_TASK, "claude", "en", "code", { modelId: "claude-fable-5.1" }).optimizedPrompt;
+  test("Fable 5.2 keeps the Fable guidance: report pre-existing issues, don't fix them", () => {
+    const out = analyzePrompt(REPO_TASK, "claude", "en", "code", { modelId: "claude-fable-5.2" }).optimizedPrompt;
     expect(out).toContain("report them at the end instead of fixing them");
   });
 });
