@@ -10,7 +10,11 @@
 // (telemetry, subscribe, feedback, analyze…) is aborted before it leaves the
 // browser, so capturing production never writes to it.
 //
-// Each shot: { name, path, w, h?, theme?, scheme?, full?, scroll?, click?, wait?, storage? }.
+// Each shot: { name, path, w, h?, theme?, scheme?, full?, scroll?, click?, wait?, storage?, fill?, hover? }.
+// v1.8.5: --set=primary captures the primary button (Aqua contrast fix) in the
+// three languages and the key widths, plus Metro and Glass to show they did not change;
+// `fill` types into a field (the analyzer's button is disabled while empty) and
+// `hover` leaves the pointer over a selector.
 
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
@@ -63,7 +67,24 @@ const AFTER = [
   { name: "footer-version__en__1440__metro", path: "/en/about", w: 1440, theme: "metro", scroll: "footer" },
 ];
 
-const shots = (SET === "before" ? BEFORE : AFTER).filter((s) => !ONLY || ONLY.some((o) => s.name.includes(o)));
+/** v1.8.5 — the primary button, before and after the Aqua contrast fix. */
+const SAMPLE = "Write a launch email for our new feature";
+const PRIMARY = [
+  { name: "primary-home__es__1440__aqua", path: "/es", w: 1440, theme: "aqua" },
+  { name: "primary-home__en__1440__aqua", path: "/en", w: 1440, theme: "aqua" },
+  { name: "primary-home__pt__1440__aqua", path: "/pt", w: 1440, theme: "aqua" },
+  { name: "primary-home__es__768__aqua", path: "/es", w: 768, h: 1024, theme: "aqua" },
+  { name: "primary-home__pt__375__aqua", path: "/pt", w: 375, theme: "aqua" },
+  { name: "primary-analyzer__en__1440__aqua", path: "/en/analyzer", w: 1440, theme: "aqua", fill: "textarea", scroll: "textarea" },
+  { name: "primary-home-hover__en__1440__aqua", path: "/en", w: 1440, theme: "aqua", hover: "form button.btn-primary" },
+  { name: "primary-analyzer__es__375__aqua", path: "/es/analyzer", w: 375, theme: "aqua", fill: "textarea", scroll: "textarea" },
+  { name: "primary-analyzer-empty__pt__1440__aqua", path: "/pt/analyzer", w: 1440, theme: "aqua", scroll: "textarea" },
+  { name: "primary-home__en__1440__metro", path: "/en", w: 1440, theme: "metro" },
+  { name: "primary-home__en__1440__glass-light", path: "/en", w: 1440, theme: "glass", scheme: "light" },
+  { name: "primary-home__en__1440__glass-dark", path: "/en", w: 1440, theme: "glass", scheme: "dark" },
+];
+
+const shots = (SET === "before" ? BEFORE : SET === "primary" ? PRIMARY : AFTER).filter((s) => !ONLY || ONLY.some((o) => s.name.includes(o)));
 await mkdir(OUT, { recursive: true });
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ["--no-sandbox"] });
 let blocked = 0;
@@ -95,6 +116,14 @@ for (const s of shots) {
     if (s.click) {
       await page.click(s.click);
       await new Promise((r) => setTimeout(r, 450));
+    }
+    if (s.fill) {
+      await page.type(s.fill, SAMPLE);
+      await new Promise((r) => setTimeout(r, 300));
+    }
+    if (s.hover) {
+      await page.hover(s.hover);
+      await new Promise((r) => setTimeout(r, 400));
     }
     if (s.scroll) {
       await page.evaluate((sel) => document.querySelector(sel)?.scrollIntoView({ block: "start" }), s.scroll);
