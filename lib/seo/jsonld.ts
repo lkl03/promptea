@@ -359,6 +359,8 @@ export function datasetNode(i: {
   dateModified?: string | null;
   sourceName: string;
   sourceUrl: string;
+  /** v1.8.5: Google requires a description on every Dataset, the nested source included. */
+  sourceDescription: string;
   measured: string[];
   citation?: string | null;
   siteUrl?: string;
@@ -374,7 +376,7 @@ export function datasetNode(i: {
     isAccessibleForFree: true,
     creator: ref(ids.organization),
     publisher: ref(ids.organization),
-    isBasedOn: { "@type": "Dataset", name: i.sourceName, url: i.sourceUrl },
+    isBasedOn: { "@type": "Dataset", name: i.sourceName, description: i.sourceDescription, url: i.sourceUrl },
     variableMeasured: i.measured.map((name) => ({ "@type": "PropertyValue", name })),
     ...(i.dateModified ? { dateModified: i.dateModified } : {}),
     ...(i.citation ? { citation: i.citation } : {}),

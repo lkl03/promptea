@@ -147,6 +147,22 @@ describe("data-backed graphs", () => {
     expect(errs(page("en", "AI model benchmarks", md, withSnap), absUrl("/en/benchmarks"), ["Dataset", "CollectionPage"])).toEqual([]);
   });
 
+  it("v1.8.5 — the source Dataset carries the description Google requires, in every language", () => {
+    // Google's Rich Results Test rejected /en/benchmarks: the nested isBasedOn Dataset had no description.
+    const snap = makeSnapshot();
+    for (const l of LOCALES) {
+      const g = benchmarksGraph({ lang: l, title: "t", description: "d", snapshot: snap }) as { "@graph": Array<Record<string, unknown>> };
+      const src = g["@graph"].find((n) => n["@type"] === "Dataset")!.isBasedOn as { "@type": string; description?: string };
+      expect(src["@type"], l).toBe("Dataset");
+      expect(src.description?.length ?? 0, l).toBeGreaterThanOrEqual(50);
+    }
+    // ...and the validator behind seo:check now refuses a source Dataset without one.
+    const g = benchmarksGraph({ lang: "en", title: "AI model benchmarks", description: "d", snapshot: snap }) as { "@graph": Array<Record<string, unknown>> };
+    const broken = { ...g, "@graph": g["@graph"].map((n) => (n["@type"] === "Dataset" ? { ...n, isBasedOn: { "@type": "Dataset", name: "Source", url: "https://example.com" } } : n)) };
+    const md = benchmarksMarkdown(snap, "en", absUrl("/en/benchmarks"), "2026-11-08");
+    expect(errs(page("en", "AI model benchmarks", md, broken), absUrl("/en/benchmarks"), ["Dataset"]).join(" ")).toMatch(/source Dataset without a 50–5000 character description/);
+  });
+
   it("AI Daily article: NewsArticle with real dates, references to the graph, headline within 110 chars", () => {
     const a = makeArticle({ slug: "story", eventDate: "2026-11-05", title: "A".repeat(40) + " " + "long headline ".repeat(12), updatedAt: "2026-11-06T08:00:00.000Z" });
     const url = absUrl("/en/blog/story");
@@ -253,7 +269,7 @@ describe("the validator fails when the contract is broken", () => {
   });
 
   it("flags a Dataset that is not backed by what the page shows", () => {
-    const ds = { "@type": "Dataset", "@id": `${url}#dataset`, name: "D", variableMeasured: [{ "@type": "PropertyValue", name: "GPQA Diamond (Science)" }], dateModified: "2026-11-03", isBasedOn: { url: "https://openrouter.ai/benchmarks" } };
+    const ds = { "@type": "Dataset", "@id": `${url}#dataset`, name: "D", description: "A ranking of AI models on GPQA Diamond, the science benchmark shown on this page.", variableMeasured: [{ "@type": "PropertyValue", name: "GPQA Diamond (Science)" }], dateModified: "2026-11-03", isBasedOn: { url: "https://openrouter.ai/benchmarks" } };
     expect(errs(doc([wp(), ds]), url).join()).toMatch(/measured variable not visible/);
     expect(errs(doc([wp(), ds], "X", "GPQA Diamond ranking"), url)).toEqual([]);
   });
