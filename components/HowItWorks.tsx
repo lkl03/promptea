@@ -26,7 +26,7 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
         {
           title: "1. Elegí modelo y tipo de prompt",
           body:
-            "Seleccioná la familia de IA (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) y para qué es el prompt: texto, código, datos, marketing, estudio, imagen, traducción o resumen.",
+            "Seleccioná la familia de IA (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen…) y para qué es el prompt: texto, código, datos, marketing, estudio, imagen, traducción o resumen.",
         },
         {
           title: "2. Pegá, escribí o dictá tu prompt",
@@ -59,7 +59,7 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
         {
           title: "1. Pick model and prompt type",
           body:
-            "Select the AI family (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) and what the prompt is for: text, code, data, marketing, study, image, translation, or summarization.",
+            "Select the AI family (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen…) and what the prompt is for: text, code, data, marketing, study, image, translation, or summarization.",
         },
         {
           title: "2. Paste, write, or dictate your prompt",
@@ -92,7 +92,7 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
         {
           title: "1. Escolha o modelo e o tipo de prompt",
           body:
-            "Selecione a família de IA (GPT, Claude, Gemini, Grok, DeepSeek, Kimi…) e para que serve o prompt: texto, código, dados, marketing, estudo, imagem, tradução ou resumo.",
+            "Selecione a família de IA (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen…) e para que serve o prompt: texto, código, dados, marketing, estudo, imagem, tradução ou resumo.",
         },
         {
           title: "2. Cole, escreva ou dite seu prompt",
@@ -138,7 +138,7 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
         {
           title: "3. Comparamos las IA",
           body:
-            "Con esas señales puntuamos cada IA y entorno (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Perplexity) según capacidades verificadas. El ranking es 100% determinístico: ninguna IA decide por vos.",
+            "Con esas señales puntuamos cada IA y entorno (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity) según capacidades verificadas. El ranking es 100% determinístico: ninguna IA decide por vos.",
         },
         {
           title: "4. Recibí la recomendación",
@@ -171,7 +171,7 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
         {
           title: "3. We compare the AIs",
           body:
-            "Those signals score each AI and environment (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Perplexity) against verified capabilities. The ranking is 100% deterministic: no AI decides for you.",
+            "Those signals score each AI and environment (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity) against verified capabilities. The ranking is 100% deterministic: no AI decides for you.",
         },
         {
           title: "4. Get the recommendation",
@@ -204,7 +204,7 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
         {
           title: "3. Comparamos as IAs",
           body:
-            "Esses sinais pontuam cada IA e ambiente (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Perplexity) com base em capacidades verificadas. O ranking é 100% determinístico: nenhuma IA decide por você.",
+            "Esses sinais pontuam cada IA e ambiente (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity) com base em capacidades verificadas. O ranking é 100% determinístico: nenhuma IA decide por você.",
         },
         {
           title: "4. Receba a recomendação",

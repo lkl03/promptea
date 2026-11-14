@@ -20,7 +20,7 @@ import { trackProductEvent } from "@/lib/analytics/productEvents";
 
 export type LibraryDict = Record<string, string>;
 
-const TARGET_LABEL: Record<string, string> = { gpt: "GPT", claude: "Claude", gemini: "Gemini", grok: "Grok", kimi: "Kimi", deepseek: "DeepSeek", perplexity: "Perplexity" };
+const TARGET_LABEL: Record<string, string> = { gpt: "GPT", claude: "Claude", gemini: "Gemini", grok: "Grok", kimi: "Kimi", deepseek: "DeepSeek", perplexity: "Perplexity", qwen: "Qwen", glm: "GLM", minimax: "MiniMax", doubao: "Doubao" };
 
 function scoreTone(score: number) {
   return score < 50 ? "text-danger" : score < 75 ? "text-warning" : "text-success";

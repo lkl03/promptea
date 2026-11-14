@@ -4,6 +4,39 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.6 — 2026-11-14
+
+**SEO for the US and Asia.** A traffic analysis (2026-11-14) found that "prompt analyzer" ranks 11–14 in the US (5.3 globally) with no clicks, and that Chinese readers come for the DeepSeek and Kimi guides while Qwen, GLM, MiniMax and Doubao were missing. What changed and what to measure in Search Console after four weeks: [`docs/release/v1.8.6/seo-report.md`](./docs/release/v1.8.6/seo-report.md).
+
+### Added
+- **Qwen, GLM, MiniMax and Doubao** as AI families: 10 selectable models and 3 retired aliases in `lib/models.ts`, verified on 2026-11-14 against the Alibaba Cloud Model Studio, Z.ai, MiniMax and Volcengine Ark docs (each entry carries its source URL). Each family has a prompting profile (`qwen-general`, `glm-reasoner`, `minimax-agent`, `doubao-seed`) built only from what those docs say, a `/models/<family>` page in three languages and a `/guides/<family>-prompt-guide` in English and Spanish (Portuguese shows the English text). All of it is in the sitemap, `llms.txt` and `llms-full.txt`.
+- **Prompt analyzer copy.**
+  - `/en/landing/prompt-analyzer` has a new English title and description, three before → after examples and a six-question FAQ with `FAQPage`. The example scores are the engine's own, test-enforced in every language.
+  - `/{lang}/analyzer` explains the six criteria under the tool, with a three-question FAQ (`FAQPage`) and a new English `<title>` and description.
+  - Eleven of the most-read guides link to the analyzer, and each model page links to its guide.
+- **IndexNow.** Nothing is sent until the owner sets the key.
+  - `/indexnow-key.txt` serves the `INDEXNOW_KEY` env var, which is not in the repo.
+  - `/api/internal/blog/publish` pings a new AI Daily story's URLs after publishing it.
+  - `npm run seo:indexnow` and `.github/workflows/indexnow.yml` submit the sitemap URLs changed in the last two days after each production deploy.
+
+- **Clean measurement** (#46).
+  - Vercel Analytics custom events for real product actions: `Prompt Analyzed`, `Prompt Copied`, `Target Changed` and `Template Copied`, each with at most two closed-enum properties (`lang`, `target` or `source`) and never prompt text. Nothing is sent under WebDriver (`lib/analytics/productEvents.ts`).
+  - Guide templates have a **Copy** button.
+  - `robots.txt` names eight more crawlers, all still allowed: `meta-webindexer`, `meta-externalfetcher`, `ExaSearchBot`, `ElevenlabsCrawler`, `PetalBot`, `Baiduspider`, `YisouSpider` and `Bytespider` (`lib/seo/crawlers.ts`).
+
+### Changed
+- `llms-full.txt` is more compact: guides list their FAQ questions (the answers are in each `.md` twin), model pages list their templates by title, and the analyzer landing links its examples instead of inlining them. With the new content included, its fixed part is about 302 KB in Spanish (the test limit is 330 KB; without this change it would have been about 356 KB).
+- Lists of supported AIs (home, how it works, best-ai, models, guides, JSON-LD) name the four new families.
+- Own telemetry (`/api/telemetry/app`, `/api/telemetry/session`) skips bot and tool User-Agents and is only sent after the first real interaction; page-load events wait in a queue of at most 20 (#46). Expect `dau`, `newSessions` and `mode_opened` in Firestore to drop: bots and visits without interaction no longer count.
+
+### Open (owner)
+- Set `INDEXNOW_KEY` in Vercel (Production) and redeploy; steps in the report. Measure in Search Console around 2026-12-12 (table in the report).
+
+### Tests and checks
+- `lint`, `typecheck`, `build` green; `npm test` 1,757 tests; `npm run seo:check` against a local production build: 846 passed, 0 failed.
+
+---
+
 ## v1.8.5 — 2026-11-13
 
 **The owner's open items from the v1.8.4 QA.** Next.js security update (its own PR, #43, already in production), the Aqua accent passes WCAG AA, two new guides, `resend` updated, the benchmarks JSON-LD fixed after Google's Rich Results Test, and the AI Daily Tech routine created (disabled until the owner finishes its setup). What was done, verified, and left to the owner, step by step: [`docs/release/v1.8.5/report.md`](./docs/release/v1.8.5/report.md).

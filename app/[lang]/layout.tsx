@@ -77,7 +77,7 @@ const SEO: Record<Lang, { title: string; description: string; keywords: string[]
   en: {
     title: "Promptea — Prompt analyzer & optimizer for GPT, Claude, Gemini, Grok",
     description:
-      "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity. Score, fix and rewrite prompts for text, code, data/JSON, marketing, study, image, translation and summaries.",
+      "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao and Perplexity. Score, fix and rewrite prompts for text, code, data/JSON, marketing, study, image, translation and summaries.",
     keywords: [
       "prompt analyzer",
       "prompt optimizer",
@@ -93,7 +93,7 @@ const SEO: Record<Lang, { title: string; description: string; keywords: string[]
   es: {
     title: "Promptea — Analizá y optimizá prompts para GPT, Claude, Gemini, Grok",
     description:
-      "Analizador y optimizador de prompts gratis para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi y Perplexity. Puntúa, mejora y reescribe prompts para texto, código, data/JSON, marketing, estudio, imagen, traducción y resúmenes.",
+      "Analizador y optimizador de prompts gratis para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao y Perplexity. Puntúa, mejora y reescribe prompts para texto, código, data/JSON, marketing, estudio, imagen, traducción y resúmenes.",
     keywords: [
       "analizador de prompts",
       "optimizador de prompts",
@@ -108,7 +108,7 @@ const SEO: Record<Lang, { title: string; description: string; keywords: string[]
   pt: {
     title: "Promptea — Analise e otimize prompts para GPT, Claude, Gemini, Grok",
     description:
-      "Analisador e otimizador de prompts gratuito para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi e Perplexity. Pontua, corrige e reescreve prompts de texto, código, dados/JSON, marketing, estudo, imagem, tradução e resumos.",
+      "Analisador e otimizador de prompts gratuito para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao e Perplexity. Pontua, corrige e reescreve prompts de texto, código, dados/JSON, marketing, estudo, imagem, tradução e resumos.",
     keywords: [
       "analisador de prompts",
       "otimizador de prompts",

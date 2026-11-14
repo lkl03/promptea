@@ -26,19 +26,19 @@ import { type TargetAI, INTL_LOCALE, type Lang } from "@/lib/domain";
 export type IsoDay = string;
 
 export const CONTENT_UPDATED = {
-  home: "2026-11-10",
+  home: "2026-11-14",
   /** /how-it-works (v1.8.1): the long product explanation that used to sit under the home page. */
-  howItWorks: "2026-11-10",
+  howItWorks: "2026-11-14",
   about: "2026-11-08",
   methodology: "2026-11-08",
-  analyzer: "2026-10-09",
-  bestAi: "2026-10-09",
+  analyzer: "2026-11-14",
+  bestAi: "2026-11-14",
   /** /prompts hub and the six purpose packs. */
   prompts: "2026-08-04",
-  guides: "2026-11-13",
+  guides: "2026-11-14",
   glossary: "2026-11-09",
-  models: "2026-11-09",
-  landings: "2026-11-09",
+  models: "2026-11-14",
+  landings: "2026-11-14",
   changelog: "2026-11-11",
   /** v1.8.3: /blog/tech (the Tech index; its sitemap date follows its newest story) and /sources. */
   blogTech: "2026-11-11",

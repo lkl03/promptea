@@ -20,12 +20,14 @@
 // The endpoint deliberately reports typed snake_case error codes and never
 // echoes the payload, the secret, or any signature material into logs.
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { createHmac, timingSafeEqual } from "crypto";
 import { checkFreshness } from "@/lib/blog/dates";
 import { MAX_PUBLISH_BODY_BYTES, PublishPayloadSchema } from "@/lib/blog/types";
 import { publishPost, recordRun } from "@/lib/blog/server";
 import { APP_VERSION } from "@/lib/version";
+import { indexNowKey, submitIndexNow } from "@/lib/seo/indexnow";
+import { sectionOfEdition } from "@/lib/domain";
 
 export const runtime = "nodejs";
 
@@ -200,6 +202,23 @@ export async function POST(req: NextRequest) {
     sourceCount: payload.sources.length,
     articleId: result.id,
   }).catch(() => {});
+
+  // v1.8.6: tell IndexNow (Bing & co.) about the new story once the response is
+  // sent. Only for a new publish, only when INDEXNOW_KEY is set; a failed ping is
+  // ignored (lib/seo/indexnow.ts).
+  if (result.outcome === "published" && indexNowKey()) {
+    const tech = sectionOfEdition(payload.edition) === "tech";
+    const paths = (["en", "es"] as const).flatMap((l) => [
+      `/${l}/blog/${payload.locales[l].slug}`,
+      tech ? `/${l}/blog/tech` : `/${l}/blog`,
+    ]);
+    const ping = () => submitIndexNow(paths).then(() => undefined);
+    try {
+      after(ping);
+    } catch {
+      void ping();
+    }
+  }
 
   const res = NextResponse.json(
     {

@@ -413,7 +413,7 @@
     "title": "Analizador de prompts",
     "subtitle": "Analizá tu prompt, detectá problemas y mejoralo para cada IA.",
     "metaTitle": "Analizador y optimizador de prompts",
-    "metaDescription": "Puntuá, corregí y reescribí prompts para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi y Perplexity: texto, código, data/JSON, marketing, estudio, imagen, traducción y resúmenes."
+    "metaDescription": "Puntuá, corregí y reescribí prompts para ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao y Perplexity: texto, código, data/JSON, marketing, estudio, imagen, traducción y resúmenes."
   },
   "dailyTabs": {
     "aria": "Secciones de IA al día",
@@ -563,6 +563,16 @@
     "about": "Acerca de Promptea"
   },
   "changelog": {
+    "v186": {
+      "released": "Publicado: 2026-11-14",
+      "items": [
+        "Cuatro familias de IA nuevas en el analizador: Qwen (Alibaba Cloud), GLM (Z.ai / Zhipu AI), MiniMax y Doubao (ByteDance), cada una con sus modelos verificados, sus propias reglas de prompting, una página de modelo y una guía.",
+        "El analizador de prompts explica qué revisa, responde preguntas frecuentes y muestra ejemplos antes → después con el puntaje exacto que da.",
+        "Las guías más leídas enlazan al analizador, y cada página de modelo enlaza a su guía.",
+        "Las notas y guías nuevas se avisan a Bing y otros buscadores (IndexNow) apenas se publican.",
+        "Las plantillas de las guías tienen un botón Copiar."
+      ]
+    },
     "v185": {
       "released": "Lanzado: 13-11-2026",
       "items": [

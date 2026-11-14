@@ -212,7 +212,11 @@ export function benchmarksGraph(i: { lang: Locale; title: string; description: s
  * the sitemap use. Returns null for a path the registry does not know, so a page
  * can never emit a graph for something that is not in the public index.
  */
-export function registryPageGraph(lang: Locale, path: string, opts: { collection?: boolean; aboutSoftware?: boolean; parent?: Crumb } = {}): JsonLdNode | null {
+export function registryPageGraph(
+  lang: Locale,
+  path: string,
+  opts: { collection?: boolean; aboutSoftware?: boolean; parent?: Crumb; faq?: Array<{ q: string; a: string }> } = {},
+): JsonLdNode | null {
   const entry = staticSeoUrls(lang).find((u) => u.path === path);
   if (!entry) return null;
   const url = absUrl(path);
@@ -229,6 +233,9 @@ export function registryPageGraph(lang: Locale, path: string, opts: { collection
       markdownUrl: entry.markdown ? absUrl(markdownPathOf(path)) : undefined,
     }),
     breadcrumbNode(url, crumbs(lang, [...(opts.parent ? [opts.parent] : []), { name: entry.title, path }])),
+    // v1.8.6: only for a page that prints these questions and answers (the check
+    // in scripts/seo-check.mjs fails when a FAQ claim is not visible).
+    opts.faq ? faqNode(url, lang, faqItems(opts.faq)) : null,
   );
 }
 

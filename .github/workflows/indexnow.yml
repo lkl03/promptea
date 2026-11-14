@@ -1,0 +1,35 @@
+# .github/workflows/indexnow.yml
+#
+# v1.8.6 — after every successful PRODUCTION deploy (Vercel reports it as a
+# GitHub deployment), announce the URLs whose sitemap <lastmod> changed in the
+# last 2 days to IndexNow (Bing and the engines that share its index). This is
+# how new or edited guides, model pages and landings are pinged; AI Daily
+# stories are pinged by the publish endpoint itself.
+#
+# No secrets: scripts/seo/indexnow.mjs reads the key from the site's own
+# /indexnow-key.txt, and exits 0 while INDEXNOW_KEY is not set on Vercel.
+
+name: IndexNow
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: scripts/seo
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Submit recently changed URLs
+        run: node scripts/seo/indexnow.mjs --days 2
+        env:
+          BASE_URL: https://www.promptea.me

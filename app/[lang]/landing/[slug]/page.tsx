@@ -66,7 +66,12 @@ export default async function LandingPage({
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 pt-12 pb-16 space-y-8">
-      <JsonLd data={registryPageGraph(l, `/${l}/landing/${slug}`, { aboutSoftware: true })} />
+      <JsonLd
+        data={registryPageGraph(l, `/${l}/landing/${slug}`, {
+          aboutSoftware: true,
+          faq: page.faq?.map((x) => ({ q: x.q[l], a: x.a[l] })),
+        })}
+      />
       <header className="space-y-3 text-center">
         <h1 className="font-title text-3xl sm:text-4xl font-semibold tracking-tight">
           {page.h1[l]}
@@ -97,6 +102,66 @@ export default async function LandingPage({
           ))}
         </ul>
       </section>
+
+      {page.examples && page.examples.length > 0 ? (
+        <section className="space-y-3" aria-labelledby="examples-title">
+          <h2 id="examples-title" className="font-title text-xl font-semibold">
+            {pick(l, { es: "Ejemplos antes → después", en: "Before → after examples", pt: "Exemplos antes → depois" })}
+          </h2>
+          <p className="text-sm opacity-80">
+            {pick(l, {
+              es: "Los puntajes son los que da el analizador a cada prompt, tal cual: probá cualquiera y vas a obtener el mismo número.",
+              en: "The scores are exactly what the analyzer returns for each prompt: try any of them and you will get the same number.",
+              pt: "As pontuações são exatamente as que o analisador dá a cada prompt: teste qualquer um e você vai obter o mesmo número.",
+            })}
+          </p>
+          {page.examples.map((ex) => {
+            const s = ex.score[l];
+            const tryLabel = pick(l, { es: "Analizar el prompt de antes", en: "Analyze the before prompt", pt: "Analisar o prompt de antes" });
+            return (
+              <article key={ex.id} className="surface p-5 space-y-3">
+                <h3 id={`example-${ex.id}`} className="text-sm font-medium">{ex.title[l]}</h3>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <div className="text-xs opacity-75">
+                      {pick(l, { es: "Antes", en: "Before", pt: "Antes" })} · {pick(l, { es: "puntaje", en: "score", pt: "pontuação" })} {s.before}/100
+                    </div>
+                    <pre tabIndex={0} role="group" aria-label={`${ex.title[l]} — ${pick(l, { es: "antes", en: "before", pt: "antes" })}`} className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-64 overflow-auto">{ex.before[l]}</pre>
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="text-xs opacity-75">
+                      {pick(l, { es: "Después", en: "After", pt: "Depois" })} · {pick(l, { es: "puntaje", en: "score", pt: "pontuação" })} {s.after}/100
+                    </div>
+                    <pre tabIndex={0} role="group" aria-label={`${ex.title[l]} — ${pick(l, { es: "después", en: "after", pt: "depois" })}`} className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-64 overflow-auto">{ex.after[l]}</pre>
+                  </div>
+                </div>
+                <p className="text-sm opacity-85">{ex.why[l]}</p>
+                <Link
+                  href={buildPrefillHref({ lang: l, prompt: ex.before[l], purpose: ex.purpose, target: ex.target })}
+                  className="btn btn-ghost h-9 px-4 text-xs"
+                  aria-label={`${tryLabel}: ${ex.title[l]}`}
+                >
+                  {tryLabel}
+                </Link>
+              </article>
+            );
+          })}
+        </section>
+      ) : null}
+
+      {page.faq && page.faq.length > 0 ? (
+        <section className="surface p-5">
+          <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</h2>
+          <div className="mt-3 space-y-2">
+            {page.faq.map((x) => (
+              <details key={x.q[l]} className="surface-soft p-3 rounded-2xl">
+                <summary className="cursor-pointer text-sm font-medium">{x.q[l]}</summary>
+                <div className="mt-2 text-sm opacity-80">{x.a[l]}</div>
+              </details>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="surface-soft p-4 space-y-2">
         <h2 className="text-sm font-medium">

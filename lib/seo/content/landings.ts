@@ -6,6 +6,9 @@
 
 import type { Locale } from "../site";
 import type { Purpose, TargetModel } from "../prefill";
+import { TARGETS } from "@/lib/domain";
+import { TARGET_SHORT } from "../facts";
+import { ANALYZER_EXAMPLES, analyzerLandingFaq, type AnalyzerExample, type Faq } from "./analyzerContent";
 
 export type LandingPage = {
   slug: string;
@@ -20,7 +23,13 @@ export type LandingPage = {
     href: (lang: Locale) => string;
     label: Record<Locale, string>;
   }>;
+  /** v1.8.6: before → after examples with the engine's own scores. */
+  examples?: AnalyzerExample[];
+  /** v1.8.6: visible FAQ, also emitted as FAQPage JSON-LD. */
+  faq?: Faq[];
 };
+
+const FAMILIES = TARGETS.map((t) => TARGET_SHORT[t]).join(", ");
 
 const HUB_LINKS: LandingPage["internalLinks"] = [
   {
@@ -41,23 +50,23 @@ export const landings: LandingPage[] = [
   {
     slug: "prompt-analyzer",
     title: {
-      en: "Prompt analyzer — review and score any AI prompt",
+      en: "AI prompt analyzer — score and fix prompts, with examples",
       es: "Analizador de prompts — revisá y puntuá cualquier prompt de IA",
       pt: "Analisador de prompts — revise e pontue qualquer prompt de IA",
     },
     description: {
-      en: "Free prompt analyzer. Detects missing context, output format, constraints, and gives a per-task score with concrete fixes.",
+      en: "How a free AI prompt analyzer scores a prompt 0–100 on six criteria, with real before → after examples (20 → 64, 19 → 84) and the fixes that made the difference.",
       es: "Analizador de prompts gratuito. Detecta contexto faltante, formato, restricciones y da un puntaje por tarea con correcciones concretas.",
       pt: "Analisador de prompts gratuito. Detecta falta de contexto, de formato de saída e de restrições e dá uma pontuação por tarefa, com correções concretas.",
     },
     h1: {
-      en: "Prompt analyzer",
+      en: "AI prompt analyzer",
       es: "Analizador de prompts",
       pt: "Analisador de prompts",
     },
     intro: {
       en: [
-        "Promptea reviews your prompt against criteria that matter for the task you pick — coding, data, marketing, study, image, translation, or summary.",
+        "A prompt analyzer checks a prompt before you send it to ChatGPT, Claude, Gemini or any other AI. Promptea reviews yours against criteria that matter for the task you pick — coding, data, marketing, study, image, translation, or summary.",
         "You get a score, the missing pieces, what to fix first, and an optimized version ready to copy.",
         "How it works: paste the prompt, choose its purpose and the AI you will use, and the analyzer applies fixed rules — the same prompt always gets the same score. It lists the findings in order of impact, writes an optimized version and scores that version again, so you see a before → after score. Promptea optimizes prompts; it does not run them on a model.",
       ],
@@ -90,7 +99,19 @@ export const landings: LandingPage[] = [
       ],
     },
     ctaLabel: { en: "Analyze a prompt", es: "Analizar un prompt", pt: "Analisar um prompt" },
-    internalLinks: HUB_LINKS,
+    internalLinks: [
+      {
+        href: (l) => `/${l}/guides/prompt-quality-scoring`,
+        label: { es: "Cómo se puntúa un prompt", en: "How prompt scoring works", pt: "Como um prompt é pontuado" },
+      },
+      {
+        href: (l) => `/${l}/guides/prompt-debugging`,
+        label: { es: "Depurar un prompt que falla", en: "Debug a prompt that fails", pt: "Depurar um prompt que falha" },
+      },
+      ...HUB_LINKS,
+    ],
+    examples: ANALYZER_EXAMPLES,
+    faq: analyzerLandingFaq(FAMILIES),
   },
   {
     slug: "ai-prompt-optimizer",
@@ -100,9 +121,9 @@ export const landings: LandingPage[] = [
       pt: "Otimizador de prompts de IA — faça qualquer prompt funcionar melhor",
     },
     description: {
-      en: "Optimize prompts for GPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity. Reduce ambiguity, define formats, and tailor structure per model.",
-      es: "Optimizá prompts para GPT, Claude, Gemini, Grok, DeepSeek, Kimi y Perplexity. Reducí ambigüedad, definí formato y ajustá la estructura por modelo.",
-      pt: "Otimize prompts para GPT, Claude, Gemini, Grok, DeepSeek, Kimi e Perplexity. Reduza a ambiguidade, defina formatos e adapte a estrutura a cada modelo.",
+      en: "Optimize prompts for GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao and Perplexity. Reduce ambiguity, define formats, and tailor structure per model.",
+      es: "Optimizá prompts para GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao y Perplexity. Reducí ambigüedad, definí formato y ajustá la estructura por modelo.",
+      pt: "Otimize prompts para GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao e Perplexity. Reduza a ambiguidade, defina formatos e adapte a estrutura a cada modelo.",
     },
     h1: { en: "AI prompt optimizer", es: "Optimizador de prompts de IA", pt: "Otimizador de prompts de IA" },
     intro: {
@@ -124,17 +145,17 @@ export const landings: LandingPage[] = [
     },
     bullets: {
       en: [
-        "Per-model hints (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Perplexity).",
+        "Per-model hints (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity).",
         "Choose checklist or pure JSON output, depending on your workflow.",
         "Attachments treated as context, not as instructions.",
       ],
       es: [
-        "Hints por modelo (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Perplexity).",
+        "Hints por modelo (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity).",
         "Elegí salida tipo checklist o JSON puro, según tu flujo de trabajo.",
         "Los adjuntos se tratan como contexto, no como instrucciones.",
       ],
       pt: [
-        "Dicas por modelo (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Perplexity).",
+        "Dicas por modelo (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity).",
         "Escolha saída em checklist ou em JSON puro, conforme o seu fluxo de trabalho.",
         "Anexos tratados como contexto, não como instruções.",
       ],

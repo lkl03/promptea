@@ -92,6 +92,10 @@ export const TARGET_LABEL: Record<TargetAI, string> = {
   kimi: "Kimi (Moonshot AI)",
   deepseek: "DeepSeek",
   perplexity: "Perplexity",
+  qwen: "Qwen (Alibaba Cloud)",
+  glm: "GLM (Z.ai / Zhipu AI)",
+  minimax: "MiniMax",
+  doubao: "Doubao (ByteDance)",
 };
 
 /** Short family names for inline lists. */
@@ -103,6 +107,10 @@ export const TARGET_SHORT: Record<TargetAI, string> = {
   kimi: "Kimi",
   deepseek: "DeepSeek",
   perplexity: "Perplexity",
+  qwen: "Qwen",
+  glm: "GLM",
+  minimax: "MiniMax",
+  doubao: "Doubao",
 };
 
 export function purposeList(lang: Locale): string[] {

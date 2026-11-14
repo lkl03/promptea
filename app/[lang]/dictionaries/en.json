@@ -412,8 +412,8 @@
   "analyzerPage": {
     "title": "Prompt analyzer",
     "subtitle": "Analyze your prompt, catch problems, and improve it for each AI.",
-    "metaTitle": "Prompt analyzer and optimizer",
-    "metaDescription": "Score, fix and rewrite prompts for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi and Perplexity: text, code, data/JSON, marketing, study, image, translation and summaries."
+    "metaTitle": "Prompt analyzer — free AI prompt checker and optimizer",
+    "metaDescription": "Free prompt analyzer: paste any prompt and get a 0–100 score on six criteria, what to fix first and an optimized rewrite for ChatGPT, Claude, Gemini, DeepSeek, Qwen and more. No sign-up."
   },
   "dailyTabs": {
     "aria": "AI Daily sections",
@@ -563,6 +563,16 @@
     "about": "About Promptea"
   },
   "changelog": {
+    "v186": {
+      "released": "Released: 2026-11-14",
+      "items": [
+        "Four new AI families in the analyzer: Qwen (Alibaba Cloud), GLM (Z.ai / Zhipu AI), MiniMax and Doubao (ByteDance), each with its verified models, its own prompting rules, a model page and a guide.",
+        "The prompt analyzer explains what it checks, answers common questions and shows before → after examples with the exact scores it gives.",
+        "The most-read guides link to the analyzer, and each model page links to its guide.",
+        "New stories and guides are announced to Bing and other search engines (IndexNow) as soon as they are published.",
+        "Guide templates have a Copy button."
+      ]
+    },
     "v185": {
       "released": "Released: 2026-11-13",
       "items": [

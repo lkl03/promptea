@@ -144,7 +144,7 @@ const FEATURES: Record<Locale, string[]> = {
   en: [
     "Prompt score from 0 to 100 on six criteria",
     "Findings and recommendations for each prompt",
-    "Optimized prompt for GPT, Claude, Gemini, Grok, Kimi, DeepSeek and Perplexity",
+    "Optimized prompt for GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao and Perplexity",
     "Best-AI recommendation for a task",
     "AI Daily: one verified AI story a day",
     "AI model benchmarks with source and date",
@@ -152,7 +152,7 @@ const FEATURES: Record<Locale, string[]> = {
   es: [
     "Puntaje de 0 a 100 en seis criterios",
     "Hallazgos y recomendaciones para cada prompt",
-    "Prompt optimizado para GPT, Claude, Gemini, Grok, Kimi, DeepSeek y Perplexity",
+    "Prompt optimizado para GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao y Perplexity",
     "Recomendación de la mejor IA para una tarea",
     "IA al Día: una noticia de IA verificada por día",
     "Benchmarks de modelos de IA con fuente y fecha",
@@ -160,7 +160,7 @@ const FEATURES: Record<Locale, string[]> = {
   pt: [
     "Pontuação do prompt de 0 a 100 em seis critérios",
     "Achados e recomendações para cada prompt",
-    "Prompt otimizado para GPT, Claude, Gemini, Grok, Kimi, DeepSeek e Perplexity",
+    "Prompt otimizado para GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao e Perplexity",
     "Recomendação da melhor IA para uma tarefa",
     "AI Daily: uma notícia de IA verificada por dia (em inglês e espanhol)",
     "Benchmarks de modelos de IA com fonte e data",

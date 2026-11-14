@@ -23,6 +23,10 @@ const TARGET_PRODUCT: Record<TargetAI, string> = {
   kimi: "Kimi",
   deepseek: "DeepSeek",
   perplexity: "Perplexity",
+  qwen: "Qwen",
+  glm: "GLM",
+  minimax: "MiniMax",
+  doubao: "Doubao",
 };
 
 const AGENT_PRODUCT: Partial<Record<TargetAI, string>> = {

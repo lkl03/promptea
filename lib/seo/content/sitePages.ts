@@ -85,9 +85,9 @@ export function homeAboutDoc(lang: Locale): PageDoc {
     ),
     absoluteTitle: true,
     description: t(
-      "Score any prompt 0–100 on six criteria, see what to fix and get a rewrite tuned for GPT, Claude, Gemini, Grok, Kimi, DeepSeek or Perplexity. Free, no account.",
-      "Puntuá tu prompt de 0 a 100 en seis criterios, mirá qué corregir y obtené una versión mejorada para GPT, Claude, Gemini, Grok, Kimi, DeepSeek o Perplexity. Gratis, sin cuenta.",
-      "Pontue qualquer prompt de 0 a 100 em seis critérios, veja o que corrigir e receba uma reescrita ajustada para GPT, Claude, Gemini, Grok, Kimi, DeepSeek ou Perplexity. Grátis, sem conta.",
+      "Score any prompt 0–100 on six criteria, see what to fix and get a rewrite tuned for GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao or Perplexity. Free, no account.",
+      "Puntuá tu prompt de 0 a 100 en seis criterios, mirá qué corregir y obtené una versión mejorada para GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao o Perplexity. Gratis, sin cuenta.",
+      "Pontue qualquer prompt de 0 a 100 em seis critérios, veja o que corrigir e receba uma reescrita ajustada para GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao ou Perplexity. Grátis, sem conta.",
     ),
     h1: t(
       "Promptea — analyze, score and optimize your AI prompts",
