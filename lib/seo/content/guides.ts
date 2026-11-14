@@ -1791,7 +1791,7 @@ Analise o tema abaixo a partir de duas perspectivas opostas.
 Regras:
 1. Apresente a versão mais forte de cada lado — como o melhor defensor de cada posição faria.
 2. Não expresse uma preferência pessoal.
-3. Termine com: o fato mais importante de que alguém que precisa decidir precisa saber.
+3. Termine com: o fato mais importante que quem vai decidir precisa saber.
 Formato de saída: use as tags XML abaixo.
 </instructions>
 
@@ -13218,7 +13218,7 @@ Regras:
           pt: [
             "RFPs costumam ter cláusulas de confidencialidade: confira-as, junto com a política de IA da sua empresa, antes de colar o documento em qualquer ferramenta.",
             "Preços, termos jurídicos e compromissos contratuais devem ser escritos ou aprovados pelas pessoas responsáveis por eles, não redigidos livremente por um modelo.",
-            "Leia o documento final como o avaliador vai ler: contra os critérios de pontuação, em ordem e com o limite de páginas em mente.",
+            "Leia o documento final como o avaliador vai lê-lo: à luz dos critérios de pontuação, em ordem e com o limite de páginas em mente.",
           ],
         },
       },
@@ -13410,7 +13410,7 @@ Não reescreva o rascunho; apenas relate.`,
         a: {
           en: "Section by section. Each prompt gets only the requirements and material it needs, answers are easier to check against the checklist, and a weak section can be redone without touching the rest.",
           es: "Sección por sección. Cada prompt recibe solo los requisitos y el material que necesita, las respuestas se controlan más fácil contra el checklist y una sección floja se puede rehacer sin tocar el resto.",
-          pt: "Seção por seção. Cada prompt recebe só os requisitos e o material de que precisa, as respostas ficam mais fáceis de conferir contra o checklist e uma seção fraca pode ser refeita sem mexer no resto.",
+          pt: "Seção por seção. Cada prompt recebe só os requisitos e o material de que precisa, as respostas ficam mais fáceis de conferir com o checklist e uma seção fraca pode ser refeita sem mexer no resto.",
         },
       },
       {
