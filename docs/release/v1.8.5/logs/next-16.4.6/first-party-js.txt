@@ -1,0 +1,8 @@
+16.1.1 prod  /en             first-party JS 977 KB (15 chunks, uncompressed), CSS 82 KB
+16.1.1 prod  /pt             first-party JS 977 KB (15 chunks, uncompressed), CSS 82 KB
+16.1.1 prod  /en/analyzer    first-party JS 1134 KB (16 chunks, uncompressed), CSS 82 KB
+16.1.1 prod  /en/benchmarks  first-party JS 970 KB (13 chunks, uncompressed), CSS 82 KB
+16.4.6 local /en             first-party JS 704 KB (13 chunks, uncompressed), CSS 82 KB
+16.4.6 local /pt             first-party JS 704 KB (13 chunks, uncompressed), CSS 82 KB
+16.4.6 local /en/analyzer    first-party JS 866 KB (15 chunks, uncompressed), CSS 82 KB
+16.4.6 local /en/benchmarks  first-party JS 707 KB (13 chunks, uncompressed), CSS 82 KB

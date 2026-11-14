@@ -30,6 +30,10 @@ const nextConfig: NextConfig = {
   trailingSlash: false,
   // Do not advertise the framework in every response.
   poweredByHeader: false,
+  // Next 16.3+: `next dev` writes an AGENTS.md block whenever it detects an AI
+  // coding agent. Agent sessions on this repo would leave that untracked file
+  // behind on every run; the docs it points to stay in node_modules/next/dist/docs.
+  agentRules: false,
   async headers() {
     return [{ source: "/:path*", headers: SECURITY_HEADERS }];
   },
