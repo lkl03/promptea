@@ -31,6 +31,14 @@ export function modelLabel(target: TargetAI) {
       return "Deepseek";
     case "perplexity":
       return "Perplexity";
+    case "qwen":
+      return "Qwen";
+    case "glm":
+      return "GLM";
+    case "minimax":
+      return "MiniMax";
+    case "doubao":
+      return "Doubao";
   }
 }
 
@@ -187,6 +195,30 @@ export function targetTip(target: TargetAI, lang: Lang) {
         es: "Grok funciona mejor si definís el tono y cuán directo querés que sea.",
         en: "Grok works best if you define tone and how direct you want it.",
         pt: "O Grok funciona melhor quando você define o tom e o quanto quer que ele seja direto.",
+      });
+    case "qwen":
+      return pick(lang, {
+        es: "Qwen rinde mejor con secciones claras (contexto, objetivo, estilo, tono, audiencia, respuesta), delimitadores como ### y un ejemplo.",
+        en: "Qwen does best with clear sections (context, objective, style, tone, audience, response), delimiters like ### and an example.",
+        pt: "O Qwen rende mais com seções claras (contexto, objetivo, estilo, tom, público, resposta), delimitadores como ### e um exemplo.",
+      });
+    case "glm":
+      return pick(lang, {
+        es: "GLM siempre razona: poné las restricciones importantes al principio y no infles el rol: que sirva a la tarea.",
+        en: "GLM always reasons: put the important constraints early and don't inflate the role: make it serve the task.",
+        pt: "O GLM sempre raciocina: coloque as restrições importantes no começo e não infle o papel: que ele sirva à tarefa.",
+      });
+    case "minimax":
+      return pick(lang, {
+        es: "MiniMax M3 apunta a código y agentes: dale contexto del repo, criterios de aceptación y cómo verificar el resultado.",
+        en: "MiniMax M3 is built for coding and agents: give repo context, acceptance criteria and how to verify the result.",
+        pt: "O MiniMax M3 é feito para código e agentes: dê o contexto do repositório, critérios de aceitação e como verificar o resultado.",
+      });
+    case "doubao":
+      return pick(lang, {
+        es: "Doubao rinde mejor con el objetivo y el escenario claros, sin descomponer el problema en pasos.",
+        en: "Doubao does best with a clear goal and scenario, without breaking the problem into steps.",
+        pt: "O Doubao rende mais com objetivo e cenário claros, sem decompor o problema em passos.",
       });
     case "perplexity":
       return pick(lang, {

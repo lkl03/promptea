@@ -34,6 +34,20 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
       <JsonLd data={registryPageGraph(lang, `/${lang}/changelog`, {})} />
       <h1 className="text-2xl font-semibold">Changelog</h1>
 
+      {/* v1.8.6 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.8.6</div>
+          <div className="text-xs opacity-70">{dict.changelog.v186.released}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          {dict.changelog.v186.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+
       {/* v1.8.5 */}
       <div className="surface-soft p-4 space-y-2">
         <div className="flex items-baseline justify-between gap-4">

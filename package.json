@@ -1,6 +1,6 @@
 {
   "name": "prompt-evaluator",
-  "version": "1.8.5",
+  "version": "1.8.6",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "seo:check": "node scripts/seo-check.mjs",
+    "seo:indexnow": "node scripts/seo/indexnow.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "showcase:record": "node scripts/showcase/record.mjs",

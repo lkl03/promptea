@@ -1,5 +1,6 @@
 import { LOCALES, type Locale } from "../site";
 import type { Purpose, TargetModel } from "../prefill";
+import { CHINESE_MODEL_GUIDES } from "./chineseModels";
 
 export type Guide = {
   slug: string;
@@ -13423,6 +13424,8 @@ Não reescreva o rascunho; apenas relate.`,
       },
     ],
   },
+  // v1.8.6: Qwen, GLM, MiniMax, Doubao guides (lib/seo/content/chineseModels.ts).
+  ...CHINESE_MODEL_GUIDES,
 ];
 
 /**

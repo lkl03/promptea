@@ -1,5 +1,6 @@
 import type { Locale } from "../site";
 import type { Purpose, TargetModel } from "../prefill";
+import { CHINESE_MODEL_PAGES } from "./chineseModels";
 
 export type ModelPage = {
   slug: TargetModel;
@@ -600,6 +601,8 @@ Se as fontes não responderem a parte do briefing, diga qual parte.`,
       },
     ],
   },
+  // v1.8.6: Qwen, GLM, MiniMax, Doubao (lib/seo/content/chineseModels.ts).
+  ...CHINESE_MODEL_PAGES,
 ];
 
 export function getModelPage(slug: string): ModelPage | undefined {

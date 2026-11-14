@@ -14,6 +14,7 @@ import { glossary, type GlossaryTerm } from "@/lib/seo/content/glossary";
 import { guides, type Guide } from "@/lib/seo/content/guides";
 import type { ModelPage } from "@/lib/seo/content/models";
 import type { LandingPage } from "@/lib/seo/content/landings";
+import { ANALYZER_LINK_TEXT, GUIDE_ANALYZER_CTA } from "@/lib/seo/content/analyzerContent";
 import type { PublicArticle } from "@/lib/blog/types";
 import type { BenchmarksSnapshot } from "@/lib/benchmarks/normalize";
 import { CATEGORY_LABELS, SOURCE_INFO } from "@/lib/benchmarks/catalog";
@@ -135,8 +136,19 @@ export function guideMarkdown(g: Guide, lang: Locale, url: string, updated: stri
   for (const s of g.sections) {
     out.push(`## ${oneLine(s.heading[lang])}`, "", ...s.bullets[lang].map((b) => `- ${oneLine(b)}`), "");
   }
+  const cta = GUIDE_ANALYZER_CTA[g.slug];
+  if (cta) out.push(`${cta[lang]} [${ANALYZER_LINK_TEXT[lang]}](${absUrl(`/${lang}/analyzer`)}).`, "");
   out.push(...templatesMarkdown(lang, g.templates, "gpt", templates, `${url}.md`));
-  out.push(...faqMarkdown(lang, g.faq));
+  if (templates === "titles" && g.faq.length > 0) {
+    // v1.8.6 (llms-full.txt): the questions only; the answers live in the page's twin,
+    // like the template prompts. Keeps the explanatory part inside its budget.
+    const t = tr(lang);
+    out.push(`## ${t("Frequently asked questions", "Preguntas frecuentes", "Perguntas frequentes")}`, "");
+    out.push(...g.faq.map((f) => `- ${oneLine(f.q[lang])}`), "");
+    out.push(t(`The answers: ${url}.md`, `Las respuestas: ${url}.md`, `As respostas: ${url}.md`), "");
+  } else {
+    out.push(...faqMarkdown(lang, g.faq));
+  }
   return out.join("\n").trimEnd() + "\n";
 }
 
@@ -162,10 +174,26 @@ export function glossaryMarkdown(term: GlossaryTerm, lang: Locale, url: string, 
   return out.join("\n").trimEnd() + "\n";
 }
 
-export function landingMarkdown(p: LandingPage, lang: Locale, url: string, updated: string): string {
+/** `compact` (llms-full.txt): the before → after examples are linked, not inlined. */
+export function landingMarkdown(p: LandingPage, lang: Locale, url: string, updated: string, opts: { compact?: boolean } = {}): string {
   const out = [header({ title: p.h1[lang], description: p.description[lang], url, lang, updated })];
   out.push(...p.intro[lang].flatMap((x) => [x, ""]));
   out.push(...p.bullets[lang].map((b) => `- ${oneLine(b)}`), "");
+  if (p.examples && p.examples.length > 0 && opts.compact) {
+    const t = tr(lang);
+    out.push(t(`Before → after examples with their scores: ${url}.md`, `Ejemplos antes → después con su puntaje: ${url}.md`, `Exemplos antes → depois com a pontuação: ${url}.md`), "");
+  } else if (p.examples && p.examples.length > 0) {
+    const t = tr(lang);
+    out.push(`## ${t("Before → after examples", "Ejemplos antes → después", "Exemplos antes → depois")}`, "");
+    for (const ex of p.examples) {
+      const s = ex.score[lang];
+      out.push(`### ${oneLine(ex.title[lang])}`, "");
+      out.push(`${t("Before", "Antes", "Antes")} (${t("score", "puntaje", "pontuação")} ${s.before}/100):`, "", fence(ex.before[lang]), "");
+      out.push(`${t("After", "Después", "Depois")} (${t("score", "puntaje", "pontuação")} ${s.after}/100):`, "", fence(ex.after[lang]), "");
+      out.push(ex.why[lang], "");
+    }
+  }
+  if (p.faq) out.push(...faqMarkdown(lang, p.faq));
   const links = p.internalLinks.map((l) => `- [${oneLine(l.label[lang])}](${absUrl(l.href(lang))})`);
   if (links.length > 0) out.push(...links, "");
   return out.join("\n").trimEnd() + "\n";
@@ -201,7 +229,8 @@ export function modelMarkdown(m: ModelPage, lang: Locale, url: string, updated: 
     }
   }
 
-  out.push(...templatesMarkdown(lang, m.templates, m.slug, templates === "titles" ? "prompts" : templates));
+  // v1.8.6: "titles" (llms-full.txt) lists the templates by title and points at the twin, like guides.
+  out.push(...templatesMarkdown(lang, m.templates, m.slug, templates, `${url}.md`));
   out.push(...faqMarkdown(lang, m.faq));
   return out.join("\n").trimEnd() + "\n";
 }

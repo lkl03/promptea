@@ -230,4 +230,8 @@ export const PROVIDER_TO_PROMPTEA: Record<string, { modelPage: string; target: s
   "x-ai": { modelPage: "grok", target: "grok" },
   deepseek: { modelPage: "deepseek", target: "deepseek" },
   moonshotai: { modelPage: "kimi", target: "kimi" },
+  // v1.8.6
+  qwen: { modelPage: "qwen", target: "qwen" },
+  "z-ai": { modelPage: "glm", target: "glm" },
+  minimax: { modelPage: "minimax", target: "minimax" },
 };

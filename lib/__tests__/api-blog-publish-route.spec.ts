@@ -372,3 +372,57 @@ describe("API /api/internal/blog/publish", () => {
     }
   });
 });
+
+// v1.8.6 — IndexNow ping after a new publish (lib/seo/indexnow.ts).
+describe("API /api/internal/blog/publish — IndexNow", () => {
+  const indexNowCalls = () =>
+    (globalThis.fetch as unknown as ReturnType<typeof vi.fn>).mock.calls.filter(([url]) => String(url).includes("indexnow"));
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    process.env.BLOG_PUBLISH_SECRET = SECRET;
+    process.env.NEXT_PUBLIC_SITE_URL = "https://www.promptea.me";
+    publishPostMock.mockResolvedValue({ outcome: "published", id: "ai-daily_x", canonicalSlug: "x" });
+    recordRunMock.mockResolvedValue({ ok: true });
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(null, { status: 202 })));
+  });
+
+  test("a new story is submitted with its en/es URLs and the AI Daily index when INDEXNOW_KEY is set", async () => {
+    process.env.INDEXNOW_KEY = "0123456789abcdef0123456789abcdef";
+    try {
+      const payload = makePayload();
+      const res = await POST(signedRequest(payload));
+      expect(res.status).toBe(201);
+      await new Promise((r) => setTimeout(r, 0));
+      const calls = indexNowCalls();
+      expect(calls).toHaveLength(1);
+      const body = JSON.parse(String((calls[0][1] as RequestInit).body)) as { host: string; key: string; keyLocation: string; urlList: string[] };
+      expect(body.host).toBe("www.promptea.me");
+      expect(body.keyLocation).toBe("https://www.promptea.me/indexnow-key.txt");
+      const locales = (payload as { locales: Record<"en" | "es", { slug: string }> }).locales;
+      expect(body.urlList).toEqual([
+        `https://www.promptea.me/en/blog/${locales.en.slug}`,
+        "https://www.promptea.me/en/blog",
+        `https://www.promptea.me/es/blog/${locales.es.slug}`,
+        "https://www.promptea.me/es/blog",
+      ]);
+    } finally {
+      delete process.env.INDEXNOW_KEY;
+    }
+  });
+
+  test("nothing is pinged without a key, for an already-published story, or on a dry run", async () => {
+    delete process.env.INDEXNOW_KEY;
+    expect((await POST(signedRequest(makePayload()))).status).toBe(201);
+    process.env.INDEXNOW_KEY = "0123456789abcdef0123456789abcdef";
+    try {
+      publishPostMock.mockResolvedValue({ outcome: "already_published", id: "ai-daily_x", canonicalSlug: "x" });
+      expect((await POST(signedRequest(makePayload()))).status).toBe(200);
+      expect((await POST(signedRequest(makePayload({ dryRun: true })))).status).toBe(200);
+      await new Promise((r) => setTimeout(r, 0));
+      expect(indexNowCalls()).toHaveLength(0);
+    } finally {
+      delete process.env.INDEXNOW_KEY;
+    }
+  });
+});

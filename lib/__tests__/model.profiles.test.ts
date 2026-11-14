@@ -167,7 +167,7 @@ describe("prompting profiles are documented and bilingual", () => {
     for (const id of PROMPT_PROFILES) {
       const p = PROMPT_PROFILE_SPECS[id];
       expect(p.id).toBe(id);
-      expect(p.source, id).toMatch(/^https:\/\/(platform\.claude\.com|developers\.openai\.com|ai\.google\.dev|docs\.x\.ai|api-docs\.deepseek\.com|platform\.kimi\.ai|docs\.perplexity\.ai)\//);
+      expect(p.source, id).toMatch(/^https:\/\/(platform\.claude\.com|developers\.openai\.com|ai\.google\.dev|docs\.x\.ai|api-docs\.deepseek\.com|platform\.kimi\.ai|docs\.perplexity\.ai|www\.alibabacloud\.com|docs\.bigmodel\.cn|platform\.minimax\.io|docs\.volcengine\.com)\//);
       expect(p.refinerRules.es.length, `${id} rules`).toBeGreaterThan(0);
       expect(p.refinerRules.es.length, `${id} rule parity`).toBe(p.refinerRules.en.length);
       if (p.codingDeliverable) expect(p.codingDeliverable.es.length).toBe(p.codingDeliverable.en.length);

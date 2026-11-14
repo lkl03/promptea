@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { getModelPage, modelPages } from "@/lib/seo/content/models";
+import { getGuide } from "@/lib/seo/content/guides";
 import { buildPrefillHref } from "@/lib/seo/prefill";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf, modelPageUpdated } from "@/lib/seo/registry";
@@ -94,6 +95,12 @@ export default async function ModelPage({
           </p>
 
           <div className="flex flex-wrap gap-2 pt-2">
+            {/* v1.8.6: the family's own prompt guide, when there is one. */}
+            {getGuide(`${model.slug}-prompt-guide`) ? (
+              <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${model.slug}-prompt-guide`}>
+                {pick(l, { es: "Guía de prompts", en: "Prompt guide", pt: "Guia de prompts" })}
+              </Link>
+            ) : null}
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>{pick(l, { es: "JSON estricto", en: "Strict JSON", pt: "JSON estrito" })}</Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>

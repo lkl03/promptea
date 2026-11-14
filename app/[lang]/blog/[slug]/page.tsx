@@ -62,6 +62,10 @@ const MODEL_MATCHERS: ReadonlyArray<{ slug: string; label: string; keywords: str
   { slug: "kimi", label: "Kimi", keywords: ["kimi", "moonshot"] },
   { slug: "deepseek", label: "DeepSeek", keywords: ["deepseek"] },
   { slug: "perplexity", label: "Perplexity", keywords: ["perplexity"] },
+  { slug: "qwen", label: "Qwen", keywords: ["qwen", "alibaba"] },
+  { slug: "glm", label: "GLM", keywords: ["glm-", "zhipu", "z.ai"] },
+  { slug: "minimax", label: "MiniMax", keywords: ["minimax"] },
+  { slug: "doubao", label: "Doubao", keywords: ["doubao", "volcengine"] },
 ];
 
 function relatedModelLinks(article: PublicArticle): Array<{ slug: string; label: string }> {

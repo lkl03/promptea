@@ -89,7 +89,7 @@ export function bandColor(score: number): string {
   return "#1b7f4c";
 }
 
-const TARGET_NAMES: Record<string, string> = { gpt: "GPT", claude: "Claude", gemini: "Gemini", grok: "Grok", kimi: "Kimi", deepseek: "DeepSeek", perplexity: "Perplexity" };
+const TARGET_NAMES: Record<string, string> = { gpt: "GPT", claude: "Claude", gemini: "Gemini", grok: "Grok", kimi: "Kimi", deepseek: "DeepSeek", perplexity: "Perplexity", qwen: "Qwen", glm: "GLM", minimax: "MiniMax", doubao: "Doubao" };
 export function targetLabel(t: string): string {
   return TARGET_NAMES[t] ?? t;
 }

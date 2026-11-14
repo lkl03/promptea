@@ -89,7 +89,9 @@ export function contentIsFallback(lang: Lang): boolean {
 // Target AI families (providers as the user picks them in the UI)
 // ---------------------------------------------------------------------------
 
-export const TARGETS = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek", "perplexity"] as const;
+// v1.8.6: Qwen, GLM, MiniMax and Doubao join Kimi and DeepSeek. New targets go at
+// the end so stored telemetry and existing links keep their meaning.
+export const TARGETS = ["gpt", "claude", "gemini", "grok", "kimi", "deepseek", "perplexity", "qwen", "glm", "minimax", "doubao"] as const;
 export type TargetAI = (typeof TARGETS)[number];
 
 export function isTarget(v: unknown): v is TargetAI {
@@ -304,6 +306,10 @@ export const PROMPT_PROFILES = [
   "kimi-general", // Kimi — source vs instruction separation, JSON objects
   "kimi-code", // Kimi Code — agent-loop coding
   "perplexity-search", // Perplexity Agent API — the prompt seeds the search
+  "qwen-general", // Qwen (Alibaba Cloud Model Studio) — framework sections, ### delimiters, examples
+  "glm-reasoner", // GLM (Z.ai / Zhipu) — always reasons; key constraints early, duty-only roles
+  "minimax-agent", // MiniMax M3 — agentic coding; sampling fixed, no documented JSON mode
+  "doubao-seed", // Doubao Seed (Volcengine Ark) — goal + scenario, no step-by-step over-constraint
 ] as const;
 export type PromptProfileId = (typeof PROMPT_PROFILES)[number];
 

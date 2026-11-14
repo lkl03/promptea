@@ -88,6 +88,11 @@ export const LLMS_FULL_ARTICLES_BYTES = 60 * 1024;
  * more than LLMS_FULL_ARTICLES_BYTES. `npm run seo:check` fails above the
  * ceiling, and a unit test fails if the explanatory part alone gets within
  * 40 KB of it — the signal to move more of the guides to their twins.
+ *
+ * v1.8.6 did exactly that when the four new model families pushed the Spanish
+ * part past the test: guides now list their FAQ questions (answers in the twin),
+ * model pages list their templates by title and the analyzer landing links its
+ * before → after examples. Measured: ~275 KB (en) / ~302 KB (es) / ~297 KB (pt).
  */
 export const LLMS_FULL_TOTAL_BYTES = 400 * 1024;
 
@@ -346,7 +351,7 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   // links (each repeats its whole prompt URL-encoded) and, for guides, template
   // titles only; the per-page .md twin carries the full prompts.
   out.push(sectionTitle(t("Prompts by model", "Prompts por modelo", "Prompts por modelo")));
-  for (const m of modelPages) out.push(demote(modelMarkdown(m, lang, absUrl(`/${lang}/models/${m.slug}`), modelPageUpdated(m.slug), "prompts")), "---", "");
+  for (const m of modelPages) out.push(demote(modelMarkdown(m, lang, absUrl(`/${lang}/models/${m.slug}`), modelPageUpdated(m.slug), "titles")), "---", "");
 
   out.push(sectionTitle(t("Glossary", "Glosario", "Glossário")));
   for (const g of glossary) out.push(demote(glossaryMarkdown(g, lang, absUrl(`/${lang}/glossary/${g.slug}`), g.updated ?? CONTENT_UPDATED.glossary, "prompts")), "---", "");
@@ -355,7 +360,7 @@ export function buildLlmsFullTxt(i: LlmsInput): string {
   for (const g of guides.filter((x) => guideLang(x, lang) === lang)) out.push(demote(guideMarkdown(g, lang, absUrl(`/${lang}/guides/${g.slug}`), g.updated ?? CONTENT_UPDATED.guides, "titles")), "---", "");
 
   out.push(sectionTitle(t("Landing pages", "Páginas de producto", "Landing pages")));
-  for (const p of landings) out.push(demote(landingMarkdown(p, lang, absUrl(`/${lang}/landing/${p.slug}`), CONTENT_UPDATED.landings)), "---", "");
+  for (const p of landings) out.push(demote(landingMarkdown(p, lang, absUrl(`/${lang}/landing/${p.slug}`), CONTENT_UPDATED.landings, { compact: true })), "---", "");
 
   out.push(`\n# ${t("How to cite", "Cómo citar", "Como citar")}\n`, ...citeBlock(lang), "");
 

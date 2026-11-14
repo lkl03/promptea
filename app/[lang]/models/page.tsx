@@ -28,9 +28,9 @@ export async function generateMetadata({
     }),
     description:
       pick(l, {
-        es: "Guía por modelo: tips concretos, modelos vigentes con sus capacidades verificadas y plantillas para copiar, para GPT, Claude, Gemini, Grok, Kimi, DeepSeek y Perplexity.",
-        en: "Per-model guide: practical tips, current models with their verified capabilities and copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, DeepSeek and Perplexity.",
-        pt: "Guia por modelo: dicas práticas, os modelos atuais com suas capacidades verificadas e templates prontos para copiar para GPT, Claude, Gemini, Grok, Kimi, DeepSeek e Perplexity.",
+        es: "Guía por modelo: tips concretos, modelos vigentes con sus capacidades verificadas y plantillas para copiar, para GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao y Perplexity.",
+        en: "Per-model guide: practical tips, current models with their verified capabilities and copy-paste templates for GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao and Perplexity.",
+        pt: "Guia por modelo: dicas práticas, os modelos atuais com suas capacidades verificadas e templates prontos para copiar para GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao e Perplexity.",
       }),
   });
 }

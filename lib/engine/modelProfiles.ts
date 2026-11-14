@@ -567,6 +567,135 @@ export const PROMPT_PROFILE_SPECS: Record<PromptProfileId, PromptProfile> = {
     },
   },
 
+  // v1.8.6 — Chinese model families, each from its provider's own docs
+  // (verified 2026-11-14). MiniMax and Doubao publish no general prompting
+  // guide: their profiles encode only what their API docs say.
+  "qwen-general": {
+    id: "qwen-general",
+    source: "https://www.alibabacloud.com/help/en/model-studio/prompt-engineering-guide",
+    clarifier: "ask",
+    agentStyle: "stepwise",
+    contextFirst: false,
+    codingDeliverable: null,
+    researchApproach: null,
+    closing: null,
+    frontendAvoid: null,
+    refinerRules: {
+      es: [
+        "Organizá el prompt con las secciones que recomienda Alibaba: contexto, objetivo, estilo, tono, audiencia y respuesta (formato).",
+        "Separá instrucciones y material con delimitadores únicos como ###.",
+        "Si la tarea admite un ejemplo de salida, incluí uno: hace las respuestas más consistentes.",
+        "Si se pide JSON, la palabra 'JSON' tiene que aparecer en el prompt (requisito del modo json_object) y conviene dar la forma exacta.",
+      ],
+      en: [
+        "Organize the prompt with the sections Alibaba recommends: context, objective, style, tone, audience and response (format).",
+        "Separate instructions from material with unique delimiters such as ###.",
+        "If the task allows an output example, include one: it makes answers more consistent.",
+        "When JSON is requested, the word 'JSON' must appear in the prompt (a json_object-mode requirement) and the exact shape should be given.",
+      ],
+      pt: [
+        "Organize o prompt com as seções que a Alibaba recomenda: contexto, objetivo, estilo, tom, público e resposta (formato).",
+        "Separe instruções e material com delimitadores únicos como ###.",
+        "Se a tarefa admitir um exemplo de saída, inclua um: ele deixa as respostas mais consistentes.",
+        "Quando o pedido for JSON, a palavra 'JSON' precisa aparecer no prompt (requisito do modo json_object) e convém dar o formato exato.",
+      ],
+    },
+  },
+
+  "glm-reasoner": {
+    id: "glm-reasoner",
+    source: "https://docs.bigmodel.cn/cn/best-practice/prompt-engineering-general",
+    clarifier: "ask",
+    agentStyle: "stepwise",
+    contextFirst: false,
+    codingDeliverable: null,
+    researchApproach: null,
+    closing: null,
+    frontendAvoid: null,
+    refinerRules: {
+      es: [
+        "Poné las restricciones importantes que ya se conocen lo antes posible en el prompt, no al final.",
+        "Si usás un rol, que sirva a la tarea (sin títulos inflados como 'experto de nivel mundial'): no reemplaza la descripción de la tarea, el material fuente ni los criterios de verificación.",
+        "GLM-5.3 siempre razona: guialo con instrucciones y criterios explícitos, no pidiéndole que piense paso a paso.",
+        "Para JSON, definí la estructura, qué significa cada campo y qué valores admite; no alcanza con pedir 'JSON'.",
+      ],
+      en: [
+        "Put the important constraints you already know as early in the prompt as possible, not at the end.",
+        "If you use a role, make it serve the task (no inflated titles like 'world-class expert'): it does not replace the task description, the source material or the validation criteria.",
+        "GLM-5.3 always reasons: steer it with explicit instructions and criteria, not by asking it to think step by step.",
+        "For JSON, define the structure, what each field means and which values it allows; asking for 'JSON' is not enough.",
+      ],
+      pt: [
+        "Coloque as restrições importantes que você já conhece o mais cedo possível no prompt, não no final.",
+        "Se usar um papel, que ele sirva à tarefa (sem títulos inflados como 'especialista de nível mundial'): ele não substitui a descrição da tarefa, o material-fonte nem os critérios de validação.",
+        "O GLM-5.3 sempre raciocina: conduza com instruções e critérios explícitos, não pedindo que pense passo a passo.",
+        "Para JSON, defina a estrutura, o que cada campo significa e quais valores aceita; pedir 'JSON' não basta.",
+      ],
+    },
+  },
+
+  "minimax-agent": {
+    id: "minimax-agent",
+    source: "https://platform.minimax.io/docs/guides/text-m3-function-call",
+    clarifier: "ask",
+    agentStyle: "stepwise",
+    contextFirst: false,
+    codingDeliverable: null,
+    researchApproach: null,
+    closing: {
+      es: "Verificá el resultado contra los criterios de aceptación antes de darlo por terminado y decí qué quedó sin verificar.",
+      en: "Check the result against the acceptance criteria before calling it done, and say what was left unverified.",
+      pt: "Confira o resultado com os critérios de aceitação antes de dar por concluído e diga o que ficou sem verificar.",
+    },
+    frontendAvoid: null,
+    refinerRules: {
+      es: [
+        "MiniMax M3 apunta a código y agentes: dale el contexto del repositorio, criterios de aceptación concretos y cómo verificar.",
+        "La temperatura y top_p están fijos: guialo con instrucciones, no con parámetros de muestreo.",
+        "No hay modo JSON documentado: si se pide JSON, describí la forma exacta con un ejemplo y pedí solo el JSON.",
+      ],
+      en: [
+        "MiniMax M3 is built for coding and agents: give it the repository context, concrete acceptance criteria and how to verify.",
+        "Temperature and top_p are fixed: steer it with instructions, not sampling parameters.",
+        "No JSON mode is documented: when JSON is requested, describe the exact shape with an example and ask for the JSON only.",
+      ],
+      pt: [
+        "O MiniMax M3 é feito para código e agentes: dê o contexto do repositório, critérios de aceitação concretos e como verificar.",
+        "A temperatura e o top_p são fixos: conduza com instruções, não com parâmetros de amostragem.",
+        "Não há modo JSON documentado: quando o pedido for JSON, descreva o formato exato com um exemplo e peça só o JSON.",
+      ],
+    },
+  },
+
+  "doubao-seed": {
+    id: "doubao-seed",
+    source: "https://docs.volcengine.com/docs/ark/deep-thinking",
+    clarifier: "ask",
+    agentStyle: "outcome",
+    contextFirst: false,
+    codingDeliverable: null,
+    researchApproach: null,
+    closing: null,
+    frontendAvoid: null,
+    refinerRules: {
+      es: [
+        "Sumá el objetivo y el escenario (para quién es y para qué se usa) en vez de descomponer el problema en pasos o ejemplos: con el razonamiento activo, eso limita su lógica.",
+        "Preferí poner todas las instrucciones en el mensaje del usuario antes que en un prompt de sistema.",
+        "Si se pide JSON, la palabra 'json' tiene que aparecer en el texto (requisito del modo json_object) y conviene dar la forma exacta.",
+      ],
+      en: [
+        "Add the goal and the scenario (who it is for and what it is used for) instead of breaking the problem into steps or examples: with reasoning on, that limits its logic.",
+        "Prefer putting all instructions in the user message rather than in a system prompt.",
+        "When JSON is requested, the word 'json' must appear in the text (a json_object-mode requirement) and the exact shape should be given.",
+      ],
+      pt: [
+        "Acrescente o objetivo e o cenário (para quem é e para que será usado) em vez de decompor o problema em passos ou exemplos: com o raciocínio ligado, isso limita a lógica dele.",
+        "Prefira colocar todas as instruções na mensagem do usuário em vez de um prompt de sistema.",
+        "Quando o pedido for JSON, a palavra 'json' precisa aparecer no texto (requisito do modo json_object) e convém dar o formato exato.",
+      ],
+    },
+  },
+
   "perplexity-search": {
     id: "perplexity-search",
     source: "https://docs.perplexity.ai/docs/agent-api/prompt-guide",
@@ -632,6 +761,10 @@ const TARGET_FALLBACK: Record<TargetAI, PromptProfileId> = {
   deepseek: "deepseek-reasoner",
   kimi: "kimi-general",
   perplexity: "perplexity-search",
+  qwen: "qwen-general",
+  glm: "glm-reasoner",
+  minimax: "minimax-agent",
+  doubao: "doubao-seed",
 };
 
 /**

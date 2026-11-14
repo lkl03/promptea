@@ -28,9 +28,9 @@ export async function generateMetadata({
     }),
     description:
       pick(l, {
-        es: "Guías prácticas para escribir mejores prompts: estructura, salida JSON, código, roles, few-shot, consejos por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) y casos de uso por área.",
-        en: "Practical guides to write better prompts: structure, JSON output, code, roles, few-shot, per-model advice (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and use cases by job.",
-        pt: "Guias práticos para escrever prompts melhores: estrutura, saída em JSON, código, papéis, few-shot, dicas por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) e casos de uso por profissão.",
+        es: "Guías prácticas para escribir mejores prompts: estructura, salida JSON, código, roles, few-shot, consejos por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao, Perplexity) y casos de uso por área.",
+        en: "Practical guides to write better prompts: structure, JSON output, code, roles, few-shot, per-model advice (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao, Perplexity) and use cases by job.",
+        pt: "Guias práticos para escrever prompts melhores: estrutura, saída em JSON, código, papéis, few-shot, dicas por modelo (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao, Perplexity) e casos de uso por profissão.",
       }),
   });
 }

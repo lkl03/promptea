@@ -19,6 +19,8 @@ import HowItWorks from "@/components/HowItWorks";
 import ModeSwitcher from "@/components/ModeSwitcher";
 import AiDailyPromo from "@/components/blog/AiDailyPromo";
 import NewsletterMarquee from "@/components/newsletter/NewsletterMarquee";
+import AnalyzerAbout from "@/components/seo/AnalyzerAbout";
+import { ANALYZER_PAGE_FAQ } from "@/lib/seo/content/analyzerContent";
 
 // v1.2.0: types + normalization come from the shared domain module, so URL
 // prefill supports every purpose (translation/summarization were silently
@@ -92,7 +94,12 @@ export default async function AnalyzerPage({
 
   return (
     <main className="px-4 pb-10 pt-8 sm:pt-10">
-      <JsonLd data={registryPageGraph(lang, `/${lang}/analyzer`, { aboutSoftware: true })} />
+      <JsonLd
+        data={registryPageGraph(lang, `/${lang}/analyzer`, {
+          aboutSoftware: true,
+          faq: ANALYZER_PAGE_FAQ.map((x) => ({ q: x.q[lang as Lang], a: x.a[lang as Lang] })),
+        })}
+      />
       <div
         className={[
           "mx-auto grid w-full gap-8 xl:gap-10",
@@ -160,6 +167,9 @@ export default async function AnalyzerPage({
           </aside>
         )}
       </div>
+
+      {/* v1.8.6: what the analyzer checks + FAQ (below the tool, never above it). */}
+      <AnalyzerAbout lang={lang as Lang} />
     </main>
   );
 }
