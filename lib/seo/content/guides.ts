@@ -12852,6 +12852,577 @@ Regras:
       },
     ],
   },
+  {
+    slug: "ai-prompts-for-customer-feedback",
+    updated: "2026-11-13",
+    title: {
+      en: "AI prompts for customer feedback analysis: themes, evidence and priorities you can trust",
+      es: "Prompts de IA para analizar feedback de clientes: temas, evidencia y prioridades confiables",
+      pt: "Prompts de IA para análise de feedback de clientes: temas, evidências e prioridades confiáveis",
+    },
+    description: {
+      en: "How to use ChatGPT, Claude or Gemini to analyze reviews, survey answers and support tickets: define themes before counting, quote the evidence, separate frequency from severity, and avoid invented percentages. Templates included.",
+      es: "Cómo usar ChatGPT, Claude o Gemini para analizar reseñas, respuestas de encuestas y tickets de soporte: definí los temas antes de contar, citá la evidencia, separá frecuencia de gravedad y evitá porcentajes inventados. Incluye plantillas.",
+      pt: "Como usar o ChatGPT, o Claude ou o Gemini para analisar avaliações, respostas de pesquisas e tickets de suporte: defina os temas antes de contar, cite as evidências, separe frequência de gravidade e evite porcentagens inventadas. Inclui templates.",
+    },
+    sections: [
+      {
+        heading: { en: "Why feedback summaries go wrong", es: "Por qué fallan los resúmenes de feedback", pt: "Por que os resumos de feedback dão errado" },
+        bullets: {
+          en: [
+            "Asking 'what are customers saying?' gets a fluent paragraph that mirrors the loudest comments, not the most common ones.",
+            "Models round and estimate when asked for numbers: '40% of users mention pricing' may not come from any count at all.",
+            "Themes drift between runs: 'onboarding', 'setup' and 'getting started' become three themes one day and one the next.",
+            "Sarcasm, mixed reviews ('love it, but…') and non-English comments are easy to misclassify without explicit rules.",
+            "Before: 'Summarize these 300 reviews.' After: 'Tag each review with one theme from this list, quote the sentence that justifies it, and count tags at the end.'",
+          ],
+          es: [
+            "Preguntar '¿qué dicen los clientes?' devuelve un párrafo prolijo que refleja los comentarios más ruidosos, no los más frecuentes.",
+            "Cuando les pedís números, los modelos redondean y estiman: 'el 40% menciona el precio' puede no salir de ningún conteo.",
+            "Los temas cambian entre ejecuciones: 'onboarding', 'configuración' y 'primeros pasos' son tres temas un día y uno al siguiente.",
+            "El sarcasmo, las reseñas mixtas ('me encanta, pero…') y los comentarios en otros idiomas se clasifican mal fácilmente si no hay reglas explícitas.",
+            "Antes: 'Resumí estas 300 reseñas.' Después: 'Etiquetá cada reseña con un tema de esta lista, citá la oración que lo justifica y contá las etiquetas al final.'",
+          ],
+          pt: [
+            "Perguntar 'o que os clientes estão dizendo?' rende um parágrafo fluente que reflete os comentários mais barulhentos, não os mais comuns.",
+            "Quando você pede números, os modelos arredondam e estimam: '40% dos usuários mencionam o preço' pode não vir de contagem nenhuma.",
+            "Os temas mudam entre execuções: 'onboarding', 'configuração' e 'primeiros passos' viram três temas num dia e um só no outro.",
+            "Sarcasmo, avaliações mistas ('adoro, mas…') e comentários em outros idiomas são fáceis de classificar errado sem regras explícitas.",
+            "Antes: 'Resuma estas 300 avaliações.' Depois: 'Marque cada avaliação com um tema desta lista, cite a frase que justifica a marcação e conte as marcações no final.'",
+          ],
+        },
+      },
+      {
+        heading: { en: "A workflow that holds up", es: "Un flujo de trabajo que se sostiene", pt: "Um fluxo de trabalho que se sustenta" },
+        bullets: {
+          en: [
+            "Step 1 — discover: on a sample (for example 50 comments), ask for candidate themes with a one-line definition and two example quotes each.",
+            "Step 2 — fix the codebook: merge overlapping themes yourself, add 'other' and 'unclear', and keep that list identical for every batch.",
+            "Step 3 — tag: give each comment an ID and ask for one row per comment (ID, theme, sentiment, quote). Rows are easy to spot-check; paragraphs are not.",
+            "Step 4 — count outside the model: paste the rows into a spreadsheet, or ask for counts only from the rows already produced, never from memory of the input.",
+            "Step 5 — prioritize: rank themes by frequency and by impact (churn risk, blocked tasks, revenue) as two separate columns, so a rare but critical issue isn't buried.",
+          ],
+          es: [
+            "Paso 1 — descubrir: sobre una muestra (por ejemplo, 50 comentarios), pedí temas candidatos con una definición de una línea y dos citas de ejemplo cada uno.",
+            "Paso 2 — fijar el libro de códigos: fusioná vos los temas que se superponen, agregá 'otro' y 'poco claro', y mantené esa lista idéntica en cada tanda.",
+            "Paso 3 — etiquetar: dale un ID a cada comentario y pedí una fila por comentario (ID, tema, sentimiento, cita). Las filas se revisan fácil; los párrafos no.",
+            "Paso 4 — contar fuera del modelo: pegá las filas en una planilla, o pedí conteos solo a partir de las filas ya generadas, nunca de memoria sobre el texto original.",
+            "Paso 5 — priorizar: ordená los temas por frecuencia y por impacto (riesgo de baja, tareas bloqueadas, ingresos) en dos columnas separadas, para que un problema raro pero crítico no quede enterrado.",
+          ],
+          pt: [
+            "Passo 1 — descobrir: em uma amostra (por exemplo, 50 comentários), peça temas candidatos com uma definição de uma linha e duas citações de exemplo para cada um.",
+            "Passo 2 — fixar o livro de códigos: junte você mesmo os temas que se sobrepõem, acrescente 'outro' e 'pouco claro' e mantenha essa lista idêntica em todos os lotes.",
+            "Passo 3 — marcar: dê um ID a cada comentário e peça uma linha por comentário (ID, tema, sentimento, citação). Linhas são fáceis de conferir por amostragem; parágrafos não.",
+            "Passo 4 — contar fora do modelo: cole as linhas em uma planilha, ou peça contagens só a partir das linhas já produzidas, nunca de memória sobre o texto original.",
+            "Passo 5 — priorizar: ordene os temas por frequência e por impacto (risco de cancelamento, tarefas bloqueadas, receita) em duas colunas separadas, para que um problema raro, mas crítico, não fique enterrado.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Privacy and honesty checks", es: "Controles de privacidad y honestidad", pt: "Verificações de privacidade e honestidade" },
+        bullets: {
+          en: [
+            "Remove names, emails, order numbers and other personal data before pasting; keep your own ID so you can trace a row back.",
+            "Check your company's policy on which AI tools may receive customer data.",
+            "Spot-check at least a handful of tagged rows per theme against the original comment before you share the report.",
+            "Report what the data is: 'themes in 312 app-store reviews from October', not 'what our customers think'.",
+          ],
+          es: [
+            "Sacá nombres, correos, números de pedido y otros datos personales antes de pegar; mantené tu propio ID para poder rastrear cada fila.",
+            "Revisá la política de tu empresa sobre qué herramientas de IA pueden recibir datos de clientes.",
+            "Verificá al menos algunas filas etiquetadas por tema contra el comentario original antes de compartir el informe.",
+            "Aclará qué son los datos: 'temas en 312 reseñas de la tienda de apps de octubre', no 'lo que piensan nuestros clientes'.",
+          ],
+          pt: [
+            "Remova nomes, e-mails, números de pedido e outros dados pessoais antes de colar; mantenha o seu próprio ID para conseguir rastrear cada linha.",
+            "Confira a política da sua empresa sobre quais ferramentas de IA podem receber dados de clientes.",
+            "Confira pelo menos algumas linhas marcadas de cada tema com o comentário original antes de compartilhar o relatório.",
+            "Diga o que os dados são: 'temas em 312 avaliações da loja de apps de outubro', não 'o que os nossos clientes pensam'.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Discover candidate themes from a sample", es: "Descubrir temas candidatos a partir de una muestra", pt: "Descobrir temas candidatos a partir de uma amostra" },
+        purpose: "data",
+        target: "claude",
+        prompt: {
+          en: `Below are [number] customer comments from [source: reviews / survey / support tickets] about [product]. Each line starts with an ID.
+
+<comments>
+[paste the comments, one per line, as "ID: text"]
+</comments>
+
+Propose 6 to 10 themes that cover these comments. For each theme give:
+- name (2–4 words)
+- definition (one sentence: what belongs and what doesn't)
+- two IDs with a short exact quote each
+
+Rules:
+- Themes must not overlap; if two are close, merge them and say so.
+- Include "other" for comments that fit nowhere.
+- Do not count or estimate percentages yet.`,
+          es: `Abajo hay [cantidad] comentarios de clientes de [fuente: reseñas / encuesta / tickets de soporte] sobre [producto]. Cada línea empieza con un ID.
+
+<comentarios>
+[pegá los comentarios, uno por línea, como "ID: texto"]
+</comentarios>
+
+Proponé entre 6 y 10 temas que cubran estos comentarios. Para cada tema dame:
+- nombre (2–4 palabras)
+- definición (una oración: qué entra y qué no)
+- dos IDs con una cita textual corta cada uno
+
+Reglas:
+- Los temas no se pueden superponer; si dos son parecidos, fusionalos y decilo.
+- Incluí "otro" para los comentarios que no encajan en ninguno.
+- Todavía no cuentes ni estimes porcentajes.`,
+          pt: `Abaixo estão [quantidade] comentários de clientes de [fonte: avaliações / pesquisa / tickets de suporte] sobre [produto]. Cada linha começa com um ID.
+
+<comments>
+[cole os comentários, um por linha, no formato "ID: texto"]
+</comments>
+
+Proponha de 6 a 10 temas que cubram esses comentários. Para cada tema, informe:
+- nome (2–4 palavras)
+- definição (uma frase: o que entra e o que não entra)
+- dois IDs com uma citação literal curta cada um
+
+Regras:
+- Os temas não podem se sobrepor; se dois forem parecidos, junte-os e diga isso.
+- Inclua "outro" para os comentários que não se encaixam em nenhum.
+- Ainda não conte nem estime porcentagens.`,
+        },
+      },
+      {
+        title: { en: "Tag every comment with a fixed codebook", es: "Etiquetar cada comentario con un libro de códigos fijo", pt: "Marcar cada comentário com um livro de códigos fixo" },
+        purpose: "data",
+        target: "gpt",
+        prompt: {
+          en: `Classify each customer comment using ONLY the themes below.
+
+<themes>
+[paste your final theme list with one-line definitions, including "other" and "unclear"]
+</themes>
+
+<comments>
+[paste the comments as "ID: text"]
+</comments>
+
+Return a table with one row per comment and these columns:
+ID | theme | sentiment (positive / negative / mixed) | quote (the exact words that justify the theme)
+
+Rules:
+- Exactly one theme per row; if two apply, pick the main complaint or praise.
+- If the comment is sarcastic or ambiguous, use "unclear" instead of guessing.
+- Copy quotes exactly; do not paraphrase.
+- Do not skip any ID and do not add a summary.`,
+          es: `Clasificá cada comentario de cliente usando SOLO los temas de abajo.
+
+<temas>
+[pegá tu lista final de temas con definiciones de una línea, incluyendo "otro" y "poco claro"]
+</temas>
+
+<comentarios>
+[pegá los comentarios como "ID: texto"]
+</comentarios>
+
+Devolvé una tabla con una fila por comentario y estas columnas:
+ID | tema | sentimiento (positivo / negativo / mixto) | cita (las palabras exactas que justifican el tema)
+
+Reglas:
+- Exactamente un tema por fila; si aplican dos, elegí la queja o el elogio principal.
+- Si el comentario es sarcástico o ambiguo, usá "poco claro" en lugar de adivinar.
+- Copiá las citas textuales; no parafrasees.
+- No saltees ningún ID y no agregues un resumen.`,
+          pt: `Classifique cada comentário de cliente usando SOMENTE os temas abaixo.
+
+<themes>
+[cole a sua lista final de temas com definições de uma linha, incluindo "outro" e "pouco claro"]
+</themes>
+
+<comments>
+[cole os comentários no formato "ID: texto"]
+</comments>
+
+Retorne uma tabela com uma linha por comentário e estas colunas:
+ID | tema | sentimento (positivo / negativo / misto) | citação (as palavras exatas que justificam o tema)
+
+Regras:
+- Exatamente um tema por linha; se dois se aplicarem, escolha a reclamação ou o elogio principal.
+- Se o comentário for sarcástico ou ambíguo, use "pouco claro" em vez de chutar.
+- Copie as citações literalmente; não parafraseie.
+- Não pule nenhum ID e não acrescente um resumo.`,
+        },
+      },
+      {
+        title: { en: "Turn tagged rows into a prioritized report", es: "Convertir las filas etiquetadas en un informe priorizado", pt: "Transformar as linhas marcadas em um relatório priorizado" },
+        purpose: "summarization",
+        target: "gemini",
+        prompt: {
+          en: `Write a one-page feedback report for [audience: product team / leadership] from the tagged rows below.
+
+<rows>
+[paste the table: ID | theme | sentiment | quote]
+</rows>
+
+Structure:
+1. Scope: source, period and number of comments (count the rows; do not estimate).
+2. Themes table: theme | count | negative count | one representative quote with its ID.
+3. Top 3 issues to act on, judged by count AND by impact. Explain the impact in one sentence each and say which part is your judgment.
+4. What customers praise (to protect in future changes).
+5. Open questions the data cannot answer.
+
+Rules:
+- Every number must come from counting the rows above.
+- Quote only text that appears in the rows.`,
+          es: `Escribí un informe de feedback de una página para [público: equipo de producto / dirección] a partir de las filas etiquetadas de abajo.
+
+<filas>
+[pegá la tabla: ID | tema | sentimiento | cita]
+</filas>
+
+Estructura:
+1. Alcance: fuente, período y cantidad de comentarios (contá las filas; no estimes).
+2. Tabla de temas: tema | cantidad | cantidad negativa | una cita representativa con su ID.
+3. Los 3 problemas principales para atacar, según cantidad Y según impacto. Explicá el impacto en una oración cada uno y aclará qué parte es tu criterio.
+4. Qué elogian los clientes (para cuidarlo en cambios futuros).
+5. Preguntas abiertas que los datos no pueden responder.
+
+Reglas:
+- Cada número tiene que salir de contar las filas de arriba.
+- Citá solo texto que aparezca en las filas.`,
+          pt: `Escreva um relatório de feedback de uma página para [público: time de produto / diretoria] a partir das linhas marcadas abaixo.
+
+<rows>
+[cole a tabela: ID | tema | sentimento | citação]
+</rows>
+
+Estrutura:
+1. Escopo: fonte, período e número de comentários (conte as linhas; não estime).
+2. Tabela de temas: tema | quantidade | quantidade negativa | uma citação representativa com o seu ID.
+3. Os 3 principais problemas a atacar, avaliados pela quantidade E pelo impacto. Explique o impacto em uma frase cada um e diga qual parte é julgamento seu.
+4. O que os clientes elogiam (para preservar em mudanças futuras).
+5. Perguntas em aberto que os dados não conseguem responder.
+
+Regras:
+- Todo número deve vir da contagem das linhas acima.
+- Cite apenas textos que aparecem nas linhas.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can I paste thousands of comments in one prompt?", es: "¿Puedo pegar miles de comentarios en un solo prompt?", pt: "Posso colar milhares de comentários em um único prompt?" },
+        a: {
+          en: "Even when the context window allows it, long single runs are harder to check and rows get skipped more easily. Work in batches (a few hundred comments at a time) with the same codebook, then combine the rows in a spreadsheet and count there.",
+          es: "Aunque la ventana de contexto lo permita, las ejecuciones largas son más difíciles de verificar y es más fácil que se salteen filas. Trabajá por tandas (unos cientos de comentarios por vez) con el mismo libro de códigos, después juntá las filas en una planilla y contá ahí.",
+          pt: "Mesmo quando a janela de contexto permite, execuções longas são mais difíceis de conferir e linhas são puladas com mais facilidade. Trabalhe em lotes (algumas centenas de comentários por vez) com o mesmo livro de códigos, depois junte as linhas em uma planilha e conte lá.",
+        },
+      },
+      {
+        q: { en: "Should the AI decide which issues matter most?", es: "¿La IA tiene que decidir qué problemas importan más?", pt: "A IA deve decidir quais problemas importam mais?" },
+        a: {
+          en: "It can propose a ranking, but frequency is something to count and impact is a business judgment. Ask the model to show both columns and to label its own reasoning, then make the final call with your team.",
+          es: "Puede proponer un orden, pero la frecuencia es algo que se cuenta y el impacto es una decisión de negocio. Pedile al modelo que muestre las dos columnas y que marque su propio razonamiento, y tomá la decisión final con tu equipo.",
+          pt: "Ela pode propor uma ordem, mas frequência é algo que se conta e impacto é uma decisão de negócio. Peça ao modelo para mostrar as duas colunas e identificar o próprio raciocínio, e tome a decisão final com o seu time.",
+        },
+      },
+      {
+        q: { en: "How do I check that my tagging prompt is clear enough?", es: "¿Cómo verifico que mi prompt de etiquetado sea lo bastante claro?", pt: "Como confiro se o meu prompt de marcação está claro o suficiente?" },
+        a: {
+          en: "Run the same batch twice and compare the tags; rows that change point at vague theme definitions. Promptea's analyzer also flags missing output-format and constraint instructions before you run the prompt on real data.",
+          es: "Corré la misma tanda dos veces y compará las etiquetas; las filas que cambian señalan definiciones de temas vagas. El analizador de Promptea también marca instrucciones de formato de salida y restricciones que faltan antes de usar el prompt con datos reales.",
+          pt: "Rode o mesmo lote duas vezes e compare as marcações; as linhas que mudam apontam definições de tema vagas. O analisador do Promptea também sinaliza instruções de formato de saída e de restrições que estejam faltando antes de você usar o prompt com dados reais.",
+        },
+      },
+    ],
+  },
+  {
+    slug: "ai-prompts-for-proposals",
+    updated: "2026-11-13",
+    title: {
+      en: "AI prompts for proposals and RFP responses: answer the brief, not a generic pitch",
+      es: "Prompts de IA para propuestas y respuestas a licitaciones (RFP): respondé el pedido, no un pitch genérico",
+      pt: "Prompts de IA para propostas e respostas a RFPs: responda ao que o cliente pediu, sem pitch genérico",
+    },
+    description: {
+      en: "How to use ChatGPT, Claude or Gemini to answer an RFP or write a client proposal: extract every requirement first, draft only from your own approved material, mark gaps instead of inventing claims, and check compliance before sending. Templates included.",
+      es: "Cómo usar ChatGPT, Claude o Gemini para responder una licitación (RFP) o escribir una propuesta comercial: extraé primero cada requisito, redactá solo con tu material aprobado, marcá los huecos en lugar de inventar y verificá el cumplimiento antes de enviar. Incluye plantillas.",
+      pt: "Como usar o ChatGPT, o Claude ou o Gemini para responder a uma RFP ou escrever uma proposta comercial: extraia primeiro cada requisito, redija só com o seu material aprovado, marque lacunas em vez de inventar afirmações e confira a conformidade antes de enviar. Inclui templates.",
+    },
+    sections: [
+      {
+        heading: { en: "Where AI helps with proposals, and where it hurts", es: "Dónde ayuda la IA con las propuestas y dónde perjudica", pt: "Onde a IA ajuda nas propostas e onde atrapalha" },
+        bullets: {
+          en: [
+            "Helps: turning a long RFP into a requirement checklist, mapping requirements to your existing material, first drafts in the buyer's structure, and consistency checks.",
+            "Hurts: inventing case studies, certifications, client names, prices or delivery dates that sound right but your company never approved.",
+            "A proposal is a commitment. Anything the model writes about capability, price or timeline must come from a source you can point to.",
+            "Before: 'Write a proposal for this RFP.' After: 'List every requirement in this RFP with its section number, then draft answers using only the attached capability notes, marking [needs input] where they don't cover it.'",
+          ],
+          es: [
+            "Ayuda: convertir una licitación larga en un checklist de requisitos, mapear requisitos con tu material existente, primeros borradores con la estructura del comprador y controles de consistencia.",
+            "Perjudica: inventar casos de éxito, certificaciones, nombres de clientes, precios o plazos que suenan bien pero tu empresa nunca aprobó.",
+            "Una propuesta es un compromiso. Todo lo que el modelo escriba sobre capacidades, precio o plazos tiene que salir de una fuente que puedas señalar.",
+            "Antes: 'Escribí una propuesta para esta licitación.' Después: 'Listá cada requisito de esta licitación con su número de sección y después redactá respuestas usando solo las notas de capacidades adjuntas, marcando [falta información] donde no alcancen.'",
+          ],
+          pt: [
+            "Ajuda: transformar uma RFP longa em um checklist de requisitos, mapear requisitos para o seu material existente, primeiros rascunhos na estrutura do comprador e verificações de consistência.",
+            "Atrapalha: inventar casos de sucesso, certificações, nomes de clientes, preços ou prazos que soam certos, mas que a sua empresa nunca aprovou.",
+            "Uma proposta é um compromisso. Tudo o que o modelo escrever sobre capacidade, preço ou prazo precisa vir de uma fonte que você consiga apontar.",
+            "Antes: 'Escreva uma proposta para esta RFP.' Depois: 'Liste cada requisito desta RFP com o número da seção e depois redija respostas usando só as notas de capacidades anexadas, marcando [precisa de informação] onde elas não cobrirem.'",
+          ],
+        },
+      },
+      {
+        heading: { en: "A proposal workflow in four steps", es: "Un flujo de propuesta en cuatro pasos", pt: "Um fluxo de proposta em quatro etapas" },
+        bullets: {
+          en: [
+            "1 — Extract: requirements, mandatory formats, page or word limits, evaluation criteria and deadlines, each with the RFP section it came from.",
+            "2 — Map: for each requirement, which of your approved sources answers it (past proposals, product sheets, policies) and which ones nothing answers yet.",
+            "3 — Draft: one section at a time, in the order and with the headings the buyer asked for, citing the source you used for each claim.",
+            "4 — Review: a compliance pass that checks every requirement is answered, limits are respected and no claim lacks a source.",
+            "Keep a library of approved answers (security, support hours, implementation approach) and paste the relevant ones instead of letting the model rewrite them from memory.",
+          ],
+          es: [
+            "1 — Extraer: requisitos, formatos obligatorios, límites de páginas o palabras, criterios de evaluación y plazos, cada uno con la sección de la licitación de donde salió.",
+            "2 — Mapear: para cada requisito, cuál de tus fuentes aprobadas lo responde (propuestas anteriores, fichas de producto, políticas) y cuáles todavía no responde nada.",
+            "3 — Redactar: una sección por vez, en el orden y con los títulos que pidió el comprador, citando la fuente que usaste para cada afirmación.",
+            "4 — Revisar: una pasada de cumplimiento que verifique que cada requisito tiene respuesta, que se respetan los límites y que ninguna afirmación queda sin fuente.",
+            "Mantené una biblioteca de respuestas aprobadas (seguridad, horario de soporte, enfoque de implementación) y pegá las que correspondan en lugar de dejar que el modelo las reescriba de memoria.",
+          ],
+          pt: [
+            "1 — Extrair: requisitos, formatos obrigatórios, limites de páginas ou palavras, critérios de avaliação e prazos, cada um com a seção da RFP de onde veio.",
+            "2 — Mapear: para cada requisito, qual das suas fontes aprovadas responde a ele (propostas anteriores, fichas de produto, políticas) e quais ainda não têm resposta.",
+            "3 — Redigir: uma seção por vez, na ordem e com os títulos que o comprador pediu, citando a fonte usada para cada afirmação.",
+            "4 — Revisar: uma passada de conformidade que confere se todo requisito foi respondido, se os limites foram respeitados e se nenhuma afirmação ficou sem fonte.",
+            "Mantenha uma biblioteca de respostas aprovadas (segurança, horário de suporte, abordagem de implementação) e cole as que forem relevantes em vez de deixar o modelo reescrevê-las de memória.",
+          ],
+        },
+      },
+      {
+        heading: { en: "Confidentiality and final responsibility", es: "Confidencialidad y responsabilidad final", pt: "Confidencialidade e responsabilidade final" },
+        bullets: {
+          en: [
+            "RFPs often carry confidentiality terms: check them, and your company's AI policy, before pasting the document into any tool.",
+            "Pricing, legal terms and contractual commitments should be written or approved by the people accountable for them, not drafted freely by a model.",
+            "Read the final document as the evaluator will: against the scoring criteria, in order, with the page limit in mind.",
+          ],
+          es: [
+            "Las licitaciones suelen tener cláusulas de confidencialidad: revisalas, junto con la política de IA de tu empresa, antes de pegar el documento en cualquier herramienta.",
+            "Precios, términos legales y compromisos contractuales los tienen que escribir o aprobar las personas responsables, no un modelo redactando libremente.",
+            "Leé el documento final como lo va a leer el evaluador: contra los criterios de puntuación, en orden y con el límite de páginas en mente.",
+          ],
+          pt: [
+            "RFPs costumam ter cláusulas de confidencialidade: confira-as, junto com a política de IA da sua empresa, antes de colar o documento em qualquer ferramenta.",
+            "Preços, termos jurídicos e compromissos contratuais devem ser escritos ou aprovados pelas pessoas responsáveis por eles, não redigidos livremente por um modelo.",
+            "Leia o documento final como o avaliador vai ler: contra os critérios de pontuação, em ordem e com o limite de páginas em mente.",
+          ],
+        },
+      },
+    ],
+    templates: [
+      {
+        title: { en: "Extract a requirement checklist from an RFP", es: "Extraer un checklist de requisitos de una licitación", pt: "Extrair um checklist de requisitos de uma RFP" },
+        purpose: "data",
+        target: "claude",
+        prompt: {
+          en: `Read the RFP below and extract everything a compliant response must address.
+
+<rfp>
+[paste the RFP text]
+</rfp>
+
+Return a table with these columns:
+ID | RFP section | requirement (quoted or closely paraphrased) | type (mandatory / desirable / format / deadline / evaluation criterion) | limit (pages, words, file type, if any)
+
+Then list:
+- the submission deadline and method, exactly as written;
+- the evaluation criteria and their weights, if stated;
+- anything ambiguous that we should ask the buyer about.
+
+Rules:
+- Do not draft any answers.
+- If something is not stated in the RFP, write "not stated" instead of assuming.`,
+          es: `Leé la licitación de abajo y extraé todo lo que una respuesta conforme tiene que cubrir.
+
+<licitacion>
+[pegá el texto de la licitación]
+</licitacion>
+
+Devolvé una tabla con estas columnas:
+ID | sección de la licitación | requisito (citado o parafraseado de cerca) | tipo (obligatorio / deseable / formato / plazo / criterio de evaluación) | límite (páginas, palabras, tipo de archivo, si hay)
+
+Después listá:
+- la fecha y la forma de presentación, tal como están escritas;
+- los criterios de evaluación y sus ponderaciones, si están indicados;
+- todo lo ambiguo que convenga preguntarle al comprador.
+
+Reglas:
+- No redactes ninguna respuesta.
+- Si algo no está en la licitación, escribí "no indicado" en lugar de suponer.`,
+          pt: `Leia a RFP abaixo e extraia tudo o que uma resposta em conformidade precisa abordar.
+
+<rfp>
+[cole o texto da RFP]
+</rfp>
+
+Retorne uma tabela com estas colunas:
+ID | seção da RFP | requisito (citado ou parafraseado de perto) | tipo (obrigatório / desejável / formato / prazo / critério de avaliação) | limite (páginas, palavras, tipo de arquivo, se houver)
+
+Depois, liste:
+- o prazo e a forma de envio, exatamente como estão escritos;
+- os critérios de avaliação e os seus pesos, se informados;
+- tudo o que for ambíguo e valha a pena perguntar ao comprador.
+
+Regras:
+- Não redija nenhuma resposta.
+- Se algo não estiver na RFP, escreva "não informado" em vez de supor.`,
+        },
+      },
+      {
+        title: { en: "Draft one proposal section from approved material", es: "Redactar una sección de la propuesta con material aprobado", pt: "Redigir uma seção da proposta com material aprovado" },
+        purpose: "text",
+        target: "gpt",
+        prompt: {
+          en: `Draft the "[section name]" section of our response to [buyer]'s RFP.
+
+<requirements>
+[paste the requirement rows this section must answer, with their IDs]
+</requirements>
+
+<approved_material>
+[paste approved answers, product sheets, past proposal excerpts]
+</approved_material>
+
+Rules:
+- Answer every requirement ID above, in order, and label each answer with its ID.
+- Use only facts from the approved material. Where it doesn't cover a requirement, write [needs input: what is missing].
+- No client names, figures, certifications or dates that are not in the approved material.
+- Write for [buyer type], in a plain, specific tone; no superlatives.
+- Stay under [word limit] words.`,
+          es: `Redactá la sección "[nombre de la sección]" de nuestra respuesta a la licitación de [comprador].
+
+<requisitos>
+[pegá las filas de requisitos que esta sección tiene que responder, con sus IDs]
+</requisitos>
+
+<material_aprobado>
+[pegá respuestas aprobadas, fichas de producto, fragmentos de propuestas anteriores]
+</material_aprobado>
+
+Reglas:
+- Respondé cada ID de requisito de arriba, en orden, y etiquetá cada respuesta con su ID.
+- Usá solo datos del material aprobado. Donde no cubra un requisito, escribí [falta información: qué falta].
+- Nada de nombres de clientes, cifras, certificaciones o fechas que no estén en el material aprobado.
+- Escribí para [tipo de comprador], con un tono claro y concreto; sin superlativos.
+- No pases de [límite] palabras.`,
+          pt: `Redija a seção "[nome da seção]" da nossa resposta à RFP de [comprador].
+
+<requirements>
+[cole as linhas de requisitos que esta seção precisa responder, com os IDs]
+</requirements>
+
+<approved_material>
+[cole respostas aprovadas, fichas de produto, trechos de propostas anteriores]
+</approved_material>
+
+Regras:
+- Responda a cada ID de requisito acima, em ordem, e identifique cada resposta com o seu ID.
+- Use apenas fatos do material aprovado. Onde ele não cobrir um requisito, escreva [precisa de informação: o que falta].
+- Nada de nomes de clientes, números, certificações ou datas que não estejam no material aprovado.
+- Escreva para [tipo de comprador], em tom simples e específico; sem superlativos.
+- Fique abaixo de [limite] palavras.`,
+        },
+      },
+      {
+        title: { en: "Compliance check before you send", es: "Control de cumplimiento antes de enviar", pt: "Verificação de conformidade antes de enviar" },
+        purpose: "text",
+        target: "gemini",
+        prompt: {
+          en: `Act as the buyer's evaluator. Compare our draft response with the requirement checklist.
+
+<checklist>
+[paste the requirement table from the extraction step]
+</checklist>
+
+<draft>
+[paste the full draft response]
+</draft>
+
+Return:
+1. A table: requirement ID | answered? (yes / partly / no) | where in the draft | what is missing.
+2. Any format or length limit the draft breaks.
+3. Claims in the draft that need a source or an internal approval (figures, dates, client names, certifications, guarantees).
+4. Remaining [needs input] markers.
+
+Do not rewrite the draft; only report.`,
+          es: `Actuá como evaluador del comprador. Compará nuestro borrador de respuesta con el checklist de requisitos.
+
+<checklist>
+[pegá la tabla de requisitos del paso de extracción]
+</checklist>
+
+<borrador>
+[pegá el borrador completo de la respuesta]
+</borrador>
+
+Devolvé:
+1. Una tabla: ID de requisito | ¿respondido? (sí / en parte / no) | dónde en el borrador | qué falta.
+2. Cualquier límite de formato o extensión que el borrador no cumpla.
+3. Afirmaciones del borrador que necesitan una fuente o una aprobación interna (cifras, fechas, nombres de clientes, certificaciones, garantías).
+4. Marcadores [falta información] que siguen sin resolver.
+
+No reescribas el borrador; solo informá.`,
+          pt: `Aja como avaliador do comprador. Compare o nosso rascunho de resposta com o checklist de requisitos.
+
+<checklist>
+[cole a tabela de requisitos da etapa de extração]
+</checklist>
+
+<draft>
+[cole o rascunho completo da resposta]
+</draft>
+
+Retorne:
+1. Uma tabela: ID do requisito | respondido? (sim / em parte / não) | onde no rascunho | o que falta.
+2. Qualquer limite de formato ou extensão que o rascunho descumpra.
+3. Afirmações do rascunho que precisam de uma fonte ou de uma aprovação interna (números, datas, nomes de clientes, certificações, garantias).
+4. Marcadores [precisa de informação] que continuam pendentes.
+
+Não reescreva o rascunho; apenas relate.`,
+        },
+      },
+    ],
+    faq: [
+      {
+        q: { en: "Can AI write a whole RFP response for me?", es: "¿La IA puede escribirme una respuesta completa a una licitación?", pt: "A IA consegue escrever uma resposta inteira a uma RFP para mim?" },
+        a: {
+          en: "It can produce a complete-looking draft, but the parts that win or lose an RFP — your real capabilities, references, pricing and commitments — have to come from your company. Use AI to extract, structure, draft from approved material and check compliance; keep people accountable for every claim.",
+          es: "Puede producir un borrador que parece completo, pero las partes que ganan o pierden una licitación — tus capacidades reales, referencias, precios y compromisos — tienen que salir de tu empresa. Usá la IA para extraer, estructurar, redactar con material aprobado y controlar el cumplimiento; las personas siguen respondiendo por cada afirmación.",
+          pt: "Ela consegue produzir um rascunho com cara de completo, mas as partes que ganham ou perdem uma RFP — suas capacidades reais, referências, preços e compromissos — precisam vir da sua empresa. Use a IA para extrair, estruturar, redigir a partir de material aprovado e conferir a conformidade; as pessoas continuam responsáveis por cada afirmação.",
+        },
+      },
+      {
+        q: { en: "Is it better to draft the whole proposal at once or section by section?", es: "¿Conviene redactar toda la propuesta de una vez o sección por sección?", pt: "É melhor redigir a proposta inteira de uma vez ou seção por seção?" },
+        a: {
+          en: "Section by section. Each prompt gets only the requirements and material it needs, answers are easier to check against the checklist, and a weak section can be redone without touching the rest.",
+          es: "Sección por sección. Cada prompt recibe solo los requisitos y el material que necesita, las respuestas se controlan más fácil contra el checklist y una sección floja se puede rehacer sin tocar el resto.",
+          pt: "Seção por seção. Cada prompt recebe só os requisitos e o material de que precisa, as respostas ficam mais fáceis de conferir contra o checklist e uma seção fraca pode ser refeita sem mexer no resto.",
+        },
+      },
+      {
+        q: { en: "How do I make our proposal prompts reusable?", es: "¿Cómo hago reutilizables nuestros prompts de propuestas?", pt: "Como tornar os nossos prompts de proposta reutilizáveis?" },
+        a: {
+          en: "Keep these prompts with bracketed placeholders in a shared prompt library and run each one through Promptea's analyzer once, so missing constraints (limits, sources, format) are caught before the next deadline rather than during it.",
+          es: "Guardá estos prompts con marcadores entre corchetes en una biblioteca compartida de prompts y pasá cada uno una vez por el analizador de Promptea, así las restricciones que faltan (límites, fuentes, formato) aparecen antes del próximo plazo y no durante.",
+          pt: "Mantenha estes prompts com marcadores entre colchetes em uma biblioteca de prompts compartilhada e passe cada um uma vez pelo analisador do Promptea, para que restrições que faltam (limites, fontes, formato) apareçam antes do próximo prazo, e não durante ele.",
+        },
+      },
+    ],
+  },
 ];
 
 /**
