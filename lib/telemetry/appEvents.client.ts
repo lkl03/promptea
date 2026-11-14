@@ -4,8 +4,13 @@
 //
 // Fire-and-forget client helper for v1.3.0 operational events. Silent on
 // every failure — telemetry must never affect the product experience.
+//
+// v1.8.6: sent only after a real interaction and never under automation
+// (lib/telemetry/humanGate.ts). On-mount events (mode_opened, impressions)
+// wait for the first key/pointer and are dropped if it never comes.
 
 import { getSessionId } from "@/lib/telemetry/session";
+import { afterHumanInteraction } from "@/lib/telemetry/humanGate";
 import type { AppMode, Lang, TranscribeErrorReason } from "@/lib/domain";
 
 export type AppEventName =
@@ -30,15 +35,17 @@ export function trackAppEvent(args: {
   reason?: TranscribeErrorReason;
   surface?: NewsletterSurface;
 }): void {
-  try {
-    const sessionId = getSessionId();
-    void fetch("/api/telemetry/app", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ sessionId, ...args }),
-      keepalive: true,
-    }).catch(() => {});
-  } catch {
-    // ignore
-  }
+  afterHumanInteraction(() => {
+    try {
+      const sessionId = getSessionId();
+      void fetch("/api/telemetry/app", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ sessionId, ...args }),
+        keepalive: true,
+      }).catch(() => {});
+    } catch {
+      // ignore
+    }
+  });
 }

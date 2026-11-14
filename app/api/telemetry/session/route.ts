@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
 import { isLang } from "@/lib/domain";
+import { BOT_SKIPPED, isBotUserAgent } from "@/lib/telemetry/bots";
 
 export const runtime = "nodejs";
 
@@ -14,6 +15,12 @@ function todayKey(d = new Date()) {
 }
 
 export async function POST(req: NextRequest) {
+  // v1.8.6: known bots / tools / missing UA are acknowledged and not counted
+  // (they were inflating dau / newSessions).
+  if (isBotUserAgent(req.headers.get("user-agent"))) {
+    return NextResponse.json(BOT_SKIPPED, { status: 200 });
+  }
+
   const contentType = req.headers.get("content-type") || "";
   if (!contentType.includes("application/json")) {
     return NextResponse.json({ error: "Unsupported content-type" }, { status: 415 });

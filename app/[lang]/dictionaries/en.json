@@ -569,7 +569,8 @@
         "Four new AI families in the analyzer: Qwen (Alibaba Cloud), GLM (Z.ai / Zhipu AI), MiniMax and Doubao (ByteDance), each with its verified models, its own prompting rules, a model page and a guide.",
         "The prompt analyzer explains what it checks, answers common questions and shows before → after examples with the exact scores it gives.",
         "The most-read guides link to the analyzer, and each model page links to its guide.",
-        "New stories and guides are announced to Bing and other search engines (IndexNow) as soon as they are published."
+        "New stories and guides are announced to Bing and other search engines (IndexNow) as soon as they are published.",
+        "Guide templates have a Copy button."
       ]
     },
     "v185": {

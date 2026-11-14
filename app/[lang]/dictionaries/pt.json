@@ -569,7 +569,8 @@
         "Quatro famílias de IA novas no analisador: Qwen (Alibaba Cloud), GLM (Z.ai / Zhipu AI), MiniMax e Doubao (ByteDance), cada uma com seus modelos verificados, regras de prompting próprias, uma página de modelo e um guia.",
         "O analisador de prompts explica o que verifica, responde a perguntas frequentes e mostra exemplos antes → depois com a pontuação exata que ele dá.",
         "Os guias mais lidos levam ao analisador, e cada página de modelo leva ao seu guia.",
-        "Notícias e guias novos são avisados ao Bing e a outros buscadores (IndexNow) assim que são publicados."
+        "Notícias e guias novos são avisados ao Bing e a outros buscadores (IndexNow) assim que são publicados.",
+        "Os modelos dos guias têm um botão Copiar."
       ]
     },
     "v185": {

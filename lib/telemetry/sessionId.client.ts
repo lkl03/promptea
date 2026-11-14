@@ -1,5 +1,6 @@
 "use client";
 import { type Lang } from "@/lib/domain";
+import { afterHumanInteraction } from "@/lib/telemetry/humanGate";
 
 const KEY = "promptea_session_id";
 const DAY_KEY = "promptea_session_last_day";
@@ -33,18 +34,24 @@ export async function ensureSessionPing(lang: Lang) {
     const last = localStorage.getItem(DAY_KEY);
     if (last === today) return sessionId; // ya contó hoy
 
-    await fetch("/api/telemetry/session", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        sessionId,
-        lang,
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? null,
-      }),
-      keepalive: true,
+    // v1.8.6: only after a real interaction (lib/telemetry/humanGate.ts).
+    afterHumanInteraction(() => {
+      void fetch("/api/telemetry/session", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          lang,
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? null,
+        }),
+        keepalive: true,
+      }).catch(() => {});
+      try {
+        localStorage.setItem(DAY_KEY, today);
+      } catch {
+        // ignore
+      }
     });
-
-    localStorage.setItem(DAY_KEY, today);
     return sessionId;
   } catch {
     return getOrCreateSessionId();

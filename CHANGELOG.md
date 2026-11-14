@@ -19,9 +19,15 @@ All notable changes to Promptea are documented here.
   - `/api/internal/blog/publish` pings a new AI Daily story's URLs after publishing it.
   - `npm run seo:indexnow` and `.github/workflows/indexnow.yml` submit the sitemap URLs changed in the last two days after each production deploy.
 
+- **Clean measurement** (#46).
+  - Vercel Analytics custom events for real product actions: `Prompt Analyzed`, `Prompt Copied`, `Target Changed` and `Template Copied`, each with at most two closed-enum properties (`lang`, `target` or `source`) and never prompt text. Nothing is sent under WebDriver (`lib/analytics/productEvents.ts`).
+  - Guide templates have a **Copy** button.
+  - `robots.txt` names eight more crawlers, all still allowed: `meta-webindexer`, `meta-externalfetcher`, `ExaSearchBot`, `ElevenlabsCrawler`, `PetalBot`, `Baiduspider`, `YisouSpider` and `Bytespider` (`lib/seo/crawlers.ts`).
+
 ### Changed
 - `llms-full.txt` is more compact: guides list their FAQ questions (the answers are in each `.md` twin), model pages list their templates by title, and the analyzer landing links its examples instead of inlining them. With the new content included, its fixed part is about 302 KB in Spanish (the test limit is 330 KB; without this change it would have been about 356 KB).
 - Lists of supported AIs (home, how it works, best-ai, models, guides, JSON-LD) name the four new families.
+- Own telemetry (`/api/telemetry/app`, `/api/telemetry/session`) skips bot and tool User-Agents and is only sent after the first real interaction; page-load events wait in a queue of at most 20 (#46). Expect `dau`, `newSessions` and `mode_opened` in Firestore to drop: bots and visits without interaction no longer count.
 
 ### Open (owner)
 - Set `INDEXNOW_KEY` in Vercel (Production) and redeploy; steps in the report. Measure in Search Console around 2026-12-12 (table in the report).

@@ -8,6 +8,8 @@
 import { useRef, useState } from "react";
 import type { AnalyzeResponse } from "@/lib/analyzeClient";
 import { useToast } from "@/components/ToastProvider";
+import { trackProductEvent } from "@/lib/analytics/productEvents";
+import type { Lang } from "@/lib/domain";
 
 type ResultsDict = Record<string, string>;
 
@@ -40,10 +42,12 @@ function SparkIcon({ className }: { className?: string }) {
 
 export default function OptimizedPromptPanel({
   dict,
+  lang,
   result,
   originalPrompt,
 }: {
   dict: ResultsDict;
+  lang: Lang;
   result: AnalyzeResponse;
   originalPrompt: string;
 }) {
@@ -62,6 +66,7 @@ export default function OptimizedPromptPanel({
   async function handleCopy() {
     if (!result.optimizedPrompt) return;
     await navigator.clipboard.writeText(result.optimizedPrompt);
+    trackProductEvent({ name: "Prompt Copied", lang, target: result.meta.target });
     setCopied(true);
     if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
     copyTimerRef.current = window.setTimeout(() => setCopied(false), 2200);

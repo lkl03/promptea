@@ -12,7 +12,12 @@ vi.mock("@/lib/firebase/admin", () => ({
 import { POST } from "@/app/api/telemetry/app/route";
 
 function req(body: unknown) {
-  return new NextRequest("http://localhost/api/telemetry/app", { method: "POST", body: JSON.stringify(body), headers: { "content-type": "application/json" } });
+  // v1.8.6: a browser User-Agent — requests without one are dropped as bots.
+  return new NextRequest("http://localhost/api/telemetry/app", {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" },
+  });
 }
 const base = { sessionId: "session-1234567890", lang: "es" };
 
