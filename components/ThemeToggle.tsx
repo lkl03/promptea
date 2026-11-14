@@ -48,7 +48,7 @@ function SwatchIcon({ theme, className }: { theme: ThemeName | "system"; classNa
   }
   // Round swatches previewing canvas + accent (mirrors globals.css values).
   const preview: Record<"aqua", { bg: string; dot: string }> = {
-    aqua: { bg: "#eaf1fe", dot: "#007aff" },
+    aqua: { bg: "#eaf1fe", dot: "#0061cc" },
   };
   const p = preview[theme as "aqua"];
   return (

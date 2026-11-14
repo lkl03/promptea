@@ -213,9 +213,31 @@ for (const path of ["/en/how-it-works", "/es/benchmarks"]) {
 
 // ── contrast ──────────────────────────────────────────────────────────────
 const CASES = [["aqua", "light"], ["glass", "light"], ["glass", "dark"], ["metro", "dark"]];
+// v1.8.5: every element per page is held to 4.5:1, Aqua's primary button included
+// (its accent moved from #007aff to #0061cc). The analyzer adds the accent text
+// and the accent badge of the AI Daily promo, which share the same token.
+const CONTRAST_PAGES = [
+  ["/en", {
+    tagline: "main header p",
+    "action title": ".home-action-title",
+    "action description": ".home-actions li p",
+    "how-this-works button": "a[href$='/how-it-works']",
+    "prompt box explanation": "form[action$='/analyzer'] h2 + p",
+    "prompt box hint": "form[action$='/analyzer'] p[aria-live]",
+    "primary button label": "form[action$='/analyzer'] button[type=submit]",
+    "nav link": "header nav a",
+    "newsletter body": "aside section p",
+    "footer link": "footer a",
+  }],
+  ["/en/analyzer", {
+    "accent badge (AI Daily promo)": "main a[href$='/blog'] .badge-accent",
+    "accent link text (AI Daily promo)": "main a[href$='/blog'] .text-accent",
+  }],
+];
+for (const [path, pick] of CONTRAST_PAGES)
 for (const [theme, scheme] of CASES) {
-  const { page, context } = await open("/en", { theme, scheme, storage: QUIET });
-  const rows = await page.evaluate(() => {
+  const { page, context } = await open(path, { theme, scheme, storage: QUIET });
+  const rows = await page.evaluate((pick) => {
     const parse = (c) => {
       const m = /rgba?\(([^)]+)\)/.exec(c);
       if (!m) return null;
@@ -272,37 +294,25 @@ for (const [theme, scheme] of CASES) {
       });
       return Math.round(Math.min(...all) * 100) / 100;
     };
-    const pick = {
-      tagline: "main header p",
-      "action title": ".home-action-title",
-      "action description": ".home-actions li p",
-      "how-this-works button": "a[href$='/how-it-works']",
-      "prompt box explanation": "form[action$='/analyzer'] h2 + p",
-      "prompt box hint": "form[action$='/analyzer'] p[aria-live]",
-      "primary button label": "form[action$='/analyzer'] button[type=submit]",
-      "nav link": "header nav a",
-      "newsletter body": "aside section p",
-      "footer link": "footer a",
-    };
     return Object.entries(pick).map(([name, sel]) => {
       const el = [...document.querySelectorAll(sel)].find((e) => e.offsetParent !== null);
       return { name, ratio: el ? ratio(el) : null, size: el ? parseFloat(getComputedStyle(el).fontSize) : null };
     });
-  });
+  }, pick);
   for (const r of rows) {
     if (r.ratio === null) {
       ok("contrast", `${theme}/${scheme}: ${r.name}`, false, "element not found");
       continue;
     }
-    // Known, pre-existing and left to the owner: Aqua's system blue under white button labels
-    // measures ~4.0:1 (AA asks 4.5:1 for 14 px text). It is the theme's approved accent, so it is
-    // reported, not changed (docs/release/v1.8.1/qa-report.md, finding A11Y-1).
-    const known = theme === "aqua" && r.name === "primary button label" && r.ratio >= 3;
+    // Measured for the first time in v1.8.5 and left to the owner: in Metro and Glass light the
+    // accent text and badges use each theme's own accent, below 4.5:1 there (docs/release/v1.8.5/report.md,
+    // finding N-1). Aqua, the default theme, is held to 4.5:1 everywhere.
+    const known = r.ratio < 4.5 && ((theme === "metro" && /accent (badge|link text)/.test(r.name)) || (theme === "glass" && scheme === "light" && /accent badge/.test(r.name)));
     if (known) {
-      console.log(`known [contrast] ${theme}/${scheme}: ${r.name} ${r.ratio}:1 (below 4.5:1; approved Aqua accent, see qa-report A11Y-1)`);
+      console.log(`known [contrast] ${path} ${theme}/${scheme}: ${r.name} ${r.ratio}:1 (pre-existing in this theme; owner decision, v1.8.5 report N-1)`);
       continue;
     }
-    ok("contrast", `${theme}/${scheme}: ${r.name} ${r.ratio}:1`, r.ratio >= 4.5, `${r.size}px`);
+    ok("contrast", `${path} ${theme}/${scheme}: ${r.name} ${r.ratio}:1`, r.ratio >= 4.5, `${r.size}px`);
   }
   await context.close();
 }
