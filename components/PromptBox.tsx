@@ -13,6 +13,8 @@ import HowItWorks from "./HowItWorks";
 import { useToast } from "./ToastProvider";
 import { getSessionId } from "@/lib/telemetry/session";
 import { trackAppEvent } from "@/lib/telemetry/appEvents.client";
+import { afterHumanInteraction } from "@/lib/telemetry/humanGate";
+import { trackProductEvent } from "@/lib/analytics/productEvents";
 import { isPurposeAttachmentEnabled, type AttachmentInput } from "@/lib/attachments";
 import { defaultModelIdForTarget, getModelsForTarget } from "@/lib/models";
 import { isPurpose, isTarget, type FormatChoice, type PromptPurpose, type TargetAI, type Lang } from "@/lib/domain";
@@ -329,19 +331,22 @@ export default function PromptBox({
     return () => window.removeEventListener("promptea:set-prompt", handler);
   }, [dict.analyzer.promptLoaded, toast]);
 
-  // Telemetry session ping
+  // Telemetry session ping — v1.8.6: only once the visitor really interacts
+  // (lib/telemetry/humanGate.ts), so render-and-leave bots are not sessions.
   useEffect(() => {
-    const sessionId = getSessionId();
-    fetch("/api/telemetry/session", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        sessionId,
-        lang,
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? null,
-      }),
-      keepalive: true,
-    }).catch(() => {});
+    afterHumanInteraction(() => {
+      const sessionId = getSessionId();
+      fetch("/api/telemetry/session", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          lang,
+          projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? null,
+        }),
+        keepalive: true,
+      }).catch(() => {});
+    });
   }, [lang]);
 
   // Drop attachments when the purpose no longer supports them
@@ -415,6 +420,7 @@ export default function PromptBox({
 
       setResult(data);
       trackGoogleAnalyzeSuccess();
+      trackProductEvent({ name: "Prompt Analyzed", lang, target });
     } catch {
       if (controller.signal.aborted) return; // superseded or reset — keep quiet
       // A network failure's own message ("Failed to fetch") is the browser's, in English.
@@ -448,6 +454,8 @@ export default function PromptBox({
         modelId={modelId}
         disabled={locked}
         onTargetChange={(next, nextModelId) => {
+          // Only the visitor's own pick (prefill / handoff / example set the target elsewhere).
+          if (next && next !== target) trackProductEvent({ name: "Target Changed", lang, target: next });
           setTarget(next);
           setModelId(nextModelId);
         }}

@@ -14,6 +14,7 @@ import PageMeta from "@/components/seo/PageMeta";
 import { guideGraph } from "@/lib/seo/pageGraphs";
 import { LANG_TAG, type ContentLang, pick, LANGS, toLang } from "@/lib/domain";
 import ContentLangNotice from "@/components/blog/ContentLangNotice";
+import CopyTemplateButton from "@/components/guides/CopyTemplateButton";
 
 export function generateStaticParams() {
   return LANGS.flatMap((lang) => guides.map((g) => ({ lang, slug: g.slug })));
@@ -129,9 +130,12 @@ export default async function GuidePage({
                   {/* Every card has the same visible label; the accessible name
                       starts with it and adds the template title, so screen-reader
                       link lists can tell the buttons apart (WCAG 2.4.4 / 2.5.3). */}
-                  <Link href={href} className="btn btn-primary h-9 px-4" aria-label={`${openLabel}: ${t.title[cl]}`}>
-                    {openLabel}
-                  </Link>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <CopyTemplateButton lang={l} text={t.prompt[cl]} title={t.title[cl]} />
+                    <Link href={href} className="btn btn-primary h-9 px-4" aria-label={`${openLabel}: ${t.title[cl]}`}>
+                      {openLabel}
+                    </Link>
+                  </div>
                 </div>
               </article>
             );

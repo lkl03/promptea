@@ -17,10 +17,28 @@ describe("AI crawler policy", () => {
     for (const t of [
       "GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-SearchBot", "Claude-User",
       "PerplexityBot", "Perplexity-User", "Google-Extended", "Applebot-Extended", "CCBot", "Meta-ExternalAgent",
+      // v1.8.6
+      "meta-webindexer", "meta-externalfetcher", "ExaSearchBot", "ElevenlabsCrawler",
+      "PetalBot", "Baiduspider", "YisouSpider", "Bytespider",
     ]) {
       expect(tokens, t).toContain(t);
     }
-    expect(new Set(tokens).size).toBe(tokens.length);
+    // robots.txt matches tokens case-insensitively: no duplicates under any casing.
+    expect(new Set(tokens.map((t) => t.toLowerCase())).size).toBe(tokens.length);
+  });
+
+  it("v1.8.6: classifies the new crawlers by what their operators document", () => {
+    const kind = (t: string) => AI_CRAWLERS.find((c) => c.userAgent === t)?.kind;
+    expect(kind("meta-webindexer")).toBe("search");
+    expect(kind("meta-externalfetcher")).toBe("user");
+    expect(kind("ExaSearchBot")).toBe("search");
+    expect(kind("ElevenlabsCrawler")).toBe("training");
+    expect(kind("PetalBot")).toBe("search");
+    expect(kind("Baiduspider")).toBe("search");
+    expect(kind("YisouSpider")).toBe("search");
+    expect(kind("Bytespider")).toBe("training");
+    // Undocumented operator: deliberately not given its own rule.
+    expect(AI_CRAWLERS.map((c) => c.userAgent)).not.toContain("TokenFoundryBot");
   });
 
   it("classifies each crawler and documents it", () => {

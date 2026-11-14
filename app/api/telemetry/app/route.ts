@@ -11,6 +11,7 @@ import { z } from "zod";
 import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { getAdminFirestore } from "@/lib/firebase/admin";
 import { APP_MODES, LANGS, TRANSCRIBE_ERROR_REASONS } from "@/lib/domain";
+import { BOT_SKIPPED, isBotUserAgent } from "@/lib/telemetry/bots";
 
 export const runtime = "nodejs";
 
@@ -46,6 +47,11 @@ function ttlDays() {
 }
 
 export async function POST(req: NextRequest) {
+  // v1.8.6: known bots / tools / missing UA are acknowledged and not stored.
+  if (isBotUserAgent(req.headers.get("user-agent"))) {
+    return NextResponse.json(BOT_SKIPPED, { status: 200 });
+  }
+
   let body: unknown;
   try {
     body = await req.json();
