@@ -223,6 +223,7 @@ export default function PromptBox({
     if (handoff) {
       const payload = readHandoff();
       if (payload && typeof payload.prompt === "string" && payload.prompt.trim().length > 0) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time restore of the matcher handoff from sessionStorage after hydration (not readable during SSR).
         setPrompt(payload.prompt);
         const handoffTarget = isTarget(payload.target) ? payload.target : undefined;
         if (handoffTarget) {
@@ -286,6 +287,7 @@ export default function PromptBox({
   // Keep modelId valid for the chosen target
   useEffect(() => {
     if (!target) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- resets a model id that no longer belongs to the chosen target; runs once per target change.
       if (modelId !== "") setModelId("");
       return;
     }
@@ -345,6 +347,7 @@ export default function PromptBox({
   // Drop attachments when the purpose no longer supports them
   useEffect(() => {
     if (purpose && !isPurposeAttachmentEnabled(purpose) && attachments.length > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- drops attachments the newly chosen purpose does not support; runs once per purpose change.
       setAttachments([]);
     }
   }, [purpose, attachments.length]);
