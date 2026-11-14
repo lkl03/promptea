@@ -1,0 +1,43 @@
+
+> prompt-evaluator@1.8.5 seo:check
+> node scripts/seo-check.mjs
+
+seo:check against https://www.promptea.me
+
+== robots.txt
+  ✓ robots.txt: 43 passed
+
+== sitemap.xml
+  ✓ sitemap.xml: 13 passed
+
+== llms.txt / llms-full.txt
+  ✓ llms.txt / llms-full.txt: 81 passed
+
+== markdown twins
+  ✓ markdown twins: 360 passed
+
+== pages (every sitemap URL)
+  ✗ /es/benchmarks
+      JSON-LD: Dataset https://www.promptea.me/es/benchmarks#dataset: source Dataset without a 50–5000 character description
+  ✗ /en/benchmarks
+      JSON-LD: Dataset https://www.promptea.me/en/benchmarks#dataset: source Dataset without a 50–5000 character description
+  ✗ /pt/benchmarks
+      JSON-LD: Dataset https://www.promptea.me/pt/benchmarks#dataset: source Dataset without a 50–5000 character description
+  ✗ pages (every sitemap URL): 601 passed, 3 FAILED
+
+== language entry (proxy)
+  ✓ language entry (proxy): 5 passed
+
+== /pt views of content without a Portuguese version
+    (every guide is translated to Portuguese: no guide view to check)
+  ✓ /pt views of content without a Portuguese version: 5 passed
+
+============================================================
+seo:check — 1108 passed, 3 failed, 0 warning(s)  [1111 checks]
+
+Failures:
+  - [pages (every sitemap URL)] /es/benchmarks: JSON-LD: Dataset https://www.promptea.me/es/benchmarks#dataset: source Dataset without a 50–5000 character description
+  - [pages (every sitemap URL)] /en/benchmarks: JSON-LD: Dataset https://www.promptea.me/en/benchmarks#dataset: source Dataset without a 50–5000 character description
+  - [pages (every sitemap URL)] /pt/benchmarks: JSON-LD: Dataset https://www.promptea.me/pt/benchmarks#dataset: source Dataset without a 50–5000 character description
+
+RESULT: FAIL

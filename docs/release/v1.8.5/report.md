@@ -84,7 +84,10 @@ Versión **1.8.5** en `lib/version.ts`, `package.json`, `package-lock.json`, REA
 | `qa-local` | 57/57 ([log](./logs/final/qa-local.txt)) |
 | `a11y-check` | 83/83, Aqua estricto; 3 "known" de N-1 ([log](./logs/final/a11y-check.txt)) |
 | `engine-qa` | 64/64 ([log](./logs/final/engine-qa.txt)) |
-| `audit` | ver [log](./logs/final/audit.txt) |
+| `audit` (páginas × temas × anchos) | 460 cargas, 0 hallazgos ([log](./logs/final/audit.txt)) |
+| `overflow` de las guías nuevas | 0 en es/en/pt × 375/768 ([log](./logs/final/overflow-new-guides.txt)) |
+| `seo:check` contra producción **antes** del merge | 1.108/1.111: fallan solo los tres `/benchmarks` por el Dataset de origen sin `description`, que es exactamente lo que arregla este PR (el validador nuevo lo detecta) ([log](./logs/final/seo-check-prod-before-merge.txt)) |
+| Preview de Vercel de #44 (Chrome del dueño) | V1.8.5, Next 16.4.6, primario de Aqua `#0061cc` con texto blanco, Metro sin cambios, Dataset de origen con `description`, guías nuevas y gemelo `.md` en 200 |
 
 ## Pasos del dueño (en orden)
 
