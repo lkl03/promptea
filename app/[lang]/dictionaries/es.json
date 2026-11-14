@@ -563,6 +563,16 @@
     "about": "Acerca de Promptea"
   },
   "changelog": {
+    "v185": {
+      "released": "Lanzado: 13-11-2026",
+      "items": [
+        "Actualización de seguridad del framework del sitio (Next.js 16.4): cierra cuatro vulnerabilidades críticas y las páginas cargan menos JavaScript.",
+        "Mejor contraste en el tema Aqua: el azul de botones, enlaces y etiquetas es un poco más profundo y se lee bien (WCAG AA).",
+        "Dos guías nuevas: prompts de IA para analizar feedback de clientes y para propuestas y respuestas a licitaciones (RFP), en español, inglés y portugués.",
+        "Los datos estructurados de la página de benchmarks ahora son válidos para Google.",
+        "Actualización de la librería que envía el newsletter."
+      ]
+    },
     "v184": {
       "released": "Lanzado: 13-11-2026",
       "items": [

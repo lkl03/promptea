@@ -9,7 +9,13 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 
 Available in English, Spanish and Brazilian Portuguese (`/en`, `/es`, `/pt`; v1.8.2). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.4 (2026-11-13)
+## Latest update — v1.8.5 (2026-11-13)
+
+**The owner's open items from the v1.8.4 QA.** Next.js 16.4.6 closes four critical security advisories (released on its own, #43); Aqua's accent becomes `#0061cc` so buttons, links and badges pass WCAG AA; two new guides (customer feedback analysis, proposals and RFP responses) in the three languages; `resend` is updated; the benchmarks JSON-LD passes Google's Rich Results Test; and the AI Daily Tech routine exists, disabled until its network access, secret and validation run are done (see "AI Daily Tech" below). Report and the owner's remaining steps: [`docs/release/v1.8.5/report.md`](./docs/release/v1.8.5/report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.4 (2026-11-13) — final QA after v1.8.3, with its fixes._
+
+## v1.8.4 (2026-11-13)
 
 **Final QA after v1.8.3, with its fixes.** The scrollable prompt boxes on guides, model pages, the glossary and the six prompt packs can be scrolled from the keyboard; the AI Daily Tech index stays out of search engines, the sitemap and `llms.txt` until its first story; the model registry adds Claude Fable 5.2, Gemini 4 Argon and Gemini 4 Carbon, checked against each provider's documentation; `zod` is updated. Evidence and the owner's open decisions: [`docs/release/v1.8.4/qa-report.md`](./docs/release/v1.8.4/qa-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
 
