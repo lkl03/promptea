@@ -64,3 +64,35 @@ Después de aplicar: `npm run lint`, `npm run typecheck`, `npm test` (incluye `i
 
 - Qué newsletter recibe un suscriptor de `/pt` (hoy elige inglés o español): es una decisión de producto, no de traducción.
 - Traducir AI Daily o el resumen semanal: hoy se muestran en inglés bajo `/pt` a propósito.
+
+## 6. Pasada asistida (2026-11-13) — no reemplaza la revisión nativa
+
+Una pasada hecha por IA, **no por una persona nativa**, para sacar errores claros antes de que llegue el revisor. Criterio: corregir solo lo inequívoco (concordancia, regencia, crase, acentos, calcos evidentes, contradicciones con el glosario) y anotar lo dudoso acá, sin cambiarlo.
+
+**Qué se leyó completo:** toda la interfaz (`pt.json`), el inicio y Como funciona (`sitePages.ts`), los mensajes del analizador (`findings.ts`, `feedback.ts`, `recommendations.ts`), las explicaciones de Melhor IA (`lib/matcher`), los textos de Benchmarks y las seis guías prioritarias (`json-output`, `prompt-checklist`, `chatgpt-prompts-for-work`, `claude-prompt-guide`, `ai-prompts-for-customer-feedback`, `ai-prompts-for-proposals`).
+
+**Qué se escaneó de forma automática en todo el texto pt** (contenido SEO, motor, páginas y diccionario): restos de español, crase delante de masculino o de verbo, "a medida que", "afim de", "houveram", términos fuera del glosario ("score", "nota", "de graça", "tu/teu", "email" sin guion), informalidades ("pra", "tá"), palabras repetidas y falsos amigos típicos (eventualmente, endereçar, assumir que, requerimento, compreensivo, suporta, performar). No apareció ningún caso real: el texto estaba limpio en esos puntos.
+
+**Corregido (3, todo en `lib/seo/content/guides.ts`):**
+
+| Guía | Antes | Después | Motivo |
+| --- | --- | --- | --- |
+| `claude-prompt-guide` (template "Análise estruturada…") | o fato mais importante de que alguém que precisa decidir precisa saber | o fato mais importante que quem vai decidir precisa saber | Regencia: "saber algo" es directo, el "de que" sobra; además repetía "precisa". |
+| `ai-prompts-for-proposals` | Leia o documento final como o avaliador vai ler: contra os critérios de pontuação | Leia o documento final como o avaliador vai lê-lo: à luz dos critérios de pontuação | Calco de *against*; falta el pronombre objeto. |
+| `ai-prompts-for-proposals` (FAQ) | conferir contra o checklist | conferir com o checklist | Calco de *check against*. |
+
+**Dudas para el revisor nativo (no se tocaron):**
+
+| Dónde | Texto actual | Posible alternativa | Duda |
+| --- | --- | --- | --- |
+| Guía `json-output`, FAQ "Por que o modelo ainda coloca texto?" | Porque você não deixou isso custoso. | Porque nada no prompt deixa claro que isso não é aceito. | Suena a calco de *you didn't make it costly*. |
+| Guía `json-output`, título de sección | Valide no código, não na esperança | Valide no código em vez de confiar na sorte | Juego de palabras traducido literal; ¿se entiende? |
+| Guía `ai-prompts-for-customer-feedback` | Diga o que os dados são: 'temas em 312 avaliações…' | Deixe claro o que os dados representam: … | Calco de *say what the data is*. |
+| Guía `ai-prompts-for-proposals`, template | Fique abaixo de [limite] palavras. | Use no máximo [limite] palavras. | Calco de *stay under*. |
+| Glosario (`glossary.ts`, término de saída estruturada) | valide o resultado contra o esquema | valide o resultado com base no esquema | "Validar contra o schema" es jerga de dev muy usada; ¿se deja? |
+| `pt.json` → `voice.errorUnsupported` | Seu navegador não tem suporte a gravação de voz. | … não tem suporte à gravação de voz. | ¿Crase? Depende de si se lee con artículo. |
+| `pt.json` → `hub.teaser.title` y changelog v1.8.1 | Benchmarks em um relance / que se explica em um relance | Benchmarks de relance / num piscar de olhos | "Em um relance" puede sonar a calco de *at a glance*. |
+| `pt.json` → changelog v1.8.2 | O Encontrar a melhor IA também explica a recomendação | A função "Encontrar a melhor IA" também explica… | Artículo delante del nombre de una función. |
+| `pt.json` → `analyzer.tryExample` | Testar um exemplo → | Experimentar um exemplo → | Cuál es más natural en un botón. |
+| Como funciona, sección "Como um prompt é pontuado" | Ela mede o quanto o prompt está bem especificado | Ela mede o quão bem especificado o prompt está | Orden de palabras. |
+| Guía de RR. HH. (`guides.ts`, "checagem de referências") | checar referências | verificar referências | "Checar" es coloquial; ¿registro adecuado? |
