@@ -1,0 +1,4 @@
+
+> prompt-evaluator@1.8.5 typecheck
+> tsc --noEmit
+

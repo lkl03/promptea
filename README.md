@@ -9,7 +9,13 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 
 Available in English, Spanish and Brazilian Portuguese (`/en`, `/es`, `/pt`; v1.8.2). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.4 (2026-11-13)
+## Latest update — v1.8.5 (2026-11-13)
+
+**The owner's open items from the v1.8.4 QA.** Next.js 16.4.6 closes four critical security advisories (released on its own, #43); Aqua's accent becomes `#0061cc` so buttons, links and badges pass WCAG AA; two new guides (customer feedback analysis, proposals and RFP responses) in the three languages; `resend` is updated; the benchmarks JSON-LD passes Google's Rich Results Test; and the AI Daily Tech routine exists, disabled until its network access, secret and validation run are done (see "AI Daily Tech" below). Report and the owner's remaining steps: [`docs/release/v1.8.5/report.md`](./docs/release/v1.8.5/report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.4 (2026-11-13) — final QA after v1.8.3, with its fixes._
+
+## v1.8.4 (2026-11-13)
 
 **Final QA after v1.8.3, with its fixes.** The scrollable prompt boxes on guides, model pages, the glossary and the six prompt packs can be scrolled from the keyboard; the AI Daily Tech index stays out of search engines, the sitemap and `llms.txt` until its first story; the model registry adds Claude Fable 5.2, Gemini 4 Argon and Gemini 4 Carbon, checked against each provider's documentation; `zod` is updated. Evidence and the owner's open decisions: [`docs/release/v1.8.4/qa-report.md`](./docs/release/v1.8.4/qa-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
 
@@ -91,11 +97,8 @@ Design and data model: [`docs/editorial/tech-daily-design.md`](./docs/editorial/
 - **What it is.** Edition `tech-daily`: at most one story a day, stored in its own document (`ai-tech_<date>`) next to that day's AI stories. Categories added for it (usable by any edition): `cloud`, `web-platform`, `hardware`.
 - **Where it shows.** `/[lang]/blog/tech` (index, search, filters, pagination), `/[lang]/blog/tech/feed.xml`, the tabs AI | Tech | Weekly digest, the home page's "Latest in AI Daily" (the lead is always an AI story; at most one Tech story in the row — `lib/blog/latest.ts`), the news marquee, the weekly digest's "Tech this week" block, the sitemap, `llms.txt` and the markdown twins. Under `/pt` it is shown in English with a notice, canonical → `/en/blog/tech`.
 - **Sources.** `lib/blog/sources.ts` is the curated registry (Tier 1 primary, Tier 2 trusted press, Tier 3 discovery only), explained to readers at `/[lang]/sources` and to maintainers in [`docs/editorial/sources.md`](./docs/editorial/sources.md). `node scripts/editorial/verify-sources.mjs` fetches every URL and rewrites [`docs/editorial/sources-verification.md`](./docs/editorial/sources-verification.md); a source that cannot be verified is not added.
-- **Setting up the routine (once).** Nothing publishes Tech stories until an external routine exists:
-  1. At https://claude.ai/code/routines create "Promptea AI Daily Tech" (suggested cron `0 15 * * *`, 12:00 in Buenos Aires).
-  2. Give it the **same** `BLOG_PUBLISH_SECRET` the AI Daily routine uses (the value in Vercel → Production). No new Vercel variable and no Firebase credentials.
-  3. Paste the prompt from [`docs/editorial/tech-daily-routine.md`](./docs/editorial/tech-daily-routine.md). It signs requests exactly like the AI Daily routine and always sends a `dryRun` before publishing.
-  Until then `/blog/tech` shows its empty state, the home shows no "Tech" button and the digest has no Tech block.
+- **The routine (v1.8.5).** "Promptea AI Daily Tech" exists, **disabled**: `trig_016d8RWXCJbYzCYrzKKqfmAc` (https://claude.ai/code/routines/trig_016d8RWXCJbYzCYrzKKqfmAc), cron `0 15 * * *` (12:00 in Buenos Aires), the same model, environment, repository and tools as the AI Daily routines, no connectors. Its instructions are the prompt from [`docs/editorial/tech-daily-routine.md`](./docs/editorial/tech-daily-routine.md) behind a short setup block: a placeholder for the **same** `BLOG_PUBLISH_SECRET` the AI Daily routines carry in their instructions (no new Vercel variable, no Firebase credentials) and a `VALIDATION MODE` switch that only allows `dryRun` requests. Before enabling it: allow the 85 Tech source hosts the shared cloud environment does not reach yet ([`docs/editorial/tech-routine-domains-to-allow.txt`](./docs/editorial/tech-routine-domains-to-allow.txt)), paste the secret, run it once in validation mode, then remove the validation block and enable it. Step by step and what was verified: [`docs/editorial/tech-daily-routine-status.md`](./docs/editorial/tech-daily-routine-status.md).
+  Until it publishes, `/blog/tech` shows its empty state, the home shows no "Tech" button and the digest has no Tech block.
 - **Reviewing it locally.** `BLOG_DEV_FIXTURE=1` includes four clearly fictitious Tech stories.
 
 ## Promptea Weekly (newsletter)

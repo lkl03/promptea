@@ -1,0 +1,207 @@
+
+> prompt-evaluator@1.8.5 build
+> next build
+
+▲ Next.js 16.4.6 (Turbopack)
+✓ Running next.config.ts took 59ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.6s
+  Running TypeScript ...
+  Finished TypeScript in 6.1s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/702) ...
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+  Generating static pages using 11 workers (175/702) 
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+  Generating static pages using 11 workers (350/702) 
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+  Generating static pages using 11 workers (526/702) 
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+[benchmarks] benchmarks_fetch_failed { reason: 'not_configured', status: null }
+✓ Generating static pages using 11 workers (702/702) in 4.5s
+  Finalizing page optimization ...
+
+Route (app)                              Revalidate  Expire
+┌ ○ /_not-found
+├   /[lang]
+│ ├ ● /es                                        5m      1y
+│ ├ ● /en                                        5m      1y
+│ └ ● /pt                                        5m      1y
+├   /[lang]/about
+│ ├ ● /es/about
+│ ├ ● /en/about
+│ └ ● /pt/about
+├ ƒ /[lang]/analyzer
+├   /[lang]/benchmarks
+│ ├ ● /es/benchmarks                             1h      1y
+│ ├ ● /en/benchmarks                             1h      1y
+│ └ ● /pt/benchmarks                             1h      1y
+├   /[lang]/best-ai
+│ ├ ● /es/best-ai
+│ ├ ● /en/best-ai
+│ └ ● /pt/best-ai
+├ ƒ /[lang]/blog
+├ ƒ /[lang]/blog/[slug]
+├ ƒ /[lang]/blog/[slug]/opengraph-image
+├ ƒ /[lang]/blog/feed.xml
+├ ƒ /[lang]/blog/tech
+├ ƒ /[lang]/blog/tech/feed.xml
+├   /[lang]/blog/weekly
+│ ├ ● /es/blog/weekly                            5m      1y
+│ ├ ● /en/blog/weekly                            5m      1y
+│ └ ● /pt/blog/weekly                            5m      1y
+├ ƒ /[lang]/blog/weekly/[date]
+├   /[lang]/changelog
+│ ├ ● /es/changelog
+│ ├ ● /en/changelog
+│ └ ● /pt/changelog
+├   /[lang]/glossary
+│ ├ ● /es/glossary
+│ ├ ● /en/glossary
+│ └ ● /pt/glossary
+├   /[lang]/glossary/[slug]
+│ ├ ● /es/glossary/system-prompt
+│ ├ ● /es/glossary/few-shot
+│ ├ ● /es/glossary/delimiters
+│ └ ● [+57 more paths]
+├   /[lang]/guides
+│ ├ ● /es/guides
+│ ├ ● /en/guides
+│ └ ● /pt/guides
+├   /[lang]/guides/[slug]
+│ ├ ● /es/guides/prompt-checklist
+│ ├ ● /es/guides/json-output
+│ ├ ● /es/guides/code-prompts-that-work
+│ └ ● [+177 more paths]
+├   /[lang]/how-it-works
+│ ├ ● /es/how-it-works
+│ ├ ● /en/how-it-works
+│ └ ● /pt/how-it-works
+├   /[lang]/landing/[slug]
+│ ├ ● /es/landing/prompt-analyzer
+│ ├ ● /en/landing/prompt-analyzer
+│ ├ ● /pt/landing/prompt-analyzer
+│ └ ● [+21 more paths]
+├   /[lang]/library
+│ ├ ● /es/library
+│ ├ ● /en/library
+│ └ ● /pt/library
+├   /[lang]/llms-full.txt
+│ ├ ● /es/llms-full.txt                          1h      1y
+│ ├ ● /en/llms-full.txt                          1h      1y
+│ └ ● /pt/llms-full.txt                          1h      1y
+├   /[lang]/llms.txt
+│ ├ ● /es/llms.txt                               1h      1y
+│ ├ ● /en/llms.txt                               1h      1y
+│ └ ● /pt/llms.txt                               1h      1y
+├   /[lang]/methodology
+│ ├ ● /es/methodology
+│ ├ ● /en/methodology
+│ └ ● /pt/methodology
+├   /[lang]/models
+│ ├ ● /es/models
+│ ├ ● /en/models
+│ └ ● /pt/models
+├   /[lang]/models/[slug]
+│ ├ ● /es/models/gpt
+│ ├ ● /es/models/claude
+│ ├ ● /es/models/gemini
+│ └ ● [+18 more paths]
+├   /[lang]/opengraph-image
+│ ├ ● /es/opengraph-image
+│ ├ ● /en/opengraph-image
+│ └ ● /pt/opengraph-image
+├   /[lang]/privacy
+│ ├ ● /es/privacy
+│ ├ ● /en/privacy
+│ └ ● /pt/privacy
+├   /[lang]/prompts
+│ ├ ● /es/prompts
+│ ├ ● /en/prompts
+│ └ ● /pt/prompts
+├   /[lang]/prompts/code
+│ ├ ● /es/prompts/code
+│ ├ ● /en/prompts/code
+│ └ ● /pt/prompts/code
+├   /[lang]/prompts/data
+│ ├ ● /es/prompts/data
+│ ├ ● /en/prompts/data
+│ └ ● /pt/prompts/data
+├   /[lang]/prompts/image
+│ ├ ● /es/prompts/image
+│ ├ ● /en/prompts/image
+│ └ ● /pt/prompts/image
+├   /[lang]/prompts/marketing
+│ ├ ● /es/prompts/marketing
+│ ├ ● /en/prompts/marketing
+│ └ ● /pt/prompts/marketing
+├   /[lang]/prompts/study
+│ ├ ● /es/prompts/study
+│ ├ ● /en/prompts/study
+│ └ ● /pt/prompts/study
+├   /[lang]/prompts/text
+│ ├ ● /es/prompts/text
+│ ├ ● /en/prompts/text
+│ └ ● /pt/prompts/text
+├ ƒ /[lang]/share
+├   /[lang]/sources
+│ ├ ● /es/sources
+│ ├ ● /en/sources
+│ └ ● /pt/sources
+├   /[lang]/twitter-image
+│ ├ ● /es/twitter-image
+│ ├ ● /en/twitter-image
+│ └ ● /pt/twitter-image
+├   /[lang]/weekly
+│ ├ ● /es/weekly
+│ ├ ● /en/weekly
+│ └ ● /pt/weekly
+├ ƒ /api/analyze
+├ ƒ /api/analyze-llm
+├ ƒ /api/app-feedback
+├ ○ /api/benchmarks                              1h      1y
+├ ƒ /api/feedback
+├ ƒ /api/internal/blog/publish
+├ ƒ /api/internal/newsletter/run
+├ ƒ /api/match
+├ ƒ /api/newsletter/subscribe
+├ ƒ /api/newsletter/unsubscribe
+├ ƒ /api/share/card
+├ ƒ /api/telemetry
+├ ƒ /api/telemetry/app
+├ ƒ /api/telemetry/session
+├ ƒ /api/transcribe
+├ ○ /apple-icon.png
+├ ○ /icon.png
+├ ○ /llms-full.txt                               1h      1y
+├ ○ /llms.txt                                    1h      1y
+├ ○ /manifest.webmanifest
+├   /md/[lang]/[[...path]]
+│ ├ ● /md/es                                     5m      1y
+│ ├ ● /md/es/how-it-works                        5m      1y
+│ ├ ● /md/es/about                               5m      1y
+│ └ ● [+300 more paths]
+├ ○ /robots.txt
+└ ○ /sitemap.xml                                30m      1y
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+

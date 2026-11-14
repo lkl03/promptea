@@ -251,6 +251,11 @@ export function validateLd(html, opts) {
       }
       if (!n.dateModified) errors.push(`${label}: Dataset without dateModified`);
       if (!n.isBasedOn?.url) errors.push(`${label}: Dataset without its source`);
+      // v1.8.5 — Google's Dataset rich result requires a description (50–5000 characters)
+      // on every Dataset, including a Dataset nested as the source (Rich Results Test).
+      const described = (d) => typeof d?.description === "string" && d.description.length >= 50 && d.description.length <= 5000;
+      if (!described(n)) errors.push(`${label}: Dataset without a 50–5000 character description`);
+      if (asArray(n.isBasedOn?.["@type"]).includes("Dataset") && !described(n.isBasedOn)) errors.push(`${label}: source Dataset without a 50–5000 character description`);
     }
   }
 

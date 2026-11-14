@@ -1,0 +1,81 @@
+ok   [engine] text/es — score 57 → 57
+ok   [engine] text/en — score 57 → 57
+ok   [engine] study/es — score 46 → 46
+ok   [engine] study/en — score 46 → 46
+ok   [engine] code/es — score 38 → 38
+ok   [engine] code/en — score 41 → 41
+ok   [engine] data/es — score 66 → 69
+ok   [engine] data/en — score 66 → 69
+ok   [engine] image/es — score 40 → 64
+ok   [engine] image/en — score 40 → 64
+ok   [engine] marketing/es — score 41 → 41
+ok   [engine] marketing/en — score 41 → 41
+ok   [engine] translation/es — score 46 → 46
+ok   [engine] translation/en — score 48 → 48
+ok   [engine] summarization/es — score 56 → 56
+ok   [engine] summarization/en — score 56 → 56
+ok   [engine] same prompt, same score — 41 / 41
+ok   [engine] invalid body is rejected with 4xx — status 400
+ok   [share card] valid — status 200 image/png 245533 B
+ok   [share card] no params — status 200 image/png 283512 B
+ok   [share card] score out of range — status 200 image/png 270969 B
+ok   [share card] non-numeric — status 200 image/png 283512 B
+ok   [share card] hostile strings — status 200 image/png 240771 B
+ok   [share card] very long value — status 200 image/png 283512 B
+ok   [share page] /es/share with hostile params — status 200
+ok   [share page] /es/share is noindex
+ok   [share page] /en/share with hostile params — status 200
+ok   [share page] /en/share is noindex
+ok   [noindex] /en/library is noindex
+ok   [noindex] /es/library is noindex
+ok   [noindex] /en is not noindex
+ok   [noindex] /en/how-it-works is not noindex
+ok   [noindex] /es/how-it-works is not noindex
+ok   [noindex] /en/analyzer is not noindex
+ok   [noindex] /en/benchmarks is not noindex
+ok   [no JavaScript] /en — h1=1 words=261 links=37
+ok   [no JavaScript] /es — h1=1 words=273 links=37
+ok   [no JavaScript] /en/how-it-works — h1=1 words=720 links=38
+ok   [no JavaScript] /en/analyzer — h1=1 words=252 links=40
+ok   [no JavaScript] /en/best-ai — h1=1 words=100 links=38
+ok   [no JavaScript] /en/benchmarks — h1=1 words=134 links=38
+ok   [no JavaScript] /en/blog — h1=1 words=126 links=38
+ok   [no JavaScript] /en/library — h1=1 words=57 links=38
+ok   [no JavaScript] /en/guides/json-output — h1=1 words=490 links=38
+ok   [no JavaScript] home prompt box is a GET form with a 'prompt' field
+ok   [storage blocked] /en
+ok   [storage blocked] /es
+ok   [storage blocked] /en/how-it-works
+ok   [storage blocked] /en/analyzer
+ok   [storage blocked] /en/best-ai
+ok   [storage blocked] /en/benchmarks
+ok   [storage blocked] /en/blog
+ok   [storage blocked] /en/library
+ok   [storage blocked] /en/guides/json-output
+ok   [storage blocked] home prompt box falls back to ?prompt= — http://localhost:3182/en/analyzer?prompt=Write%20a%20haiku%20about%20rain
+ok   [hand-off] home → analyzer keeps the prompt out of the URL — http://localhost:3182/en/analyzer?handoff=1
+ok   [hand-off] the analyzer opens with the prompt loaded — Write a haiku about rain
+
+engine summary:
+┌─────────┬─────────────────┬──────┬───────┬───────┬───────┬─────────────────┬────────────────┬───────────────────┐
+│ (index) │ purpose         │ lang │ score │ after │ delta │ engine          │ fallbackReason │ taskType          │
+├─────────┼─────────────────┼──────┼───────┼───────┼───────┼─────────────────┼────────────────┼───────────────────┤
+│ 0       │ 'text'          │ 'es' │ 57    │ 57    │ 0     │ 'deterministic' │ 'disabled'     │ 'writing'         │
+│ 1       │ 'text'          │ 'en' │ 57    │ 57    │ 0     │ 'deterministic' │ 'disabled'     │ 'writing'         │
+│ 2       │ 'study'         │ 'es' │ 46    │ 46    │ 0     │ 'deterministic' │ 'disabled'     │ 'study'           │
+│ 3       │ 'study'         │ 'en' │ 46    │ 46    │ 0     │ 'deterministic' │ 'disabled'     │ 'study'           │
+│ 4       │ 'code'          │ 'es' │ 38    │ 38    │ 0     │ 'deterministic' │ 'disabled'     │ 'coding'          │
+│ 5       │ 'code'          │ 'en' │ 41    │ 41    │ 0     │ 'deterministic' │ 'disabled'     │ 'coding'          │
+│ 6       │ 'data'          │ 'es' │ 66    │ 69    │ 3     │ 'deterministic' │ 'disabled'     │ 'data_extraction' │
+│ 7       │ 'data'          │ 'en' │ 66    │ 69    │ 3     │ 'deterministic' │ 'disabled'     │ 'data_extraction' │
+│ 8       │ 'image'         │ 'es' │ 40    │ 64    │ 24    │ 'deterministic' │ 'disabled'     │ 'image'           │
+│ 9       │ 'image'         │ 'en' │ 40    │ 64    │ 24    │ 'deterministic' │ 'disabled'     │ 'image'           │
+│ 10      │ 'marketing'     │ 'es' │ 41    │ 41    │ 0     │ 'deterministic' │ 'disabled'     │ 'marketing'       │
+│ 11      │ 'marketing'     │ 'en' │ 41    │ 41    │ 0     │ 'deterministic' │ 'disabled'     │ 'marketing'       │
+│ 12      │ 'translation'   │ 'es' │ 46    │ 46    │ 0     │ 'deterministic' │ 'disabled'     │ 'translation'     │
+│ 13      │ 'translation'   │ 'en' │ 48    │ 48    │ 0     │ 'deterministic' │ 'disabled'     │ 'translation'     │
+│ 14      │ 'summarization' │ 'es' │ 56    │ 56    │ 0     │ 'deterministic' │ 'disabled'     │ 'summarization'   │
+│ 15      │ 'summarization' │ 'en' │ 56    │ 56    │ 0     │ 'deterministic' │ 'disabled'     │ 'summarization'   │
+└─────────┴─────────────────┴──────┴───────┴───────┴───────┴─────────────────┴────────────────┴───────────────────┘
+
+57 passed, 0 failed

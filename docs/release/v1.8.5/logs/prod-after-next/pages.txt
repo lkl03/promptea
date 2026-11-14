@@ -1,0 +1,15 @@
+200 /es 1.224329s
+200 /en 1.179657s
+200 /pt 0.955713s
+200 /es/analyzer 1.242211s
+200 /en/analyzer 0.725958s
+200 /pt/analyzer 0.407260s
+200 /en/benchmarks 0.723680s
+200 /pt/benchmarks 0.705623s
+200 /es/blog 3.423721s
+200 /en/blog/tech 1.557301s
+200 /pt/guides 0.694420s
+200 /en/opengraph-image 0.569997s
+200 /api/benchmarks 0.638160s
+200 /sitemap.xml 0.453920s
+200 /en/llms.txt 0.484827s

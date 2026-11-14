@@ -4,6 +4,32 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.5 — 2026-11-13
+
+**The owner's open items from the v1.8.4 QA.** Next.js security update (its own PR, #43, already in production), the Aqua accent passes WCAG AA, two new guides, `resend` updated, the benchmarks JSON-LD fixed after Google's Rich Results Test, and the AI Daily Tech routine created (disabled until the owner finishes its setup). What was done, verified, and left to the owner, step by step: [`docs/release/v1.8.5/report.md`](./docs/release/v1.8.5/report.md).
+
+### Security
+- **`next` and `eslint-config-next` 16.1.1 → 16.4.6** (#43): closes the 41 `npm audit` advisories on `next`, 4 of them critical (remote code execution). Checked before installing: published by GitHub Actions as a trusted publisher with SLSA provenance to `vercel/next.js@v16.4.6`, no install scripts. `npm audit signatures` verifies every package. Consequences: `ImageResponse` uses Geist instead of Noto Sans by default, so Open Graph images and the share card change typeface, not layout; first-party JavaScript is about 25 % smaller; `eslint-plugin-react-hooks` 7.1.1 flags four existing effects that restore client state after hydration (marked with a justified disable, behaviour unchanged); `agentRules: false` stops `next dev` from writing an `AGENTS.md` for AI agents; the lockfile's impossible `base64-js@1.5.2` entry is corrected to the `1.5.1` it always installed. Verification: [`docs/release/v1.8.5/next-16.4.6.md`](./docs/release/v1.8.5/next-16.4.6.md).
+- **`resend` 6.8.0 → 6.38.0**: drops `svix` and its vulnerable `uuid` (moderate advisory). 6.38.1 was skipped: published hours earlier and only changing its CI publishing. No email was sent; the owner's test send is in the report. `npm audit --omit=dev`: 25 → 18 advisories, all transitive (`firebase-admin` and build tooling).
+
+### Changed
+- **Aqua's accent is `#0061cc`** instead of Apple's `#007aff`: white button labels 5.86:1 (was 4.02:1), accent links on the canvas 5.17:1 (was 3.54:1); hover `#0052ad`. New `--accent-ink` / `--info-ink` tokens give the 11 px accent and info badges ≥ 5.36:1. Tints, the focus ring and the selection keep the system blue; Metro and Glass do not change. `a11y-check` no longer carries the Aqua exception and now also measures the analyzer's accent badge and link. Test: `lib/__tests__/a11y.accentContrast.test.ts`. Before/after: `docs/release/v1.8.5/shots/`.
+
+### Added
+- **Two guides, from the closed bot PR #41, reviewed before porting**: [AI prompts for customer feedback analysis](https://www.promptea.me/en/guides/ai-prompts-for-customer-feedback) and [AI prompts for proposals and RFP responses](https://www.promptea.me/en/guides/ai-prompts-for-proposals), in English, Spanish and Portuguese, three templates and three FAQ each. Fixed in review: the proposals guide promised "four prompts" with three templates, and its Portuguese title mixed two constructions. They are in the sitemap, `llms.txt`, `llms-full.txt` and the markdown twins; `llms-full.txt` stays under its 400 KB ceiling (Spanish: about 8 KB more of fixed content, AI Daily keeps its current stories).
+- **The AI Daily Tech routine** (`trig_016d8RWXCJbYzCYrzKKqfmAc`, daily 12:00 Buenos Aires), **disabled**: before enabling it, the shared cloud environment needs the 85 Tech source hosts it does not reach yet, its instructions need the publish secret (never written by Claude), and one validation run that only sends `dryRun`. [`docs/editorial/tech-daily-routine-status.md`](./docs/editorial/tech-daily-routine-status.md).
+- [`docs/i18n/pt-review.md`](./docs/i18n/pt-review.md): the package for a native Portuguese review.
+
+### Fixed
+- **Benchmarks JSON-LD rejected by Google**: the Rich Results Test flagged `/en/benchmarks` because the source `Dataset` nested in `isBasedOn` had no `description`. It has one now in every language, and the `seo:check` validator requires a 50–5000 character description on every `Dataset`. `/en/how-it-works`, a guide and an AI Daily story passed (only optional fields reported: `aggregateRating`, which Promptea will not invent, and `image` on guides).
+
+### Open (owner)
+- Search Console and Bing Webmaster Tools: `promptea.me` is not a property in either account yet (verification is the owner's); the tabs are left prepared. Native Portuguese review. Contrast of accent text and badges in **Metro** and of badges in **Glass light** (measured for the first time, below 4.5:1; a theme identity decision). Newsletter test send with `resend` 6.38.0.
+
+### Tests and checks
+- `lint`, `typecheck`, `build` (no credentials) green; `npm test` 1,707 tests (1,696 at the start).
+- `seo:check` local and against production, `a11y-check`, `audit`, `engine-qa`, `qa-local`: results in the report.
+
 ## v1.8.4 — 2026-11-13
 
 **Final QA after v1.8.3, with its fixes.** v1.8.3 was released by merging #39 (QA) and #40 (AI Daily Tech); the weekly bot's own v1.8.3 PR (#41) was closed without merging and its routine paused. What was tested, how, the results, what stays open and what could not be verified: [`docs/release/v1.8.4/qa-report.md`](./docs/release/v1.8.4/qa-report.md).

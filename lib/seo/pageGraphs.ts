@@ -177,6 +177,11 @@ export function benchmarksGraph(i: { lang: Locale; title: string; description: s
       }),
       dateModified: asOf,
       sourceName: "OpenRouter benchmarks API",
+      sourceDescription: pick(i.lang, {
+        es: "Resultados de benchmarks publicados por la API pública de benchmarks de OpenRouter, que Promptea lee para armar estos rankings. Cada benchmark conserva la fuente y la métrica que informa esa API.",
+        en: "Benchmark results published through OpenRouter's public benchmarks API, which Promptea reads to build these rankings. Each benchmark keeps the source and the metric that API reports.",
+        pt: "Resultados de benchmarks publicados pela API pública de benchmarks do OpenRouter, que o Promptea lê para montar estes rankings. Cada benchmark mantém a fonte e a métrica informadas por essa API.",
+      }),
       sourceUrl: snap.sourceUrl ?? "https://openrouter.ai/benchmarks",
       measured: snap.tables.map((tb) => `${tb.def.label[i.lang]} (${CATEGORY_LABELS[tb.def.category][i.lang]})`),
       citation: snap.citation,
