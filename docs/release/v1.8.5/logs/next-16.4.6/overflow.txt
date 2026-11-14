@@ -1,0 +1,96 @@
+== /pt @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /pt @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}
+== /en/analyzer @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /en/analyzer @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}
+== /pt/benchmarks @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /pt/benchmarks @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}
+== /es/blog @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /es/blog @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}
+== /pt/guides/json-output @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /pt/guides/json-output @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}
+== /en/how-it-works @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /en/how-it-works @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}
+== /pt/prompts/code @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /pt/prompts/code @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}
+== /en/changelog @375
+{
+  "overflow": 0,
+  "vw": 375,
+  "bad": []
+}
+== /en/changelog @768
+{
+  "overflow": 0,
+  "vw": 768,
+  "bad": []
+}

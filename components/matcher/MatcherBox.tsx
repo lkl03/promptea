@@ -58,6 +58,7 @@ export default function MatcherBox({ dict, lang }: { dict: UiDict; lang: Lang })
     if (didInitRef.current) return;
     didInitRef.current = true;
     const shared = readSharedPrompt();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time restore of the shared prompt from sessionStorage after hydration (not readable during SSR).
     if (shared.trim().length > 0) setPrompt(shared);
     trackAppEvent({ event: "mode_opened", lang, mode: "best-ai" });
   }, [lang]);
