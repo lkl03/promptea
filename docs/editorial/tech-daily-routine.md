@@ -2,6 +2,8 @@
 
 Este archivo es el prompt de la rutina externa que publica **una nota tech por día** en AI Daily Tech (`/{lang}/blog/tech`). La rutina vive en Claude Code (cloud routines), igual que la de AI Daily: investiga, verifica, escribe en inglés y en español y publica con un `POST` firmado a `/api/internal/blog/publish`. El repositorio no publica nada por sí mismo.
 
+> **Estado (v1.8.5, 2026-11-13):** la rutina ya existe, **deshabilitada**: `trig_016d8RWXCJbYzCYrzKKqfmAc`. Faltan los dominios de red, el secreto y una corrida de validación antes de encenderla: [`tech-daily-routine-status.md`](./tech-daily-routine-status.md).
+
 ## Cómo darla de alta
 
 1. En https://claude.ai/code/routines, crear una rutina nueva llamada **Promptea AI Daily Tech**.
