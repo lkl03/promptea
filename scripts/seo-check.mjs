@@ -42,6 +42,9 @@ const EXPECTED_CRAWLERS = [
   "Claude-SearchBot", "Claude-User", "ClaudeBot",
   "PerplexityBot", "Perplexity-User",
   "Google-Extended", "Applebot-Extended", "CCBot", "Meta-ExternalAgent",
+  // v1.8.6
+  "meta-webindexer", "meta-externalfetcher", "ExaSearchBot", "ElevenlabsCrawler",
+  "PetalBot", "Baiduspider", "YisouSpider", "Bytespider",
 ];
 
 // Keep equal to lib/domain.ts LANGS.

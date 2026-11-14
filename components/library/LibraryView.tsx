@@ -16,6 +16,7 @@ import { purposeLabel } from "@/lib/purposes";
 import { isPurpose, INTL_LOCALE, type Lang } from "@/lib/domain";
 import ShareButton, { type ShareDict } from "@/components/share/ShareButton";
 import { useToast } from "@/components/ToastProvider";
+import { trackProductEvent } from "@/lib/analytics/productEvents";
 
 export type LibraryDict = Record<string, string>;
 
@@ -49,6 +50,7 @@ function EntryCard({ entry, lang, t, shareDict }: { entry: LibraryEntry; lang: L
   async function copy(text: string) {
     try {
       await navigator.clipboard.writeText(text);
+      trackProductEvent({ name: "Template Copied", lang, source: "library" });
       toast.show(t.copied, "success");
     } catch {
       /* clipboard blocked: nothing to do */

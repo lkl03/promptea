@@ -152,7 +152,7 @@ export default function ResultsPanel({
 
         {/* RIGHT — the improved prompt (primary actor) */}
         <div className="stagger-item">
-          <OptimizedPromptPanel dict={r} result={data} originalPrompt={originalPrompt} />
+          <OptimizedPromptPanel dict={r} lang={lang} result={data} originalPrompt={originalPrompt} />
         </div>
       </div>
 

@@ -27,8 +27,12 @@
 //
 // Names are the user-agent tokens each vendor publishes in its own crawler
 // documentation (OpenAI, Anthropic, Perplexity, Google, Apple, Common Crawl, Meta,
-// Amazon, DuckDuckGo, Mistral). Tokens change: re-check them against those docs
-// before relying on this list.
+// Amazon, DuckDuckGo, Mistral, Exa, ElevenLabs, Huawei/Petal, Baidu). Two have
+// no operator page and are taken from their UA strings, as the note says
+// (ByteDance's Bytespider, Shenma's YisouSpider). TokenFoundryBot (seen in the
+// 2026-11-14 review) is NOT listed: no operator documents it, so its owner and
+// purpose are unknown; `User-agent: *` still covers it. Tokens change: re-check
+// them against those docs before relying on this list.
 
 export type CrawlerKind = "search" | "user" | "training";
 
@@ -69,6 +73,17 @@ export const AI_CRAWLERS: readonly AiCrawler[] = [
   { userAgent: "Amazonbot", operator: "Amazon", kind: "search", allow: true, note: "Indexes pages for Alexa answers and Amazon services." },
   { userAgent: "DuckAssistBot", operator: "DuckDuckGo", kind: "user", allow: true, note: "Fetches pages to answer DuckAssist questions." },
   { userAgent: "MistralAI-User", operator: "Mistral", kind: "user", allow: true, note: "Fetches a page when a Le Chat user asks about it." },
+  // v1.8.6 — Meta's AI search and user-requested fetchers (tokens as Meta's
+  // web-crawlers page writes them, lower-case; robots.txt matching ignores case).
+  { userAgent: "meta-webindexer", operator: "Meta", kind: "search", allow: true, note: "Indexes pages so Meta AI search can find and cite them." },
+  { userAgent: "meta-externalfetcher", operator: "Meta", kind: "user", allow: true, note: "Fetches a link a Meta AI user shared; Meta documents it may bypass robots.txt." },
+  // v1.8.6 — search engines and AI crawlers seen in the 2026-11-14 traffic review.
+  { userAgent: "ExaSearchBot", operator: "Exa", kind: "search", allow: true, note: "Indexes pages for Exa's search and retrieval API (crawler.exa.ai)." },
+  { userAgent: "ElevenlabsCrawler", operator: "ElevenLabs", kind: "training", allow: true, note: "Collects content that may be used to train ElevenLabs models (elevenlabs.io/docs/bots)." },
+  { userAgent: "PetalBot", operator: "Huawei", kind: "search", allow: true, note: "Indexes pages for Petal Search (webmaster.petalsearch.com/site/petalbot)." },
+  { userAgent: "Baiduspider", operator: "Baidu", kind: "search", allow: true, note: "Indexes pages for Baidu search (variants such as Baiduspider-image have their own tokens)." },
+  { userAgent: "YisouSpider", operator: "Alibaba (Shenma / UC)", kind: "search", allow: true, note: "Indexes pages for Shenma search; no English operator page, token as Baidu and Shenma list it." },
+  { userAgent: "Bytespider", operator: "ByteDance", kind: "training", allow: true, note: "Crawls for ByteDance search and model data; no public crawler page, token from its UA string." },
 ] as const;
 
 const KIND_SWITCH: Record<CrawlerKind, boolean> = {
