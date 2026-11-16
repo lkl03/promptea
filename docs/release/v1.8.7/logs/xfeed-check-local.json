@@ -1,0 +1,953 @@
+{
+  "base": "http://localhost:3191",
+  "at": "2026-11-16T04:24:48.936Z",
+  "results": [
+    {
+      "name": "/es 1440px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es 1440px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es 1440px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es 1440px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es 375px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es 375px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 375px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 375px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es 375px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 375px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es 375px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es 375px aqua/light: no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es/blog 1440px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es/blog 1440px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es/blog 1440px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es/blog 1440px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es/blog 1440px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es/blog 1440px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es/blog 1440px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/en 1440px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/en 1440px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en 1440px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en 1440px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/en 1440px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en 1440px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Follow us on X The latest we posted about prompts and AI. We can't show our posts here yet. They are all on our X profil"
+    },
+    {
+      "name": "/en 1440px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/en 375px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/en 375px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en 375px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en 375px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/en 375px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en 375px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Follow us on X The latest we posted about prompts and AI. We can't show our posts here yet. They are all on our X profil"
+    },
+    {
+      "name": "/en 375px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/en 375px aqua/light: no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en/blog 1440px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/en/blog 1440px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en/blog 1440px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en/blog 1440px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/en/blog 1440px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/en/blog 1440px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Follow us on X The latest we posted about prompts and AI. We can't show our posts here yet. They are all on our X profil"
+    },
+    {
+      "name": "/en/blog 1440px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/pt 1440px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/pt 1440px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt 1440px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt 1440px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/pt 1440px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt 1440px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Siga a gente no X O que publicamos de mais recente sobre prompts e IA. Ainda não conseguimos mostrar nossas publicações "
+    },
+    {
+      "name": "/pt 1440px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/pt 375px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/pt 375px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt 375px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt 375px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/pt 375px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt 375px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Siga a gente no X O que publicamos de mais recente sobre prompts e IA. Ainda não conseguimos mostrar nossas publicações "
+    },
+    {
+      "name": "/pt 375px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/pt 375px aqua/light: no horizontal overflow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Siga a gente no X O que publicamos de mais recente sobre prompts e IA. Ainda não conseguimos mostrar nossas publicações "
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es 1440px metro/dark: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es 1440px metro/dark: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px metro/dark: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px metro/dark: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es 1440px metro/dark: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px metro/dark: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es 1440px metro/dark: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es 1440px glass/light: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es 1440px glass/light: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px glass/light: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px glass/light: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es 1440px glass/light: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px glass/light: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es 1440px glass/light: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es 1440px glass/dark: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es 1440px glass/dark: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px glass/dark: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px glass/dark: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es 1440px glass/dark: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px glass/dark: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es 1440px glass/dark: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es 1440px aqua/dark: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es 1440px aqua/dark: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/dark: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/dark: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es 1440px aqua/dark: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/dark: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es 1440px aqua/dark: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS: page 200",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS: card in the HTML",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS: no request to X / Elfsight / Buffer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS: no image, frame or script in the card",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS: every link https, new tab, safe rel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS: empty state shows the \"Follow us on X\" button",
+      "pass": true,
+      "detail": "Seguinos en X Lo último que publicamos sobre prompts e IA. Todavía no podemos mostrar nuestras publicaciones acá. Están "
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS: newsletter before X",
+      "pass": true,
+      "detail": "newsletter-first"
+    }
+  ],
+  "rows": [
+    {
+      "name": "/es 1440px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/es 375px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/es/blog 1440px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/en 1440px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Follow us on X\n\nThe latest we posted about prompts and AI.\n\nWe can't show our posts here yet. They are all on our X profile.\n\nFollow us on X"
+    },
+    {
+      "name": "/en 375px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Follow us on X\n\nThe latest we posted about prompts and AI.\n\nWe can't show our posts here yet. They are all on our X profile.\n\nFollow us on X"
+    },
+    {
+      "name": "/en/blog 1440px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Follow us on X\n\nThe latest we posted about prompts and AI.\n\nWe can't show our posts here yet. They are all on our X profile.\n\nFollow us on X"
+    },
+    {
+      "name": "/pt 1440px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Siga a gente no X\n\nO que publicamos de mais recente sobre prompts e IA.\n\nAinda não conseguimos mostrar nossas publicações aqui. Estão todas no nosso perfil do X.\n\nSiga a gente no X"
+    },
+    {
+      "name": "/pt 375px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Siga a gente no X\n\nO que publicamos de mais recente sobre prompts e IA.\n\nAinda não conseguimos mostrar nossas publicações aqui. Estão todas no nosso perfil do X.\n\nSiga a gente no X"
+    },
+    {
+      "name": "/pt/blog 1440px aqua/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Siga a gente no X\n\nO que publicamos de mais recente sobre prompts e IA.\n\nAinda não conseguimos mostrar nossas publicações aqui. Estão todas no nosso perfil do X.\n\nSiga a gente no X"
+    },
+    {
+      "name": "/es 1440px metro/dark",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/es 1440px glass/light",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/es 1440px glass/dark",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/es 1440px aqua/dark",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/es 1440px aqua/light no-JS",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    },
+    {
+      "name": "/es/blog 1440px aqua/light no-JS",
+      "status": 200,
+      "third": [],
+      "before": null,
+      "card": true,
+      "state": "empty",
+      "posts": 0,
+      "sorted": true,
+      "timesOk": true,
+      "postLinks": [],
+      "links": [
+        {
+          "href": "https://x.com",
+          "rel": "noopener noreferrer",
+          "target": "_blank",
+          "post": false
+        }
+      ],
+      "foreign": 0,
+      "boxHeight": null,
+      "boxRegion": null,
+      "emptyCta": true,
+      "order": "newsletter-first",
+      "overflow": false,
+      "text": "Seguinos en X\n\nLo último que publicamos sobre prompts e IA.\n\nTodavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.\n\nSeguinos en X"
+    }
+  ]
+}

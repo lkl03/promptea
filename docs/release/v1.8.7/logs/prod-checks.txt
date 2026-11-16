@@ -1,0 +1,57 @@
+# Production read-only checks — 2026-11-16T04:06:52Z (GET only)
+
+## Cache / ISR / headers (two GETs each: the 2nd should be a cache HIT)
+/en              #1  200 cache=HIT age=228 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/en              #2  200 cache=HIT age=229 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/es/benchmarks   #1  200 cache=HIT age=281 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/es/benchmarks   #2  200 cache=HIT age=281 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/pt/guides       #1  200 cache=HIT age=149529 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/pt/guides       #2  200 cache=HIT age=149530 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/en/analyzer     #1  200 cache=MISS age=0 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/en/analyzer     #2  200 cache=MISS age=0 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/es/blog         #1  200 cache=MISS age=0 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/es/blog         #2  200 cache=MISS age=0 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/en/blog/tech    #1  200 cache=MISS age=0 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+/en/blog/tech    #2  200 cache=MISS age=0 app= nosniff=nosniff frame=SAMEORIGIN powered-by=none
+
+## v1.8.6 (#47): analyzer FAQ, Chinese model pages, guides, IndexNow key
+  /en/analyzer JSON-LD: "@type":"FAQPage"
+  /es/models/qwen     200
+  /es/models/glm      200
+  /es/models/minimax  200
+  /es/models/doubao   200
+  /en/models/qwen     200
+  /en/models/glm      200
+  /en/models/minimax  200
+  /en/models/doubao   200
+  /pt/models/qwen     200
+  /pt/models/glm      200
+  /pt/models/minimax  200
+  /pt/models/doubao   200
+  /en/guides/qwen-prompt-guide 200
+  /en/guides/glm-prompt-guide 200
+  /en/guides/minimax-prompt-guide 200
+  /en/guides/doubao-prompt-guide 200
+  /indexnow-key.txt 404
+
+## AI Daily Tech
+  /es/blog/tech robots=[<meta name="robots" content="index, follow"] feed items=1
+  /en/blog/tech robots=[<meta name="robots" content="index, follow"] feed items=1
+  /pt/blog/tech robots=[<meta name="robots" content="index, follow"] feed items=0
+  /es/llms.txt mentions /blog/tech: 1
+  /en/llms.txt mentions /blog/tech: 1
+  sitemap /blog/tech URLs: 2
+
+## llms-full.txt sizes (cap 409,600 bytes)
+  /es/llms-full.txt 383370 bytes
+  /en/llms-full.txt 349547 bytes
+  /pt/llms-full.txt 319787 bytes
+
+## X feed today (Elfsight) and newsletter card markup
+  home still renders: elfsight-app-941b1ba8-5c1c-4d91-a254-c242d3c77a61
+
+## pt (#45) spot check: <html lang> and title
+  /pt                <html lang="pt-BR" | Promptea — Analisador e otimizador de prompts grátis para ChatGPT, Claude, Gemin
+  /pt/analyzer       <html lang="pt-BR" | Analisador e otimizador de prompts · Promptea
+  /pt/how-it-works   <html lang="pt-BR" | Como o Promptea funciona: pontuação, IAs e dúvidas
+  /pt/guides         <html lang="pt-BR" | Guias de prompting (sem enrolação) · Promptea

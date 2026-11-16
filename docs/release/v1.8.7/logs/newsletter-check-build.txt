@@ -1,0 +1,36 @@
+clean      1440 /es                200 → nothing [inline form on screen]
+clean      1440 /en/analyzer       200 → CARD(full)
+clean      1440 /en/guides         200 → CARD(full)
+clean      1440 /pt/how-it-works   200 → CARD(full)
+clean      1440 /es/benchmarks     200 → pill
+clean      1440 /en/blog           200 → nothing [inline form on screen]
+clean       375 /es                200 → nothing → after scrolling: nothing
+clean       375 /en/analyzer       200 → nothing → after scrolling: nothing
+clean       375 /en/guides         200 → CARD(compact)
+clean       375 /pt/how-it-works   200 → CARD(compact)
+clean       375 /es/benchmarks     200 → CARD(compact)
+clean       375 /en/blog           200 → nothing → after scrolling: nothing
+closed     1440 /es                200 → nothing [inline form on screen]
+closed     1440 /en/analyzer       200 → pill
+closed     1440 /en/guides         200 → pill
+closed     1440 /pt/how-it-works   200 → pill
+closed     1440 /es/benchmarks     200 → pill
+closed     1440 /en/blog           200 → nothing [inline form on screen]
+closed      375 /es                200 → nothing → after scrolling: nothing
+closed      375 /en/analyzer       200 → nothing → after scrolling: nothing
+closed      375 /en/guides         200 → pill
+closed      375 /pt/how-it-works   200 → pill
+closed      375 /es/benchmarks     200 → pill
+closed      375 /en/blog           200 → nothing → after scrolling: nothing
+subscribed 1440 /es                200 → nothing [inline form on screen]
+subscribed 1440 /en/analyzer       200 → nothing
+subscribed 1440 /en/guides         200 → nothing
+subscribed 1440 /pt/how-it-works   200 → nothing
+subscribed 1440 /es/benchmarks     200 → nothing
+subscribed 1440 /en/blog           200 → nothing
+subscribed  375 /es                200 → nothing
+subscribed  375 /en/analyzer       200 → nothing
+subscribed  375 /en/guides         200 → nothing
+subscribed  375 /pt/how-it-works   200 → nothing
+subscribed  375 /es/benchmarks     200 → nothing
+subscribed  375 /en/blog           200 → nothing

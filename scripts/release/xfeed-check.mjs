@@ -53,8 +53,10 @@ async function run({ path, width, js = true, theme = "aqua", scheme = "light" })
   await page.evaluateOnNewDocument((t) => {
     try {
       localStorage.setItem("theme", t);
-      // Keep the floating newsletter card out of the way of this check.
-      localStorage.setItem("promptea:newsletter-nudges", JSON.stringify({ subscribed: true }));
+      // Keep the floating newsletter card out of the way of this check: "closed the pill today"
+      // (not "subscribed", which would also hide the side-column newsletter card whose order is checked).
+      const now = Date.now();
+      localStorage.setItem("promptea:newsletter-nudges", JSON.stringify({ pillDismissedAt: now, cardDismissedAt: now }));
     } catch {}
   }, theme);
   const third = [];

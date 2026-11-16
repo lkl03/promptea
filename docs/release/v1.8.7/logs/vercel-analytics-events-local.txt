@@ -1,0 +1,11 @@
+after load: []
+after target change: [{"name":"Target Changed","data":{"lang":"en","target":"claude"}}]
+textareas: [{"len":98,"id":""}]
+analyze btn: [{"t":"Try this prompt","disabled":false,"type":"button"},{"t":"Analyze","disabled":false,"type":"submit"},{"t":"Try this prompt","disabled":false,"type":"button"}]
+buttons: ["Analyze","Write a new prompt","Write a new prompt"]
+api/analyze: [200] score shown: false
+alerts: []
+after analyze: [{"name":"Target Changed","data":{"lang":"en","target":"claude"}},{"name":"Prompt Analyzed","data":{"lang":"en","target":"claude"}}]
+after copy: [{"name":"Target Changed","data":{"lang":"en","target":"claude"}},{"name":"Prompt Analyzed","data":{"lang":"en","target":"claude"}},{"name":"Prompt Copied","data":{"lang":"en","target":"claude"}}]
+counts: {"Target Changed":1,"Prompt Analyzed":1,"Prompt Copied":1}
+payload keys: ["lang","target"]

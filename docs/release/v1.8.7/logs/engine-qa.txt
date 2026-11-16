@@ -1,0 +1,96 @@
+ok   [same language] text/pt — score 57 → 57 (writing)
+ok   [idempotence] text/pt — 282 → 282 chars, re-score 57
+ok   [same language] text/es — score 57 → 57 (writing)
+ok   [idempotence] text/es — 260 → 260 chars, re-score 57
+ok   [same language] text/en — score 57 → 57 (writing)
+ok   [idempotence] text/en — 234 → 234 chars, re-score 57
+ok   [cross interface] text: pt prompt from /es — score 57 (pt UI: 57)
+ok   [cross interface] text: pt prompt from /en — score 57 (pt UI: 57)
+ok   [same language] study/pt — score 46 → 46 (study)
+ok   [idempotence] study/pt — 271 → 271 chars, re-score 46
+ok   [same language] study/es — score 46 → 46 (study)
+ok   [idempotence] study/es — 253 → 253 chars, re-score 46
+ok   [same language] study/en — score 46 → 46 (study)
+ok   [idempotence] study/en — 238 → 238 chars, re-score 46
+ok   [cross interface] study: pt prompt from /es — score 46 (pt UI: 46)
+ok   [cross interface] study: pt prompt from /en — score 46 (pt UI: 46)
+ok   [same language] code/pt — score 41 → 41 (coding)
+ok   [idempotence] code/pt — 284 → 284 chars, re-score 41
+ok   [same language] code/es — score 38 → 38 (coding)
+ok   [idempotence] code/es — 272 → 272 chars, re-score 38
+ok   [same language] code/en — score 41 → 41 (coding)
+ok   [idempotence] code/en — 257 → 257 chars, re-score 41
+ok   [cross interface] code: pt prompt from /es — score 41 (pt UI: 41)
+ok   [cross interface] code: pt prompt from /en — score 41 (pt UI: 41)
+ok   [same language] data/pt — score 66 → 69 (data_extraction)
+ok   [idempotence] data/pt — 500 → 500 chars, re-score 69
+ok   [same language] data/es — score 66 → 69 (data_extraction)
+ok   [idempotence] data/es — 480 → 480 chars, re-score 69
+ok   [same language] data/en — score 66 → 69 (data_extraction)
+ok   [idempotence] data/en — 465 → 465 chars, re-score 69
+ok   [cross interface] data: pt prompt from /es — score 66 (pt UI: 66)
+ok   [cross interface] data: pt prompt from /en — score 66 (pt UI: 66)
+ok   [same language] image/pt — score 46 → 62 (image)
+ok   [idempotence] image/pt — 632 → 632 chars, re-score 62
+ok   [same language] image/es — score 40 → 64 (image)
+ok   [idempotence] image/es — 586 → 586 chars, re-score 64
+ok   [same language] image/en — score 40 → 64 (image)
+ok   [idempotence] image/en — 584 → 584 chars, re-score 64
+ok   [cross interface] image: pt prompt from /es — score 46 (pt UI: 46)
+ok   [cross interface] image: pt prompt from /en — score 46 (pt UI: 46)
+ok   [same language] marketing/pt — score 49 → 49 (marketing)
+ok   [idempotence] marketing/pt — 274 → 274 chars, re-score 49
+ok   [same language] marketing/es — score 41 → 41 (marketing)
+ok   [idempotence] marketing/es — 265 → 265 chars, re-score 41
+ok   [same language] marketing/en — score 41 → 41 (marketing)
+ok   [idempotence] marketing/en — 253 → 253 chars, re-score 41
+ok   [cross interface] marketing: pt prompt from /es — score 49 (pt UI: 49)
+ok   [cross interface] marketing: pt prompt from /en — score 49 (pt UI: 49)
+ok   [same language] translation/pt — score 48 → 48 (translation)
+ok   [idempotence] translation/pt — 103 → 103 chars, re-score 48
+ok   [same language] translation/es — score 46 → 46 (translation)
+ok   [idempotence] translation/es — 99 → 99 chars, re-score 46
+ok   [same language] translation/en — score 48 → 48 (translation)
+ok   [idempotence] translation/en — 98 → 98 chars, re-score 48
+ok   [cross interface] translation: pt prompt from /es — score 48 (pt UI: 48)
+ok   [cross interface] translation: pt prompt from /en — score 48 (pt UI: 48)
+ok   [same language] summarization/pt — score 56 → 56 (summarization)
+ok   [idempotence] summarization/pt — 84 → 84 chars, re-score 56
+ok   [same language] summarization/es — score 56 → 56 (summarization)
+ok   [idempotence] summarization/es — 89 → 89 chars, re-score 56
+ok   [same language] summarization/en — score 56 → 56 (summarization)
+ok   [idempotence] summarization/en — 86 → 86 chars, re-score 56
+ok   [cross interface] summarization: pt prompt from /es — score 56 (pt UI: 56)
+ok   [cross interface] summarization: pt prompt from /en — score 56 (pt UI: 56)
+
+engine summary:
+┌─────────┬─────────────────┬──────┬───────┬───────┬───────────────────┬─────────────────────────────────────────────────────────────────────────┬─────────────────────┐
+│ (index) │ purpose         │ lang │ score │ after │ taskType          │ findings                                                                │ optimizedPromptLang │
+├─────────┼─────────────────┼──────┼───────┼───────┼───────────────────┼─────────────────────────────────────────────────────────────────────────┼─────────────────────┤
+│ 0       │ 'text'          │ 'pt' │ 57    │ 57    │ 'writing'         │ 'missing_context'                                                       │ 'pt'                │
+│ 1       │ 'text'          │ 'es' │ 57    │ 57    │ 'writing'         │ 'missing_context'                                                       │ 'es'                │
+│ 2       │ 'text'          │ 'en' │ 57    │ 57    │ 'writing'         │ 'missing_context'                                                       │ 'en'                │
+│ 3       │ 'study'         │ 'pt' │ 46    │ 46    │ 'study'           │ 'missing_context,missing_study_level'                                   │ 'pt'                │
+│ 4       │ 'study'         │ 'es' │ 46    │ 46    │ 'study'           │ 'missing_context,missing_study_level'                                   │ 'es'                │
+│ 5       │ 'study'         │ 'en' │ 46    │ 46    │ 'study'           │ 'missing_context,missing_study_level'                                   │ 'en'                │
+│ 6       │ 'code'          │ 'pt' │ 41    │ 41    │ 'coding'          │ 'missing_context,missing_constraints'                                   │ 'pt'                │
+│ 7       │ 'code'          │ 'es' │ 38    │ 38    │ 'coding'          │ 'missing_context,missing_constraints'                                   │ 'es'                │
+│ 8       │ 'code'          │ 'en' │ 41    │ 41    │ 'coding'          │ 'missing_context,missing_constraints'                                   │ 'en'                │
+│ 9       │ 'data'          │ 'pt' │ 66    │ 69    │ 'data_extraction' │ 'missing_context,missing_constraints,missing_input_data,missing_schema' │ 'pt'                │
+│ 10      │ 'data'          │ 'es' │ 66    │ 69    │ 'data_extraction' │ 'missing_context,missing_constraints,missing_input_data,missing_schema' │ 'es'                │
+│ 11      │ 'data'          │ 'en' │ 66    │ 69    │ 'data_extraction' │ 'missing_context,missing_constraints,missing_input_data,missing_schema' │ 'en'                │
+│ 12      │ 'image'         │ 'pt' │ 46    │ 62    │ 'image'           │ 'missing_constraints'                                                   │ 'en'                │
+│ 13      │ 'image'         │ 'es' │ 40    │ 64    │ 'image'           │ 'missing_constraints'                                                   │ 'es'                │
+│ 14      │ 'image'         │ 'en' │ 40    │ 64    │ 'image'           │ 'missing_constraints'                                                   │ 'en'                │
+│ 15      │ 'marketing'     │ 'pt' │ 49    │ 49    │ 'marketing'       │ 'missing_context,missing_marketing_cta'                                 │ 'pt'                │
+│ 16      │ 'marketing'     │ 'es' │ 41    │ 41    │ 'marketing'       │ 'missing_context,missing_marketing_cta'                                 │ 'es'                │
+│ 17      │ 'marketing'     │ 'en' │ 41    │ 41    │ 'marketing'       │ 'missing_context,missing_marketing_cta'                                 │ 'en'                │
+│ 18      │ 'translation'   │ 'pt' │ 48    │ 48    │ 'translation'     │ 'missing_output_format,missing_input_data,missing_translation_register' │ 'pt'                │
+│ 19      │ 'translation'   │ 'es' │ 46    │ 46    │ 'translation'     │ 'missing_output_format,missing_input_data,missing_translation_register' │ 'es'                │
+│ 20      │ 'translation'   │ 'en' │ 48    │ 48    │ 'translation'     │ 'missing_output_format,missing_input_data,missing_translation_register' │ 'en'                │
+│ 21      │ 'summarization' │ 'pt' │ 56    │ 56    │ 'summarization'   │ 'missing_input_data,missing_summary_scope'                              │ 'pt'                │
+│ 22      │ 'summarization' │ 'es' │ 56    │ 56    │ 'summarization'   │ 'missing_input_data,missing_summary_scope'                              │ 'es'                │
+│ 23      │ 'summarization' │ 'en' │ 56    │ 56    │ 'summarization'   │ 'missing_input_data,missing_summary_scope'                              │ 'en'                │
+└─────────┴─────────────────┴──────┴───────┴───────┴───────────────────┴─────────────────────────────────────────────────────────────────────────┴─────────────────────┘
+
+64 passed, 0 failed
