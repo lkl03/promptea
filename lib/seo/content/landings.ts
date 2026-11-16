@@ -34,15 +34,15 @@ const FAMILIES = TARGETS.map((t) => TARGET_SHORT[t]).join(", ");
 const HUB_LINKS: LandingPage["internalLinks"] = [
   {
     href: (l) => `/${l}/prompts`,
-    label: { es: "Packs de prompts", en: "Prompt packs", pt: "Pacotes de prompts" },
+    label: { es: "Packs de prompts", en: "Prompt packs", pt: "Pacotes de prompts", zh: "Prompt packs" },
   },
   {
     href: (l) => `/${l}/guides`,
-    label: { es: "Guías", en: "Guides", pt: "Guias" },
+    label: { es: "Guías", en: "Guides", pt: "Guias", zh: "Guides" },
   },
   {
     href: (l) => `/${l}/models`,
-    label: { es: "Prompts por modelo", en: "Prompts by model", pt: "Prompts por modelo" },
+    label: { es: "Prompts por modelo", en: "Prompts by model", pt: "Prompts por modelo", zh: "Prompts by model" },
   },
 ];
 
@@ -53,16 +53,19 @@ export const landings: LandingPage[] = [
       en: "AI prompt analyzer — score and fix prompts, with examples",
       es: "Analizador de prompts — revisá y puntuá cualquier prompt de IA",
       pt: "Analisador de prompts — revise e pontue qualquer prompt de IA",
+      zh: "AI prompt analyzer — score and fix prompts, with examples",
     },
     description: {
       en: "How a free AI prompt analyzer scores a prompt 0–100 on six criteria, with real before → after examples (20 → 64, 19 → 84) and the fixes that made the difference.",
       es: "Analizador de prompts gratuito. Detecta contexto faltante, formato, restricciones y da un puntaje por tarea con correcciones concretas.",
       pt: "Analisador de prompts gratuito. Detecta falta de contexto, de formato de saída e de restrições e dá uma pontuação por tarefa, com correções concretas.",
+      zh: "How a free AI prompt analyzer scores a prompt 0–100 on six criteria, with real before → after examples (20 → 64, 19 → 84) and the fixes that made the difference.",
     },
     h1: {
       en: "AI prompt analyzer",
       es: "Analizador de prompts",
       pt: "Analisador de prompts",
+      zh: "AI prompt analyzer",
     },
     intro: {
       en: [
@@ -79,6 +82,11 @@ export const landings: LandingPage[] = [
         "O Promptea revisa o seu prompt com base nos critérios que importam para a tarefa que você escolher — código, dados, marketing, estudo, imagem, tradução ou resumo.",
         "Você recebe uma pontuação, o que está faltando, o que corrigir primeiro e uma versão otimizada pronta para copiar.",
         "Como funciona: cole o prompt, escolha o propósito e a IA que você vai usar, e o analisador aplica regras fixas — o mesmo prompt sempre recebe a mesma pontuação. Ele lista os achados por ordem de impacto, escreve uma versão otimizada e pontua essa versão de novo, para você ver a pontuação antes → depois. O Promptea otimiza prompts; ele não os executa em um modelo.",
+      ],
+      zh: [
+        "A prompt analyzer checks a prompt before you send it to ChatGPT, Claude, Gemini or any other AI. Promptea reviews yours against criteria that matter for the task you pick — coding, data, marketing, study, image, translation, or summary.",
+        "You get a score, the missing pieces, what to fix first, and an optimized version ready to copy.",
+        "How it works: paste the prompt, choose its purpose and the AI you will use, and the analyzer applies fixed rules — the same prompt always gets the same score. It lists the findings in order of impact, writes an optimized version and scores that version again, so you see a before → after score. Promptea optimizes prompts; it does not run them on a model.",
       ],
     },
     bullets: {
@@ -97,16 +105,21 @@ export const landings: LandingPage[] = [
         "Perguntas de acompanhamento direcionadas quando o prompt é ambíguo demais.",
         "Saída otimizada como um checklist legível ou como JSON estrito.",
       ],
+      zh: [
+        "Score breakdown by clarity, context, constraints, output, and verifiability.",
+        "Targeted follow-up questions when the prompt is too ambiguous.",
+        "Optimized output as a human-readable checklist or strict JSON.",
+      ],
     },
-    ctaLabel: { en: "Analyze a prompt", es: "Analizar un prompt", pt: "Analisar um prompt" },
+    ctaLabel: { en: "Analyze a prompt", es: "Analizar un prompt", pt: "Analisar um prompt", zh: "Analyze a prompt" },
     internalLinks: [
       {
         href: (l) => `/${l}/guides/prompt-quality-scoring`,
-        label: { es: "Cómo se puntúa un prompt", en: "How prompt scoring works", pt: "Como um prompt é pontuado" },
+        label: { es: "Cómo se puntúa un prompt", en: "How prompt scoring works", pt: "Como um prompt é pontuado", zh: "How prompt scoring works" },
       },
       {
         href: (l) => `/${l}/guides/prompt-debugging`,
-        label: { es: "Depurar un prompt que falla", en: "Debug a prompt that fails", pt: "Depurar um prompt que falha" },
+        label: { es: "Depurar un prompt que falla", en: "Debug a prompt that fails", pt: "Depurar um prompt que falha", zh: "Debug a prompt that fails" },
       },
       ...HUB_LINKS,
     ],
@@ -119,13 +132,15 @@ export const landings: LandingPage[] = [
       en: "AI prompt optimizer — make any prompt work better",
       es: "Optimizador de prompts de IA — mejorá cualquier prompt",
       pt: "Otimizador de prompts de IA — faça qualquer prompt funcionar melhor",
+      zh: "AI prompt optimizer — make any prompt work better",
     },
     description: {
       en: "Optimize prompts for GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao and Perplexity. Reduce ambiguity, define formats, and tailor structure per model.",
       es: "Optimizá prompts para GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao y Perplexity. Reducí ambigüedad, definí formato y ajustá la estructura por modelo.",
       pt: "Otimize prompts para GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao e Perplexity. Reduza a ambiguidade, defina formatos e adapte a estrutura a cada modelo.",
+      zh: "Optimize prompts for GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao and Perplexity. Reduce ambiguity, define formats, and tailor structure per model.",
     },
-    h1: { en: "AI prompt optimizer", es: "Optimizador de prompts de IA", pt: "Otimizador de prompts de IA" },
+    h1: { en: "AI prompt optimizer", es: "Optimizador de prompts de IA", pt: "Otimizador de prompts de IA", zh: "AI prompt optimizer" },
     intro: {
       en: [
         "The optimizer rewrites your prompt with clear sections, explicit constraints, and a model-aware structure.",
@@ -141,6 +156,11 @@ export const landings: LandingPage[] = [
         "O otimizador reescreve o seu prompt com seções claras, restrições explícitas e uma estrutura pensada para o modelo.",
         "Cada modelo tem pontos fortes diferentes — o Promptea escolhe as dicas certas automaticamente quando você seleciona um destino.",
         "Comece de uma ideia solta ou de um prompt que você já usa. O otimizador mantém a sua intenção, acrescenta o que falta (contexto, restrições, formato de saída) e escreve o resultado para a IA selecionada. O controle continua com você: copie, edite ou salve na sua biblioteca.",
+      ],
+      zh: [
+        "The optimizer rewrites your prompt with clear sections, explicit constraints, and a model-aware structure.",
+        "Every model has different strengths — Promptea picks the right hints automatically when you select a target.",
+        "Start from a rough idea or from a prompt you already use. The optimizer keeps your intent, adds what is missing (context, constraints, output format) and writes the result for the AI you select. You stay in control: copy it, edit it or save it to your library.",
       ],
     },
     bullets: {
@@ -159,8 +179,13 @@ export const landings: LandingPage[] = [
         "Escolha saída em checklist ou em JSON puro, conforme o seu fluxo de trabalho.",
         "Anexos tratados como contexto, não como instruções.",
       ],
+      zh: [
+        "Per-model hints (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity).",
+        "Choose checklist or pure JSON output, depending on your workflow.",
+        "Attachments treated as context, not as instructions.",
+      ],
     },
-    ctaLabel: { en: "Optimize my prompt", es: "Optimizar mi prompt", pt: "Otimizar meu prompt" },
+    ctaLabel: { en: "Optimize my prompt", es: "Optimizar mi prompt", pt: "Otimizar meu prompt", zh: "Optimize my prompt" },
     internalLinks: HUB_LINKS,
   },
   {
@@ -169,13 +194,15 @@ export const landings: LandingPage[] = [
       en: "Prompt scoring — see what's missing in any prompt",
       es: "Score de prompts — ver qué le falta a cualquier prompt",
       pt: "Pontuação de prompts — veja o que falta em qualquer prompt",
+      zh: "Prompt scoring — see what's missing in any prompt",
     },
     description: {
       en: "Quantitative score across clarity, context, constraints, output format, verifiability, and safety. With reasoning and quick wins.",
       es: "Score cuantitativo de claridad, contexto, restricciones, formato, verificabilidad y seguridad. Con explicación y quick wins.",
       pt: "Pontuação quantitativa de clareza, contexto, restrições, formato de saída, verificabilidade e segurança. Com justificativa e ganhos rápidos.",
+      zh: "Quantitative score across clarity, context, constraints, output format, verifiability, and safety. With reasoning and quick wins.",
     },
-    h1: { en: "Prompt scoring", es: "Score de prompts", pt: "Pontuação de prompts" },
+    h1: { en: "Prompt scoring", es: "Score de prompts", pt: "Pontuação de prompts", zh: "Prompt scoring" },
     intro: {
       en: [
         "Promptea scores your prompt with a transparent breakdown so you know what to fix first.",
@@ -191,6 +218,11 @@ export const landings: LandingPage[] = [
         "O Promptea pontua o seu prompt com um detalhamento transparente, para você saber o que corrigir primeiro.",
         "Ele também diz o que já está funcionando, para você não estragar um bom prompt editando demais.",
         "A pontuação combina seis dimensões: clareza, contexto, restrições, formato de saída, verificabilidade e segurança. Os pesos dependem do tipo de tarefa que o analisador detecta (a verificabilidade pesa mais em depuração do que em um pedido casual de texto), e há um teto quando falta material essencial, como um pedido de tradução sem o texto a traduzir. O método completo está na página de metodologia.",
+      ],
+      zh: [
+        "Promptea scores your prompt with a transparent breakdown so you know what to fix first.",
+        "It also tells you what's already working, so you don't break a good prompt by over-editing.",
+        "The score combines six dimensions: clarity, context, constraints, output format, verifiability and safety. Their weights depend on the type of task the analyzer detects (verifiability counts for more in debugging than in a casual text request), and a cap applies when essential material is missing, such as a translation request with no text to translate. The full method is on the methodology page.",
       ],
     },
     bullets: {
@@ -209,8 +241,13 @@ export const landings: LandingPage[] = [
         "Problemas críticos, ganhos rápidos e informações que faltam, separados.",
         "Critérios que levam a tarefa em conta (depuração, dados, marketing, estudo, imagem etc.).",
       ],
+      zh: [
+        "Transparent score breakdown with confidence level.",
+        "Critical issues, quick wins, and missing information separated.",
+        "Task-aware criteria (debugging, data, marketing, study, image, etc.).",
+      ],
     },
-    ctaLabel: { en: "Score my prompt", es: "Puntuar mi prompt", pt: "Pontuar meu prompt" },
+    ctaLabel: { en: "Score my prompt", es: "Puntuar mi prompt", pt: "Pontuar meu prompt", zh: "Score my prompt" },
     internalLinks: HUB_LINKS,
   },
   {
@@ -219,13 +256,15 @@ export const landings: LandingPage[] = [
       en: "Prompt generator for Claude — Sonnet, Opus, Haiku",
       es: "Generador de prompts para Claude — Sonnet, Opus, Haiku",
       pt: "Gerador de prompts para Claude — Sonnet, Opus, Haiku",
+      zh: "Prompt generator for Claude — Sonnet, Opus, Haiku",
     },
     description: {
       en: "Generate Claude-style prompts with explicit context, structured instructions, examples, and a clear output format.",
       es: "Generá prompts estilo Claude con contexto explícito, instrucciones estructuradas, ejemplos y formato de salida claro.",
       pt: "Gere prompts no estilo do Claude, com contexto explícito, instruções estruturadas, exemplos e um formato de saída claro.",
+      zh: "Generate Claude-style prompts with explicit context, structured instructions, examples, and a clear output format.",
     },
-    h1: { en: "Prompt generator for Claude", es: "Generador de prompts para Claude", pt: "Gerador de prompts para Claude" },
+    h1: { en: "Prompt generator for Claude", es: "Generador de prompts para Claude", pt: "Gerador de prompts para Claude", zh: "Prompt generator for Claude" },
     intro: {
       en: [
         "Claude responds best with explicit sections, XML-style delimiters for long input, and well-defined success criteria.",
@@ -241,6 +280,11 @@ export const landings: LandingPage[] = [
         "O Claude responde melhor com seções explícitas, delimitadores no estilo XML para entradas longas e critérios de sucesso bem definidos.",
         "O Promptea aplica essas convenções automaticamente quando o destino é o Claude (Sonnet, Opus ou Haiku).",
         "Abra o analisador com o Claude selecionado, cole o seu rascunho e escolha o modelo. O resultado segue as orientações de prompting da própria Anthropic para os modelos Claude do registro do Promptea; a página do Claude lista os atuais e a data em que cada um foi verificado pela última vez na documentação do provedor.",
+      ],
+      zh: [
+        "Claude responds best with explicit sections, XML-style delimiters for long input, and well-defined success criteria.",
+        "Promptea applies these conventions automatically when you target Claude (Sonnet, Opus, or Haiku).",
+        "Open the analyzer with Claude selected, paste your draft and pick the model. The result follows Anthropic's own prompting guidance for the Claude models in Promptea's registry; the Claude page lists the current ones and the date each was last verified against the provider's documentation.",
       ],
     },
     bullets: {
@@ -259,14 +303,19 @@ export const landings: LandingPage[] = [
         "Adiciona critérios de sucesso explícitos quando faz sentido.",
         "Escolhe uma estrutura que combina com o estilo de entrada preferido do Claude.",
       ],
+      zh: [
+        "Wraps long source material in <context> / <source_text> tags.",
+        "Adds explicit success criteria when relevant.",
+        "Picks structure that matches Claude's preferred input style.",
+      ],
     },
-    ctaLabel: { en: "Generate a Claude prompt", es: "Generar prompt para Claude", pt: "Gerar um prompt para Claude" },
+    ctaLabel: { en: "Generate a Claude prompt", es: "Generar prompt para Claude", pt: "Gerar um prompt para Claude", zh: "Generate a Claude prompt" },
     prefill: { purpose: "text", target: "claude" },
     internalLinks: [
       ...HUB_LINKS,
       {
         href: (l) => `/${l}/models/claude`,
-        label: { es: "Tips y plantillas para Claude", en: "Tips and templates for Claude", pt: "Dicas e templates para Claude" },
+        label: { es: "Tips y plantillas para Claude", en: "Tips and templates for Claude", pt: "Dicas e templates para Claude", zh: "Tips and templates for Claude" },
       },
     ],
   },
@@ -276,13 +325,15 @@ export const landings: LandingPage[] = [
       en: "Prompt generator for ChatGPT — GPT-6 Astra, Sol, Luna",
       es: "Generador de prompts para ChatGPT — GPT-6 Astra, Sol, Luna",
       pt: "Gerador de prompts para ChatGPT — GPT-6 Astra, Sol, Luna",
+      zh: "Prompt generator for ChatGPT — GPT-6 Astra, Sol, Luna",
     },
     description: {
       en: "Generate ChatGPT-ready prompts with role, decomposed task, constraints, examples, and explicit evaluation criteria.",
       es: "Generá prompts listos para ChatGPT con rol, tarea descompuesta, restricciones, ejemplos y criterios de evaluación explícitos.",
       pt: "Gere prompts prontos para o ChatGPT, com papel, tarefa decomposta, restrições, exemplos e critérios de avaliação explícitos.",
+      zh: "Generate ChatGPT-ready prompts with role, decomposed task, constraints, examples, and explicit evaluation criteria.",
     },
-    h1: { en: "Prompt generator for ChatGPT", es: "Generador de prompts para ChatGPT", pt: "Gerador de prompts para ChatGPT" },
+    h1: { en: "Prompt generator for ChatGPT", es: "Generador de prompts para ChatGPT", pt: "Gerador de prompts para ChatGPT", zh: "Prompt generator for ChatGPT" },
     intro: {
       en: [
         "ChatGPT (GPT-6 Astra, Sol, Luna) benefits from instruction-first prompts with delimiters and clear acceptance criteria. Astra does best with the goal and constraints; Sol and Luna do best with explicit steps and an exact format.",
@@ -298,6 +349,11 @@ export const landings: LandingPage[] = [
         "O ChatGPT (GPT-6 Astra, Sol, Luna) se beneficia de prompts que começam pela instrução, com delimitadores e critérios de aceitação claros. O Astra rende mais com o objetivo e as restrições; o Sol e o Luna rendem mais com passos explícitos e um formato exato.",
         "O Promptea estrutura os prompts do jeito que o GPT espera e adapta a profundidade ao caso de uso que você escolher.",
         "Abra o analisador com o GPT selecionado, cole o seu rascunho e escolha o modelo GPT que você vai usar. O Promptea otimiza o prompt para ele; não o executa. A página do GPT lista os modelos atuais, com suas capacidades verificadas e a data dessa verificação.",
+      ],
+      zh: [
+        "ChatGPT (GPT-6 Astra, Sol, Luna) benefits from instruction-first prompts with delimiters and clear acceptance criteria. Astra does best with the goal and constraints; Sol and Luna do best with explicit steps and an exact format.",
+        "Promptea structures prompts the way GPT expects them and adapts the depth to the use case you pick.",
+        "Open the analyzer with GPT selected, paste your draft and choose the GPT model you will use. Promptea optimizes the prompt for it; it does not run it. The GPT page lists the current models with their verified capabilities and the date of that verification.",
       ],
     },
     bullets: {
@@ -316,14 +372,19 @@ export const landings: LandingPage[] = [
         "Bloco de critérios de aceitação quando a tarefa se beneficia disso.",
         "Leva em conta o submodelo: modelos de raciocínio vs. modelos gerais.",
       ],
+      zh: [
+        "Instruction-first ordering with explicit delimiters.",
+        "Acceptance criteria block when the task benefits from it.",
+        "Sub-model awareness for reasoning vs general models.",
+      ],
     },
-    ctaLabel: { en: "Generate a ChatGPT prompt", es: "Generar prompt para ChatGPT", pt: "Gerar um prompt para ChatGPT" },
+    ctaLabel: { en: "Generate a ChatGPT prompt", es: "Generar prompt para ChatGPT", pt: "Gerar um prompt para ChatGPT", zh: "Generate a ChatGPT prompt" },
     prefill: { purpose: "text", target: "gpt" },
     internalLinks: [
       ...HUB_LINKS,
       {
         href: (l) => `/${l}/models/gpt`,
-        label: { es: "Tips y plantillas para GPT", en: "Tips and templates for GPT", pt: "Dicas e templates para GPT" },
+        label: { es: "Tips y plantillas para GPT", en: "Tips and templates for GPT", pt: "Dicas e templates para GPT", zh: "Tips and templates for GPT" },
       },
     ],
   },
@@ -333,13 +394,15 @@ export const landings: LandingPage[] = [
       en: "Prompt generator for Gemini — Pro and Flash",
       es: "Generador de prompts para Gemini — Pro y Flash",
       pt: "Gerador de prompts para Gemini — Pro e Flash",
+      zh: "Prompt generator for Gemini — Pro and Flash",
     },
     description: {
       en: "Generate Gemini prompts with exact output format, short examples, and explicit handling of unknowns.",
       es: "Generá prompts para Gemini con formato exacto, ejemplos cortos y manejo explícito de la incertidumbre.",
       pt: "Gere prompts para o Gemini com formato de saída exato, exemplos curtos e tratamento explícito do que é desconhecido.",
+      zh: "Generate Gemini prompts with exact output format, short examples, and explicit handling of unknowns.",
     },
-    h1: { en: "Prompt generator for Gemini", es: "Generador de prompts para Gemini", pt: "Gerador de prompts para Gemini" },
+    h1: { en: "Prompt generator for Gemini", es: "Generador de prompts para Gemini", pt: "Gerador de prompts para Gemini", zh: "Prompt generator for Gemini" },
     intro: {
       en: [
         "Gemini benefits from a visible, exact output format and from being told what to do under uncertainty.",
@@ -355,6 +418,11 @@ export const landings: LandingPage[] = [
         "O Gemini se beneficia de um formato de saída visível e exato e de saber o que fazer quando há incerteza.",
         "O Promptea inclui um exemplo estrutural curto quando a consistência importa.",
         "Abra o analisador com o Gemini selecionado, cole o seu rascunho e escolha o modelo Gemini. Se você precisa de um formato estrito, as regras de formato de saída e de dados desconhecidos acima são adicionadas para você. A página do Gemini lista os modelos atuais e quando suas capacidades foram verificadas pela última vez.",
+      ],
+      zh: [
+        "Gemini benefits from a visible, exact output format and from being told what to do under uncertainty.",
+        "Promptea includes a short structural example when consistency matters.",
+        "Open the analyzer with Gemini selected, paste your draft and choose the Gemini model. If you need a strict format, the output-format and unknowns rules above are added for you. The Gemini page lists the current models and when their capabilities were last verified.",
       ],
     },
     bullets: {
@@ -373,14 +441,19 @@ export const landings: LandingPage[] = [
         "Alternativa explícita quando falta informação.",
         "Limites de tamanho para evitar respostas prolixas.",
       ],
+      zh: [
+        "Exact output format with optional mini-template.",
+        "Explicit fallback when info is missing.",
+        "Length caps to avoid verbose answers.",
+      ],
     },
-    ctaLabel: { en: "Generate a Gemini prompt", es: "Generar prompt para Gemini", pt: "Gerar um prompt para Gemini" },
+    ctaLabel: { en: "Generate a Gemini prompt", es: "Generar prompt para Gemini", pt: "Gerar um prompt para Gemini", zh: "Generate a Gemini prompt" },
     prefill: { purpose: "text", target: "gemini" },
     internalLinks: [
       ...HUB_LINKS,
       {
         href: (l) => `/${l}/models/gemini`,
-        label: { es: "Tips y plantillas para Gemini", en: "Tips and templates for Gemini", pt: "Dicas e templates para Gemini" },
+        label: { es: "Tips y plantillas para Gemini", en: "Tips and templates for Gemini", pt: "Dicas e templates para Gemini", zh: "Tips and templates for Gemini" },
       },
     ],
   },
@@ -390,13 +463,15 @@ export const landings: LandingPage[] = [
       en: "JSON prompt generator — strict schema-friendly prompts",
       es: "Generador de prompts JSON — prompts estrictos para schemas",
       pt: "Gerador de prompts JSON — prompts estritos, prontos para esquemas",
+      zh: "JSON prompt generator — strict schema-friendly prompts",
     },
     description: {
       en: "Generate prompts that return valid JSON only — fields, types, missing-value rules, and post-validation steps.",
       es: "Generá prompts que devuelven SOLO JSON válido: campos, tipos, reglas para faltantes y validación posterior.",
       pt: "Gere prompts que retornam somente JSON válido — campos, tipos, regras para valores ausentes e etapas de validação posterior.",
+      zh: "Generate prompts that return valid JSON only — fields, types, missing-value rules, and post-validation steps.",
     },
-    h1: { en: "JSON prompt generator", es: "Generador de prompts JSON", pt: "Gerador de prompts JSON" },
+    h1: { en: "JSON prompt generator", es: "Generador de prompts JSON", pt: "Gerador de prompts JSON", zh: "JSON prompt generator" },
     intro: {
       en: [
         "When you need machine-readable output, ambiguity is the enemy. Promptea's JSON mode produces a strict, parseable optimized prompt.",
@@ -412,6 +487,11 @@ export const landings: LandingPage[] = [
         "Quando você precisa de uma saída legível por máquina, a ambiguidade é a inimiga. O modo JSON do Promptea produz um prompt otimizado estrito e fácil de processar.",
         "Ele também oferece um modo de saída em JSON para o próprio prompt otimizado, para você encaixá-lo em automações e APIs.",
         "Um bom prompt torna o JSON válido provável, não garantido. Faça o parse e valide a resposta no seu código e tente de novo em caso de falha; o guia sobre como forçar uma saída em JSON válido mostra o padrão de esquema, validação e nova tentativa, e o glossário explica JSON schema e saída estruturada.",
+      ],
+      zh: [
+        "When you need machine-readable output, ambiguity is the enemy. Promptea's JSON mode produces a strict, parseable optimized prompt.",
+        "It also exposes a JSON output mode for the optimized prompt itself, so you can pipe it into automations and APIs.",
+        "A good prompt makes valid JSON likely, not certain. Parse and validate the response in your code and retry on failure; the guide on forcing valid JSON output shows the schema, validation and retry pattern, and the glossary explains JSON schema and structured output.",
       ],
     },
     bullets: {
@@ -430,14 +510,19 @@ export const landings: LandingPage[] = [
         "Saída que passa sem erros pelo JSON.parse.",
         "Modo checklist opcional, se você precisar editar à mão antes.",
       ],
+      zh: [
+        "Strict schema with field types and missing-value policy.",
+        "Output that parses cleanly with JSON.parse.",
+        "Optional checklist mode if you need to edit by hand first.",
+      ],
     },
-    ctaLabel: { en: "Generate a JSON prompt", es: "Generar prompt JSON", pt: "Gerar um prompt JSON" },
+    ctaLabel: { en: "Generate a JSON prompt", es: "Generar prompt JSON", pt: "Gerar um prompt JSON", zh: "Generate a JSON prompt" },
     prefill: { purpose: "data", target: "gemini" },
     internalLinks: [
       ...HUB_LINKS,
       {
         href: (l) => `/${l}/prompts/data`,
-        label: { es: "Pack: Data / JSON", en: "Pack: Data / JSON", pt: "Pacote: Dados / JSON" },
+        label: { es: "Pack: Data / JSON", en: "Pack: Data / JSON", pt: "Pacote: Dados / JSON", zh: "Pack: Data / JSON" },
       },
     ],
   },
@@ -447,13 +532,15 @@ export const landings: LandingPage[] = [
       en: "Coding prompt generator — repo context, tests, and acceptance criteria",
       es: "Generador de prompts para código — contexto, tests y criterios",
       pt: "Gerador de prompts de código — contexto do repositório, testes e critérios de aceitação",
+      zh: "Coding prompt generator — repo context, tests, and acceptance criteria",
     },
     description: {
       en: "Generate coding prompts with repo context, task boundaries, acceptance criteria, test commands, and expected diff format.",
       es: "Generá prompts para código con contexto del repo, límites de la tarea, criterios de aceptación, comandos de test y formato de diff esperado.",
       pt: "Gere prompts de código com contexto do repositório, limites da tarefa, critérios de aceitação, comandos de teste e o formato de diff esperado.",
+      zh: "Generate coding prompts with repo context, task boundaries, acceptance criteria, test commands, and expected diff format.",
     },
-    h1: { en: "Coding prompt generator", es: "Generador de prompts para código", pt: "Gerador de prompts de código" },
+    h1: { en: "Coding prompt generator", es: "Generador de prompts para código", pt: "Gerador de prompts de código", zh: "Coding prompt generator" },
     intro: {
       en: [
         "Coding tasks fail when the model has to guess: stack, scope, edge cases, or how to verify the change.",
@@ -469,6 +556,11 @@ export const landings: LandingPage[] = [
         "Tarefas de código falham quando o modelo precisa adivinhar: a stack, o escopo, os casos de borda ou como verificar a mudança.",
         "O Promptea obriga a deixar essas decisões explícitas antes de o modelo escrever uma linha de código.",
         "Passe o menor trecho que reproduz o problema, o ambiente e o que você esperava versus o que aconteceu. Peça um diff e um teste e rode os dois antes de confiar na mudança. O guia de prompts de código tem um template de depuração para você começar.",
+      ],
+      zh: [
+        "Coding tasks fail when the model has to guess: stack, scope, edge cases, or how to verify the change.",
+        "Promptea forces those decisions to be explicit before the model writes a line of code.",
+        "Give it the smallest snippet that reproduces the problem, the environment and what you expected versus what happened. Ask for a diff and a test, then run both before trusting the change. The code prompts guide has a debugging template you can start from.",
       ],
     },
     bullets: {
@@ -487,14 +579,19 @@ export const landings: LandingPage[] = [
         "Critérios de aceitação e comandos de teste.",
         "Saída esperada: diff, arquivo completo ou passo a passo.",
       ],
+      zh: [
+        "Repo context block with stack, versions, and constraints.",
+        "Acceptance criteria and test commands.",
+        "Expected output: diff vs full file vs step-by-step.",
+      ],
     },
-    ctaLabel: { en: "Generate a coding prompt", es: "Generar prompt de código", pt: "Gerar um prompt de código" },
+    ctaLabel: { en: "Generate a coding prompt", es: "Generar prompt de código", pt: "Gerar um prompt de código", zh: "Generate a coding prompt" },
     prefill: { purpose: "code", target: "claude" },
     internalLinks: [
       ...HUB_LINKS,
       {
         href: (l) => `/${l}/prompts/code`,
-        label: { es: "Pack: Código", en: "Pack: Code", pt: "Pacote: Código" },
+        label: { es: "Pack: Código", en: "Pack: Code", pt: "Pacote: Código", zh: "Pack: Code" },
       },
     ],
   },

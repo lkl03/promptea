@@ -93,6 +93,29 @@ const COPY: Record<
     ],
     close: "Fechar",
   },
+  zh: {
+    trigger: "Which one should I use?",
+    title: "Checklist vs JSON",
+    intro: "Both versions contain the same analysis. Only the way the optimized prompt is delivered changes.",
+    checklistTitle: "Checklist (normal format)",
+    checklistBody: [
+      "Easier to read and tweak by hand.",
+      "Best for pasting straight into ChatGPT, Claude, Gemini, or Grok.",
+      "The right pick for most use cases.",
+    ],
+    jsonTitle: "Pure JSON",
+    jsonBody: [
+      "Strict, parseable with JSON.parse().",
+      "Best for automations, APIs, agents, and repeatable workflows.",
+      "More rigid and less conversational.",
+    ],
+    recommendationTitle: "Quick recommendation",
+    recommendation: [
+      "Use Checklist if you'll paste the prompt manually.",
+      "Use JSON if another tool or pipeline will consume it.",
+    ],
+    close: "Close",
+  },
 };
 
 export default function FormatExplainModal({ lang }: Props) {

@@ -47,10 +47,11 @@ export type LlmsInput = {
 };
 
 /** "Index in <language>", written in that language. */
-const OTHER_INDEX: Record<Locale, string> = { en: "Index in English", es: "Índice en español", pt: "Índice em português" };
-const OTHER_INDEX_NAME: Record<Locale, string> = { en: "English", es: "Español", pt: "Português" };
+const OTHER_INDEX: Record<Locale, string> = { en: "Index in English", es: "Índice en español", pt: "Índice em português", zh: "Index in English" };
+const OTHER_INDEX_NAME: Record<Locale, string> = { en: "English", es: "Español", pt: "Português", zh: "English" };
 
-const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T): T => ({ en, es, pt })[lang];
+// v1.8.7: zh is optional while the Chinese text is written; it falls back to English.
+const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T, zh: T = en): T => ({ en, es, pt, zh })[lang];
 
 /** How many AI Daily stories llms.txt lists (newest first, across editions). */
 export const LLMS_MAX_ARTICLES = 30;
@@ -105,14 +106,14 @@ type Section = { section: SeoSection; title: Record<Locale, string> };
 
 /** Static sections, in display order. AI Daily is built separately (it is per-edition). */
 const SECTIONS: readonly Section[] = [
-  { section: "tools", title: { en: "Tools", es: "Herramientas", pt: "Ferramentas" } },
-  { section: "about", title: { en: "About, method and policies", es: "Acerca de, método y políticas", pt: "Sobre, método e políticas" } },
+  { section: "tools", title: { en: "Tools", es: "Herramientas", pt: "Ferramentas", zh: "Tools" } },
+  { section: "about", title: { en: "About, method and policies", es: "Acerca de, método y políticas", pt: "Sobre, método e políticas", zh: "About, method and policies" } },
   // "ai-daily" is inserted here by buildLlmsTxt
-  { section: "guides", title: { en: "Prompting guides", es: "Guías de prompting", pt: "Guias de prompting" } },
-  { section: "models", title: { en: "Prompts by model", es: "Prompts por modelo", pt: "Prompts por modelo" } },
-  { section: "glossary", title: { en: "Glossary", es: "Glosario", pt: "Glossário" } },
-  { section: "prompts", title: { en: "Prompt packs", es: "Packs de prompts", pt: "Pacotes de prompts" } },
-  { section: "landing", title: { en: "Landing pages", es: "Páginas de producto", pt: "Landing pages" } },
+  { section: "guides", title: { en: "Prompting guides", es: "Guías de prompting", pt: "Guias de prompting", zh: "Prompting guides" } },
+  { section: "models", title: { en: "Prompts by model", es: "Prompts por modelo", pt: "Prompts por modelo", zh: "Prompts by model" } },
+  { section: "glossary", title: { en: "Glossary", es: "Glosario", pt: "Glossário", zh: "Glossary" } },
+  { section: "prompts", title: { en: "Prompt packs", es: "Packs de prompts", pt: "Pacotes de prompts", zh: "Prompt packs" } },
+  { section: "landing", title: { en: "Landing pages", es: "Páginas de producto", pt: "Landing pages", zh: "Landing pages" } },
 ];
 
 export function summaryText(lang: Locale): string {

@@ -29,12 +29,14 @@ export async function generateMetadata({
       es: "Prompts para estudiar (plantillas)",
       en: "Study prompts (templates)",
       pt: "Prompts para estudar (templates)",
+      zh: "Study prompts (templates)",
     }),
     description:
       pick(l, {
         es: "Plantillas para estudiar: explicación, ejemplos, ejercicios y planes. Abrilas en Promptea y optimizalas por IA.",
         en: "Study prompt templates: explanations, examples, exercises and plans. Open in Promptea and optimize per AI.",
         pt: "Templates de prompts para estudar: explicações, exemplos, exercícios e planos. Abra no Promptea e otimize para cada IA.",
+        zh: "Study prompt templates: explanations, examples, exercises and plans. Open in Promptea and optimize per AI.",
       }),
   });
 }
@@ -48,17 +50,18 @@ export default async function StudyPromptPackPage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = pick(l, { es: "Prompts para estudiar", en: "Study prompts", pt: "Prompts para estudar" });
+  const title = pick(l, { es: "Prompts para estudiar", en: "Study prompts", pt: "Prompts para estudar", zh: "Study prompts" });
   const subtitle =
     pick(l, {
       es: "Plantillas listas para copiar. Elegí un ejemplo y abrilo en Promptea.",
       en: "Copy-ready templates. Pick one and open it in Promptea.",
       pt: "Templates prontos para copiar. Escolha um e abra no Promptea.",
+      zh: "Copy-ready templates. Pick one and open it in Promptea.",
     });
 
   const examples = [
     {
-      title: pick(l, { es: "Entender un tema desde cero", en: "Learn a topic from scratch", pt: "Aprender um assunto do zero" }),
+      title: pick(l, { es: "Entender un tema desde cero", en: "Learn a topic from scratch", pt: "Aprender um assunto do zero", zh: "Learn a topic from scratch" }),
       target: "gpt",
       purpose: "study",
       prompt:
@@ -96,6 +99,17 @@ Explique:
 4) erros comuns
 5) 5 questões no estilo de prova, com respostas curtas
 Se faltar informação, faça até 3 perguntas.`,
+          zh: `I’m studying: [topic]
+Level: [high school/university]
+Goal: understand it well enough to explain it.
+
+Explain:
+1) intuition (core idea)
+2) formal definition
+3) worked example
+4) common mistakes
+5) 5 exam-style questions with short answers
+If info is missing, ask up to 3 questions.`,
         }),
     },
     {
@@ -103,6 +117,7 @@ Se faltar informação, faça até 3 perguntas.`,
         es: "Resumen + mapa mental + flashcards",
         en: "Summary + mind map + flashcards",
         pt: "Resumo + mapa mental + flashcards",
+        zh: "Summary + mind map + flashcards",
       }),
       target: "gemini",
       purpose: "study",
@@ -132,6 +147,14 @@ Faça:
 - mapa mental (lista hierárquica)
 - 12 flashcards (P/R)
 Mantenha a saída em português.`,
+          zh: `Notes/Text:
+[paste here]
+
+Do:
+- 10-bullet summary
+- mind map (hierarchical list)
+- 12 flashcards (Q/A)
+Keep the output in English.`,
         }),
     },
     {
@@ -139,6 +162,7 @@ Mantenha a saída em português.`,
         es: "Plan de estudio 7 días (con mini-tests)",
         en: "7-day study plan (with mini-quizzes)",
         pt: "Plano de estudos de 7 dias (com miniquizzes)",
+        zh: "7-day study plan (with mini-quizzes)",
       }),
       target: "claude",
       purpose: "study",
@@ -174,10 +198,20 @@ Monte um plano de 7 dias com:
 - exercícios sugeridos
 - miniquiz diário (5 questões)
 - repetição espaçada`,
+          zh: `Subject: [subject]
+Exam date: [date]
+Daily time available: [minutes]
+Difficult topics: [topics]
+
+Create a 7-day plan with:
+- daily objectives
+- suggested exercises
+- daily mini-quiz (5 questions)
+- spaced repetition`,
         }),
     },
     {
-      title: pick(l, { es: "Preparación para examen oral", en: "Oral exam prep", pt: "Preparação para prova oral" }),
+      title: pick(l, { es: "Preparación para examen oral", en: "Oral exam prep", pt: "Preparação para prova oral", zh: "Oral exam prep" }),
       target: "grok",
       purpose: "study",
       prompt:
@@ -206,6 +240,14 @@ Simule uma prova oral:
 - espere a minha resposta (eu vou responder)
 - corrija e diga o que melhorar (de forma breve e clara)
 Comece pela pergunta 1.`,
+          zh: `Topic: [topic]
+Level: [level]
+
+Simulate an oral exam:
+- ask 10 questions increasing in difficulty
+- wait for my answer (I will answer)
+- correct me and tell me what to improve (brief and clear)
+Start with question 1.`,
         }),
     },
     {
@@ -213,6 +255,7 @@ Comece pela pergunta 1.`,
         es: "Ejercicios graduados + solución",
         en: "Graduated exercises + solutions",
         pt: "Exercícios graduados + soluções",
+        zh: "Graduated exercises + solutions",
       }),
       target: "deepseek",
       purpose: "study",
@@ -242,6 +285,14 @@ Quero:
 - para cada um: dica opcional
 - soluções completas no final
 - checklist de erros comuns`,
+          zh: `Topic: [topic]
+Goal: practice until mastery.
+
+Give me:
+- 6 exercises (easy → hard)
+- for each: optional hint
+- full solutions at the end
+- checklist of common mistakes`,
         }),
     },
     {
@@ -249,6 +300,7 @@ Quero:
         es: "Aprender idioma (rutina + corrección)",
         en: "Language learning (routine + corrections)",
         pt: "Aprender idiomas (rotina + correções)",
+        zh: "Language learning (routine + corrections)",
       }),
       target: "gpt",
       purpose: "study",
@@ -281,18 +333,28 @@ Monte:
 - 10 frases úteis do dia
 - miniexercício (tradução ou completar lacunas)
 - peça 3 respostas minhas e corrija`,
+          zh: `I want to practice [language] 15 minutes per day.
+Current level: [A2/B1/etc.]
+Goal: [conversation/exam/technical vocabulary]
+
+Build:
+- daily 15-min routine
+- 10 useful phrases of the day
+- mini exercise (translation or fill-in)
+- ask me for 3 answers and correct me`,
         }),
     },
   ];
 
   const faq = [
     {
-      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?" }),
+      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?", zh: "How do I use these templates?" }),
       a:
         pick(l, {
           es: "Elegí un ejemplo y tocá “Abrir en Promptea”. Te precarga el prompt, el objetivo (Study) y el modelo sugerido.",
           en: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Study), and a suggested model.",
           pt: "Escolha um exemplo e clique em “Abrir no Promptea”. O prompt, o propósito (Estudo) e um modelo sugerido já vêm preenchidos.",
+          zh: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Study), and a suggested model.",
         }),
     },
     {
@@ -300,30 +362,34 @@ Monte:
         es: "¿Por qué importa elegir 'Study'?",
         en: "Why does selecting 'Study' matter?",
         pt: "Por que selecionar 'Estudo' faz diferença?",
+        zh: "Why does selecting 'Study' matter?",
       }),
       a:
         pick(l, {
           es: "Porque Promptea ajusta el análisis y el prompt optimizado para aprendizaje: estructura, ejemplos, ejercicios y preguntas.",
           en: "Because Promptea tunes the analysis and optimized prompt for learning: structure, examples, exercises, and questions.",
           pt: "Porque o Promptea ajusta a análise e o prompt otimizado para o aprendizado: estrutura, exemplos, exercícios e perguntas.",
+          zh: "Because Promptea tunes the analysis and optimized prompt for learning: structure, examples, exercises, and questions.",
         }),
     },
     {
-      q: pick(l, { es: "¿Puedo cambiar el modelo?", en: "Can I change the model?", pt: "Posso trocar o modelo?" }),
+      q: pick(l, { es: "¿Puedo cambiar el modelo?", en: "Can I change the model?", pt: "Posso trocar o modelo?", zh: "Can I change the model?" }),
       a:
         pick(l, {
           es: "Sí. Si tu prioridad es claridad y estructura, probá Claude/GPT. Si querés formatos estrictos, elegí el que te rinda mejor.",
           en: "Yes. If you want clarity and structure, try Claude/GPT. For strict formats, pick the one that works best for you.",
           pt: "Sim. Se você quer clareza e estrutura, experimente Claude/GPT. Para formatos estritos, escolha o que funcionar melhor para você.",
+          zh: "Yes. If you want clarity and structure, try Claude/GPT. For strict formats, pick the one that works best for you.",
         }),
     },
     {
-      q: pick(l, { es: "¿Qué pasa con mis datos?", en: "What happens to my data?", pt: "O que acontece com os meus dados?" }),
+      q: pick(l, { es: "¿Qué pasa con mis datos?", en: "What happens to my data?", pt: "O que acontece com os meus dados?", zh: "What happens to my data?" }),
       a:
         pick(l, {
           es: "Promptea evita enviar el texto del prompt en telemetría. El objetivo es medir uso y calidad sin guardar contenido sensible.",
           en: "Promptea avoids sending the prompt text in telemetry. The goal is measuring usage and quality without storing sensitive content.",
           pt: "O Promptea evita enviar o texto do prompt na telemetria. O objetivo é medir uso e qualidade sem guardar conteúdo sensível.",
+          zh: "Promptea avoids sending the prompt text in telemetry. The goal is measuring usage and quality without storing sensitive content.",
         }),
     },
   ];
@@ -349,10 +415,10 @@ Monte:
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes" })}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes", zh: "← View all packs" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →" })}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →", zh: "Open Analyzer →" })}
           </Link>
         </div>
       </div>
@@ -372,10 +438,11 @@ Monte:
                     es: "Se abre en el analizador con el prompt precargado.",
                     en: "Opens the analyzer with the prompt prefilled.",
                     pt: "Abre o analisador com o prompt já preenchido.",
+                    zh: "Opens the analyzer with the prompt prefilled.",
                   })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "Open in Promptea" })}
                 </Link>
               </div>
             </div>
@@ -385,7 +452,7 @@ Monte:
 
       {/* FAQ visible */}
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

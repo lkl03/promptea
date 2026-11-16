@@ -22,8 +22,13 @@ export const X_DEFAULT_LOCALE: Locale = DEFAULT_LOCALE;
  * region-neutral (as before v1.8.2); Portuguese is written for Brazil, so it is
  * announced as `pt-BR` and also as plain `pt` (the fallback for every other
  * Portuguese-speaking region, which has no page of its own).
+ *
+ * v1.8.7 — Chinese is Simplified Chinese: announced as `zh-Hans` (the script:
+ * mainland China, Singapore, Malaysia), `zh-CN` (the region it is written for)
+ * and plain `zh`. Readers of Traditional Chinese (zh-TW, zh-HK, zh-Hant) are not
+ * targeted: proxy.ts sends them to /en (docs/i18n/zh-review.md explains why).
  */
-export const HREFLANG: Record<Locale, readonly string[]> = { es: ["es"], en: ["en"], pt: ["pt-BR", "pt"] };
+export const HREFLANG: Record<Locale, readonly string[]> = { es: ["es"], en: ["en"], pt: ["pt-BR", "pt"], zh: ["zh-Hans", "zh-CN", "zh"] };
 
 /** BCP 47 tag of a locale: `<html lang>`, JSON-LD `inLanguage`, RSS `<language>`. */
 export const LOCALE_TAG: Record<Locale, string> = LANG_TAG;
@@ -44,7 +49,7 @@ export const STUDIO_NAME = "eterlab";
 export const STUDIO_URL = "https://eterlab.co";
 
 /** `og:locale` for each language. */
-export const OG_LOCALE: Record<Locale, string> = { en: "en_US", es: "es_AR", pt: "pt_BR" };
+export const OG_LOCALE: Record<Locale, string> = { en: "en_US", es: "es_AR", pt: "pt_BR", zh: "zh_CN" };
 
 /**
  * IMPORTANT for SEO:

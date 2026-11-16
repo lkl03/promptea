@@ -99,7 +99,7 @@ describe("strict localization for lang=pt", () => {
         for (const f of by.pt.findings) {
           const es = by.es.findings.find((x) => x.id === f.id);
           const en = by.en.findings.find((x) => x.id === f.id);
-          if (es && en) seen.set(`f:${f.id}`, { pt: f.description, es: es.description, en: en.description });
+          if (es && en) seen.set(`f:${f.id}`, { pt: f.description, es: es.description, en: en.description, zh: en.description });
         }
       }
     }

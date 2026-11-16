@@ -29,12 +29,14 @@ export async function generateMetadata({
       es: "Prompts para programar (debug + review)",
       en: "Coding prompts (debug + review)",
       pt: "Prompts para programar (debug + review)",
+      zh: "Coding prompts (debug + review)",
     }),
     description:
       pick(l, {
         es: "Plantillas para debugging, code review, refactors y tests. Abrilas en Promptea y optimizalas por IA.",
         en: "Templates for debugging, code reviews, refactors and tests. Open in Promptea and optimize per AI.",
         pt: "Templates para depuração, code review, refatorações e testes. Abra no Promptea e otimize para cada IA.",
+        zh: "Templates for debugging, code reviews, refactors and tests. Open in Promptea and optimize per AI.",
       }),
   });
 }
@@ -48,12 +50,13 @@ export default async function CodePromptPackPage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = pick(l, { es: "Prompts para código", en: "Coding prompts", pt: "Prompts para código" });
+  const title = pick(l, { es: "Prompts para código", en: "Coding prompts", pt: "Prompts para código", zh: "Coding prompts" });
   const subtitle =
     pick(l, {
       es: "Debugging, review, refactors y tests. Elegí uno y abrilo en Promptea.",
       en: "Debugging, reviews, refactors and tests. Pick one and open it in Promptea.",
       pt: "Depuração, review, refatorações e testes. Escolha um e abra no Promptea.",
+      zh: "Debugging, reviews, refactors and tests. Pick one and open it in Promptea.",
     });
 
   const examples = [
@@ -62,6 +65,7 @@ export default async function CodePromptPackPage({
         es: "Debugging con pasos reproducibles",
         en: "Debugging with reproducible steps",
         pt: "Depuração com passos reproduzíveis",
+        zh: "Debugging with reproducible steps",
       }),
       target: "gpt",
       purpose: "code",
@@ -127,10 +131,30 @@ Preciso de:
 3) correção (com diff/trecho de código)
 4) casos de borda
 Se faltar informação, faça de 1 a 3 perguntas antes.`,
+          zh: `I’m hitting this bug:
+
+Context:
+- Stack: [Next.js / Node / Python / etc.]
+- Environment: [local/prod]
+- Expected:
+- Actual:
+
+Logs:
+[paste logs]
+
+Minimal code:
+[paste snippet]
+
+I need:
+1) most likely hypothesis
+2) repro steps
+3) fix (diff/snippet)
+4) edge cases
+If missing info, ask 1–3 questions first.`,
         }),
     },
     {
-      title: pick(l, { es: "Code review con criterios", en: "Code review with criteria", pt: "Code review com critérios" }),
+      title: pick(l, { es: "Code review con criterios", en: "Code review with criteria", pt: "Code review com critérios", zh: "Code review with criteria" }),
       target: "claude",
       purpose: "code",
       prompt:
@@ -180,6 +204,21 @@ Retorne:
 - problemas priorizados
 - correções concretas (trechos de código)
 - checklist de testes`,
+          zh: `Review this code:
+
+[paste code]
+
+Evaluate:
+- Correctness
+- Security
+- Performance
+- Readability
+- Missing tests
+
+Return:
+- prioritized issues
+- concrete fixes (snippets)
+- test checklist`,
         }),
     },
     {
@@ -187,6 +226,7 @@ Retorne:
         es: "Diseño de feature (plan por pasos)",
         en: "Feature design (step plan)",
         pt: "Design de funcionalidade (plano em passos)",
+        zh: "Feature design (step plan)",
       }),
       target: "gemini",
       purpose: "code",
@@ -222,6 +262,16 @@ Proponha:
 - modelo de dados
 - casos de borda
 - plano em passos`,
+          zh: `I want to implement: [feature]
+Constraints: [time, stack, limits]
+Users: [who uses it]
+
+Propose:
+- simple architecture
+- endpoints/modules
+- data model
+- edge cases
+- step plan`,
         }),
     },
     {
@@ -229,6 +279,7 @@ Proponha:
         es: "Refactor con objetivos claros",
         en: "Refactor with clear goals",
         pt: "Refatoração com objetivos claros",
+        zh: "Refactor with clear goals",
       }),
       target: "deepseek",
       purpose: "code",
@@ -273,6 +324,19 @@ Retorne:
 - explicação breve
 - diff/trechos de código
 - testes sugeridos`,
+          zh: `Refactor this code with goals:
+- reduce complexity
+- improve naming
+- separate responsibilities
+- keep behavior (don’t break API)
+
+Code:
+[paste code]
+
+Return:
+- brief explanation
+- diff/snippets
+- suggested tests`,
         }),
     },
     {
@@ -280,6 +344,7 @@ Retorne:
         es: "Escribir tests (unit + integration)",
         en: "Write tests (unit + integration)",
         pt: "Escrever testes (unitários + integração)",
+        zh: "Write tests (unit + integration)",
       }),
       target: "gpt",
       purpose: "code",
@@ -318,6 +383,17 @@ Entregue:
 - testes unitários (trechos de código)
 - 1 ou 2 testes de integração
 - como executá-los`,
+          zh: `I need tests for this module:
+
+Stack: [jest/vitest/etc.]
+Code:
+[paste code]
+
+Provide:
+- cases to cover (list)
+- unit tests (snippets)
+- 1–2 integration tests
+- how to run them`,
         }),
     },
     {
@@ -325,6 +401,7 @@ Entregue:
         es: "Performance: diagnóstico + optimización",
         en: "Performance: diagnose + optimize",
         pt: "Desempenho: diagnosticar + otimizar",
+        zh: "Performance: diagnose + optimize",
       }),
       target: "grok",
       purpose: "code",
@@ -372,18 +449,33 @@ Quero:
 - hipóteses por impacto
 - como medir (profiling)
 - correções e trade-offs`,
+          zh: `I have a performance issue.
+
+Context:
+- app: [web/api]
+- symptom: [latency/CPU/memory]
+- metrics: [p95, RPS, etc.]
+
+Code/logs:
+[paste]
+
+Give me:
+- hypotheses by impact
+- how to measure (profiling)
+- fixes and tradeoffs`,
         }),
     },
   ];
 
   const faq = [
     {
-      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?" }),
+      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?", zh: "How do I use these templates?" }),
       a:
         pick(l, {
           es: "Elegí un ejemplo y tocá “Abrir en Promptea”. Se precarga el prompt, el objetivo (Code) y un modelo sugerido.",
           en: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Code), and a suggested model.",
           pt: "Escolha um exemplo e clique em “Abrir no Promptea”. O prompt, o propósito (Código) e um modelo sugerido já vêm preenchidos.",
+          zh: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Code), and a suggested model.",
         }),
     },
     {
@@ -391,12 +483,14 @@ Quero:
         es: "¿Qué debería pegar (mínimo)?",
         en: "What should I paste (minimum)?",
         pt: "O que devo colar (no mínimo)?",
+        zh: "What should I paste (minimum)?",
       }),
       a:
         pick(l, {
           es: "Un snippet mínimo, logs relevantes y el comportamiento esperado vs real. Eso sube el score y mejora el output.",
           en: "A minimal snippet, relevant logs, and expected vs actual behavior. That improves score and output quality.",
           pt: "Um trecho mínimo de código, os logs relevantes e o comportamento esperado vs. o real. Isso melhora a pontuação e a qualidade da resposta.",
+          zh: "A minimal snippet, relevant logs, and expected vs actual behavior. That improves score and output quality.",
         }),
     },
     {
@@ -404,21 +498,24 @@ Quero:
         es: "¿Cómo evito respuestas genéricas?",
         en: "How do I avoid generic answers?",
         pt: "Como evito respostas genéricas?",
+        zh: "How do I avoid generic answers?",
       }),
       a:
         pick(l, {
           es: "Pedí formato de salida (pasos, diff, checklist) y agregá restricciones (stack, versiones, límites).",
           en: "Request an output format (steps, diff, checklist) and add constraints (stack, versions, limits).",
           pt: "Peça um formato de saída (passos, diff, checklist) e adicione restrições (stack, versões, limites).",
+          zh: "Request an output format (steps, diff, checklist) and add constraints (stack, versions, limits).",
         }),
     },
     {
-      q: pick(l, { es: "¿Puedo cambiar el modelo?", en: "Can I change the model?", pt: "Posso trocar o modelo?" }),
+      q: pick(l, { es: "¿Puedo cambiar el modelo?", en: "Can I change the model?", pt: "Posso trocar o modelo?", zh: "Can I change the model?" }),
       a:
         pick(l, {
           es: "Sí. Si querés estructura fuerte, probá Claude/GPT. Si querés bullets rápidos, Grok puede servir.",
           en: "Yes. For strong structure, try Claude/GPT. For quick bullets, Grok can work well.",
           pt: "Sim. Para uma estrutura sólida, experimente Claude/GPT. Para tópicos rápidos, o Grok pode funcionar bem.",
+          zh: "Yes. For strong structure, try Claude/GPT. For quick bullets, Grok can work well.",
         }),
     },
   ];
@@ -443,10 +540,10 @@ Quero:
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes" })}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes", zh: "← View all packs" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →" })}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →", zh: "Open Analyzer →" })}
           </Link>
         </div>
       </div>
@@ -466,10 +563,11 @@ Quero:
                     es: "Se abre en el analizador con el prompt precargado.",
                     en: "Opens the analyzer with the prompt prefilled.",
                     pt: "Abre o analisador com o prompt já preenchido.",
+                    zh: "Opens the analyzer with the prompt prefilled.",
                   })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "Open in Promptea" })}
                 </Link>
               </div>
             </div>
@@ -478,7 +576,7 @@ Quero:
       </div>
 
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

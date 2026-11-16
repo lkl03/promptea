@@ -165,6 +165,14 @@ const FEATURES: Record<Locale, string[]> = {
     "AI Daily: uma notícia de IA verificada por dia (em inglês e espanhol)",
     "Benchmarks de modelos de IA com fonte e data",
   ],
+  zh: [
+    "Prompt score from 0 to 100 on six criteria",
+    "Findings and recommendations for each prompt",
+    "Optimized prompt for GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao and Perplexity",
+    "Best-AI recommendation for a task",
+    "AI Daily: one verified AI story a day",
+    "AI model benchmarks with source and date",
+  ],
 };
 
 export function softwareApplicationNode(lang: Locale, description: string, siteUrl?: string): JsonLdNode {

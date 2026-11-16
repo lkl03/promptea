@@ -75,6 +75,20 @@ Preciso de:
     purpose: "code",
     target: "claude",
   },
+  zh: {
+    prompt: `You are a senior software engineer. I'm getting this error in Next.js 14:
+
+Error: "Cannot read properties of undefined (reading 'map')"
+
+It happens in the ProductList component when the products prop is not passed from the server.
+
+I need:
+1. Exactly why this happens
+2. How to prevent it (default value, guard clause, or Suspense)
+3. A snippet showing the applied fix`,
+    purpose: "code",
+    target: "claude",
+  },
 };
 
 /** sessionStorage key for persisting analyzer form state across navigation */

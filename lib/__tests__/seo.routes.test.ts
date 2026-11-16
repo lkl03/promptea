@@ -95,7 +95,7 @@ describe("llms.txt routes", () => {
   });
 
   it("is statically generated for every locale only", () => {
-    expect(llmsParams()).toEqual([{ lang: "es" }, { lang: "en" }, { lang: "pt" }]);
+    expect(llmsParams()).toEqual([{ lang: "es" }, { lang: "en" }, { lang: "pt" }, { lang: "zh" }]);
   });
 });
 

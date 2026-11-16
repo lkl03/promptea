@@ -29,12 +29,14 @@ export async function generateMetadata({
       es: "Prompts para marketing (ads + landing + emails)",
       en: "Marketing prompts (ads + landing + emails)",
       pt: "Prompts de marketing (anúncios + landing + e-mails)",
+      zh: "Marketing prompts (ads + landing + emails)",
     }),
     description:
       pick(l, {
         es: "Plantillas para copy, ads, landings y emails. Abrilas en Promptea y optimizalas por IA.",
         en: "Templates for copy, ads, landing pages and emails. Open in Promptea and optimize per AI.",
         pt: "Templates para copy, anúncios, landing pages e e-mails. Abra no Promptea e otimize para cada IA.",
+        zh: "Templates for copy, ads, landing pages and emails. Open in Promptea and optimize per AI.",
       }),
   });
 }
@@ -48,12 +50,13 @@ export default async function MarketingPromptPackPage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = pick(l, { es: "Prompts para marketing", en: "Marketing prompts", pt: "Prompts de marketing" });
+  const title = pick(l, { es: "Prompts para marketing", en: "Marketing prompts", pt: "Prompts de marketing", zh: "Marketing prompts" });
   const subtitle =
     pick(l, {
       es: "Copy, ads, emails y redes. Elegí uno y abrilo en Promptea.",
       en: "Copy, ads, emails and social. Pick one and open it in Promptea.",
       pt: "Copy, anúncios, e-mails e redes sociais. Escolha um e abra no Promptea.",
+      zh: "Copy, ads, emails and social. Pick one and open it in Promptea.",
     });
 
   const examples = [
@@ -62,6 +65,7 @@ export default async function MarketingPromptPackPage({
         es: "Landing hero + bullets + CTA",
         en: "Landing hero + bullets + CTA",
         pt: "Hero de landing + bullets + CTA",
+        zh: "Landing hero + bullets + CTA",
       }),
       target: "gpt",
       purpose: "marketing",
@@ -100,6 +104,17 @@ Escreva:
 - 5 subtítulos
 - 6 bullets de benefícios (sem promessas falsas)
 - 3 CTAs`,
+          zh: `Product: [what it is]
+Audience: [who it’s for]
+Pain: [pain]
+Value prop: [value]
+Tone: [professional/friendly/playful]
+
+Write:
+- 5 headlines
+- 5 subheadlines
+- 6 benefit bullets (no false promises)
+- 3 CTAs`,
         }),
     },
     {
@@ -107,6 +122,7 @@ Escreva:
         es: "Google Ads (Search) por intención",
         en: "Google Ads (Search) by intent",
         pt: "Google Ads (Search) por intenção",
+        zh: "Google Ads (Search) by intent",
       }),
       target: "gemini",
       purpose: "marketing",
@@ -139,10 +155,19 @@ Gere:
 - 5 grupos por intenção
 - 3 RSAs por grupo (títulos + descrições)
 - palavras-chave negativas sugeridas`,
+          zh: `Product: [what it is]
+Country/language: [es/en]
+Goal: leads
+
+Generate:
+- 15 long-tail keywords
+- 5 intent-based groups
+- 3 RSAs per group (headlines + descriptions)
+- suggested negatives`,
         }),
     },
     {
-      title: pick(l, { es: "Email frío (corto y humano)", en: "Cold email (short and human)", pt: "Cold e-mail (curto e humano)" }),
+      title: pick(l, { es: "Email frío (corto y humano)", en: "Cold email (short and human)", pt: "Cold e-mail (curto e humano)", zh: "Cold email (short and human)" }),
       target: "claude",
       purpose: "marketing",
       prompt:
@@ -177,6 +202,16 @@ Escreva:
 - e-mail com até 120 palavras
 - follow-up depois de 48h
 Sem hype, sem afirmações exageradas.`,
+          zh: `To: [role / industry]
+Problem: [problem]
+Proof: [evidence if any]
+Offer: [demo / free tool]
+
+Write:
+- 3 subject lines
+- email <=120 words
+- follow-up after 48h
+No hype, no exaggerated claims.`,
         }),
     },
     {
@@ -184,6 +219,7 @@ Sem hype, sem afirmações exageradas.`,
         es: "Posicionamiento (mensaje central)",
         en: "Positioning (core messaging)",
         pt: "Posicionamento (mensagem central)",
+        zh: "Positioning (core messaging)",
       }),
       target: "gpt",
       purpose: "marketing",
@@ -216,6 +252,15 @@ Crie:
 - 3 mensagens-chave
 - 3 objeções + respostas
 - 10 afirmações seguras (sem grandes promessas)`,
+          zh: `Product: [what it is]
+Competitors: [list]
+Audience: [who it’s for]
+
+Create:
+- positioning statement (1 sentence)
+- 3 key messages
+- 3 objections + answers
+- 10 safe claims (no big promises)`,
         }),
     },
     {
@@ -223,6 +268,7 @@ Crie:
         es: "Contenido para X (hilo + posts sueltos)",
         en: "X content (thread + single posts)",
         pt: "Conteúdo para o X (thread + posts avulsos)",
+        zh: "X content (thread + single posts)",
       }),
       target: "grok",
       purpose: "marketing",
@@ -252,10 +298,18 @@ Gere:
 - 1 thread de 6 posts (educativa, sem venda agressiva)
 - 5 posts avulsos (ganchos diferentes)
 - CTA suave no final`,
+          zh: `Product: [what it is]
+Audience: [who it’s for]
+Tone: direct and clear
+
+Generate:
+- 1 thread of 6 tweets (educational, not hard-sell)
+- 5 single tweets (different hooks)
+- soft CTA at the end`,
         }),
     },
     {
-      title: pick(l, { es: "A/B test de hooks (10 variantes)", en: "A/B hooks (10 variations)", pt: "Ganchos A/B (10 variações)" }),
+      title: pick(l, { es: "A/B test de hooks (10 variantes)", en: "A/B hooks (10 variations)", pt: "Ganchos A/B (10 variações)", zh: "A/B hooks (10 variations)" }),
       target: "deepseek",
       purpose: "marketing",
       prompt:
@@ -296,18 +350,31 @@ Entregue 10 ganchos diferentes:
 - 2 de comparação
 - 2 contraintuitivos
 Sem afirmações falsas.`,
+          zh: `Context:
+- product: [what it is]
+- realistic promise: [benefit]
+- audience: [who]
+- channel: [landing / ads / tiktok / X]
+
+Give 10 different hooks:
+- 3 curiosity
+- 3 pain
+- 2 comparison
+- 2 contrarian
+No false claims.`,
         }),
     },
   ];
 
   const faq = [
     {
-      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?" }),
+      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?", zh: "How do I use these templates?" }),
       a:
         pick(l, {
           es: "Elegí un ejemplo y tocá “Abrir en Promptea”. Se precarga el prompt, el objetivo (Marketing) y un modelo sugerido.",
           en: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Marketing), and a suggested model.",
           pt: "Escolha um exemplo e clique em “Abrir no Promptea”. O prompt, o propósito (Marketing) e um modelo sugerido já vêm preenchidos.",
+          zh: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Marketing), and a suggested model.",
         }),
     },
     {
@@ -315,12 +382,14 @@ Sem afirmações falsas.`,
         es: "¿Qué debería completar sí o sí?",
         en: "What should I fill in for best results?",
         pt: "O que devo preencher para ter os melhores resultados?",
+        zh: "What should I fill in for best results?",
       }),
       a:
         pick(l, {
           es: "Audiencia, propuesta de valor, tono y canal. Si agregás constraints (largo, claims prohibidos), sube la calidad.",
           en: "Audience, value proposition, tone, and channel. Adding constraints (length, forbidden claims) improves quality.",
           pt: "Público, proposta de valor, tom e canal. Adicionar restrições (tamanho, afirmações proibidas) melhora a qualidade.",
+          zh: "Audience, value proposition, tone, and channel. Adding constraints (length, forbidden claims) improves quality.",
         }),
     },
     {
@@ -328,21 +397,24 @@ Sem afirmações falsas.`,
         es: "¿Sirve para ads y redes?",
         en: "Does it work for ads and social?",
         pt: "Funciona para anúncios e redes sociais?",
+        zh: "Does it work for ads and social?",
       }),
       a:
         pick(l, {
           es: "Sí. Por eso el pack incluye variantes por canal: landing, Google Ads, email y X.",
           en: "Yes. That’s why this pack includes channel-specific variants: landing, Google Ads, email and X.",
           pt: "Sim. Por isso este pacote inclui variantes por canal: landing, Google Ads, e-mail e X.",
+          zh: "Yes. That’s why this pack includes channel-specific variants: landing, Google Ads, email and X.",
         }),
     },
     {
-      q: pick(l, { es: "¿Cómo evito 'venta dura'?", en: "How do I avoid hard-selling?", pt: "Como evito a venda agressiva?" }),
+      q: pick(l, { es: "¿Cómo evito 'venta dura'?", en: "How do I avoid hard-selling?", pt: "Como evito a venda agressiva?", zh: "How do I avoid hard-selling?" }),
       a:
         pick(l, {
           es: "Pedí tono humano, claims seguros y CTA suave. Y pedí 2–3 variantes para iterar rápido.",
           en: "Ask for a human tone, safe claims and a soft CTA. Request 2–3 variants to iterate faster.",
           pt: "Peça um tom humano, afirmações seguras e um CTA suave. Peça 2 ou 3 variantes para iterar mais rápido.",
+          zh: "Ask for a human tone, safe claims and a soft CTA. Request 2–3 variants to iterate faster.",
         }),
     },
   ];
@@ -367,10 +439,10 @@ Sem afirmações falsas.`,
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes" })}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes", zh: "← View all packs" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →" })}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →", zh: "Open Analyzer →" })}
           </Link>
         </div>
       </div>
@@ -390,10 +462,11 @@ Sem afirmações falsas.`,
                     es: "Se abre en el analizador con el prompt precargado.",
                     en: "Opens the analyzer with the prompt prefilled.",
                     pt: "Abre o analisador com o prompt já preenchido.",
+                    zh: "Opens the analyzer with the prompt prefilled.",
                   })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "Open in Promptea" })}
                 </Link>
               </div>
             </div>
@@ -402,7 +475,7 @@ Sem afirmações falsas.`,
       </div>
 
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

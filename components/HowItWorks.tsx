@@ -117,6 +117,39 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
       ],
       close: "Fechar",
     },
+    zh: {
+      button: "New? See how it works →",
+      title: "How Promptea works",
+      intro: "Five quick steps to turn a vague prompt into an optimized version for the AI you use.",
+      steps: [
+        {
+          title: "1. Pick model and prompt type",
+          body:
+            "Select the AI family (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen…) and what the prompt is for: text, code, data, marketing, study, image, translation, or summarization.",
+        },
+        {
+          title: "2. Paste, write, or dictate your prompt",
+          body:
+            "Paste the text, write it, or dictate it with your voice using the mic. If you have extra context (logs, code, data, notes), attach up to 3 files.",
+        },
+        {
+          title: "3. Review the analysis",
+          body:
+            "Check the score, areas to improve, follow-up questions, and detected risks. Fix the critical issues and re-analyze.",
+        },
+        {
+          title: "4. Copy the optimized prompt",
+          body:
+            "Once optimized, copy it and paste into your preferred AI. The structure adapts to each model and each kind of task.",
+        },
+        {
+          title: "5. Choose the output format",
+          body:
+            "Checklist mode: best for chat with humans. Pure JSON mode: best for automations, APIs, and workflows.",
+        },
+      ],
+      close: "Close",
+    },
   },
   "best-ai": {
     es: {
@@ -218,6 +251,39 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
         },
       ],
       close: "Fechar",
+    },
+    zh: {
+      button: "New? See how it works →",
+      title: "How Find the Best AI works",
+      intro:
+        "Paste a prompt you already have and find out which AI fits it best — no AI jargon required.",
+      steps: [
+        {
+          title: "1. Paste or dictate your prompt",
+          body: "Write, paste, or dictate the prompt you already have. Nothing else to configure.",
+        },
+        {
+          title: "2. We detect signals in your text",
+          body:
+            "We look for concrete clues: code paths and commands, requests for sources or current information, JSON data, image references, translations, summaries, and more.",
+        },
+        {
+          title: "3. We compare the AIs",
+          body:
+            "Those signals score each AI and environment (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity) against verified capabilities. The ranking is 100% deterministic: no AI decides for you.",
+        },
+        {
+          title: "4. Get the recommendation",
+          body:
+            "You see the best fit with its score and confidence level, why we picked it (citing what we found in your prompt), and up to 3 alternatives with their trade-offs. If it's a tie, we say so.",
+        },
+        {
+          title: "5. Improve your prompt for that AI",
+          body:
+            "One click takes you to Improve Prompt with the recommended AI, model, and purpose preselected.",
+        },
+      ],
+      close: "Close",
     },
   },
 };

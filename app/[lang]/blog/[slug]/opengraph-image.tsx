@@ -47,6 +47,10 @@ const FALLBACK: Record<Lang, { title: string; footer: string }> = {
     title: "A notícia de IA do dia, verificada.",
     footer: "promptea.me",
   },
+  zh: {
+    title: "The AI story of the day, verified.",
+    footer: "promptea.me",
+  },
 };
 
 /** Cut a headline so it still fits three comfortable lines at the largest size. */

@@ -25,7 +25,8 @@ import type { DocBlock, PageDoc } from "./content/sitePages";
 import { SITE_NAME, absUrl, type Locale } from "./site";
 import { LANG_NAME } from "@/lib/domain";
 
-const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T): T => ({ en, es, pt })[lang];
+// v1.8.7: zh is optional while the Chinese text is written; it falls back to English.
+const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T, zh: T = en): T => ({ en, es, pt, zh })[lang];
 
 /** Make a site-relative href absolute; leave full URLs alone. */
 export function href(h: string): string {

@@ -71,6 +71,20 @@ const COPY = {
     invalidBody: "Este link parece inválido ou incompleto. Se você o recebeu por e-mail, use o link completo.",
     invalidLink: "Voltar para o Promptea",
   },
+  zh: {
+    title: "Unsubscribed — Promptea",
+    heading: "You’ve been unsubscribed",
+    body: "You will no longer receive Promptea Weekly emails.",
+    link: "Back to Promptea",
+    errorTitle: "Something went wrong — Promptea",
+    errorHeading: "Something went wrong",
+    errorBody: "We couldn’t process your unsubscription right now. Please try again later or contact us.",
+    errorLink: "Back to Promptea",
+    invalidTitle: "Invalid link — Promptea",
+    invalidHeading: "Invalid unsubscribe link",
+    invalidBody: "This link appears to be invalid or incomplete. If you received this in an email, please use the full link.",
+    invalidLink: "Back to Promptea",
+  },
 } as const;
 
 function htmlPage(opts: {

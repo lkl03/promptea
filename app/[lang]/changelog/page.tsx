@@ -12,11 +12,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return pageMetadata({
     lang: l,
     path: `/${l}/changelog`,
-    title: pick(l, { es: "Historial de versiones", en: "Changelog", pt: "Histórico de versões" }),
+    title: pick(l, { es: "Historial de versiones", en: "Changelog", pt: "Histórico de versões", zh: "Changelog" }),
     description: pick(l, {
       es: "Historial completo de versiones de Promptea: nuevas guías SEO, mejoras del analizador de prompts y correcciones de producto.",
       en: "Full version history for Promptea: new SEO guides, prompt analyzer improvements, and product fixes.",
       pt: "Histórico completo de versões do Promptea: novos guias, melhorias no analisador de prompts e correções do produto.",
+      zh: "Full version history for Promptea: new SEO guides, prompt analyzer improvements, and product fixes.",
     }),
   });
 }

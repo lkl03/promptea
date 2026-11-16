@@ -27,12 +27,14 @@ export async function generateMetadata({
       es: "Elegir la mejor IA para tu prompt",
       en: "Find the Best AI for your prompt",
       pt: "Encontre a melhor IA para o seu prompt",
+      zh: "Find the Best AI for your prompt",
     });
   const description =
     pick(lang, {
       es: "Pegá tu prompt y descubrí qué IA le queda mejor: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao o Perplexity — con razones, alternativas y consejos concretos.",
       en: "Paste your prompt and find out which AI fits it best: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, or Perplexity — with reasons, alternatives, and concrete advice.",
       pt: "Cole seu prompt e descubra qual IA combina mais com ele: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao ou Perplexity — com motivos, alternativas e dicas concretas.",
+      zh: "Paste your prompt and find out which AI fits it best: ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, or Perplexity — with reasons, alternatives, and concrete advice.",
     });
 
   return pageMetadata({ lang, path: `/${lang}/best-ai`, title, description });

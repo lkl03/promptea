@@ -18,13 +18,14 @@
 // text (guideLang() falls back when the pt title equals the en one), like other
 // guides that are not translated yet.
 
+import type { Locale } from "../site";
 import type { Guide } from "./guides";
 import type { ModelPage } from "./models";
 
-type L = { en: string; es: string; pt: string };
-/** English + Spanish; Portuguese shows the English original (see guideLang). */
-const enEs = (en: string, es: string): L => ({ en, es, pt: en });
-const enEsList = (en: string[], es: string[]) => ({ en, es, pt: en });
+type L = Record<Locale, string>;
+/** English + Spanish; Portuguese and Chinese show the English original (see guideLang) until translated. */
+const enEs = (en: string, es: string): L => ({ en, es, pt: en, zh: en });
+const enEsList = (en: string[], es: string[]): Record<Locale, string[]> => ({ en, es, pt: en, zh: en });
 
 const UPDATED = "2026-11-14";
 
@@ -39,11 +40,13 @@ export const CHINESE_MODEL_PAGES: ModelPage[] = [
       en: "Prompts for Qwen: clear sections, delimiters and one example",
       es: "Prompts para Qwen: secciones claras, delimitadores y un ejemplo",
       pt: "Prompts para Qwen: seções claras, delimitadores e um exemplo",
+      zh: "Prompts for Qwen: clear sections, delimiters and one example",
     },
     description: {
       en: "How to prompt Qwen3.8 Max, Qwen3.7 Plus and Qwen3.8 Flash on Alibaba Cloud Model Studio: the section framework Alibaba recommends, ### delimiters, examples and JSON mode.",
       es: "Cómo promptear Qwen3.8 Max, Qwen3.7 Plus y Qwen3.8 Flash en Alibaba Cloud Model Studio: el esquema de secciones que recomienda Alibaba, delimitadores ###, ejemplos y modo JSON.",
       pt: "Como escrever prompts para Qwen3.8 Max, Qwen3.7 Plus e Qwen3.8 Flash no Alibaba Cloud Model Studio: o esquema de seções que a Alibaba recomenda, delimitadores ###, exemplos e modo JSON.",
+      zh: "How to prompt Qwen3.8 Max, Qwen3.7 Plus and Qwen3.8 Flash on Alibaba Cloud Model Studio: the section framework Alibaba recommends, ### delimiters, examples and JSON mode.",
     },
     bullets: {
       en: [
@@ -64,10 +67,16 @@ export const CHINESE_MODEL_PAGES: ModelPage[] = [
         "Inclua um exemplo da saída quando puder: segundo a Alibaba, exemplos deixam as respostas mais consistentes, e para saída estruturada o que funciona melhor é um modelo de formato com dados de exemplo.",
         "No modo JSON (json_object) a palavra 'JSON' precisa aparecer no prompt, senão a API retorna erro; json_schema com strict obriga a seguir um esquema.",
       ],
+      zh: [
+        "Alibaba's prompt guide suggests six parts: context, objective, style, tone, audience and response (the exact output form). Drop the ones a task does not need.",
+        "Mark blocks of material with distinctive delimiters such as ### or ===, so the model can tell instructions from the text it should work on.",
+        "Add an example of the output when you can: Alibaba says examples make answers more consistent, and a format template plus sample data works best for structured output.",
+        "For JSON mode (json_object) the word 'JSON' must appear in the prompt or the API returns an error; json_schema with strict enforces a schema.",
+      ],
     },
     templates: [
       {
-        title: { en: "Six-part brief", es: "Brief en seis partes", pt: "Briefing em seis partes" },
+        title: { en: "Six-part brief", es: "Brief en seis partes", pt: "Briefing em seis partes", zh: "Six-part brief" },
         purpose: "text",
         prompt: {
           en: `### Context
@@ -106,10 +115,22 @@ export const CHINESE_MODEL_PAGES: ModelPage[] = [
 [quem lê e o que já sabe]
 ### Resposta
 [formato exato: ex. 5 tópicos, no máximo 15 palavras cada]`,
+          zh: `### Context
+[background the model needs]
+### Objective
+[the one task to complete]
+### Style
+[e.g. a product manager's status note]
+### Tone
+[e.g. plain, direct]
+### Audience
+[who reads it and what they already know]
+### Response
+[exact format: e.g. 5 bullets, max 15 words each]`,
         },
       },
       {
-        title: { en: "JSON extraction (json_object mode)", es: "Extracción a JSON (modo json_object)", pt: "Extração para JSON (modo json_object)" },
+        title: { en: "JSON extraction (json_object mode)", es: "Extracción a JSON (modo json_object)", pt: "Extração para JSON (modo json_object)", zh: "JSON extraction (json_object mode)" },
         purpose: "data",
         prompt: {
           en: `Extract the fields below from the text and return JSON only.
@@ -133,24 +154,33 @@ Exemplo: {"name": "Ana Ruiz", "company": "Tasklight", "email": null}
 ###
 [cole o texto aqui]
 ###`,
+          zh: `Extract the fields below from the text and return JSON only.
+Fields: "name" (string), "company" (string or null), "email" (string or null).
+If a field is missing, use null; do not guess.
+Example: {"name": "Ana Ruiz", "company": "Tasklight", "email": null}
+###
+[paste the text here]
+###`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which Qwen model should I pick?", es: "¿Qué modelo de Qwen elijo?", pt: "Qual modelo do Qwen eu escolho?" },
+        q: { en: "Which Qwen model should I pick?", es: "¿Qué modelo de Qwen elijo?", pt: "Qual modelo do Qwen eu escolho?", zh: "Which Qwen model should I pick?" },
         a: {
           en: "Alibaba calls Qwen3.7 Plus the recommended starting point (capability and cost in balance). Use Qwen3.8 Max for the hardest reasoning and long multimodal inputs, and Qwen3.8 Flash for short, high-volume tasks.",
           es: "Alibaba presenta a Qwen3.7 Plus como el punto de partida recomendado (equilibra capacidad y costo). Usá Qwen3.8 Max para el razonamiento más difícil y entradas multimodales largas, y Qwen3.8 Flash para tareas cortas de alto volumen.",
           pt: "A Alibaba apresenta o Qwen3.7 Plus como o ponto de partida recomendado (equilibra capacidade e custo). Use o Qwen3.8 Max para o raciocínio mais difícil e entradas multimodais longas, e o Qwen3.8 Flash para tarefas curtas e de alto volume.",
+          zh: "Alibaba calls Qwen3.7 Plus the recommended starting point (capability and cost in balance). Use Qwen3.8 Max for the hardest reasoning and long multimodal inputs, and Qwen3.8 Flash for short, high-volume tasks.",
         },
       },
       {
-        q: { en: "Should I turn thinking off?", es: "¿Conviene apagar el razonamiento?", pt: "Vale a pena desligar o raciocínio?" },
+        q: { en: "Should I turn thinking off?", es: "¿Conviene apagar el razonamiento?", pt: "Vale a pena desligar o raciocínio?", zh: "Should I turn thinking off?" },
         a: {
           en: "Thinking is on by default. Turn it off (enable_thinking: false) for quick, simple answers, or cap it with thinking_budget; keep it on for reasoning, math and code.",
           es: "El razonamiento viene activado. Apagalo (enable_thinking: false) para respuestas simples y rápidas, o limitalo con thinking_budget; dejalo activo para razonamiento, matemática y código.",
           pt: "O raciocínio vem ligado. Desligue (enable_thinking: false) para respostas simples e rápidas, ou limite com thinking_budget; deixe ligado para raciocínio, matemática e código.",
+          zh: "Thinking is on by default. Turn it off (enable_thinking: false) for quick, simple answers, or cap it with thinking_budget; keep it on for reasoning, math and code.",
         },
       },
     ],
@@ -161,11 +191,13 @@ Exemplo: {"name": "Ana Ruiz", "company": "Tasklight", "email": null}
       en: "Prompts for GLM: constraints first, no inflated roles",
       es: "Prompts para GLM: restricciones primero, sin roles inflados",
       pt: "Prompts para GLM: restrições primeiro, sem papéis inflados",
+      zh: "Prompts for GLM: constraints first, no inflated roles",
     },
     description: {
       en: "How to prompt GLM-5.3 and GLM-5.3 Flash from Z.ai (Zhipu AI): always-on reasoning, key constraints early, roles that serve the task and JSON with explicit fields.",
       es: "Cómo promptear GLM-5.3 y GLM-5.3 Flash de Z.ai (Zhipu AI): razonamiento siempre activo, restricciones clave al principio, roles al servicio de la tarea y JSON con campos explícitos.",
       pt: "Como escrever prompts para GLM-5.3 e GLM-5.3 Flash da Z.ai (Zhipu AI): raciocínio sempre ligado, restrições-chave no começo, papéis a serviço da tarefa e JSON com campos explícitos.",
+      zh: "How to prompt GLM-5.3 and GLM-5.3 Flash from Z.ai (Zhipu AI): always-on reasoning, key constraints early, roles that serve the task and JSON with explicit fields.",
     },
     bullets: {
       en: [
@@ -186,10 +218,16 @@ Exemplo: {"name": "Ana Ruiz", "company": "Tasklight", "email": null}
         "Use tags ou delimitadores com o nome do que contêm, sempre iguais, para o modelo separar as regras que deve seguir do material que deve processar.",
         "O GLM-5.3 sempre raciocina e aceita só texto; escolha reasoning_effort (low, high ou max). O GLM-5.3 Flash também lê imagens e vídeo.",
       ],
+      zh: [
+        "Zhipu's prompt guide says to give the important constraints you already know as early as possible, not as an afterthought at the end.",
+        "A role should serve the task: skip titles like 'world-class expert'. A role does not replace the task description, the source material or the criteria to check the answer.",
+        "Use tags or delimiters named after what they contain, consistently, so the model separates the rules it must follow from the material it must process.",
+        "GLM-5.3 always reasons and takes text only; choose reasoning_effort (low, high or max). GLM-5.3 Flash also reads images and video.",
+      ],
     },
     templates: [
       {
-        title: { en: "Constraints-first task", es: "Tarea con restricciones primero", pt: "Tarefa com restrições primeiro" },
+        title: { en: "Constraints-first task", es: "Tarea con restricciones primero", pt: "Tarefa com restrições primeiro", zh: "Constraints-first task" },
         purpose: "text",
         prompt: {
           en: `Constraints (apply to everything below):
@@ -228,24 +266,38 @@ Tarefa: [o que produzir]
 </fonte>
 
 Pronto quando: [como conferir a resposta]`,
+          zh: `Constraints (apply to everything below):
+- Audience: [who]
+- Length: [limit]
+- Must not: [what to avoid]
+
+Task: [what to produce]
+
+<source>
+[material to work on]
+</source>
+
+Done when: [how to check the answer]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can I turn GLM-5.3's reasoning off?", es: "¿Se puede apagar el razonamiento de GLM-5.3?", pt: "Dá para desligar o raciocínio do GLM-5.3?" },
+        q: { en: "Can I turn GLM-5.3's reasoning off?", es: "¿Se puede apagar el razonamiento de GLM-5.3?", pt: "Dá para desligar o raciocínio do GLM-5.3?", zh: "Can I turn GLM-5.3's reasoning off?" },
         a: {
           en: "No. Z.ai's docs say disabling reasoning is no longer supported; set reasoning_effort to low for quick tasks instead (the default is max).",
           es: "No. La documentación de Z.ai dice que ya no se puede desactivar; para tareas rápidas poné reasoning_effort en low (el valor por defecto es max).",
           pt: "Não. A documentação da Z.ai diz que não é mais possível desativar; para tarefas rápidas use reasoning_effort low (o padrão é max).",
+          zh: "No. Z.ai's docs say disabling reasoning is no longer supported; set reasoning_effort to low for quick tasks instead (the default is max).",
         },
       },
       {
-        q: { en: "Is asking for 'JSON' enough?", es: "¿Alcanza con pedir 'JSON'?", pt: "Basta pedir 'JSON'?" },
+        q: { en: "Is asking for 'JSON' enough?", es: "¿Alcanza con pedir 'JSON'?", pt: "Basta pedir 'JSON'?", zh: "Is asking for 'JSON' enough?" },
         a: {
           en: "No. Zhipu's guide asks you to define the structure, what each field means and which values it allows, and to keep validating the result in your application.",
           es: "No. La guía de Zhipu pide definir la estructura, qué significa cada campo y qué valores admite, y seguir validando el resultado en tu aplicación.",
           pt: "Não. O guia da Zhipu pede para definir a estrutura, o que cada campo significa e quais valores aceita, e continuar validando o resultado na sua aplicação.",
+          zh: "No. Zhipu's guide asks you to define the structure, what each field means and which values it allows, and to keep validating the result in your application.",
         },
       },
     ],
@@ -256,11 +308,13 @@ Pronto quando: [como conferir a resposta]`,
       en: "Prompts for MiniMax: coding and agent tasks with clear checks",
       es: "Prompts para MiniMax: código y agentes con verificaciones claras",
       pt: "Prompts para MiniMax: código e agentes com verificações claras",
+      zh: "Prompts for MiniMax: coding and agent tasks with clear checks",
     },
     description: {
       en: "How to prompt MiniMax-M3 and MiniMax-M3.1 Flash: frontier coding models with 1M context, fixed sampling, and tool loops that must send the full response back.",
       es: "Cómo promptear MiniMax-M3 y MiniMax-M3.1 Flash: modelos de código de frontera con contexto de 1M, muestreo fijo y loops de herramientas que deben devolver la respuesta completa.",
       pt: "Como escrever prompts para MiniMax-M3 e MiniMax-M3.1 Flash: modelos de código de ponta com contexto de 1M, amostragem fixa e loops de ferramentas que devem devolver a resposta completa.",
+      zh: "How to prompt MiniMax-M3 and MiniMax-M3.1 Flash: frontier coding models with 1M context, fixed sampling, and tool loops that must send the full response back.",
     },
     bullets: {
       en: [
@@ -281,10 +335,16 @@ Pronto quando: [como conferir a resposta]`,
         "A MiniMax não documenta um modo JSON: se você precisar de JSON, descreva o formato exato com um exemplo e peça só o JSON.",
         "Em loops com ferramentas, devolva a resposta completa do modelo a cada turno, incluindo o reasoning_content.",
       ],
+      zh: [
+        "MiniMax presents both models as frontier coding models: give repository context, concrete acceptance criteria and the command that proves the change works.",
+        "Temperature and top_p are fixed (MiniMax always uses 1 and 0.95), so steer the output with instructions, not sampling settings.",
+        "MiniMax documents no JSON mode: when you need JSON, describe the exact shape with an example and ask for the JSON only.",
+        "In tool-calling loops, send the model's full response back on every turn, reasoning_content included.",
+      ],
     },
     templates: [
       {
-        title: { en: "Agent coding task", es: "Tarea de código para un agente", pt: "Tarefa de código para um agente" },
+        title: { en: "Agent coding task", es: "Tarea de código para un agente", pt: "Tarefa de código para um agente", zh: "Agent coding task" },
         purpose: "code",
         prompt: {
           en: `Goal: [the change, in one sentence]
@@ -311,16 +371,25 @@ Critérios de aceitação:
 Verifique com: [comando de testes]
 Restrições: [o que não pode mudar]
 Ao terminar: resuma o diff e diga o que ficou sem verificar.`,
+          zh: `Goal: [the change, in one sentence]
+Repository context: [relevant files and how they connect]
+Acceptance criteria:
+- [observable behavior 1]
+- [observable behavior 2]
+Verify with: [test command]
+Constraints: [what must not change]
+When done: report the diff summary and anything left unverified.`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which MiniMax model should I use?", es: "¿Qué modelo de MiniMax uso?", pt: "Qual modelo da MiniMax eu uso?" },
+        q: { en: "Which MiniMax model should I use?", es: "¿Qué modelo de MiniMax uso?", pt: "Qual modelo da MiniMax eu uso?", zh: "Which MiniMax model should I use?" },
         a: {
           en: "MiniMax-M3 is the flagship and can turn thinking off; MiniMax-M3.1 Flash is the faster option, always reasons and lets you tune the depth with reasoning_effort. MiniMax-M2.5 and M2.7 retire on 2026-11-18.",
           es: "MiniMax-M3 es el modelo insignia y permite apagar el razonamiento; MiniMax-M3.1 Flash es la opción más rápida, siempre razona y deja ajustar la profundidad con reasoning_effort. MiniMax-M2.5 y M2.7 se retiran el 2026-11-18.",
           pt: "O MiniMax-M3 é o modelo principal e permite desligar o raciocínio; o MiniMax-M3.1 Flash é a opção mais rápida, sempre raciocina e deixa ajustar a profundidade com reasoning_effort. O MiniMax-M2.5 e o M2.7 serão aposentados em 18/11/2026.",
+          zh: "MiniMax-M3 is the flagship and can turn thinking off; MiniMax-M3.1 Flash is the faster option, always reasons and lets you tune the depth with reasoning_effort. MiniMax-M2.5 and M2.7 retire on 2026-11-18.",
         },
       },
     ],
@@ -331,11 +400,13 @@ Ao terminar: resuma o diff e diga o que ficou sem verificar.`,
       en: "Prompts for Doubao: goal and scenario, not step-by-step",
       es: "Prompts para Doubao: objetivo y escenario, no paso a paso",
       pt: "Prompts para Doubao: objetivo e cenário, não passo a passo",
+      zh: "Prompts for Doubao: goal and scenario, not step-by-step",
     },
     description: {
       en: "How to prompt Doubao Seed 2.1 (Pro, Lite, Turbo) on ByteDance's Volcengine Ark: give the goal and scenario, avoid step-by-step decomposition, put instructions in the user message and raise max_tokens.",
       es: "Cómo promptear Doubao Seed 2.1 (Pro, Lite, Turbo) en Volcengine Ark de ByteDance: dar objetivo y escenario, evitar descomponer en pasos, poner las instrucciones en el mensaje del usuario y subir max_tokens.",
       pt: "Como escrever prompts para Doubao Seed 2.1 (Pro, Lite, Turbo) no Volcengine Ark da ByteDance: dar objetivo e cenário, evitar decompor em passos, pôr as instruções na mensagem do usuário e aumentar max_tokens.",
+      zh: "How to prompt Doubao Seed 2.1 (Pro, Lite, Turbo) on ByteDance's Volcengine Ark: give the goal and scenario, avoid step-by-step decomposition, put instructions in the user message and raise max_tokens.",
     },
     bullets: {
       en: [
@@ -356,10 +427,16 @@ Ao terminar: resuma o diff e diga o que ficou sem verificar.`,
         "Use menos prompts de sistema: mande as informações do prompt como mensagem do usuário.",
         "A saída máxima padrão é de 4K tokens: aumente max_tokens para respostas longas. Para JSON (beta), json_object precisa da palavra 'json' na entrada; json_schema com strict obriga a seguir um esquema.",
       ],
+      zh: [
+        "Volcengine's guide for reasoning models says to add the goal and the scenario (who it is for, what it is used for, what a good outcome is) to the problem itself.",
+        "It also says to reduce or avoid breaking the problem into steps or giving examples: with thinking on, that limits the model's own reasoning.",
+        "Use fewer system prompts: send the prompt information as the user message.",
+        "Default max output is 4K tokens: raise max_tokens for long answers. For JSON (beta), json_object needs the word 'json' in the input; json_schema with strict enforces a schema.",
+      ],
     },
     templates: [
       {
-        title: { en: "Goal + scenario request", es: "Pedido con objetivo + escenario", pt: "Pedido com objetivo + cenário" },
+        title: { en: "Goal + scenario request", es: "Pedido con objetivo + escenario", pt: "Pedido com objetivo + cenário", zh: "Goal + scenario request" },
         purpose: "text",
         prompt: {
           en: `Problem: [what you need]
@@ -380,24 +457,32 @@ Cenário: [quem vai usar, onde e quando]
 Público: [quem lê e o que já sabe]
 Restrições: [tamanho, tom, o que não fazer]
 Formato de saída: [formato exato]`,
+          zh: `Problem: [what you need]
+Goal: [what a good result lets you do]
+Scenario: [who will use it, where and when]
+Audience: [who reads it and what they already know]
+Constraints: [length, tone, must-nots]
+Output format: [exact shape]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Doubao or Dola Seed?", es: "¿Doubao o Dola Seed?", pt: "Doubao ou Dola Seed?" },
+        q: { en: "Doubao or Dola Seed?", es: "¿Doubao o Dola Seed?", pt: "Doubao ou Dola Seed?", zh: "Doubao or Dola Seed?" },
         a: {
           en: "The same family under two brands: Doubao on Volcengine Ark (China), Dola Seed on BytePlus ModelArk (international). Promptea lists the Volcengine model ids.",
           es: "La misma familia con dos marcas: Doubao en Volcengine Ark (China) y Dola Seed en BytePlus ModelArk (internacional). Promptea lista los ids de modelo de Volcengine.",
           pt: "A mesma família com duas marcas: Doubao no Volcengine Ark (China) e Dola Seed no BytePlus ModelArk (internacional). O Promptea lista os ids de modelo da Volcengine.",
+          zh: "The same family under two brands: Doubao on Volcengine Ark (China), Dola Seed on BytePlus ModelArk (international). Promptea lists the Volcengine model ids.",
         },
       },
       {
-        q: { en: "Why is my Doubao answer cut short?", es: "¿Por qué la respuesta de Doubao sale cortada?", pt: "Por que a resposta do Doubao sai cortada?" },
+        q: { en: "Why is my Doubao answer cut short?", es: "¿Por qué la respuesta de Doubao sale cortada?", pt: "Por que a resposta do Doubao sai cortada?", zh: "Why is my Doubao answer cut short?" },
         a: {
           en: "The default max output is 4K tokens even though the models allow up to 256K. Set max_tokens explicitly for long answers.",
           es: "La salida máxima por defecto es de 4K tokens aunque los modelos admiten hasta 256K. Fijá max_tokens a mano para respuestas largas.",
           pt: "A saída máxima padrão é de 4K tokens, embora os modelos aceitem até 256K. Defina max_tokens explicitamente para respostas longas.",
+          zh: "The default max output is 4K tokens even though the models allow up to 256K. Set max_tokens explicitly for long answers.",
         },
       },
     ],

@@ -23,8 +23,9 @@ function clamp(n: number) {
   return Math.max(0, Math.min(100, Math.round(n)));
 }
 
-function t(lang: Lang, es: string, en: string, pt: string) {
-  return { es, en, pt }[lang];
+function t(lang: Lang, es: string, en: string, pt: string, zh: string = en) {
+  // v1.8.7: zh is optional while the Chinese text is written; it falls back to English (zh === en marks it untranslated).
+  return { es, en, pt, zh }[lang];
 }
 
 function getWeights(taskType: TaskType): Weights {

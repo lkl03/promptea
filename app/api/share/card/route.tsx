@@ -46,6 +46,14 @@ const COPY = {
     bands: { weak: "Fraco", fair: "Regular", good: "Bom", excellent: "Excelente" },
     criteria: { clarity: "Clareza", context: "Contexto", constraints: "Restrições", output: "Formato de saída", verifiability: "Verificabilidade", safety: "Segurança" },
   },
+  zh: {
+    score: "Score",
+    original: "Original",
+    optimized: "Optimized",
+    tagline: "Analyze and optimize your prompts",
+    bands: { weak: "Weak", fair: "Fair", good: "Good", excellent: "Excellent" },
+    criteria: { clarity: "Clarity", context: "Context", constraints: "Constraints", output: "Output format", verifiability: "Verifiability", safety: "Safety" },
+  },
 } as const;
 
 async function pngDataUri(file: string): Promise<string | null> {

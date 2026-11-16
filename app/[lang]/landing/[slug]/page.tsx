@@ -87,14 +87,14 @@ export default async function LandingPage({
             {page.ctaLabel[l]}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-secondary h-10 px-4">
-            {pick(l, { es: "Ver el analizador", en: "Open the analyzer", pt: "Abrir o analisador" })}
+            {pick(l, { es: "Ver el analizador", en: "Open the analyzer", pt: "Abrir o analisador", zh: "Open the analyzer" })}
           </Link>
         </div>
       </header>
 
       <section className="surface p-5 space-y-3">
         <h2 className="text-sm font-medium">
-          {pick(l, { es: "Qué obtenés", en: "What you get", pt: "O que você recebe" })}
+          {pick(l, { es: "Qué obtenés", en: "What you get", pt: "O que você recebe", zh: "What you get" })}
         </h2>
         <ul className="space-y-1.5 text-sm opacity-85 list-disc pl-5">
           {page.bullets[l].map((b) => (
@@ -106,33 +106,34 @@ export default async function LandingPage({
       {page.examples && page.examples.length > 0 ? (
         <section className="space-y-3" aria-labelledby="examples-title">
           <h2 id="examples-title" className="font-title text-xl font-semibold">
-            {pick(l, { es: "Ejemplos antes → después", en: "Before → after examples", pt: "Exemplos antes → depois" })}
+            {pick(l, { es: "Ejemplos antes → después", en: "Before → after examples", pt: "Exemplos antes → depois", zh: "Before → after examples" })}
           </h2>
           <p className="text-sm opacity-80">
             {pick(l, {
               es: "Los puntajes son los que da el analizador a cada prompt, tal cual: probá cualquiera y vas a obtener el mismo número.",
               en: "The scores are exactly what the analyzer returns for each prompt: try any of them and you will get the same number.",
               pt: "As pontuações são exatamente as que o analisador dá a cada prompt: teste qualquer um e você vai obter o mesmo número.",
+              zh: "The scores are exactly what the analyzer returns for each prompt: try any of them and you will get the same number.",
             })}
           </p>
           {page.examples.map((ex) => {
             const s = ex.score[l];
-            const tryLabel = pick(l, { es: "Analizar el prompt de antes", en: "Analyze the before prompt", pt: "Analisar o prompt de antes" });
+            const tryLabel = pick(l, { es: "Analizar el prompt de antes", en: "Analyze the before prompt", pt: "Analisar o prompt de antes", zh: "Analyze the before prompt" });
             return (
               <article key={ex.id} className="surface p-5 space-y-3">
                 <h3 id={`example-${ex.id}`} className="text-sm font-medium">{ex.title[l]}</h3>
                 <div className="grid gap-3 md:grid-cols-2">
                   <div className="space-y-1.5">
                     <div className="text-xs opacity-75">
-                      {pick(l, { es: "Antes", en: "Before", pt: "Antes" })} · {pick(l, { es: "puntaje", en: "score", pt: "pontuação" })} {s.before}/100
+                      {pick(l, { es: "Antes", en: "Before", pt: "Antes", zh: "Before" })} · {pick(l, { es: "puntaje", en: "score", pt: "pontuação", zh: "score" })} {s.before}/100
                     </div>
-                    <pre tabIndex={0} role="group" aria-label={`${ex.title[l]} — ${pick(l, { es: "antes", en: "before", pt: "antes" })}`} className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-64 overflow-auto">{ex.before[l]}</pre>
+                    <pre tabIndex={0} role="group" aria-label={`${ex.title[l]} — ${pick(l, { es: "antes", en: "before", pt: "antes", zh: "before" })}`} className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-64 overflow-auto">{ex.before[l]}</pre>
                   </div>
                   <div className="space-y-1.5">
                     <div className="text-xs opacity-75">
-                      {pick(l, { es: "Después", en: "After", pt: "Depois" })} · {pick(l, { es: "puntaje", en: "score", pt: "pontuação" })} {s.after}/100
+                      {pick(l, { es: "Después", en: "After", pt: "Depois", zh: "After" })} · {pick(l, { es: "puntaje", en: "score", pt: "pontuação", zh: "score" })} {s.after}/100
                     </div>
-                    <pre tabIndex={0} role="group" aria-label={`${ex.title[l]} — ${pick(l, { es: "después", en: "after", pt: "depois" })}`} className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-64 overflow-auto">{ex.after[l]}</pre>
+                    <pre tabIndex={0} role="group" aria-label={`${ex.title[l]} — ${pick(l, { es: "después", en: "after", pt: "depois", zh: "after" })}`} className="surface-soft p-3 text-xs whitespace-pre-wrap max-h-64 overflow-auto">{ex.after[l]}</pre>
                   </div>
                 </div>
                 <p className="text-sm opacity-85">{ex.why[l]}</p>
@@ -151,7 +152,7 @@ export default async function LandingPage({
 
       {page.faq && page.faq.length > 0 ? (
         <section className="surface p-5">
-          <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</h2>
+          <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</h2>
           <div className="mt-3 space-y-2">
             {page.faq.map((x) => (
               <details key={x.q[l]} className="surface-soft p-3 rounded-2xl">
@@ -165,7 +166,7 @@ export default async function LandingPage({
 
       <section className="surface-soft p-4 space-y-2">
         <h2 className="text-sm font-medium">
-          {pick(l, { es: "Recursos relacionados", en: "Related resources", pt: "Recursos relacionados" })}
+          {pick(l, { es: "Recursos relacionados", en: "Related resources", pt: "Recursos relacionados", zh: "Related resources" })}
         </h2>
         <div className="flex flex-wrap gap-2">
           {page.internalLinks.map((link) => (
@@ -178,7 +179,7 @@ export default async function LandingPage({
 
       <div className="text-center text-xs opacity-70">
         <Link href={`/${l}`} className="hover:underline underline-offset-2">
-          {pick(l, { es: "← Volver al inicio", en: "← Back to home", pt: "← Voltar ao início" })}
+          {pick(l, { es: "← Volver al inicio", en: "← Back to home", pt: "← Voltar ao início", zh: "← Back to home" })}
         </Link>
       </div>
     </main>

@@ -29,17 +29,17 @@ export default function Footer({
   labels: { tech: string; sources: string };
 }) {
   const year = new Date().getFullYear();
-  const privacyLabel = pick(lang, { es: "Privacidad", en: "Privacy", pt: "Privacidade" });
-  const homeLabel = pick(lang, { es: "Inicio", en: "Home", pt: "Início" });
-  const promptsLabel = pick(lang, { es: "Prompts", en: "Prompts", pt: "Prompts" });
-  const guidesLabel = pick(lang, { es: "Guías", en: "Guides", pt: "Guias" });
-  const modelsLabel = pick(lang, { es: "Modelos", en: "Models", pt: "Modelos" });
-  const glossaryLabel = pick(lang, { es: "Glosario", en: "Glossary", pt: "Glossário" });
-  const blogLabel = pick(lang, { es: "IA al Día", en: "AI Daily", pt: "AI Daily" });
-  const weeklyLabel = pick(lang, { es: "Resumen semanal", en: "Weekly digest", pt: "Resumo semanal" });
-  const resourcesLabel = pick(lang, { es: "Recursos útiles", en: "Useful resources", pt: "Recursos úteis" });
-  const eterlabMessage = pick(lang, { es: "diseñado y desarrollado por", en: "designed and developed by", pt: "design e desenvolvimento por" });
-  const followLabel = pick(lang, { es: "Seguinos en X", en: "Follow us on X", pt: "Siga a gente no X" });
+  const privacyLabel = pick(lang, { es: "Privacidad", en: "Privacy", pt: "Privacidade", zh: "Privacy" });
+  const homeLabel = pick(lang, { es: "Inicio", en: "Home", pt: "Início", zh: "Home" });
+  const promptsLabel = pick(lang, { es: "Prompts", en: "Prompts", pt: "Prompts", zh: "Prompts" });
+  const guidesLabel = pick(lang, { es: "Guías", en: "Guides", pt: "Guias", zh: "Guides" });
+  const modelsLabel = pick(lang, { es: "Modelos", en: "Models", pt: "Modelos", zh: "Models" });
+  const glossaryLabel = pick(lang, { es: "Glosario", en: "Glossary", pt: "Glossário", zh: "Glossary" });
+  const blogLabel = pick(lang, { es: "IA al Día", en: "AI Daily", pt: "AI Daily", zh: "AI Daily" });
+  const weeklyLabel = pick(lang, { es: "Resumen semanal", en: "Weekly digest", pt: "Resumo semanal", zh: "Weekly digest" });
+  const resourcesLabel = pick(lang, { es: "Recursos útiles", en: "Useful resources", pt: "Recursos úteis", zh: "Useful resources" });
+  const eterlabMessage = pick(lang, { es: "diseñado y desarrollado por", en: "designed and developed by", pt: "design e desenvolvimento por", zh: "designed and developed by" });
+  const followLabel = pick(lang, { es: "Seguinos en X", en: "Follow us on X", pt: "Siga a gente no X", zh: "Follow us on X" });
   const xUrl = getXLinks().url;
 
   return (
@@ -48,7 +48,7 @@ export default function Footer({
 
       {/* Primary navigation */}
       <nav
-        aria-label={pick(lang, { es: "Pie de página", en: "Footer navigation", pt: "Navegação do rodapé" })}
+        aria-label={pick(lang, { es: "Pie de página", en: "Footer navigation", pt: "Navegação do rodapé", zh: "Footer navigation" })}
         className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs opacity-80"
       >
         <span>V{APP_VERSION}</span>
@@ -131,11 +131,11 @@ export default function Footer({
         </Link>
 
         <Link href={`/${lang}/analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          {pick(lang, { es: "Analizador", en: "Analyzer", pt: "Analisador" })}
+          {pick(lang, { es: "Analizador", en: "Analyzer", pt: "Analisador", zh: "Analyzer" })}
         </Link>
 
         <Link href={`/${lang}/library`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          {pick(lang, { es: "Biblioteca", en: "Library", pt: "Biblioteca" })}
+          {pick(lang, { es: "Biblioteca", en: "Library", pt: "Biblioteca", zh: "Library" })}
         </Link>
       </div>
 

@@ -48,7 +48,8 @@ export type PageDoc = {
   updated: string;
 };
 
-const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T): T => ({ en, es, pt })[lang];
+// v1.8.7: zh is optional while the Chinese text is written; it falls back to English.
+const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T, zh: T = en): T => ({ en, es, pt, zh })[lang];
 
 function modelFamilyList(): string {
   return TARGETS.map((t) => TARGET_SHORT[t]).join(", ");

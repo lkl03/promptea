@@ -86,7 +86,7 @@ export default function ThemeToggle({ lang = "en" }: { lang?: Lang }) {
     };
   }, [open]);
 
-  const label = pick(lang, { es: "Tema", en: "Theme", pt: "Tema" });
+  const label = pick(lang, { es: "Tema", en: "Theme", pt: "Tema", zh: "Theme" });
   const stored = (theme ?? "system") as ThemeName | "system";
   const current: ThemeName | "system" = stored === "system" || THEMES.includes(stored as ThemeName) ? stored : "system";
   const options: Array<ThemeName | "system"> = ["system", ...THEMES];

@@ -27,8 +27,9 @@ import { APP_VERSION } from "@/lib/version";
 import { composeImagePrompt, isDevelopedImagePrompt } from "./imagePrompt";
 const PROMPTEA_JSON_VERSION = `v${APP_VERSION}`;
 
-function t<T>(lang: Lang, es: T, en: T, pt: T): T {
-  return { es, en, pt }[lang];
+function t<T>(lang: Lang, es: T, en: T, pt: T, zh: T = en): T {
+  // v1.8.7: zh is optional while the Chinese text is written; it falls back to English (zh === en marks it untranslated).
+  return { es, en, pt, zh }[lang];
 }
 
 function modelLabel(target: TargetAI) {

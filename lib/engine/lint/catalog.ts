@@ -295,7 +295,8 @@ export function findingText(id: FindingId, lang: Lang) {
     },
   };
 
-  return { es, en, pt }[lang][id];
+  // v1.8.7: the Chinese catalog falls back to English until it is written.
+  return ({ es, en, pt, zh: en } as Record<Lang, typeof en>)[lang][id];
 }
 
 export function recoText(id: RecommendationId, lang: Lang) {
@@ -362,5 +363,6 @@ export function recoText(id: RecommendationId, lang: Lang) {
     define_marketing_cta: { title: "Defina o CTA", detail: "Especifique a ação que a mensagem deve provocar." },
   };
 
-  return { es, en, pt }[lang][id];
+  // v1.8.7: the Chinese catalog falls back to English until it is written.
+  return ({ es, en, pt, zh: en } as Record<Lang, typeof en>)[lang][id];
 }

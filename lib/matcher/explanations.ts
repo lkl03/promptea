@@ -9,8 +9,9 @@ import type { InteractionProfile, Lang, MatchCategory, TargetAI } from "@/lib/do
 import type { ModelEntry } from "@/lib/models";
 import type { CategoryContribution, MatcherFeatures, ScoredModel } from "./types";
 
-function t(lang: Lang, es: string, en: string, pt: string): string {
-  return { es, en, pt }[lang];
+function t(lang: Lang, es: string, en: string, pt: string, zh: string = en): string {
+  // v1.8.7: zh is optional while the Chinese text is written; it falls back to English (zh === en marks it untranslated).
+  return { es, en, pt, zh }[lang];
 }
 
 // ── Labels ──────────────────────────────────────────────────────────────────
@@ -41,21 +42,21 @@ export function productLabel(target: TargetAI, profile: InteractionProfile): str
 }
 
 export const CATEGORY_LABEL: Record<MatchCategory, Record<Lang, string>> = {
-  chat: { es: "conversación general", en: "general chat", pt: "chat geral" },
-  coding: { es: "trabajo con código", en: "code work", pt: "trabalho com código" },
-  codingAgent: { es: "tareas de agente sobre repositorios", en: "repository agent tasks", pt: "tarefas de agente em repositório" },
-  research: { es: "investigación con información actual", en: "research with current information", pt: "pesquisa com informação atual" },
-  longContext: { es: "documentos y contexto largo", en: "long documents and context", pt: "documentos longos e contexto" },
-  multimodal: { es: "contenido multimodal (imágenes, video)", en: "multimodal content (images, video)", pt: "conteúdo multimodal (imagens, vídeo)" },
-  dataExtraction: { es: "extracción de datos estricta", en: "strict data extraction", pt: "extração estrita de dados" },
-  creativeWriting: { es: "escritura creativa", en: "creative writing", pt: "escrita criativa" },
-  marketing: { es: "copy de marketing", en: "marketing copy", pt: "textos de marketing" },
-  translation: { es: "traducción", en: "translation", pt: "tradução" },
-  summarization: { es: "resumen de contenido", en: "summarization", pt: "resumo" },
-  tutoring: { es: "estudio y tutoría", en: "study and tutoring", pt: "estudo e tutoria" },
-  imagePrompts: { es: "prompts para generar imágenes", en: "image-generation prompts", pt: "prompts de geração de imagens" },
-  complexReasoning: { es: "razonamiento complejo", en: "complex reasoning", pt: "raciocínio complexo" },
-  fastLightweight: { es: "tareas rápidas y livianas", en: "fast lightweight tasks", pt: "tarefas rápidas e leves" },
+  chat: { es: "conversación general", en: "general chat", pt: "chat geral", zh: "general chat" },
+  coding: { es: "trabajo con código", en: "code work", pt: "trabalho com código", zh: "code work" },
+  codingAgent: { es: "tareas de agente sobre repositorios", en: "repository agent tasks", pt: "tarefas de agente em repositório", zh: "repository agent tasks" },
+  research: { es: "investigación con información actual", en: "research with current information", pt: "pesquisa com informação atual", zh: "research with current information" },
+  longContext: { es: "documentos y contexto largo", en: "long documents and context", pt: "documentos longos e contexto", zh: "long documents and context" },
+  multimodal: { es: "contenido multimodal (imágenes, video)", en: "multimodal content (images, video)", pt: "conteúdo multimodal (imagens, vídeo)", zh: "multimodal content (images, video)" },
+  dataExtraction: { es: "extracción de datos estricta", en: "strict data extraction", pt: "extração estrita de dados", zh: "strict data extraction" },
+  creativeWriting: { es: "escritura creativa", en: "creative writing", pt: "escrita criativa", zh: "creative writing" },
+  marketing: { es: "copy de marketing", en: "marketing copy", pt: "textos de marketing", zh: "marketing copy" },
+  translation: { es: "traducción", en: "translation", pt: "tradução", zh: "translation" },
+  summarization: { es: "resumen de contenido", en: "summarization", pt: "resumo", zh: "summarization" },
+  tutoring: { es: "estudio y tutoría", en: "study and tutoring", pt: "estudo e tutoria", zh: "study and tutoring" },
+  imagePrompts: { es: "prompts para generar imágenes", en: "image-generation prompts", pt: "prompts de geração de imagens", zh: "image-generation prompts" },
+  complexReasoning: { es: "razonamiento complejo", en: "complex reasoning", pt: "raciocínio complexo", zh: "complex reasoning" },
+  fastLightweight: { es: "tareas rápidas y livianas", en: "fast lightweight tasks", pt: "tarefas rápidas e leves", zh: "fast lightweight tasks" },
 };
 
 function categoryLabel(category: MatchCategory, lang: Lang): string {

@@ -121,6 +121,22 @@ const SEO: Record<Lang, { title: string; description: string; keywords: string[]
       "prompt engineering",
     ],
   },
+  zh: {
+    title: "Promptea — Prompt analyzer & optimizer for GPT, Claude, Gemini, Grok",
+    description:
+      "Free prompt analyzer and optimizer for ChatGPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao and Perplexity. Score, fix and rewrite prompts for text, code, data/JSON, marketing, study, image, translation and summaries.",
+    keywords: [
+      "prompt analyzer",
+      "prompt optimizer",
+      "prompt engineering",
+      "ChatGPT prompts",
+      "Claude prompts",
+      "Gemini prompts",
+      "JSON prompts",
+      "coding prompts",
+      "AI prompt scoring",
+    ],
+  },
 };
 
 function seoForLang(lang: Lang) {

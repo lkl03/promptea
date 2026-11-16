@@ -21,6 +21,7 @@ const COPY = {
   es: { tagline: "Analizá y optimizá tus prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
   en: { tagline: "Analyze and optimize your prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
   pt: { tagline: "Analise e otimize seus prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
+  zh: { tagline: "Analyze and optimize your prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
 } as const;
 
 async function dataUri(file: string): Promise<string> {

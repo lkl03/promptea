@@ -99,7 +99,7 @@ export default function DocSections({
     <>
       {showTldr ? (
         <p className="surface-soft mt-4 rounded-2xl p-4 text-sm leading-relaxed sm:text-base">
-          <strong className="font-semibold">{pick(lang, { es: "En breve: ", en: "In short: ", pt: "Em resumo: " })}</strong>
+          <strong className="font-semibold">{pick(lang, { es: "En breve: ", en: "In short: ", pt: "Em resumo: ", zh: "In short: " })}</strong>
           {doc.tldr}
         </p>
       ) : null}
@@ -121,7 +121,7 @@ export default function DocSections({
         {doc.faq.length > 0 ? (
           <section id={`${idPrefix}faq`} aria-labelledby={`${idPrefix}faq-title`} className="scroll-mt-24">
             <FaqH id={`${idPrefix}faq-title`} className="font-title text-xl font-semibold sm:text-2xl">
-              {pick(lang, { es: "Preguntas frecuentes", en: "Frequently asked questions", pt: "Perguntas frequentes" })}
+              {pick(lang, { es: "Preguntas frecuentes", en: "Frequently asked questions", pt: "Perguntas frequentes", zh: "Frequently asked questions" })}
             </FaqH>
             <div className="mt-3 space-y-2">
               {doc.faq.map((f) => (
@@ -136,7 +136,7 @@ export default function DocSections({
       </div>
 
       <p className="mt-8 text-xs text-ink-faint">
-        {pick(lang, { es: "Última actualización: ", en: "Last updated: ", pt: "Última atualização: " })}
+        {pick(lang, { es: "Última actualización: ", en: "Last updated: ", pt: "Última atualização: ", zh: "Last updated: " })}
         <time dateTime={doc.updated}>{formatDay(doc.updated, lang)}</time>
       </p>
     </>

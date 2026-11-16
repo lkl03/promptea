@@ -59,7 +59,7 @@ describe("URL registry", () => {
     for (const lang of LOCALES) {
       const paths = staticSeoUrls(lang).map((u) => u.path);
       expect(paths, lang).toContain(`/${lang}/sources`);
-      if (lang === "pt") expect(paths).not.toContain("/pt/blog/tech");
+      if (lang === "pt" || lang === "zh") expect(paths).not.toContain(`/${lang}/blog/tech`);
       else expect(paths).toContain(`/${lang}/blog/tech`);
     }
   });
@@ -100,6 +100,7 @@ describe("sitemap.xml", () => {
       expect(langsOf(e!)).toEqual(["en", "es", "x-default"]);
     }
     expect(byUrl.has(absUrl("/pt/blog/tech"))).toBe(false);
+    expect(byUrl.has(absUrl("/zh/blog/tech"))).toBe(false);
   });
 
   it("v1.8.4: leaves /blog/tech out while it has no stories, per language", async () => {
@@ -115,7 +116,7 @@ describe("sitemap.xml", () => {
     for (const lang of LOCALES) {
       const e = entries.find((x) => x.url === absUrl(`/${lang}/sources`));
       expect(e, lang).toBeDefined();
-      expect(langsOf(e!)).toEqual(["en", "es", "pt", "pt-BR", "x-default"]);
+      expect(langsOf(e!)).toEqual(["en", "es", "pt", "pt-BR", "x-default", "zh", "zh-CN", "zh-Hans"]);
     }
   });
 

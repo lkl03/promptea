@@ -16,7 +16,8 @@ import { CONTENT_UPDATED, formatDay } from "../dates";
 import { STUDIO_NAME, STUDIO_URL, type Locale } from "../site";
 import type { PageDoc } from "./sitePages";
 
-const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T): T => ({ en, es, pt })[lang];
+// v1.8.7: zh is optional while the Chinese text is written; it falls back to English.
+const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T, zh: T = en): T => ({ en, es, pt, zh })[lang];
 
 export function sourcesDoc(lang: Locale): PageDoc {
   const t = tr(lang);

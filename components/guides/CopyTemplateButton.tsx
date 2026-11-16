@@ -18,8 +18,8 @@ export default function CopyTemplateButton({ lang, text, title }: { lang: Lang; 
     if (timer.current) window.clearTimeout(timer.current);
   }, []);
 
-  const label = pick(lang, { es: "Copiar", en: "Copy", pt: "Copiar" });
-  const doneLabel = pick(lang, { es: "Copiado", en: "Copied", pt: "Copiado" });
+  const label = pick(lang, { es: "Copiar", en: "Copy", pt: "Copiar", zh: "Copy" });
+  const doneLabel = pick(lang, { es: "Copiado", en: "Copied", pt: "Copiado", zh: "Copied" });
 
   async function copy() {
     try {

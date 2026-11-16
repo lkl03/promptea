@@ -29,12 +29,14 @@ export async function generateMetadata({
       es: "Prompts para imágenes (plantillas)",
       en: "Image prompts (templates)",
       pt: "Prompts para imagens (templates)",
+      zh: "Image prompts (templates)",
     }),
     description:
       pick(l, {
         es: "Plantillas para generar imágenes: estilo, composición, iluminación y variantes. Abrilas en Promptea y optimizalas por IA.",
         en: "Templates for image generation: style, composition, lighting and variations. Open in Promptea and optimize per AI.",
         pt: "Templates para geração de imagens: estilo, composição, iluminação e variações. Abra no Promptea e otimize para cada IA.",
+        zh: "Templates for image generation: style, composition, lighting and variations. Open in Promptea and optimize per AI.",
       }),
   });
 }
@@ -48,17 +50,18 @@ export default async function ImagePromptPackPage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = pick(l, { es: "Prompts para imágenes", en: "Image prompts", pt: "Prompts para imagens" });
+  const title = pick(l, { es: "Prompts para imágenes", en: "Image prompts", pt: "Prompts para imagens", zh: "Image prompts" });
   const subtitle =
     pick(l, {
       es: "Describí sujeto, estilo y composición. Elegí un ejemplo y abrilo en Promptea.",
       en: "Describe subject, style, and composition. Pick an example and open it in Promptea.",
       pt: "Descreva o sujeito, o estilo e a composição. Escolha um exemplo e abra no Promptea.",
+      zh: "Describe subject, style, and composition. Pick an example and open it in Promptea.",
     });
 
   const examples = [
     {
-      title: pick(l, { es: "Producto (foto tipo e-commerce)", en: "Product (e-commerce style)", pt: "Produto (estilo e-commerce)" }),
+      title: pick(l, { es: "Producto (foto tipo e-commerce)", en: "Product (e-commerce style)", pt: "Produto (estilo e-commerce)", zh: "Product (e-commerce style)" }),
       target: "gpt",
       purpose: "image",
       prompt:
@@ -96,6 +99,17 @@ Give 3 variants with subtle changes.`,
 - proporção: 1:1
 
 Entregue 3 variantes com mudanças sutis.`,
+          zh: `Generate a product image:
+- product: [what]
+- material: [material]
+- color: [color]
+- background: clean white
+- lighting: softbox, soft shadows
+- framing: 3/4 view + front variant
+- style: hyper-realistic
+- aspect ratio: 1:1
+
+Give 3 variants with subtle changes.`,
         }),
     },
     {
@@ -103,6 +117,7 @@ Entregue 3 variantes com mudanças sutis.`,
         es: "Ilustración estilo editorial",
         en: "Editorial illustration style",
         pt: "Estilo de ilustração editorial",
+        zh: "Editorial illustration style",
       }),
       target: "claude",
       purpose: "image",
@@ -138,10 +153,20 @@ Include 2 composition variants.`,
 - proporção: 4:5
 
 Inclua 2 variantes de composição.`,
+          zh: `Editorial illustration:
+- topic: [topic]
+- style: ink + soft watercolor
+- palette: [colors]
+- composition: subject left, negative space right
+- mood: [mood]
+- texture: paper grain
+- aspect ratio: 4:5
+
+Include 2 composition variants.`,
         }),
     },
     {
-      title: pick(l, { es: "Personaje (turnaround)", en: "Character (turnaround)", pt: "Personagem (turnaround)" }),
+      title: pick(l, { es: "Personaje (turnaround)", en: "Character (turnaround)", pt: "Personagem (turnaround)", zh: "Character (turnaround)" }),
       target: "gpt",
       purpose: "image",
       prompt:
@@ -173,6 +198,15 @@ Avoid text in the image.`,
 - proporção: 16:9
 
 Evite texto na imagem.`,
+          zh: `Design a character:
+- description: [age, traits, outfit]
+- style: modern animation (clean)
+- 3 poses: front, side, back
+- expression: 3 emotions
+- background: neutral gray
+- aspect ratio: 16:9
+
+Avoid text in the image.`,
         }),
     },
     {
@@ -180,6 +214,7 @@ Evite texto na imagem.`,
         es: "Thumbnail estilo YouTube (sin texto)",
         en: "YouTube-style thumbnail (no text)",
         pt: "Thumbnail estilo YouTube (sem texto)",
+        zh: "YouTube-style thumbnail (no text)",
       }),
       target: "gemini",
       purpose: "image",
@@ -215,10 +250,20 @@ Give 4 variants with different compositions.`,
 - SEM texto (eu adiciono depois)
 
 Entregue 4 variantes com composições diferentes.`,
+          zh: `I need a thumbnail:
+- topic: [topic]
+- style: high contrast, sharp
+- subject: [who/what]
+- background: simple with depth
+- lighting: rim light
+- aspect ratio: 16:9
+- NO text (I’ll add later)
+
+Give 4 variants with different compositions.`,
         }),
     },
     {
-      title: pick(l, { es: "Paisaje cinematográfico", en: "Cinematic landscape", pt: "Paisagem cinematográfica" }),
+      title: pick(l, { es: "Paisaje cinematográfico", en: "Cinematic landscape", pt: "Paisagem cinematográfica", zh: "Cinematic landscape" }),
       target: "grok",
       purpose: "image",
       prompt:
@@ -247,6 +292,14 @@ Entregue 4 variantes com composições diferentes.`,
 - detalhe: elementos em primeiro plano
 - estilo: cinema, color grading teal/orange sutil
 - proporção: 21:9`,
+          zh: `Cinematic landscape:
+- place: [description]
+- time: golden hour
+- atmosphere: light fog
+- lens: 35mm, soft depth of field
+- detail: foreground elements
+- style: cinema, subtle teal/orange grading
+- aspect ratio: 21:9`,
         }),
     },
     {
@@ -254,6 +307,7 @@ Entregue 4 variantes com composições diferentes.`,
         es: "Icon set / UI illustration",
         en: "Icon set / UI illustration",
         pt: "Conjunto de ícones / ilustração de UI",
+        zh: "Icon set / UI illustration",
       }),
       target: "deepseek",
       purpose: "image",
@@ -283,6 +337,14 @@ Provide 12 different icons (describe them).`,
 - proporção: 1:1 por ícone
 
 Entregue 12 ícones diferentes (descreva cada um).`,
+          zh: `Design an icon set:
+- theme: [theme]
+- style: clean outline, 2px
+- consistency: same grid and radius
+- background: transparent
+- aspect ratio: 1:1 per icon
+
+Provide 12 different icons (describe them).`,
         }),
     },
   ];
@@ -293,21 +355,24 @@ Entregue 12 ícones diferentes (descreva cada um).`,
         es: "¿Cómo hago que el resultado sea consistente?",
         en: "How do I make results consistent?",
         pt: "Como deixo os resultados consistentes?",
+        zh: "How do I make results consistent?",
       }),
       a:
         pick(l, {
           es: "Definí estilo, iluminación, encuadre y relación de aspecto. Pedí variantes con cambios controlados.",
           en: "Specify style, lighting, framing, and aspect ratio. Ask for variants with controlled changes.",
           pt: "Especifique estilo, iluminação, enquadramento e proporção. Peça variantes com mudanças controladas.",
+          zh: "Specify style, lighting, framing, and aspect ratio. Ask for variants with controlled changes.",
         }),
     },
     {
-      q: pick(l, { es: "¿Qué debería incluir sí o sí?", en: "What should I always include?", pt: "O que devo sempre incluir?" }),
+      q: pick(l, { es: "¿Qué debería incluir sí o sí?", en: "What should I always include?", pt: "O que devo sempre incluir?", zh: "What should I always include?" }),
       a:
         pick(l, {
           es: "Sujeto, estilo, composición, fondo, luz y aspecto (1:1, 16:9, 4:5).",
           en: "Subject, style, composition, background, lighting, and aspect ratio (1:1, 16:9, 4:5).",
           pt: "Sujeito, estilo, composição, fundo, iluminação e proporção (1:1, 16:9, 4:5).",
+          zh: "Subject, style, composition, background, lighting, and aspect ratio (1:1, 16:9, 4:5).",
         }),
     },
     {
@@ -315,12 +380,14 @@ Entregue 12 ícones diferentes (descreva cada um).`,
         es: "¿Puedo pedir múltiples variantes?",
         en: "Can I request multiple variants?",
         pt: "Posso pedir várias variantes?",
+        zh: "Can I request multiple variants?",
       }),
       a:
         pick(l, {
           es: "Sí. Es lo mejor para iterar: pedí 3–4 variantes con cambios explícitos (pose, paleta, encuadre).",
           en: "Yes. It’s best for iteration: request 3–4 variants with explicit changes (pose, palette, framing).",
           pt: "Sim. É o ideal para iterar: peça 3 ou 4 variantes com mudanças explícitas (pose, paleta, enquadramento).",
+          zh: "Yes. It’s best for iteration: request 3–4 variants with explicit changes (pose, palette, framing).",
         }),
     },
     {
@@ -328,12 +395,14 @@ Entregue 12 ícones diferentes (descreva cada um).`,
         es: "¿Esto agrega texto a la imagen?",
         en: "Will this add text in the image?",
         pt: "Isso vai colocar texto na imagem?",
+        zh: "Will this add text in the image?",
       }),
       a:
         pick(l, {
           es: "Si no querés texto, pedilo explícitamente (“evitá texto en la imagen”).",
           en: "If you don’t want text, ask explicitly (“avoid text in the image”).",
           pt: "Se você não quer texto, peça de forma explícita (“evite texto na imagem”).",
+          zh: "If you don’t want text, ask explicitly (“avoid text in the image”).",
         }),
     },
   ];
@@ -358,10 +427,10 @@ Entregue 12 ícones diferentes (descreva cada um).`,
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes" })}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes", zh: "← View all packs" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →" })}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →", zh: "Open Analyzer →" })}
           </Link>
         </div>
       </div>
@@ -381,10 +450,11 @@ Entregue 12 ícones diferentes (descreva cada um).`,
                     es: "Se abre en el analizador con el prompt precargado.",
                     en: "Opens the analyzer with the prompt prefilled.",
                     pt: "Abre o analisador com o prompt já preenchido.",
+                    zh: "Opens the analyzer with the prompt prefilled.",
                   })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "Open in Promptea" })}
                 </Link>
               </div>
             </div>
@@ -393,7 +463,7 @@ Entregue 12 ícones diferentes (descreva cada um).`,
       </div>
 
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">
