@@ -44,7 +44,7 @@ export default function ModelRegistryList({ target, lang }: { target: TargetAI; 
               <header className="flex flex-wrap items-center gap-2">
                 <h3 className="text-sm font-semibold">{s.label}</h3>
                 {s.default ? <span className="badge badge-accent">{pick(lang, { es: "por defecto", en: "default", pt: "padrão", zh: "默认" })}</span> : null}
-                {s.status === "preview" ? <span className="badge badge-info">preview</span> : null}
+                {s.status === "preview" ? <span className="badge badge-info">{pick(lang, { es: "preview", en: "preview", pt: "preview", zh: "预览版" })}</span> : null}
               </header>
               <p className="text-sm opacity-85">{s.note}</p>
               <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">

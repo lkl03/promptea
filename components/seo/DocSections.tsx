@@ -10,13 +10,13 @@ import Link from "next/link";
 import type { DocBlock, PageDoc } from "@/lib/seo/content/sitePages";
 import { formatDay } from "@/lib/seo/dates";
 import type { Locale } from "@/lib/seo/site";
-import { pick } from "@/lib/domain";
+import { pick, PUNCT } from "@/lib/domain";
 
 function isInternalPage(href: string): boolean {
   return href.startsWith("/") && !/\.(txt|xml|md)$/.test(href);
 }
 
-function Block({ b }: { b: DocBlock }) {
+function Block({ b, lang }: { b: DocBlock; lang: Locale }) {
   switch (b.type) {
     case "p":
       return <p className="text-sm leading-relaxed text-ink-muted sm:text-base">{b.text}</p>;
@@ -41,7 +41,8 @@ function Block({ b }: { b: DocBlock }) {
         <ol className="list-decimal space-y-1.5 pl-5 text-sm leading-relaxed text-ink-muted sm:text-base">
           {b.items.map((x) => (
             <li key={x.name}>
-              <strong className="font-medium text-ink">{x.name}.</strong> {x.text}
+              <strong className="font-medium text-ink">{x.name}{PUNCT[lang].stop}</strong>
+              {x.text}
             </li>
           ))}
         </ol>
@@ -112,7 +113,7 @@ export default function DocSections({
             </H>
             <div className="mt-3 space-y-3">
               {s.blocks.map((b, i) => (
-                <Block key={i} b={b} />
+                <Block key={i} b={b} lang={lang} />
               ))}
             </div>
           </section>

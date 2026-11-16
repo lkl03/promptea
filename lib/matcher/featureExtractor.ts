@@ -6,7 +6,7 @@
 
 import { wordCount as countWords } from "@/lib/engine/normalize";
 import type { Lang, MatchCategory } from "@/lib/domain";
-import { detectPromptLanguage, readsAsPortuguese } from "@/lib/refine/language";
+import { detectPromptLanguage, readsAsChinese, readsAsPortuguese } from "@/lib/refine/language";
 import type { AttachmentContext } from "@/lib/attachments";
 import {
   CHAT_BASELINE_EVIDENCE,
@@ -40,6 +40,7 @@ export function extractMatcherFeatures(args: ExtractArgs): MatcherFeatures {
     attachmentsCount: attachments.length,
     attachmentChars: attachments.reduce((sum, file) => sum + (file.text?.length ?? 0), 0),
     pt: readsAsPortuguese(text, args.uiLang),
+    zh: readsAsChinese(text, args.uiLang),
   };
 
   const signals: SignalHit[] = [];

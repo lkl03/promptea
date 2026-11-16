@@ -12,7 +12,7 @@ import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { guideGraph } from "@/lib/seo/pageGraphs";
-import { LANG_TAG, type ContentLang, pick, LANGS, toLang } from "@/lib/domain";
+import { LANG_TAG, type ContentLang, pick, LANGS, PUNCT, toLang } from "@/lib/domain";
 import ContentLangNotice from "@/components/blog/ContentLangNotice";
 import { ANALYZER_LINK_TEXT, GUIDE_ANALYZER_CTA } from "@/lib/seo/content/analyzerContent";
 import CopyTemplateButton from "@/components/guides/CopyTemplateButton";
@@ -109,11 +109,12 @@ export default async function GuidePage({
       {/* v1.8.6: contextual link to the analyzer from the most-read guides. */}
       {GUIDE_ANALYZER_CTA[guide.slug] ? (
         <p className="mt-6 surface-soft p-4 text-sm" lang={cl === l ? undefined : LANG_TAG[cl]}>
-          {GUIDE_ANALYZER_CTA[guide.slug][cl]}{" "}
+          {GUIDE_ANALYZER_CTA[guide.slug][cl]}
+          {PUNCT[cl].gap}
           <Link href={`/${l}/analyzer`} className="font-medium underline underline-offset-2">
             {ANALYZER_LINK_TEXT[cl]}
           </Link>
-          .
+          {PUNCT[cl].stop.trim()}
         </p>
       ) : null}
 

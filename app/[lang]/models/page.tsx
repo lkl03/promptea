@@ -126,9 +126,9 @@ export default async function ModelsIndexPage({ params }: { params: Promise<{ la
           })}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>
-          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
-          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/temperature`}>Temperature</Link>
+          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/hallucinations`}>{pick(l, { es: "Alucinaciones", en: "Hallucinations", pt: "Alucinações", zh: "幻觉" })}</Link>
+          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/few-shot`}>{pick(l, { es: "Few-shot", en: "Few-shot", pt: "Few-shot", zh: "少样本提示" })}</Link>
+          <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/temperature`}>{pick(l, { es: "Temperatura", en: "Temperature", pt: "Temperatura", zh: "温度" })}</Link>
         </div>
       </section>
     </main>

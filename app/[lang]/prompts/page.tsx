@@ -75,7 +75,7 @@ export default async function PromptsIndexPage({
     },
     {
       href: `/${l}/prompts/marketing`,
-      name: "Marketing",
+      name: pick(l, { es: "Marketing", en: "Marketing", pt: "Marketing", zh: "营销" }),
       desc:
         pick(l, {
           es: "Ads, landings, emails y contenido para redes.",
@@ -87,7 +87,7 @@ export default async function PromptsIndexPage({
     },
     {
       href: `/${l}/prompts/image`,
-      name: "Image",
+      name: pick(l, { es: "Image (imágenes)", en: "Image", pt: "Imagem", zh: "图像" }),
       desc:
         pick(l, {
           es: "Prompts para generar imágenes: estilo, composición y variantes.",
@@ -111,7 +111,7 @@ export default async function PromptsIndexPage({
     },
     {
       href: `/${l}/prompts/data`,
-      name: "Data",
+      name: pick(l, { es: "Data (datos)", en: "Data", pt: "Dados", zh: "数据" }),
       desc:
         pick(l, {
           es: "JSON estricto, extracción, limpieza y transformaciones.",

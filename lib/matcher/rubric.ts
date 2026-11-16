@@ -9,7 +9,7 @@
 
 import type { InteractionProfile, Lang, MatchCategory } from "@/lib/domain";
 
-export const RUBRIC_VERSION = "2026-08-04.1";
+export const RUBRIC_VERSION = "2026-11-16.1"; // v1.8.7: Chinese detectors (ZH_RE)
 
 export type SignalDef = {
   id: string;
@@ -27,6 +27,8 @@ export type SignalContext = {
   attachmentChars: number;
   /** v1.8.2: the prompt reads as Portuguese → the Portuguese detectors apply too. */
   pt?: boolean;
+  /** v1.8.7: the prompt reads as Chinese → the Chinese detectors apply too. */
+  zh?: boolean;
 };
 
 // ── Detector regexes (bilingual ES/EN) ──────────────────────────────────────
@@ -87,9 +89,41 @@ const PT_RE: Partial<Record<keyof typeof RE, RegExp>> = {
   quickTask: ptw("corrija|renomeie|uma linha|r[áa]pido|rapidinho|simples|curtinho|breve|s[óo] me diga"),
 };
 
-/** A detector hit: the es/en pattern, or its Portuguese spelling when the prompt reads as Portuguese. */
+// ── Chinese spellings of the same detectors (v1.8.7) ───────────────────────
+// Consulted only when the prompt reads as Chinese (SignalContext.zh). Chinese has
+// no spaces between words, so these are plain substrings, without word edges; each
+// one is specific enough not to fire inside an unrelated word ("行" alone would).
+const zhw = (alternation: string) => new RegExp(alternation, "iu");
+
+const ZH_RE: Partial<Record<keyof typeof RE, RegExp>> = {
+  gitWorkflow: zhw("代码库|仓库|分支|合并请求|拉取请求"),
+  testsAcceptance: zhw("测试|验收标准|测试用例|覆盖率|自动化验证|类型检查"),
+  autonomousAgent: zhw("智能体|自主|多步骤|端到端|实现(?:这个|该|整个)?功能|迁移|重构"),
+  debugSignal: zhw("报错|错误|异常|崩溃|闪退|不工作|无法运行|跑不起来|堆栈"),
+  webRecency: zhw("今天|现在|当前|目前|最近|最新|本周|本月|今年|新闻|市场价格"),
+  citations: zhw("来源|出处|引用|参考文献|参考资料|链接|论文|文献"),
+  searchVerb: zhw("搜索|搜一下|查找|查一下|查查|调研|对比(?:价格|方案|产品)|大家怎么看"),
+  longDocument: zhw("文档|报告|合同|论文|会议记录|逐字稿|章节|白皮书|全文"),
+  multimodalRef: zhw("这张(?:图|图片|照片|截图)|附上的(?:图|图片|照片|截图)|(?:图片|照片|截图)(?:见附件|已附上)|这段视频|视频里|音频附件|分析(?:这张|该)(?:图|图片|照片|截图)"),
+  jsonStrict: zhw("有效的JSON|只输出JSON|仅输出JSON|只返回JSON|JSON格式|字段[：:]|数据结构"),
+  tabularData: zhw("表格|列名|单元格|电子表格|提取|抽取|解析"),
+  creativeWriting: zhw("故事|小说|短篇|诗歌|写一首诗|剧本|角色|人物|对白|歌词|俳句|童话"),
+  marketingCopy: zhw("文案|广告|营销|推广|小红书|抖音|微博|公众号|朋友圈|转化率|标语|口号|目标受众|带货"),
+  translation: zhw("翻译|译成|译为|翻成|(?:成|为)(?:英文|英语|中文|西班牙语|法语|德语|日语|葡萄牙语)"),
+  summarization: zhw("总结|摘要|概括|归纳|提炼|要点|核心观点"),
+  tutoring: zhw("解释|讲解|教我|学习|复习|考试|作业|一步一步|逐步|像给\\d+岁"),
+  imageGen: zhw("生成(?:一张|一幅)?(?:图片|图像|插画|照片)|画一(?:张|幅|个)|宽高比|画面比例|照片级|写实风格|渲染|标志设计"),
+  complexReasoning: zhw("证明|定理|最优化|权衡|系统设计|架构设计|长期战略|推理|形式逻辑|悖论|国际象棋|高等数学"),
+  quickTask: zhw("错别字|重命名|一行|快速|简单|简短|直接告诉我"),
+};
+
+/** A detector hit: the es/en pattern, or its Portuguese / Chinese spelling when the prompt reads as that language. */
 function has(c: SignalContext, key: keyof typeof RE): boolean {
-  return RE[key].test(c.text) || (c.pt === true && (PT_RE[key]?.test(c.text) ?? false));
+  return (
+    RE[key].test(c.text) ||
+    (c.pt === true && (PT_RE[key]?.test(c.text) ?? false)) ||
+    (c.zh === true && (ZH_RE[key]?.test(c.text) ?? false))
+  );
 }
 
 // ── Signal registry ─────────────────────────────────────────────────────────
@@ -155,7 +189,7 @@ export const SIGNALS: SignalDef[] = [
   {
     id: "web_recency",
     label: { es: "Necesita información actual de la web", en: "Needs current web information", pt: "Precisa de informação atual da web", zh: "需要最新的网络信息" },
-    test: (c) => has(c, "webRecency") && (has(c, "searchVerb") || has(c, "citations") || (/\b(precio|price|noticia|news|versi[oó]n m[aá]s reciente|latest version)\b/i.test(c.text) || (c.pt === true && /pre[çc]o|not[íi]cia|vers[ãa]o mais recente/i.test(c.text)))),
+    test: (c) => has(c, "webRecency") && (has(c, "searchVerb") || has(c, "citations") || (/\b(precio|price|noticia|news|versi[oó]n m[aá]s reciente|latest version)\b/i.test(c.text) || (c.pt === true && /pre[çc]o|not[íi]cia|vers[ãa]o mais recente/i.test(c.text)) || (c.zh === true && /价格|新闻|最新版本/u.test(c.text)))),
     contributes: [{ category: "research", weight: 2 }],
   },
   {

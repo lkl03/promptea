@@ -9,6 +9,7 @@
 import type { Lang, TargetAI } from "@/lib/promptTemplates";
 import type { Features, Finding, PromptPurpose, Recommendation, TaskType } from "./types";
 import { modelNoteForTarget } from "@/lib/models";
+import { PUNCT } from "@/lib/domain";
 
 export type ScoreCriterion = {
   key: string;
@@ -190,7 +191,7 @@ function pickFollowUps(features: Features, task: TaskType, purpose: PromptPurpos
 function pickQuickWins(features: Features, recommendations: Recommendation[], lang: Lang): string[] {
   const fromRecs = recommendations
     .filter((r) => r.impact !== "low")
-    .map((r) => `${r.title}: ${r.detail}`)
+    .map((r) => `${r.title}${PUNCT[lang].colon}${r.detail}`)
     .slice(0, 3);
 
   if (fromRecs.length > 0) return fromRecs;
@@ -208,17 +209,17 @@ function pickQuickWins(features: Features, recommendations: Recommendation[], la
   return fallback.slice(0, 3);
 }
 
-function pickMissingInformation(findings: Finding[]): string[] {
+function pickMissingInformation(findings: Finding[], lang: Lang): string[] {
   return findings
     .filter((f) => f.severity !== "low" && /missing/i.test(f.id))
-    .map((f) => `${f.title}. ${f.fix}`)
+    .map((f) => `${f.title}${PUNCT[lang].stop}${f.fix}`)
     .slice(0, 3);
 }
 
-function pickCriticalIssues(findings: Finding[]): string[] {
+function pickCriticalIssues(findings: Finding[], lang: Lang): string[] {
   return findings
     .filter((f) => f.severity === "high" && !/missing/i.test(f.id))
-    .map((f) => `${f.title}. ${f.description}`)
+    .map((f) => `${f.title}${PUNCT[lang].stop}${f.description}`)
     .slice(0, 3);
 }
 
@@ -237,9 +238,9 @@ export function buildFeedbackBlock(args: {
   return {
     scoreCriteria: criteriaFor(taskType),
     strengths: pickStrengths(features, taskType, lang),
-    criticalIssues: pickCriticalIssues(findings),
+    criticalIssues: pickCriticalIssues(findings, lang),
     quickWins: pickQuickWins(features, recommendations, lang),
-    missingInformation: pickMissingInformation(findings),
+    missingInformation: pickMissingInformation(findings, lang),
     followUpQuestions: pickFollowUps(features, taskType, purpose, lang),
     modelNotes: modelNoteForTarget(target, lang, modelId),
   };

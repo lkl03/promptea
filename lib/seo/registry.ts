@@ -151,7 +151,7 @@ export const CORE_PAGES: readonly CorePage[] = [
     id: "how-it-works",
     slug: "how-it-works",
     section: "about",
-    title: { en: "How Promptea works", es: "Cómo funciona Promptea", pt: "Como o Promptea funciona", zh: "Promptea如何运作" },
+    title: { en: "How Promptea works", es: "Cómo funciona Promptea", pt: "Como o Promptea funciona", zh: "Promptea的工作原理" },
     description: {
       en: "What Promptea is, how a prompt is scored 0–100 on six criteria, how to use the analyzer, supported AIs and prompt types, and the FAQ.",
       es: "Qué es Promptea, cómo se puntúa un prompt de 0 a 100 en seis criterios, cómo usar el analizador, IAs y tipos de prompt soportados, y las preguntas frecuentes.",

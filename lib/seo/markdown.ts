@@ -23,7 +23,7 @@ import { currentModels, modelSummary } from "./facts";
 import { formatDay, toDay } from "./dates";
 import type { DocBlock, PageDoc } from "./content/sitePages";
 import { SITE_NAME, absUrl, type Locale } from "./site";
-import { LANG_NAME } from "@/lib/domain";
+import { LANG_NAME, PUNCT } from "@/lib/domain";
 
 // v1.8.7: zh is optional while the Chinese text is written; it falls back to English.
 const tr = (lang: Locale) => <T,>(en: T, es: T, pt: T, zh: T = en): T => ({ en, es, pt, zh })[lang];
@@ -138,7 +138,7 @@ export function guideMarkdown(g: Guide, lang: Locale, url: string, updated: stri
     out.push(`## ${oneLine(s.heading[lang])}`, "", ...s.bullets[lang].map((b) => `- ${oneLine(b)}`), "");
   }
   const cta = GUIDE_ANALYZER_CTA[g.slug];
-  if (cta) out.push(`${cta[lang]} [${ANALYZER_LINK_TEXT[lang]}](${absUrl(`/${lang}/analyzer`)}).`, "");
+  if (cta) out.push(`${cta[lang]}${PUNCT[lang].gap}[${ANALYZER_LINK_TEXT[lang]}](${absUrl(`/${lang}/analyzer`)})${PUNCT[lang].stop.trim()}`, "");
   out.push(...templatesMarkdown(lang, g.templates, "gpt", templates, `${url}.md`));
   if (templates === "titles" && g.faq.length > 0) {
     // v1.8.6 (llms-full.txt): the questions only; the answers live in the page's twin,
@@ -367,3 +367,15 @@ export function benchmarksMarkdown(snapshot: BenchmarksSnapshot | null, lang: Lo
 }
 
 export const MARKDOWN_CONTENT_TYPE = "text/markdown; charset=utf-8";
+
+/**
+ * v1.8.7: the builders above join a label and its value with ": " in every language; Chinese
+ * takes a full-width colon and no space ("语言：简体中文"). Only a colon right after a Han
+ * character changes, so URLs, code and English text inside a zh twin stay as they are.
+ */
+export function localizeMarkdownPunctuation(md: string, lang: Locale): string {
+  const colon = PUNCT[lang].colon;
+  if (colon === ": ") return md;
+  // "**简而言之:** x" keeps the space after the closing ** (else it is not bold in CommonMark).
+  return md.replace(/(\p{Script=Han}):(\*\*)? /gu, (_m, han: string, bold?: string) => (bold ? `${han}${colon.trim()}** ` : `${han}${colon}`));
+}

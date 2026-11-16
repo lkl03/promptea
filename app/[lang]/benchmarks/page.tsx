@@ -32,7 +32,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { benchmarksGraph } from "@/lib/seo/pageGraphs";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
-import { pick, toLang, INTL_LOCALE, type Lang } from "@/lib/domain";
+import { pick, toLang, INTL_LOCALE, PUNCT, type Lang } from "@/lib/domain";
 
 export const revalidate = 3600;
 
@@ -682,15 +682,16 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
                     </dt>
                     <dd className="mt-2 space-y-2 text-sm leading-relaxed text-ink-muted">
                       <p>
-                        <span className="font-medium text-ink">{c.measures}: </span>
+                        <span className="font-medium text-ink">{c.measures}{PUNCT[l].colon}</span>
                         {t.def.measures[l]}
                       </p>
                       <p>
-                        <span className="font-medium text-ink">{c.limits}: </span>
+                        <span className="font-medium text-ink">{c.limits}{PUNCT[l].colon}</span>
                         {t.def.limitations[l]}
                       </p>
                       <p className="text-xs">
-                        {c.source}:{" "}
+                        {c.source}
+                        {PUNCT[l].colon}
                         <a href={SOURCE_INFO[t.def.source].url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-ink">
                           {SOURCE_INFO[t.def.source].name}
                         </a>{" "}

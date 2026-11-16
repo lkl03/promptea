@@ -19,6 +19,8 @@ import { isZh } from "@/lib/engine/zh";
 import { wordCount, approxTokensFromWords } from "@/lib/engine/normalize";
 import { chineseShare, detectPromptLanguage, vocabularyLang } from "@/lib/refine/language";
 import { LANGS, TARGETS, type PromptPurpose, type TargetAI } from "@/lib/domain";
+import { matchPrompt } from "@/lib/matcher";
+import { cacheableSystemPrompt } from "@/lib/refine/adaptive";
 
 const ZH_PROMPTS: Array<{ purpose: PromptPurpose; prompt: string }> = [
   { purpose: "text", prompt: "帮我写一封邮件" },
@@ -217,5 +219,46 @@ describe("es, en and pt are untouched", () => {
       expect(Math.abs(a.score - b.score), c.id).toBeLessThanOrEqual(6);
       expect(a.meta.taskType, c.id).toBe(b.meta.taskType);
     }
+  });
+});
+
+describe("Find the best AI in Chinese", () => {
+  test("explanations, signals and advice are Chinese", () => {
+    const prompt = "修复 src/app/login.ts 里的错误：运行 npm test 时测试失败。修好后提交一个 pull request。";
+    const r = matchPrompt({ prompt, uiLang: "zh" });
+    expect(r.lang).toBe("zh");
+    const labels = r.detected.signals.map((s) => s.label).join(" ");
+    expect(labels).toMatch(/\p{Script=Han}/u);
+    expect(labels).not.toMatch(/\b(Shell commands|Comandos de terminal|Repository or code file paths)\b/);
+    const text = [...r.primary.reasons, ...r.advice.adaptation, ...r.advice.switching].join(" ");
+    expect(text.match(SPANISH_ONLY)?.[0] ?? null).toBeNull();
+    expect(text.match(PORTUGUESE_ONLY)?.[0] ?? null).toBeNull();
+  });
+
+  test("Chinese signals are detected: translation, summary, citations, debugging, marketing", () => {
+    const ids = (prompt: string, uiLang: (typeof LANGS)[number] = "zh") => matchPrompt({ prompt, uiLang }).detected.signals.map((s) => s.id);
+    expect(ids("把这份合同翻译成英文")).toContain("translation_task");
+    expect(ids("总结这份报告的要点")).toContain("summarization_task");
+    expect(ids("搜索最近关于AI的新闻，并注明来源")).toContain("citations_required");
+    expect(ids("为小红书写一条推广文案，目标受众是大学生")).toContain("marketing_copy");
+    // the same Chinese prompt is read the same way from a Spanish or English interface
+    expect(ids("把这份合同翻译成英文", "es")).toContain("translation_task");
+    expect(ids("把这份合同翻译成英文", "en")).toEqual(ids("把这份合同翻译成英文"));
+  });
+
+  test("a Spanish or Portuguese prompt never fires a Chinese detector", () => {
+    const es = matchPrompt({ prompt: "Escribí un poema corto sobre el mar", uiLang: "zh" }).detected.signals.map((s) => s.id);
+    expect(es).not.toContain("translation_task");
+    expect(es).not.toContain("summarization_task");
+  });
+});
+
+describe("the adaptive refiner in Chinese", () => {
+  test("instructions stay in English and require Simplified Chinese for user-visible fields", () => {
+    const sys = cacheableSystemPrompt("zh");
+    expect(sys).toMatch(/Simplified Chinese \(zh-CN/);
+    expect(sys).toMatch(/Do NOT answer the user's task/);
+    expect(cacheableSystemPrompt("en")).not.toMatch(/Chinese/);
+    expect(cacheableSystemPrompt("pt")).not.toMatch(/Chinese/);
   });
 });

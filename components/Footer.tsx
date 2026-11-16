@@ -5,7 +5,7 @@ import { APP_VERSION } from "@/lib/version";
 import type { AppFeedbackDict } from "@/lib/uiDict";
 import { weeklyArchivePath } from "@/lib/newsletter/paths";
 import { getXLinks } from "@/lib/social";
-import { pick, type Lang } from "@/lib/domain";
+import { pick, PUNCT, type Lang } from "@/lib/domain";
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -38,7 +38,9 @@ export default function Footer({
   const blogLabel = pick(lang, { es: "IA al Día", en: "AI Daily", pt: "AI Daily", zh: "AI Daily" });
   const weeklyLabel = pick(lang, { es: "Resumen semanal", en: "Weekly digest", pt: "Resumo semanal", zh: "每周摘要" });
   const resourcesLabel = pick(lang, { es: "Recursos útiles", en: "Useful resources", pt: "Recursos úteis", zh: "实用资源" });
-  const eterlabMessage = pick(lang, { es: "diseñado y desarrollado por", en: "designed and developed by", pt: "design e desenvolvimento por", zh: "设计与开发" });
+  const eterlabMessage = pick(lang, { es: "diseñado y desarrollado por", en: "designed and developed by", pt: "design e desenvolvimento por", zh: "由" });
+  // Chinese puts the verb after the name: "由 eterlab 设计与开发。"
+  const eterlabSuffix = pick(lang, { es: ".", en: ".", pt: ".", zh: " 设计与开发。" });
   const followLabel = pick(lang, { es: "Seguinos en X", en: "Follow us on X", pt: "Siga a gente no X", zh: "在X上关注我们" });
   const xUrl = getXLinks().url;
 
@@ -91,7 +93,7 @@ export default function Footer({
 
       {/* Useful resources */}
       <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs opacity-80">
-        <span className="opacity-70">{resourcesLabel}:</span>
+        <span className="opacity-70">{resourcesLabel}{PUNCT[lang].colon.trimEnd()}</span>
 
         <Link href={`/${lang}/prompts`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {promptsLabel}
@@ -146,7 +148,7 @@ export default function Footer({
           <Link href="https://eterlab.co" className="hover:text-ink transition-all ease-in-out">
             eterlab
           </Link>
-          .
+          {eterlabSuffix}
         </span>
       </div>
     </footer>

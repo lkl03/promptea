@@ -62,6 +62,18 @@ export function imageLang(lang: Lang): Lang {
 export const LANG_NAME: Record<Lang, string> = { es: "Español", en: "English", pt: "Português", zh: "简体中文" };
 
 /**
+ * v1.8.7: punctuation that code puts between two pieces of copy ("Clarity. Measures…",
+ * "Source: …"). Chinese writes it full width and with no space after ("清晰度。衡量…"), and
+ * puts no space between words either (`gap`: before an inline link that ends a sentence).
+ */
+export const PUNCT: Record<Lang, { colon: string; stop: string; gap: string }> = {
+  es: { colon: ": ", stop: ". ", gap: " " },
+  en: { colon: ": ", stop: ". ", gap: " " },
+  pt: { colon: ": ", stop: ". ", gap: " " },
+  zh: { colon: "：", stop: "。", gap: "" },
+};
+
+/**
  * Pick the text for `lang` from an inline `{ es, en, pt }` literal. For copy
  * that lives next to the markup instead of in the dictionaries; TypeScript
  * rejects a literal that misses a language.

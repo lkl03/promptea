@@ -6,7 +6,7 @@
 // JSON-LD is built from (lib/seo/content/analyzerContent.ts).
 
 import Link from "next/link";
-import { pick, type Lang } from "@/lib/domain";
+import { pick, PUNCT, type Lang } from "@/lib/domain";
 import { SCORE_DIMENSIONS } from "@/lib/seo/facts";
 import { ANALYZER_PAGE_FAQ } from "@/lib/seo/content/analyzerContent";
 
@@ -35,7 +35,8 @@ export default function AnalyzerAbout({ lang }: { lang: Lang }) {
       <ul className="surface grid gap-3 p-5 text-sm sm:grid-cols-2">
         {SCORE_DIMENSIONS.map((d) => (
           <li key={d.key}>
-            <span className="font-medium">{d.label[lang]}.</span> <span className="opacity-80">{d.measures[lang]}</span>
+            <span className="font-medium">{d.label[lang]}{PUNCT[lang].stop}</span>
+            <span className="opacity-80">{d.measures[lang]}</span>
           </li>
         ))}
       </ul>
