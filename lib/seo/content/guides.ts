@@ -282,7 +282,7 @@ Se faltar informação, faça até 3 perguntas antes de responder.`,
       en: "Templates to extract and transform data into strict JSON, with validation rules.",
       es: "Plantillas para extraer/transformar datos a JSON estricto, con reglas de validación.",
       pt: "Templates para extrair e transformar dados em JSON estrito, com regras de validação.",
-      zh: "把数据提取并转换成严格JSON的模板，附带校验规则。",
+      zh: "把数据提取并转换成严格JSON的提示词模板：写明字段、类型、null规则和校验步骤，让输出可以直接解析。",
     },
     sections: [
       {

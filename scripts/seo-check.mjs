@@ -438,7 +438,10 @@ function checkPage(loc, origin, res, sitemapEntry) {
   if (head.count("robots") > 1) problems.push(`<meta robots> x${head.count("robots")}`);
   if (/noindex/i.test(head.first("robots") || "")) problems.push("page is noindex");
   const desc = head.first("description") || "";
-  if (desc.length < 50 || desc.length > 320) problems.push(`meta description length ${desc.length}`);
+  // v1.8.7: a Chinese character is about two Latin ones wide in a search result (and says
+  // as much as a short word), so it counts double against the 50–320 range.
+  const descWidth = desc.length + (desc.match(/\p{Script=Han}/gu) ?? []).length;
+  if (descWidth < 50 || descWidth > 320) problems.push(`meta description length ${desc.length} (width ${descWidth})`);
   if (head.first("og:url") && head.first("og:url") !== loc) problems.push(`og:url ${head.first("og:url")} ≠ canonical`);
   if (head.first("og:image") && !/^https?:\/\//.test(head.first("og:image"))) problems.push("og:image is not absolute");
   if (head.first("twitter:image") && !/^https?:\/\//.test(head.first("twitter:image"))) problems.push("twitter:image is not absolute");
@@ -551,7 +554,11 @@ async function checkPortugueseViews(origin, urls, ui = "pt") {
       const head = parseHead(r.body);
       if (head.canonicals[0] !== `${origin}${original}`) problems.push(`canonical ${head.canonicals[0]} ≠ ${origin}${original}`);
       const keys = Object.keys(head.hreflang).sort().join(",");
-      if (keys !== HREFLANG_CONTENT) problems.push(`hreflang: ${keys}`);
+      // A view announces the same locales as its original (v1.8.7: a guide may exist in
+      // es+en, es+en+pt, es+en+zh or all four; AI Daily in es+en).
+      const originalEntry = urls.find((u) => u.loc === `${origin}${original}`);
+      const want = originalEntry ? Object.keys(originalEntry.alts).sort().join(",") : HREFLANG_CONTENT;
+      if (keys !== want) problems.push(`hreflang: ${keys} (the original has ${want})`);
       if (!/data-content-lang-notice/.test(r.body)) problems.push("no visible notice that the content is in English");
       if (!new RegExp(`<html[^>]*\\blang="${HTML_LANG[ui]}"`, "i").test(r.body)) problems.push(`<html lang> is not ${HTML_LANG[ui]}`);
       if (head.first("og:locale") !== "en_US") problems.push(`og:locale ${head.first("og:locale")} (the content is English)`);

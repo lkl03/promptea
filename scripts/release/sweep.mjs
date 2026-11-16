@@ -10,8 +10,8 @@
 // (innerWidth), no horizontal overflow (and which elements stick out), no text
 // cut inside a box that hides its overflow (headings, buttons, badges, links,
 // table cells, list items), exactly one <h1>, <html lang> matching the locale,
-// no console or page error, and — under /pt — no sentinel string that only
-// exists in the English or Spanish interface.
+// no console or page error, and — under /pt and /zh (v1.8.7) — no sentinel string
+// that only exists in the English or Spanish (or, under /zh, Portuguese) interface.
 //
 // READ-ONLY against anything that is not localhost (non-GET requests are aborted).
 // Exit code 1 on any finding.
@@ -29,7 +29,7 @@ const EXTRA = args.extra ? args.extra.split(",") : [];
 const CONCURRENCY = Number(args.concurrency ?? 4);
 const CHROME = process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(BASE);
-const HTML_LANG = { es: "es", en: "en", pt: "pt-BR" };
+const HTML_LANG = { es: "es", en: "en", pt: "pt-BR", zh: "zh-CN" };
 
 const SENTINELS = [
   "Analyze", "Find the best AI", "Paste your prompt", "Target AI", "Subscribe", "Back to", "Open in Promptea", "Read more",
@@ -38,6 +38,8 @@ const SENTINELS = [
   "Analizá", "Elegí", "Pegá", "Suscribirme", "Guías", "Glosario", "Volver", "Abrir en Promptea", "Privacidad",
   "Cómo funciona", "Preguntas frecuentes", "Última actualización", "Resumen semanal", "Copiar prompt", "Plantillas",
 ];
+// v1.8.7: under /zh, Portuguese leftovers count too.
+const PT_SENTINELS = ["Analisar", "Assinar", "Guias", "Glossário", "Privacidade", "Como funciona", "Perguntas frequentes", "Voltar", "Última atualização", "Resumo semanal", "Copiar prompt"];
 
 const sitemap = await (await fetch(`${BASE}/sitemap.xml`)).text();
 const origin = /<loc>(https?:\/\/[^/<]+)/.exec(sitemap)?.[1] ?? BASE;
@@ -105,7 +107,7 @@ async function check(path, w) {
             out.clipped.push(`${el.tagName.toLowerCase()} "${el.textContent.trim().slice(0, 40)}" ${el.scrollWidth}>${el.clientWidth}`);
           }
         }
-        if (lang === "pt") {
+        if (lang === "pt" || lang === "zh") {
           const skip = '[lang="en"], [lang="es"], [data-content-lang-notice], pre, code, [data-language-switcher], script, style, .blog-row-title, [data-x-feed]';
           const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
           for (let n = walker.nextNode(); n; n = walker.nextNode()) {
@@ -121,7 +123,7 @@ async function check(path, w) {
         }
         return out;
       },
-      { lang, sentinels: SENTINELS },
+      { lang, sentinels: lang === "zh" ? [...SENTINELS, ...PT_SENTINELS] : SENTINELS },
     );
     const bad = [];
     if (res?.status() !== 200) bad.push(`status ${res?.status()}`);

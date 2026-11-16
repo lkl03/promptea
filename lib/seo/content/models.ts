@@ -318,7 +318,7 @@ Saída em tabela com as colunas: Opção | Prós | Contras | Riscos | Ideal para
       en: "Templates that ask Grok for concrete outputs and quick validation steps.",
       es: "Plantillas que piden outputs concretos y pasos de validación rápidos.",
       pt: "Templates que pedem ao Grok entregas concretas e etapas rápidas de validação.",
-      zh: "让Grok给出具体产出和快速验证步骤的提示词模板。",
+      zh: "Grok提示词模板：要求给出具体产出、标明信息时效，并附上快速验证步骤，减少空泛的回答。",
     },
     bullets: {
       en: [
@@ -443,7 +443,7 @@ Retorne:
       en: "General prompt templates designed to keep outputs structured and practical.",
       es: "Plantillas generales para mantener outputs estructurados y prácticos.",
       pt: "Templates gerais de prompts pensados para manter as respostas estruturadas e práticas.",
-      zh: "通用提示词模板，让输出保持结构清晰、切实可用。",
+      zh: "Kimi提示词模板：长文档分析时把原文和指令分开，要求结构化输出，让结果清晰、切实可用。",
     },
     bullets: {
       en: [

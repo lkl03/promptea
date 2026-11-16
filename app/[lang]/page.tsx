@@ -59,7 +59,7 @@ import { homeAboutDoc } from "@/lib/seo/content/sitePages";
 import { homeGraph } from "@/lib/seo/pageGraphs";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { type Lang, toLang, INTL_LOCALE, contentLangFor } from "@/lib/domain";
+import { type Lang, toLang, INTL_LOCALE, PUNCT, contentLangFor } from "@/lib/domain";
 
 export const revalidate = 300;
 
@@ -187,7 +187,11 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             hidden span completes the heading ("Promptea — analyze, score and optimize your AI prompts"). */}
         <h1 className="m-0">
           <BrandLogo height={56} smHeight={88} priority />
-          <span className="sr-only"> {doc.h1.replace(/^Promptea\s*/, "")}</span>
+          {/* No space before the rest in Chinese ("Promptea——…"). */}
+          <span className="sr-only">
+            {PUNCT[l].gap}
+            {doc.h1.replace(/^Promptea\s*/, "")}
+          </span>
         </h1>
         <p className="mt-4 max-w-xl text-base text-ink-muted sm:text-lg">{t.tagline}</p>
       </header>

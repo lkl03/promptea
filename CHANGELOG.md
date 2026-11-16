@@ -4,9 +4,46 @@ All notable changes to Promptea are documented here.
 
 ---
 
-## v1.8.7 (unreleased)
+## v1.8.7 — 2026-11-16
 
-**Promptea's own X feed, a newsletter card that every visitor actually sees, and an analysis of each model on Benchmarks.** Evidence and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md).
+**Simplified Chinese (`/zh`) as a fourth language, Promptea's own X feed, a newsletter card that every visitor actually sees, and an analysis of each model on Benchmarks.** Built in two PRs: part A (X feed, newsletter, Benchmarks, QA) and part B (Chinese), which bumps the version. Evidence and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md).
+
+### Chinese (Simplified), the fourth language
+- **`/zh` for readers in mainland China.**
+  - Browsers in `zh`, `zh-CN`, `zh-SG` or `zh-Hans` land there.
+  - Traditional Chinese (`zh-TW`, `zh-HK`, `zh-MO`, `zh-Hant`) goes to `/en`: 6 visits in 30 days, and Simplified text reads as a mistake to them.
+  - `<html lang="zh-CN">`, `og:locale` `zh_CN` and hreflang `zh-Hans` + `zh-CN` + `zh`.
+  - The sitemap, `/zh/llms.txt`, `llms-full.txt`, the `.md` twins and the feeds include it, all driven by `LANGS` in `lib/domain.ts`.
+  - The language switcher has four options (ES | EN | PT | 中文) and stays on one row on phones.
+- **What is translated.**
+  - The whole interface: `zh.json`, with the same keys as es/en/pt.
+  - The analyzer's and "Find the best AI"'s messages.
+  - The 11 model pages, 8 landings, 20 glossary terms, 6 prompt packs and the static pages.
+  - 13 of 64 guides: the six for Chinese models (DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao) and the most-read ones.
+  - The translations were written by AI. Native review package: [`docs/i18n/zh-review.md`](./docs/i18n/zh-review.md). Terminology: [`docs/i18n/zh-glossary.md`](./docs/i18n/zh-glossary.md).
+- **What is not translated, on purpose.**
+  - AI Daily and the weekly digest: English with a notice under `/zh`, and out of the zh sitemap and hreflang.
+  - 51 guides: English with a notice, canonical → the English original, and out of the zh sitemap, hreflang and `llms.txt`.
+  - The newsletter: the form preselects the English edition, says there is no Chinese one, and records `uiLang: "zh"`.
+- **Typography.**
+  - The system's Chinese fonts under `:lang(zh)` (PingFang SC, Microsoft YaHei, Noto Sans SC…); no CJK web font is downloaded.
+  - Taller line height, strict line breaking, and no synthetic italics (emphasis is bold).
+  - When code joins two strings, Chinese gets full-width punctuation with no space (`PUNCT` in `lib/domain.ts`), in the UI and in the `.md` twins.
+  - Share and Open Graph images keep Latin text (`imageLang()`): `next/og` has no CJK font, and Han characters would render as empty boxes.
+- **Engine 2.5.0** (full localization, option A):
+  - every engine string has a Chinese version;
+  - prompts written in Chinese are detected by their share of Han characters and counted by characters (Han ÷ 1.7 per word);
+  - they are matched with a Chinese vocabulary (`lib/engine/zh.ts`), so a Chinese prompt gets the same task type, findings and score from any of the four interfaces;
+  - 24 Chinese calibration cases score within ±6 of their Portuguese twins, and the 104 es/en/pt cases did not move;
+  - image prompts are composed in English, as in Portuguese (`meta.optimizedPromptLang = "en"`);
+  - "Find the best AI" has Chinese detectors (`RUBRIC_VERSION` 2026-11-16.1);
+  - the Groq coach and the judge answer in zh-CN.
+
+  Contract: [`docs/engine-contract.md`](./docs/engine-contract.md) §E. Audit: [`docs/engine-audit.md`](./docs/engine-audit.md) §10.
+
+### Fixed
+- **Guide hreflang with four languages.** A guide translated to Portuguese but not to Chinese announced only es/en in its `<head>`, while the sitemap listed es/en/pt. Fixed with `pageMetadata({ locales })` and a regression test that calls the page's real `generateMetadata`.
+- **Strings hardcoded in English in every language**: the `/changelog` `<h1>`, the Marketing / Image / Data pack names, the glossary buttons on `/models` and the "preview" badge.
 
 ### X feed: Promptea's own, no third-party widget
 - **The card no longer loads Elfsight.** The Elfsight widget loaded ~165 KB of third-party script, and its free plan (200 views a month) was at 141/200. The card is now rendered by our server from **Buffer**, the tool Promptea's posts are published with. Buffer keeps every sent post with its text, its date and its link on X. The card shows up to 10 posts as text, with a relative, localized date and a "View on X" link on each. Its box has a fixed height (no layout shift). It works without JavaScript and the browser makes no request to X or any third party. Decision record (Buffer vs. X's oEmbed vs. the X API, costs and terms): [`docs/release/v1.8.7/x-feed-decision.md`](./docs/release/v1.8.7/x-feed-decision.md).

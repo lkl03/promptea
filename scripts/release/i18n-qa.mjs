@@ -7,12 +7,16 @@
 // LOCALHOST ONLY by default (it submits the analyzer form). For each
 // language × page × viewport (1440 and 375) it checks:
 //   - no horizontal page overflow, and which elements stick out if there is
-//   - <html lang> (pt-BR under /pt) and the ES | EN | PT switcher (3 links,
-//     the current one marked, none clipped, the header on one row at 375 px)
+//   - <html lang> (pt-BR under /pt, zh-CN under /zh) and the ES | EN | PT | 中文
+//     switcher (4 links since v1.8.7, the current one marked, none clipped, the
+//     header on one row at 375 px)
 //   - text clipped inside buttons, badges, nav links and tabs
-//   - under /pt: visible strings that are still English or Spanish (a list of
-//     sentinel phrases taken from the en/es dictionaries), outside the regions
-//     that are English on purpose (AI Daily, untranslated guides, old changelog)
+//   - under /pt and /zh: visible strings that are still English, Spanish (or,
+//     under /zh, Portuguese) — a list of sentinel phrases taken from the
+//     dictionaries — outside the regions that are English on purpose (AI Daily,
+//     untranslated guides, old changelog); under /zh it also lists text with no
+//     Chinese at all, for a human to look at (not a failure: model names and
+//     technical terms are Latin on purpose)
 // and, with --shots=1, saves screenshots (3 themes × light/dark for the home and
 // the analyzer; one theme for the rest).
 //
@@ -32,8 +36,11 @@ if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(BASE)) {
   process.exit(2);
 }
 
-const LANGS = ["pt", "es", "en"];
-const HTML_LANG = { es: "es", en: "en", pt: "pt-BR" };
+const LANGS = (args.langs ?? "zh,pt,es,en").split(",");
+const HTML_LANG = { es: "es", en: "en", pt: "pt-BR", zh: "zh-CN" };
+const SWITCHER_LABEL = { es: "ES", en: "EN", pt: "PT", zh: "中文" };
+/** Translated interfaces whose visible text is checked for leftovers of the others. */
+const CHECKED = new Set(["pt", "zh"]);
 const PAGES = [
   ["home", ""],
   ["analyzer", "/analyzer"],
@@ -82,6 +89,10 @@ const SENTINELS = [
   "Analizá", "Elegí", "Pegá", "Suscribirme", "Guías", "Glosario", "Volver", "Abrir en Promptea", "Privacidad", "Inicio",
   "Cómo funciona", "Preguntas frecuentes", "Última actualización", "Resumen semanal", "Calculadora de costo",
 ];
+// v1.8.7: under /zh, Portuguese leftovers count too.
+const PT_SENTINELS = ["Analisar", "Assinar", "Guias", "Glossário", "Privacidade", "Início", "Como funciona", "Perguntas frequentes", "Voltar", "Última atualização", "Resumo semanal"];
+const sentinelsFor = (lang) => (lang === "zh" ? [...SENTINELS, ...PT_SENTINELS] : SENTINELS);
+const notes = [];
 
 const results = [];
 const fail = (where, what) => {
@@ -115,7 +126,7 @@ async function inspect(page, lang, sentinels) {
   return page.evaluate(
     ({ lang, sentinels }) => {
       const vw = document.documentElement.clientWidth;
-      const out = { innerWidth: window.innerWidth, overflow: Math.max(0, document.documentElement.scrollWidth - vw), offenders: [], clipped: [], htmlLang: document.documentElement.lang, switcher: null, untranslated: [], headerRows: 0 };
+      const out = { innerWidth: window.innerWidth, overflow: Math.max(0, document.documentElement.scrollWidth - vw), offenders: [], clipped: [], htmlLang: document.documentElement.lang, switcher: null, untranslated: [], latinOnly: [], headerRows: 0 };
 
       const inScrollable = (el) => {
         for (let n = el.parentElement; n && n !== document.body; n = n.parentElement) {
@@ -164,7 +175,7 @@ async function inspect(page, lang, sentinels) {
         }
       }
 
-      if (lang === "pt") {
+      if (lang === "pt" || lang === "zh") {
         // Regions that are English (or Spanish/English history) on purpose.
         const skip = '[lang="en"], [lang="es"], [data-content-lang-notice], pre, code, [data-language-switcher], script, style, .blog-row-title, [data-x-feed]';
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -180,6 +191,10 @@ async function inspect(page, lang, sentinels) {
               seen.add(s + text);
               out.untranslated.push(`"${s}" in «${text.slice(0, 70)}»`);
             }
+          }
+          // Under /zh: a sentence with four or more Latin words and no Chinese at all.
+          if (lang === "zh" && !/\p{Script=Han}/u.test(text) && (text.match(/\b[A-Za-z]{3,}\b/g) ?? []).length >= 4 && out.latinOnly.length < 6) {
+            out.latinOnly.push(`«${text.slice(0, 70)}» (${el.tagName.toLowerCase()})`);
           }
         }
       }
@@ -202,7 +217,7 @@ for (const lang of LANGS) {
           const { page, status } = ctx;
           pagesChecked++;
           if (name === "404" ? status !== 404 : status !== 200) fail(where, `status ${status}`);
-          const r = await inspect(page, lang, SENTINELS);
+          const r = await inspect(page, lang, sentinelsFor(lang));
           if (r.innerWidth !== w) fail(where, `viewport is ${r.innerWidth}px, not ${w}px`);
           if (r.overflow > 1) fail(where, `horizontal overflow ${r.overflow}px — ${r.offenders.join("; ")}`);
           // The 404 page is Next's own document (no site layout) in every language since before v1.8.2.
@@ -213,17 +228,18 @@ for (const lang of LANGS) {
           if (r.htmlLang !== HTML_LANG[lang]) fail(where, `<html lang="${r.htmlLang}">`);
           if (!r.switcher) fail(where, "no language switcher");
           else {
-            if (r.switcher.labels !== "ES|EN|PT") fail(where, `switcher shows ${r.switcher.labels}`);
-            if (r.switcher.current !== lang.toUpperCase()) fail(where, `switcher marks ${r.switcher.current || "nothing"} as current`);
-            if (r.switcher.hrefLangs !== "es|en|pt-BR") fail(where, `switcher hreflang ${r.switcher.hrefLangs}`);
+            if (r.switcher.labels !== "ES|EN|PT|中文") fail(where, `switcher shows ${r.switcher.labels}`);
+            if (r.switcher.current !== SWITCHER_LABEL[lang]) fail(where, `switcher marks ${r.switcher.current || "nothing"} as current`);
+            if (r.switcher.hrefLangs !== "es|en|pt-BR|zh-CN") fail(where, `switcher hreflang ${r.switcher.hrefLangs}`);
             if (!r.switcher.inside || r.switcher.clipped) fail(where, "language switcher is cut off");
             // One row: the switcher sits in the header's first line (≤ 60 px from the top of the page).
             if (r.switcher.top > 60) fail(where, `language switcher dropped to a second row (top ${r.switcher.top}px)`);
           }
           for (const c of r.clipped.slice(0, 3)) fail(where, `clipped text: ${c}`);
           for (const u of r.untranslated.slice(0, 4)) fail(where, `not translated: ${u}`);
+          if (CHECKED.has(lang) && w === VIEWPORTS[0]) for (const t of r.latinOnly) notes.push(`${where}: no Chinese in ${t}`);
 
-          const wantShot = SHOTS && (ALL_THEMES.has(name) || lang === "pt" || name === "home" || name === "benchmarks");
+          const wantShot = SHOTS && (ALL_THEMES.has(name) || CHECKED.has(lang) || name === "home" || name === "benchmarks");
           if (wantShot) {
             await page.screenshot({ path: join(OUT, `${name}__${lang}__${w}__${theme}-${scheme}.jpg`), type: "jpeg", quality: 68, fullPage: w === 375 ? false : name !== "benchmarks" && name !== "changelog" });
             shots++;
@@ -237,38 +253,54 @@ for (const lang of LANGS) {
   }
 }
 
-// --- The analyzer with a real prompt written in Portuguese -------------------
-console.log("\n== analyzer flow (pt)");
-{
-  const prompt = "Escreva um e-mail para o meu gerente pedindo uma reunião na próxima semana para revisar o orçamento do projeto. Tom profissional, no máximo 120 palavras.";
+// --- The analyzer with a real prompt written in each translated language -----
+const FLOWS = [
+  {
+    lang: "pt",
+    prompt: "Escreva um e-mail para o meu gerente pedindo uma reunião na próxima semana para revisar o orçamento do projeto. Tom profissional, no máximo 120 palavras.",
+    button: "Analisar",
+    must: ["Qualidade", "Prompt otimizado", "Recomendações"],
+    ready: ["Prompt otimizado", "Riscos detectados|Recomendações"],
+    never: ["Detected risks", "Riesgos detectados", "Optimized prompt", "Prompt optimizado", "Missing ", "Falta el ", "Add success criteria", "Agregá"],
+  },
+  {
+    lang: "zh",
+    prompt: "给我的经理写一封邮件，请他下周安排一次会议，一起评审项目预算。语气专业，不超过120字。",
+    button: "分析",
+    must: ["质量", "优化后的提示词", "建议"],
+    ready: ["优化后的提示词", "发现的问题|建议"],
+    never: ["Detected risks", "Riesgos detectados", "Riscos detectados", "Optimized prompt", "Prompt optimizado", "Prompt otimizado", "Missing ", "Falta el ", "Add success criteria", "Agregá", "Adicione"],
+  },
+].filter((f) => LANGS.includes(f.lang));
+
+for (const flow of FLOWS) {
+  console.log(`\n== analyzer flow (${flow.lang})`);
   for (const w of VIEWPORTS) {
-    const where = `/pt/analyzer flow @${w}`;
+    const where = `/${flow.lang}/analyzer flow @${w}`;
     let ctx;
     try {
-      ctx = await open("pt", `/analyzer?prompt=${encodeURIComponent(prompt)}&purpose=text&target=claude`, w, "aqua", "light");
+      ctx = await open(flow.lang, `/analyzer?prompt=${encodeURIComponent(flow.prompt)}&purpose=text&target=claude`, w, "aqua", "light");
       const { page } = ctx;
       await page.waitForSelector("textarea", { timeout: 20_000 });
       const filled = await page.$eval("textarea", (t) => t.value);
-      if (!filled.includes("Escreva um e-mail")) fail(where, "the prompt from the URL was not loaded into the editor");
-      const clicked = await page.evaluate(() => {
-        const b = [...document.querySelectorAll("button")].find((x) => /^Analisar/.test(x.textContent.trim()) && !x.disabled);
+      if (!filled.includes(flow.prompt.slice(0, 8))) fail(where, "the prompt from the URL was not loaded into the editor");
+      const clicked = await page.evaluate((label) => {
+        const b = [...document.querySelectorAll("button")].find((x) => x.textContent.trim().startsWith(label) && !x.disabled);
         b?.click();
         return Boolean(b);
-      });
-      if (!clicked) fail(where, 'no enabled "Analisar" button');
+      }, flow.button);
+      if (!clicked) fail(where, `no enabled "${flow.button}" button`);
       else {
-        await page.waitForFunction(() => /Prompt otimizado/.test(document.body.innerText) && /Riscos detectados|Recomendações/.test(document.body.innerText), { timeout: 45_000 });
+        await page.waitForFunction((ready) => ready.every((r) => new RegExp(r).test(document.body.innerText)), { timeout: 45_000 }, flow.ready);
         await new Promise((r) => setTimeout(r, 1500));
         const text = await page.evaluate(() => document.body.innerText);
-        for (const must of ["Qualidade", "Prompt otimizado", "Recomendações"]) if (!text.includes(must)) fail(where, `results do not show "${must}"`);
-        for (const never of ["Detected risks", "Riesgos detectados", "Optimized prompt", "Prompt optimizado", "Missing ", "Falta el ", "Add success criteria", "Agregá"]) {
-          if (text.includes(never)) fail(where, `results contain "${never}"`);
-        }
-        const r = await inspect(page, "pt", SENTINELS);
+        for (const must of flow.must) if (!text.includes(must)) fail(where, `results do not show "${must}"`);
+        for (const never of flow.never) if (text.includes(never)) fail(where, `results contain "${never}"`);
+        const r = await inspect(page, flow.lang, sentinelsFor(flow.lang));
         if (r.overflow > 1) fail(where, `horizontal overflow ${r.overflow}px — ${r.offenders.join("; ")}`);
         for (const u of r.untranslated.slice(0, 4)) fail(where, `not translated: ${u}`);
         if (SHOTS) {
-          await page.screenshot({ path: join(OUT, `analyzer-result__pt__${w}__aqua-light.jpg`), type: "jpeg", quality: 68, fullPage: true });
+          await page.screenshot({ path: join(OUT, `analyzer-result__${flow.lang}__${w}__aqua-light.jpg`), type: "jpeg", quality: 68, fullPage: true });
           shots++;
         }
         console.log(`  ok  ${where}`);
@@ -281,7 +313,8 @@ console.log("\n== analyzer flow (pt)");
 }
 
 await browser.close();
-const summary = { base: BASE, pagesChecked, shots, failures: results };
+const summary = { base: BASE, pagesChecked, shots, failures: results, notes };
+if (notes.length) console.log(`\n${notes.length} note(s) to look at by hand (text with no Chinese under /zh):\n  ${notes.slice(0, 40).join("\n  ")}`);
 await mkdir(OUT, { recursive: true });
 await writeFile(join(OUT, "i18n-qa.json"), JSON.stringify(summary, null, 2));
 console.log(`\n${pagesChecked} page loads checked, ${shots} screenshot(s), ${results.length} failure(s)`);
