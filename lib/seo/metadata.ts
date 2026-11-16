@@ -63,6 +63,12 @@ export type PageMetadataInput = {
    * markdown twin of its own.
    */
   contentLang?: ContentLang;
+  /**
+   * v1.8.7 — the locales this page has its own text in, when it is not all of them
+   * nor just the content languages: a guide translated to Portuguese but not to
+   * Chinese exists in es, en and pt. hreflang lists exactly these.
+   */
+  locales?: readonly Locale[];
 };
 
 /** Longest <title> text (before " · Promptea") that search results show without cutting it. */
@@ -109,7 +115,7 @@ export function pageMetadata(i: PageMetadataInput): Metadata {
   // Editorial content (any page that states its `contentLang`) exists in the
   // content languages only, so no page — not the es/en originals either —
   // announces a Portuguese alternate for it.
-  const locales: readonly Locale[] = i.contentLang ? CONTENT_LANGS : LOCALES;
+  const locales: readonly Locale[] = i.locales ?? (i.contentLang ? CONTENT_LANGS : LOCALES);
   const languages = languageAlternates(pathIn, locales);
   const canonical = view ? pathIn(view) : i.path;
   const ogLang: Locale = view ?? i.lang;

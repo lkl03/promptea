@@ -6,7 +6,7 @@ import { hasLocale } from "../dictionaries";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { pick, toLang } from "@/lib/domain";
+import { pick, PUNCT, toLang } from "@/lib/domain";
 
 export async function generateMetadata({
   params,
@@ -137,7 +137,9 @@ export default async function PromptsIndexPage({
             <div className="flex items-center justify-between gap-3">
               <div className="text-sm font-medium">{p.name}</div>
               <span className="inline-flex items-center rounded-full border border-line bg-surface-soft px-2 py-0.5 text-[11px] text-ink-muted shrink-0">
-                {p.count} {pick(l, { es: "prompts", en: "prompts", pt: "prompts", zh: "个提示词" })}
+                {p.count}
+                {PUNCT[l].gap}
+                {pick(l, { es: "prompts", en: "prompts", pt: "prompts", zh: "个提示词" })}
               </span>
             </div>
             <div className="mt-1 text-sm opacity-80">{p.desc}</div>

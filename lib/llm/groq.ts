@@ -51,7 +51,9 @@ export async function fetchGroqHints(args: GroqRequestArgs): Promise<GroqHint | 
       ? "Sos un coach de prompts. Devolvé sólo JSON válido con la forma {\"followUp\":[...],\"rewrite\":\"...\"}. Máximo 4 preguntas concisas. La reescritura debe ser una mejora breve y accionable."
       : args.language === "pt"
         ? "Você é um coach de prompts. Retorne APENAS JSON válido no formato {\"followUp\":[...],\"rewrite\":\"...\"}. No máximo 4 perguntas concisas. A reescrita deve ser uma melhoria curta e acionável. Escreva em português do Brasil."
-        : "You are a prompt coach. Return ONLY valid JSON of the form {\"followUp\":[...],\"rewrite\":\"...\"}. At most 4 concise follow-up questions. The rewrite must be a short, actionable improvement.";
+        : args.language === "zh"
+          ? "You are a prompt coach. Return ONLY valid JSON of the form {\"followUp\":[...],\"rewrite\":\"...\"}. At most 4 concise follow-up questions. The rewrite must be a short, actionable improvement. Write the questions and the rewrite in Simplified Chinese (zh-CN); keep the JSON keys in English."
+          : "You are a prompt coach. Return ONLY valid JSON of the form {\"followUp\":[...],\"rewrite\":\"...\"}. At most 4 concise follow-up questions. The rewrite must be a short, actionable improvement.";
 
   const user =
     args.language === "es"

@@ -38,8 +38,10 @@ export async function generateMetadata({
   return pageMetadata({
     lang: l,
     path,
-    // A guide that does not exist in every locale names only the ones it has.
-    ...(guideLocales(guide).length < LANGS.length ? { contentLang: cl as ContentLang } : {}),
+    // A guide names only the locales it has its own text in (v1.8.7: es and en, plus pt and/or
+    // zh once translated); read in another language it is a view of the English original.
+    locales: guideLocales(guide),
+    ...(cl !== l ? { contentLang: cl as ContentLang } : {}),
     title: guide.title[cl],
     description: guide.description[cl],
     type: "article",

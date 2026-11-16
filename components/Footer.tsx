@@ -39,8 +39,8 @@ export default function Footer({
   const weeklyLabel = pick(lang, { es: "Resumen semanal", en: "Weekly digest", pt: "Resumo semanal", zh: "每周摘要" });
   const resourcesLabel = pick(lang, { es: "Recursos útiles", en: "Useful resources", pt: "Recursos úteis", zh: "实用资源" });
   const eterlabMessage = pick(lang, { es: "diseñado y desarrollado por", en: "designed and developed by", pt: "design e desenvolvimento por", zh: "由" });
-  // Chinese puts the verb after the name: "由 eterlab 设计与开发。"
-  const eterlabSuffix = pick(lang, { es: ".", en: ".", pt: ".", zh: " 设计与开发。" });
+  // Chinese puts the verb after the name, with no spaces: "由eterlab设计与开发。"
+  const eterlabSuffix = pick(lang, { es: ".", en: ".", pt: ".", zh: "设计与开发。" });
   const followLabel = pick(lang, { es: "Seguinos en X", en: "Follow us on X", pt: "Siga a gente no X", zh: "在X上关注我们" });
   const xUrl = getXLinks().url;
 
@@ -144,7 +144,8 @@ export default function Footer({
       {/* Copyright */}
       <div className="mt-4 flex flex-wrap items-center justify-center text-xs text-ink-faint">
         <span>
-          © {year} · {eterlabMessage}{" "}
+          © {year} · {eterlabMessage}
+          {PUNCT[lang].gap}
           <Link href="https://eterlab.co" className="hover:text-ink transition-all ease-in-out">
             eterlab
           </Link>
