@@ -1,0 +1,12 @@
+closed     1440 /en/guides         200 → pill
+closed     1440 /es/blog           200 → nothing [inline form on screen]
+closed      375 /en/guides         200 → pill
+closed      375 /es/blog           200 → nothing
+closed8    1440 /en/guides         200 → CARD(full)
+closed8    1440 /es/blog           200 → nothing [inline form on screen]
+closed8     375 /en/guides         200 → CARD(compact)
+closed8     375 /es/blog           200 → nothing
+subscribed 1440 /en/guides         200 → nothing
+subscribed 1440 /es/blog           200 → nothing
+subscribed  375 /en/guides         200 → nothing
+subscribed  375 /es/blog           200 → nothing

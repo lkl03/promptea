@@ -33,7 +33,7 @@ const BASE = (args.base ?? "http://localhost:3191").replace(/\/+$/, "");
 const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(BASE);
 const CHROME = process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const WIDTHS = (args.widths ?? "1440,375").split(",").map(Number);
-const PAGES = (args.pages ?? "/es,/en/analyzer,/en/guides,/es/models,/en/benchmarks,/pt/how-it-works,/es/blog,/en/blog/tech").split(",");
+const PAGES = (args.pages ?? "/es,/en/analyzer,/en/guides,/es/models,/en/benchmarks,/pt/how-it-works,/es/blog,/en/blog/tech,/en/blog/weekly").split(",");
 const PROFILES = (args.profiles ?? "clean,seen,closed,closed8,subscribed").split(",");
 const WAIT_MS = Number(args.wait ?? 6500);
 const DAY = 86_400_000;
@@ -92,7 +92,7 @@ for (const profile of PROFILES) {
       }
       const clsBefore = await page.evaluate(() => window.__cls);
       await sleep(WAIT_MS);
-      const r = await page.evaluate(() => {
+      const measure = () => page.evaluate(() => {
         const vis = (el) => {
           if (!el) return false;
           const wrap = el.closest(".newsletter-pill-wrap");
@@ -137,8 +137,17 @@ for (const profile of PROFILES) {
           cls: window.__cls,
         };
       });
-      rows.push({ profile, width, path, status, ...r, cls: Math.round((r.cls - clsBefore) * 1000) / 1000 });
-      const shown = r.card ? `CARD(${r.card})` : r.pill ? "pill" : "nothing";
+      const r = await measure();
+      // Nothing yet (a control was under the corner): scroll like a reader and look again.
+      let scrolled = null;
+      if (!r.card && !r.pill && !r.inlineFormOnScreen && profile !== "subscribed") {
+        await page.evaluate(() => window.scrollBy(0, Math.round(innerHeight * 0.6)));
+        await sleep(1800);
+        scrolled = await measure();
+      }
+      rows.push({ profile, width, path, status, ...r, cls: Math.round((r.cls - clsBefore) * 1000) / 1000, afterScroll: scrolled });
+      const label = (x) => (x.card ? `CARD(${x.card})` : x.pill ? "pill" : "nothing");
+      const shown = label(r) + (scrolled ? ` → after scrolling: ${label(scrolled)}${scrolled.covers.length ? " COVERS: " + scrolled.covers.join(" | ") : ""}` : "");
       console.log(`${profile.padEnd(10)} ${String(width).padStart(4)} ${path.padEnd(18)} ${status} → ${shown}${r.inlineFormOnScreen ? " [inline form on screen]" : ""}${r.covers.length ? " COVERS: " + r.covers.join(" | ") : ""}${r.focusInCard ? " FOCUS-STOLEN" : ""}`);
       await context.close();
     }

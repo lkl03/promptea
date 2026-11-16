@@ -444,9 +444,7 @@
   },
   "newsletterDock": {
     "title": "Promptea Weekly",
-    "body": "The best AI stories of the week, every Monday in your inbox.",
-    "open": "Subscribe to the newsletter",
-    "close": "Close"
+    "body": "The best AI stories of the week, every Monday in your inbox."
   },
   "newsletterNudge": {
     "pill": "Join the newsletter",

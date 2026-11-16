@@ -1353,18 +1353,6 @@ html {
   }
 }
 
-/* v1.7.0 — mobile newsletter bar slides away for the footer / soft keyboard. */
-.newsletter-dock-bar {
-  transition:
-    transform 240ms var(--ease-out-strong),
-    opacity 180ms ease;
-}
-@media (prefers-reduced-motion: reduce) {
-  .newsletter-dock-bar {
-    transition: opacity 120ms ease;
-  }
-}
-
 /* ═══════════════════════════════════════════════════════════════════════════
    v1.8.0 — Overlay surfaces (dialogs, sheets, menus)
 

@@ -60,8 +60,8 @@ function emit() {
 function patch(next: Partial<NudgeSnapshot>, persist = true) {
   snapshot = { ...snapshot, ...next };
   if (persist) {
-    const { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt, cardShownAt } = snapshot;
-    writeState(local(), { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt, cardShownAt });
+    const { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt, cardShownAt, cardDismissedAt } = snapshot;
+    writeState(local(), { subscribed, pillDismissedAt, dockDismissedAt, modalShownAt, cardShownAt, cardDismissedAt });
   }
   emit();
 }
@@ -99,14 +99,15 @@ export const nudgeActions = {
     hydrate();
     patch({ pillDismissedAt: now, pillFormOpen: false });
   },
-  /** v1.8.1 — the first-visit card opened by itself: remembered for good, so it happens once per browser. */
+  /** The card opened by itself (v1.8.7: informative only; it no longer limits the card to one appearance). */
   markCardShown(now = Date.now()) {
     hydrate();
-    if (snapshot.cardShownAt === 0) patch({ cardShownAt: now });
+    patch({ cardShownAt: now });
   },
-  dismissDock(now = Date.now()) {
+  /** v1.8.7 — the visitor closed the card: it collapses to the pill and does not open by itself for DISMISS_DAYS. */
+  dismissCard(now = Date.now()) {
     hydrate();
-    patch({ dockDismissedAt: now });
+    patch({ cardDismissedAt: now, pillFormOpen: false });
   },
   /** Records that the modal was shown (session flag + cooldown) and opens it. */
   openModal(now = Date.now()) {

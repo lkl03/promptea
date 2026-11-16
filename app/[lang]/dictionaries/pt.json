@@ -444,9 +444,7 @@
   },
   "newsletterDock": {
     "title": "Promptea Weekly",
-    "body": "As melhores notícias de IA da semana, toda segunda-feira no seu e-mail.",
-    "open": "Assinar a newsletter",
-    "close": "Fechar"
+    "body": "As melhores notícias de IA da semana, toda segunda-feira no seu e-mail."
   },
   "newsletterNudge": {
     "pill": "Assine a newsletter",

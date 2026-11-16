@@ -444,9 +444,7 @@
   },
   "newsletterDock": {
     "title": "Promptea Semanal",
-    "body": "Las mejores historias de IA de la semana, cada lunes en tu email.",
-    "open": "Suscribirme al newsletter",
-    "close": "Cerrar"
+    "body": "Las mejores historias de IA de la semana, cada lunes en tu email."
   },
   "newsletterNudge": {
     "pill": "Sumate al newsletter",
