@@ -321,6 +321,6 @@ Ver §7, filas 10–15: rubric propio para imagen, evals del refinador y del jue
 
 ### 10a) Limitaciones conocidas (zh)
 
-- `frontendAvoid` (`modelProfiles.ts`) reconoce los antipatrones de diseño solo en es/en/pt: un prompt chino que pide explícitamente "胶囊按钮" igual recibe la línea que sugiere evitarlo.
+- ~~`frontendAvoid` reconocía los antipatrones de diseño solo en es/en/pt~~: arreglado en la misma v1.8.7 (términos chinos en `match`; test "frontend design direction in Chinese").
 - El juez con Groq (pt y zh): el prompt base pide el `rationale` en inglés y el camino `combined` no manda la línea de idioma, así que la justificación probablemente se descarta por idioma. Ya pasaba con pt; no se pudo verificar sin clave.
 - No hay prompts chinos con mezcla de chino tradicional: `/zh` es simplificado y los navegadores zh-TW/zh-HK van a `/en` (ver `docs/i18n/zh-review.md`).

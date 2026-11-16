@@ -5,14 +5,14 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { glossary, getTerm } from "@/lib/seo/content/glossary";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { glossaryGraph } from "@/lib/seo/pageGraphs";
-import { pick, LANGS, toLang, type Lang } from "@/lib/domain";
+import { pick, LANGS, LANG_TAG, toLang, type Lang } from "@/lib/domain";
 
 function buildOpenLink(lang: Lang, purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -105,8 +105,9 @@ export default async function GlossaryTermPage({
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs opacity-70">{pick(l, { es: "Guías relacionadas:", en: "Related guides:", pt: "Guias relacionados:", zh: "相关指南：" })}</span>
                   {relatedGuides.map((g) => (
-                    <Link key={g.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${g.slug}`}>
-                      {g.title[l]}
+                    // An untranslated guide keeps its English title, marked as English (v1.8.7).
+                    <Link key={g.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${g.slug}`} lang={guideLang(g, l) === l ? undefined : LANG_TAG[guideLang(g, l)]}>
+                      {g.title[guideLang(g, l)]}
                     </Link>
                   ))}
                 </div>

@@ -29,7 +29,7 @@ import { getModelPage } from "@/lib/seo/content/models";
 import { absUrl, getSiteUrl } from "@/lib/seo/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
-import { LANG_TAG, contentLangFor, sectionOfEdition, toLang, type ContentLang } from "@/lib/domain";
+import { LANG_TAG, PUNCT, contentLangFor, sectionOfEdition, toLang, type ContentLang } from "@/lib/domain";
 import ContentLangNotice from "@/components/blog/ContentLangNotice";
 
 export const revalidate = 300;
@@ -363,7 +363,10 @@ export default async function BlogArticlePage({
                   .filter((group) => group.values.length > 0)
                   .map((group) => (
                     <div key={group.label} className="flex flex-wrap items-center gap-2">
-                      <span className="text-xs opacity-70">{group.label}:</span>
+                      <span className="text-xs opacity-70">
+                        {group.label}
+                        {PUNCT[l].colon.trimEnd()}
+                      </span>
                       <ul className="flex flex-wrap gap-1.5">
                         {group.values.map((value) => (
                           <li key={value} className="badge badge-neutral">

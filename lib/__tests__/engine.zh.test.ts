@@ -262,3 +262,15 @@ describe("the adaptive refiner in Chinese", () => {
     expect(cacheableSystemPrompt("pt")).not.toMatch(/Chinese/);
   });
 });
+
+describe("frontend design direction in Chinese", () => {
+  test("a pattern the prompt asks for in Chinese is not listed as one to avoid", () => {
+    const opts = { modelId: "claude-opus-5.5" };
+    const base = "用React和Tailwind做一个咖啡店的落地页，包含联系表单和价格区块。";
+    const plain = analyzePrompt(base, "claude", "zh", "code", opts).optimizedPrompt;
+    const asked = analyzePrompt(`${base}按钮用胶囊形，背景用米白色。`, "claude", "zh", "code", opts).optimizedPrompt;
+    expect(plain).toContain("胶囊形按钮");
+    expect(asked).not.toContain("胶囊形按钮");
+    expect(asked).not.toContain("奶油色或米白色背景");
+  });
+});

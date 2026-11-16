@@ -86,12 +86,13 @@ export const CLARIFIER_LINES: Record<ClarifierStyle, Line> = {
 // Profiles
 // ---------------------------------------------------------------------------
 
+// `match`: the prompt asks for it explicitly, so the avoid line is dropped (v1.8.7: Chinese terms too).
 const OPUS_FRONTEND_AVOID: PromptProfile["frontendAvoid"] = [
-  { en: "a cream or off-white background", es: "un fondo crema o blanco roto", pt: "um fundo creme ou off-white", zh: "奶油色或米白色背景", match: /\b(cream|off-white|crema|blanco roto|creme)\b/i },
-  { en: "italic accent words in headlines", es: "palabras en itálica como acento en los titulares", pt: "palavras em itálico como destaque nos títulos", zh: "标题中用斜体强调的词", match: /\b(italic|itálica|italica|cursiva|itálico|italico)\b/i },
-  { en: "numbered “01/02/03” section labels", es: "etiquetas de sección numeradas “01/02/03”", pt: "rótulos de seção numerados “01/02/03”", zh: "带编号的“01/02/03”分区标签", match: /\b01\s*\/\s*02\b|\bnumbered (section )?labels\b|\betiquetas numeradas\b/i },
-  { en: "monospace labels", es: "etiquetas en tipografía monoespaciada", pt: "rótulos em fonte monoespaçada", zh: "等宽字体标签", match: /\b(monospace|monoespaciad[ao]|mono font)\b/i },
-  { en: "pill-shaped buttons", es: "botones con forma de píldora", pt: "botões em formato de pílula", zh: "胶囊形按钮", match: /\b(pill|p[ií]ldora)\b/i },
+  { en: "a cream or off-white background", es: "un fondo crema o blanco roto", pt: "um fundo creme ou off-white", zh: "奶油色或米白色背景", match: /\b(cream|off-white|crema|blanco roto|creme)\b|奶油色|米白|米色/i },
+  { en: "italic accent words in headlines", es: "palabras en itálica como acento en los titulares", pt: "palavras em itálico como destaque nos títulos", zh: "标题中用斜体强调的词", match: /\b(italic|itálica|italica|cursiva|itálico|italico)\b|斜体/i },
+  { en: "numbered “01/02/03” section labels", es: "etiquetas de sección numeradas “01/02/03”", pt: "rótulos de seção numerados “01/02/03”", zh: "带编号的“01/02/03”分区标签", match: /\b01\s*\/\s*02\b|\bnumbered (section )?labels\b|\betiquetas numeradas\b|编号标签|分区编号/i },
+  { en: "monospace labels", es: "etiquetas en tipografía monoespaciada", pt: "rótulos em fonte monoespaçada", zh: "等宽字体标签", match: /\b(monospace|monoespaciad[ao]|mono font)\b|等宽/i },
+  { en: "pill-shaped buttons", es: "botones con forma de píldora", pt: "botões em formato de pílula", zh: "胶囊形按钮", match: /\b(pill|p[ií]ldora)\b|胶囊|药丸/i },
 ];
 
 export const PROMPT_PROFILE_SPECS: Record<PromptProfileId, PromptProfile> = {

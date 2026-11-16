@@ -23,7 +23,7 @@ import type { BenchmarkTable } from "@/lib/benchmarks/normalize";
 import { PROVIDER_TO_PROMPTEA } from "@/lib/benchmarks/catalog";
 import { costRows, formatTokens, formatUsd, providerColor, sortCostRows, type CostSort } from "@/lib/benchmarks/chart";
 import { formatScore } from "@/lib/benchmarks/normalize";
-import { INTL_LOCALE, type Lang } from "@/lib/domain";
+import { INTL_LOCALE, PUNCT, type Lang } from "@/lib/domain";
 
 export type CalcCopy = {
   title: string;
@@ -117,7 +117,10 @@ export default function CostCalculator({
 
       <div className="surface mt-4 p-4 sm:p-5">
         <div role="group" aria-label={copy.presets} className="mb-4 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-ink-muted">{copy.presets}:</span>
+          <span className="text-xs text-ink-muted">
+            {copy.presets}
+            {PUNCT[lang].colon.trimEnd()}
+          </span>
           <button type="button" className="pill !h-7 !px-2.5" onClick={() => applyPreset("chat")}>
             {copy.presetChat}
           </button>

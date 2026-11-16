@@ -31,6 +31,9 @@ export default function Footer({
   const year = new Date().getFullYear();
   const privacyLabel = pick(lang, { es: "Privacidad", en: "Privacy", pt: "Privacidade", zh: "隐私" });
   const homeLabel = pick(lang, { es: "Inicio", en: "Home", pt: "Início", zh: "首页" });
+  // v1.8.7: these two were English literals in every language; es/en/pt keep the same word.
+  const changelogLabel = pick(lang, { es: "Changelog", en: "Changelog", pt: "Changelog", zh: "更新日志" });
+  const benchmarksLabel = pick(lang, { es: "Benchmarks", en: "Benchmarks", pt: "Benchmarks", zh: "基准测试" });
   const promptsLabel = pick(lang, { es: "Prompts", en: "Prompts", pt: "Prompts", zh: "提示词" });
   const guidesLabel = pick(lang, { es: "Guías", en: "Guides", pt: "Guias", zh: "指南" });
   const modelsLabel = pick(lang, { es: "Modelos", en: "Models", pt: "Modelos", zh: "模型" });
@@ -60,7 +63,7 @@ export default function Footer({
         </Link>
 
         <Link href={`/${lang}/changelog`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          Changelog
+          {changelogLabel}
         </Link>
 
         <Link href={`/${lang}/privacy`} className="hover:underline underline-offset-2 transition-all ease-in-out">
@@ -129,7 +132,7 @@ export default function Footer({
         </Link>
 
         <Link href={`/${lang}/benchmarks`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          Benchmarks
+          {benchmarksLabel}
         </Link>
 
         <Link href={`/${lang}/analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">

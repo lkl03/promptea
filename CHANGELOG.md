@@ -43,7 +43,8 @@ All notable changes to Promptea are documented here.
 
 ### Fixed
 - **Guide hreflang with four languages.** A guide translated to Portuguese but not to Chinese announced only es/en in its `<head>`, while the sitemap listed es/en/pt. Fixed with `pageMetadata({ locales })` and a regression test that calls the page's real `generateMetadata`.
-- **Strings hardcoded in English in every language**: the `/changelog` `<h1>`, the Marketing / Image / Data pack names, the glossary buttons on `/models` and the "preview" badge.
+- **Strings hardcoded in English in every language**: the `/changelog` `<h1>`, the footer's Changelog and Benchmarks links, the Marketing / Image / Data pack names, the glossary buttons on `/models` and the "preview" badge.
+- Claude Opus's design direction listed "pill-shaped buttons" or "a cream background" as patterns to avoid even when a Chinese prompt asked for them (`frontendAvoid` now knows the Chinese terms).
 
 ### X feed: Promptea's own, no third-party widget
 - **The card no longer loads Elfsight.** The Elfsight widget loaded ~165 KB of third-party script, and its free plan (200 views a month) was at 141/200. The card is now rendered by our server from **Buffer**, the tool Promptea's posts are published with. Buffer keeps every sent post with its text, its date and its link on X. The card shows up to 10 posts as text, with a relative, localized date and a "View on X" link on each. Its box has a fixed height (no layout shift). It works without JavaScript and the browser makes no request to X or any third party. Decision record (Buffer vs. X's oEmbed vs. the X API, costs and terms): [`docs/release/v1.8.7/x-feed-decision.md`](./docs/release/v1.8.7/x-feed-decision.md).
@@ -77,6 +78,13 @@ All notable changes to Promptea are documented here.
 ### QA (v1.8.6 in production)
 - 0 runtime errors in 7 days on Next 16.4.6, and `seo:check` against production passes 1,193/1,193. Vercel Analytics events are emitted once, with `{ lang, target }` only. Full matrix and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md).
 - Still waiting on the owner: `INDEXNOW_KEY` (`/indexnow-key.txt` returns 404), `firebase-admin` 14 for the transitive `npm audit` warnings, N-1 contrast in Metro and Glass light.
+
+### Tests and checks
+- `lint`, `typecheck` and `build` are green, and `npm test` passes 2,006 tests. `seo:check` against a local production build passes 1,033 checks with 0 failures; it now weighs Chinese characters double in description lengths and compares a view's hreflang with its original's.
+- With a real Chrome:
+  - `i18n-qa`, four languages × 23 pages × 1440/768/375, plus the analyzer with a Chinese prompt: 396 page loads, 0 failures.
+  - `engine-qa`, 8 purposes × zh/pt/es/en, with the Chinese prompt run from the other three interfaces: 104/104.
+- Report: [`docs/release/v1.8.7/zh-report.md`](./docs/release/v1.8.7/zh-report.md).
 
 ---
 

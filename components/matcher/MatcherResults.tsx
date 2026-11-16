@@ -9,6 +9,7 @@
 
 import type { MatchResult } from "@/lib/matcher/types";
 import type { MatcherDict } from "@/lib/uiDict";
+import { PUNCT } from "@/lib/domain";
 
 function confidenceLabel(dict: MatcherDict, confidence: MatchResult["confidence"]): string {
   if (confidence === "high") return dict.confidenceHigh;
@@ -44,7 +45,9 @@ export default function MatcherResults({
             </div>
             <h2 className="mt-1 text-2xl font-semibold text-ink sm:text-3xl">{primary.productLabel}</h2>
             <div className="mt-1 text-sm text-ink-muted">
-              {dict.recommendedModel}: <span className="font-medium text-ink">{primary.modelLabel}</span>
+              {dict.recommendedModel}
+              {PUNCT[result.lang].colon}
+              <span className="font-medium text-ink">{primary.modelLabel}</span>
             </div>
           </div>
           <div className="flex flex-col items-end gap-1.5">
@@ -53,7 +56,9 @@ export default function MatcherResults({
               <span className="text-sm text-ink-faint">/100</span>
             </div>
             <span className={confidenceBadgeClass(result.confidence)}>
-              {dict.confidenceLabel}: {confidenceLabel(dict, result.confidence)}
+              {dict.confidenceLabel}
+              {PUNCT[result.lang].colon}
+              {confidenceLabel(dict, result.confidence)}
             </span>
             {result.isTie && <span className="badge badge-neutral">{dict.tieNote}</span>}
           </div>

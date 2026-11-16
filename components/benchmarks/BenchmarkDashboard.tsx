@@ -48,7 +48,7 @@ import ProviderShareDonut, { type ShareCopy } from "./ProviderShareDonut";
 import PriceScoreScatter, { type ScatterCopy } from "./PriceScoreScatter";
 import BenchmarkTableView, { type TableCopy } from "./BenchmarkTableView";
 import CostCalculator, { type CalcCopy } from "./CostCalculator";
-import { type Lang } from "@/lib/domain";
+import { PUNCT, type Lang } from "@/lib/domain";
 
 export type DashboardCopy = {
   rankingTitle: string;
@@ -259,7 +259,9 @@ export default function BenchmarkDashboard({
                   <span className="block truncate text-sm font-medium text-ink">{t.def.label[lang]}</span>
                   <span className="mt-1 flex min-w-0 items-baseline justify-between gap-2 text-xs text-ink-muted">
                     <span className="min-w-0 flex-1 truncate">
-                      {copy.leader}: <span className="font-medium text-ink">{top.name}</span>
+                      {copy.leader}
+                      {PUNCT[lang].colon}
+                      <span className="font-medium text-ink">{top.name}</span>
                     </span>
                     <span className="shrink-0 text-sm font-semibold tabular-nums text-accent">{formatScore(top.value, t.def.metric, lang)}</span>
                   </span>

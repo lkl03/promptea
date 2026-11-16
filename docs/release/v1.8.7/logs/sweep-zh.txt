@@ -1,0 +1,4 @@
+sweep: 52 page(s) × 1440/768/375 px, aqua-light, against http://localhost:3191
+
+156 page loads checked, 0 finding(s)
+EXIT 0

@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import type { AnalyzeResponse } from "@/lib/analyzeClient";
 import { useToast } from "@/components/ToastProvider";
 import { trackProductEvent } from "@/lib/analytics/productEvents";
-import type { Lang } from "@/lib/domain";
+import { pick, PUNCT, type Lang } from "@/lib/domain";
 
 type ResultsDict = Record<string, string>;
 
@@ -106,7 +106,7 @@ export default function OptimizedPromptPanel({
             )
           )}
           <span className={["badge", formatChoice === "json" ? "badge-info" : "badge-neutral"].join(" ")}>
-            {formatChoice === "json" ? "JSON" : "Checklist"}
+            {formatChoice === "json" ? "JSON" : pick(lang, { es: "Checklist", en: "Checklist", pt: "Checklist", zh: "清单" })}
           </span>
         </div>
       </div>
@@ -115,7 +115,10 @@ export default function OptimizedPromptPanel({
       {isAdaptive && refinement?.summary && (
         <div className="rounded-lg border border-line bg-accent-soft/60 p-3 space-y-2">
           <p className="text-sm leading-relaxed">
-            <span className="font-medium">{dict.refinementSummaryTitle}: </span>
+            <span className="font-medium">
+              {dict.refinementSummaryTitle}
+              {PUNCT[lang].colon}
+            </span>
             {refinement.summary}
           </p>
           {keyImprovements.length > 0 && (
