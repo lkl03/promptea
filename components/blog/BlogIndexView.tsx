@@ -53,7 +53,7 @@ import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
 import { contentIsFallback, contentLangFor, type BlogSection, type ContentLang, type Lang } from "@/lib/domain";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { getSiteUrl } from "@/lib/seo/site";
-import { getXLinks, getXWidgetId } from "@/lib/social";
+import { getXLinks } from "@/lib/social";
 
 export const BLOG_PAGE_SIZE = 12;
 
@@ -202,7 +202,6 @@ export default async function BlogIndexView({ lang: l, sp, section }: { lang: La
   const requestedPage = parsePage(sp.page);
 
   const dict = await getDictionary(l);
-  const xWidgetId = getXWidgetId();
   const x = getXLinks();
   const t = dict.blog;
   const copy = sectionCopy(dict, section);
@@ -404,9 +403,10 @@ export default async function BlogIndexView({ lang: l, sp, section }: { lang: La
           </p>
         </div>
 
-        {/* v1.8.1: the side column also carries the X feed card (desktop). */}
+        {/* v1.8.1: the side column also carries the X feed card (desktop), under the newsletter card.
+            v1.8.7: same order as the home side column — newsletter first, X below. */}
         <NewsletterDock lang={l} dict={dict.newsletterDock} formDict={dict.newsletter.bar}>
-          {xWidgetId ? <XFeed widgetId={xWidgetId} handle={x.handle} profileUrl={x.url} dict={dict.hub.xFeed} /> : null}
+          <XFeed lang={l} handle={x.handle} profileUrl={x.url} dict={dict.hub.xFeed} />
         </NewsletterDock>
       </div>
     </main>

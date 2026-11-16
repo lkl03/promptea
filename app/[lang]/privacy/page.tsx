@@ -184,30 +184,23 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
         </ul>
 
         <h2 className="text-lg font-medium mt-6">{pick(lang, {
-          es: "Feed de X (contenido de terceros)",
-          en: "X feed (third-party content)",
-          pt: "Feed do X (conteúdo de terceiros)",
+          es: "Publicaciones de X",
+          en: "Posts from X",
+          pt: "Publicações do X",
         })}</h2>
         <ul className="list-disc pl-5 space-y-2">
           <li>
             {pick(lang, {
-              es: "La página de inicio y la de IA al Día muestran las publicaciones de Promptea en X (Twitter) con un widget de Elfsight. Es contenido de terceros: lo carga y lo sirve Elfsight desde elfsightcdn.com y sus servidores, y las publicaciones, imágenes y avatares son de X.",
-              en: "The home page and AI Daily show Promptea's posts on X (Twitter) through an Elfsight widget. It is third-party content: Elfsight loads and serves it from elfsightcdn.com and its own servers, and the posts, images and avatars come from X.",
-              pt: "A página inicial e o AI Daily mostram as publicações do Promptea no X (Twitter) por meio de um widget da Elfsight. É conteúdo de terceiros: a Elfsight o carrega e o serve a partir de elfsightcdn.com e de seus próprios servidores, e as publicações, imagens e avatares vêm do X.",
+              es: "La página de inicio y la de IA al Día muestran las últimas publicaciones de la cuenta de Promptea en X (Twitter). Desde la versión 1.8.7 las muestra Promptea mismo, como texto: nuestro servidor las obtiene de Buffer, la herramienta con la que las publicamos (o, si no está disponible, de la información pública de X sobre cada publicación), las guarda unas horas en caché y las incluye en la página.",
+              en: "The home page and AI Daily show the latest posts of Promptea's X (Twitter) account. Since version 1.8.7 Promptea shows them itself, as text: our server gets them from Buffer, the tool we publish them with (or, when it is unavailable, from X's public information about each post), keeps them in a cache for a few hours and includes them in the page.",
+              pt: "A página inicial e o AI Daily mostram as últimas publicações da conta do Promptea no X (Twitter). Desde a versão 1.8.7 o próprio Promptea as exibe, como texto: nosso servidor as obtém do Buffer, a ferramenta com que publicamos (ou, quando ele não está disponível, das informações públicas do X sobre cada publicação), guarda em cache por algumas horas e as inclui na página.",
             })}
           </li>
           <li>
             {pick(lang, {
-              es: "Se carga solo cuando la tarjeta del feed está por entrar en pantalla; en una página donde no aparece esa tarjeta no se hace ningún pedido a Elfsight.",
-              en: "It loads only when the feed card is about to come on screen; a page that does not show that card makes no request to Elfsight.",
-              pt: "Ele só é carregado quando o cartão do feed está prestes a aparecer na tela; uma página que não mostra esse cartão não faz nenhuma requisição à Elfsight.",
-            })}
-          </li>
-          <li>
-            {pick(lang, {
-              es: "Al cargarse, Elfsight (y X, por las imágenes) pueden recibir tu dirección IP y datos de tu navegador, y pueden usar cookies o almacenamiento propio, según sus políticas de privacidad (elfsight.com/privacy-policy, x.com/privacy). Promptea no recibe esos datos.",
-              en: "When it loads, Elfsight (and X, for the images) may receive your IP address and browser data and may use their own cookies or storage, as described in their privacy policies (elfsight.com/privacy-policy, x.com/privacy). Promptea does not receive that data.",
-              pt: "Ao carregar, a Elfsight (e o X, pelas imagens) pode receber seu endereço IP e dados do seu navegador e pode usar cookies ou armazenamento próprios, conforme suas políticas de privacidade (elfsight.com/privacy-policy, x.com/privacy). O Promptea não recebe esses dados.",
+              es: "Tu navegador no carga ningún script, imagen ni widget de X ni de otro tercero para mostrarlas, y no se envía ningún dato tuyo a X ni a Buffer. Solo te conectás con X si abrís un enlace de una publicación o del perfil; desde ahí rige la política de privacidad de X (x.com/privacy).",
+              en: "Your browser loads no script, image or widget from X or any other third party to show them, and none of your data is sent to X or Buffer. You only connect to X if you open the link of a post or of the profile; from there X's privacy policy applies (x.com/privacy).",
+              pt: "Seu navegador não carrega nenhum script, imagem ou widget do X nem de outro terceiro para exibi-las, e nenhum dado seu é enviado ao X ou ao Buffer. Você só se conecta ao X se abrir o link de uma publicação ou do perfil; a partir daí vale a política de privacidade do X (x.com/privacy).",
             })}
           </li>
         </ul>

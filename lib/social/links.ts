@@ -1,4 +1,4 @@
-// lib/social.ts
+// lib/social/links.ts
 //
 // v1.8.0 — where Promptea's X (Twitter) presence lives, read from the
 // environment at build/render time (both variables are NEXT_PUBLIC_*, so they
@@ -9,13 +9,9 @@
 //                         NEXT_PUBLIC_X_HANDLE is not set (default https://x.com,
 //                         which carries no handle)
 //
-//   NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID (optional) the id of the Elfsight "Twitter
-//                         Feed" widget the feed card renders. Defaults to
-//                         Promptea's own widget (DEFAULT_X_WIDGET_ID below).
-//
-// The handle names the account in the footer link and on the feed card; the
-// posts themselves come from the Elfsight widget, whose account, layout and
-// number of posts are set in the Elfsight dashboard (components/home/XFeed.tsx).
+// The handle names the account in the footer link and on the X feed card. The
+// posts themselves come from lib/social/feed.ts (v1.8.7: Promptea's own feed,
+// server-rendered; the Elfsight widget of v1.8.1–v1.8.6 is gone).
 
 /** X handles: 1–15 letters, digits or underscores. */
 const HANDLE_RE = /^[A-Za-z0-9_]{1,15}$/;
@@ -52,25 +48,4 @@ export function resolveXLinks(handleEnv: string | undefined, urlEnv: string | un
 export function getXLinks(): XLinks {
   // Direct property access so Next inlines the NEXT_PUBLIC_* values.
   return resolveXLinks(process.env.NEXT_PUBLIC_X_HANDLE, process.env.NEXT_PUBLIC_X_URL);
-}
-
-// ---------------------------------------------------------------------------
-// Feed widget (v1.8.1): Elfsight "Twitter Feed"
-// ---------------------------------------------------------------------------
-
-/** Promptea's Elfsight widget (created by the owner on 2026-11-10). */
-export const DEFAULT_X_WIDGET_ID = "941b1ba8-5c1c-4d91-a254-c242d3c77a61";
-
-/** Elfsight widget ids are UUIDs; anything else is ignored (the id becomes a class name). */
-const WIDGET_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-/** Pure: the env value when it is a valid id, the default otherwise; "off" (or "none") disables the card. */
-export function resolveXWidgetId(env: string | undefined): string | null {
-  const v = env?.trim();
-  if (v && /^(off|none|false|0)$/i.test(v)) return null;
-  return v && WIDGET_ID_RE.test(v) ? v.toLowerCase() : DEFAULT_X_WIDGET_ID;
-}
-
-export function getXWidgetId(): string | null {
-  return resolveXWidgetId(process.env.NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID);
 }

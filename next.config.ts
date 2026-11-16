@@ -9,9 +9,10 @@ const LOCALE_ALT = LANGS.join("|");
 /**
  * v1.8.3 — baseline security headers for every response (the platform only
  * added Strict-Transport-Security). Deliberately NOT a Content-Security-Policy:
- * the page loads third-party scripts whose origins change (the Elfsight X feed,
- * optional Google Ads, Vercel Analytics) and a wrong policy breaks them
- * silently; that needs its own rollout in report-only mode.
+ * the page loads third-party scripts whose origins change (optional Google
+ * Ads, Vercel Analytics) and a wrong policy breaks them silently; that needs
+ * its own rollout in report-only mode. (v1.8.7: the X feed no longer loads any
+ * third-party script — it is rendered by our server, lib/social.)
  *   - nosniff: never let a browser reinterpret a response's type;
  *   - SAMEORIGIN framing: no other site can frame Promptea (clickjacking);
  *   - Referrer-Policy: other sites get the origin, never the path or query

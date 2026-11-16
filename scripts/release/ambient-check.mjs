@@ -73,15 +73,11 @@ for (const c of CASES) {
       }).observe({ type: "longtask" });
     } catch {}
   }, c.theme);
-  // v1.8.3: this check measures the ambient background, so the third-party X feed
-  // widget is kept out of it. Since v1.8.3 the widget loads after the load event,
-  // i.e. inside this measuring window, and rendering its posts costs ~100 layouts
-  // that have nothing to do with the animation (scripts/release/xfeed-check.mjs
-  // measures the widget on its own).
+  // v1.8.7: the X feed is server-rendered markup now (no third-party widget to keep
+  // out of the measuring window, as v1.8.3–v1.8.6 had to).
   const LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)/.test(BASE);
   await page.setRequestInterception(true);
   page.on("request", (r) => {
-    if (/elfsight|twimg\.com/.test(r.url())) return r.abort();
     // Read-only against anything that is not local: no telemetry or other writes leave the browser.
     return LOCAL || r.method() === "GET" ? r.continue() : r.abort();
   });
