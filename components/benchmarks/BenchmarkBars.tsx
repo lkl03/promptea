@@ -6,10 +6,10 @@
 // error whisker (± stddev between runs, when the source reports one) are
 // decoration over that text.
 //
-// Accessibility: the figure is role="img" with a textual description of every
-// bar (the same data as the table below it); the visual rows are aria-hidden
-// so a screen reader gets the description once, not twice. Under
-// prefers-reduced-motion the bars simply appear.
+// Accessibility: a textual description of every bar (the same data as the table
+// below it) and, since v1.8.7, the rows themselves are an ordered list whose
+// model names are buttons that open the model's analysis (the bars and the axis
+// are decoration, aria-hidden). Under prefers-reduced-motion the bars simply appear.
 
 import type { BarChartModel } from "@/lib/benchmarks/chart";
 import { providerColor } from "@/lib/benchmarks/chart";
@@ -38,6 +38,8 @@ export default function BenchmarkBars({
   copy,
   highlightId,
   onHighlight,
+  onOpen,
+  openLabel,
 }: {
   model: BarChartModel;
   def: BenchmarkDef;
@@ -45,6 +47,10 @@ export default function BenchmarkBars({
   copy: BarsCopy;
   highlightId?: string | null;
   onHighlight?: (id: string | null) => void;
+  /** v1.8.7 — opens the model's analysis. */
+  onOpen?: (id: string) => void;
+  /** "Analysis of {name}" */
+  openLabel?: string;
 }) {
   const n = model.bars.length;
   const title = copy.title.replace("{n}", String(n)).replace("{benchmark}", def.label[lang]);
@@ -59,20 +65,20 @@ export default function BenchmarkBars({
   const hasError = model.bars.some((b) => b.spread !== null);
 
   return (
-    <figure className="m-0" role="img" aria-label={title} aria-describedby="bm-bars-desc">
+    <figure className="m-0" aria-labelledby="bm-bars-title" aria-describedby="bm-bars-desc">
       <p id="bm-bars-desc" className="sr-only">
         {desc}
       </p>
-      <figcaption className="text-sm font-medium text-ink" aria-hidden="true">
+      <figcaption id="bm-bars-title" className="text-sm font-medium text-ink">
         {title}
       </figcaption>
       <p className="mt-0.5 text-xs text-ink-muted" aria-hidden="true">
         {def.metricLabel[lang]} · {copy.showingOf.replace("{n}", String(n)).replace("{total}", String(model.total))}
       </p>
 
-      <div aria-hidden="true" className="relative mt-3" key={def.key}>
+      <div className="relative mt-3" key={def.key}>
         {/* Grid lines at the axis ticks */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 right-0">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 right-0">
           {model.ticks.map((t) => (
             <span
               key={t}
@@ -95,14 +101,26 @@ export default function BenchmarkBars({
                 <div className="flex items-baseline justify-between gap-3 text-sm">
                   <span className="min-w-0 truncate">
                     <span className="mr-1.5 tabular-nums text-ink-faint">{b.rank}</span>
-                    <span className={active ? "font-semibold text-ink" : "font-medium text-ink"}>{b.name}</span>
+                    {onOpen ? (
+                      <button
+                        type="button"
+                        onClick={() => onOpen(b.modelId)}
+                        className={["bm-model-link", active ? "font-semibold text-ink" : "font-medium text-ink"].join(" ")}
+                        aria-label={openLabel ? openLabel.replace("{name}", b.name) : undefined}
+                        aria-haspopup="dialog"
+                      >
+                        {b.name}
+                      </button>
+                    ) : (
+                      <span className={active ? "font-semibold text-ink" : "font-medium text-ink"}>{b.name}</span>
+                    )}
                     <span className="ml-1.5 text-xs text-ink-muted">{b.providerLabel}</span>
                   </span>
                   <span className="shrink-0 font-semibold tabular-nums text-ink">
                     {formatScore(def.metric === "accuracy" || def.metric === "f1" ? b.value / 100 : b.value, def.metric, lang)}
                   </span>
                 </div>
-                <div className="relative mt-1 h-3 rounded-sm bg-surface-soft/70">
+                <div aria-hidden="true" className="relative mt-1 h-3 rounded-sm bg-surface-soft/70">
                   <div
                     className="bm-bar-fill absolute inset-y-0 left-0 rounded-sm"
                     style={{
@@ -126,7 +144,7 @@ export default function BenchmarkBars({
         </ol>
 
         {/* Axis labels */}
-        <div className="relative mt-1.5 h-4 text-[10px] tabular-nums text-ink-muted">
+        <div aria-hidden="true" className="relative mt-1.5 h-4 text-[10px] tabular-nums text-ink-muted">
           {model.ticks.map((t) => {
             const p = ((t - model.axisMin) / (model.axisMax - model.axisMin || 1)) * 100;
             return (

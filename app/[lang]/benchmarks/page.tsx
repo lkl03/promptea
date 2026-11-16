@@ -3,6 +3,13 @@
 // v1.7.0 — AI model benchmarks: leaders by category, frontier models, an
 // explorable ranking table, and what each benchmark measures.
 //
+// v1.8.7 — every model can be opened (its analysis: rank and score in each
+// benchmark, strengths, limits, links) and up to four compared; the frontier
+// section leads with a quick comparison of the top of the general benchmark.
+// All of it is client state over the same validated snapshot (BenchmarkDashboard),
+// shareable through the URL hash (#m=<model>, #c=<a>,<b>). There is deliberately
+// no route per model: docs/release/v1.8.7/benchmarks-model-routes.md says why.
+//
 // Data: OpenRouter's unified benchmarks API, fetched on the server
 // (lib/benchmarks). The page states its source, date and metric everywhere,
 // keeps non-comparable metrics apart, and degrades honestly: live data →
@@ -14,7 +21,7 @@ import { notFound } from "next/navigation";
 
 import { getDictionary, hasLocale } from "../dictionaries";
 import BenchmarkDashboard, { type DashboardCopy } from "@/components/benchmarks/BenchmarkDashboard";
-import FrontierMatrix from "@/components/benchmarks/FrontierMatrix";
+import { MODEL_COPY } from "@/lib/benchmarks/modelCopy";
 import { getBenchmarks } from "@/lib/benchmarks/server";
 import { frontierModels, FRONTIER_TOP_N } from "@/lib/benchmarks/normalize";
 import { snapshotAgeHours, type FetchFailure } from "@/lib/benchmarks/load";
@@ -517,25 +524,24 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
           </nav>
 
           <div className="mt-10">
-            <BenchmarkDashboard tables={compactTables(snapshot.tables)} lang={l} copy={{ ...c.dash, share: dict.benchmarks.share } as DashboardCopy} dateLabel={dateLabel} />
+            <BenchmarkDashboard
+              tables={compactTables(snapshot.tables)}
+              lang={l}
+              copy={{ ...c.dash, share: dict.benchmarks.share, ...MODEL_COPY[l] } as DashboardCopy}
+              dateLabel={dateLabel}
+              texts={Object.fromEntries(snapshot.tables.map((t) => [t.def.key, { measures: t.def.measures[l], limitations: t.def.limitations[l] }]))}
+              frontier={{
+                title: c.frontierTitle,
+                def: c.frontierDef,
+                why: c.frontierWhy,
+                whyLabel: c.frontierWhyLabel,
+                more: c.matrixMore,
+                matrix,
+                total: frontier.length,
+                copy: c.matrix,
+              }}
+            />
           </div>
-
-          <section id="frontier" aria-labelledby="bm-frontier" className="mt-16 scroll-mt-24">
-            <h2 id="bm-frontier" className="font-title text-2xl font-semibold">{c.frontierTitle}</h2>
-            <p className="mt-2 max-w-3xl text-sm leading-relaxed text-ink">{c.frontierDef}</p>
-            <details className="mt-2 max-w-3xl text-sm leading-relaxed text-ink-muted">
-              <summary className="cursor-pointer text-ink">{c.frontierWhyLabel}</summary>
-              <p className="mt-2">{c.frontierWhy}</p>
-            </details>
-            {matrix && matrix.rows.length > 0 ? (
-              <div className="mt-5">
-                <FrontierMatrix matrix={matrix} lang={l} copy={c.matrix} />
-                {frontier.length > matrix.rows.length ? (
-                  <p className="mt-2 text-[11px] text-ink-muted">{c.matrixMore.replace("{n}", String(matrix.rows.length)).replace("{total}", String(frontier.length))}</p>
-                ) : null}
-              </div>
-            ) : null}
-          </section>
 
           <section id="about" aria-labelledby="bm-context" className="mt-16 scroll-mt-24">
             <h2 id="bm-context" className="font-title text-2xl font-semibold">{c.context}</h2>

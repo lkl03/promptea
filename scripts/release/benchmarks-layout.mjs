@@ -9,6 +9,13 @@
 //   - no card is wider than the list that holds it,
 //   - the page has no horizontal overflow,
 //   - the chart panel starts right after the picker (no tall empty gap).
+// v1.8.7 — and the model analysis and the comparison, per width:
+//   - the frontier quick view and its cards fit (no card wider than the page);
+//   - a model name opens the analysis: a modal dialog inside the viewport, focus
+//     inside it, no horizontal overflow of its content, Esc closes it and the
+//     focus returns to the name;
+//   - three "Compare" checkboxes show the comparison bar inside the viewport, and
+//     the comparison dialog opens inside the viewport.
 //
 //   node scripts/release/benchmarks-layout.mjs --base=http://localhost:3181 [--lang=en] [--shots=dir]
 //
@@ -90,6 +97,74 @@ for (const width of WIDTHS) {
       await page.evaluate(() => document.querySelector("#ranking").scrollIntoView());
       await page.screenshot({ path: join(args.shots, `benchmarks-ranking__${width}__${i + 1}.jpg`), type: "jpeg", quality: 80 });
     }
+  }
+
+  // ── v1.8.7: frontier quick view, model analysis, comparison ──────────────
+  const inside = (r, vw, vh) => r.left >= -0.5 && r.top >= -0.5 && r.right <= vw + 0.5 && r.bottom <= vh + 0.5;
+  const fq = await page.evaluate(() => {
+    const cards = [...document.querySelectorAll("#frontier ol > li")].map((li) => li.getBoundingClientRect());
+    const vw = document.documentElement.clientWidth;
+    return { cards: cards.length, wider: cards.filter((c) => c.right > vw + 0.5 || c.left < -0.5).length };
+  });
+  checks++;
+  if (!fq.cards) findings.push(`${width}px: frontier quick view has no cards`);
+  if (fq.wider) findings.push(`${width}px: ${fq.wider} frontier card(s) wider than the page`);
+  const opener = await page.$("#ranking .bm-model-link");
+  if (!opener) findings.push(`${width}px: no model name opens an analysis`);
+  else {
+    await opener.focus();
+    await page.keyboard.press("Enter");
+    await new Promise((r) => setTimeout(r, 500));
+    const d = await page.evaluate(() => {
+      const dlg = document.querySelector('[role="dialog"][aria-modal="true"]');
+      if (!dlg) return null;
+      const r = dlg.getBoundingClientRect();
+      const scroller = dlg.querySelector(".overflow-y-auto");
+      return { box: { left: r.left, top: r.top, right: r.right, bottom: r.bottom }, focus: dlg.contains(document.activeElement), overflow: scroller ? scroller.scrollWidth - scroller.clientWidth : 0, vw: innerWidth, vh: innerHeight };
+    });
+    checks++;
+    if (!d) findings.push(`${width}px: the model analysis did not open`);
+    else {
+      if (!inside(d.box, d.vw, d.vh)) findings.push(`${width}px: the model analysis is not inside the viewport ${JSON.stringify(d.box)}`);
+      if (!d.focus) findings.push(`${width}px: focus is not inside the model analysis`);
+      if (d.overflow > 1) findings.push(`${width}px: the model analysis overflows sideways by ${d.overflow}px`);
+      if (args.shots) await page.screenshot({ path: join(args.shots, `benchmarks-model__${width}.jpg`), type: "jpeg", quality: 80 });
+      await page.keyboard.press("Escape");
+      await new Promise((r) => setTimeout(r, 300));
+      const back = await page.evaluate(() => !document.querySelector('[role="dialog"][aria-modal="true"]') && document.activeElement?.classList.contains("bm-model-link"));
+      if (!back) findings.push(`${width}px: Esc did not close the analysis or return the focus`);
+      console.log(`ok  ${width}px · model analysis (inside viewport, focus in, Esc returns focus)`);
+    }
+  }
+  await page.evaluate(() => [...document.querySelectorAll("#frontier table .bm-compare-check")].slice(0, 3).forEach((c) => c.click()));
+  await new Promise((r) => setTimeout(r, 300));
+  const bar = await page.evaluate(() => {
+    const b = document.querySelector(".bm-compare-bar");
+    if (!b) return null;
+    b.scrollIntoView({ block: "nearest" });
+    const r = b.getBoundingClientRect();
+    return { right: r.right, left: r.left, vw: document.documentElement.clientWidth };
+  });
+  checks++;
+  if (!bar) findings.push(`${width}px: the comparison bar did not appear`);
+  else if (bar.right > bar.vw + 0.5 || bar.left < -0.5) findings.push(`${width}px: the comparison bar is wider than the page`);
+  else {
+    await page.click(".bm-compare-bar .btn-primary");
+    await new Promise((r) => setTimeout(r, 500));
+    const c = await page.evaluate(() => {
+      const dlg = document.querySelector('[role="dialog"][aria-modal="true"]');
+      if (!dlg) return null;
+      const r = dlg.getBoundingClientRect();
+      return { box: { left: r.left, top: r.top, right: r.right, bottom: r.bottom }, vw: innerWidth, vh: innerHeight, headers: dlg.querySelectorAll("thead th").length };
+    });
+    if (!c) findings.push(`${width}px: the comparison did not open`);
+    else {
+      if (!inside(c.box, c.vw, c.vh)) findings.push(`${width}px: the comparison is not inside the viewport`);
+      if (c.headers !== 4) findings.push(`${width}px: the comparison has ${c.headers - 1} model columns, expected 3`);
+      if (args.shots) await page.screenshot({ path: join(args.shots, `benchmarks-compare__${width}.jpg`), type: "jpeg", quality: 80 });
+      console.log(`ok  ${width}px · comparison bar and dialog`);
+    }
+    await page.keyboard.press("Escape");
   }
   await page.close();
 }
