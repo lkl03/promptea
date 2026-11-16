@@ -9,7 +9,7 @@
 
 import type { InteractionProfile, Lang, MatchCategory } from "@/lib/domain";
 
-export const RUBRIC_VERSION = "2026-08-04.1";
+export const RUBRIC_VERSION = "2026-11-16.1"; // v1.8.7: Chinese detectors (ZH_RE)
 
 export type SignalDef = {
   id: string;
@@ -27,6 +27,8 @@ export type SignalContext = {
   attachmentChars: number;
   /** v1.8.2: the prompt reads as Portuguese → the Portuguese detectors apply too. */
   pt?: boolean;
+  /** v1.8.7: the prompt reads as Chinese → the Chinese detectors apply too. */
+  zh?: boolean;
 };
 
 // ── Detector regexes (bilingual ES/EN) ──────────────────────────────────────
@@ -87,9 +89,41 @@ const PT_RE: Partial<Record<keyof typeof RE, RegExp>> = {
   quickTask: ptw("corrija|renomeie|uma linha|r[áa]pido|rapidinho|simples|curtinho|breve|s[óo] me diga"),
 };
 
-/** A detector hit: the es/en pattern, or its Portuguese spelling when the prompt reads as Portuguese. */
+// ── Chinese spellings of the same detectors (v1.8.7) ───────────────────────
+// Consulted only when the prompt reads as Chinese (SignalContext.zh). Chinese has
+// no spaces between words, so these are plain substrings, without word edges; each
+// one is specific enough not to fire inside an unrelated word ("行" alone would).
+const zhw = (alternation: string) => new RegExp(alternation, "iu");
+
+const ZH_RE: Partial<Record<keyof typeof RE, RegExp>> = {
+  gitWorkflow: zhw("代码库|仓库|分支|合并请求|拉取请求"),
+  testsAcceptance: zhw("测试|验收标准|测试用例|覆盖率|自动化验证|类型检查"),
+  autonomousAgent: zhw("智能体|自主|多步骤|端到端|实现(?:这个|该|整个)?功能|迁移|重构"),
+  debugSignal: zhw("报错|错误|异常|崩溃|闪退|不工作|无法运行|跑不起来|堆栈"),
+  webRecency: zhw("今天|现在|当前|目前|最近|最新|本周|本月|今年|新闻|市场价格"),
+  citations: zhw("来源|出处|引用|参考文献|参考资料|链接|论文|文献"),
+  searchVerb: zhw("搜索|搜一下|查找|查一下|查查|调研|对比(?:价格|方案|产品)|大家怎么看"),
+  longDocument: zhw("文档|报告|合同|论文|会议记录|逐字稿|章节|白皮书|全文"),
+  multimodalRef: zhw("这张(?:图|图片|照片|截图)|附上的(?:图|图片|照片|截图)|(?:图片|照片|截图)(?:见附件|已附上)|这段视频|视频里|音频附件|分析(?:这张|该)(?:图|图片|照片|截图)"),
+  jsonStrict: zhw("有效的JSON|只输出JSON|仅输出JSON|只返回JSON|JSON格式|字段[：:]|数据结构"),
+  tabularData: zhw("表格|列名|单元格|电子表格|提取|抽取|解析"),
+  creativeWriting: zhw("故事|小说|短篇|诗歌|写一首诗|剧本|角色|人物|对白|歌词|俳句|童话"),
+  marketingCopy: zhw("文案|广告|营销|推广|小红书|抖音|微博|公众号|朋友圈|转化率|标语|口号|目标受众|带货"),
+  translation: zhw("翻译|译成|译为|翻成|(?:成|为)(?:英文|英语|中文|西班牙语|法语|德语|日语|葡萄牙语)"),
+  summarization: zhw("总结|摘要|概括|归纳|提炼|要点|核心观点"),
+  tutoring: zhw("解释|讲解|教我|学习|复习|考试|作业|一步一步|逐步|像给\\d+岁"),
+  imageGen: zhw("生成(?:一张|一幅)?(?:图片|图像|插画|照片)|画一(?:张|幅|个)|宽高比|画面比例|照片级|写实风格|渲染|标志设计"),
+  complexReasoning: zhw("证明|定理|最优化|权衡|系统设计|架构设计|长期战略|推理|形式逻辑|悖论|国际象棋|高等数学"),
+  quickTask: zhw("错别字|重命名|一行|快速|简单|简短|直接告诉我"),
+};
+
+/** A detector hit: the es/en pattern, or its Portuguese / Chinese spelling when the prompt reads as that language. */
 function has(c: SignalContext, key: keyof typeof RE): boolean {
-  return RE[key].test(c.text) || (c.pt === true && (PT_RE[key]?.test(c.text) ?? false));
+  return (
+    RE[key].test(c.text) ||
+    (c.pt === true && (PT_RE[key]?.test(c.text) ?? false)) ||
+    (c.zh === true && (ZH_RE[key]?.test(c.text) ?? false))
+  );
 }
 
 // ── Signal registry ─────────────────────────────────────────────────────────
@@ -97,7 +131,7 @@ function has(c: SignalContext, key: keyof typeof RE): boolean {
 export const SIGNALS: SignalDef[] = [
   {
     id: "repo_paths",
-    label: { es: "Rutas de repositorio o archivos de código", en: "Repository or code file paths", pt: "Caminhos de repositório ou de arquivos de código" },
+    label: { es: "Rutas de repositorio o archivos de código", en: "Repository or code file paths", pt: "Caminhos de repositório ou de arquivos de código", zh: "代码库或代码文件路径" },
     test: (c) => has(c, "repoPath"),
     contributes: [
       { category: "codingAgent", weight: 2 },
@@ -106,7 +140,7 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "shell_commands",
-    label: { es: "Comandos de terminal", en: "Shell commands", pt: "Comandos de shell" },
+    label: { es: "Comandos de terminal", en: "Shell commands", pt: "Comandos de shell", zh: "终端命令" },
     test: (c) => has(c, "shellCommand"),
     contributes: [
       { category: "codingAgent", weight: 2 },
@@ -115,13 +149,13 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "git_workflow",
-    label: { es: "Flujo git / pull requests", en: "Git / pull-request workflow", pt: "Fluxo de Git / pull request" },
+    label: { es: "Flujo git / pull requests", en: "Git / pull-request workflow", pt: "Fluxo de Git / pull request", zh: "Git/pull request工作流" },
     test: (c) => has(c, "gitWorkflow"),
     contributes: [{ category: "codingAgent", weight: 1.5 }],
   },
   {
     id: "tests_acceptance",
-    label: { es: "Tests o criterios de aceptación", en: "Tests or acceptance criteria", pt: "Testes ou critérios de aceitação" },
+    label: { es: "Tests o criterios de aceptación", en: "Tests or acceptance criteria", pt: "Testes ou critérios de aceitação", zh: "测试或验收标准" },
     test: (c) => has(c, "testsAcceptance"),
     contributes: [
       { category: "codingAgent", weight: 1.5 },
@@ -130,55 +164,55 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "autonomous_multistep",
-    label: { es: "Ejecución autónoma multi-paso", en: "Autonomous multi-step execution", pt: "Execução autônoma em várias etapas" },
+    label: { es: "Ejecución autónoma multi-paso", en: "Autonomous multi-step execution", pt: "Execução autônoma em várias etapas", zh: "自主多步执行" },
     test: (c) => has(c, "autonomousAgent") && has(c, "gitWorkflow"),
     contributes: [{ category: "codingAgent", weight: 1.5 }],
   },
   {
     id: "code_content",
-    label: { es: "Código en el prompt", en: "Code in the prompt", pt: "Código no prompt" },
+    label: { es: "Código en el prompt", en: "Code in the prompt", pt: "Código no prompt", zh: "提示词中包含代码" },
     test: (c) => has(c, "codeFence") || has(c, "codeSymbol"),
     contributes: [{ category: "coding", weight: 2 }],
   },
   {
     id: "coding_language",
-    label: { es: "Lenguajes o frameworks de programación", en: "Programming languages or frameworks", pt: "Linguagens de programação ou frameworks" },
+    label: { es: "Lenguajes o frameworks de programación", en: "Programming languages or frameworks", pt: "Linguagens de programação ou frameworks", zh: "编程语言或框架" },
     test: (c) => has(c, "codingLanguage"),
     contributes: [{ category: "coding", weight: 1.5 }],
   },
   {
     id: "debug_evidence",
-    label: { es: "Errores o comportamiento a depurar", en: "Errors or behavior to debug", pt: "Erros ou comportamento a depurar" },
+    label: { es: "Errores o comportamiento a depurar", en: "Errors or behavior to debug", pt: "Erros ou comportamento a depurar", zh: "需要调试的错误或行为" },
     test: (c) => has(c, "debugSignal"),
     contributes: [{ category: "coding", weight: 1.5 }],
   },
   {
     id: "web_recency",
-    label: { es: "Necesita información actual de la web", en: "Needs current web information", pt: "Precisa de informação atual da web" },
-    test: (c) => has(c, "webRecency") && (has(c, "searchVerb") || has(c, "citations") || (/\b(precio|price|noticia|news|versi[oó]n m[aá]s reciente|latest version)\b/i.test(c.text) || (c.pt === true && /pre[çc]o|not[íi]cia|vers[ãa]o mais recente/i.test(c.text)))),
+    label: { es: "Necesita información actual de la web", en: "Needs current web information", pt: "Precisa de informação atual da web", zh: "需要最新的网络信息" },
+    test: (c) => has(c, "webRecency") && (has(c, "searchVerb") || has(c, "citations") || (/\b(precio|price|noticia|news|versi[oó]n m[aá]s reciente|latest version)\b/i.test(c.text) || (c.pt === true && /pre[çc]o|not[íi]cia|vers[ãa]o mais recente/i.test(c.text)) || (c.zh === true && /价格|新闻|最新版本/u.test(c.text)))),
     contributes: [{ category: "research", weight: 2 }],
   },
   {
     id: "citations_required",
-    label: { es: "Pide fuentes o citas", en: "Requests sources or citations", pt: "Pede fontes ou citações" },
+    label: { es: "Pide fuentes o citas", en: "Requests sources or citations", pt: "Pede fontes ou citações", zh: "要求提供来源或引用" },
     test: (c) => has(c, "citations"),
     contributes: [{ category: "research", weight: 2 }],
   },
   {
     id: "search_task",
-    label: { es: "Tarea de búsqueda o investigación", en: "Search or research task", pt: "Tarefa de busca ou pesquisa" },
+    label: { es: "Tarea de búsqueda o investigación", en: "Search or research task", pt: "Tarefa de busca ou pesquisa", zh: "搜索或研究任务" },
     test: (c) => has(c, "searchVerb"),
     contributes: [{ category: "research", weight: 1.5 }],
   },
   {
     id: "long_input",
-    label: { es: "Contexto largo (documentos extensos)", en: "Long context (large documents)", pt: "Contexto longo (documentos grandes)" },
+    label: { es: "Contexto largo (documentos extensos)", en: "Long context (large documents)", pt: "Contexto longo (documentos grandes)", zh: "长上下文（大型文档）" },
     test: (c) => c.wordCount > 1200 || c.attachmentChars > 8000,
     contributes: [{ category: "longContext", weight: 2.5 }],
   },
   {
     id: "document_processing",
-    label: { es: "Procesamiento de documentos", en: "Document processing", pt: "Processamento de documentos" },
+    label: { es: "Procesamiento de documentos", en: "Document processing", pt: "Processamento de documentos", zh: "文档处理" },
     test: (c) => has(c, "longDocument"),
     contributes: [
       { category: "longContext", weight: 1.5 },
@@ -187,67 +221,67 @@ export const SIGNALS: SignalDef[] = [
   },
   {
     id: "multimodal_refs",
-    label: { es: "Referencias a imágenes, video o audio", en: "References to images, video, or audio", pt: "Referências a imagens, vídeo ou áudio" },
+    label: { es: "Referencias a imágenes, video o audio", en: "References to images, video, or audio", pt: "Referências a imagens, vídeo ou áudio", zh: "涉及图像、视频或音频" },
     test: (c) => has(c, "multimodalRef"),
     contributes: [{ category: "multimodal", weight: 2.5 }],
   },
   {
     id: "strict_json",
-    label: { es: "Salida JSON o schema estricto", en: "Strict JSON or schema output", pt: "Saída em JSON estrito ou com esquema" },
+    label: { es: "Salida JSON o schema estricto", en: "Strict JSON or schema output", pt: "Saída em JSON estrito ou com esquema", zh: "严格的JSON或schema输出" },
     test: (c) => has(c, "jsonStrict"),
     contributes: [{ category: "dataExtraction", weight: 2.5 }],
   },
   {
     id: "tabular_extraction",
-    label: { es: "Extracción de datos tabulares", en: "Tabular data extraction", pt: "Extração de dados tabulares" },
+    label: { es: "Extracción de datos tabulares", en: "Tabular data extraction", pt: "Extração de dados tabulares", zh: "表格数据提取" },
     test: (c) => has(c, "tabularData") && (has(c, "jsonStrict") || /\b(extrae[er]?|extract|parse)\b/i.test(c.text)),
     contributes: [{ category: "dataExtraction", weight: 1.5 }],
   },
   {
     id: "creative_writing",
-    label: { es: "Escritura creativa", en: "Creative writing", pt: "Escrita criativa" },
+    label: { es: "Escritura creativa", en: "Creative writing", pt: "Escrita criativa", zh: "创意写作" },
     test: (c) => has(c, "creativeWriting"),
     contributes: [{ category: "creativeWriting", weight: 2.5 }],
   },
   {
     id: "marketing_copy",
-    label: { es: "Copy de marketing", en: "Marketing copy", pt: "Textos de marketing" },
+    label: { es: "Copy de marketing", en: "Marketing copy", pt: "Textos de marketing", zh: "营销文案" },
     test: (c) => has(c, "marketingCopy"),
     contributes: [{ category: "marketing", weight: 2.5 }],
   },
   {
     id: "translation_task",
-    label: { es: "Traducción", en: "Translation", pt: "Tradução" },
+    label: { es: "Traducción", en: "Translation", pt: "Tradução", zh: "翻译" },
     test: (c) => has(c, "translation"),
     contributes: [{ category: "translation", weight: 2.5 }],
   },
   {
     id: "summarization_task",
-    label: { es: "Resumen de contenido", en: "Content summarization", pt: "Resumo de conteúdo" },
+    label: { es: "Resumen de contenido", en: "Content summarization", pt: "Resumo de conteúdo", zh: "内容摘要" },
     test: (c) => has(c, "summarization"),
     contributes: [{ category: "summarization", weight: 2.5 }],
   },
   {
     id: "tutoring_task",
-    label: { es: "Aprendizaje o tutoría", en: "Learning or tutoring", pt: "Aprendizado ou tutoria" },
+    label: { es: "Aprendizaje o tutoría", en: "Learning or tutoring", pt: "Aprendizado ou tutoria", zh: "学习或辅导" },
     test: (c) => has(c, "tutoring"),
     contributes: [{ category: "tutoring", weight: 2 }],
   },
   {
     id: "image_generation",
-    label: { es: "Generación de imágenes", en: "Image generation", pt: "Geração de imagens" },
+    label: { es: "Generación de imágenes", en: "Image generation", pt: "Geração de imagens", zh: "图像生成" },
     test: (c) => has(c, "imageGen"),
     contributes: [{ category: "imagePrompts", weight: 3 }],
   },
   {
     id: "complex_reasoning",
-    label: { es: "Razonamiento complejo", en: "Complex reasoning", pt: "Raciocínio complexo" },
+    label: { es: "Razonamiento complejo", en: "Complex reasoning", pt: "Raciocínio complexo", zh: "复杂推理" },
     test: (c) => has(c, "complexReasoning"),
     contributes: [{ category: "complexReasoning", weight: 2 }],
   },
   {
     id: "quick_lightweight",
-    label: { es: "Tarea corta y liviana", en: "Short, lightweight task", pt: "Tarefa curta e leve" },
+    label: { es: "Tarea corta y liviana", en: "Short, lightweight task", pt: "Tarefa curta e leve", zh: "简短轻量的任务" },
     test: (c) => c.wordCount <= 30 && has(c, "quickTask"),
     contributes: [{ category: "fastLightweight", weight: 2 }],
   },

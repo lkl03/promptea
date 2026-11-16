@@ -11,6 +11,12 @@
 // wins when the text carries Portuguese-only signal on top of what it shares
 // with Spanish. A text with no Portuguese-only word or letter can never be
 // detected as Portuguese, so every es/en result of v1.8.1 is unchanged.
+//
+// v1.8.7 (engine 2.5.0) added Chinese the same way: it is decided FIRST and
+// only from Han characters (CJK has no word markers to count). A text without
+// Han characters can never be detected as Chinese, so every es/en/pt result of
+// v1.8.6 is unchanged; a Chinese prompt with English terms in it ("用Python写
+// 一个函数") still reads as Chinese.
 
 import type { Lang } from "@/lib/domain";
 
@@ -44,12 +50,37 @@ export type DetectedLanguage = { lang: Lang; confidence: number };
 
 const count = (text: string, re: RegExp) => (text.match(re) ?? []).length;
 
+/** Han ideographs: the script of written Chinese. */
+const HAN = /\p{Script=Han}/gu;
+/** Japanese kana. A text with real kana is Japanese (not supported), never Chinese. */
+const KANA = /[\p{Script=Hiragana}\p{Script=Katakana}]/gu;
+/** Latin letters, accented ones included. */
+const LATIN = /[A-Za-z\u00C0-\u024F]/g;
+
+/**
+ * v1.8.7 — how much of a text is written in Chinese, measured in "word units"
+ * so a Chinese prompt with a few English terms still counts as Chinese: a
+ * Chinese word is ~1.7 characters, a Latin one ~5 letters. `share` is 0–1.
+ */
+export function chineseShare(text: string): { han: number; share: number } {
+  const src = String(text ?? "");
+  const han = count(src, HAN);
+  if (han === 0 || count(src, KANA) > han * 0.2) return { han, share: 0 };
+  const hanUnits = han / 1.7;
+  const latinUnits = count(src, LATIN) / 5;
+  return { han, share: hanUnits / (hanUnits + latinUnits) };
+}
+
 /**
  * Detect whether prompt text reads as Spanish, English or Portuguese.
  * `fallback` wins when the signal is too weak (very short or mixed text).
  */
 export function detectPromptLanguage(text: string, fallback: Lang = "en"): DetectedLanguage {
   const src = String(text ?? "");
+  // v1.8.7: Chinese first. Two Han characters already say "Chinese" (e.g. "翻译"),
+  // so this check runs before the length guard below.
+  const zh = chineseShare(src);
+  if (zh.han >= 2 && zh.share >= 0.5) return { lang: "zh", confidence: Math.min(1, 0.4 + (zh.share - 0.5) * 1.2) };
   if (src.trim().length < 3) return { lang: fallback, confidence: 0 };
 
   const esHits = count(src, ES_MARKERS);
@@ -110,7 +141,12 @@ export function languageMatches(rewritten: string, expected: Lang): boolean {
  */
 export function vocabularyLang(prompt: string, uiLang: Lang): Lang {
   const d = detectPromptLanguage(prompt, uiLang);
+  // v1.8.7: a prompt written in Chinese is read as Chinese from any interface; a
+  // Chinese interface with a prompt that clearly is another language reads that
+  // language (its own vocabulary), otherwise Chinese.
+  if (d.lang === "zh") return "zh";
   if (d.lang === "pt" && (uiLang === "pt" || d.confidence >= 0.35)) return "pt";
+  if (uiLang === "zh") return d.confidence >= 0.35 ? d.lang : "zh";
   if (uiLang === "pt") {
     // A Portuguese interface with a prompt that clearly is Spanish or English.
     // "Clearly Spanish" needs Spanish-ONLY signal: a short Portuguese sentence
@@ -131,4 +167,9 @@ function spanishOwnSignal(text: string): number {
 /** True when the prompt should also be read with the Portuguese vocabulary. */
 export function readsAsPortuguese(prompt: string, uiLang: Lang = "en"): boolean {
   return vocabularyLang(prompt, uiLang) === "pt";
+}
+
+/** v1.8.7 — true when the prompt should also be read with the Chinese vocabulary (lib/engine/zh.ts). */
+export function readsAsChinese(prompt: string, uiLang: Lang = "en"): boolean {
+  return vocabularyLang(prompt, uiLang) === "zh";
 }

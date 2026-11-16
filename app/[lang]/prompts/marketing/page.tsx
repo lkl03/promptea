@@ -29,12 +29,14 @@ export async function generateMetadata({
       es: "Prompts para marketing (ads + landing + emails)",
       en: "Marketing prompts (ads + landing + emails)",
       pt: "Prompts de marketing (anúncios + landing + e-mails)",
+      zh: "营销提示词（广告、落地页、邮件）",
     }),
     description:
       pick(l, {
         es: "Plantillas para copy, ads, landings y emails. Abrilas en Promptea y optimizalas por IA.",
         en: "Templates for copy, ads, landing pages and emails. Open in Promptea and optimize per AI.",
         pt: "Templates para copy, anúncios, landing pages e e-mails. Abra no Promptea e otimize para cada IA.",
+        zh: "用于文案、广告、落地页和邮件的模板。在Promptea中打开，并针对每款AI进行优化。",
       }),
   });
 }
@@ -48,12 +50,13 @@ export default async function MarketingPromptPackPage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = pick(l, { es: "Prompts para marketing", en: "Marketing prompts", pt: "Prompts de marketing" });
+  const title = pick(l, { es: "Prompts para marketing", en: "Marketing prompts", pt: "Prompts de marketing", zh: "营销提示词" });
   const subtitle =
     pick(l, {
       es: "Copy, ads, emails y redes. Elegí uno y abrilo en Promptea.",
       en: "Copy, ads, emails and social. Pick one and open it in Promptea.",
       pt: "Copy, anúncios, e-mails e redes sociais. Escolha um e abra no Promptea.",
+      zh: "文案、广告、邮件和社交媒体。选一个，在Promptea中打开。",
     });
 
   const examples = [
@@ -62,6 +65,7 @@ export default async function MarketingPromptPackPage({
         es: "Landing hero + bullets + CTA",
         en: "Landing hero + bullets + CTA",
         pt: "Hero de landing + bullets + CTA",
+        zh: "落地页首屏 + 要点 + CTA",
       }),
       target: "gpt",
       purpose: "marketing",
@@ -100,6 +104,17 @@ Escreva:
 - 5 subtítulos
 - 6 bullets de benefícios (sem promessas falsas)
 - 3 CTAs`,
+          zh: `产品：[是什么]
+受众：[面向谁]
+痛点：[痛点]
+价值主张：[价值]
+语气：[专业/亲和/轻松有趣]
+
+请写：
+- 5个主标题
+- 5个副标题
+- 6条利益点（不做虚假承诺）
+- 3个CTA`,
         }),
     },
     {
@@ -107,6 +122,7 @@ Escreva:
         es: "Google Ads (Search) por intención",
         en: "Google Ads (Search) by intent",
         pt: "Google Ads (Search) por intenção",
+        zh: "按搜索意图组织的Google Ads（搜索广告）",
       }),
       target: "gemini",
       purpose: "marketing",
@@ -139,10 +155,19 @@ Gere:
 - 5 grupos por intenção
 - 3 RSAs por grupo (títulos + descrições)
 - palavras-chave negativas sugeridas`,
+          zh: `产品：[是什么]
+国家/语言：[zh/en]
+目标：获取潜在客户（leads）
+
+生成：
+- 15个长尾关键词
+- 5个按搜索意图划分的广告组
+- 每组3条RSA（标题 + 描述）
+- 建议的否定关键词`,
         }),
     },
     {
-      title: pick(l, { es: "Email frío (corto y humano)", en: "Cold email (short and human)", pt: "Cold e-mail (curto e humano)" }),
+      title: pick(l, { es: "Email frío (corto y humano)", en: "Cold email (short and human)", pt: "Cold e-mail (curto e humano)", zh: "开发信（简短、有人情味）" }),
       target: "claude",
       purpose: "marketing",
       prompt:
@@ -177,6 +202,16 @@ Escreva:
 - e-mail com até 120 palavras
 - follow-up depois de 48h
 Sem hype, sem afirmações exageradas.`,
+          zh: `收件人：[职位 / 行业]
+问题：[问题]
+证明：[证据（如有）]
+提议：[演示 / 免费工具]
+
+请写：
+- 3个邮件主题
+- 邮件正文不超过120字
+- 48小时后的跟进邮件
+不要炒作，不要夸大其词。`,
         }),
     },
     {
@@ -184,6 +219,7 @@ Sem hype, sem afirmações exageradas.`,
         es: "Posicionamiento (mensaje central)",
         en: "Positioning (core messaging)",
         pt: "Posicionamento (mensagem central)",
+        zh: "定位（核心信息）",
       }),
       target: "gpt",
       purpose: "marketing",
@@ -216,6 +252,15 @@ Crie:
 - 3 mensagens-chave
 - 3 objeções + respostas
 - 10 afirmações seguras (sem grandes promessas)`,
+          zh: `产品：[是什么]
+竞争对手：[列表]
+受众：[面向谁]
+
+请制作：
+- 定位陈述（1句话）
+- 3条核心信息
+- 3个常见异议及回应
+- 10条稳妥的宣传说法（不做夸大承诺）`,
         }),
     },
     {
@@ -223,6 +268,7 @@ Crie:
         es: "Contenido para X (hilo + posts sueltos)",
         en: "X content (thread + single posts)",
         pt: "Conteúdo para o X (thread + posts avulsos)",
+        zh: "X内容（推文串 + 单条帖子）",
       }),
       target: "grok",
       purpose: "marketing",
@@ -252,10 +298,18 @@ Gere:
 - 1 thread de 6 posts (educativa, sem venda agressiva)
 - 5 posts avulsos (ganchos diferentes)
 - CTA suave no final`,
+          zh: `产品：[是什么]
+受众：[面向谁]
+语气：直接、清晰
+
+生成：
+- 1个由6条推文组成的推文串（以科普为主，不硬推销）
+- 5条单独的推文（开头钩子各不相同）
+- 结尾放一个温和的CTA`,
         }),
     },
     {
-      title: pick(l, { es: "A/B test de hooks (10 variantes)", en: "A/B hooks (10 variations)", pt: "Ganchos A/B (10 variações)" }),
+      title: pick(l, { es: "A/B test de hooks (10 variantes)", en: "A/B hooks (10 variations)", pt: "Ganchos A/B (10 variações)", zh: "A/B测试开头钩子（10个变体）" }),
       target: "deepseek",
       purpose: "marketing",
       prompt:
@@ -296,18 +350,31 @@ Entregue 10 ganchos diferentes:
 - 2 de comparação
 - 2 contraintuitivos
 Sem afirmações falsas.`,
+          zh: `背景：
+- 产品：[是什么]
+- 现实可行的承诺：[好处]
+- 受众：[面向谁]
+- 渠道：[落地页 / 广告 / tiktok / X]
+
+给出10个不同的开头钩子：
+- 3个制造好奇
+- 3个戳中痛点
+- 2个做对比
+- 2个反常识
+不要虚假宣传。`,
         }),
     },
   ];
 
   const faq = [
     {
-      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?" }),
+      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?", zh: "这些模板怎么用？" }),
       a:
         pick(l, {
           es: "Elegí un ejemplo y tocá “Abrir en Promptea”. Se precarga el prompt, el objetivo (Marketing) y un modelo sugerido.",
           en: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Marketing), and a suggested model.",
           pt: "Escolha um exemplo e clique em “Abrir no Promptea”. O prompt, o propósito (Marketing) e um modelo sugerido já vêm preenchidos.",
+          zh: "选一个示例，点击“在Promptea中打开”。系统会预先填入提示词、用途（营销）和一个推荐模型。",
         }),
     },
     {
@@ -315,12 +382,14 @@ Sem afirmações falsas.`,
         es: "¿Qué debería completar sí o sí?",
         en: "What should I fill in for best results?",
         pt: "O que devo preencher para ter os melhores resultados?",
+        zh: "填写哪些内容效果最好？",
       }),
       a:
         pick(l, {
           es: "Audiencia, propuesta de valor, tono y canal. Si agregás constraints (largo, claims prohibidos), sube la calidad.",
           en: "Audience, value proposition, tone, and channel. Adding constraints (length, forbidden claims) improves quality.",
           pt: "Público, proposta de valor, tom e canal. Adicionar restrições (tamanho, afirmações proibidas) melhora a qualidade.",
+          zh: "受众、价值主张、语气和渠道。再加上约束（篇幅、禁用的说法），质量会更高。",
         }),
     },
     {
@@ -328,21 +397,24 @@ Sem afirmações falsas.`,
         es: "¿Sirve para ads y redes?",
         en: "Does it work for ads and social?",
         pt: "Funciona para anúncios e redes sociais?",
+        zh: "适用于广告和社交媒体吗？",
       }),
       a:
         pick(l, {
           es: "Sí. Por eso el pack incluye variantes por canal: landing, Google Ads, email y X.",
           en: "Yes. That’s why this pack includes channel-specific variants: landing, Google Ads, email and X.",
           pt: "Sim. Por isso este pacote inclui variantes por canal: landing, Google Ads, e-mail e X.",
+          zh: "适用。所以这个合集按渠道提供了不同版本：落地页、Google Ads、邮件和X。",
         }),
     },
     {
-      q: pick(l, { es: "¿Cómo evito 'venta dura'?", en: "How do I avoid hard-selling?", pt: "Como evito a venda agressiva?" }),
+      q: pick(l, { es: "¿Cómo evito 'venta dura'?", en: "How do I avoid hard-selling?", pt: "Como evito a venda agressiva?", zh: "如何避免硬推销？" }),
       a:
         pick(l, {
           es: "Pedí tono humano, claims seguros y CTA suave. Y pedí 2–3 variantes para iterar rápido.",
           en: "Ask for a human tone, safe claims and a soft CTA. Request 2–3 variants to iterate faster.",
           pt: "Peça um tom humano, afirmações seguras e um CTA suave. Peça 2 ou 3 variantes para iterar mais rápido.",
+          zh: "要求使用有人情味的语气、稳妥的说法和温和的CTA，再要求2–3个变体，迭代得更快。",
         }),
     },
   ];
@@ -367,10 +439,10 @@ Sem afirmações falsas.`,
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes" })}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes", zh: "← 查看全部合集" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →" })}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →", zh: "打开分析器 →" })}
           </Link>
         </div>
       </div>
@@ -390,10 +462,11 @@ Sem afirmações falsas.`,
                     es: "Se abre en el analizador con el prompt precargado.",
                     en: "Opens the analyzer with the prompt prefilled.",
                     pt: "Abre o analisador com o prompt já preenchido.",
+                    zh: "将在分析器中打开，并预先填入该提示词。",
                   })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "在Promptea中打开" })}
                 </Link>
               </div>
             </div>
@@ -402,7 +475,7 @@ Sem afirmações falsas.`,
       </div>
 
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "常见问题" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

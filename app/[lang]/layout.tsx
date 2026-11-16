@@ -121,6 +121,22 @@ const SEO: Record<Lang, { title: string; description: string; keywords: string[]
       "prompt engineering",
     ],
   },
+  zh: {
+    title: "Promptea — 适用于GPT、Claude、Gemini、Grok的提示词分析器与优化器",
+    description:
+      "免费的提示词分析器与优化器，支持ChatGPT、Claude、Gemini、Grok、DeepSeek、Kimi、Qwen、GLM、MiniMax、Doubao和Perplexity。为文本、代码、数据/JSON、营销、学习、图像、翻译和摘要类提示词评分、修正并改写。",
+    keywords: [
+      "提示词分析器",
+      "提示词优化器",
+      "提示词工程",
+      "ChatGPT提示词",
+      "Claude提示词",
+      "Gemini提示词",
+      "JSON提示词",
+      "编程提示词",
+      "AI提示词评分",
+    ],
+  },
 };
 
 function seoForLang(lang: Lang) {

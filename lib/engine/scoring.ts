@@ -23,8 +23,9 @@ function clamp(n: number) {
   return Math.max(0, Math.min(100, Math.round(n)));
 }
 
-function t(lang: Lang, es: string, en: string, pt: string) {
-  return { es, en, pt }[lang];
+function t(lang: Lang, es: string, en: string, pt: string, zh: string = en) {
+  // v1.8.7: zh is optional while the Chinese text is written; it falls back to English (zh === en marks it untranslated).
+  return { es, en, pt, zh }[lang];
 }
 
 function getWeights(taskType: TaskType): Weights {
@@ -206,14 +207,15 @@ export function scorePrompt(
   const explain: string[] = [];
 
   if (score >= 85) {
-    explain.push(t(lang, "Muy buen prompt: está claro y bien guiado.", "Very good prompt: it is clear and well guided.", "Prompt muito bom: está claro e bem orientado."));
+    explain.push(t(lang, "Muy buen prompt: está claro y bien guiado.", "Very good prompt: it is clear and well guided.", "Prompt muito bom: está claro e bem orientado.", "提示词很好：清晰，引导也到位。"));
   } else if (score >= 70) {
     explain.push(
       t(
         lang,
         "Buen punto de partida: con pequeños ajustes puede mejorar mucho.",
         "Good starting point: small refinements can improve it a lot.",
-        "Bom ponto de partida: pequenos ajustes podem melhorá-lo bastante."
+        "Bom ponto de partida: pequenos ajustes podem melhorá-lo bastante.",
+        "不错的起点：稍作调整就能大幅提升。"
       )
     );
   } else if (score >= 50) {
@@ -222,7 +224,8 @@ export function scorePrompt(
         lang,
         "El pedido es entendible, pero todavía le falta precisión para responder mejor.",
         "The request is understandable, but it still lacks precision for better answers.",
-        "O pedido é compreensível, mas ainda falta precisão para respostas melhores."
+        "O pedido é compreensível, mas ainda falta precisão para respostas melhores.",
+        "请求可以理解，但还不够精确，难以得到更好的回答。"
       )
     );
   } else {
@@ -231,31 +234,32 @@ export function scorePrompt(
         lang,
         "Prompt flojo: faltan piezas importantes para obtener una respuesta consistente.",
         "Weak prompt: important pieces are still missing for a consistent answer.",
-        "Prompt fraco: ainda faltam peças importantes para uma resposta consistente."
+        "Prompt fraco: ainda faltam peças importantes para uma resposta consistente.",
+        "提示词较弱：还缺少得到稳定回答所需的重要信息。"
       )
     );
   }
 
   if (taskType === "summarization") {
     if (!f.hasLengthHint) {
-      explain.push(t(lang, "Definí cuánto resumir: bullets, párrafo o resumen corto.", "Define summary length: bullets, paragraph, or short summary.", "Defina o tamanho do resumo: tópicos, parágrafo ou resumo curto."));
+      explain.push(t(lang, "Definí cuánto resumir: bullets, párrafo o resumen corto.", "Define summary length: bullets, paragraph, or short summary.", "Defina o tamanho do resumo: tópicos, parágrafo ou resumo curto.", "规定摘要篇幅：要点、段落或简短摘要。"));
     }
     if (!f.hasOutputFormat) {
-      explain.push(t(lang, "Pedí un formato final concreto para el resumen.", "Ask for a concrete final format for the summary.", "Peça um formato final concreto para o resumo."));
+      explain.push(t(lang, "Pedí un formato final concreto para el resumen.", "Ask for a concrete final format for the summary.", "Peça um formato final concreto para o resumo.", "为摘要指定一个具体的最终格式。"));
     }
   }
 
   if (taskType === "translation") {
     if (!f.hasInputs) {
-      explain.push(t(lang, "Falta el texto fuente para traducir.", "The source text is missing.", "Falta o texto de origem."));
+      explain.push(t(lang, "Falta el texto fuente para traducir.", "The source text is missing.", "Falta o texto de origem.", "缺少需要翻译的原文。"));
     }
     if (!f.hasConstraints) {
-      explain.push(t(lang, "Aclará idioma destino y registro de traducción.", "Clarify target language and translation register.", "Esclareça o idioma de destino e o registro da tradução."));
+      explain.push(t(lang, "Aclará idioma destino y registro de traducción.", "Clarify target language and translation register.", "Esclareça o idioma de destino e o registro da tradução.", "说明目标语言和译文风格。"));
     }
   }
 
   if ((taskType === "coding" || taskType === "debugging") && !f.hasInputs) {
-    explain.push(t(lang, "Falta contexto técnico concreto: código, logs o error.", "Concrete technical context is missing: code, logs, or error.", "Falta contexto técnico concreto: código, logs ou erro."));
+    explain.push(t(lang, "Falta contexto técnico concreto: código, logs o error.", "Concrete technical context is missing: code, logs, or error.", "Falta contexto técnico concreto: código, logs ou erro.", "缺少具体的技术背景：代码、日志或错误信息。"));
   }
 
   if ((opts?.attachmentsCount ?? 0) > 0 && !f.hasGoal) {
@@ -264,7 +268,8 @@ export function scorePrompt(
         lang,
         "Los adjuntos ayudan con contexto, pero no reemplazan un pedido claro.",
         "Attachments help with context, but they do not replace a clear request.",
-        "Os anexos ajudam com o contexto, mas não substituem um pedido claro."
+        "Os anexos ajudam com o contexto, mas não substituem um pedido claro.",
+        "附件能提供上下文，但不能代替清楚的请求。"
       )
     );
   }
@@ -275,7 +280,8 @@ export function scorePrompt(
         lang,
         "El score quedó capado porque todavía faltan insumos críticos para esta tarea.",
         "The score was capped because critical inputs are still missing for this task.",
-        "A pontuação foi limitada porque ainda faltam insumos críticos para esta tarefa."
+        "A pontuação foi limitada porque ainda faltam insumos críticos para esta tarefa.",
+        "评分被设了上限，因为这项任务还缺少关键信息。"
       )
     );
   }

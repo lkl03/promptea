@@ -1,5 +1,6 @@
 import type { Lang, FindingId, Severity } from "../types";
 import { isPt, PT_INJECTION, PT_SECRETS } from "../../pt";
+import { isZh, ZH_INJECTION, ZH_SECRETS } from "../../zh";
 
 type AddFinding = (id: FindingId, severity: Severity) => void;
 
@@ -64,6 +65,9 @@ export function applyInjectionRules(opts: { prompt: string; lang: Lang; addFindi
 
   const hit = patterns.some((re) => re.test(low));
   // v1.8.2: the same requests written in Portuguese.
-  const ptHit = isPt(prompt ?? "", opts.lang) && (PT_INJECTION.test(low) || PT_SECRETS.test(low));
+  const ptHit =
+    (isPt(prompt ?? "", opts.lang) && (PT_INJECTION.test(low) || PT_SECRETS.test(low))) ||
+    // v1.8.7: the same requests written in Chinese.
+    (isZh(prompt ?? "", opts.lang) && (ZH_INJECTION.test(low) || ZH_SECRETS.test(low)));
   if (hit || ptHit) addFinding("prompt_injection", "high");
 }

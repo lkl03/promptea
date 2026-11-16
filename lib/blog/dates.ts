@@ -208,7 +208,8 @@ export function weekAheadWindow(date: EditorialDate): { from: EditorialDate; to:
 /**
  * Human-readable publication date, matching the locale conventions already used
  * on the changelog page: ES writes `DD-MM-YYYY`, EN writes `YYYY-MM-DD`, PT
- * writes `DD/MM/YYYY` (the Brazilian convention). `lang` is the INTERFACE
+ * writes `DD/MM/YYYY` (the Brazilian convention), ZH writes `YYYY-MM-DD` like EN
+ * (the ISO order is the Chinese one too, GB/T 7408). `lang` is the INTERFACE
  * language: a date is chrome, not content.
  */
 export function formatEditorialDate(date: EditorialDate, lang: Lang): string {

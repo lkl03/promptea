@@ -19,7 +19,7 @@
 // free of filesystem access at build time.
 
 import { ImageResponse } from "next/og";
-import { isLang, contentLangFor } from "@/lib/domain";
+import { isLang, contentLangFor, imageLang } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import { getArticleBySlug } from "@/lib/blog/server";
@@ -45,6 +45,11 @@ const FALLBACK: Record<Lang, { title: string; footer: string }> = {
   },
   pt: {
     title: "A notícia de IA do dia, verificada.",
+    footer: "promptea.me",
+  },
+  // v1.8.7: no CJK font in next/og — the Chinese card is written in English (imageLang).
+  zh: {
+    title: "The AI story of the day, verified.",
     footer: "promptea.me",
   },
 };
@@ -84,7 +89,7 @@ export default async function OpenGraphImage({
       const article = await getArticleBySlug(contentLangFor(l), slug);
       if (article) {
         title = clampTitle(article.title);
-        dateLabel = formatEditorialDate(article.eventDate, l);
+        dateLabel = formatEditorialDate(article.eventDate, imageLang(l));
         meta = `${article.readingMinutes} min`;
       }
     } catch {

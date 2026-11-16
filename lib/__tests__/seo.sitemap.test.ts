@@ -17,7 +17,8 @@ vi.mock("@/lib/seo/dynamic", () => ({
 
 import sitemap from "@/app/sitemap";
 import { allStaticSeoUrls, staticSeoUrls, withoutEmptySectionIndexes } from "@/lib/seo/registry";
-import { LOCALES, X_DEFAULT_LOCALE, absUrl } from "@/lib/seo/site";
+import { HREFLANG, LOCALES, X_DEFAULT_LOCALE, absUrl, type Locale } from "@/lib/seo/site";
+import { CONTENT_LANGS } from "@/lib/domain";
 import { getGuide, guideLocales, guides } from "@/lib/seo/content/guides";
 import { glossary } from "@/lib/seo/content/glossary";
 import { modelPages } from "@/lib/seo/content/models";
@@ -53,7 +54,9 @@ describe("static URL registry", () => {
 
   it("every entry has a title, a description and a real date", () => {
     for (const u of allStaticSeoUrls()) {
-      expect(u.title.trim().length, u.path).toBeGreaterThan(3);
+      // A Han character carries about a word: "方法论" (3) is as long a title as "Methodology".
+      const han = (u.title.match(/\p{Script=Han}/gu) ?? []).length;
+      expect(u.title.trim().length + han * 2, u.path).toBeGreaterThan(3);
       expect(u.description.trim().length, u.path).toBeGreaterThan(10);
       expect(Number.isNaN(new Date(u.updated.length === 10 ? `${u.updated}T00:00:00Z` : u.updated).getTime()), `${u.path} ${u.updated}`).toBe(false);
       expect(u.path.startsWith(`/${u.lang}`), u.path).toBe(true);
@@ -74,7 +77,7 @@ describe("sitemap.xml generator", () => {
     expect(expected.length).toBe(allStaticSeoUrls().length - 2); // /es and /en/blog/tech
   });
 
-  it("gives every URL es, en, pt-BR + pt and x-default alternates that point back at itself", async () => {
+  it("gives every URL es, en, pt-BR + pt, zh-Hans + zh-CN + zh and x-default alternates that point back at itself", async () => {
     const entries = await sitemap();
     const byUrl = new Map(entries.map((e) => [e.url, e]));
     for (const e of entries) {
@@ -83,11 +86,14 @@ describe("sitemap.xml generator", () => {
       // has no /pt page of its own: no Portuguese alternate is claimed for either.
       const path = new URL(e.url).pathname;
       const guide = /^\/[a-z]{2}\/guides\/([^/]+)$/.exec(path);
-      const editorial = /\/blog(\/|$)/.test(path) || Boolean(guide && guideLocales(getGuide(guide[1])!).length < LOCALES.length);
-      expect(Object.keys(l).sort(), e.url).toEqual(editorial ? ["en", "es", "x-default"] : ["en", "es", "pt", "pt-BR", "x-default"]);
+      // v1.8.7: a guide is announced in exactly the locales it has its own text in (es, en,
+      // and pt / zh once translated); AI Daily in es/en.
+      const locs: readonly Locale[] = /\/blog(\/|$)/.test(path) ? CONTENT_LANGS : guide ? guideLocales(getGuide(guide[1])!) : LOCALES;
+      expect(Object.keys(l).sort(), e.url).toEqual([...locs.flatMap((x) => HREFLANG[x]), "x-default"].sort());
       expect(Object.values(l), e.url).toContain(e.url);
       expect(l["x-default"], e.url).toBe(l[X_DEFAULT_LOCALE]);
-      if (!editorial) expect(l.pt, e.url).toBe(l["pt-BR"]);
+      if (locs.includes("pt")) expect(l.pt, e.url).toBe(l["pt-BR"]);
+      if (locs.includes("zh")) expect([l["zh-Hans"], l["zh-CN"]], e.url).toEqual([l.zh, l.zh]);
       // reciprocal: every alternate has its own entry, with the very same alternates
       for (const alt of new Set(Object.values(l))) {
         const other = byUrl.get(alt);

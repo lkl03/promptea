@@ -12,7 +12,7 @@ El motor recibe:
 
 - `prompt: string` (1..12000 caracteres)
 - `target: "gpt" | "gemini" | "grok" | "claude" | "kimi" | "deepseek"`
-- `lang: "es" | "en" | "pt"` (v1.8.2 / engine 2.4.0 sumó portugués de Brasil)
+- `lang: Lang` (`lib/domain.ts` `LANGS`: `"es" | "en" | "pt" | "zh"`; v1.8.2 / engine 2.4.0 sumó portugués de Brasil, v1.8.7 / engine 2.5.0 chino simplificado)
 
 ### Output (AnalyzeResult)
 El motor devuelve:
@@ -93,6 +93,20 @@ Si `lang="pt"` (engine 2.4.0):
 
 La capa adaptativa (LLM) mantiene sus instrucciones en inglés para `lang="pt"` y agrega una regla que obliga a devolver en portugués de Brasil los campos visibles (`summary`, `keyImprovements`, `assumptions`, `followUpQuestions`); el prompt mejorado sigue en el idioma del usuario.
 
+Si `lang="zh"` (engine 2.5.0, v1.8.7):
+- no aparecen strings en español, inglés ni portugués: hallazgos, recomendaciones, explicación del score, fortalezas, preguntas de seguimiento, notas del modelo, encabezados y líneas del prompt optimizado, y el scaffold del formato JSON salen en chino simplificado (zh-CN, tuteo "你"). Quedan en inglés solo los tokens técnicos que un lector chino escribe así (JSON, null, API, URL, Markdown, nombres de modelos y parámetros como `reasoning_effort`) y las claves del JSON;
+- la puntuación que el motor pone entre dos textos (título + detalle) es de ancho completo y sin espacio (`PUNCT` en `lib/domain.ts`: "：", "。").
+
+**La misma excepción de imagen vale para `zh`.** Con `lang="zh"` y estrategia `image_generation` el prompt de imagen terminado se compone en inglés alrededor de las palabras del usuario y el resultado lo declara con `meta.optimizedPromptLang = "en"`; el resto del análisis sale en chino.
+
+**Prompts escritos en chino (engine 2.5.0).** El chino no separa palabras con espacios, así que:
+- `wordCount()` (`lib/engine/normalize.ts`) cuenta los caracteres Han como ~1,7 por palabra y el resto por espacios; los tokens aproximados y los umbrales de largo usan ese conteo;
+- un texto se lee como chino cuando tiene al menos 2 caracteres Han y son la mitad o más de las letras (`chineseShare()` en `lib/refine/language.ts`); el japonés (con kana) nunca se lee como chino;
+- el vocabulario chino (`lib/engine/zh.ts`, sin límites de palabra: el `\b` de JS no se cumple entre caracteres Han) se consulta solo cuando el prompt se lee como chino, igual que el portugués. Un prompt en chino da el mismo `taskType`, estrategia, IDs de hallazgos y score desde las cuatro interfaces y no recibe "idioma mezclado"; un prompt en español, inglés o portugués nunca llega a ese vocabulario (los 104 casos es/en/pt del dataset no se movieron);
+- desde `/zh`, un prompt claramente en español o inglés sí recibe la penalización de idioma mezclado (como desde `/pt`); uno en portugués no.
+
+La capa adaptativa mantiene sus instrucciones en inglés para `lang="zh"` y agrega la regla análoga a pt: los campos visibles se devuelven en chino simplificado. El juez pide el `rationale` en zh-CN.
+
 ### F) Robustez ante inputs arbitrarios
 Cualquier string válido debe producir resultado válido o error controlado.
 Nunca debe crashear.
@@ -130,7 +144,7 @@ Es puro y sin red (`scoreOptimizedPrompt`, `lib/engine/index.ts`). Re-analizar e
 
 - `engineVersion` sigue semver (`MAJOR.MINOR.PATCH`)
 - MAJOR: cambia IDs o reglas de contrato
-- MINOR: agrega heurísticas/findings/recs sin romper compatibilidad (ej. 2.3.0: re-score antes → después, detectores compartidos, fixes de clasificación; ningún ID renombrado. 2.4.0: tercer idioma `pt` — salida localizada, vocabulario portugués en los detectores, `meta.optimizedPromptLang`; ningún ID renombrado y resultados es/en sin cambios)
+- MINOR: agrega heurísticas/findings/recs sin romper compatibilidad (ej. 2.3.0: re-score antes → después, detectores compartidos, fixes de clasificación; ningún ID renombrado. 2.4.0: tercer idioma `pt` — salida localizada, vocabulario portugués en los detectores, `meta.optimizedPromptLang`; ningún ID renombrado y resultados es/en sin cambios. 2.5.0: cuarto idioma `zh` — salida localizada, vocabulario chino, conteo de palabras con Han, 24 casos de calibración zh; ningún ID renombrado y resultados es/en/pt sin cambios)
 - PATCH: fixes internos sin impacto visible, o correcciones de falsos positivos que igualan el comportamiento entre idiomas (ej. 2.4.1, v1.8.3: `missing_summary_length` ya no salta con "five bullet points" y `missing_marketing_audience` ya no salta con "para clientes recurrentes"; en ambos casos el equivalente en los otros dos idiomas ya contaba. Ningún ID renombrado, el dataset de calibración no se movió)
 
 ---

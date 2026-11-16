@@ -4,8 +4,17 @@ import Negotiator from "negotiator";
 
 import { DEFAULT_LOCALE, LOCALES } from "./lib/seo/site";
 
-// lib/domain.ts LANGS: es, en, pt. The matcher resolves regional tags to their
+// lib/domain.ts LANGS: es, en, pt, zh. The matcher resolves regional tags to their
 // language, so pt-BR and pt-PT both land on /pt (and es-AR, es-MX on /es).
+//
+// v1.8.7 — /zh is Simplified Chinese: zh, zh-CN, zh-Hans, zh-SG (and zh-MY) land
+// on it. Traditional Chinese (zh-TW, zh-HK, zh-MO, zh-Hant…) is NOT matched to it:
+// a Traditional reader is not served Simplified text by default. Those tags are
+// dropped before matching, so the visitor gets their next listed language, or
+// /en. The switcher still offers 中文 to anyone. Why /en and not /zh with a
+// notice: in the 30 days to 2026-11-16 Taiwan and Hong Kong together brought 6
+// visitors (Vercel Analytics), and auto-serving the other script is the one
+// choice that annoys readers of both (docs/i18n/zh-review.md).
 const locales = LOCALES;
 /**
  * The language a visitor gets when nothing in Accept-Language matches (an
@@ -35,6 +44,9 @@ export function hasAnalyzerParams(search: URLSearchParams): boolean {
   return ANALYZER_PARAMS.some((k) => search.has(k));
 }
 
+/** Traditional-Chinese tags: never matched to the Simplified /zh (see above). */
+export const TRADITIONAL_CHINESE = /^zh-(?:hant|tw|hk|mo)(?:-|$)/i;
+
 function getLocale(request: NextRequest): Locale {
   const acceptLanguage = request.headers.get("accept-language") ?? "";
 
@@ -43,7 +55,11 @@ function getLocale(request: NextRequest): Locale {
   // "*" (what some crawlers send) and malformed tags make Intl throw a
   // RangeError inside match(): that used to turn the request into a 500. Neither
   // says anything about the visitor's language, so they fall back to the default.
-  const languages = new Negotiator({ headers }).languages().filter((l) => l !== "*");
+  const all = new Negotiator({ headers }).languages().filter((l) => l !== "*");
+  // A browser whose FIRST Chinese tag is Traditional ("zh-TW,zh;q=0.9") uses the bare
+  // "zh" as a fallback for the same reader: drop it too; an explicit zh-CN/zh-Hans stays.
+  const traditionalFirst = TRADITIONAL_CHINESE.test(all.find((l) => /^zh(?:-|$)/i.test(l)) ?? "");
+  const languages = all.filter((l) => !TRADITIONAL_CHINESE.test(l) && !(traditionalFirst && /^zh$/i.test(l)));
 
   try {
     return match(languages, locales as unknown as string[], defaultLocale) as Locale;

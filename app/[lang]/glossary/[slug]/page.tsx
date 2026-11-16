@@ -5,14 +5,14 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
 import { glossary, getTerm } from "@/lib/seo/content/glossary";
-import { guides } from "@/lib/seo/content/guides";
+import { guideLang, guides } from "@/lib/seo/content/guides";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { glossaryGraph } from "@/lib/seo/pageGraphs";
-import { pick, LANGS, toLang, type Lang } from "@/lib/domain";
+import { pick, LANGS, LANG_TAG, toLang, type Lang } from "@/lib/domain";
 
 function buildOpenLink(lang: Lang, purpose: string, target: string, prompt: string) {
   const qp = new URLSearchParams();
@@ -82,37 +82,39 @@ export default async function GlossaryTermPage({
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/glossary`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Volver al glosario", en: "← Back to glossary", pt: "← Voltar ao glossário" })}
+            {pick(l, { es: "← Volver al glosario", en: "← Back to glossary", pt: "← Voltar ao glossário", zh: "← 返回术语表" })}
           </Link>
         </div>
       </div>
 
       {/* ✅ SEO editorial block */}
       <section className="mt-8 surface p-5">
-        <h2 className="text-sm font-medium">{pick(l, { es: "Cómo aplicarlo en prompts", en: "How to apply it in prompts", pt: "Como aplicar em prompts" })}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Cómo aplicarlo en prompts", en: "How to apply it in prompts", pt: "Como aplicar em prompts", zh: "如何在提示词中运用" })}</h2>
         <div className="mt-2 space-y-2 text-sm opacity-85">
           <p>
             {pick(l, {
               es: "Usá este concepto para reducir ambigüedad y mejorar consistencia. Si tu output necesita formato estricto, combiná esto con una guía de JSON y un template por modelo.",
               en: "Use this concept to reduce ambiguity and improve consistency. If you need strict formatting, combine it with a JSON guide and a per-model template.",
               pt: "Use este conceito para reduzir a ambiguidade e melhorar a consistência. Se precisar de formato estrito, combine-o com um guia de JSON e um template por modelo.",
+              zh: "用这个概念减少歧义、提高一致性。如果需要严格的格式，可以把它和JSON指南以及按模型区分的模板结合使用。",
             })}
           </p>
           {relatedGuides.length > 0 || relatedTerms.length > 0 ? (
             <div className="space-y-2 pt-2">
               {relatedGuides.length > 0 ? (
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs opacity-70">{pick(l, { es: "Guías relacionadas:", en: "Related guides:", pt: "Guias relacionados:" })}</span>
+                  <span className="text-xs opacity-70">{pick(l, { es: "Guías relacionadas:", en: "Related guides:", pt: "Guias relacionados:", zh: "相关指南：" })}</span>
                   {relatedGuides.map((g) => (
-                    <Link key={g.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${g.slug}`}>
-                      {g.title[l]}
+                    // An untranslated guide keeps its English title, marked as English (v1.8.7).
+                    <Link key={g.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${g.slug}`} lang={guideLang(g, l) === l ? undefined : LANG_TAG[guideLang(g, l)]}>
+                      {g.title[guideLang(g, l)]}
                     </Link>
                   ))}
                 </div>
               ) : null}
               {relatedTerms.length > 0 ? (
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs opacity-70">{pick(l, { es: "Términos relacionados:", en: "Related terms:", pt: "Termos relacionados:" })}</span>
+                  <span className="text-xs opacity-70">{pick(l, { es: "Términos relacionados:", en: "Related terms:", pt: "Termos relacionados:", zh: "相关术语：" })}</span>
                   {relatedTerms.map((t) => (
                     <Link key={t.slug} className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/${t.slug}`}>
                       {t.title[l]}
@@ -124,13 +126,13 @@ export default async function GlossaryTermPage({
           ) : null}
           <div className="flex flex-wrap gap-2 pt-2">
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>
-              {pick(l, { es: "JSON estricto", en: "Strict JSON", pt: "JSON estrito" })}
+              {pick(l, { es: "JSON estricto", en: "Strict JSON", pt: "JSON estrito", zh: "严格JSON" })}
             </Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/models`}>
-              {pick(l, { es: "Modelos", en: "Models", pt: "Modelos" })}
+              {pick(l, { es: "Modelos", en: "Models", pt: "Modelos", zh: "模型" })}
             </Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/prompts`}>
-              {pick(l, { es: "Packs", en: "Packs", pt: "Pacotes" })}
+              {pick(l, { es: "Packs", en: "Packs", pt: "Pacotes", zh: "提示词合集" })}
             </Link>
           </div>
         </div>
@@ -138,7 +140,7 @@ export default async function GlossaryTermPage({
 
       {/* Qué significa */}
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Qué significa", en: "What it means", pt: "O que significa" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Qué significa", en: "What it means", pt: "O que significa", zh: "含义" })}</div>
         <ul className="mt-3 list-disc pl-5 text-sm opacity-90 space-y-1">
           {term.body[l].map((b, i) => (
             <li key={i}>{b}</li>
@@ -148,7 +150,7 @@ export default async function GlossaryTermPage({
 
       {/* Ejemplo */}
       <section className="mt-10">
-        <div id="example-title" className="text-sm font-medium">{pick(l, { es: "Ejemplo copy-paste", en: "Copy-paste example", pt: "Exemplo pronto para copiar" })}</div>
+        <div id="example-title" className="text-sm font-medium">{pick(l, { es: "Ejemplo copy-paste", en: "Copy-paste example", pt: "Exemplo pronto para copiar", zh: "可直接复制的示例" })}</div>
 
         <article className="mt-3 surface p-4 space-y-3">
           {/* v1.8.4: scrolls inside; focusable so it can be scrolled from the keyboard (WCAG 2.1.1). */}
@@ -160,10 +162,11 @@ export default async function GlossaryTermPage({
                 es: "Se abre en el analizador con el prompt precargado.",
                 en: "Opens the analyzer with the prompt prefilled.",
                 pt: "Abre o analisador com o prompt já preenchido.",
+                zh: "将在分析器中打开，并预先填入该提示词。",
               })}
             </div>
             <Link href={href} className="btn btn-primary h-9 px-4">
-              {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" })}
+              {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "在Promptea中打开" })}
             </Link>
           </div>
         </article>
@@ -172,7 +175,7 @@ export default async function GlossaryTermPage({
       {/* FAQ visible */}
       {faq.length > 0 && (
         <section className="mt-10 surface p-5">
-          <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</div>
+          <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "常见问题" })}</div>
           <div className="mt-3 space-y-2">
             {faq.map((x) => (
               <details key={x.q} className="surface-soft p-3 rounded-2xl">

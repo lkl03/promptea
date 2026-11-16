@@ -13,6 +13,8 @@
 
 import type { Lang, TaskType } from "@/lib/domain";
 import { isPt, PT_COUNT_WITH_UNIT, PT_GOAL_LABEL, PT_GOAL_VERBS, PT_IMAGE_SPEC, PT_N_QUESTION, PT_OUTPUT_LABEL } from "./pt";
+import { isZh, ZH_COUNT_WITH_UNIT, ZH_GOAL_LABEL, ZH_GOAL_VERBS, ZH_IMAGE_SPEC, ZH_N_QUESTION, ZH_OUTPUT_LABEL } from "./zh";
+import { wordCount } from "./normalize";
 
 const L = "\\p{L}\\p{N}_";
 
@@ -61,10 +63,12 @@ export function hasGoalSignal(text: string, taskType?: TaskType | string, lang?:
   if (GOAL_VERBS.test(src)) return true;
   // v1.8.2: Portuguese request verbs and labels, when the prompt reads as Portuguese.
   if (isPt(src, lang) && (PT_GOAL_VERBS.test(src) || PT_GOAL_LABEL.test(src))) return true;
+  // v1.8.7: Chinese request verbs and labels ("请…", "帮我…", "目标：…").
+  if (isZh(src, lang) && (ZH_GOAL_VERBS.test(src) || ZH_GOAL_LABEL.test(src))) return true;
   if (/(?:^|\n)\s*(goal|objective|objetivo|meta|task|tarea)\s*:/i.test(src)) return true;
   if (String(taskType) === "image") {
-    const n = src.trim().split(/\s+/).filter(Boolean).length;
-    return n >= 3;
+    // v1.8.7: wordCount counts Chinese by characters (a Chinese description has no spaces).
+    return wordCount(src) >= 3;
   }
   return false;
 }
@@ -94,7 +98,9 @@ export function hasImplicitOutputSpec(text: string, lang?: Lang): boolean {
   const src = String(text ?? "");
   if (COUNT_WITH_UNIT.test(src) || N_QUESTION.test(src) || OUTPUT_LABEL.test(src)) return true;
   // v1.8.2: "3 títulos", "no máximo 120 palavras", "Saída: …".
-  return isPt(src, lang) && (PT_COUNT_WITH_UNIT.test(src) || PT_N_QUESTION.test(src) || PT_OUTPUT_LABEL.test(src));
+  if (isPt(src, lang) && (PT_COUNT_WITH_UNIT.test(src) || PT_N_QUESTION.test(src) || PT_OUTPUT_LABEL.test(src))) return true;
+  // v1.8.7: "3个标题", "不超过120字", "输出：…".
+  return isZh(src, lang) && (ZH_COUNT_WITH_UNIT.test(src) || ZH_N_QUESTION.test(src) || ZH_OUTPUT_LABEL.test(src));
 }
 
 // ---------------------------------------------------------------------------
@@ -118,7 +124,7 @@ const IMAGE_SPEC_RE = words(
 /** An image prompt's "output format" is its medium/style or aspect ratio. */
 export function hasImageOutputSpec(text: string, lang?: Lang): boolean {
   const src = String(text ?? "");
-  return IMAGE_SPEC_RE.test(src) || (isPt(src, lang) && PT_IMAGE_SPEC.test(src));
+  return IMAGE_SPEC_RE.test(src) || (isPt(src, lang) && PT_IMAGE_SPEC.test(src)) || (isZh(src, lang) && ZH_IMAGE_SPEC.test(src));
 }
 
 // ---------------------------------------------------------------------------

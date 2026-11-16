@@ -21,6 +21,11 @@ const COPY = {
   es: { tagline: "Analizá y optimizá tus prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
   en: { tagline: "Analyze and optimize your prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
   pt: { tagline: "Analise e otimize seus prompts", sub: "ChatGPT · Claude · Gemini · Grok · DeepSeek" },
+  // v1.8.7: next/og ships no CJK font, and Han characters would render as empty boxes ("tofu").
+  // The Chinese card is the brand artwork with Latin text — the tagline in English and the
+  // model families Chinese readers look for — instead of bundling a Chinese font subset.
+  // lib/__tests__/i18n.zh.test.ts keeps every image text of /zh free of Han characters.
+  zh: { tagline: "Analyze and optimize your prompts", sub: "DeepSeek · Kimi · Qwen · GLM · Doubao" },
 } as const;
 
 async function dataUri(file: string): Promise<string> {

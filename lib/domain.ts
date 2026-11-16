@@ -13,13 +13,13 @@
 // ---------------------------------------------------------------------------
 
 /**
- * The ONE list of interface languages (v1.8.2 added Brazilian Portuguese).
- * Routes (`/es`, `/en`, `/pt`), the proxy, the dictionaries, the sitemap,
- * hreflang, llms.txt, validators and the engine all derive from it:
- * lib/seo/site.ts re-exports it as LOCALES and nothing else may spell the list
- * out (`lib/__tests__/i18n.locales.test.ts` enforces it).
+ * The ONE list of interface languages (v1.8.2 added Brazilian Portuguese,
+ * v1.8.7 Simplified Chinese). Routes (`/es`, `/en`, `/pt`, `/zh`), the proxy,
+ * the dictionaries, the sitemap, hreflang, llms.txt, validators and the engine
+ * all derive from it: lib/seo/site.ts re-exports it as LOCALES and nothing else
+ * may spell the list out (`lib/__tests__/i18n.locales.test.ts` enforces it).
  */
-export const LANGS = ["es", "en", "pt"] as const;
+export const LANGS = ["es", "en", "pt", "zh"] as const;
 export type Lang = (typeof LANGS)[number];
 
 export function isLang(v: unknown): v is Lang {
@@ -34,17 +34,44 @@ export function toLang(v: unknown): Lang {
   return isLang(v) ? v : DEFAULT_LANG;
 }
 
-/** BCP 47 tag for `<html lang>`, JSON-LD `inLanguage` and `Intl` formatters. */
-export const LANG_TAG: Record<Lang, string> = { es: "es", en: "en", pt: "pt-BR" };
+/**
+ * BCP 47 tag for `<html lang>`, JSON-LD `inLanguage` and `Intl` formatters.
+ * v1.8.7: Chinese is Simplified Chinese for mainland readers, `zh-CN`.
+ */
+export const LANG_TAG: Record<Lang, string> = { es: "es", en: "en", pt: "pt-BR", zh: "zh-CN" };
 
 /** Locale passed to `Intl.*` / `toLocaleString` for dates, numbers and currency. */
-export const INTL_LOCALE: Record<Lang, string> = { es: "es-AR", en: "en-US", pt: "pt-BR" };
+export const INTL_LOCALE: Record<Lang, string> = { es: "es-AR", en: "en-US", pt: "pt-BR", zh: "zh-CN" };
 
-/** Short label of each language in the language switcher. */
-export const LANG_LABEL: Record<Lang, string> = { es: "ES", en: "EN", pt: "PT" };
+/** Short label of each language in the language switcher (the language's own name for its script). */
+export const LANG_LABEL: Record<Lang, string> = { es: "ES", en: "EN", pt: "PT", zh: "中文" };
+
+/**
+ * v1.8.7 — the language TEXT INSIDE GENERATED IMAGES is written in (Open Graph
+ * cards, the share card). next/og ships no CJK font, so Han characters would
+ * render as empty boxes: a Chinese page gets its image text in the default
+ * language. The other languages are written in Latin script and keep theirs.
+ */
+export const IMAGE_TEXT_LANG: Record<Lang, Lang> = { es: "es", en: "en", pt: "pt", zh: DEFAULT_LANG };
+
+export function imageLang(lang: Lang): Lang {
+  return IMAGE_TEXT_LANG[lang];
+}
 
 /** Full name of each language, in that language (aria-labels, selects). */
-export const LANG_NAME: Record<Lang, string> = { es: "Español", en: "English", pt: "Português" };
+export const LANG_NAME: Record<Lang, string> = { es: "Español", en: "English", pt: "Português", zh: "简体中文" };
+
+/**
+ * v1.8.7: punctuation that code puts between two pieces of copy ("Clarity. Measures…",
+ * "Source: …"). Chinese writes it full width and with no space after ("清晰度。衡量…"), and
+ * puts no space between words either (`gap`: before an inline link that ends a sentence).
+ */
+export const PUNCT: Record<Lang, { colon: string; stop: string; gap: string }> = {
+  es: { colon: ": ", stop: ". ", gap: " " },
+  en: { colon: ": ", stop: ". ", gap: " " },
+  pt: { colon: ": ", stop: ". ", gap: " " },
+  zh: { colon: "：", stop: "。", gap: "" },
+};
 
 /**
  * Pick the text for `lang` from an inline `{ es, en, pt }` literal. For copy
@@ -74,13 +101,13 @@ export function isContentLang(v: unknown): v is ContentLang {
  * the one the sources of AI Daily are written in. The page says so and offers
  * the Spanish edition next to it.
  */
-export const CONTENT_LANG_FOR: Record<Lang, ContentLang> = { es: "es", en: "en", pt: "en" };
+export const CONTENT_LANG_FOR: Record<Lang, ContentLang> = { es: "es", en: "en", pt: "en", zh: "en" };
 
 export function contentLangFor(lang: Lang): ContentLang {
   return CONTENT_LANG_FOR[lang];
 }
 
-/** True when the interface language has no edition of its own (today: pt). */
+/** True when the interface language has no edition of its own (today: pt and zh). */
 export function contentIsFallback(lang: Lang): boolean {
   return CONTENT_LANG_FOR[lang] !== lang;
 }

@@ -14,22 +14,23 @@
 //   Doubao   docs.volcengine.com/docs/82379/1330310 (models) and
 //            docs/ark/deep-thinking, docs/ark/structured-output-beta
 //
-// Guides are written in English and Spanish; Portuguese readers get the English
-// text (guideLang() falls back when the pt title equals the en one), like other
-// guides that are not translated yet.
+// Guides are written in English, Spanish and Chinese (v1.8.7); Portuguese readers
+// get the English text (guideLang() falls back when the pt title equals the en
+// one), like other guides that are not translated yet.
 
+import type { Locale } from "../site";
 import type { Guide } from "./guides";
 import type { ModelPage } from "./models";
 
-type L = { en: string; es: string; pt: string };
-/** English + Spanish; Portuguese shows the English original (see guideLang). */
-const enEs = (en: string, es: string): L => ({ en, es, pt: en });
-const enEsList = (en: string[], es: string[]) => ({ en, es, pt: en });
+type L = Record<Locale, string>;
+/** English + Spanish + Chinese; Portuguese shows the English original (see guideLang) until translated. */
+const enEsZh = (en: string, es: string, zh: string): L => ({ en, es, pt: en, zh });
+const enEsZhList = (en: string[], es: string[], zh: string[]): Record<Locale, string[]> => ({ en, es, pt: en, zh });
 
 const UPDATED = "2026-11-14";
 
 // ---------------------------------------------------------------------------
-// Model pages (/models/<slug>), all three languages
+// Model pages (/models/<slug>), all four languages
 // ---------------------------------------------------------------------------
 
 export const CHINESE_MODEL_PAGES: ModelPage[] = [
@@ -39,11 +40,13 @@ export const CHINESE_MODEL_PAGES: ModelPage[] = [
       en: "Prompts for Qwen: clear sections, delimiters and one example",
       es: "Prompts para Qwen: secciones claras, delimitadores y un ejemplo",
       pt: "Prompts para Qwen: seções claras, delimitadores e um exemplo",
+      zh: "通义千问（Qwen）提示词：分段清晰、用好分隔符、附一个示例",
     },
     description: {
       en: "How to prompt Qwen3.8 Max, Qwen3.7 Plus and Qwen3.8 Flash on Alibaba Cloud Model Studio: the section framework Alibaba recommends, ### delimiters, examples and JSON mode.",
       es: "Cómo promptear Qwen3.8 Max, Qwen3.7 Plus y Qwen3.8 Flash en Alibaba Cloud Model Studio: el esquema de secciones que recomienda Alibaba, delimitadores ###, ejemplos y modo JSON.",
       pt: "Como escrever prompts para Qwen3.8 Max, Qwen3.7 Plus e Qwen3.8 Flash no Alibaba Cloud Model Studio: o esquema de seções que a Alibaba recomenda, delimitadores ###, exemplos e modo JSON.",
+      zh: "如何在阿里云百炼（Model Studio）上为Qwen3.8 Max、Qwen3.7 Plus和Qwen3.8 Flash编写提示词：Alibaba推荐的分段框架、###分隔符、示例和JSON模式。",
     },
     bullets: {
       en: [
@@ -64,10 +67,16 @@ export const CHINESE_MODEL_PAGES: ModelPage[] = [
         "Inclua um exemplo da saída quando puder: segundo a Alibaba, exemplos deixam as respostas mais consistentes, e para saída estruturada o que funciona melhor é um modelo de formato com dados de exemplo.",
         "No modo JSON (json_object) a palavra 'JSON' precisa aparecer no prompt, senão a API retorna erro; json_schema com strict obriga a seguir um esquema.",
       ],
+      zh: [
+        "Alibaba的提示词指南建议分成六个部分：背景、目标、风格、语气、受众和回复（输出的具体形式）。任务用不到的部分可以删掉。",
+        "用###或===这类醒目的分隔符标出各段材料，让模型分清哪些是指令、哪些是要处理的文本。",
+        "尽量附上一个输出示例：Alibaba表示，示例能让回答更一致；对于结构化输出，格式模板加示例数据的效果最好。",
+        "使用JSON模式（json_object）时，提示词中必须出现“JSON”一词，否则API会返回错误；json_schema配合strict会强制遵循schema。",
+      ],
     },
     templates: [
       {
-        title: { en: "Six-part brief", es: "Brief en seis partes", pt: "Briefing em seis partes" },
+        title: { en: "Six-part brief", es: "Brief en seis partes", pt: "Briefing em seis partes", zh: "六段式需求说明" },
         purpose: "text",
         prompt: {
           en: `### Context
@@ -106,10 +115,22 @@ export const CHINESE_MODEL_PAGES: ModelPage[] = [
 [quem lê e o que já sabe]
 ### Resposta
 [formato exato: ex. 5 tópicos, no máximo 15 palavras cada]`,
+          zh: `### 背景
+[模型需要了解的背景信息]
+### 目标
+[要完成的唯一任务]
+### 风格
+[例如：产品经理写的进度说明]
+### 语气
+[例如：朴实、直接]
+### 受众
+[谁来读，他们已经知道什么]
+### 回复
+[确切格式：例如5个要点，每条不超过15个字]`,
         },
       },
       {
-        title: { en: "JSON extraction (json_object mode)", es: "Extracción a JSON (modo json_object)", pt: "Extração para JSON (modo json_object)" },
+        title: { en: "JSON extraction (json_object mode)", es: "Extracción a JSON (modo json_object)", pt: "Extração para JSON (modo json_object)", zh: "JSON提取（json_object模式）" },
         purpose: "data",
         prompt: {
           en: `Extract the fields below from the text and return JSON only.
@@ -133,24 +154,33 @@ Exemplo: {"name": "Ana Ruiz", "company": "Tasklight", "email": null}
 ###
 [cole o texto aqui]
 ###`,
+          zh: `从下面的文本中提取以下字段，只返回JSON。
+字段："name"（string）、"company"（string或null）、"email"（string或null）。
+如果某个字段缺失，填null，不要猜测。
+示例：{"name": "Ana Ruiz", "company": "Tasklight", "email": null}
+###
+[在这里粘贴文本]
+###`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which Qwen model should I pick?", es: "¿Qué modelo de Qwen elijo?", pt: "Qual modelo do Qwen eu escolho?" },
+        q: { en: "Which Qwen model should I pick?", es: "¿Qué modelo de Qwen elijo?", pt: "Qual modelo do Qwen eu escolho?", zh: "该选哪个Qwen模型？" },
         a: {
           en: "Alibaba calls Qwen3.7 Plus the recommended starting point (capability and cost in balance). Use Qwen3.8 Max for the hardest reasoning and long multimodal inputs, and Qwen3.8 Flash for short, high-volume tasks.",
           es: "Alibaba presenta a Qwen3.7 Plus como el punto de partida recomendado (equilibra capacidad y costo). Usá Qwen3.8 Max para el razonamiento más difícil y entradas multimodales largas, y Qwen3.8 Flash para tareas cortas de alto volumen.",
           pt: "A Alibaba apresenta o Qwen3.7 Plus como o ponto de partida recomendado (equilibra capacidade e custo). Use o Qwen3.8 Max para o raciocínio mais difícil e entradas multimodais longas, e o Qwen3.8 Flash para tarefas curtas e de alto volume.",
+          zh: "Alibaba把Qwen3.7 Plus列为推荐的入门选择（能力与成本兼顾）。最难的推理和较长的多模态输入用Qwen3.8 Max，简短且调用量大的任务用Qwen3.8 Flash。",
         },
       },
       {
-        q: { en: "Should I turn thinking off?", es: "¿Conviene apagar el razonamiento?", pt: "Vale a pena desligar o raciocínio?" },
+        q: { en: "Should I turn thinking off?", es: "¿Conviene apagar el razonamiento?", pt: "Vale a pena desligar o raciocínio?", zh: "要不要关闭思考模式？" },
         a: {
           en: "Thinking is on by default. Turn it off (enable_thinking: false) for quick, simple answers, or cap it with thinking_budget; keep it on for reasoning, math and code.",
           es: "El razonamiento viene activado. Apagalo (enable_thinking: false) para respuestas simples y rápidas, o limitalo con thinking_budget; dejalo activo para razonamiento, matemática y código.",
           pt: "O raciocínio vem ligado. Desligue (enable_thinking: false) para respostas simples e rápidas, ou limite com thinking_budget; deixe ligado para raciocínio, matemática e código.",
+          zh: "思考模式默认开启。需要快速、简单的回答时可以关闭（enable_thinking: false），或用thinking_budget设定上限；推理、数学和代码任务建议保持开启。",
         },
       },
     ],
@@ -161,11 +191,13 @@ Exemplo: {"name": "Ana Ruiz", "company": "Tasklight", "email": null}
       en: "Prompts for GLM: constraints first, no inflated roles",
       es: "Prompts para GLM: restricciones primero, sin roles inflados",
       pt: "Prompts para GLM: restrições primeiro, sem papéis inflados",
+      zh: "智谱GLM提示词：约束先行，不要夸大角色",
     },
     description: {
       en: "How to prompt GLM-5.3 and GLM-5.3 Flash from Z.ai (Zhipu AI): always-on reasoning, key constraints early, roles that serve the task and JSON with explicit fields.",
       es: "Cómo promptear GLM-5.3 y GLM-5.3 Flash de Z.ai (Zhipu AI): razonamiento siempre activo, restricciones clave al principio, roles al servicio de la tarea y JSON con campos explícitos.",
       pt: "Como escrever prompts para GLM-5.3 e GLM-5.3 Flash da Z.ai (Zhipu AI): raciocínio sempre ligado, restrições-chave no começo, papéis a serviço da tarefa e JSON com campos explícitos.",
+      zh: "如何为Z.ai（智谱AI）的GLM-5.3和GLM-5.3 Flash编写提示词：推理始终开启，关键约束尽早给出，角色要服务于任务，JSON要写明字段。",
     },
     bullets: {
       en: [
@@ -186,10 +218,16 @@ Exemplo: {"name": "Ana Ruiz", "company": "Tasklight", "email": null}
         "Use tags ou delimitadores com o nome do que contêm, sempre iguais, para o modelo separar as regras que deve seguir do material que deve processar.",
         "O GLM-5.3 sempre raciocina e aceita só texto; escolha reasoning_effort (low, high ou max). O GLM-5.3 Flash também lê imagens e vídeo.",
       ],
+      zh: [
+        "智谱的提示词指南建议，把你已知的重要约束尽早写出来，而不是在结尾顺带补充。",
+        "角色要服务于任务：别用“世界级专家”这类头衔。角色代替不了任务描述、原始材料和检验答案的标准。",
+        "用按内容命名的标签或分隔符，并保持前后一致，让模型把必须遵守的规则和需要处理的材料区分开。",
+        "GLM-5.3始终进行推理，只接受文本输入；可以选择reasoning_effort（low、high或max）。GLM-5.3 Flash还能读取图片和视频。",
+      ],
     },
     templates: [
       {
-        title: { en: "Constraints-first task", es: "Tarea con restricciones primero", pt: "Tarefa com restrições primeiro" },
+        title: { en: "Constraints-first task", es: "Tarea con restricciones primero", pt: "Tarefa com restrições primeiro", zh: "约束先行的任务" },
         purpose: "text",
         prompt: {
           en: `Constraints (apply to everything below):
@@ -228,24 +266,38 @@ Tarefa: [o que produzir]
 </fonte>
 
 Pronto quando: [como conferir a resposta]`,
+          zh: `约束（适用于以下全部内容）：
+- 受众：[谁]
+- 篇幅：[上限]
+- 不得：[要避免什么]
+
+任务：[要产出什么]
+
+<source>
+[要处理的材料]
+</source>
+
+完成标准：[如何检验答案]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can I turn GLM-5.3's reasoning off?", es: "¿Se puede apagar el razonamiento de GLM-5.3?", pt: "Dá para desligar o raciocínio do GLM-5.3?" },
+        q: { en: "Can I turn GLM-5.3's reasoning off?", es: "¿Se puede apagar el razonamiento de GLM-5.3?", pt: "Dá para desligar o raciocínio do GLM-5.3?", zh: "可以关闭GLM-5.3的推理吗？" },
         a: {
           en: "No. Z.ai's docs say disabling reasoning is no longer supported; set reasoning_effort to low for quick tasks instead (the default is max).",
           es: "No. La documentación de Z.ai dice que ya no se puede desactivar; para tareas rápidas poné reasoning_effort en low (el valor por defecto es max).",
           pt: "Não. A documentação da Z.ai diz que não é mais possível desativar; para tarefas rápidas use reasoning_effort low (o padrão é max).",
+          zh: "不可以。Z.ai的文档说明已不再支持关闭推理；处理快速任务时，可以把reasoning_effort设为low（默认值为max）。",
         },
       },
       {
-        q: { en: "Is asking for 'JSON' enough?", es: "¿Alcanza con pedir 'JSON'?", pt: "Basta pedir 'JSON'?" },
+        q: { en: "Is asking for 'JSON' enough?", es: "¿Alcanza con pedir 'JSON'?", pt: "Basta pedir 'JSON'?", zh: "只要求输出“JSON”就够了吗？" },
         a: {
           en: "No. Zhipu's guide asks you to define the structure, what each field means and which values it allows, and to keep validating the result in your application.",
           es: "No. La guía de Zhipu pide definir la estructura, qué significa cada campo y qué valores admite, y seguir validando el resultado en tu aplicación.",
           pt: "Não. O guia da Zhipu pede para definir a estrutura, o que cada campo significa e quais valores aceita, e continuar validando o resultado na sua aplicação.",
+          zh: "不够。智谱的指南要求你定义结构、每个字段的含义和允许的取值，并且仍要在你的应用中校验结果。",
         },
       },
     ],
@@ -256,11 +308,13 @@ Pronto quando: [como conferir a resposta]`,
       en: "Prompts for MiniMax: coding and agent tasks with clear checks",
       es: "Prompts para MiniMax: código y agentes con verificaciones claras",
       pt: "Prompts para MiniMax: código e agentes com verificações claras",
+      zh: "MiniMax提示词：编程与智能体任务，检验标准要明确",
     },
     description: {
       en: "How to prompt MiniMax-M3 and MiniMax-M3.1 Flash: frontier coding models with 1M context, fixed sampling, and tool loops that must send the full response back.",
       es: "Cómo promptear MiniMax-M3 y MiniMax-M3.1 Flash: modelos de código de frontera con contexto de 1M, muestreo fijo y loops de herramientas que deben devolver la respuesta completa.",
       pt: "Como escrever prompts para MiniMax-M3 e MiniMax-M3.1 Flash: modelos de código de ponta com contexto de 1M, amostragem fixa e loops de ferramentas que devem devolver a resposta completa.",
+      zh: "如何为MiniMax-M3和MiniMax-M3.1 Flash编写提示词：它们是拥有1M上下文的前沿编程模型，采样参数固定，工具调用循环中必须回传完整响应。",
     },
     bullets: {
       en: [
@@ -281,10 +335,16 @@ Pronto quando: [como conferir a resposta]`,
         "A MiniMax não documenta um modo JSON: se você precisar de JSON, descreva o formato exato com um exemplo e peça só o JSON.",
         "Em loops com ferramentas, devolva a resposta completa do modelo a cada turno, incluindo o reasoning_content.",
       ],
+      zh: [
+        "MiniMax把这两个模型定位为前沿编程模型：请提供代码仓库的上下文、具体的验收标准，以及能证明改动有效的命令。",
+        "temperature（温度）和top_p是固定的（MiniMax始终使用1和0.95），所以要靠指令而不是采样参数来引导输出。",
+        "MiniMax的文档中没有JSON模式：需要JSON时，用一个示例说明确切的结构，并要求只返回JSON。",
+        "在工具调用循环中，每一轮都要回传模型的完整响应，包括reasoning_content。",
+      ],
     },
     templates: [
       {
-        title: { en: "Agent coding task", es: "Tarea de código para un agente", pt: "Tarefa de código para um agente" },
+        title: { en: "Agent coding task", es: "Tarea de código para un agente", pt: "Tarefa de código para um agente", zh: "智能体编程任务" },
         purpose: "code",
         prompt: {
           en: `Goal: [the change, in one sentence]
@@ -311,16 +371,25 @@ Critérios de aceitação:
 Verifique com: [comando de testes]
 Restrições: [o que não pode mudar]
 Ao terminar: resuma o diff e diga o que ficou sem verificar.`,
+          zh: `目标：[要做的改动，用一句话说明]
+代码仓库上下文：[相关文件及其相互关系]
+验收标准：
+- [可观察的行为1]
+- [可观察的行为2]
+验证方式：[测试命令]
+约束：[哪些内容不能改]
+完成后：汇报diff摘要，以及尚未验证的内容。`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Which MiniMax model should I use?", es: "¿Qué modelo de MiniMax uso?", pt: "Qual modelo da MiniMax eu uso?" },
+        q: { en: "Which MiniMax model should I use?", es: "¿Qué modelo de MiniMax uso?", pt: "Qual modelo da MiniMax eu uso?", zh: "该用哪个MiniMax模型？" },
         a: {
           en: "MiniMax-M3 is the flagship and can turn thinking off; MiniMax-M3.1 Flash is the faster option, always reasons and lets you tune the depth with reasoning_effort. MiniMax-M2.5 and M2.7 retire on 2026-11-18.",
           es: "MiniMax-M3 es el modelo insignia y permite apagar el razonamiento; MiniMax-M3.1 Flash es la opción más rápida, siempre razona y deja ajustar la profundidad con reasoning_effort. MiniMax-M2.5 y M2.7 se retiran el 2026-11-18.",
           pt: "O MiniMax-M3 é o modelo principal e permite desligar o raciocínio; o MiniMax-M3.1 Flash é a opção mais rápida, sempre raciocina e deixa ajustar a profundidade com reasoning_effort. O MiniMax-M2.5 e o M2.7 serão aposentados em 18/11/2026.",
+          zh: "MiniMax-M3是旗舰模型，可以关闭思考；MiniMax-M3.1 Flash速度更快，始终进行推理，可用reasoning_effort调整推理深度。MiniMax-M2.5和M2.7将于2026年11月18日下线。",
         },
       },
     ],
@@ -331,11 +400,13 @@ Ao terminar: resuma o diff e diga o que ficou sem verificar.`,
       en: "Prompts for Doubao: goal and scenario, not step-by-step",
       es: "Prompts para Doubao: objetivo y escenario, no paso a paso",
       pt: "Prompts para Doubao: objetivo e cenário, não passo a passo",
+      zh: "豆包（Doubao）提示词：讲清目标和场景，不要拆成步骤",
     },
     description: {
       en: "How to prompt Doubao Seed 2.1 (Pro, Lite, Turbo) on ByteDance's Volcengine Ark: give the goal and scenario, avoid step-by-step decomposition, put instructions in the user message and raise max_tokens.",
       es: "Cómo promptear Doubao Seed 2.1 (Pro, Lite, Turbo) en Volcengine Ark de ByteDance: dar objetivo y escenario, evitar descomponer en pasos, poner las instrucciones en el mensaje del usuario y subir max_tokens.",
       pt: "Como escrever prompts para Doubao Seed 2.1 (Pro, Lite, Turbo) no Volcengine Ark da ByteDance: dar objetivo e cenário, evitar decompor em passos, pôr as instruções na mensagem do usuário e aumentar max_tokens.",
+      zh: "如何在ByteDance旗下的火山方舟（Volcengine Ark）上为Doubao Seed 2.1（Pro、Lite、Turbo）编写提示词：给出目标和场景，避免拆解成步骤，把指令放在用户消息里，并调高max_tokens。",
     },
     bullets: {
       en: [
@@ -356,10 +427,16 @@ Ao terminar: resuma o diff e diga o que ficou sem verificar.`,
         "Use menos prompts de sistema: mande as informações do prompt como mensagem do usuário.",
         "A saída máxima padrão é de 4K tokens: aumente max_tokens para respostas longas. Para JSON (beta), json_object precisa da palavra 'json' na entrada; json_schema com strict obriga a seguir um esquema.",
       ],
+      zh: [
+        "火山引擎（Volcengine）针对推理模型的指南建议，在问题本身之外补充目标和场景（给谁用、用来做什么、怎样算好结果）。",
+        "指南还建议尽量减少或避免把问题拆成步骤、提供示例：开启思考时，这样做会限制模型自身的推理。",
+        "少用系统提示词：把提示词信息作为用户消息发送。",
+        "默认最大输出为4K token：需要长回答时请调高max_tokens。JSON输出（beta）方面，json_object要求输入中包含“json”一词；json_schema配合strict会强制遵循schema。",
+      ],
     },
     templates: [
       {
-        title: { en: "Goal + scenario request", es: "Pedido con objetivo + escenario", pt: "Pedido com objetivo + cenário" },
+        title: { en: "Goal + scenario request", es: "Pedido con objetivo + escenario", pt: "Pedido com objetivo + cenário", zh: "目标+场景式请求" },
         purpose: "text",
         prompt: {
           en: `Problem: [what you need]
@@ -380,24 +457,32 @@ Cenário: [quem vai usar, onde e quando]
 Público: [quem lê e o que já sabe]
 Restrições: [tamanho, tom, o que não fazer]
 Formato de saída: [formato exato]`,
+          zh: `问题：[你需要什么]
+目标：[好的结果能让你做成什么]
+场景：[谁会在何时何地使用]
+受众：[谁来读，他们已经知道什么]
+约束：[篇幅、语气、禁止事项]
+输出格式：[确切的形式]`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Doubao or Dola Seed?", es: "¿Doubao o Dola Seed?", pt: "Doubao ou Dola Seed?" },
+        q: { en: "Doubao or Dola Seed?", es: "¿Doubao o Dola Seed?", pt: "Doubao ou Dola Seed?", zh: "豆包还是Dola Seed？" },
         a: {
           en: "The same family under two brands: Doubao on Volcengine Ark (China), Dola Seed on BytePlus ModelArk (international). Promptea lists the Volcengine model ids.",
           es: "La misma familia con dos marcas: Doubao en Volcengine Ark (China) y Dola Seed en BytePlus ModelArk (internacional). Promptea lista los ids de modelo de Volcengine.",
           pt: "A mesma família com duas marcas: Doubao no Volcengine Ark (China) e Dola Seed no BytePlus ModelArk (internacional). O Promptea lista os ids de modelo da Volcengine.",
+          zh: "同一个模型家族，两个品牌：在火山方舟（Volcengine Ark，中国）上叫豆包（Doubao），在BytePlus ModelArk（国际）上叫Dola Seed。Promptea列出的是火山引擎的模型ID。",
         },
       },
       {
-        q: { en: "Why is my Doubao answer cut short?", es: "¿Por qué la respuesta de Doubao sale cortada?", pt: "Por que a resposta do Doubao sai cortada?" },
+        q: { en: "Why is my Doubao answer cut short?", es: "¿Por qué la respuesta de Doubao sale cortada?", pt: "Por que a resposta do Doubao sai cortada?", zh: "为什么豆包的回答被截断了？" },
         a: {
           en: "The default max output is 4K tokens even though the models allow up to 256K. Set max_tokens explicitly for long answers.",
           es: "La salida máxima por defecto es de 4K tokens aunque los modelos admiten hasta 256K. Fijá max_tokens a mano para respuestas largas.",
           pt: "A saída máxima padrão é de 4K tokens, embora os modelos aceitem até 256K. Defina max_tokens explicitamente para respostas longas.",
+          zh: "默认最大输出只有4K token，尽管模型最多支持256K。需要长回答时，请显式设置max_tokens。",
         },
       },
     ],
@@ -405,25 +490,27 @@ Formato de saída: [formato exato]`,
 ];
 
 // ---------------------------------------------------------------------------
-// Guides (/guides/<family>-prompt-guide), English + Spanish
+// Guides (/guides/<family>-prompt-guide), English + Spanish + Chinese
 // ---------------------------------------------------------------------------
 
 export const CHINESE_MODEL_GUIDES: Guide[] = [
   {
     slug: "qwen-prompt-guide",
     updated: UPDATED,
-    title: enEs(
+    title: enEsZh(
       "Qwen prompt guide: Alibaba's six-part framework, delimiters and JSON mode",
       "Guía de prompts para Qwen: el esquema de seis partes de Alibaba, delimitadores y modo JSON",
+      "通义千问（Qwen）提示词指南：Alibaba的六段式框架、分隔符与JSON模式",
     ),
-    description: enEs(
+    description: enEsZh(
       "How to write prompts for Qwen3.8 Max, Qwen3.7 Plus and Qwen3.8 Flash, following Alibaba Cloud Model Studio's own prompt guide and API docs.",
       "Cómo escribir prompts para Qwen3.8 Max, Qwen3.7 Plus y Qwen3.8 Flash siguiendo la guía de prompts y la documentación de la API de Alibaba Cloud Model Studio.",
+      "依据阿里云百炼（Model Studio）官方的提示词指南和API文档，介绍如何为Qwen3.8 Max、Qwen3.7 Plus和Qwen3.8 Flash编写提示词。",
     ),
     sections: [
       {
-        heading: enEs("What Alibaba recommends", "Qué recomienda Alibaba"),
-        bullets: enEsList(
+        heading: enEsZh("What Alibaba recommends", "Qué recomienda Alibaba", "Alibaba的建议"),
+        bullets: enEsZhList(
           [
             "Build the prompt from six parts: context, objective, style, tone, audience and response. Each one answers a question the model would otherwise guess; leave out the ones the task does not need.",
             "Response is the exact output form: a list, a table, JSON with named fields, a word limit.",
@@ -436,11 +523,17 @@ export const CHINESE_MODEL_GUIDES: Guide[] = [
             "Separá los bloques de material con marcadores bien distintos como ### o ===, para que los límites no se confundan.",
             "Dá ejemplos cuando importa el formato: permiten que el modelo imite el formato, los términos y el tono, y hacen las respuestas más consistentes. Para salida estructurada, combiná una plantilla de formato con datos de ejemplo.",
           ],
+          [
+            "用六个部分搭建提示词：背景、目标、风格、语气、受众和回复。每一部分都回答一个模型原本只能去猜的问题；任务用不到的部分可以省略。",
+            "“回复”指输出的具体形式：列表、表格、带命名字段的JSON、字数限制等。",
+            "用###或===这类醒目的标记把各段材料隔开，让边界一目了然。",
+            "格式重要时就给示例：示例能让模型模仿格式、术语和语气，让回答更一致。对于结构化输出，把格式模板和示例数据搭配使用。",
+          ],
         ),
       },
       {
-        heading: enEs("Settings that change the prompt", "Ajustes que cambian el prompt"),
-        bullets: enEsList(
+        heading: enEsZh("Settings that change the prompt", "Ajustes que cambian el prompt", "会影响提示词的设置"),
+        bullets: enEsZhList(
           [
             "Thinking is on by default on Qwen3.8 Max, Qwen3.7 Plus and Qwen3.8 Flash. Turn it off with enable_thinking for quick answers, or cap it with thinking_budget.",
             "JSON mode: with response_format json_object, the word 'JSON' must appear in the prompt or the request fails. json_schema with strict enforces a schema.",
@@ -453,15 +546,21 @@ export const CHINESE_MODEL_GUIDES: Guide[] = [
             "La búsqueda web es un parámetro (enable_search), no algo que se pide en el texto. En Qwen3.8 Max está disponible en las regiones de Pekín y Singapur.",
             "Los tres aceptan texto, imagen y video con un contexto de 1M de tokens, así que entran documentos largos, pero decí qué parte importa.",
           ],
+          [
+            "Qwen3.8 Max、Qwen3.7 Plus和Qwen3.8 Flash默认开启思考模式。需要快速回答时可用enable_thinking关闭，或用thinking_budget设定上限。",
+            "JSON模式：使用response_format json_object时，提示词中必须出现“JSON”一词，否则请求会失败。json_schema配合strict会强制遵循schema。",
+            "联网搜索是一个参数（enable_search），不是在正文里提出的要求。在Qwen3.8 Max上，该功能在北京和新加坡地域可用。",
+            "三个模型都支持文本、图片和视频输入，上下文窗口为1M token，长文档也放得下，但要说明其中哪一部分最重要。",
+          ],
         ),
       },
     ],
     templates: [
       {
-        title: enEs("Six-part brief", "Brief en seis partes"),
+        title: enEsZh("Six-part brief", "Brief en seis partes", "六段式需求说明"),
         purpose: "text",
         target: "qwen",
-        prompt: enEs(
+        prompt: enEsZh(
           `### Context
 [background the model needs]
 ### Objective
@@ -486,13 +585,25 @@ export const CHINESE_MODEL_GUIDES: Guide[] = [
 [quién lo lee y qué sabe ya]
 ### Respuesta
 [formato exacto, ej. 3 párrafos cortos, máximo 120 palabras]`,
+          `### 背景
+[模型需要了解的背景信息]
+### 目标
+[要完成的唯一任务]
+### 风格
+[例如：客服人员的回复]
+### 语气
+[例如：亲切、简洁]
+### 受众
+[谁来读，他们已经知道什么]
+### 回复
+[确切格式，例如：3个短段落，不超过120字]`,
         ),
       },
       {
-        title: enEs("Classification with examples", "Clasificación con ejemplos"),
+        title: enEsZh("Classification with examples", "Clasificación con ejemplos", "带示例的分类"),
         purpose: "data",
         target: "qwen",
-        prompt: enEs(
+        prompt: enEsZh(
           `Classify each support ticket as "billing", "bug" or "how-to". Return JSON: [{"id": number, "label": string}].
 
 Examples:
@@ -513,22 +624,34 @@ Ejemplos:
 ### Tickets
 [pegá los tickets con su id]
 ###`,
+          `把每张客服工单归类为"billing"、"bug"或"how-to"。返回JSON：[{"id": number, "label": string}]。
+
+示例：
+"我被扣了两次费" -> billing
+"点导出按钮没有任何反应" -> bug
+"怎么添加团队成员？" -> how-to
+
+### 工单
+[粘贴工单及其id]
+###`,
         ),
       },
     ],
     faq: [
       {
-        q: enEs("Why does my JSON-mode request fail?", "¿Por qué falla mi pedido en modo JSON?"),
-        a: enEs(
+        q: enEsZh("Why does my JSON-mode request fail?", "¿Por qué falla mi pedido en modo JSON?", "为什么我的JSON模式请求失败了？"),
+        a: enEsZh(
           "With json_object, Model Studio requires the word 'JSON' in the prompt. Add it (for example 'Return JSON with these fields…') or switch to json_schema.",
           "Con json_object, Model Studio exige que la palabra 'JSON' esté en el prompt. Agregala (por ejemplo, 'Devolvé JSON con estos campos…') o pasá a json_schema.",
+          "使用json_object时，阿里云百炼要求提示词中包含“JSON”一词。把它加上（例如“返回包含以下字段的JSON……”），或者改用json_schema。",
         ),
       },
       {
-        q: enEs("Is there a Qwen coder model?", "¿Hay un modelo de Qwen para código?"),
-        a: enEs(
+        q: enEsZh("Is there a Qwen coder model?", "¿Hay un modelo de Qwen para código?", "Qwen有专门的代码模型吗？"),
+        a: enEsZh(
           "Alibaba's docs now point coding work to the latest general-purpose model, so use Qwen3.8 Max or Qwen3.7 Plus with clear acceptance criteria.",
           "La documentación de Alibaba ahora recomienda el modelo general más reciente para código, así que usá Qwen3.8 Max o Qwen3.7 Plus con criterios de aceptación claros.",
+          "Alibaba的文档现在建议用最新的通用模型处理编程任务，所以请使用Qwen3.8 Max或Qwen3.7 Plus，并给出清晰的验收标准。",
         ),
       },
     ],
@@ -536,18 +659,20 @@ Ejemplos:
   {
     slug: "glm-prompt-guide",
     updated: UPDATED,
-    title: enEs(
+    title: enEsZh(
       "GLM prompt guide: constraints early, useful roles and explicit JSON",
       "Guía de prompts para GLM: restricciones al principio, roles útiles y JSON explícito",
+      "智谱GLM提示词指南：约束尽早给出，角色要有用，JSON要明确",
     ),
-    description: enEs(
+    description: enEsZh(
       "How to write prompts for GLM-5.3 and GLM-5.3 Flash from Z.ai (Zhipu AI), following Zhipu's general prompt-engineering guide and the GLM-5.3 docs.",
       "Cómo escribir prompts para GLM-5.3 y GLM-5.3 Flash de Z.ai (Zhipu AI), siguiendo la guía general de prompt engineering de Zhipu y la documentación de GLM-5.3.",
+      "依据智谱的通用提示词工程指南和GLM-5.3文档，介绍如何为Z.ai（智谱AI）的GLM-5.3和GLM-5.3 Flash编写提示词。",
     ),
     sections: [
       {
-        heading: enEs("What Zhipu recommends", "Qué recomienda Zhipu"),
-        bullets: enEsList(
+        heading: enEsZh("What Zhipu recommends", "Qué recomienda Zhipu", "智谱的建议"),
+        bullets: enEsZhList(
           [
             "Give the important constraints you already know as early as possible. A rule that arrives at the end is easy to under-weight.",
             "Roles should serve the task. Skip inflated identities like 'world-class expert'; a role cannot replace the task description, the source evidence or the validation criteria.",
@@ -562,11 +687,18 @@ Ejemplos:
             "La cantidad de ejemplos no es el objetivo: cubrí las diferencias que importan.",
             "Para JSON, explicitá la estructura, qué significa cada campo y los valores permitidos. Un prompt estructurado describe el resultado pero no garantiza datos válidos, así que validalos en tu app.",
           ],
+          [
+            "把你已知的重要约束尽早给出。放在最后的规则很容易得不到足够的重视。",
+            "角色应当服务于任务。别用“世界级专家”这类夸大的身份；角色代替不了任务描述、原始依据和验证标准。",
+            "按内容给标签命名并保持一致，让模型能分清必须遵守的要求和需要处理的材料。",
+            "示例的数量不是目的：要覆盖那些关键的差异。",
+            "对于JSON，要写清结构、每个字段的含义和允许的取值。结构化的提示词能描述结果，但无法保证数据有效，所以要在你的应用里做校验。",
+          ],
         ),
       },
       {
-        heading: enEs("What is different about GLM-5.3", "Qué cambia con GLM-5.3"),
-        bullets: enEsList(
+        heading: enEsZh("What is different about GLM-5.3", "Qué cambia con GLM-5.3", "GLM-5.3有哪些不同"),
+        bullets: enEsZhList(
           [
             "Reasoning is always on: disabling it is no longer supported. Pick reasoning_effort low, high or max (default max); low is the setting for quick tasks.",
             "GLM-5.3 takes text only, with a 1M-token context and up to 128K tokens of output. Use GLM-5.3 Flash for images, video and files.",
@@ -577,15 +709,20 @@ Ejemplos:
             "GLM-5.3 acepta solo texto, con un contexto de 1M de tokens y hasta 128K de salida. Para imágenes, video y archivos usá GLM-5.3 Flash.",
             "Como ya razona, no hace falta 'pensá paso a paso'. Usá esas palabras para las restricciones y para cómo verificar la respuesta.",
           ],
+          [
+            "推理始终开启，已不再支持关闭。reasoning_effort可选low、high或max（默认max）；快速任务用low。",
+            "GLM-5.3只接受文本输入，上下文为1M token，输出最多128K token。处理图片、视频和文件请用GLM-5.3 Flash。",
+            "它本身就会推理，所以不需要写“一步一步思考”。把笔墨花在约束和答案的检验方式上。",
+          ],
         ),
       },
     ],
     templates: [
       {
-        title: enEs("Constraints-first review", "Revisión con restricciones primero"),
+        title: enEsZh("Constraints-first review", "Revisión con restricciones primero", "约束先行的审阅"),
         purpose: "text",
         target: "glm",
-        prompt: enEs(
+        prompt: enEsZh(
           `Constraints (apply to everything below):
 - Audience: [who]
 - Max length: [limit]
@@ -610,13 +747,25 @@ Tarea: revisá el borrador de abajo y devolvé las 5 correcciones más important
 </borrador>
 
 Listo cuando: cada corrección nombra la oración a la que aplica y el motivo.`,
+          `约束（适用于以下全部内容）：
+- 受众：[谁]
+- 最大篇幅：[上限]
+- 不要：[要避免什么]
+
+任务：审阅下面的草稿，给出最重要的5处修改，按重要性从高到低排列。
+
+<draft>
+[粘贴草稿]
+</draft>
+
+完成标准：每处修改都指明对应的句子和理由。`,
         ),
       },
       {
-        title: enEs("JSON with allowed values", "JSON con valores permitidos"),
+        title: enEsZh("JSON with allowed values", "JSON con valores permitidos", "限定取值的JSON"),
         purpose: "data",
         target: "glm",
-        prompt: enEs(
+        prompt: enEsZh(
           `Read the review below and return JSON only:
 {"sentiment": "positive" | "neutral" | "negative", "topics": string[] (max 3, lowercase), "refund_requested": boolean}
 - sentiment: the reviewer's overall view.
@@ -635,22 +784,33 @@ Listo cuando: cada corrección nombra la oración a la que aplica y el motivo.`,
 <reseña>
 [pegá la reseña]
 </reseña>`,
+          `阅读下面的评价，只返回JSON：
+{"sentiment": "positive" | "neutral" | "negative", "topics": string[]（最多3个，小写）, "refund_requested": boolean}
+- sentiment：评价者的总体看法。
+- topics：评价涉及的主题（例如"delivery"、"price"）。
+- refund_requested：仅当评价者要求退款时为true。
+
+<review>
+[粘贴评价]
+</review>`,
         ),
       },
     ],
     faq: [
       {
-        q: enEs("Should I ask GLM-5.3 to think step by step?", "¿Le pido a GLM-5.3 que piense paso a paso?"),
-        a: enEs(
+        q: enEsZh("Should I ask GLM-5.3 to think step by step?", "¿Le pido a GLM-5.3 que piense paso a paso?", "要让GLM-5.3一步一步思考吗？"),
+        a: enEsZh(
           "No need: it always reasons. Adjust depth with reasoning_effort and use the prompt for constraints, material and success criteria.",
           "No hace falta: siempre razona. Ajustá la profundidad con reasoning_effort y usá el prompt para restricciones, material y criterios de éxito.",
+          "不需要：它始终会推理。用reasoning_effort调整推理深度，把提示词留给约束、材料和成功标准。",
         ),
       },
       {
-        q: enEs("Z.ai or Zhipu AI?", "¿Z.ai o Zhipu AI?"),
-        a: enEs(
+        q: enEsZh("Z.ai or Zhipu AI?", "¿Z.ai o Zhipu AI?", "Z.ai还是智谱AI？"),
+        a: enEsZh(
           "Both are Zhipu AI platforms: Z.ai (docs.z.ai) for international users and BigModel (bigmodel.cn) in China. Promptea lists the model ids from the Z.ai docs.",
           "Las dos son plataformas de Zhipu AI: Z.ai (docs.z.ai) para usuarios internacionales y BigModel (bigmodel.cn) en China. Promptea lista los ids de modelo de la documentación de Z.ai.",
+          "两者都是智谱AI的平台：Z.ai（docs.z.ai）面向国际用户，BigModel（bigmodel.cn）面向中国国内。Promptea列出的是Z.ai文档中的模型ID。",
         ),
       },
     ],
@@ -658,18 +818,20 @@ Listo cuando: cada corrección nombra la oración a la que aplica y el motivo.`,
   {
     slug: "minimax-prompt-guide",
     updated: UPDATED,
-    title: enEs(
+    title: enEsZh(
       "MiniMax prompt guide: coding and agent prompts for MiniMax-M3",
       "Guía de prompts para MiniMax: prompts de código y agentes para MiniMax-M3",
+      "MiniMax提示词指南：MiniMax-M3的编程与智能体提示词",
     ),
-    description: enEs(
+    description: enEsZh(
       "How to write prompts for MiniMax-M3 and MiniMax-M3.1 Flash: acceptance criteria, fixed sampling, JSON without a JSON mode and tool loops, from MiniMax's API docs.",
       "Cómo escribir prompts para MiniMax-M3 y MiniMax-M3.1 Flash: criterios de aceptación, muestreo fijo, JSON sin modo JSON y loops de herramientas, según la documentación de la API de MiniMax.",
+      "根据MiniMax的API文档，介绍如何为MiniMax-M3和MiniMax-M3.1 Flash编写提示词：验收标准、固定采样、没有JSON模式时如何拿到JSON，以及工具调用循环。",
     ),
     sections: [
       {
-        heading: enEs("What the docs tell you", "Qué dice la documentación"),
-        bullets: enEsList(
+        heading: enEsZh("What the docs tell you", "Qué dice la documentación", "文档怎么说"),
+        bullets: enEsZhList(
           [
             "MiniMax lists both models as frontier coding models with a 1M-token context and text, image and video input.",
             "Temperature and top_p are ignored: the models always run at 1 and 0.95. Precision has to come from the prompt.",
@@ -684,11 +846,18 @@ Listo cuando: cada corrección nombra la oración a la que aplica y el motivo.`,
             "Con herramientas, devolvé la respuesta completa del modelo en cada turno, reasoning_content incluido, o el loop pierde su razonamiento.",
             "MiniMax no publica una guía general de prompts, así que los consejos de abajo apuntan a que un prompt de código se pueda verificar.",
           ],
+          [
+            "MiniMax把这两个模型列为前沿编程模型，上下文为1M token，支持文本、图片和视频输入。",
+            "temperature（温度）和top_p会被忽略：模型始终以1和0.95运行。精确度只能靠提示词来保证。",
+            "MiniMax-M3默认进行推理，也可以关闭（thinking: disabled）。MiniMax-M3.1 Flash始终进行推理，可用reasoning_effort调节（默认max）。",
+            "在工具调用中，每一轮都要回传模型的完整响应，包括reasoning_content，否则循环会丢失推理内容。",
+            "MiniMax没有发布通用的提示词指南，所以下面的建议着眼于如何让编程提示词的结果可以检验。",
+          ],
         ),
       },
       {
-        heading: enEs("Patterns that work", "Patrones que funcionan"),
-        bullets: enEsList(
+        heading: enEsZh("Patterns that work", "Patrones que funcionan", "行之有效的写法"),
+        bullets: enEsZhList(
           [
             "State the goal in one sentence, then the acceptance criteria as observable behavior, then the command that verifies them.",
             "Name the files that matter and what must not change; agents widen the scope when nothing bounds it.",
@@ -701,15 +870,21 @@ Listo cuando: cada corrección nombra la oración a la que aplica y el motivo.`,
             "Para JSON no hay un modo documentado: dá la forma exacta, un ejemplo y 'devolvé solo el JSON'.",
             "Pedí un reporte final: qué cambió, qué se verificó y qué no.",
           ],
+          [
+            "先用一句话说明目标，再把验收标准写成可观察的行为，最后给出验证它们的命令。",
+            "列出相关的文件和不能改动的内容；没有边界时，智能体会扩大改动范围。",
+            "文档里没有JSON模式：需要JSON时，给出确切的结构、一个示例，并写明“只返回JSON”。",
+            "要求最后给出一份报告：改了什么、验证了什么、哪些没有验证。",
+          ],
         ),
       },
     ],
     templates: [
       {
-        title: enEs("Bug fix with a failing test first", "Arreglo de bug con un test que falla primero"),
+        title: enEsZh("Bug fix with a failing test first", "Arreglo de bug con un test que falla primero", "先写失败的测试，再修复bug"),
         purpose: "code",
         target: "minimax",
-        prompt: enEs(
+        prompt: enEsZh(
           `Goal: fix [bug, one sentence].
 Expected: [behavior]. Actual: [behavior + error message].
 Relevant files: [paths]
@@ -728,22 +903,33 @@ Pasos:
 2) Corregí el código hasta que pase.
 Verificá con: [comando de tests]
 Reporte: la causa, el resumen del diff y lo que quedó sin verificar.`,
+          `目标：修复[bug，用一句话说明]。
+预期：[行为]。实际：[行为+错误信息]。
+相关文件：[路径]
+不要改动：[公开API、其他模块]
+步骤：
+1) 写一个能复现该bug、会失败的测试。
+2) 修改代码，直到测试通过。
+验证方式：[测试命令]
+报告：原因、diff摘要，以及尚未验证的内容。`,
         ),
       },
     ],
     faq: [
       {
-        q: enEs("Can I make MiniMax more deterministic with temperature 0?", "¿Puedo hacer a MiniMax más determinístico con temperatura 0?"),
-        a: enEs(
+        q: enEsZh("Can I make MiniMax more deterministic with temperature 0?", "¿Puedo hacer a MiniMax más determinístico con temperatura 0?", "把temperature设为0，能让MiniMax的输出更确定吗？"),
+        a: enEsZh(
           "No: MiniMax ignores temperature and top_p on these models. Make the output stable with an exact format, an example and explicit acceptance criteria.",
           "No: MiniMax ignora temperature y top_p en estos modelos. Estabilizá la salida con un formato exacto, un ejemplo y criterios de aceptación explícitos.",
+          "不能：在这些模型上，MiniMax会忽略temperature和top_p。要让输出稳定，请给出确切的格式、一个示例和明确的验收标准。",
         ),
       },
       {
-        q: enEs("What happens to MiniMax-M2.7?", "¿Qué pasa con MiniMax-M2.7?"),
-        a: enEs(
+        q: enEsZh("What happens to MiniMax-M2.7?", "¿Qué pasa con MiniMax-M2.7?", "MiniMax-M2.7会怎样？"),
+        a: enEsZh(
           "MiniMax-M2.5 and M2.7 take no new users since 2026-10-19 and retire on 2026-11-18. Move to MiniMax-M3.",
           "MiniMax-M2.5 y M2.7 no aceptan usuarios nuevos desde el 2026-10-19 y se retiran el 2026-11-18. Pasá a MiniMax-M3.",
+          "MiniMax-M2.5和M2.7自2026年10月19日起不再接受新用户，并将于2026年11月18日下线。请迁移到MiniMax-M3。",
         ),
       },
     ],
@@ -751,18 +937,20 @@ Reporte: la causa, el resumen del diff y lo que quedó sin verificar.`,
   {
     slug: "doubao-prompt-guide",
     updated: UPDATED,
-    title: enEs(
+    title: enEsZh(
       "Doubao prompt guide: goal and scenario for Doubao Seed 2.1",
       "Guía de prompts para Doubao: objetivo y escenario para Doubao Seed 2.1",
+      "豆包（Doubao）提示词指南：为Doubao Seed 2.1讲清目标和场景",
     ),
-    description: enEs(
+    description: enEsZh(
       "How to write prompts for ByteDance's Doubao Seed 2.1 Pro, Lite and Turbo on Volcengine Ark, following Volcengine's guidance for reasoning models.",
       "Cómo escribir prompts para Doubao Seed 2.1 Pro, Lite y Turbo de ByteDance en Volcengine Ark, siguiendo las recomendaciones de Volcengine para modelos con razonamiento.",
+      "依据火山引擎（Volcengine）针对推理模型的建议，介绍如何在火山方舟（Volcengine Ark）上为ByteDance的Doubao Seed 2.1 Pro、Lite和Turbo编写提示词。",
     ),
     sections: [
       {
-        heading: enEs("What Volcengine recommends for reasoning models", "Qué recomienda Volcengine para modelos con razonamiento"),
-        bullets: enEsList(
+        heading: enEsZh("What Volcengine recommends for reasoning models", "Qué recomienda Volcengine para modelos con razonamiento", "火山引擎对推理模型的建议"),
+        bullets: enEsZhList(
           [
             "Besides the problem itself, add the goal and the scenario: who the answer is for, what it will be used for and what a good outcome looks like.",
             "Reduce or avoid breaking the problem into steps or giving worked examples: with thinking on, that constrains the model's own reasoning.",
@@ -775,11 +963,17 @@ Reporte: la causa, el resumen del diff y lo que quedó sin verificar.`,
             "Usá menos prompts de sistema; mandá la información del prompt como mensaje del usuario.",
             "En chats de varios turnos, conservá el campo reasoning_content de los turnos anteriores; en loops de agente con herramientas, algunos modelos exigen devolver el razonamiento cifrado sin cambios.",
           ],
+          [
+            "除了问题本身，还要补充目标和场景：回答是给谁的、用来做什么、好的结果是什么样。",
+            "尽量减少或避免把问题拆成步骤、给出解题示例：开启思考时，这样做会束缚模型自身的推理。",
+            "少用系统提示词；把提示词信息作为用户消息发送。",
+            "在多轮对话中，保留之前各轮的reasoning_content字段；在智能体的工具调用循环中，部分模型要求原样回传加密的推理内容。",
+          ],
         ),
       },
       {
-        heading: enEs("Settings that change the result", "Ajustes que cambian el resultado"),
-        bullets: enEsList(
+        heading: enEsZh("Settings that change the result", "Ajustes que cambian el resultado", "会影响结果的设置"),
+        bullets: enEsZhList(
           [
             "Thinking is on by default; turn it off with thinking type disabled for simple tasks. reasoning_effort defaults to high on Seed 2.1.",
             "Default max output is 4K tokens even though the models allow up to 256K: set max_tokens for long answers.",
@@ -792,15 +986,21 @@ Reporte: la causa, el resumen del diff y lo que quedó sin verificar.`,
             "La salida estructurada está en beta: json_object necesita la cadena 'json' en la entrada; json_schema con strict obliga a respetar el esquema. No la combines con penalizaciones de frecuencia o presencia.",
             "Pro y Lite tienen contexto de 1024K; Turbo, pensado para baja latencia, de 256K. Lite además acepta audio.",
           ],
+          [
+            "思考模式默认开启；简单任务可以把thinking的type设为disabled来关闭。Seed 2.1上reasoning_effort默认为high。",
+            "默认最大输出只有4K token，尽管模型最多支持256K：需要长回答时请设置max_tokens。",
+            "结构化输出目前是beta功能：json_object要求输入中包含字符串“json”；json_schema配合strict会强制遵循schema。不要与频率惩罚或存在惩罚同时使用。",
+            "Pro和Lite的上下文为1024K；面向低延迟的Turbo为256K。Lite还支持音频输入。",
+          ],
         ),
       },
     ],
     templates: [
       {
-        title: enEs("Goal + scenario request", "Pedido con objetivo + escenario"),
+        title: enEsZh("Goal + scenario request", "Pedido con objetivo + escenario", "目标+场景式请求"),
         purpose: "marketing",
         target: "doubao",
-        prompt: enEs(
+        prompt: enEsZh(
           `Problem: write the launch email for [product/feature].
 Goal: existing customers try [feature] this week.
 Scenario: sent on [day] to [segment]; most read it on their phone.
@@ -813,22 +1013,30 @@ Escenario: se envía el [día] a [segmento]; la mayoría lo lee en el celular.
 Audiencia: [quiénes son y qué usan ya]
 Restricciones: menos de 150 palabras, sin descuentos, lenguaje simple.
 Formato de salida: asunto (máximo 8 palabras) + cuerpo + un llamado a la acción.`,
+          `问题：为[产品/功能]写一封发布邮件。
+目标：让现有客户在本周试用[功能]。
+场景：在[日期]发送给[用户群]；大多数人会在手机上阅读。
+受众：[他们是谁，已经在用什么]
+约束：不超过150字，不提折扣，语言平实。
+输出格式：邮件标题（不超过8个字）+正文+一个行动号召。`,
         ),
       },
     ],
     faq: [
       {
-        q: enEs("Should I give Doubao a step-by-step plan?", "¿Le doy a Doubao un plan paso a paso?"),
-        a: enEs(
+        q: enEsZh("Should I give Doubao a step-by-step plan?", "¿Le doy a Doubao un plan paso a paso?", "要给豆包一份分步计划吗？"),
+        a: enEsZh(
           "With thinking on, Volcengine advises against it: describe the goal, the scenario and the constraints, and let the model plan the steps.",
           "Con el razonamiento activo, Volcengine lo desaconseja: describí el objetivo, el escenario y las restricciones, y dejá que el modelo planifique los pasos.",
+          "开启思考时，火山引擎不建议这样做：描述目标、场景和约束，让模型自己规划步骤。",
         ),
       },
       {
-        q: enEs("Doubao or Dola Seed?", "¿Doubao o Dola Seed?"),
-        a: enEs(
+        q: enEsZh("Doubao or Dola Seed?", "¿Doubao o Dola Seed?", "豆包还是Dola Seed？"),
+        a: enEsZh(
           "The same model family: Doubao on Volcengine Ark in China, Dola Seed on BytePlus ModelArk internationally.",
           "La misma familia de modelos: Doubao en Volcengine Ark en China y Dola Seed en BytePlus ModelArk a nivel internacional.",
+          "同一个模型家族：在中国的火山方舟（Volcengine Ark）上叫豆包（Doubao），在国际上的BytePlus ModelArk上叫Dola Seed。",
         ),
       },
     ],

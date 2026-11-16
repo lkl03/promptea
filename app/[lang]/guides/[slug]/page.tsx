@@ -12,7 +12,7 @@ import { CONTENT_UPDATED } from "@/lib/seo/dates";
 import JsonLd from "@/components/seo/JsonLd";
 import PageMeta from "@/components/seo/PageMeta";
 import { guideGraph } from "@/lib/seo/pageGraphs";
-import { LANG_TAG, type ContentLang, pick, LANGS, toLang } from "@/lib/domain";
+import { LANG_TAG, type ContentLang, pick, LANGS, PUNCT, toLang } from "@/lib/domain";
 import ContentLangNotice from "@/components/blog/ContentLangNotice";
 import { ANALYZER_LINK_TEXT, GUIDE_ANALYZER_CTA } from "@/lib/seo/content/analyzerContent";
 import CopyTemplateButton from "@/components/guides/CopyTemplateButton";
@@ -38,8 +38,10 @@ export async function generateMetadata({
   return pageMetadata({
     lang: l,
     path,
-    // A guide that does not exist in every locale names only the ones it has.
-    ...(guideLocales(guide).length < LANGS.length ? { contentLang: cl as ContentLang } : {}),
+    // A guide names only the locales it has its own text in (v1.8.7: es and en, plus pt and/or
+    // zh once translated); read in another language it is a view of the English original.
+    locales: guideLocales(guide),
+    ...(cl !== l ? { contentLang: cl as ContentLang } : {}),
     title: guide.title[cl],
     description: guide.description[cl],
     type: "article",
@@ -87,7 +89,7 @@ export default async function GuidePage({
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/guides`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Volver a guías", en: "← Back to guides", pt: "← Voltar aos guias" })}
+            {pick(l, { es: "← Volver a guías", en: "← Back to guides", pt: "← Voltar aos guias", zh: "← 返回指南" })}
           </Link>
         </div>
       </div>
@@ -109,22 +111,23 @@ export default async function GuidePage({
       {/* v1.8.6: contextual link to the analyzer from the most-read guides. */}
       {GUIDE_ANALYZER_CTA[guide.slug] ? (
         <p className="mt-6 surface-soft p-4 text-sm" lang={cl === l ? undefined : LANG_TAG[cl]}>
-          {GUIDE_ANALYZER_CTA[guide.slug][cl]}{" "}
+          {GUIDE_ANALYZER_CTA[guide.slug][cl]}
+          {PUNCT[cl].gap}
           <Link href={`/${l}/analyzer`} className="font-medium underline underline-offset-2">
             {ANALYZER_LINK_TEXT[cl]}
           </Link>
-          .
+          {PUNCT[cl].stop.trim()}
         </p>
       ) : null}
 
       {/* Templates */}
       <section className="mt-10">
-        <h2 className="text-sm font-medium">{pick(l, { es: "Plantillas", en: "Templates", pt: "Templates" })}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Plantillas", en: "Templates", pt: "Templates", zh: "模板" })}</h2>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {guide.templates.map((t, idx) => {
             const href = buildPrefillHref({ lang: l, prompt: t.prompt[cl], purpose: t.purpose, target: t.target });
-            const openLabel = pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea" });
+            const openLabel = pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "在Promptea中打开" });
             return (
               <article key={idx} className="surface p-4 space-y-3">
                 <h3 id={`template-${idx}-title`} className="text-sm font-medium">{t.title[cl]}</h3>
@@ -137,6 +140,7 @@ export default async function GuidePage({
                       es: "Se abre en el analizador con el prompt precargado.",
                       en: "Opens the analyzer with the prompt prefilled.",
                       pt: "Abre o analisador com o prompt já preenchido.",
+                      zh: "将在分析器中打开，并预先填入该提示词。",
                     })}
                   </div>
                   {/* Every card has the same visible label; the accessible name
@@ -157,7 +161,7 @@ export default async function GuidePage({
 
       {/* FAQ visible */}
       <section className="mt-10 surface p-5">
-        <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes" })}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "常见问题" })}</h2>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

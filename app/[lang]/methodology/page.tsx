@@ -34,9 +34,9 @@ export default async function MethodologyPage({ params }: { params: Promise<{ la
   return (
     <main className="mx-auto w-full max-w-3xl px-4 pb-12 pt-12">
       <JsonLd data={docPageGraph({ doc, lang: l, path: `/${l}/methodology`, kind: "methodology", label: doc.h1 })} />
-      <nav aria-label={pick(l, { es: "Ruta de navegación", en: "Breadcrumb", pt: "Trilha de navegação" })} className="text-xs opacity-70">
+      <nav aria-label={pick(l, { es: "Ruta de navegación", en: "Breadcrumb", pt: "Trilha de navegação", zh: "面包屑导航" })} className="text-xs opacity-70">
         <Link href={`/${l}`} className="hover:underline underline-offset-2">
-          {pick(l, { es: "Inicio", en: "Home", pt: "Início" })}
+          {pick(l, { es: "Inicio", en: "Home", pt: "Início", zh: "首页" })}
         </Link>
         <span aria-hidden="true"> / </span>
         <span>{doc.h1}</span>

@@ -1,5 +1,6 @@
 import type { Lang, OutputFormat } from "./types";
 import { isPt, PT_FORMAT } from "../pt";
+import { isZh, ZH_FORMAT } from "../zh";
 
 function hasAny(text: string, patterns: RegExp[]) {
   return patterns.some((r) => r.test(text));
@@ -9,6 +10,7 @@ export function detectOutputFormat(prompt: string, lang?: Lang): OutputFormat | 
   const p = (prompt ?? "").toLowerCase();
   // v1.8.2: Portuguese spellings ("tabela", "tópicos", "somente JSON").
   const pt = isPt(prompt ?? "", lang);
+  const zh = !pt && isZh(prompt ?? "", lang); // v1.8.7
 
   // “estricto”: SOLO JSON / ONLY JSON / JSON válido y nada más
   const strictJson =
@@ -18,7 +20,7 @@ export function detectOutputFormat(prompt: string, lang?: Lang): OutputFormat | 
     /valid\s+json\b/.test(p) ||
     /sin\s+texto\s+extra\b/.test(p) ||
     /no\s+incluyas\s+texto\b/.test(p) ||
-    (pt && PT_FORMAT.strictJson.test(p));
+    ((pt && PT_FORMAT.strictJson.test(p)) || (zh && ZH_FORMAT.strictJson.test(p)));
 
   const json = hasAny(p, [
     /\bjson\b/,
@@ -53,10 +55,10 @@ export function detectOutputFormat(prompt: string, lang?: Lang): OutputFormat | 
   ]);
 
   // Prioridad: JSON > table > steps > bullets (podés ajustar)
-  if (json || (pt && PT_FORMAT.json.test(p))) return { kind: "json", strict: strictJson };
-  if (table || (pt && PT_FORMAT.table.test(p))) return { kind: "table", strict: false };
-  if (steps || (pt && PT_FORMAT.steps.test(p))) return { kind: "steps", strict: false };
-  if (bullets || (pt && PT_FORMAT.bullets.test(p))) return { kind: "bullets", strict: false };
+  if (json || ((pt && PT_FORMAT.json.test(p)) || (zh && ZH_FORMAT.json.test(p)))) return { kind: "json", strict: strictJson };
+  if (table || ((pt && PT_FORMAT.table.test(p)) || (zh && ZH_FORMAT.table.test(p)))) return { kind: "table", strict: false };
+  if (steps || ((pt && PT_FORMAT.steps.test(p)) || (zh && ZH_FORMAT.steps.test(p)))) return { kind: "steps", strict: false };
+  if (bullets || ((pt && PT_FORMAT.bullets.test(p)) || (zh && ZH_FORMAT.bullets.test(p)))) return { kind: "bullets", strict: false };
 
   return null;
 }

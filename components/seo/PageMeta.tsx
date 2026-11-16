@@ -12,13 +12,13 @@ import { pick } from "@/lib/domain";
 export default function PageMeta({ lang, updated, markdownPath }: { lang: Locale; updated: string; markdownPath?: string }) {
   return (
     <p className="text-xs text-ink-faint">
-      {pick(lang, { es: "Última actualización: ", en: "Last updated: ", pt: "Última atualização: " })}
+      {pick(lang, { es: "Última actualización: ", en: "Last updated: ", pt: "Última atualização: ", zh: "最后更新：" })}
       <time dateTime={updated}>{formatDay(updated, lang)}</time>
       {markdownPath ? (
         <>
           {" · "}
           <a href={markdownPath} className="underline-offset-2 hover:underline">
-            {pick(lang, { es: "Versión en markdown", en: "Markdown version", pt: "Versão em Markdown" })}
+            {pick(lang, { es: "Versión en markdown", en: "Markdown version", pt: "Versão em Markdown", zh: "Markdown版本" })}
           </a>
         </>
       ) : null}

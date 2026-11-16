@@ -19,7 +19,7 @@ import { buildBenchHash, MAX_COMPARE } from "@/lib/benchmarks/model";
 import { CATEGORY_LABELS, SOURCE_INFO } from "@/lib/benchmarks/catalog";
 import { formatPrice, formatScore } from "@/lib/benchmarks/normalize";
 import { providerColor } from "@/lib/benchmarks/chart";
-import { INTL_LOCALE, type Lang } from "@/lib/domain";
+import { INTL_LOCALE, PUNCT, type Lang } from "@/lib/domain";
 
 export type ModelCopy = {
   open: string; // "Analysis of {name}" (accessible name of the buttons that open the panel)
@@ -122,7 +122,9 @@ export default function ModelPanel({
             <span className="min-w-0 break-words">{model.name}</span>
           </h2>
           <p className="mt-0.5 text-sm text-ink-muted">
-            {copy.provider}: {model.providerLabel} · <span className="font-mono text-xs">{model.modelId}</span>
+            {copy.provider}
+            {PUNCT[lang].colon}
+            {model.providerLabel} · <span className="font-mono text-xs">{model.modelId}</span>
           </p>
         </div>
         <button type="button" onClick={onClose} className="btn-icon h-9 w-9 shrink-0" aria-label={copy.close} title={copy.close} data-autofocus>
@@ -252,11 +254,17 @@ export default function ModelPanel({
                   <dt className="font-medium text-ink">{s.def.label[lang]}</dt>
                   <dd className="m-0 mt-1 space-y-1 text-ink-muted">
                     <p className="m-0">
-                      <span className="font-medium text-ink">{copy.measures}: </span>
+                      <span className="font-medium text-ink">
+                        {copy.measures}
+                        {PUNCT[lang].colon}
+                      </span>
                       {texts[s.key].measures}
                     </p>
                     <p className="m-0">
-                      <span className="font-medium text-ink">{copy.limitations}: </span>
+                      <span className="font-medium text-ink">
+                        {copy.limitations}
+                        {PUNCT[lang].colon}
+                      </span>
                       {texts[s.key].limitations}
                     </p>
                   </dd>

@@ -562,6 +562,16 @@
     "about": "Acerca de Promptea"
   },
   "changelog": {
+    "v187": {
+      "released": "Publicado: 2026-11-16",
+      "items": [
+        "Promptea en chino simplificado (/zh): la interfaz, el analizador, las páginas de DeepSeek, Kimi, Qwen, GLM, MiniMax y Doubao, el glosario y las guías más leídas.",
+        "El analizador entiende prompts escritos en chino y los evalúa igual desde cualquier idioma de la interfaz.",
+        "El feed de X de la portada es propio: sin widgets de terceros, más liviano y sin scripts externos.",
+        "La tarjeta de la newsletter aparece para cualquier visitante que no la cerró, sin tapar el editor ni los botones. Si la cerrás, vuelve en 7 días.",
+        "Benchmarks: cada modelo abre su análisis (posición en cada benchmark, dónde se destaca, límites y precio) y podés comparar hasta cuatro modelos."
+      ]
+    },
     "v186": {
       "released": "Publicado: 2026-11-14",
       "items": [

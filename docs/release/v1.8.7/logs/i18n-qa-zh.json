@@ -1,0 +1,16 @@
+{
+  "base": "http://localhost:3191",
+  "pagesChecked": 396,
+  "shots": 276,
+  "failures": [],
+  "notes": [
+    "/zh/glossary/system-prompt @1440 glass-dark: no Chinese in «System prompts: how to set persistent instructions for ChatGPT, Claude» (a)",
+    "/zh/glossary/system-prompt @1440 glass-dark: no Chinese in «Role prompting: how to assign personas for better AI outputs» (a)",
+    "/zh/how-it-works @1440 glass-dark: no Chinese in «GPT-6 Astra · GPT-6.1 Sol · GPT-6 Luna» (dd)",
+    "/zh/how-it-works @1440 glass-dark: no Chinese in «Claude Opus 5.5 · Claude Fable 5.2 · Claude Sonnet 5.5 · Claude Haiku » (dd)",
+    "/zh/how-it-works @1440 glass-dark: no Chinese in «Gemini 3.8 Flash · Gemini 4 Argon · Gemini 4 Carbon · Gemini 3.7 Flash» (dd)",
+    "/zh/how-it-works @1440 glass-dark: no Chinese in «Grok 4.7 · Grok 4.3 · Grok Build 0.1» (dd)",
+    "/zh/how-it-works @1440 glass-dark: no Chinese in «Kimi K3 · Kimi K2.6 · Kimi K2.7 Code» (dd)",
+    "/zh/how-it-works @1440 glass-dark: no Chinese in «DeepSeek Flash (V4.1) · DeepSeek V4 Pro» (dd)"
+  ]
+}

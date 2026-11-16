@@ -57,7 +57,8 @@ async function open(path, { width = 1440, height = 900, theme = "aqua", scheme =
 const QUIET = { "promptea:newsletter-nudges": JSON.stringify({ subscribed: true }) };
 
 // ── header: collapsed menu on a phone ─────────────────────────────────────
-for (const path of ["/en", "/es/guides"]) {
+// v1.8.7: /zh too (four languages in the switcher, Chinese labels in the menu).
+for (const path of ["/en", "/es/guides", "/zh"]) {
   const { page, context } = await open(path, { width: 375, height: 812, storage: QUIET });
   const btn = "[data-nav-toggle]";
   const before = await page.$eval(btn, (b) => ({ expanded: b.getAttribute("aria-expanded"), controls: b.getAttribute("aria-controls"), name: (b.getAttribute("aria-label") || b.textContent || "").trim() }));
@@ -84,10 +85,11 @@ for (const path of ["/en", "/es/guides"]) {
 }
 
 // ── home: focus visibility, heading, lang ─────────────────────────────────
-for (const [lang, theme, scheme] of [["en", "aqua", "light"], ["es", "glass", "dark"], ["en", "metro", "dark"]]) {
+const HTML_LANG = { es: "es", en: "en", pt: "pt-BR", zh: "zh-CN" };
+for (const [lang, theme, scheme] of [["en", "aqua", "light"], ["es", "glass", "dark"], ["en", "metro", "dark"], ["zh", "glass", "light"]]) {
   const { page, context } = await open(`/${lang}`, { theme, scheme, storage: QUIET });
   const basics = await page.evaluate(() => ({ h1: document.querySelectorAll("h1").length, lang: document.documentElement.lang, navs: [...document.querySelectorAll("nav[aria-label]")].filter((n) => n.offsetParent !== null).map((n) => n.getAttribute("aria-label")) }));
-  ok("home", `/${lang} ${theme}: one <h1>, <html lang="${lang}">`, basics.h1 === 1 && basics.lang === lang, JSON.stringify(basics));
+  ok("home", `/${lang} ${theme}: one <h1>, <html lang="${HTML_LANG[lang]}">`, basics.h1 === 1 && basics.lang === HTML_LANG[lang], JSON.stringify(basics));
   // Tab through the page and collect what gets focus and whether a focus indicator is painted.
   const seen = [];
   for (let i = 0; i < 40; i++) {
@@ -216,19 +218,22 @@ const CASES = [["aqua", "light"], ["glass", "light"], ["glass", "dark"], ["metro
 // v1.8.5: every element per page is held to 4.5:1, Aqua's primary button included
 // (its accent moved from #007aff to #0061cc). The analyzer adds the accent text
 // and the accent badge of the AI Daily promo, which share the same token.
+const HOME_CONTRAST = {
+  tagline: "main header p",
+  "action title": ".home-action-title",
+  "action description": ".home-actions li p",
+  "how-this-works button": "a[href$='/how-it-works']",
+  "prompt box explanation": "form[action$='/analyzer'] h2 + p",
+  "prompt box hint": "form[action$='/analyzer'] p[aria-live]",
+  "primary button label": "form[action$='/analyzer'] button[type=submit]",
+  "nav link": "header nav a",
+  "newsletter body": "aside section p",
+  "footer link": "footer a",
+};
 const CONTRAST_PAGES = [
-  ["/en", {
-    tagline: "main header p",
-    "action title": ".home-action-title",
-    "action description": ".home-actions li p",
-    "how-this-works button": "a[href$='/how-it-works']",
-    "prompt box explanation": "form[action$='/analyzer'] h2 + p",
-    "prompt box hint": "form[action$='/analyzer'] p[aria-live]",
-    "primary button label": "form[action$='/analyzer'] button[type=submit]",
-    "nav link": "header nav a",
-    "newsletter body": "aside section p",
-    "footer link": "footer a",
-  }],
+  ["/en", HOME_CONTRAST],
+  // v1.8.7: the Chinese font stack renders thinner strokes; the same colours must still pass.
+  ["/zh", HOME_CONTRAST],
   ["/en/analyzer", {
     "accent badge (AI Daily promo)": "main a[href$='/blog'] .badge-accent",
     "accent link text (AI Daily promo)": "main a[href$='/blog'] .text-accent",

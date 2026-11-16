@@ -1,7 +1,8 @@
 // v1.8.2 — the locale infrastructure: ONE list of interface languages
 // (lib/domain.ts LANGS) that the proxy, the routes, hreflang and the metadata
 // derive from, and the split between interface languages (es, en, pt) and the
-// languages editorial content is written in (es, en).
+// languages editorial content is written in (es, en). v1.8.7 added Simplified
+// Chinese (zh) as the fourth interface language.
 
 import { describe, expect, test } from "vitest";
 import { execSync } from "node:child_process";
@@ -28,31 +29,36 @@ import { languageAlternates, pageMetadata } from "@/lib/seo/metadata";
 import { replaceLocale } from "@/components/LanguageSwitcher";
 
 describe("one list of locales", () => {
-  test("es, en and pt; the SEO layer re-exports the same list", () => {
-    expect([...LANGS]).toEqual(["es", "en", "pt"]);
+  test("es, en, pt and zh; the SEO layer re-exports the same list", () => {
+    expect([...LANGS]).toEqual(["es", "en", "pt", "zh"]);
     expect(LOCALES).toBe(LANGS);
     expect(DEFAULT_LANG).toBe("en");
     expect(X_DEFAULT_LOCALE).toBe(DEFAULT_LANG);
     for (const l of LANGS) {
       expect(isLang(l) && isLocale(l)).toBe(true);
-      expect(LANG_LABEL[l]).toMatch(/^[A-Z]{2}$/);
+      // Two Latin capitals, or the language's own name in its script (中文).
+      expect(LANG_LABEL[l]).toMatch(/^(?:[A-Z]{2}|\p{Script=Han}{2})$/u);
       expect(LANG_NAME[l].length).toBeGreaterThan(3);
     }
     expect(isLang("fr")).toBe(false);
     expect(toLang("fr")).toBe("en");
     expect(toLang("pt")).toBe("pt");
+    expect(toLang("zh")).toBe("zh");
   });
 
   test("tags: <html lang> / inLanguage, og:locale and Intl", () => {
-    expect(LANG_TAG).toEqual({ es: "es", en: "en", pt: "pt-BR" });
-    expect(OG_LOCALE).toEqual({ es: "es_AR", en: "en_US", pt: "pt_BR" });
+    expect(LANG_TAG).toEqual({ es: "es", en: "en", pt: "pt-BR", zh: "zh-CN" });
+    expect(OG_LOCALE).toEqual({ es: "es_AR", en: "en_US", pt: "pt_BR", zh: "zh_CN" });
+    expect(INTL_LOCALE.zh).toBe("zh-CN");
+    expect(new Intl.DateTimeFormat(INTL_LOCALE.zh, { dateStyle: "long", timeZone: "UTC" }).format(new Date("2026-11-10T12:00:00Z"))).toBe("2026年11月10日");
     expect(INTL_LOCALE.pt).toBe("pt-BR");
     expect(new Intl.NumberFormat(INTL_LOCALE.pt).format(1234.5)).toBe("1.234,5");
     expect(new Intl.DateTimeFormat(INTL_LOCALE.pt, { dateStyle: "long", timeZone: "UTC" }).format(new Date("2026-11-10T12:00:00Z"))).toBe("10 de novembro de 2026");
   });
 
   test("pick() returns the text of the language", () => {
-    expect(pick("pt", { es: "Inicio", en: "Home", pt: "Início" })).toBe("Início");
+    expect(pick("pt", { es: "Inicio", en: "Home", pt: "Início", zh: "首页" })).toBe("Início");
+    expect(pick("zh", { es: "Inicio", en: "Home", pt: "Início", zh: "首页" })).toBe("首页");
   });
 
   // The union must never be spelled out again: a fourth language is added in
@@ -89,6 +95,17 @@ describe("proxy: language negotiation", () => {
     ["fr-FR,fr;q=0.9,pt;q=0.5", "pt"],
     ["de-DE,de;q=0.9", "en"],
     ["*", "en"],
+    // v1.8.7: Simplified Chinese → /zh; Traditional Chinese is never sent to /zh.
+    ["zh-CN,zh;q=0.9,en;q=0.8", "zh"],
+    ["zh", "zh"],
+    ["zh-Hans", "zh"],
+    ["zh-SG,zh;q=0.9", "zh"],
+    ["zh-Hans-CN", "zh"],
+    ["zh-TW,zh;q=0.9", "en"],
+    ["zh-TW", "en"],
+    ["zh-HK,en;q=0.8", "en"],
+    ["zh-Hant-TW,es;q=0.5", "es"],
+    ["zh-MO", "en"],
   ])("Accept-Language %s → /%s", (accept, locale) => {
     expect(path(go(accept))).toBe(`/${locale}/guides/json-output`);
   });
@@ -128,13 +145,16 @@ describe("paths and the language switcher", () => {
 });
 
 describe("hreflang and page metadata", () => {
-  test("es, en, pt-BR + pt and x-default", () => {
-    expect(HREFLANG).toEqual({ es: ["es"], en: ["en"], pt: ["pt-BR", "pt"] });
+  test("es, en, pt-BR + pt, zh-Hans + zh-CN + zh and x-default", () => {
+    expect(HREFLANG).toEqual({ es: ["es"], en: ["en"], pt: ["pt-BR", "pt"], zh: ["zh-Hans", "zh-CN", "zh"] });
     expect(languageAlternates((l) => `/${l}/guides`)).toEqual({
       es: "/es/guides",
       en: "/en/guides",
       "pt-BR": "/pt/guides",
       pt: "/pt/guides",
+      "zh-Hans": "/zh/guides",
+      "zh-CN": "/zh/guides",
+      zh: "/zh/guides",
       "x-default": "/en/guides",
     });
   });
@@ -146,14 +166,23 @@ describe("hreflang and page metadata", () => {
     expect(m.alternates?.types).toEqual({ "text/markdown": "/pt/guides/json-output.md" });
     const og = m.openGraph as { locale: string; alternateLocale: string[]; url: string };
     expect(og.locale).toBe("pt_BR");
-    expect([...og.alternateLocale].sort()).toEqual(["en_US", "es_AR"]);
+    expect([...og.alternateLocale].sort()).toEqual(["en_US", "es_AR", "zh_CN"]);
     expect(og.url).toBe("/pt/guides/json-output");
   });
 
   test("es and en pages keep their canonical and gain the Portuguese alternate", () => {
     const m = pageMetadata({ lang: "es", path: "/es/guides/x", title: "t", description: "d" });
     expect(m.alternates?.canonical).toBe("/es/guides/x");
-    expect(m.alternates?.languages).toEqual({ es: "/es/guides/x", en: "/en/guides/x", "pt-BR": "/pt/guides/x", pt: "/pt/guides/x", "x-default": "/en/guides/x" });
+    expect(m.alternates?.languages).toEqual({
+      es: "/es/guides/x",
+      en: "/en/guides/x",
+      "pt-BR": "/pt/guides/x",
+      pt: "/pt/guides/x",
+      "zh-Hans": "/zh/guides/x",
+      "zh-CN": "/zh/guides/x",
+      zh: "/zh/guides/x",
+      "x-default": "/en/guides/x",
+    });
     expect((m.openGraph as { locale: string }).locale).toBe("es_AR");
   });
 });
@@ -165,6 +194,8 @@ describe("interface language vs content language", () => {
     expect(contentLangFor("en")).toBe("en");
     expect(contentLangFor("pt")).toBe("en");
     expect(contentIsFallback("pt")).toBe(true);
+    expect(contentLangFor("zh")).toBe("en");
+    expect(contentIsFallback("zh")).toBe(true);
     expect(contentIsFallback("es") || contentIsFallback("en")).toBe(false);
   });
 

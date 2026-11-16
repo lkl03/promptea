@@ -14,7 +14,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { BREAKDOWN_ORDER, bandColor, decodeCard, qualityBand, targetLabel } from "@/lib/share/card";
 import { purposeLabel } from "@/lib/purposes";
-import { isLang } from "@/lib/domain";
+import { isLang, imageLang } from "@/lib/domain";
 
 export const runtime = "nodejs";
 
@@ -45,6 +45,16 @@ const COPY = {
     tagline: "Analise e otimize seus prompts",
     bands: { weak: "Fraco", fair: "Regular", good: "Bom", excellent: "Excelente" },
     criteria: { clarity: "Clareza", context: "Contexto", constraints: "Restrições", output: "Formato de saída", verifiability: "Verificabilidade", safety: "Segurança" },
+  },
+  // v1.8.7: next/og has no CJK font (Han characters would render as empty boxes):
+  // the Chinese card is written in English, like the other images (lib/domain.ts imageLang).
+  zh: {
+    score: "Score",
+    original: "Original",
+    optimized: "Optimized",
+    tagline: "Analyze and optimize your prompts",
+    bands: { weak: "Weak", fair: "Fair", good: "Good", excellent: "Excellent" },
+    criteria: { clarity: "Clarity", context: "Context", constraints: "Constraints", output: "Output format", verifiability: "Verifiability", safety: "Safety" },
   },
 } as const;
 
@@ -95,7 +105,7 @@ export async function GET(req: Request) {
 
   const main = data.optimizedScore ?? data.score;
   const hasAfter = data.optimizedScore !== null && data.optimizedScore !== data.score;
-  const meta = [data.purpose ? purposeLabel(data.purpose, lang) : null, data.target ? targetLabel(data.target) : null].filter(Boolean).join(" · ");
+  const meta = [data.purpose ? purposeLabel(data.purpose, imageLang(lang)) : null, data.target ? targetLabel(data.target) : null].filter(Boolean).join(" · ");
 
   const res = new ImageResponse(
     (

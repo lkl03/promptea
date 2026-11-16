@@ -4,7 +4,10 @@ import { registryPageGraph } from "@/lib/seo/pageGraphs";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { isContentLang, pick, toLang } from "@/lib/domain";
+import { isContentLang, pick, toLang, type Lang } from "@/lib/domain";
+
+/** v1.8.7: the h1 and the <title> say the same thing in each language (it was "Changelog" in all). */
+const changelogTitle = (l: Lang) => pick(l, { es: "Historial de versiones", en: "Changelog", pt: "Histórico de versões", zh: "更新日志" });
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -12,11 +15,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return pageMetadata({
     lang: l,
     path: `/${l}/changelog`,
-    title: pick(l, { es: "Historial de versiones", en: "Changelog", pt: "Histórico de versões" }),
+    title: changelogTitle(l),
     description: pick(l, {
       es: "Historial completo de versiones de Promptea: nuevas guías SEO, mejoras del analizador de prompts y correcciones de producto.",
       en: "Full version history for Promptea: new SEO guides, prompt analyzer improvements, and product fixes.",
       pt: "Histórico completo de versões do Promptea: novos guias, melhorias no analisador de prompts e correções do produto.",
+      zh: "Promptea的完整版本历史：新的SEO指南、提示词分析器改进和产品修复。",
     }),
   });
 }
@@ -32,7 +36,21 @@ export default async function ChangelogPage({ params }: { params: Promise<{ lang
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10 space-y-6">
       <JsonLd data={registryPageGraph(lang, `/${lang}/changelog`, {})} />
-      <h1 className="text-2xl font-semibold">Changelog</h1>
+      <h1 className="text-2xl font-semibold">{changelogTitle(lang)}</h1>
+
+      {/* v1.8.7 */}
+      <div className="surface-soft p-4 space-y-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <div className="text-lg font-medium">v1.8.7</div>
+          <div className="text-xs opacity-70">{dict.changelog.v187.released}</div>
+        </div>
+
+        <ul className="list-disc pl-5 text-sm opacity-90 space-y-1">
+          {dict.changelog.v187.items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
 
       {/* v1.8.6 */}
       <div className="surface-soft p-4 space-y-2">

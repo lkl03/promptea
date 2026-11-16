@@ -11,9 +11,9 @@
 // What it checks
 //   robots.txt      one rule group per AI crawler, the shared Disallow repeated, sitemap line
 //   sitemap.xml     every URL answers 200 without redirecting, no duplicates, real <lastmod>,
-//                   es/en/pt-BR+pt/x-default alternates that point back at the page (es/en/x-default
+//                   es/en/pt-BR+pt/zh-Hans+zh-CN+zh/x-default alternates that point back at the page (es/en/x-default
 //                   for content that has no Portuguese version: AI Daily, untranslated guides)
-//   llms.txt        (root, /es, /en, /pt) and llms-full.txt: 200, text/plain, expected sections,
+//   llms.txt        (root, /es, /en, /pt, /zh) and llms-full.txt: 200, text/plain, expected sections,
 //                   every same-site link resolves, every .md link is text/markdown
 //   markdown twins  title, source URL, language, canonical Link header
 //   pages           one <h1>, one <title>, one canonical equal to the page, reciprocal hreflang
@@ -47,14 +47,29 @@ const EXPECTED_CRAWLERS = [
   "PetalBot", "Baiduspider", "YisouSpider", "Bytespider",
 ];
 
-// Keep equal to lib/domain.ts LANGS.
-const LOCALES = ["es", "en", "pt"];
+// Keep equal to lib/domain.ts LANGS and lib/seo/site.ts HREFLANG.
+const LOCALES = ["es", "en", "pt", "zh"];
 const LOCALE_ALT = LOCALES.join("|");
+const HREFLANG = { es: ["es"], en: ["en"], pt: ["pt-BR", "pt"], zh: ["zh-Hans", "zh-CN", "zh"] };
+/** The hreflang keys of a page that exists in these locales (+ x-default), sorted and joined. */
+const hreflangKeys = (locales) => [...locales.flatMap((l) => HREFLANG[l]), "x-default"].sort().join(",");
 /** hreflang of a page that exists in every locale / only in the content languages (es, en). */
-const HREFLANG_ALL = "en,es,pt,pt-BR,x-default";
-const HREFLANG_CONTENT = "en,es,x-default";
-const HTML_LANG = { es: "es", en: "en", pt: "pt-BR" };
-const LANGUAGE_LINE = { es: "Idioma: Español", en: "Language: English", pt: "Idioma: Português" };
+const HREFLANG_ALL = hreflangKeys(LOCALES);
+const HREFLANG_CONTENT = hreflangKeys(["es", "en"]);
+/**
+ * v1.8.7: a guide exists in es and en, plus pt and/or zh once translated, so a page may
+ * carry any of these sets. Each one maps back to its locales.
+ */
+const HREFLANG_SETS = new Map(
+  [["es", "en"], ["es", "en", "pt"], ["es", "en", "zh"], ["es", "en", "pt", "zh"]].map((ls) => [hreflangKeys(ls), ls]),
+);
+const HTML_LANG = { es: "es", en: "en", pt: "pt-BR", zh: "zh-CN" };
+const LANGUAGE_LINE = { es: "Idioma: Español", en: "Language: English", pt: "Idioma: Português", zh: "语言：简体中文" };
+/** Words of visible text: Latin by spaces, Chinese by characters (~1.7 per word). */
+const visibleWords = (text) => {
+  const han = (text.match(/\p{Script=Han}/gu) ?? []).length;
+  return text.replace(/\p{Script=Han}/gu, " ").split(/\s+/).filter(Boolean).length + Math.round(han / 1.7);
+};
 /** Keep equal to LLMS_FULL_TOTAL_BYTES / 1024 in lib/seo/llms.ts (test-enforced). */
 const LLMS_FULL_MAX_KB = 400;
 /**
@@ -245,13 +260,15 @@ async function checkSitemap() {
 
   for (const u of urls) {
     const keys = Object.keys(u.alts).sort().join(",");
-    if (keys !== HREFLANG_ALL && keys !== HREFLANG_CONTENT) {
+    const locs = HREFLANG_SETS.get(keys);
+    if (!locs) {
       record(`alternates of ${pathOf(u.loc)}`, false, `got hreflang: ${keys || "(none)"}`);
       continue;
     }
-    if (keys === HREFLANG_ALL && u.alts.pt !== u.alts["pt-BR"]) record(`pt and pt-BR of ${pathOf(u.loc)} are the same page`, false, `${u.alts.pt} vs ${u.alts["pt-BR"]}`);
-    // A Portuguese URL is only listed for content that exists in Portuguese.
-    if (keys === HREFLANG_CONTENT && pathOf(u.loc).startsWith("/pt")) record(`${pathOf(u.loc)} is listed without a Portuguese alternate`, false);
+    if (locs.includes("pt") && u.alts.pt !== u.alts["pt-BR"]) record(`pt and pt-BR of ${pathOf(u.loc)} are the same page`, false, `${u.alts.pt} vs ${u.alts["pt-BR"]}`);
+    if (locs.includes("zh") && !(u.alts["zh-Hans"] === u.alts.zh && u.alts["zh-CN"] === u.alts.zh)) record(`zh, zh-CN and zh-Hans of ${pathOf(u.loc)} are the same page`, false, `${u.alts.zh} vs ${u.alts["zh-CN"]} vs ${u.alts["zh-Hans"]}`);
+    // A Portuguese or Chinese URL is only listed for content that exists in that language.
+    for (const l of ["pt", "zh"]) if (pathOf(u.loc).startsWith(`/${l}`) && !locs.includes(l)) record(`${pathOf(u.loc)} is listed without a ${l} alternate`, false);
     if (!Object.values(u.alts).includes(u.loc)) record(`alternates of ${pathOf(u.loc)} include itself`, false, JSON.stringify(u.alts));
     if (u.alts["x-default"] !== u.alts.en) record(`x-default of ${pathOf(u.loc)} equals the en page`, false, `${u.alts["x-default"]} vs ${u.alts.en}`);
   }
@@ -260,6 +277,9 @@ async function checkSitemap() {
   const ptCount = urls.filter((u) => pathOf(u.loc) === "/pt" || pathOf(u.loc).startsWith("/pt/")).length;
   record("the sitemap lists Portuguese pages", ptCount > 20, `${ptCount} /pt URL(s)`);
   record("no /pt/blog URL is listed (AI Daily has no Portuguese edition)", !urls.some((u) => pathOf(u.loc).startsWith("/pt/blog")));
+  const zhCount = urls.filter((u) => pathOf(u.loc) === "/zh" || pathOf(u.loc).startsWith("/zh/")).length;
+  record("the sitemap lists Chinese pages", zhCount > 20, `${zhCount} /zh URL(s)`);
+  record("no /zh/blog URL is listed (AI Daily has no Chinese edition)", !urls.some((u) => pathOf(u.loc).startsWith("/zh/blog")));
   record("alternates are reciprocal (each counterpart lists this URL back)", nonRecip.length === 0, nonRecip.slice(0, 5).map((u) => u.loc).join("\n"));
 
   // Every URL answers 200 directly.
@@ -286,10 +306,12 @@ async function checkLlms(origin) {
     ["/es/llms.txt", "es", false],
     ["/en/llms.txt", "en", false],
     ["/pt/llms.txt", "pt", false],
+    ["/zh/llms.txt", "zh", false],
     ["/llms-full.txt", "en", true],
     ["/es/llms-full.txt", "es", true],
     ["/en/llms-full.txt", "en", true],
     ["/pt/llms-full.txt", "pt", true],
+    ["/zh/llms-full.txt", "zh", true],
   ];
   const linkSet = new Set();
   for (const [path, lang, full] of targets) {
@@ -303,6 +325,8 @@ async function checkLlms(origin) {
       ? full ? ["Guías de prompting", "Glosario", "Prompts por modelo", "Cómo citar"] : ["## Herramientas", "## Guías de prompting", "## Glosario", "## Prompts por modelo", "### Cómo citar", "## Optional"]
       : lang === "pt"
         ? full ? ["Glossário", "Prompts por modelo", "Como citar"] : ["## Ferramentas", "## Glossário", "## Prompts por modelo", "### Como citar", "## AI Daily", "## Optional"]
+      : lang === "zh"
+        ? full ? ["术语表", "按模型分类的提示词", "如何引用"] : ["## 工具", "## 提示词指南", "## 术语表", "## 按模型分类的提示词", "### 如何引用", "## AI Daily", "## Optional"]
         : full ? ["Prompting guides", "Glossary", "Prompts by model", "How to cite"] : ["## Tools", "## Prompting guides", "## Glossary", "## Prompts by model", "### How to cite", "## Optional"];
     for (const s of expected) record(`${path} has "${s}"`, r.body.includes(s));
     record(`${path} has no template leftovers`, !/\[object Object\]|\bundefined\b/.test(r.body.replace(/null(\/|%2F)undefined/g, "")));
@@ -392,13 +416,15 @@ function checkPage(loc, origin, res, sitemapEntry) {
   else if (head.canonicals[0] !== loc) problems.push(`canonical ${head.canonicals[0]} ≠ ${loc}`);
 
   const keys = Object.keys(head.hreflang).sort().join(",");
-  const fullSet = keys === HREFLANG_ALL && head.hreflangCount === 5;
-  const contentSet = keys === HREFLANG_CONTENT && head.hreflangCount === 3;
-  if (!fullSet && !contentSet) problems.push(`hreflang: ${keys || "(none)"} (${head.hreflangCount} tags)`);
+  const pageLocs = HREFLANG_SETS.get(keys);
+  if (!pageLocs || head.hreflangCount !== keys.split(",").length) problems.push(`hreflang: ${keys || "(none)"} (${head.hreflangCount} tags)`);
   else {
+    // Only a guide (translated per language) and AI Daily (es/en) may skip a locale.
+    if (!/^\/[a-z]{2}\/(?:guides\/[^/]+|blog(?:\/.*)?)$/.test(new URL(loc).pathname) && keys !== HREFLANG_ALL) problems.push(`hreflang misses a locale: ${keys}`);
     if (!Object.values(head.hreflang).includes(loc)) problems.push("hreflang does not include the page itself");
     if (head.hreflang["x-default"] !== head.hreflang.en) problems.push("x-default is not the en page");
-    if (fullSet && head.hreflang.pt !== head.hreflang["pt-BR"]) problems.push("pt and pt-BR point at different pages");
+    if (pageLocs.includes("pt") && head.hreflang.pt !== head.hreflang["pt-BR"]) problems.push("pt and pt-BR point at different pages");
+    if (pageLocs.includes("zh") && !(head.hreflang["zh-Hans"] === head.hreflang.zh && head.hreflang["zh-CN"] === head.hreflang.zh)) problems.push("zh, zh-CN and zh-Hans point at different pages");
     if (sitemapEntry && Object.keys(sitemapEntry.alts).sort().join(",") !== keys) problems.push(`hreflang set differs from the sitemap's (${Object.keys(sitemapEntry.alts).sort().join(",")})`);
     else if (sitemapEntry && !Object.keys(head.hreflang).every((k) => sitemapEntry.alts[k] === head.hreflang[k])) {
       problems.push("hreflang differs from the sitemap's alternates");
@@ -412,20 +438,23 @@ function checkPage(loc, origin, res, sitemapEntry) {
   if (head.count("robots") > 1) problems.push(`<meta robots> x${head.count("robots")}`);
   if (/noindex/i.test(head.first("robots") || "")) problems.push("page is noindex");
   const desc = head.first("description") || "";
-  if (desc.length < 50 || desc.length > 320) problems.push(`meta description length ${desc.length}`);
+  // v1.8.7: a Chinese character is about two Latin ones wide in a search result (and says
+  // as much as a short word), so it counts double against the 50–320 range.
+  const descWidth = desc.length + (desc.match(/\p{Script=Han}/gu) ?? []).length;
+  if (descWidth < 50 || descWidth > 320) problems.push(`meta description length ${desc.length} (width ${descWidth})`);
   if (head.first("og:url") && head.first("og:url") !== loc) problems.push(`og:url ${head.first("og:url")} ≠ canonical`);
   if (head.first("og:image") && !/^https?:\/\//.test(head.first("og:image"))) problems.push("og:image is not absolute");
   if (head.first("twitter:image") && !/^https?:\/\//.test(head.first("twitter:image"))) problems.push("twitter:image is not absolute");
   if (head.first("twitter:card") && head.first("twitter:card") !== "summary_large_image") problems.push(`twitter:card ${head.first("twitter:card")}`);
   const lang = /<html[^>]*\blang="([^"]+)"/i.exec(html)?.[1];
-  // pt-BR for /pt; es and en as they are.
+  // pt-BR for /pt, zh-CN for /zh; es and en as they are.
   if (lang !== (HTML_LANG[path.split("/")[1]] ?? path.split("/")[1])) problems.push(`<html lang="${lang}"> ≠ /${path.split("/")[1]}`);
   const dup = head.metas.filter((m) => m.key === "og:locale").length;
   if (dup !== 1) problems.push(`og:locale x${dup}`);
 
   const ld = validateLd(html, { url: loc });
   for (const e of ld.errors) problems.push(`JSON-LD: ${e}`);
-  if (visibleText(html).split(" ").length < 60) problems.push("fewer than 60 words of server-rendered text");
+  if (visibleWords(visibleText(html)) < 60) problems.push("fewer than 60 words of server-rendered text");
   // v1.8.1: the HowTo + FAQ moved with their text from the home page to /how-it-works.
   const types = ld.types || [];
   if (new RegExp(`^/(${LOCALE_ALT})/how-it-works$`).test(path)) {
@@ -489,6 +518,12 @@ async function checkEntry() {
     const pt = await get("/", { headers: { "accept-language": accept, "user-agent": "promptea-seo-check/1.0" } });
     record(`/ redirects a Portuguese-speaking visitor (${accept.split(",")[0]}) to /pt`, pt.status >= 300 && pt.status < 400 && /\/pt\/?$/.test(pt.headers.get("location") || ""), `status ${pt.status} → ${pt.headers.get("location") || "(none)"}`);
   }
+  // v1.8.7: Simplified Chinese → /zh; Traditional Chinese is never sent to /zh.
+  for (const [accept, want] of [["zh-CN,zh;q=0.9,en;q=0.8", "zh"], ["zh-Hans", "zh"], ["zh-SG,zh;q=0.9", "zh"], ["zh-TW,zh;q=0.9", "en"], ["zh-HK", "en"]]) {
+    const zh = await get("/", { headers: { "accept-language": accept, "user-agent": "promptea-seo-check/1.0" } });
+    const where = zh.headers.get("location") || "";
+    record(`/ sends ${accept.split(",")[0]} to /${want}`, zh.status >= 300 && zh.status < 400 && new RegExp(`/${want}/?$`).test(where), `status ${zh.status} → ${where || "(none)"}`);
+  }
   summaryOfGroup("language entry (proxy)");
 }
 
@@ -502,13 +537,14 @@ async function checkEntry() {
  * hreflang only for the languages the content exists in, a visible notice, and
  * no entry in the sitemap (checked above).
  */
-async function checkPortugueseViews(origin, urls) {
-  group("/pt views of content without a Portuguese version");
-  const views = [["/pt/blog", "/en/blog"], ["/pt/blog/tech", "/en/blog/tech"], ["/pt/blog/weekly", "/en/blog/weekly"]];
+async function checkPortugueseViews(origin, urls, ui = "pt") {
+  const title = `/${ui} views of content without a ${ui === "zh" ? "Chinese" : "Portuguese"} version`;
+  group(title);
+  const views = [[`/${ui}/blog`, "/en/blog"], [`/${ui}/blog/tech`, "/en/blog/tech"], [`/${ui}/blog/weekly`, "/en/blog/weekly"]];
   const listed = new Set(urls.map((u) => pathOf(u.loc)));
-  const enGuide = urls.map((u) => pathOf(u.loc)).find((p) => p.startsWith("/en/guides/") && !listed.has(p.replace("/en/", "/pt/")));
-  if (enGuide) views.push([enGuide.replace("/en/", "/pt/"), enGuide]);
-  else console.log("    (every guide is translated to Portuguese: no guide view to check)");
+  const enGuide = urls.map((u) => pathOf(u.loc)).find((p) => p.startsWith("/en/guides/") && !listed.has(p.replace("/en/", `/${ui}/`)));
+  if (enGuide) views.push([enGuide.replace("/en/", `/${ui}/`), enGuide]);
+  else console.log(`    (every guide is translated to ${ui}: no guide view to check)`);
 
   for (const [path, original] of views) {
     const r = await get(path);
@@ -518,18 +554,22 @@ async function checkPortugueseViews(origin, urls) {
       const head = parseHead(r.body);
       if (head.canonicals[0] !== `${origin}${original}`) problems.push(`canonical ${head.canonicals[0]} ≠ ${origin}${original}`);
       const keys = Object.keys(head.hreflang).sort().join(",");
-      if (keys !== HREFLANG_CONTENT) problems.push(`hreflang: ${keys}`);
+      // A view announces the same locales as its original (v1.8.7: a guide may exist in
+      // es+en, es+en+pt, es+en+zh or all four; AI Daily in es+en).
+      const originalEntry = urls.find((u) => u.loc === `${origin}${original}`);
+      const want = originalEntry ? Object.keys(originalEntry.alts).sort().join(",") : HREFLANG_CONTENT;
+      if (keys !== want) problems.push(`hreflang: ${keys} (the original has ${want})`);
       if (!/data-content-lang-notice/.test(r.body)) problems.push("no visible notice that the content is in English");
-      if (!/<html[^>]*\blang="pt-BR"/i.test(r.body)) problems.push("<html lang> is not pt-BR");
+      if (!new RegExp(`<html[^>]*\\blang="${HTML_LANG[ui]}"`, "i").test(r.body)) problems.push(`<html lang> is not ${HTML_LANG[ui]}`);
       if (head.first("og:locale") !== "en_US") problems.push(`og:locale ${head.first("og:locale")} (the content is English)`);
     }
     record(`${path} is a view of ${original}`, problems.length === 0, problems.join("\n"));
   }
-  const feed = await get("/pt/blog/feed.xml");
-  record("/pt/blog/feed.xml redirects to the English feed", feed.status === 308 && /\/en\/blog\/feed\.xml$/.test(feed.headers.get("location") || ""), `status ${feed.status} → ${feed.headers.get("location") || "(none)"}`);
-  const techFeed = await get("/pt/blog/tech/feed.xml");
-  record("/pt/blog/tech/feed.xml redirects to the English Tech feed", techFeed.status === 308 && /\/en\/blog\/tech\/feed\.xml$/.test(techFeed.headers.get("location") || ""), `status ${techFeed.status} → ${techFeed.headers.get("location") || "(none)"}`);
-  summaryOfGroup("/pt views of content without a Portuguese version");
+  const feed = await get(`/${ui}/blog/feed.xml`);
+  record(`/${ui}/blog/feed.xml redirects to the English feed`, feed.status === 308 && /\/en\/blog\/feed\.xml$/.test(feed.headers.get("location") || ""), `status ${feed.status} → ${feed.headers.get("location") || "(none)"}`);
+  const techFeed = await get(`/${ui}/blog/tech/feed.xml`);
+  record(`/${ui}/blog/tech/feed.xml redirects to the English Tech feed`, techFeed.status === 308 && /\/en\/blog\/tech\/feed\.xml$/.test(techFeed.headers.get("location") || ""), `status ${techFeed.status} → ${techFeed.headers.get("location") || "(none)"}`);
+  summaryOfGroup(title);
 }
 
 // ---------------------------------------------------------------------------
@@ -546,7 +586,10 @@ async function main() {
   await checkLlms(origin);
   if (urls.length > 0) await checkPages(urls, origin);
   await checkEntry();
-  if (urls.length > 0) await checkPortugueseViews(origin, urls);
+  if (urls.length > 0) {
+    await checkPortugueseViews(origin, urls, "pt");
+    await checkPortugueseViews(origin, urls, "zh");
+  }
 
   if (retried.length) {
     group("transport");

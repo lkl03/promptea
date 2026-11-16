@@ -56,7 +56,8 @@ describe("version synchronization", () => {
   // v1.8.7 is built the same way: part A (X feed, newsletter card, benchmarks per model, QA)
   // writes its notes under "## v1.8.7 (unreleased)"; part B (Chinese) bumps the version,
   // dates the heading and turns this back to false.
-  const UNRELEASED_OK = true;
+  // v1.8.7 was released by part B: the heading is dated and the tolerance is off again.
+  const UNRELEASED_OK = false;
   const releasedHeadings = (changelog: string) =>
     [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)(?! \(unreleased\))/gm)].map((m) => m[1]);
 

@@ -3,7 +3,7 @@
 // components/LanguageSwitcher.tsx
 //
 // One segmented control with every interface language (lib/domain.ts LANGS):
-// ES | EN | PT. Each option is a plain link to the same page in that language,
+// ES | EN | PT | 中文 (v1.8.7). Each option is a plain link to the same page in that language,
 // so it works without JavaScript and crawlers can follow it. The current
 // language is marked with aria-current; each link names its language in that
 // language (aria-label + lang) for screen readers.
@@ -42,8 +42,10 @@ export default function LanguageSwitcher({ lang, label }: { lang: Lang; label: s
             aria-current={active ? "true" : undefined}
             title={LANG_NAME[l]}
             className={[
-              // Three languages on a 375 px header: tighter on phones, the v1.8.1 size from `sm` up.
-              "rounded-full px-2 py-1 transition max-[340px]:px-1.5 sm:px-3",
+              // v1.8.7: four languages (ES | EN | PT | 中文) on a 320–375 px header: tighter on
+              // phones, the v1.8.1 size from `sm` up. 中文 is two Han characters, about as wide
+              // as "EN" + padding, so the control stays one row (scripts/release/i18n-qa.mjs checks it).
+              "whitespace-nowrap rounded-full px-1.5 py-1 transition max-[360px]:px-1 sm:px-3",
               active ? "bg-ink text-canvas font-medium" : "text-ink-muted hover:text-ink",
             ].join(" ")}
           >

@@ -7,8 +7,9 @@
 // decides how much structure the refined prompt receives: a short WhatsApp
 // message must not get the same scaffolding as a repository migration plan.
 
+import { wordCount as countWords } from "@/lib/engine/normalize";
 import type { Complexity, Lang, PromptPurpose, RefinementStrategy, TaskType } from "@/lib/domain";
-import { readsAsPortuguese } from "./language";
+import { readsAsChinese, readsAsPortuguese } from "./language";
 
 export type RoutingInput = {
   prompt: string;
@@ -87,11 +88,28 @@ const PT_LONG_FORM = new RegExp(`${PT_EDGE_L}(artigo|ensaio|blog|cap[íi]tulo|ro
 const PT_REPO_AGENT = new RegExp(`${PT_EDGE_L}(reposit[óo]rio|migra[çc][ãa]o de reposit[óo]rio|su[íi]te de testes|agente)${PT_EDGE_R}`, "iu");
 const PT_JSON_SCHEMA = new RegExp(`${PT_EDGE_L}(json|schema|esquema|campos|extraia|extrair|csv|tabela|colunas?|null)${PT_EDGE_R}`, "iu");
 
+// v1.8.7 — the same routing signals written in Chinese, consulted only when the
+// prompt reads as Chinese (readsAsChinese). CJK has no word edges: plain
+// substrings, specific enough to stand alone.
+const ZH_IMAGE_MEDIUM = "图片|图像|照片|插画|插图|海报|标志|logo|图标|壁纸|绘画|画作|渲染图|封面|头像";
+const ZH_IMAGE_GEN_INTENT = new RegExp(
+  `(生成|画|绘制|创作|设计|制作|渲染)(?:一张|一幅|一个|一组)?[^。\\n]{0,20}(?:${ZH_IMAGE_MEDIUM})|照片级|写实风格|宽高比\\s*\\d{1,2}:\\d{1,2}`,
+  "iu",
+);
+const ZH_IMAGE_ANALYSIS = /(分析|描述|解释|识别|读取|转录|提取)[^。\n]{0,20}(图片|图像|照片|截图)|(这张|附件中的|下面的|以下)(图片|图像|照片|截图)/u;
+const ZH_FRONTEND_BUILD = /(做|写|开发|搭建|实现|设计|创建)[^。\n]{0,20}(落地页|网站|网页|主页|前端|界面|仪表盘|后台|作品集|组件|表单|html|css)/iu;
+const ZH_BRAINSTORM = /(点子|创意|想法|头脑风暴|备选|候选|起名|名字|标题)/u;
+const ZH_PLANNING = /(计划|规划|路线图|时间表|里程碑|步骤|清单|策略)/u;
+const ZH_LONG_FORM = /(文章|论文|博客|章节|剧本|邮件通讯|报告|文档)/u;
+const ZH_REPO_AGENT = /(代码仓库|仓库|代码库|测试套件|智能体)/u;
+const ZH_JSON_SCHEMA = /(json|schema|字段|提取|csv|表格|列名|null)/iu;
+
 /** True when the text asks for an image to be GENERATED (not analyzed). */
 export function isImageGenerationRequest(text: string, lang?: Lang): boolean {
   const src = String(text ?? "");
   if (IMAGE_GEN_INTENT.test(src) && !IMAGE_ANALYSIS.test(src)) return true;
-  return readsAsPortuguese(src, lang ?? "en") && PT_IMAGE_GEN_INTENT.test(src) && !PT_IMAGE_ANALYSIS.test(src) && !IMAGE_ANALYSIS.test(src);
+  if (readsAsPortuguese(src, lang ?? "en") && PT_IMAGE_GEN_INTENT.test(src) && !PT_IMAGE_ANALYSIS.test(src) && !IMAGE_ANALYSIS.test(src)) return true;
+  return readsAsChinese(src, lang ?? "en") && ZH_IMAGE_GEN_INTENT.test(src) && !ZH_IMAGE_ANALYSIS.test(src) && !IMAGE_ANALYSIS.test(src);
 }
 
 // Building a website/UI is implementation work even when the classifier saw
@@ -104,15 +122,16 @@ const LONG_FORM =
   /\b(art[ií]culo|article|ensayo|essay|blog|post largo|cap[ií]tulo|chapter|gui[oó]n|script|newsletter|informe|report|documentaci[oó]n|documentation)\b/i;
 const MULTI_REQ = /(\n\s*[-*•]\s+|\n\s*\d+[.)]\s+)/;
 
+/** v1.8.7: the engine's word count (Chinese counted by characters, everything else by spaces). */
 function wordCount(text: string): number {
-  const t = text.trim();
-  return t === "" ? 0 : t.split(/\s+/).length;
+  return countWords(text);
 }
 
 /** Classify how much structure the prompt's task actually needs. */
 export function classifyComplexity(prompt: string, attachmentsCount = 0, lang?: Lang): Complexity {
   const text = String(prompt ?? "");
-  const repoAgent = REPO_AGENT.test(text) || (readsAsPortuguese(text, lang ?? "en") && PT_REPO_AGENT.test(text));
+  const repoAgent =
+    REPO_AGENT.test(text) || (readsAsPortuguese(text, lang ?? "en") && PT_REPO_AGENT.test(text)) || (readsAsChinese(text, lang ?? "en") && ZH_REPO_AGENT.test(text));
   const words = wordCount(text);
   const bullets = (text.match(MULTI_REQ) ?? []).length;
   const hasCode = CODE_FENCE.test(text) || /\bfunction\b|\bconst\b|=>|\bclass\s+\w+/.test(text);
@@ -140,6 +159,7 @@ export function classifyComplexity(prompt: string, attachmentsCount = 0, lang?: 
 export function selectStrategy(input: RoutingInput): RoutingDecision {
   const text = String(input.prompt ?? "");
   const pt = readsAsPortuguese(text, input.lang ?? "en");
+  const zh = !pt && readsAsChinese(text, input.lang ?? "en"); // v1.8.7
   const complexity = classifyComplexity(text, input.attachmentsCount ?? 0, input.lang);
   const signals: string[] = [`task:${input.taskType}`, `purpose:${input.purpose}`, `complexity:${complexity}`];
 
@@ -151,21 +171,21 @@ export function selectStrategy(input: RoutingInput): RoutingDecision {
   // Content-driven overrides first: the prompt knows better than the dropdown.
   const agentEligible =
     input.taskType === "debugging"
-      ? REPO_AGENT_STRONG.test(text) || (pt && PT_REPO_AGENT.test(text))
+      ? REPO_AGENT_STRONG.test(text) || ((pt && PT_REPO_AGENT.test(text)) || (zh && ZH_REPO_AGENT.test(text)))
       : input.taskType === "coding" || input.taskType === "refactor" || input.taskType === "planning" || CODE_FENCE.test(text);
-  if ((REPO_AGENT.test(text) || (pt && PT_REPO_AGENT.test(text))) && agentEligible) {
+  if ((REPO_AGENT.test(text) || ((pt && PT_REPO_AGENT.test(text)) || (zh && ZH_REPO_AGENT.test(text)))) && agentEligible) {
     return pick("agent_workflow", "match:repo_agent");
   }
   // v1.8.0: "returns 500 when I POST JSON" is a bug report, not an extraction
   // task — content-based JSON routing skips code tasks.
-  const jsonByContent = !CODE_TASKS.has(input.taskType) && (JSON_SCHEMA.test(text) || (pt && PT_JSON_SCHEMA.test(text))) && /\bjson\b/i.test(text);
+  const jsonByContent = !CODE_TASKS.has(input.taskType) && (JSON_SCHEMA.test(text) || ((pt && PT_JSON_SCHEMA.test(text)) || (zh && ZH_JSON_SCHEMA.test(text)))) && /\bjson\b/i.test(text);
   if (input.purpose === "data" || input.taskType === "data_extraction" || jsonByContent) {
     return pick("data_schema", "match:json_schema");
   }
   if (input.purpose === "image" || input.taskType === "image" || isImageGenerationRequest(text, input.lang)) {
     return pick("image_generation", "match:image");
   }
-  if ((input.purpose === "text" || input.purpose === "code") && (FRONTEND_BUILD.test(text) || (pt && PT_FRONTEND_BUILD.test(text)))) {
+  if ((input.purpose === "text" || input.purpose === "code") && (FRONTEND_BUILD.test(text) || ((pt && PT_FRONTEND_BUILD.test(text)) || (zh && ZH_FRONTEND_BUILD.test(text))))) {
     return pick("coding_implementation", "match:frontend_build");
   }
   if (input.taskType === "translation") return pick("translation", "task:translation");
@@ -181,9 +201,9 @@ export function selectStrategy(input: RoutingInput): RoutingDecision {
   // simple light path keeps it natural anyway); the bare keyword still needs
   // real multi-step intent.
   if (input.taskType === "planning") return pick("planning_execution", "task:planning");
-  if ((PLANNING.test(text) || (pt && PT_PLANNING.test(text))) && complexity !== "simple") return pick("planning_execution", "match:planning");
-  if ((BRAINSTORM.test(text) || (pt && PT_BRAINSTORM.test(text))) && complexity === "simple") return pick("brainstorming", "match:brainstorm");
-  if (LONG_FORM.test(text) || (pt && PT_LONG_FORM.test(text)) || (input.taskType === "writing" && complexity !== "simple")) {
+  if ((PLANNING.test(text) || ((pt && PT_PLANNING.test(text)) || (zh && ZH_PLANNING.test(text)))) && complexity !== "simple") return pick("planning_execution", "match:planning");
+  if ((BRAINSTORM.test(text) || ((pt && PT_BRAINSTORM.test(text)) || (zh && ZH_BRAINSTORM.test(text)))) && complexity === "simple") return pick("brainstorming", "match:brainstorm");
+  if (LONG_FORM.test(text) || ((pt && PT_LONG_FORM.test(text)) || (zh && ZH_LONG_FORM.test(text))) || (input.taskType === "writing" && complexity !== "simple")) {
     return pick("long_form_writing", "match:long_form");
   }
 

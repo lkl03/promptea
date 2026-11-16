@@ -19,7 +19,7 @@ import Link from "next/link";
 import type { PublicArticle } from "@/lib/blog/types";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import { cardDisplayDate } from "@/components/blog/ArticleCardItem";
-import { LANG_TAG, contentIsFallback, contentLangFor, type Lang } from "@/lib/domain";
+import { LANG_TAG, PUNCT, contentIsFallback, contentLangFor, type Lang } from "@/lib/domain";
 
 type Dict = {
   title: string;
@@ -134,7 +134,10 @@ export default function LatestDaily({
       </div>
 
       <Link href={`/${lang}/blog/${lead.slug}`} className="blog-lead group mt-5 block rounded-xl border border-line p-4 sm:p-5">
-        <span className="sr-only">{dict.lead}: </span>
+        <span className="sr-only">
+          {dict.lead}
+          {PUNCT[lang].colon}
+        </span>
         {meta(lead, true)}
         <h3 lang={contentLangTag} className="blog-row-title mt-3 font-title text-xl font-semibold leading-snug text-ink sm:text-2xl">{lead.title}</h3>
         {lead.deck ? <p lang={contentLangTag} className="mt-2 line-clamp-3 max-w-3xl text-sm leading-relaxed text-ink-muted">{lead.deck}</p> : null}

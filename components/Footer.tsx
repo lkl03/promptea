@@ -5,7 +5,7 @@ import { APP_VERSION } from "@/lib/version";
 import type { AppFeedbackDict } from "@/lib/uiDict";
 import { weeklyArchivePath } from "@/lib/newsletter/paths";
 import { getXLinks } from "@/lib/social";
-import { pick, type Lang } from "@/lib/domain";
+import { pick, PUNCT, type Lang } from "@/lib/domain";
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -29,17 +29,22 @@ export default function Footer({
   labels: { tech: string; sources: string };
 }) {
   const year = new Date().getFullYear();
-  const privacyLabel = pick(lang, { es: "Privacidad", en: "Privacy", pt: "Privacidade" });
-  const homeLabel = pick(lang, { es: "Inicio", en: "Home", pt: "Início" });
-  const promptsLabel = pick(lang, { es: "Prompts", en: "Prompts", pt: "Prompts" });
-  const guidesLabel = pick(lang, { es: "Guías", en: "Guides", pt: "Guias" });
-  const modelsLabel = pick(lang, { es: "Modelos", en: "Models", pt: "Modelos" });
-  const glossaryLabel = pick(lang, { es: "Glosario", en: "Glossary", pt: "Glossário" });
-  const blogLabel = pick(lang, { es: "IA al Día", en: "AI Daily", pt: "AI Daily" });
-  const weeklyLabel = pick(lang, { es: "Resumen semanal", en: "Weekly digest", pt: "Resumo semanal" });
-  const resourcesLabel = pick(lang, { es: "Recursos útiles", en: "Useful resources", pt: "Recursos úteis" });
-  const eterlabMessage = pick(lang, { es: "diseñado y desarrollado por", en: "designed and developed by", pt: "design e desenvolvimento por" });
-  const followLabel = pick(lang, { es: "Seguinos en X", en: "Follow us on X", pt: "Siga a gente no X" });
+  const privacyLabel = pick(lang, { es: "Privacidad", en: "Privacy", pt: "Privacidade", zh: "隐私" });
+  const homeLabel = pick(lang, { es: "Inicio", en: "Home", pt: "Início", zh: "首页" });
+  // v1.8.7: these two were English literals in every language; es/en/pt keep the same word.
+  const changelogLabel = pick(lang, { es: "Changelog", en: "Changelog", pt: "Changelog", zh: "更新日志" });
+  const benchmarksLabel = pick(lang, { es: "Benchmarks", en: "Benchmarks", pt: "Benchmarks", zh: "基准测试" });
+  const promptsLabel = pick(lang, { es: "Prompts", en: "Prompts", pt: "Prompts", zh: "提示词" });
+  const guidesLabel = pick(lang, { es: "Guías", en: "Guides", pt: "Guias", zh: "指南" });
+  const modelsLabel = pick(lang, { es: "Modelos", en: "Models", pt: "Modelos", zh: "模型" });
+  const glossaryLabel = pick(lang, { es: "Glosario", en: "Glossary", pt: "Glossário", zh: "术语表" });
+  const blogLabel = pick(lang, { es: "IA al Día", en: "AI Daily", pt: "AI Daily", zh: "AI Daily" });
+  const weeklyLabel = pick(lang, { es: "Resumen semanal", en: "Weekly digest", pt: "Resumo semanal", zh: "每周摘要" });
+  const resourcesLabel = pick(lang, { es: "Recursos útiles", en: "Useful resources", pt: "Recursos úteis", zh: "实用资源" });
+  const eterlabMessage = pick(lang, { es: "diseñado y desarrollado por", en: "designed and developed by", pt: "design e desenvolvimento por", zh: "由" });
+  // Chinese puts the verb after the name, with no spaces: "由eterlab设计与开发。"
+  const eterlabSuffix = pick(lang, { es: ".", en: ".", pt: ".", zh: "设计与开发。" });
+  const followLabel = pick(lang, { es: "Seguinos en X", en: "Follow us on X", pt: "Siga a gente no X", zh: "在X上关注我们" });
   const xUrl = getXLinks().url;
 
   return (
@@ -48,7 +53,7 @@ export default function Footer({
 
       {/* Primary navigation */}
       <nav
-        aria-label={pick(lang, { es: "Pie de página", en: "Footer navigation", pt: "Navegação do rodapé" })}
+        aria-label={pick(lang, { es: "Pie de página", en: "Footer navigation", pt: "Navegação do rodapé", zh: "页脚导航" })}
         className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs opacity-80"
       >
         <span>V{APP_VERSION}</span>
@@ -58,7 +63,7 @@ export default function Footer({
         </Link>
 
         <Link href={`/${lang}/changelog`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          Changelog
+          {changelogLabel}
         </Link>
 
         <Link href={`/${lang}/privacy`} className="hover:underline underline-offset-2 transition-all ease-in-out">
@@ -91,7 +96,7 @@ export default function Footer({
 
       {/* Useful resources */}
       <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs opacity-80">
-        <span className="opacity-70">{resourcesLabel}:</span>
+        <span className="opacity-70">{resourcesLabel}{PUNCT[lang].colon.trimEnd()}</span>
 
         <Link href={`/${lang}/prompts`} className="hover:underline underline-offset-2 transition-all ease-in-out">
           {promptsLabel}
@@ -127,26 +132,27 @@ export default function Footer({
         </Link>
 
         <Link href={`/${lang}/benchmarks`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          Benchmarks
+          {benchmarksLabel}
         </Link>
 
         <Link href={`/${lang}/analyzer`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          {pick(lang, { es: "Analizador", en: "Analyzer", pt: "Analisador" })}
+          {pick(lang, { es: "Analizador", en: "Analyzer", pt: "Analisador", zh: "分析器" })}
         </Link>
 
         <Link href={`/${lang}/library`} className="hover:underline underline-offset-2 transition-all ease-in-out">
-          {pick(lang, { es: "Biblioteca", en: "Library", pt: "Biblioteca" })}
+          {pick(lang, { es: "Biblioteca", en: "Library", pt: "Biblioteca", zh: "提示词库" })}
         </Link>
       </div>
 
       {/* Copyright */}
       <div className="mt-4 flex flex-wrap items-center justify-center text-xs text-ink-faint">
         <span>
-          © {year} · {eterlabMessage}{" "}
+          © {year} · {eterlabMessage}
+          {PUNCT[lang].gap}
           <Link href="https://eterlab.co" className="hover:text-ink transition-all ease-in-out">
             eterlab
           </Link>
-          .
+          {eterlabSuffix}
         </span>
       </div>
     </footer>

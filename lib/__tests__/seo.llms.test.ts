@@ -47,6 +47,7 @@ describe("llms.txt", () => {
           es: ["## Herramientas", "## Guías de prompting", "## Glosario", "## Prompts por modelo", "### Cómo citar"],
           en: ["## Tools", "## Prompting guides", "## Glossary", "## Prompts by model", "### How to cite"],
           pt: ["## Ferramentas", "## Guias de prompting", "## Glossário", "## Prompts por modelo", "### Como citar"],
+          zh: ["## 工具", "## 提示词指南", "## 术语表", "## 按模型分类的提示词", "### 如何引用"],
         }[lang];
         for (const heading of h) expect(txt).toContain(heading);
       });

@@ -75,6 +75,20 @@ Preciso de:
     purpose: "code",
     target: "claude",
   },
+  zh: {
+    prompt: `你是一名资深软件工程师。我在Next.js 14中遇到了这个错误：
+
+Error: "Cannot read properties of undefined (reading 'map')"
+
+它出现在ProductList组件中，当服务器没有传入products这个prop时就会触发。
+
+我需要：
+1. 这个错误的确切原因
+2. 如何预防（默认值、卫语句或Suspense）
+3. 一段应用了修复的代码片段`,
+    purpose: "code",
+    target: "claude",
+  },
 };
 
 /** sessionStorage key for persisting analyzer form state across navigation */

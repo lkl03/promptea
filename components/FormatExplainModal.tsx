@@ -93,6 +93,29 @@ const COPY: Record<
     ],
     close: "Fechar",
   },
+  zh: {
+    trigger: "该选哪一个？",
+    title: "清单与JSON",
+    intro: "两个版本包含相同的分析，区别只在于优化后的提示词以什么形式呈现。",
+    checklistTitle: "清单（常规格式）",
+    checklistBody: [
+      "更容易阅读，也方便手动修改。",
+      "最适合直接粘贴到ChatGPT、Claude、Gemini或Grok中。",
+      "大多数情况下的正确选择。",
+    ],
+    jsonTitle: "纯JSON",
+    jsonBody: [
+      "结构严格，可以用JSON.parse()解析。",
+      "最适合自动化、API、智能体和可复现的工作流程。",
+      "更死板，对话感也更弱。",
+    ],
+    recommendationTitle: "快速建议",
+    recommendation: [
+      "如果你要手动粘贴提示词，就用清单。",
+      "如果要交给其他工具或流水线处理，就用JSON。",
+    ],
+    close: "关闭",
+  },
 };
 
 export default function FormatExplainModal({ lang }: Props) {

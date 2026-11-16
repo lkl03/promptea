@@ -6,14 +6,14 @@
 import { PURPOSES, type Lang, type PromptPurpose } from "@/lib/domain";
 
 const LABELS: Record<PromptPurpose, Record<Lang, string>> = {
-  text: { es: "Texto", en: "Text", pt: "Texto" },
-  study: { es: "Estudio", en: "Study", pt: "Estudo" },
-  code: { es: "Código", en: "Code", pt: "Código" },
-  data: { es: "Data/JSON", en: "Data/JSON", pt: "Dados/JSON" },
-  image: { es: "Imagen", en: "Image", pt: "Imagem" },
-  marketing: { es: "Marketing", en: "Marketing", pt: "Marketing" },
-  translation: { es: "Traducción", en: "Translation", pt: "Tradução" },
-  summarization: { es: "Resumen", en: "Summary", pt: "Resumo" },
+  text: { es: "Texto", en: "Text", pt: "Texto", zh: "文本" },
+  study: { es: "Estudio", en: "Study", pt: "Estudo", zh: "学习" },
+  code: { es: "Código", en: "Code", pt: "Código", zh: "代码" },
+  data: { es: "Data/JSON", en: "Data/JSON", pt: "Dados/JSON", zh: "数据/JSON" },
+  image: { es: "Imagen", en: "Image", pt: "Imagem", zh: "图像" },
+  marketing: { es: "Marketing", en: "Marketing", pt: "Marketing", zh: "营销" },
+  translation: { es: "Traducción", en: "Translation", pt: "Tradução", zh: "翻译" },
+  summarization: { es: "Resumen", en: "Summary", pt: "Resumo", zh: "摘要" },
 };
 
 export function purposeOptions(lang: Lang): Array<{ value: PromptPurpose; label: string }> {

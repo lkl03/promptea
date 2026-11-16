@@ -1,6 +1,7 @@
 import type { Lang, FindingId, Severity } from "../types";
 import { vocabularyLang } from "@/lib/refine/language";
 import { PT_EXPLANATION, PT_ONLY_JSON, PT_SUPER_SHORT } from "../../pt";
+import { ZH_EXPLANATION, ZH_ONLY_JSON, ZH_SUPER_SHORT } from "../../zh";
 
 type AddFinding = (id: FindingId, severity: Severity) => void;
 
@@ -16,11 +17,14 @@ export function applyContradictions(opts: { prompt: string; lang: Lang; addFindi
     low.includes("solo json") ||
     low.includes("return only valid json") ||
     low.includes("json only") ||
-    (vocab === "pt" && PT_ONLY_JSON.test(low));
+    (vocab === "pt" && PT_ONLY_JSON.test(low)) ||
+    (vocab === "zh" && ZH_ONLY_JSON.test(low));
 
   const wantsExplanation =
     vocab === "pt"
       ? PT_EXPLANATION.test(low)
+      : vocab === "zh"
+        ? ZH_EXPLANATION.test(low)
       : lang === "es"
         ? low.includes("explic") || low.includes("razon") || low.includes("coment") || low.includes("paso a paso")
         : low.includes("explain") || low.includes("reason") || low.includes("comment") || low.includes("step by step");
@@ -34,6 +38,8 @@ export function applyContradictions(opts: { prompt: string; lang: Lang; addFindi
   const wantsDetailed =
     vocab === "pt"
       ? low.includes("muito detalh") || low.includes("bem detalh") || low.includes("em detalhe")
+      : vocab === "zh"
+        ? low.includes("非常详细") || low.includes("尽可能详细") || low.includes("详尽")
       : lang === "es"
         ? low.includes("muy detall") || low.includes("bien detall")
         : low.includes("very detailed") || low.includes("in detail");
@@ -43,7 +49,8 @@ export function applyContradictions(opts: { prompt: string; lang: Lang; addFindi
     /max\s*\d+\s*lines/.test(low) ||
     /una\s*frase/.test(low) ||
     /one\s*sentence/.test(low) ||
-    (vocab === "pt" && PT_SUPER_SHORT.test(low));
+    (vocab === "pt" && PT_SUPER_SHORT.test(low)) ||
+    (vocab === "zh" && ZH_SUPER_SHORT.test(low));
 
   if (wantsDetailed && wantsSuperShort) {
     addFinding("contradiction", "medium");

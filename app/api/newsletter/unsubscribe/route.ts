@@ -71,6 +71,20 @@ const COPY = {
     invalidBody: "Este link parece inválido ou incompleto. Se você o recebeu por e-mail, use o link completo.",
     invalidLink: "Voltar para o Promptea",
   },
+  zh: {
+    title: "已退订 — Promptea",
+    heading: "您已成功退订",
+    body: "您将不再收到Promptea Weekly邮件。",
+    link: "返回Promptea",
+    errorTitle: "出错了 — Promptea",
+    errorHeading: "出错了",
+    errorBody: "我们暂时无法处理您的退订请求。请稍后再试，或与我们联系。",
+    errorLink: "返回Promptea",
+    invalidTitle: "链接无效 — Promptea",
+    invalidHeading: "退订链接无效",
+    invalidBody: "此链接似乎无效或不完整。如果您是在邮件中收到的，请使用完整的链接。",
+    invalidLink: "返回Promptea",
+  },
 } as const;
 
 function htmlPage(opts: {

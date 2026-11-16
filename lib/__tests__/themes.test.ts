@@ -36,7 +36,7 @@ describe("theme registry (v1.7.0)", () => {
       expect(THEME_LABELS[key].en.length).toBeGreaterThan(0);
       expect(THEME_LABELS[key].pt.length).toBeGreaterThan(0);
     }
-    expect(THEME_LABELS.glass).toEqual({ es: "Glass", en: "Glass", pt: "Glass" });
+    expect(THEME_LABELS.glass).toEqual({ es: "Glass", en: "Glass", pt: "Glass", zh: "Glass" });
     expect(JSON.stringify(THEME_LABELS)).not.toMatch(/Old version|Versión anterior/);
   });
 

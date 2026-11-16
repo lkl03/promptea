@@ -7,9 +7,24 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 - **How Promptea works** (`/[lang]/how-it-works`, v1.8.1) — what it is, how a prompt is scored, supported AIs and prompt types, the FAQ and the product tour video. The long explanation that used to sit at the bottom of the home page, with its `HowTo` + `FAQPage` JSON-LD, a markdown twin and a place in `llms.txt`.
 - **Benchmarks** (`/[lang]/benchmarks`) — leaders per benchmark, frontier models, an explorable ranking table and what each benchmark measures, from OpenRouter's benchmarks API (server-side, cached, honest fallbacks).
 
-Available in English, Spanish and Brazilian Portuguese (`/en`, `/es`, `/pt`; v1.8.2). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
+Available in English, Spanish, Brazilian Portuguese and Simplified Chinese (`/en`, `/es`, `/pt` since v1.8.2, `/zh` since v1.8.7). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.5 (2026-11-13)
+## Latest update — v1.8.7 (2026-11-16)
+
+**Simplified Chinese (`/zh`) as a fourth language, Promptea's own X feed, a newsletter card every visitor sees, and an analysis of each model on Benchmarks.**
+- **`/zh`** for readers in mainland China (`zh`, `zh-CN`, `zh-SG`, `zh-Hans`); Traditional Chinese browsers go to `/en`.
+- Translated: the interface, the analyzer and "Find the best AI" (engine 2.5.0 reads prompts written in Chinese from any interface), the 11 model pages (DeepSeek, Kimi, Qwen, GLM, MiniMax and Doubao first), landings, glossary, prompt packs, static pages and 13 of 64 guides. The rest is shown in English with a notice and a canonical to the original.
+- Chinese typography uses the system's fonts (no CJK web font), and share images stay in Latin script (`next/og` has no CJK font).
+- The translations were written by AI: the native review package is [`docs/i18n/zh-review.md`](./docs/i18n/zh-review.md).
+- The X card is rendered by our server from Buffer, with no third-party script (see "X feed").
+- The newsletter card's rules are in "Sign-up prompts on the site" (under "Promptea Weekly").
+- Benchmarks open a per-model analysis and compare up to four models.
+
+Evidence and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.6 (2026-11-14) — SEO for the US and Asia: Qwen, GLM, MiniMax and Doubao, analyzer copy, IndexNow, clean measurement._
+
+## v1.8.5 (2026-11-13)
 
 **The owner's open items from the v1.8.4 QA.** Next.js 16.4.6 closes four critical security advisories (released on its own, #43); Aqua's accent becomes `#0061cc` so buttons, links and badges pass WCAG AA; two new guides (customer feedback analysis, proposals and RFP responses) in the three languages; `resend` is updated; the benchmarks JSON-LD passes Google's Rich Results Test; and the AI Daily Tech routine exists, disabled until its network access, secret and validation run are done (see "AI Daily Tech" below). Report and the owner's remaining steps: [`docs/release/v1.8.5/report.md`](./docs/release/v1.8.5/report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
 
@@ -95,7 +110,7 @@ A bilingual editorial section with two reader-facing sections, each with its own
 Design and data model: [`docs/editorial/tech-daily-design.md`](./docs/editorial/tech-daily-design.md).
 
 - **What it is.** Edition `tech-daily`: at most one story a day, stored in its own document (`ai-tech_<date>`) next to that day's AI stories. Categories added for it (usable by any edition): `cloud`, `web-platform`, `hardware`.
-- **Where it shows.** `/[lang]/blog/tech` (index, search, filters, pagination), `/[lang]/blog/tech/feed.xml`, the tabs AI | Tech | Weekly digest, the home page's "Latest in AI Daily" (the lead is always an AI story; at most one Tech story in the row — `lib/blog/latest.ts`), the news marquee, the weekly digest's "Tech this week" block, the sitemap, `llms.txt` and the markdown twins. Under `/pt` it is shown in English with a notice, canonical → `/en/blog/tech`.
+- **Where it shows.** `/[lang]/blog/tech` (index, search, filters, pagination), `/[lang]/blog/tech/feed.xml`, the tabs AI | Tech | Weekly digest, the home page's "Latest in AI Daily" (the lead is always an AI story; at most one Tech story in the row — `lib/blog/latest.ts`), the news marquee, the weekly digest's "Tech this week" block, the sitemap, `llms.txt` and the markdown twins. Under `/pt` and `/zh` it is shown in English with a notice, canonical → `/en/blog/tech`.
 - **Sources.** `lib/blog/sources.ts` is the curated registry (Tier 1 primary, Tier 2 trusted press, Tier 3 discovery only), explained to readers at `/[lang]/sources` and to maintainers in [`docs/editorial/sources.md`](./docs/editorial/sources.md). `node scripts/editorial/verify-sources.mjs` fetches every URL and rewrites [`docs/editorial/sources-verification.md`](./docs/editorial/sources-verification.md); a source that cannot be verified is not added.
 - **The routine (v1.8.5).** "Promptea AI Daily Tech" exists, **disabled**: `trig_016d8RWXCJbYzCYrzKKqfmAc` (https://claude.ai/code/routines/trig_016d8RWXCJbYzCYrzKKqfmAc), cron `0 15 * * *` (12:00 in Buenos Aires), the same model, environment, repository and tools as the AI Daily routines, no connectors. Its instructions are the prompt from [`docs/editorial/tech-daily-routine.md`](./docs/editorial/tech-daily-routine.md) behind a short setup block: a placeholder for the **same** `BLOG_PUBLISH_SECRET` the AI Daily routines carry in their instructions (no new Vercel variable, no Firebase credentials) and a `VALIDATION MODE` switch that only allows `dryRun` requests. Before enabling it: allow the 85 Tech source hosts the shared cloud environment does not reach yet ([`docs/editorial/tech-routine-domains-to-allow.txt`](./docs/editorial/tech-routine-domains-to-allow.txt)), paste the secret, run it once in validation mode, then remove the validation block and enable it. Step by step and what was verified: [`docs/editorial/tech-daily-routine-status.md`](./docs/editorial/tech-daily-routine-status.md).
   Until it publishes, `/blog/tech` shows its empty state, the home shows no "Tech" button and the digest has no Tech block.
@@ -122,7 +137,7 @@ A weekly email digest of AI Daily. Since v1.7.0 every published edition lives in
 
 **Sign-up prompts on the site (v1.8.7 rules).** One controller (`components/newsletter/NewsletterNudges.tsx`); the rules are pure and tested in `lib/newsletter/prompts.ts`:
 
-- **The card** — "Join our newsletter" / "Unite a nuestro newsletter" / "Junte-se à nossa newsletter", one line of value, the form and a close button — appears **already open 5 s after entering**, bottom-right with safe-area insets, on every public page (AI Daily included). It is non-blocking: no backdrop, it never takes the focus, Esc or its X close it, and it is fixed and out of flow (no layout shift).
+- **The card** — "Join our newsletter" / "Unite a nuestro newsletter" / "Junte-se à nossa newsletter" / "订阅我们的邮件通讯", one line of value, the form and a close button — appears **already open 5 s after entering**, bottom-right with safe-area insets, on every public page (AI Daily included). It is non-blocking: no backdrop, it never takes the focus, Esc or its X close it, and it is fixed and out of flow (no layout shift).
 - **Who gets it**: any visitor who has not said "no". Closing it leaves the pill and pauses the card for **7 days**; closing the pill hides both for 7 days; the AI Daily exit-intent modal shares that pause; **subscribed = never again**. (Until v1.8.6 it opened once per browser, ever.)
 - **Never over a control**: the full card when its corner is clear, the one-row compact card when only that fits (phones always), otherwise it waits until the visitor scrolls the control away. Text boxes, primary buttons and footer links count everywhere; every control counts on phones and on the analyzer / best-ai, where the card also collapses to the pill as soon as the visitor starts typing (it never sits on the results).
 - **Never stacked**: hidden while an in-page form is on screen (the home side card, the AI Daily dock on desktop), while the AI Daily modal is open (which in turn never opens over the card), while typing or with the soft keyboard up.
@@ -170,8 +185,8 @@ npm run build      # production build (works offline — fonts are local)
 
 - `node scripts/brand/build-brand-assets.mjs` — regenerates every brand raster (wordmark light/dark, mascot, favicons, apple-touch, manifest and OG artwork) from `public/brand/promptea-logo-mascot-source.png`.
 - `node scripts/release/audit.mjs --base=http://localhost:3182 [--shots] [--quick] [--out=dir]` — real-Chrome audit of 23 pages across 5 widths (1920, 1440, 1024, 768, 375) × themes × colour schemes: console/hydration errors, horizontal overflow, CLS, one `<h1>`, one canonical, and (with `--shots`) the feedback-modal fill and screenshots.
-- v1.8.2: `node scripts/release/i18n-qa.mjs --base=http://localhost:3181 [--shots=1]` walks 23 pages in the three languages at 1440 and 375 px with a real Chrome (overflow, clipped text, the language switcher, `<html lang>`, untranslated strings under `/pt`, and the analyzer with a prompt written in Portuguese). Localhost only.
-- v1.8.3 QA (evidence in [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md)): `scripts/release/engine-qa.mjs` (localhost only: the engine through the API for the 8 purposes with a prompt written in pt, es and en — language of the output, the same Portuguese prompt from the three interfaces, idempotence), `scripts/release/sweep.mjs --match=/guides [--widths=1440,768,375]` (every sitemap URL of a family: overflow, clipped text, one `<h1>`, untranslated strings; read-only against production) and `scripts/release/xfeed-check.mjs` (v1.8.7: the X feed card — server-rendered, no request to X or any third party, safe links, fixed height, empty state, card order, without JavaScript). In Git Bash prefix `MSYS_NO_PATHCONV=1` when an argument starts with `/`.
+- v1.8.2 (zh: v1.8.7): `node scripts/release/i18n-qa.mjs --base=http://localhost:3181 [--shots=1] [--widths=1440,768,375] [--langs=zh,pt,es,en]` walks 23 pages in the four languages with a real Chrome. It checks overflow, clipped text, the four-option language switcher on one row, `<html lang>`, untranslated strings under `/pt` and `/zh`, and the analyzer with a prompt written in Portuguese and in Chinese. It also lists text with no Chinese under `/zh` for a human to look at. Localhost only.
+- v1.8.3 QA (evidence in [`docs/release/v1.8.3/qa-report.md`](./docs/release/v1.8.3/qa-report.md)): `scripts/release/engine-qa.mjs` (localhost only: the engine through the API for the 8 purposes with a prompt written in zh, pt, es and en — language of the output, the same Portuguese and Chinese prompts from the other interfaces, idempotence), `scripts/release/sweep.mjs --match=/guides [--widths=1440,768,375]` (every sitemap URL of a family: overflow, clipped text, one `<h1>`, untranslated strings; read-only against production) and `scripts/release/xfeed-check.mjs` (v1.8.7: the X feed card — server-rendered, no request to X or any third party, safe links, fixed height, empty state, card order, without JavaScript). In Git Bash prefix `MSYS_NO_PATHCONV=1` when an argument starts with `/`.
 - v1.8.1 release checks, all with a real Chrome (`puppeteer-core`) and all read-only against anything that is not localhost:
   - `scripts/release/benchmarks-layout.mjs` — the "Ranking by benchmark" layout at 5 widths × every category: no overlap, no card wider than its list, no gap, no overflow.
   - `scripts/release/ambient-check.mjs` — how far the ambient background moves in a few seconds, frame rate, layouts, long tasks and CLS; Metro flat, reduced motion static.
@@ -236,7 +251,7 @@ AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PRO
 - `scripts/showcase/` — records and encodes the product tour video shown on `/how-it-works` from the real app (see its README).
 - `components/analyzer/`, `components/results/` — decomposed feature modules; `PromptBox`/`ResultsPanel` orchestrate.
 - `app/globals.css` + `lib/themes.ts` — theme tokens (Aqua / Metro / Glass) and registry.
-- `app/[lang]/dictionaries/` — EN/ES/PT copy (key parity is test-enforced).
+- `app/[lang]/dictionaries/` — EN/ES/PT/ZH copy (key parity is test-enforced). Terminology: `docs/i18n/pt-glossary.md`, `docs/i18n/zh-glossary.md`.
 - `next.config.ts` — redirects, the markdown-twin rewrites and (v1.8.3) the baseline security headers. No environment variable was added in v1.8.3.
 
 ## Theme architecture

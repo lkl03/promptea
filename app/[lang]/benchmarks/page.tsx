@@ -32,7 +32,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { benchmarksGraph } from "@/lib/seo/pageGraphs";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
-import { pick, toLang, INTL_LOCALE, type Lang } from "@/lib/domain";
+import { pick, toLang, INTL_LOCALE, PUNCT, type Lang } from "@/lib/domain";
 
 export const revalidate = 3600;
 
@@ -421,6 +421,133 @@ const COPY = {
     bestAiBody: "Um benchmark não conhece o seu caso de uso. Descreva o que você quer fazer e recomendamos uma IA e um modelo, com a justificativa.",
     bestAiCta: "Encontrar a melhor IA",
   },
+  zh: {
+    metaTitle: "AI模型基准测试",
+    metaDescription: "按类别划分的AI模型排名，涵盖通用智能、编程、智能体、科学、搜索和设计，并注明每项基准测试的来源、日期和指标。",
+    title: "AI模型基准测试",
+    intro: "当前谁在各项基准测试中领先、哪些模型处于前沿，以及每项测试衡量什么。每个排名都使用自己的指标：不存在通用的评分。",
+    live: "来自OpenRouter的实时数据",
+    asOf: "更新于{date}",
+    fetched: "获取于{date}",
+    staleTitle: "正在显示最近一次有效的快照",
+    staleBody: "我们无法更新数据（{reason}）。这些排名是{age}前的数据。",
+    hours: "{n}小时",
+    lessThanHour: "不到一小时",
+    emptyTitle: "排名暂时无法显示",
+    reasons: {
+      not_configured: "与数据源的连接尚未配置",
+      unauthorized: "数据源拒绝了凭证",
+      rate_limited: "数据源暂时限制了请求频率",
+      timeout: "数据源响应超时",
+      upstream_error: "数据源返回了错误",
+      invalid_response: "数据源返回的数据格式不符合预期",
+      empty: "数据源没有返回任何结果",
+    } as Record<FetchFailure, string>,
+    emptyBody: "原因：{reason}。我们宁可什么都不显示，也不愿展示编造的或悄悄过时的排名。",
+    nav: { label: "本页内容", ranking: "排名", value: "成本与性能", frontier: "前沿模型", calculator: "成本计算器", about: "各项测试衡量什么" },
+    dash: {
+      rankingTitle: "按基准测试排名",
+      rankingIntro: "选择一个类别和一项基准测试：图表会显示该测试中排名靠前的模型。每项基准测试都有自己的指标：只在同一项测试内进行比较。",
+      category: "类别",
+      benchmarks: "该类别中的基准测试及其领先者",
+      leader: "领先者",
+      topN: "图表中的模型数量",
+      topLabel: "前{n}名",
+      fullTable: "查看完整表格（{n}个模型）",
+      valueTitle: "成本与性能",
+      valueIntro: "每个点代表一个模型：越靠上评分越高，越靠左越便宜（输入价格，对数刻度）。虚线连接的，是在价格和评分上都没有被其他任何模型同时超越的模型。",
+      valueFor: "基准测试：{benchmark}",
+      sourceLine: "{source} · {date}",
+      bars: {
+        title: "前{n}名 · {benchmark}",
+        desc: "水平条形图：{benchmark}中排名前{n}的模型（{metric}）。{items}。",
+        axisNote: "坐标轴从{min}开始：Elo没有有意义的零点，因此条形长度与完整数值不成比例。",
+        errorNote: "条形上的细线表示多次运行之间的±标准差。",
+        showingOf: "显示{total}个模型中的{n}个"
+      },
+      scatter: {
+        title: "评分与输入价格",
+        xAxis: "输入价格（每百万token的美元价格，对数刻度）",
+        yAxis: "评分",
+        efficientLegend: "成本/性能前沿",
+        keys: "使用键盘：聚焦图表后，用← →方向键从最便宜到最贵依次浏览各个模型。",
+        excluded: "{n}个没有价格的模型未在图中绘出。",
+        empty: "价格数据不足，无法为这项基准测试绘图。上方的完整表格仍然可用。",
+        desc: "散点图：{benchmark}中的{n}个模型，输入价格对比评分。{m}个模型构成成本/性能前沿：{frontier}。",
+        score: "评分",
+        inputPrice: "输入",
+        outputPrice: "输出",
+        rank: "排名",
+        efficientBadge: "没有任何模型能在价格和评分上同时超越它",
+        perMillion: "每百万token"
+      },
+      table: {
+        search: "搜索",
+        searchPlaceholder: "模型或提供商…",
+        provider: "提供商",
+        allProviders: "全部",
+        sort: "排序",
+        sortScore: "评分从高到低",
+        sortScoreAsc: "评分从低到高",
+        sortPrice: "价格从低到高",
+        sortName: "名称（A–Z）",
+        colRank: "#",
+        colModel: "模型",
+        colProvider: "提供商",
+        colScore: "评分",
+        colSource: "基准测试 / 来源",
+        colPrice: "输入 / 输出价格",
+        priceHint: "价格为每百万输入 / 输出token的美元价格，以来源公布的数据为准。“—”表示无数据。",
+        noMatch: "没有与搜索匹配的模型。",
+        results: "{n}个模型",
+        guide: "提示词指南",
+        stddev: "多次运行之间的标准差"
+      },
+      calc: {
+        title: "成本计算器",
+        intro: "按标价估算你的用量在上方所选基准测试的每个模型上要花多少钱。“最佳性价比”按每个评分点的美元成本排序：数值越低，每一美元带来的效果越多。",
+        inputTokens: "每次请求的输入token数",
+        outputTokens: "每次请求的输出token数",
+        requests: "请求次数",
+        presets: "示例",
+        presetChat: "简短对话",
+        presetDoc: "长文档",
+        presetAgent: "智能体",
+        sortLabel: "排序方式",
+        sortValue: "最佳性价比",
+        sortCost: "成本最低",
+        sortScore: "评分最高",
+        colModel: "模型",
+        colScore: "评分",
+        colCost: "每次请求成本",
+        colPerPoint: "每评分点美元成本",
+        colTotal: "总计（{n}次请求）",
+        summary: "每次请求{tokensIn}输入token、{tokensOut}输出token，共{n}次请求 · {benchmark}",
+        excluded: "{n}个缺少输入价格或输出价格的模型未列入：我们不会把它们当作免费模型。",
+        empty: "这项基准测试中没有任何模型具备计算成本所需的价格。",
+        estimate: "按每百万token的标价估算（不含缓存、批处理或折扣）；实际费用可能不同。评分来自所选基准测试，不能与其他测试的评分比较。",
+        showAll: "显示全部{n}个模型",
+        showLess: "收起",
+        bestAiTitle: "不确定哪个适合你的任务？基准测试并不了解你的使用场景。",
+        bestAiCta: "找到最合适的AI",
+        guide: "指南"
+      },
+    },
+    matrix: {"caption":"每个前沿模型在各项通用能力基准测试中的排名","model":"模型","rankIn":"在{benchmark}中的排名","notMeasured":"未测量","guide":"指南"},
+    aboutSummary: "各项基准测试衡量什么（{n}）",
+    frontierTitle: "前沿模型",
+    frontierDef: `在Promptea中，如果一个模型在当前快照里至少一项通用能力基准测试中排进前${FRONTIER_TOP_N}名，它就是“前沿模型”。这些基准测试是：Artificial Analysis的Intelligence、Coding或Agentic指数，以及OpenRouter的GPQA Diamond和τ-bench测试结果。`,
+    frontierWhy: "我们选用这些测试，是因为它们衡量的是广泛的能力：推理、编程和智能体任务。专项排名（搜索配置、设计竞技场）也会展示，但在这些方面的单项胜出不足以让一个模型被称为“前沿模型”。数据变化时，名单也会随之变化。",
+    frontierWhyLabel: "为什么是这些基准测试？",
+    matrixMore: "显示{total}个前沿模型中的{n}个。",
+    context: "各项基准测试衡量什么",
+    measures: "衡量内容",
+    limits: "局限性",
+    source: "来源",
+    bestAiTitle: "哪个适合你的任务？",
+    bestAiBody: "基准测试并不了解你的使用场景。描述你想做的事，我们会推荐一款AI和一个模型，并说明理由。",
+    bestAiCta: "找到最合适的AI",
+  },
 };
 
 function fmtDate(iso: string | null, lang: Lang): string | null {
@@ -501,7 +628,7 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
               {c.bestAiCta}
             </Link>
             <Link href={`/${l}/models`} className="btn btn-ghost h-9 px-4">
-              {pick(l, { es: "Guías por modelo", en: "Model guides", pt: "Guias de modelos" })}
+              {pick(l, { es: "Guías por modelo", en: "Model guides", pt: "Guias de modelos", zh: "模型指南" })}
             </Link>
           </div>
         </section>
@@ -555,15 +682,16 @@ export default async function BenchmarksPage({ params }: { params: Promise<{ lan
                     </dt>
                     <dd className="mt-2 space-y-2 text-sm leading-relaxed text-ink-muted">
                       <p>
-                        <span className="font-medium text-ink">{c.measures}: </span>
+                        <span className="font-medium text-ink">{c.measures}{PUNCT[l].colon}</span>
                         {t.def.measures[l]}
                       </p>
                       <p>
-                        <span className="font-medium text-ink">{c.limits}: </span>
+                        <span className="font-medium text-ink">{c.limits}{PUNCT[l].colon}</span>
                         {t.def.limitations[l]}
                       </p>
                       <p className="text-xs">
-                        {c.source}:{" "}
+                        {c.source}
+                        {PUNCT[l].colon}
                         <a href={SOURCE_INFO[t.def.source].url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-ink">
                           {SOURCE_INFO[t.def.source].name}
                         </a>{" "}

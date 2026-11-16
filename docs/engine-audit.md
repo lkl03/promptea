@@ -309,3 +309,18 @@ Lectura honesta: en el light path el determinístico no mejora el score (solo ag
 ### 9f) Pendiente (propuestas)
 
 Ver §7, filas 10–15: rubric propio para imagen, evals del refinador y del juez, concordancia de género en el composer de imagen en español, detector de idioma destino para traducción, y decidir el destino de `/api/analyze-llm`.
+
+## 10) Qué cambió en v1.8.7 (engine 2.5.0): chino simplificado
+
+- **Opción A (localización completa).** Todo texto del motor tiene su versión zh: hallazgos y recomendaciones (`lint/catalog.ts`), feedback, explicación del score, perfiles de modelo, shapes del prompt optimizado y scaffold JSON. El test `lib/__tests__/engine.zh.test.ts` analiza 12 prompts reales en chino (los 8 propósitos) con cada target y falla si aparece una palabra propia del inglés, el español o el portugués fuera del texto del usuario.
+- **Detección y conteo.** `chineseShare()` / `readsAsChinese()` en `lib/refine/language.ts`; `wordCount()` cuenta Han/1,7. Sin esto un prompt chino de 60 caracteres contaba como 1–3 "palabras" y caía en `missing_context` / largo insuficiente.
+- **Vocabulario.** `lib/engine/zh.ts` (56 patrones) replica las señales de `pt.ts` sin límites de palabra. Casos que costaron: "一条广告" no es una especificación de salida (`ZH_NUMBER` excluye 一); "处理…错误" cuenta como manejo de errores, no como depuración.
+- **Matcher "mejor IA".** `ZH_RE` en `lib/matcher/rubric.ts` (traducción, resumen, citas, depuración, marketing, etc.); `RUBRIC_VERSION` 2026-11-16.1.
+- **Dataset.** 24 casos `lib/engine/dataset/cases/zh/*.jsonl`, gemelos de los casos pt de v1.8.2 (mismo propósito y calidad); el test exige ±6 puntos y el mismo `taskType` que su gemelo pt, y los 104 casos es/en/pt siguen en rango.
+- **Excepción documentada.** El prompt de imagen terminado se compone en inglés (`meta.optimizedPromptLang = "en"`), como en pt.
+
+### 10a) Limitaciones conocidas (zh)
+
+- ~~`frontendAvoid` reconocía los antipatrones de diseño solo en es/en/pt~~: arreglado en la misma v1.8.7 (términos chinos en `match`; test "frontend design direction in Chinese").
+- El juez con Groq (pt y zh): el prompt base pide el `rationale` en inglés y el camino `combined` no manda la línea de idioma, así que la justificación probablemente se descarta por idioma. Ya pasaba con pt; no se pudo verificar sin clave.
+- No hay prompts chinos con mezcla de chino tradicional: `/zh` es simplificado y los navegadores zh-TW/zh-HK van a `/en` (ver `docs/i18n/zh-review.md`).

@@ -17,6 +17,7 @@ import { ENGINE_VERSION } from "./contract";
 import { summarizeAttachments, getExtension, inferAttachmentKind } from "@/lib/attachments";
 import { classifyTaskDetailed } from "./classifier";
 import { isPt } from "./pt";
+import { isZh } from "./zh";
 import { selectStrategy, isImageGenerationRequest, type RoutingDecision } from "@/lib/refine/router";
 import { normalizePurpose } from "@/lib/domain";
 
@@ -137,6 +138,8 @@ function resolveTaskType(raw: string, purpose: PromptPurpose, lang: Lang): TaskT
       if (
         (classified === "coding" || classified === "debugging") &&
         (/(fix|debug|implement|bug|error|write code|refactor|function|función|funcion|snippet|compile|compilar|deploy|```)/i.test(raw) ||
+          // v1.8.7: the same code-work intent written in Chinese.
+          (isZh(raw, lang) && /(报错|错误|修复|调试|重构|代码|函数|实现|编译|部署)/.test(raw)) ||
           // v1.8.2: the same code-work intent written in Portuguese.
           (isPt(raw, lang) && /(erro|corrij|corrig|depur|refator|c[óo]digo|fun[çc][ãa]o|implement)/i.test(raw)))
       ) {
@@ -438,8 +441,9 @@ export function analyzePrompt(
       routing,
       alreadyOptimized,
       // v1.8.2: a Portuguese image request gets its art-directed prompt in English
-      // (lib/engine/imagePrompt.pt.ts); the interface says so.
-      ...(lang === "pt" && routing.strategy === "image_generation" && !alreadyOptimized ? { optimizedPromptLang: "en" as const } : {}),
+      // (lib/engine/imagePrompt.pt.ts); the interface says so. v1.8.7: the same for
+      // Chinese (docs/engine-contract.md §E, the documented exception).
+      ...((lang === "pt" || lang === "zh") && routing.strategy === "image_generation" && !alreadyOptimized ? { optimizedPromptLang: "en" as const } : {}),
       scoreCriteria: feedback.scoreCriteria,
       strengths: feedback.strengths,
       criticalIssues: feedback.criticalIssues,

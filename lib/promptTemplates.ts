@@ -47,6 +47,7 @@ export function languageLine(lang: Lang) {
     es: "Respondé exclusivamente en español (mismo idioma que esta interfaz).",
     en: "Answer exclusively in English (same language as this interface).",
     pt: "Responda exclusivamente em português do Brasil (o mesmo idioma desta interface).",
+    zh: "只用简体中文回答（与本界面的语言相同）。",
   });
 }
 
@@ -55,11 +56,12 @@ export function askQuestionsLine(lang: Lang) {
     es: "Si te falta información para responder bien, haceme hasta 3 preguntas puntuales antes de responder (sin suponer).",
     en: "If you lack information to answer well, ask up to 3 precise questions before answering (no guessing).",
     pt: "Se faltar informação para responder bem, faça até 3 perguntas precisas antes de responder (sem adivinhar).",
+    zh: "如果缺少回答所需的信息，请先提出最多3个具体问题，再作答（不要猜测）。",
   });
 }
 
 export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
-  const title = pick(lang, { es: "OUTPUT FORMAT", en: "OUTPUT FORMAT", pt: "FORMATO DE SAÍDA" });
+  const title = pick(lang, { es: "OUTPUT FORMAT", en: "OUTPUT FORMAT", pt: "FORMATO DE SAÍDA", zh: "输出格式" });
 
   switch (task) {
     case "coding":
@@ -69,6 +71,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Explicación breve", "- Solución (código)", "- Casos borde", "- Tests mínimos", "- Cómo ejecutar"],
           en: ["- Brief explanation", "- Solution (code)", "- Edge cases", "- Minimal tests", "- How to run"],
           pt: ["- Explicação breve", "- Solução (código)", "- Casos de borda", "- Testes mínimos", "- Como executar"],
+          zh: ["- 简要说明", "- 解决方案（代码）", "- 边界情况", "- 最少量的测试", "- 运行方法"],
         }),
       };
 
@@ -79,6 +82,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Diagnóstico", "- Causa probable", "- Fix paso a paso", "- Validación / tests", "- Prevención"],
           en: ["- Diagnosis", "- Likely cause", "- Step-by-step fix", "- Validation / tests", "- Prevention"],
           pt: ["- Diagnóstico", "- Causa provável", "- Correção passo a passo", "- Validação / testes", "- Prevenção"],
+          zh: ["- 诊断", "- 可能的原因", "- 分步修复", "- 验证/测试", "- 预防措施"],
         }),
       };
 
@@ -89,6 +93,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Objetivo del refactor", "- Cambios propuestos", "- Código final", "- Riesgos", "- Tests"],
           en: ["- Refactor goal", "- Proposed changes", "- Final code", "- Risks", "- Tests"],
           pt: ["- Objetivo da refatoração", "- Mudanças propostas", "- Código final", "- Riscos", "- Testes"],
+          zh: ["- 重构目标", "- 建议的改动", "- 最终代码", "- 风险", "- 测试"],
         }),
       };
 
@@ -99,6 +104,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Resumen ejecutivo", "- Hallazgos clave", "- Supuestos", "- Fuentes", "- Próximos pasos"],
           en: ["- Executive summary", "- Key findings", "- Assumptions", "- Sources", "- Next steps"],
           pt: ["- Resumo executivo", "- Principais achados", "- Suposições", "- Fontes", "- Próximos passos"],
+          zh: ["- 执行摘要", "- 关键发现", "- 假设", "- 来源", "- 后续步骤"],
         }),
       };
 
@@ -109,6 +115,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- 3 versiones (corta / media / larga)", "- Tono de marca", "- CTA", "- Variantes A/B"],
           en: ["- 3 versions (short / medium / long)", "- Brand voice", "- CTA", "- A/B variants"],
           pt: ["- 3 versões (curta / média / longa)", "- Voz da marca", "- CTA", "- Variantes A/B"],
+          zh: ["- 3个版本（短/中/长）", "- 品牌语气", "- 行动号召（CTA）", "- A/B变体"],
         }),
       };
 
@@ -119,6 +126,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Resumen en 5 viñetas", "- 3 ideas clave", "- Dudas / faltantes", "- Próximos pasos"],
           en: ["- 5-bullet summary", "- 3 key ideas", "- Missing info / questions", "- Next steps"],
           pt: ["- Resumo em 5 tópicos", "- 3 ideias-chave", "- Informações que faltam / perguntas", "- Próximos passos"],
+          zh: ["- 5条要点的摘要", "- 3个核心观点", "- 缺失的信息/疑问", "- 后续步骤"],
         }),
       };
 
@@ -129,6 +137,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Traducción", "- Alternativa más formal", "- Alternativa más natural", "- Notas de contexto"],
           en: ["- Translation", "- More formal alternative", "- More natural alternative", "- Context notes"],
           pt: ["- Tradução", "- Alternativa mais formal", "- Alternativa mais natural", "- Notas de contexto"],
+          zh: ["- 译文", "- 更正式的版本", "- 更自然的版本", "- 语境说明"],
         }),
       };
 
@@ -139,6 +148,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- JSON estricto", "- Campos requeridos", "- Faltantes como null", "- Validación de formato"],
           en: ["- Strict JSON", "- Required fields", "- Missing values as null", "- Format validation"],
           pt: ["- JSON estrito", "- Campos obrigatórios", "- Valores ausentes como null", "- Validação de formato"],
+          zh: ["- 严格的JSON", "- 必填字段", "- 缺失值用null表示", "- 格式校验"],
         }),
       };
 
@@ -149,6 +159,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Objetivo", "- Plan por pasos", "- Checklist", "- Riesgos", "- Próximas acciones"],
           en: ["- Goal", "- Step-by-step plan", "- Checklist", "- Risks", "- Next actions"],
           pt: ["- Objetivo", "- Plano passo a passo", "- Checklist", "- Riscos", "- Próximas ações"],
+          zh: ["- 目标", "- 分步计划", "- 检查清单", "- 风险", "- 下一步行动"],
         }),
       };
 
@@ -159,6 +170,7 @@ export function outputPreset(task: TaskType, lang: Lang): OutputPreset {
           es: ["- Respuesta en viñetas", "- Resumen final", "- Próximos pasos"],
           en: ["- Bullet answer", "- Final summary", "- Next steps"],
           pt: ["- Resposta em tópicos", "- Resumo final", "- Próximos passos"],
+          zh: ["- 要点式回答", "- 最终总结", "- 后续步骤"],
         }),
       };
   }
@@ -171,66 +183,77 @@ export function targetTip(target: TargetAI, lang: Lang) {
         es: "Claude suele responder mejor con secciones muy claras (incluso con tags tipo XML).",
         en: "Claude often does best with very clear sections (even XML-like tags).",
         pt: "O Claude costuma render mais com seções bem claras (até com tags no estilo XML).",
+        zh: "Claude在分区非常清晰时（甚至使用类似XML的标签）通常表现最好。",
       });
     case "gemini":
       return pick(lang, {
         es: "Gemini mejora mucho si le das ejemplos y le pedís que marque supuestos.",
         en: "Gemini improves a lot with examples and explicit assumptions.",
         pt: "O Gemini melhora muito com exemplos e suposições explícitas.",
+        zh: "给Gemini提供示例并明确写出假设，效果会好很多。",
       });
     case "deepseek":
       return pick(lang, {
         es: "Deepseek suele rendir muy bien en código si pedís tests y casos borde.",
         en: "Deepseek excels for code if you request tests and edge cases.",
         pt: "O Deepseek se destaca em código quando você pede testes e casos de borda.",
+        zh: "如果你要求测试和边界情况，Deepseek在代码任务上表现出色。",
       });
     case "kimi":
       return pick(lang, {
         es: "Kimi maneja bien contexto largo: separalo en bloques y marcá prioridades.",
         en: "Kimi handles long context well: split into blocks and mark priorities.",
         pt: "O Kimi lida bem com contexto longo: divida em blocos e marque as prioridades.",
+        zh: "Kimi擅长处理长上下文：把内容分块，并标出优先级。",
       });
     case "grok":
       return pick(lang, {
         es: "Grok funciona mejor si definís el tono y cuán directo querés que sea.",
         en: "Grok works best if you define tone and how direct you want it.",
         pt: "O Grok funciona melhor quando você define o tom e o quanto quer que ele seja direto.",
+        zh: "写明语气以及你希望它有多直接，Grok的效果最好。",
       });
     case "qwen":
       return pick(lang, {
         es: "Qwen rinde mejor con secciones claras (contexto, objetivo, estilo, tono, audiencia, respuesta), delimitadores como ### y un ejemplo.",
         en: "Qwen does best with clear sections (context, objective, style, tone, audience, response), delimiters like ### and an example.",
         pt: "O Qwen rende mais com seções claras (contexto, objetivo, estilo, tom, público, resposta), delimitadores como ### e um exemplo.",
+        zh: "Qwen在分区清晰（背景、目标、风格、语气、受众、回答）、使用###之类的分隔符并附上一个示例时表现最好。",
       });
     case "glm":
       return pick(lang, {
         es: "GLM siempre razona: poné las restricciones importantes al principio y no infles el rol: que sirva a la tarea.",
         en: "GLM always reasons: put the important constraints early and don't inflate the role: make it serve the task.",
         pt: "O GLM sempre raciocina: coloque as restrições importantes no começo e não infle o papel: que ele sirva à tarefa.",
+        zh: "GLM总是会进行推理：把重要的约束放在前面，也不要夸大角色设定，让角色为任务服务。",
       });
     case "minimax":
       return pick(lang, {
         es: "MiniMax M3 apunta a código y agentes: dale contexto del repo, criterios de aceptación y cómo verificar el resultado.",
         en: "MiniMax M3 is built for coding and agents: give repo context, acceptance criteria and how to verify the result.",
         pt: "O MiniMax M3 é feito para código e agentes: dê o contexto do repositório, critérios de aceitação e como verificar o resultado.",
+        zh: "MiniMax M3专为编程和智能体打造：提供代码仓库的背景、验收标准，以及验证结果的方法。",
       });
     case "doubao":
       return pick(lang, {
         es: "Doubao rinde mejor con el objetivo y el escenario claros, sin descomponer el problema en pasos.",
         en: "Doubao does best with a clear goal and scenario, without breaking the problem into steps.",
         pt: "O Doubao rende mais com objetivo e cenário claros, sem decompor o problema em passos.",
+        zh: "给Doubao清晰的目标和场景效果最好，不需要把问题拆成步骤。",
       });
     case "perplexity":
       return pick(lang, {
         es: "Perplexity tiene acceso web en tiempo real. Pedí fuentes o aclará si necesitás info reciente.",
         en: "Perplexity has real-time web access. Ask for sources or specify recency if freshness matters.",
         pt: "O Perplexity tem acesso à web em tempo real. Peça fontes ou especifique o período se a atualidade importar.",
+        zh: "Perplexity可以实时访问网络。请要求它给出来源；如果时效性很重要，请说明时间范围。",
       });
     default:
       return pick(lang, {
         es: "GPT mejora si separás objetivo, contexto y formato en secciones cortas.",
         en: "GPT improves if you separate goal, context, and output format into short sections.",
         pt: "O GPT melhora quando você separa objetivo, contexto e formato de saída em seções curtas.",
+        zh: "把目标、背景和输出格式分成几个简短的部分，GPT的效果会更好。",
       });
   }
 }
