@@ -46,6 +46,18 @@ export const INTL_LOCALE: Record<Lang, string> = { es: "es-AR", en: "en-US", pt:
 /** Short label of each language in the language switcher (the language's own name for its script). */
 export const LANG_LABEL: Record<Lang, string> = { es: "ES", en: "EN", pt: "PT", zh: "中文" };
 
+/**
+ * v1.8.7 — the language TEXT INSIDE GENERATED IMAGES is written in (Open Graph
+ * cards, the share card). next/og ships no CJK font, so Han characters would
+ * render as empty boxes: a Chinese page gets its image text in the default
+ * language. The other languages are written in Latin script and keep theirs.
+ */
+export const IMAGE_TEXT_LANG: Record<Lang, Lang> = { es: "es", en: "en", pt: "pt", zh: DEFAULT_LANG };
+
+export function imageLang(lang: Lang): Lang {
+  return IMAGE_TEXT_LANG[lang];
+}
+
 /** Full name of each language, in that language (aria-labels, selects). */
 export const LANG_NAME: Record<Lang, string> = { es: "Español", en: "English", pt: "Português", zh: "简体中文" };
 

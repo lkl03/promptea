@@ -33,6 +33,36 @@ import {
   PT_TRANSLATION_TARGET,
 } from "./pt";
 import {
+  isZh,
+  ZH_AUDIENCE,
+  ZH_CODE_CONSTRAINT,
+  ZH_CODE_DELIVERABLE,
+  ZH_CODE_SUCCESS,
+  ZH_CONSTRAINTS,
+  ZH_DEBUG_EXPECTED,
+  ZH_ERROR,
+  ZH_EXAMPLES,
+  ZH_IMAGE_NEGATIVE,
+  ZH_INJECTION,
+  ZH_INPUTS,
+  ZH_INVENT,
+  ZH_LENGTH,
+  ZH_LENGTH_LIMIT,
+  ZH_LONG,
+  ZH_NO_ASSUME,
+  ZH_OUTPUT_FORMAT,
+  ZH_OUTPUT_LABEL,
+  ZH_REGION,
+  ZH_REPRO,
+  ZH_SHORT,
+  ZH_SUCCESS,
+  ZH_SUMMARY_SHAPE,
+  ZH_TASK_GOAL,
+  ZH_TIMEFRAME,
+  ZH_TONE,
+  ZH_TRANSLATION_TARGET,
+} from "./zh";
+import {
   CODE_CONSTRAINT_RE,
   CODE_DELIVERABLE_RE,
   CODE_SUCCESS_RE,
@@ -62,6 +92,13 @@ function detectDominantLanguageMismatch(core: string, uiLang: Lang) {
   if (uiLang === "pt") {
     const d = detectPromptLanguage(core, "pt");
     return d.lang !== "pt" && d.confidence >= 0.5;
+  }
+  // v1.8.7: a Chinese interface flags a prompt that clearly reads as Spanish or
+  // English. A Portuguese prompt is never a mismatch (engine 2.4.0 contract), and
+  // a prompt that reads as Chinese is never one from any interface (below).
+  if (uiLang === "zh") {
+    const d = detectPromptLanguage(core, "zh");
+    return (d.lang === "es" || d.lang === "en") && d.confidence >= 0.5;
   }
 
   const esHits = scoreKeywords(t, [
@@ -289,34 +326,69 @@ export function extractFeatures(core: string, task: TaskType, lang: Lang): Featu
   // v1.8.2 (engine 2.4.0): a prompt that reads as Portuguese is ALSO checked
   // against the Portuguese vocabulary (lib/engine/pt.ts). Signals are only ever
   // added, never removed, and Spanish/English prompts never reach this branch.
-  if (!isPt(clean, lang)) return base;
-
   const isDebugOrCode = task === "debugging" || task === "coding";
-  return {
-    ...base,
-    hasGoal: base.hasGoal || (PT_TASK_GOAL[task]?.test(clean) ?? false),
-    hasInputs: base.hasInputs || PT_INPUTS.test(clean),
-    hasAudience: base.hasAudience || PT_AUDIENCE.test(clean),
-    hasExamples: base.hasExamples || PT_EXAMPLES.test(clean),
-    hasConstraints:
-      base.hasConstraints ||
-      PT_CONSTRAINTS.test(clean) ||
-      (task === "translation" && PT_TRANSLATION_TARGET.test(clean)) ||
-      (task === "summarization" && PT_SUMMARY_SHAPE.test(clean)) ||
-      (task === "image" && PT_IMAGE_NEGATIVE.test(clean)) ||
-      (isCode && PT_CODE_CONSTRAINT.test(clean)),
-    hasOutputFormat: base.hasOutputFormat || PT_OUTPUT_FORMAT.test(clean) || PT_OUTPUT_LABEL.test(clean) || (isCode && PT_CODE_DELIVERABLE.test(clean)),
-    hasSuccessCriteria:
-      base.hasSuccessCriteria || PT_SUCCESS.test(clean) || (isCode && PT_CODE_SUCCESS.test(clean)) || (task === "debugging" && PT_DEBUG_EXPECTED.test(clean)),
-    hasTone: base.hasTone || PT_TONE.test(clean),
-    hasLengthHint: base.hasLengthHint || PT_LENGTH.test(clean) || PT_LENGTH_LIMIT.test(clean),
-    hasTimeframe: base.hasTimeframe || PT_TIMEFRAME.test(clean),
-    hasRegion: base.hasRegion || PT_REGION.test(clean),
-    hasErrorDetails: base.hasErrorDetails || (isDebugOrCode && PT_ERROR.test(clean)),
-    hasReproSteps: base.hasReproSteps || (task === "debugging" && PT_REPRO.test(clean)),
-    injectionLike: base.injectionLike || PT_INJECTION.test(clean),
-    contradictions: base.contradictions || (PT_SHORT.test(clean) && PT_LONG.test(clean)) || (PT_NO_ASSUME.test(clean) && PT_INVENT.test(clean)),
-    // The prompt is Portuguese and is being read as Portuguese: not a mismatch.
-    languageMismatch: lang === "pt" ? false : base.languageMismatch,
-  };
+  if (isPt(clean, lang)) {
+    return {
+      ...base,
+      hasGoal: base.hasGoal || (PT_TASK_GOAL[task]?.test(clean) ?? false),
+      hasInputs: base.hasInputs || PT_INPUTS.test(clean),
+      hasAudience: base.hasAudience || PT_AUDIENCE.test(clean),
+      hasExamples: base.hasExamples || PT_EXAMPLES.test(clean),
+      hasConstraints:
+        base.hasConstraints ||
+        PT_CONSTRAINTS.test(clean) ||
+        (task === "translation" && PT_TRANSLATION_TARGET.test(clean)) ||
+        (task === "summarization" && PT_SUMMARY_SHAPE.test(clean)) ||
+        (task === "image" && PT_IMAGE_NEGATIVE.test(clean)) ||
+        (isCode && PT_CODE_CONSTRAINT.test(clean)),
+      hasOutputFormat: base.hasOutputFormat || PT_OUTPUT_FORMAT.test(clean) || PT_OUTPUT_LABEL.test(clean) || (isCode && PT_CODE_DELIVERABLE.test(clean)),
+      hasSuccessCriteria:
+        base.hasSuccessCriteria || PT_SUCCESS.test(clean) || (isCode && PT_CODE_SUCCESS.test(clean)) || (task === "debugging" && PT_DEBUG_EXPECTED.test(clean)),
+      hasTone: base.hasTone || PT_TONE.test(clean),
+      hasLengthHint: base.hasLengthHint || PT_LENGTH.test(clean) || PT_LENGTH_LIMIT.test(clean),
+      hasTimeframe: base.hasTimeframe || PT_TIMEFRAME.test(clean),
+      hasRegion: base.hasRegion || PT_REGION.test(clean),
+      hasErrorDetails: base.hasErrorDetails || (isDebugOrCode && PT_ERROR.test(clean)),
+      hasReproSteps: base.hasReproSteps || (task === "debugging" && PT_REPRO.test(clean)),
+      injectionLike: base.injectionLike || PT_INJECTION.test(clean),
+      contradictions: base.contradictions || (PT_SHORT.test(clean) && PT_LONG.test(clean)) || (PT_NO_ASSUME.test(clean) && PT_INVENT.test(clean)),
+      // The prompt is Portuguese and is being read as Portuguese: not a mismatch.
+      languageMismatch: lang === "pt" ? false : base.languageMismatch,
+    };
+  }
+
+  // v1.8.7 (engine 2.5.0): a prompt that reads as Chinese is ALSO checked against the
+  // Chinese vocabulary (lib/engine/zh.ts). Same rule as Portuguese: signals are only
+  // ever added, and es/en/pt prompts never reach this branch.
+  if (isZh(clean, lang)) {
+    return {
+      ...base,
+      hasGoal: base.hasGoal || (ZH_TASK_GOAL[task]?.test(clean) ?? false),
+      hasInputs: base.hasInputs || ZH_INPUTS.test(clean),
+      hasAudience: base.hasAudience || ZH_AUDIENCE.test(clean),
+      hasExamples: base.hasExamples || ZH_EXAMPLES.test(clean),
+      hasConstraints:
+        base.hasConstraints ||
+        ZH_CONSTRAINTS.test(clean) ||
+        (task === "translation" && ZH_TRANSLATION_TARGET.test(clean)) ||
+        (task === "summarization" && ZH_SUMMARY_SHAPE.test(clean)) ||
+        (task === "image" && ZH_IMAGE_NEGATIVE.test(clean)) ||
+        (isCode && ZH_CODE_CONSTRAINT.test(clean)),
+      hasOutputFormat: base.hasOutputFormat || ZH_OUTPUT_FORMAT.test(clean) || ZH_OUTPUT_LABEL.test(clean) || (isCode && ZH_CODE_DELIVERABLE.test(clean)),
+      hasSuccessCriteria:
+        base.hasSuccessCriteria || ZH_SUCCESS.test(clean) || (isCode && ZH_CODE_SUCCESS.test(clean)) || (task === "debugging" && ZH_DEBUG_EXPECTED.test(clean)),
+      hasTone: base.hasTone || ZH_TONE.test(clean),
+      hasLengthHint: base.hasLengthHint || ZH_LENGTH.test(clean) || ZH_LENGTH_LIMIT.test(clean),
+      hasTimeframe: base.hasTimeframe || ZH_TIMEFRAME.test(clean),
+      hasRegion: base.hasRegion || ZH_REGION.test(clean),
+      hasErrorDetails: base.hasErrorDetails || (isDebugOrCode && ZH_ERROR.test(clean)),
+      hasReproSteps: base.hasReproSteps || (task === "debugging" && ZH_REPRO.test(clean)),
+      injectionLike: base.injectionLike || ZH_INJECTION.test(clean),
+      contradictions: base.contradictions || (ZH_SHORT.test(clean) && ZH_LONG.test(clean)) || (ZH_NO_ASSUME.test(clean) && ZH_INVENT.test(clean)),
+      // The prompt is read as Chinese: never a "mixed language" finding, from any interface.
+      languageMismatch: false,
+    };
+  }
+
+  return base;
 }

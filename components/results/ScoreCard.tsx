@@ -137,7 +137,7 @@ export default function ScoreCard({
   const attachmentsCount = Number(result.meta.attachmentsCount ?? 0);
   const words = Number(result.stats?.words ?? 0);
   const tokens = Number(result.stats?.approxTokens ?? 0);
-  const wordsLabel = pick(lang, { es: "palabras", en: "words", pt: "palavras", zh: "words" });
+  const wordsLabel = pick(lang, { es: "palabras", en: "words", pt: "palavras", zh: "词" });
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row items-center sm:gap-5">

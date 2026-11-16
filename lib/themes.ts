@@ -32,7 +32,7 @@ export type ThemeName = (typeof THEMES)[number];
 export const DARK_THEMES: ThemeName[] = ["metro"];
 
 export const THEME_LABELS: Record<ThemeName | "system", Record<Lang, string>> = {
-  system: { es: "Sistema", en: "System", pt: "Sistema", zh: "System" },
+  system: { es: "Sistema", en: "System", pt: "Sistema", zh: "跟随系统" },
   aqua: { es: "Aqua", en: "Aqua", pt: "Aqua", zh: "Aqua" },
   metro: { es: "Metro", en: "Metro", pt: "Metro", zh: "Metro" },
   glass: { es: "Glass", en: "Glass", pt: "Glass", zh: "Glass" },

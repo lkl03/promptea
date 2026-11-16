@@ -283,7 +283,8 @@ describe("/sources page document", () => {
       const doc = sourcesDoc(lang);
       const text = JSON.stringify(doc);
       expect(doc.tldr).toContain(String(counts[1] + counts[2] + counts[3]));
-      for (const tier of SOURCE_TIERS) expect(text, `${lang} tier ${tier}`).toContain(`(${counts[tier]} `);
+      // Latin scripts write "(107 sources)"; Chinese "（107个）" (full-width parentheses, a measure word).
+      for (const tier of SOURCE_TIERS) expect(text, `${lang} tier ${tier}`).toMatch(new RegExp(`[(（]${counts[tier]}[ 个]`));
       for (const p of ["Vercel", "Cloudflare", "Ars Technica", "Techmeme"]) expect(text, p).toContain(p);
       expect(doc.faq.length).toBeGreaterThanOrEqual(3);
       expect(doc.sections.map((s) => s.id)).toEqual(["tiers", "requirements", "who-we-read", "editions", "corrections", "limits"]);

@@ -27,62 +27,62 @@ type L = Record<Locale, string>;
 export const SCORE_DIMENSIONS: ReadonlyArray<{ key: "clarity" | "context" | "constraints" | "output" | "verifiability" | "safety"; label: L; measures: L }> = [
   {
     key: "clarity",
-    label: { en: "Clarity", es: "Claridad", pt: "Clareza", zh: "Clarity" },
+    label: { en: "Clarity", es: "Claridad", pt: "Clareza", zh: "清晰度" },
     measures: {
       en: "Is there a stated goal and enough words to say what is wanted? Very short or goal-less requests score low.",
       es: "¿Hay un objetivo explícito y suficiente texto para decir qué se quiere? Los pedidos muy cortos o sin objetivo puntúan bajo.",
       pt: "Há um objetivo declarado e palavras suficientes para dizer o que se quer? Pedidos muito curtos ou sem objetivo pontuam baixo.",
-      zh: "Is there a stated goal and enough words to say what is wanted? Very short or goal-less requests score low.",
+      zh: "是否写明了目标，并用足够的文字说清想要什么？过短或没有目标的请求评分较低。",
     },
   },
   {
     key: "context",
-    label: { en: "Context", es: "Contexto", pt: "Contexto", zh: "Context" },
+    label: { en: "Context", es: "Contexto", pt: "Contexto", zh: "上下文" },
     measures: {
       en: "Does the prompt include the material to work on (inputs), say who the answer is for (audience), or give examples?",
       es: "¿Incluye el material sobre el que trabajar (inputs), dice para quién es la respuesta (audiencia) o da ejemplos?",
       pt: "O prompt inclui o material a ser trabalhado (insumos), diz para quem é a resposta (público) ou dá exemplos?",
-      zh: "Does the prompt include the material to work on (inputs), say who the answer is for (audience), or give examples?",
+      zh: "提示词是否包含要处理的材料（输入）、说明回答是给谁看的（受众），或给出示例？",
     },
   },
   {
     key: "constraints",
-    label: { en: "Constraints", es: "Restricciones", pt: "Restrições", zh: "Constraints" },
+    label: { en: "Constraints", es: "Restricciones", pt: "Restrições", zh: "约束条件" },
     measures: {
       en: "Are there explicit limits such as tone, length, timeframe, region or rules the answer must respect?",
       es: "¿Hay límites explícitos como tono, largo, plazo, región o reglas que la respuesta deba respetar?",
       pt: "Há limites explícitos, como tom, tamanho, prazo, região ou regras que a resposta precisa respeitar?",
-      zh: "Are there explicit limits such as tone, length, timeframe, region or rules the answer must respect?",
+      zh: "是否有明确的限制，例如语气、篇幅、时间范围、地区，或回答必须遵守的规则？",
     },
   },
   {
     key: "output",
-    label: { en: "Output format", es: "Formato de salida", pt: "Formato de saída", zh: "Output format" },
+    label: { en: "Output format", es: "Formato de salida", pt: "Formato de saída", zh: "输出格式" },
     measures: {
       en: "Does it say what shape the answer must have (list, table, JSON, steps), and what a good answer looks like?",
       es: "¿Dice qué forma debe tener la respuesta (lista, tabla, JSON, pasos) y cómo se ve una buena respuesta?",
       pt: "Ele diz que forma a resposta deve ter (lista, tabela, JSON, passos) e como é uma boa resposta?",
-      zh: "Does it say what shape the answer must have (list, table, JSON, steps), and what a good answer looks like?",
+      zh: "是否说明了回答应采用的形式（列表、表格、JSON、步骤），以及好的回答是什么样子？",
     },
   },
   {
     key: "verifiability",
-    label: { en: "Verifiability", es: "Verificabilidad", pt: "Verificabilidade", zh: "Verifiability" },
+    label: { en: "Verifiability", es: "Verificabilidad", pt: "Verificabilidade", zh: "可验证性" },
     measures: {
       en: "Can the answer be checked? Success criteria, error details and reproduction steps count here; it weighs most for debugging and code.",
       es: "¿Se puede comprobar la respuesta? Cuentan los criterios de éxito, el detalle del error y los pasos para reproducirlo; pesa más en depuración y código.",
       pt: "Dá para conferir a resposta? Aqui contam critérios de sucesso, detalhes do erro e passos para reproduzir; pesa mais em depuração e código.",
-      zh: "Can the answer be checked? Success criteria, error details and reproduction steps count here; it weighs most for debugging and code.",
+      zh: "回答能否被检验？成功标准、错误详情和复现步骤都计入这一项；在调试和代码类任务中权重最高。",
     },
   },
   {
     key: "safety",
-    label: { en: "Safety", es: "Seguridad", pt: "Segurança", zh: "Safety" },
+    label: { en: "Safety", es: "Seguridad", pt: "Segurança", zh: "安全性" },
     measures: {
       en: "Starts at 100 and drops for text that looks like a prompt injection, for contradictory instructions and for a language mismatch with the request.",
       es: "Parte de 100 y baja si el texto parece una inyección de prompt, si hay instrucciones contradictorias o si el idioma no coincide con el pedido.",
       pt: "Começa em 100 e cai quando há texto que parece injeção de prompt, instruções contraditórias ou um idioma que não bate com o do pedido.",
-      zh: "Starts at 100 and drops for text that looks like a prompt injection, for contradictory instructions and for a language mismatch with the request.",
+      zh: "从100分起算；文本看起来像提示词注入、指令相互矛盾，或语言与请求不一致时会扣分。",
     },
   },
 ] as const;
@@ -167,21 +167,21 @@ export type ModelSummary = {
 };
 
 const LATENCY_LABEL: Record<"fast" | "balanced" | "slow", Record<Locale, string>> = {
-  fast: { en: "fast", es: "rápido", pt: "rápido", zh: "fast" },
-  balanced: { en: "balanced", es: "equilibrado", pt: "equilibrado", zh: "balanced" },
-  slow: { en: "slower (deliberate)", es: "más lento (deliberado)", pt: "mais lento (deliberado)", zh: "slower (deliberate)" },
+  fast: { en: "fast", es: "rápido", pt: "rápido", zh: "快" },
+  balanced: { en: "balanced", es: "equilibrado", pt: "equilibrado", zh: "均衡" },
+  slow: { en: "slower (deliberate)", es: "más lento (deliberado)", pt: "mais lento (deliberado)", zh: "较慢（深度思考）" },
 };
 
 const STRENGTH_LABEL: Record<ModelEntry["strengths"][number], Record<Locale, string>> = {
-  reasoning: { en: "reasoning", es: "razonamiento", pt: "raciocínio", zh: "reasoning" },
-  coding: { en: "coding", es: "código", pt: "programação", zh: "coding" },
-  writing: { en: "writing", es: "escritura", pt: "escrita", zh: "writing" },
-  data: { en: "data", es: "datos", pt: "dados", zh: "data" },
-  multimodal: { en: "multimodal", es: "multimodal", pt: "multimodal", zh: "multimodal" },
-  long_context: { en: "long context", es: "contexto largo", pt: "contexto longo", zh: "long context" },
-  speed: { en: "speed", es: "velocidad", pt: "velocidade", zh: "speed" },
-  creativity: { en: "creativity", es: "creatividad", pt: "criatividade", zh: "creativity" },
-  search: { en: "search", es: "búsqueda", pt: "busca", zh: "search" },
+  reasoning: { en: "reasoning", es: "razonamiento", pt: "raciocínio", zh: "推理" },
+  coding: { en: "coding", es: "código", pt: "programação", zh: "编程" },
+  writing: { en: "writing", es: "escritura", pt: "escrita", zh: "写作" },
+  data: { en: "data", es: "datos", pt: "dados", zh: "数据" },
+  multimodal: { en: "multimodal", es: "multimodal", pt: "multimodal", zh: "多模态" },
+  long_context: { en: "long context", es: "contexto largo", pt: "contexto longo", zh: "长上下文" },
+  speed: { en: "speed", es: "velocidad", pt: "velocidade", zh: "速度" },
+  creativity: { en: "creativity", es: "creatividad", pt: "criatividade", zh: "创意" },
+  search: { en: "search", es: "búsqueda", pt: "busca", zh: "搜索" },
 };
 
 /** Everything a page, the markdown twin and llms.txt may say about one registry entry. */

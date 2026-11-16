@@ -42,8 +42,8 @@ export default function PromptOfTheDay({ lang, initialDate }: Props) {
   const today = useMemo(() => initialDate ?? new Date(), [initialDate]);
   const daily: DailyPrompt = useMemo(() => getDailyPrompt(today), [today]);
 
-  const heading = pick(lang, { es: "Prompt del día", en: "Prompt of the day", pt: "Prompt do dia", zh: "Prompt of the day" });
-  const tryLabel = pick(lang, { es: "Probar este prompt", en: "Try this prompt", pt: "Testar este prompt", zh: "Try this prompt" });
+  const heading = pick(lang, { es: "Prompt del día", en: "Prompt of the day", pt: "Prompt do dia", zh: "每日提示词" });
+  const tryLabel = pick(lang, { es: "Probar este prompt", en: "Try this prompt", pt: "Testar este prompt", zh: "试试这条提示词" });
   const dateLabel = mounted ? formatDate(today, lang) : "";
 
   function handleTry() {

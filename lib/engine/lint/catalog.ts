@@ -295,8 +295,105 @@ export function findingText(id: FindingId, lang: Lang) {
     },
   };
 
-  // v1.8.7: the Chinese catalog falls back to English until it is written.
-  return ({ es, en, pt, zh: en } as Record<Lang, typeof en>)[lang][id];
+  const zh: Record<FindingId, { title: string; description: string; fix: string }> = {
+    too_short: {
+      title: "提示词太短",
+      description: "信息太少时，模型往往只能靠猜。",
+      fix: "补充目标、必要的背景和输出格式。",
+    },
+    missing_goal: {
+      title: "缺少目标",
+      description: "不清楚你想要什么结果。",
+      fix: "用一句清楚的话说明目标。",
+    },
+    missing_context: {
+      title: "缺少背景信息",
+      description: "场景、预期用途或可用的信息不清楚。",
+      fix: "补充必要的背景、预期用途和可用的信息。",
+    },
+    missing_input_data: {
+      title: "缺少输入数据",
+      description: "缺少模型需要处理的文本、数据、日志或代码。",
+      fix: "粘贴内容，或附上源材料。",
+    },
+    missing_output_format: {
+      title: "缺少输出格式",
+      description: "没有格式要求时，模型会自行决定，结果可能不符合你的需要。",
+      fix: "要求具体的格式：要点、段落、分节、表格或JSON。",
+    },
+    missing_constraints: {
+      title: "缺少约束条件",
+      description: "没有语气、篇幅或重点方面的限制，回答的差异会很大。",
+      fix: "说明语气、篇幅、重点和要避免的内容。",
+    },
+    contradiction: {
+      title: "指令相互矛盾",
+      description: "提示词提出了相互冲突的要求。",
+      fix: "确定一个明确的优先级，再相应调整其余要求。",
+    },
+    prompt_injection: {
+      title: "可能存在提示词注入",
+      description: "提示词中包含绕过规则或泄露隐藏系统内容的指令。",
+      fix: "删掉这些语句，直接重新表述你的请求。",
+    },
+    missing_repro_steps: {
+      title: "缺少复现步骤",
+      description: "没有清楚的步骤，很难诊断技术问题。",
+      fix: "添加带编号的复现步骤。",
+    },
+    missing_error_message: {
+      title: "缺少错误信息",
+      description: "没有确切的错误或日志，诊断就不可靠。",
+      fix: "粘贴完整的错误信息和相关日志。",
+    },
+    missing_environment: {
+      title: "缺少环境信息",
+      description: "版本、框架或操作系统都可能改变解决方案。",
+      fix: "写明版本、操作系统和相关配置。",
+    },
+    missing_schema: {
+      title: "缺少数据结构",
+      description: "你要求提取数据或输出JSON，但没有定义需要的字段。",
+      fix: "定义字段和类型，并给出一个简短的输出示例。",
+    },
+    missing_summary_scope: {
+      title: "缺少摘要重点",
+      description: "不清楚应该优先关注源材料中的哪些内容。",
+      fix: "说明你要的是整体摘要、按章节摘要、按主题摘要，还是聚焦某个特定方面。",
+    },
+    missing_summary_length: {
+      title: "缺少摘要篇幅",
+      description: "提示词没有说明最终摘要应该多简短或多详细。",
+      fix: "规定篇幅：3个要点、1段话、简短摘要等。",
+    },
+    missing_translation_target: {
+      title: "缺少目标语言",
+      description: "没有指定要翻译成哪种语言。",
+      fix: "明确写出目标语言。",
+    },
+    missing_translation_register: {
+      title: "缺少译文风格",
+      description: "不清楚你想要直译、意译、正式还是中性的译文。",
+      fix: "确定译文的语体风格，或直译的程度。",
+    },
+    missing_study_level: {
+      title: "缺少学习者水平",
+      description: "不清楚讲解应该面向什么知识水平。",
+      fix: "说明水平：入门、高中、大学、专业等。",
+    },
+    missing_marketing_audience: {
+      title: "缺少受众",
+      description: "不清楚这段文案是写给谁的。",
+      fix: "明确写出目标受众。",
+    },
+    missing_marketing_cta: {
+      title: "缺少CTA",
+      description: "不清楚读者看完文案后应该采取什么行动。",
+      fix: "清楚说明你想要的行动号召。",
+    },
+  };
+
+  return { es, en, pt, zh }[lang][id];
 }
 
 export function recoText(id: RecommendationId, lang: Lang) {
@@ -363,6 +460,26 @@ export function recoText(id: RecommendationId, lang: Lang) {
     define_marketing_cta: { title: "Defina o CTA", detail: "Especifique a ação que a mensagem deve provocar." },
   };
 
-  // v1.8.7: the Chinese catalog falls back to English until it is written.
-  return ({ es, en, pt, zh: en } as Record<Lang, typeof en>)[lang][id];
+  const zh: Record<RecommendationId, { title: string; detail: string }> = {
+    add_goal: { title: "说明目标", detail: "用一句清楚的话说明你想要的结果。" },
+    add_context: { title: "补充必要的背景", detail: "包括场景、可用的信息和预期用途。" },
+    add_input_data: { title: "补充源材料", detail: "粘贴模型需要使用的文本、数据、日志或文件。" },
+    define_output_format: { title: "确定输出格式", detail: "要求使用要点、段落、表格、步骤或JSON。" },
+    add_constraints: { title: "补充约束条件", detail: "说明语气、篇幅、重点和要避免的内容。" },
+    add_success_criteria: { title: "补充成功标准", detail: "说明一个好的回答必须包含什么。" },
+    add_examples: { title: "补充一个示例", detail: "一个输入/输出示例能减少歧义。" },
+    add_schema: { title: "定义字段和类型", detail: "用于数据提取或JSON：定义字段、类型，并给出示例。" },
+    add_repro_steps: { title: "补充复现步骤", detail: "提供带编号的复现步骤。" },
+    add_error_message: { title: "粘贴完整的错误信息", detail: "确切的日志或stack trace，以及执行时的上下文。" },
+    add_environment: { title: "说明运行环境", detail: "框架、运行时、操作系统和相关版本。" },
+    define_summary_scope: { title: "确定摘要重点", detail: "说明应该优先关注内容的哪一部分。" },
+    define_summary_length: { title: "确定摘要篇幅", detail: "例如：3个要点、1段话、简短摘要。" },
+    define_translation_target: { title: "确定目标语言", detail: "明确写出要翻译成哪种语言。" },
+    define_translation_register: { title: "确定译文风格", detail: "说明你想要直译、意译、正式还是中性的译文。" },
+    define_study_level: { title: "确定学习者水平", detail: "说明是面向入门者、高中生还是大学生等。" },
+    define_marketing_audience: { title: "确定受众", detail: "说明这段文案是写给谁的。" },
+    define_marketing_cta: { title: "确定CTA", detail: "说明这条信息要促成什么行动。" },
+  };
+
+  return { es, en, pt, zh }[lang][id];
 }

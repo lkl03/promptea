@@ -1534,3 +1534,65 @@ html {
   border-radius: 0;
   background: transparent;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   v1.8.7 — Simplified Chinese (/zh, <html lang="zh-CN">)
+
+   Fonts: the self-hosted fonts are Latin-only, and no CJK web font is
+   downloaded (a full Chinese font is several MB). Each theme keeps its Latin
+   faces first — Latin letters, digits and code look the same as in the other
+   languages — and the operating system's Simplified Chinese UI font follows
+   for Han characters and full-width punctuation: PingFang SC (macOS/iOS),
+   Hiragino Sans GB (older macOS), Microsoft YaHei (Windows), Noto Sans SC /
+   Source Han Sans SC (Android, Linux), then the generic family.
+
+   Text: Chinese is set a little taller (Han glyphs fill the em box), never in
+   italics (there is no Chinese italic; browsers fake an oblique), never with
+   letter-spacing tightened for Latin titles, and lines break by the strict
+   CJK rules (no line starting with "，" or "。"). Uppercase transforms do not
+   apply to Han characters and are left alone for Latin words.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root:lang(zh) {
+  --zh-font-stack: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Microsoft YaHei UI", "Noto Sans SC",
+    "Noto Sans CJK SC", "Source Han Sans SC", "WenQuanYi Micro Hei", sans-serif;
+  --app-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial,
+    var(--zh-font-stack);
+  --app-font-title: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial,
+    var(--zh-font-stack);
+  --body-tracking: 0;
+  --title-tracking: 0;
+}
+:root:lang(zh).metro,
+:root:lang(zh)[data-theme="metro"] {
+  --app-font-sans: "Segoe UI", "Segoe UI Web (West European)", Segoe, Arial, var(--zh-font-stack);
+  --app-font-title: "Segoe UI", "Segoe UI Web (West European)", Segoe, Arial, var(--zh-font-stack);
+}
+:root:lang(zh).glass body,
+:root:lang(zh)[data-theme="glass"] body {
+  font-family: var(--font-body), ui-sans-serif, var(--zh-font-stack);
+}
+:root:lang(zh).glass :is(h1, h2, h3, h4, h5, h6),
+:root:lang(zh)[data-theme="glass"] :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-title), var(--font-body), var(--zh-font-stack);
+}
+:lang(zh) body {
+  line-height: 1.7;
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: break-word;
+  text-spacing-trim: normal;
+}
+:lang(zh) :is(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+:lang(zh) :is(em, i, cite, dfn, address) {
+  font-style: normal;
+}
+:lang(zh) :is(em, i) {
+  font-weight: 600;
+}
+/* Content shown in English under /zh (AI Daily, untranslated guides) keeps the Latin rhythm. */
+:lang(zh) [lang^="en"] {
+  line-break: auto;
+}

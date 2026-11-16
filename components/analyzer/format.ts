@@ -1,6 +1,8 @@
 // Small i18n helpers for the analyzer components: template interpolation for
 // dictionary strings like "Up to {max} files · {size} each."
 
+import { wordCount } from "@/lib/engine/normalize";
+
 export function tpl(template: string, vars: Record<string, string | number>): string {
   return Object.entries(vars).reduce(
     (acc, [key, value]) => acc.replaceAll(`{${key}}`, String(value)),
@@ -15,11 +17,19 @@ export function formatBytes(bytes: number): string {
   return `${(kb / 1024).toFixed(1)} MB`;
 }
 
-/** Approximate token count (chars / 4, minimum 1). */
+const HAN = /\p{Script=Han}/gu;
+
+/**
+ * Approximate token count: ~4 characters per token for Latin-script text and,
+ * v1.8.7, ~1 token per Han character (Chinese tokenizes much more densely).
+ * Minimum 1.
+ */
 export function approxTokens(text: string): number {
-  return Math.max(1, Math.ceil(text.length / 4));
+  const han = (text.match(HAN) ?? []).length;
+  return Math.max(1, han + Math.ceil((text.length - han) / 4));
 }
 
+/** Words, as the engine counts them (lib/engine/normalize.ts): Chinese by characters, the rest by spaces. */
 export function countWords(text: string): number {
-  return text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+  return text.trim() === "" ? 0 : wordCount(text);
 }

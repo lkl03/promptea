@@ -43,7 +43,7 @@ export const BLOG_TECH_LABEL: Record<Lang, string> = {
   es: "Tech",
   en: "Tech",
   pt: "Tech",
-  zh: "Tech",
+  zh: "科技",
 };
 
 /** JSON-LD is untyped by nature; this alias keeps the intent readable. */
@@ -230,7 +230,7 @@ export function blogBreadcrumbNode(input: BlogBreadcrumbInput): JsonLd {
   const { lang, title, slug, siteUrl, section = "ai" } = input;
 
   const trail: Array<{ name: string; item: string }> = [
-    { name: pick(lang, { es: "Inicio", en: "Home", pt: "Início", zh: "Home" }), item: abs(siteUrl, `/${lang}`) },
+    { name: pick(lang, { es: "Inicio", en: "Home", pt: "Início", zh: "首页" }), item: abs(siteUrl, `/${lang}`) },
     { name: BLOG_SECTION_LABEL[lang], item: abs(siteUrl, blogIndexPath(lang)) },
     ...(section === "tech" ? [{ name: BLOG_TECH_LABEL[lang], item: abs(siteUrl, blogTechIndexPath(lang)) }] : []),
     { name: truncateHeadline(title, 160), item: abs(siteUrl, blogArticlePath(lang, slug)) },
@@ -281,7 +281,7 @@ export function blogIndexJsonLd(input: BlogIndexJsonLdInput): JsonLd {
   const url = abs(input.siteUrl, blogSectionIndexPath(input.lang, section));
   const ids = entityIds(input.siteUrl);
   const items = input.items ?? [];
-  const home = pick(input.lang, { es: "Inicio", en: "Home", pt: "Início", zh: "Home" });
+  const home = pick(input.lang, { es: "Inicio", en: "Home", pt: "Início", zh: "首页" });
 
   const blog: JsonLd = {
     "@type": "Blog",

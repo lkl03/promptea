@@ -20,7 +20,7 @@ import { weeklyArchivePath, weeklyEditionPath } from "@/lib/newsletter/paths";
 import { absUrl, type Locale } from "./site";
 import { pick, type ContentLang } from "@/lib/domain";
 
-const home = (lang: Locale) => (pick(lang, { es: "Inicio", en: "Home", pt: "Início", zh: "Home" }));
+const home = (lang: Locale) => (pick(lang, { es: "Inicio", en: "Home", pt: "Início", zh: "首页" }));
 
 type Crumb = { name: string; path: string };
 
@@ -81,7 +81,7 @@ export function docPageGraph(i: { doc: PageDoc; lang: Locale; path: string; kind
 export function guideGraph(g: Guide, lang: Locale, updated: string): JsonLdNode {
   const path = `/${lang}/guides/${g.slug}`;
   const url = absUrl(path);
-  const guidesLabel = pick(lang, { es: "Guías", en: "Guides", pt: "Guias", zh: "Guides" });
+  const guidesLabel = pick(lang, { es: "Guías", en: "Guides", pt: "Guias", zh: "指南" });
   return graph(
     webPageNode({
       lang,
@@ -102,12 +102,12 @@ export function glossaryGraph(term: GlossaryTerm, lang: Locale, updated: string)
   const path = `/${lang}/glossary/${term.slug}`;
   const url = absUrl(path);
   const setUrl = absUrl(`/${lang}/glossary`);
-  const label = pick(lang, { es: "Glosario", en: "Glossary", pt: "Glossário", zh: "Glossary" });
+  const label = pick(lang, { es: "Glosario", en: "Glossary", pt: "Glossário", zh: "术语表" });
   const setName = pick(lang, {
     es: "Glosario de prompt engineering",
     en: "Prompt engineering glossary",
     pt: "Glossário de engenharia de prompt",
-    zh: "Prompt engineering glossary",
+    zh: "提示词工程术语表",
   });
   const termNode = definedTermNode({ lang, url, name: term.title[lang], description: term.description[lang], setName, setUrl });
   return graph(
@@ -130,7 +130,7 @@ export function glossaryGraph(term: GlossaryTerm, lang: Locale, updated: string)
 export function modelGraph(m: ModelPage, lang: Locale, updated: string): JsonLdNode {
   const path = `/${lang}/models/${m.slug}`;
   const url = absUrl(path);
-  const label = pick(lang, { es: "Modelos", en: "Models", pt: "Modelos", zh: "Models" });
+  const label = pick(lang, { es: "Modelos", en: "Models", pt: "Modelos", zh: "模型" });
   return graph(
     webPageNode({
       lang,
@@ -170,13 +170,13 @@ export function benchmarksGraph(i: { lang: Locale; title: string; description: s
         es: "Rankings de benchmarks de modelos de IA",
         en: "AI model benchmark rankings",
         pt: "Rankings de benchmarks de modelos de IA",
-        zh: "AI model benchmark rankings",
+        zh: "AI模型基准测试排行榜",
       }),
       description: pick(i.lang, {
         es: `${snap.tables.length} rankings de ${models} modelos de IA, uno por benchmark, con su propia métrica. Fuentes: ${sources.join(", ")}. Los puntajes de benchmarks distintos no se combinan.`,
         en: `${snap.tables.length} rankings covering ${models} AI models, one per benchmark, each with its own metric. Sources: ${sources.join(", ")}. Scores from different benchmarks are not combined.`,
         pt: `${snap.tables.length} rankings que cobrem ${models} modelos de IA, um por benchmark, cada um com sua própria métrica. Fontes: ${sources.join(", ")}. Pontuações de benchmarks diferentes não são combinadas.`,
-        zh: `${snap.tables.length} rankings covering ${models} AI models, one per benchmark, each with its own metric. Sources: ${sources.join(", ")}. Scores from different benchmarks are not combined.`,
+        zh: `${snap.tables.length}个排行榜，覆盖${models}个AI模型，每项基准测试一个，各自使用自己的指标。来源：${sources.join("、")}。不同基准测试的分数不会合并。`,
       }),
       dateModified: asOf,
       sourceName: "OpenRouter benchmarks API",
@@ -184,7 +184,7 @@ export function benchmarksGraph(i: { lang: Locale; title: string; description: s
         es: "Resultados de benchmarks publicados por la API pública de benchmarks de OpenRouter, que Promptea lee para armar estos rankings. Cada benchmark conserva la fuente y la métrica que informa esa API.",
         en: "Benchmark results published through OpenRouter's public benchmarks API, which Promptea reads to build these rankings. Each benchmark keeps the source and the metric that API reports.",
         pt: "Resultados de benchmarks publicados pela API pública de benchmarks do OpenRouter, que o Promptea lê para montar estes rankings. Cada benchmark mantém a fonte e a métrica informadas por essa API.",
-        zh: "Benchmark results published through OpenRouter's public benchmarks API, which Promptea reads to build these rankings. Each benchmark keeps the source and the metric that API reports.",
+        zh: "通过OpenRouter公开的基准测试API发布的结果，Promptea读取这些结果来生成排行榜。每项基准测试都保留该API报告的来源和指标。",
       }),
       sourceUrl: snap.sourceUrl ?? "https://openrouter.ai/benchmarks",
       measured: snap.tables.map((tb) => `${tb.def.label[i.lang]} (${CATEGORY_LABELS[tb.def.category][i.lang]})`),

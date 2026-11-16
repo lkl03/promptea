@@ -118,37 +118,37 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
       close: "Fechar",
     },
     zh: {
-      button: "New? See how it works →",
-      title: "How Promptea works",
-      intro: "Five quick steps to turn a vague prompt into an optimized version for the AI you use.",
+      button: "第一次使用？看看如何操作 →",
+      title: "Promptea如何运作",
+      intro: "五个简单步骤，把模糊的提示词变成针对你所用AI优化后的版本。",
       steps: [
         {
-          title: "1. Pick model and prompt type",
+          title: "1. 选择模型和提示词类型",
           body:
-            "Select the AI family (GPT, Claude, Gemini, Grok, DeepSeek, Kimi, Qwen…) and what the prompt is for: text, code, data, marketing, study, image, translation, or summarization.",
+            "选择AI系列（GPT、Claude、Gemini、Grok、DeepSeek、Kimi、Qwen…）以及提示词的用途：文本、代码、数据、营销、学习、图像、翻译或摘要。",
         },
         {
-          title: "2. Paste, write, or dictate your prompt",
+          title: "2. 粘贴、输入或口述你的提示词",
           body:
-            "Paste the text, write it, or dictate it with your voice using the mic. If you have extra context (logs, code, data, notes), attach up to 3 files.",
+            "粘贴文本、直接输入，或用麦克风语音输入。如果有额外的上下文（日志、代码、数据、笔记），最多可以附加3个文件。",
         },
         {
-          title: "3. Review the analysis",
+          title: "3. 查看分析结果",
           body:
-            "Check the score, areas to improve, follow-up questions, and detected risks. Fix the critical issues and re-analyze.",
+            "查看评分、需要改进的地方、追问和发现的风险。修正关键问题后重新分析。",
         },
         {
-          title: "4. Copy the optimized prompt",
+          title: "4. 复制优化后的提示词",
           body:
-            "Once optimized, copy it and paste into your preferred AI. The structure adapts to each model and each kind of task.",
+            "优化完成后，复制并粘贴到你常用的AI中。结构会根据每个模型和每类任务进行调整。",
         },
         {
-          title: "5. Choose the output format",
+          title: "5. 选择输出格式",
           body:
-            "Checklist mode: best for chat with humans. Pure JSON mode: best for automations, APIs, and workflows.",
+            "清单模式：最适合与人对话的聊天场景。纯JSON模式：最适合自动化、API和工作流程。",
         },
       ],
-      close: "Close",
+      close: "关闭",
     },
   },
   "best-ai": {
@@ -253,37 +253,37 @@ const COPY: Record<HowItWorksMode, Record<Lang, ModeCopy>> = {
       close: "Fechar",
     },
     zh: {
-      button: "New? See how it works →",
-      title: "How Find the Best AI works",
+      button: "第一次使用？看看如何操作 →",
+      title: "“找到最合适的AI”如何运作",
       intro:
-        "Paste a prompt you already have and find out which AI fits it best — no AI jargon required.",
+        "粘贴你已有的提示词，看看哪款AI最适合它，不需要懂任何AI术语。",
       steps: [
         {
-          title: "1. Paste or dictate your prompt",
-          body: "Write, paste, or dictate the prompt you already have. Nothing else to configure.",
+          title: "1. 粘贴或口述你的提示词",
+          body: "输入、粘贴或口述你已有的提示词，无需其他设置。",
         },
         {
-          title: "2. We detect signals in your text",
+          title: "2. 我们识别文本中的信号",
           body:
-            "We look for concrete clues: code paths and commands, requests for sources or current information, JSON data, image references, translations, summaries, and more.",
+            "我们会寻找具体线索：代码路径和命令、对来源或最新信息的需求、JSON数据、图像引用、翻译、摘要等。",
         },
         {
-          title: "3. We compare the AIs",
+          title: "3. 我们比较各款AI",
           body:
-            "Those signals score each AI and environment (ChatGPT, Claude, Claude Code, Gemini, Grok, DeepSeek, Kimi, Qwen, GLM, MiniMax, Doubao, Perplexity) against verified capabilities. The ranking is 100% deterministic: no AI decides for you.",
+            "根据这些信号，对照经过核实的能力，为每款AI和环境（ChatGPT、Claude、Claude Code、Gemini、Grok、DeepSeek、Kimi、Qwen、GLM、MiniMax、Doubao、Perplexity）打分。排名100%是确定性的：没有任何AI替你做决定。",
         },
         {
-          title: "4. Get the recommendation",
+          title: "4. 获取推荐",
           body:
-            "You see the best fit with its score and confidence level, why we picked it (citing what we found in your prompt), and up to 3 alternatives with their trade-offs. If it's a tie, we say so.",
+            "你会看到最合适的选项及其评分和置信度、我们选择它的理由（引用我们在你的提示词中找到的内容），以及最多3个备选方案及其利弊。如果出现平局，我们也会告诉你。",
         },
         {
-          title: "5. Improve your prompt for that AI",
+          title: "5. 针对这款AI优化你的提示词",
           body:
-            "One click takes you to Improve Prompt with the recommended AI, model, and purpose preselected.",
+            "只需点击一下，就能进入“优化提示词”，推荐的AI、模型和用途都已预先选好。",
         },
       ],
-      close: "Close",
+      close: "关闭",
     },
   },
 };

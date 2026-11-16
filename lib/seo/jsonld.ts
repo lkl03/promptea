@@ -166,12 +166,12 @@ const FEATURES: Record<Locale, string[]> = {
     "Benchmarks de modelos de IA com fonte e data",
   ],
   zh: [
-    "Prompt score from 0 to 100 on six criteria",
-    "Findings and recommendations for each prompt",
-    "Optimized prompt for GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Qwen, GLM, MiniMax, Doubao and Perplexity",
-    "Best-AI recommendation for a task",
-    "AI Daily: one verified AI story a day",
-    "AI model benchmarks with source and date",
+    "提示词评分：按六项标准打0到100分",
+    "针对每个提示词给出问题与建议",
+    "为GPT、Claude、Gemini、Grok、Kimi、DeepSeek、Qwen、GLM、MiniMax、Doubao和Perplexity生成优化后的提示词",
+    "为任务推荐最合适的AI",
+    "AI Daily（AI日报）：每天一条经过核实的AI新闻（英文和西班牙文）",
+    "附来源和日期的AI模型基准测试",
   ],
 };
 

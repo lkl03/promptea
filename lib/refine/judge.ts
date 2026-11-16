@@ -149,7 +149,7 @@ export async function judgePrompt(args: JudgeArgs): Promise<JudgeResult | null> 
     const outcome = await completeWithFailover(
       chain,
       {
-        system: { cacheable: JUDGE_SYSTEM[args.lang], dynamic: es ? `Idioma de la respuesta: español.` : args.lang === "pt" ? `Response language: Brazilian Portuguese (write the "rationale" in pt-BR).` : `Response language: English.`, combined: JUDGE_SYSTEM[args.lang] },
+        system: { cacheable: JUDGE_SYSTEM[args.lang], dynamic: es ? `Idioma de la respuesta: español.` : args.lang === "pt" ? `Response language: Brazilian Portuguese (write the "rationale" in pt-BR).` : args.lang === "zh" ? `Response language: Simplified Chinese (write the "rationale" in zh-CN).` : `Response language: English.`, combined: JUDGE_SYSTEM[args.lang] },
         messages: [{ role: "user", content: user }],
         jsonSchema: JUDGE_JSON_SCHEMA,
         temperature: 0,

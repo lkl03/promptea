@@ -76,16 +76,16 @@ Preciso de:
     target: "claude",
   },
   zh: {
-    prompt: `You are a senior software engineer. I'm getting this error in Next.js 14:
+    prompt: `你是一名资深软件工程师。我在Next.js 14中遇到了这个错误：
 
 Error: "Cannot read properties of undefined (reading 'map')"
 
-It happens in the ProductList component when the products prop is not passed from the server.
+它出现在ProductList组件中，当服务器没有传入products这个prop时就会触发。
 
-I need:
-1. Exactly why this happens
-2. How to prevent it (default value, guard clause, or Suspense)
-3. A snippet showing the applied fix`,
+我需要：
+1. 这个错误的确切原因
+2. 如何预防（默认值、卫语句或Suspense）
+3. 一段应用了修复的代码片段`,
     purpose: "code",
     target: "claude",
   },

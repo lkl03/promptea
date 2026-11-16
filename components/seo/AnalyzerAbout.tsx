@@ -19,7 +19,7 @@ export default function AnalyzerAbout({ lang }: { lang: Lang }) {
             es: "Qué revisa el analizador de prompts",
             en: "What the prompt analyzer checks",
             pt: "O que o analisador de prompts verifica",
-            zh: "What the prompt analyzer checks",
+            zh: "提示词分析器检查哪些内容",
           })}
         </h2>
         <p className="text-sm opacity-80">
@@ -27,7 +27,7 @@ export default function AnalyzerAbout({ lang }: { lang: Lang }) {
             es: "Cada prompt recibe un puntaje de 0 a 100 en seis criterios, ponderados según el propósito que elijas. Después ves qué corregir primero y una versión optimizada, puntuada de nuevo con las mismas reglas.",
             en: "Every prompt gets a 0–100 score on six criteria, weighted by the purpose you pick. Then you see what to fix first and an optimized version, scored again with the same rules.",
             pt: "Cada prompt recebe uma pontuação de 0 a 100 em seis critérios, ponderados pelo propósito que você escolher. Depois você vê o que corrigir primeiro e uma versão otimizada, pontuada de novo com as mesmas regras.",
-            zh: "Every prompt gets a 0–100 score on six criteria, weighted by the purpose you pick. Then you see what to fix first and an optimized version, scored again with the same rules.",
+            zh: "每条提示词都会按六项标准获得0–100分的评分，各项权重取决于你选择的用途。然后你会看到最该先改的地方，以及一个按同样规则重新评分的优化版本。",
           })}
         </p>
       </div>
@@ -46,17 +46,17 @@ export default function AnalyzerAbout({ lang }: { lang: Lang }) {
             es: "Ver ejemplos antes → después con su puntaje",
             en: "See before → after examples with their scores",
             pt: "Ver exemplos antes → depois com a pontuação",
-            zh: "See before → after examples with their scores",
+            zh: "查看附评分的优化前 → 优化后示例",
           })}
         </Link>
         {" · "}
         <Link href={`/${lang}/how-it-works`} className="underline underline-offset-2">
-          {pick(lang, { es: "Cómo funciona Promptea", en: "How Promptea works", pt: "Como o Promptea funciona", zh: "How Promptea works" })}
+          {pick(lang, { es: "Cómo funciona Promptea", en: "How Promptea works", pt: "Como o Promptea funciona", zh: "Promptea如何运作" })}
         </Link>
       </p>
 
       <div className="surface p-5">
-        <h2 className="text-sm font-medium">{pick(lang, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</h2>
+        <h2 className="text-sm font-medium">{pick(lang, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "常见问题" })}</h2>
         <div className="mt-3 space-y-2">
           {ANALYZER_PAGE_FAQ.map((x) => (
             <details key={x.q[lang]} className="surface-soft rounded-2xl p-3">

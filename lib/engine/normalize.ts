@@ -10,9 +10,20 @@ export function normalizeText(s: string) {
     .trim();
 }
 
+/** Han ideographs (written Chinese has no spaces between words). */
+const HAN_RE = /\p{Script=Han}/gu;
+
+/**
+ * Words in a text. v1.8.7: Chinese is written without spaces, so a run of Han
+ * characters counts as characters / 1.7 words (the average length of a
+ * Chinese word); everything else is counted by whitespace, as before — a text
+ * without Han characters gets exactly the v1.8.6 count.
+ */
 export function wordCount(s: string) {
-  const m = normalizeText(s).match(/\S+/g);
-  return m ? m.length : 0;
+  const text = normalizeText(s);
+  const han = (text.match(HAN_RE) ?? []).length;
+  const m = (han ? text.replace(HAN_RE, " ") : text).match(/\S+/g);
+  return (m ? m.length : 0) + (han ? Math.max(1, Math.round(han / 1.7)) : 0);
 }
 
 export function approxTokensFromWords(words: number) {

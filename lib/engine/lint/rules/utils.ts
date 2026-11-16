@@ -1,6 +1,7 @@
 import type { Lang, OutputFormat } from "../types";
 import { vocabularyLang } from "@/lib/refine/language";
 import { PT_DEBUG_WORDS, PT_ERROR_HANDLING, PT_EXTRACTION_WORDS, PT_INPUT_LABEL } from "../../pt";
+import { ZH_DEBUG_WORDS, ZH_ERROR_HANDLING, ZH_EXTRACTION_WORDS, ZH_INPUT_LABEL } from "../../zh";
 
 export function includesAny(low: string, list: string[]) {
   return list.some((x) => low.includes(x));
@@ -63,6 +64,7 @@ export function hasInputDataForExtraction(p: string) {
     low.includes("input:") ||
     low.includes("entrada:") ||
     PT_INPUT_LABEL.test(p) ||
+    ZH_INPUT_LABEL.test(p) || // v1.8.7: "数据：…", "原文：…"
     /```[\s\S]*?```/.test(p) ||
     /"[^"]{10,}"/.test(p) ||
     // v1.8.0: a labeled data block ("Invoice:\n…", "csv: name,age") is input.
@@ -130,6 +132,8 @@ export function isExtractionLike(taskType: string | undefined, prompt: string, l
   const byWords =
     vocabularyLang(prompt ?? "", lang) === "pt"
       ? includesAny(low, PT_EXTRACTION_WORDS)
+      : vocabularyLang(prompt ?? "", lang) === "zh"
+        ? includesAny(low, ZH_EXTRACTION_WORDS)
       : lang === "es"
         ? includesAny(low, ["extrae", "extraer", "extracción", "parsea", "parseá", "campos:", "claves:", "fields:"])
         : includesAny(low, ["extract", "extraction", "parse", "fields:", "keys:"]);
@@ -140,8 +144,11 @@ export function isExtractionLike(taskType: string | undefined, prompt: string, l
 export function isDebugLike(taskType: string | undefined, prompt: string, lang: Lang) {
   // v1.8.0: "include error handling" / "manejo de errores" is an
   // implementation requirement, not a bug report.
-  const pt = vocabularyLang(prompt ?? "", lang) === "pt";
-  const low = (pt ? (prompt ?? "").toLowerCase().replace(PT_ERROR_HANDLING, " ") : (prompt ?? "").toLowerCase()).replace(
+  const vocab = vocabularyLang(prompt ?? "", lang);
+  const pt = vocab === "pt";
+  const zh = vocab === "zh"; // v1.8.7
+  const base = (prompt ?? "").toLowerCase();
+  const low = (pt ? base.replace(PT_ERROR_HANDLING, " ") : zh ? base.replace(ZH_ERROR_HANDLING, " ") : base).replace(
     /\b(error handling|handle errors?|handling errors?)\b|manej(o|ar|á) (de |los )?errores?|control de errores/g,
     " ",
   );
@@ -149,6 +156,8 @@ export function isDebugLike(taskType: string | undefined, prompt: string, lang: 
 
   const byWords = pt
     ? includesAny(low, PT_DEBUG_WORDS)
+    : zh
+      ? includesAny(low, ZH_DEBUG_WORDS)
     : lang === "es"
       ? includesAny(low, ["bug", "error", "crash", "no funciona", "rompe", "stacktrace", "traceback"])
       : includesAny(low, ["bug", "error", "crash", "doesn't work", "stacktrace", "traceback"]);

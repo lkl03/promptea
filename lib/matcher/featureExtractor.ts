@@ -4,6 +4,7 @@
 // signal against the prompt (plus attachment metadata) and accumulates
 // weighted evidence per category. No LLM, no randomness.
 
+import { wordCount as countWords } from "@/lib/engine/normalize";
 import type { Lang, MatchCategory } from "@/lib/domain";
 import { detectPromptLanguage, readsAsPortuguese } from "@/lib/refine/language";
 import type { AttachmentContext } from "@/lib/attachments";
@@ -16,9 +17,9 @@ import {
 } from "./rubric";
 import type { MatcherFeatures, SignalHit } from "./types";
 
+/** v1.8.7: the engine's word count (Chinese counted by characters, everything else by spaces). */
 function wordCount(text: string): number {
-  const t = text.trim();
-  return t === "" ? 0 : t.split(/\s+/).length;
+  return countWords(text);
 }
 
 export type ExtractArgs = {

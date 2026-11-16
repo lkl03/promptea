@@ -75,7 +75,8 @@ describe("home page structure", () => {
 
   test("exactly one <h1>, and it still says what Promptea is", () => {
     expect(home.match(/<h1/g)).toHaveLength(1);
-    for (const lang of LOCALES) expect(homeAboutDoc(lang).h1).toMatch(/^Promptea — /);
+    // Chinese writes the dash full width and without spaces ("Promptea——…").
+    for (const lang of LOCALES) expect(homeAboutDoc(lang).h1).toMatch(/^Promptea(?: — |——)/);
   });
 
   test("the home still renders statically (no searchParams, short revalidation)", () => {

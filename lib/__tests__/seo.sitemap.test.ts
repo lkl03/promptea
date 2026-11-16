@@ -54,7 +54,9 @@ describe("static URL registry", () => {
 
   it("every entry has a title, a description and a real date", () => {
     for (const u of allStaticSeoUrls()) {
-      expect(u.title.trim().length, u.path).toBeGreaterThan(3);
+      // A Han character carries about a word: "方法论" (3) is as long a title as "Methodology".
+      const han = (u.title.match(/\p{Script=Han}/gu) ?? []).length;
+      expect(u.title.trim().length + han * 2, u.path).toBeGreaterThan(3);
       expect(u.description.trim().length, u.path).toBeGreaterThan(10);
       expect(Number.isNaN(new Date(u.updated.length === 10 ? `${u.updated}T00:00:00Z` : u.updated).getTime()), `${u.path} ${u.updated}`).toBe(false);
       expect(u.path.startsWith(`/${u.lang}`), u.path).toBe(true);

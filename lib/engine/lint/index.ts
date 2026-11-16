@@ -36,6 +36,26 @@ import {
   PT_TASK_GOAL,
   PT_WORK_MATERIAL,
 } from "../pt";
+import {
+  isZh,
+  ZH_CODE_CONSTRAINT,
+  ZH_CODE_DELIVERABLE,
+  ZH_CONTEXT_CUES,
+  ZH_GENERIC_CONSTRAINTS,
+  ZH_IMAGE_NEGATIVE,
+  ZH_INLINE_SOURCE,
+  ZH_MARKETING_AUDIENCE,
+  ZH_MARKETING_CTA,
+  ZH_REGISTER,
+  ZH_SOURCE_LABELS,
+  ZH_STUDY_LEVEL,
+  ZH_SUCCESS,
+  ZH_SUMMARY_LENGTH,
+  ZH_SUMMARY_SCOPE,
+  ZH_TARGET_LANGUAGE,
+  ZH_TASK_GOAL,
+  ZH_WORK_MATERIAL,
+} from "../zh";
 
 function wordsCount(s: string) {
   return (s ?? "").trim().split(/\s+/).filter(Boolean).length;
@@ -121,7 +141,9 @@ export function lintPrompt(
   // v1.8.0: the same detector the scorer uses (they used to disagree).
   // v1.8.2: read with the Portuguese vocabulary too when the prompt reads as Portuguese.
   const pt = isPt(p, lang);
-  const hasGoal = hasGoalSignal(p, task, lang) || detectGoal(low, task) || (pt && (PT_TASK_GOAL[task]?.test(p) ?? false));
+  // v1.8.7: and with the Chinese vocabulary when it reads as Chinese (lib/engine/zh.ts).
+  const zh = !pt && isZh(p, lang);
+  const hasGoal = hasGoalSignal(p, task, lang) || detectGoal(low, task) || ((pt && (PT_TASK_GOAL[task]?.test(p) ?? false)) || (zh && (ZH_TASK_GOAL[task]?.test(p) ?? false)));
   const isImage = task === "image";
 
   if (!hasGoal) {
@@ -133,7 +155,7 @@ export function lintPrompt(
 
   // v1.8.0: "3 headlines, max 30 characters" IS an output spec, and an
   // image's output is the image itself (medium/aspect are scored instead).
-  const codeDeliverable = (task === "coding" || task === "refactor") && (CODE_DELIVERABLE_RE.test(p) || (pt && PT_CODE_DELIVERABLE.test(p)));
+  const codeDeliverable = (task === "coding" || task === "refactor") && (CODE_DELIVERABLE_RE.test(p) || ((pt && PT_CODE_DELIVERABLE.test(p)) || (zh && ZH_CODE_DELIVERABLE.test(p))));
   if (!outputFormat && !isImage && !codeDeliverable && !hasImplicitOutputSpec(p, lang)) {
     pushFinding(findings, "missing_output_format", "high", lang);
     pushReco(recommendations, "define_output_format", "high", lang);
@@ -143,14 +165,14 @@ export function lintPrompt(
     /restric/.test(low) ||
     /constraints?/.test(low) ||
     includesAny(low, ["máx", "max ", "sin ", "avoid", "tone", "tono", "largo", "length", "focus", "foco"]) ||
-    (pt && includesAny(low, PT_GENERIC_CONSTRAINTS));
+    ((pt && includesAny(low, PT_GENERIC_CONSTRAINTS)) || (zh && includesAny(low, ZH_GENERIC_CONSTRAINTS)));
 
   const hasSuccess =
     /criterio(s)? de éxito/.test(low) ||
     /success criteria/.test(low) ||
     /que incluya/.test(low) ||
     /must include/.test(low) ||
-    (pt && PT_SUCCESS.test(p));
+    ((pt && PT_SUCCESS.test(p)) || (zh && ZH_SUCCESS.test(p)));
 
   if (!hasSuccess && task !== "summarization" && task !== "translation") {
     pushReco(recommendations, "add_success_criteria", "medium", lang);
@@ -158,6 +180,8 @@ export function lintPrompt(
 
   const contextCues = pt
     ? PT_CONTEXT_CUES
+    : zh
+      ? ZH_CONTEXT_CUES
     : lang === "es"
       ? ["contexto", "escenario", "audiencia", "para quién", "para quien", "para qué", "para que", "uso", "entrada", "inputs"]
       : ["context", "scenario", "audience", "intended use", "input", "inputs"];
@@ -187,10 +211,10 @@ export function lintPrompt(
       "article:",
       "document:",
     ]) ||
-    (pt && includesAny(low, PT_WORK_MATERIAL));
+    ((pt && includesAny(low, PT_WORK_MATERIAL)) || (zh && includesAny(low, ZH_WORK_MATERIAL)));
 
   // v1.8.0: a pinned stack ("Python 3.12 … con SQLAlchemy") IS technical context.
-  const codeSpec = (task === "coding" || task === "refactor") && (CODE_CONSTRAINT_RE.test(p) || (pt && PT_CODE_CONSTRAINT.test(p)));
+  const codeSpec = (task === "coding" || task === "refactor") && (CODE_CONSTRAINT_RE.test(p) || ((pt && PT_CODE_CONSTRAINT.test(p)) || (zh && ZH_CODE_CONSTRAINT.test(p))));
   const looksContextPoor = !isImage && !codeSpec && !attachmentsPresent && !hasContextCues && !hasWorkMaterial && w >= 4 && w <= 120;
   if (looksContextPoor && task !== "summarization" && task !== "translation") {
     pushFinding(findings, "missing_context", "high", lang);
@@ -206,7 +230,7 @@ export function lintPrompt(
       QUOTED_SOURCE.test(p) ||
       INLINE_SOURCE.test(p) ||
       includesAny(low, ["texto:", "text:", "article:", "artículo:", "articulo:", "document:", "documento:", "archivo", "file"]) ||
-      (pt && (includesAny(low, PT_SOURCE_LABELS) || PT_INLINE_SOURCE.test(p))) ||
+      ((pt && (includesAny(low, PT_SOURCE_LABELS) || PT_INLINE_SOURCE.test(p))) || (zh && (includesAny(low, ZH_SOURCE_LABELS) || ZH_INLINE_SOURCE.test(p)))) ||
       /```/.test(p) ||
       w > 40;
 
@@ -231,7 +255,7 @@ export function lintPrompt(
       "párrafo",
       "parrafo",
       "secciones",
-    ]) || (pt && includesAny(low, PT_SUMMARY_LENGTH));
+    ]) || ((pt && includesAny(low, PT_SUMMARY_LENGTH)) || (zh && includesAny(low, ZH_SUMMARY_LENGTH)));
 
     const hasSummaryScope = includesAny(low, [
       "focus",
@@ -246,7 +270,7 @@ export function lintPrompt(
       "por secciones",
       "por temas",
       "lo más importante",
-    ]) || (pt && includesAny(low, PT_SUMMARY_SCOPE));
+    ]) || ((pt && includesAny(low, PT_SUMMARY_SCOPE)) || (zh && includesAny(low, ZH_SUMMARY_SCOPE)));
 
     if (!hasSourceMaterial) {
       addFinding("missing_input_data", "high");
@@ -266,7 +290,7 @@ export function lintPrompt(
       QUOTED_SOURCE.test(p) ||
       INLINE_SOURCE.test(p) ||
       includesAny(low, ["texto:", "text:", "source text", "original text", "archivo", "file"]) ||
-      (pt && (includesAny(low, PT_SOURCE_LABELS) || PT_INLINE_SOURCE.test(p))) ||
+      ((pt && (includesAny(low, PT_SOURCE_LABELS) || PT_INLINE_SOURCE.test(p))) || (zh && (includesAny(low, ZH_SOURCE_LABELS) || ZH_INLINE_SOURCE.test(p)))) ||
       /```/.test(p) ||
       w > 30;
 
@@ -287,7 +311,7 @@ export function lintPrompt(
       "idioma objetivo",
       "into ",
       "al ",
-    ]) || (pt && includesAny(low, PT_TARGET_LANGUAGE));
+    ]) || ((pt && includesAny(low, PT_TARGET_LANGUAGE)) || (zh && includesAny(low, ZH_TARGET_LANGUAGE)));
 
     const hasRegister = includesAny(low, [
       "formal",
@@ -310,7 +334,7 @@ export function lintPrompt(
       "natural",
       "literal",
       "casual",
-    ]) || (pt && includesAny(low, PT_REGISTER));
+    ]) || ((pt && includesAny(low, PT_REGISTER)) || (zh && includesAny(low, ZH_REGISTER)));
 
     if (!hasSourceText) {
       addFinding("missing_input_data", "high");
@@ -340,7 +364,7 @@ export function lintPrompt(
       "basico",
       "intermedio",
       "avanzado",
-    ]) || STUDY_LEVEL_EXTRA.test(p) || (pt && includesAny(low, PT_STUDY_LEVEL));
+    ]) || STUDY_LEVEL_EXTRA.test(p) || ((pt && includesAny(low, PT_STUDY_LEVEL)) || (zh && includesAny(low, ZH_STUDY_LEVEL)));
 
     if (!hasStudyLevel) {
       addFinding("missing_study_level", "medium");
@@ -361,7 +385,7 @@ export function lintPrompt(
       "para founders",
       "para marketers",
       "para dueños",
-    ]) || (pt && includesAny(low, PT_MARKETING_AUDIENCE));
+    ]) || ((pt && includesAny(low, PT_MARKETING_AUDIENCE)) || (zh && includesAny(low, ZH_MARKETING_AUDIENCE)));
 
     const hasCTA = includesAny(low, [
       "cta",
@@ -374,7 +398,7 @@ export function lintPrompt(
       "registrarse",
       "agendar demo",
       "suscribirse",
-    ]) || (pt && includesAny(low, PT_MARKETING_CTA));
+    ]) || ((pt && includesAny(low, PT_MARKETING_CTA)) || (zh && includesAny(low, ZH_MARKETING_CTA)));
 
     if (!hasAudience) {
       addFinding("missing_marketing_audience", "high");
@@ -385,7 +409,7 @@ export function lintPrompt(
       addReco("define_marketing_cta", "medium");
     }
   } else {
-    if (!hasGenericConstraints && !codeSpec && !(isImage && (IMAGE_NEGATIVE_RE.test(p) || (pt && PT_IMAGE_NEGATIVE.test(p))))) {
+    if (!hasGenericConstraints && !codeSpec && !(isImage && (IMAGE_NEGATIVE_RE.test(p) || ((pt && PT_IMAGE_NEGATIVE.test(p)) || (zh && ZH_IMAGE_NEGATIVE.test(p)))))) {
       addFinding("missing_constraints", "medium");
       addReco("add_constraints", "medium");
     }

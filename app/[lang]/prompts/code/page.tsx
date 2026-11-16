@@ -29,14 +29,14 @@ export async function generateMetadata({
       es: "Prompts para programar (debug + review)",
       en: "Coding prompts (debug + review)",
       pt: "Prompts para programar (debug + review)",
-      zh: "Coding prompts (debug + review)",
+      zh: "编程提示词（调试与代码审查）",
     }),
     description:
       pick(l, {
         es: "Plantillas para debugging, code review, refactors y tests. Abrilas en Promptea y optimizalas por IA.",
         en: "Templates for debugging, code reviews, refactors and tests. Open in Promptea and optimize per AI.",
         pt: "Templates para depuração, code review, refatorações e testes. Abra no Promptea e otimize para cada IA.",
-        zh: "Templates for debugging, code reviews, refactors and tests. Open in Promptea and optimize per AI.",
+        zh: "用于调试、代码审查、重构和测试的模板。在Promptea中打开，并针对每款AI进行优化。",
       }),
   });
 }
@@ -50,13 +50,13 @@ export default async function CodePromptPackPage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const title = pick(l, { es: "Prompts para código", en: "Coding prompts", pt: "Prompts para código", zh: "Coding prompts" });
+  const title = pick(l, { es: "Prompts para código", en: "Coding prompts", pt: "Prompts para código", zh: "编程提示词" });
   const subtitle =
     pick(l, {
       es: "Debugging, review, refactors y tests. Elegí uno y abrilo en Promptea.",
       en: "Debugging, reviews, refactors and tests. Pick one and open it in Promptea.",
       pt: "Depuração, review, refatorações e testes. Escolha um e abra no Promptea.",
-      zh: "Debugging, reviews, refactors and tests. Pick one and open it in Promptea.",
+      zh: "调试、代码审查、重构和测试。选一个，在Promptea中打开。",
     });
 
   const examples = [
@@ -65,7 +65,7 @@ export default async function CodePromptPackPage({
         es: "Debugging con pasos reproducibles",
         en: "Debugging with reproducible steps",
         pt: "Depuração com passos reproduzíveis",
-        zh: "Debugging with reproducible steps",
+        zh: "带可复现步骤的调试",
       }),
       target: "gpt",
       purpose: "code",
@@ -131,30 +131,30 @@ Preciso de:
 3) correção (com diff/trecho de código)
 4) casos de borda
 Se faltar informação, faça de 1 a 3 perguntas antes.`,
-          zh: `I’m hitting this bug:
+          zh: `我遇到了这个bug：
 
-Context:
-- Stack: [Next.js / Node / Python / etc.]
-- Environment: [local/prod]
-- Expected:
-- Actual:
+背景：
+- 技术栈：[Next.js / Node / Python / 等]
+- 环境：[本地/生产]
+- 预期结果：
+- 实际结果：
 
-Logs:
-[paste logs]
+日志：
+[粘贴日志]
 
-Minimal code:
-[paste snippet]
+最小代码：
+[粘贴代码片段]
 
-I need:
-1) most likely hypothesis
-2) repro steps
-3) fix (diff/snippet)
-4) edge cases
-If missing info, ask 1–3 questions first.`,
+我需要：
+1）最可能的原因假设
+2）复现步骤
+3）修复方案（附diff/代码片段）
+4）边界情况
+如果缺少信息，先问我1–3个问题。`,
         }),
     },
     {
-      title: pick(l, { es: "Code review con criterios", en: "Code review with criteria", pt: "Code review com critérios", zh: "Code review with criteria" }),
+      title: pick(l, { es: "Code review con criterios", en: "Code review with criteria", pt: "Code review com critérios", zh: "按明确标准进行代码审查" }),
       target: "claude",
       purpose: "code",
       prompt:
@@ -204,21 +204,21 @@ Retorne:
 - problemas priorizados
 - correções concretas (trechos de código)
 - checklist de testes`,
-          zh: `Review this code:
+          zh: `审查这段代码：
 
-[paste code]
+[粘贴代码]
 
-Evaluate:
-- Correctness
-- Security
-- Performance
-- Readability
-- Missing tests
+评估：
+- 正确性
+- 安全性
+- 性能
+- 可读性
+- 缺失的测试
 
-Return:
-- prioritized issues
-- concrete fixes (snippets)
-- test checklist`,
+返回：
+- 按优先级排列的问题
+- 具体的修复方案（代码片段）
+- 测试清单`,
         }),
     },
     {
@@ -226,7 +226,7 @@ Return:
         es: "Diseño de feature (plan por pasos)",
         en: "Feature design (step plan)",
         pt: "Design de funcionalidade (plano em passos)",
-        zh: "Feature design (step plan)",
+        zh: "功能设计（分步计划）",
       }),
       target: "gemini",
       purpose: "code",
@@ -262,16 +262,16 @@ Proponha:
 - modelo de dados
 - casos de borda
 - plano em passos`,
-          zh: `I want to implement: [feature]
-Constraints: [time, stack, limits]
-Users: [who uses it]
+          zh: `我想实现：[功能]
+约束：[时间、技术栈、限制]
+用户：[谁会使用]
 
-Propose:
-- simple architecture
-- endpoints/modules
-- data model
-- edge cases
-- step plan`,
+请给出：
+- 简单的架构
+- 接口/模块
+- 数据模型
+- 边界情况
+- 分步计划`,
         }),
     },
     {
@@ -279,7 +279,7 @@ Propose:
         es: "Refactor con objetivos claros",
         en: "Refactor with clear goals",
         pt: "Refatoração com objetivos claros",
-        zh: "Refactor with clear goals",
+        zh: "目标明确的重构",
       }),
       target: "deepseek",
       purpose: "code",
@@ -324,19 +324,19 @@ Retorne:
 - explicação breve
 - diff/trechos de código
 - testes sugeridos`,
-          zh: `Refactor this code with goals:
-- reduce complexity
-- improve naming
-- separate responsibilities
-- keep behavior (don’t break API)
+          zh: `按以下目标重构这段代码：
+- 降低复杂度
+- 改进命名
+- 分离职责
+- 保持行为不变（不破坏API）
 
-Code:
-[paste code]
+代码：
+[粘贴代码]
 
-Return:
-- brief explanation
-- diff/snippets
-- suggested tests`,
+返回：
+- 简要说明
+- diff/代码片段
+- 建议补充的测试`,
         }),
     },
     {
@@ -344,7 +344,7 @@ Return:
         es: "Escribir tests (unit + integration)",
         en: "Write tests (unit + integration)",
         pt: "Escrever testes (unitários + integração)",
-        zh: "Write tests (unit + integration)",
+        zh: "编写测试（单元测试和集成测试）",
       }),
       target: "gpt",
       purpose: "code",
@@ -383,17 +383,17 @@ Entregue:
 - testes unitários (trechos de código)
 - 1 ou 2 testes de integração
 - como executá-los`,
-          zh: `I need tests for this module:
+          zh: `我需要为这个模块编写测试：
 
-Stack: [jest/vitest/etc.]
-Code:
-[paste code]
+技术栈：[jest/vitest/等]
+代码：
+[粘贴代码]
 
-Provide:
-- cases to cover (list)
-- unit tests (snippets)
-- 1–2 integration tests
-- how to run them`,
+请提供：
+- 需要覆盖的用例（列表）
+- 单元测试（代码片段）
+- 1–2个集成测试
+- 运行方法`,
         }),
     },
     {
@@ -401,7 +401,7 @@ Provide:
         es: "Performance: diagnóstico + optimización",
         en: "Performance: diagnose + optimize",
         pt: "Desempenho: diagnosticar + otimizar",
-        zh: "Performance: diagnose + optimize",
+        zh: "性能：诊断与优化",
       }),
       target: "grok",
       purpose: "code",
@@ -449,33 +449,33 @@ Quero:
 - hipóteses por impacto
 - como medir (profiling)
 - correções e trade-offs`,
-          zh: `I have a performance issue.
+          zh: `我遇到了一个性能问题。
 
-Context:
-- app: [web/api]
-- symptom: [latency/CPU/memory]
-- metrics: [p95, RPS, etc.]
+背景：
+- 应用：[web/api]
+- 症状：[延迟/CPU/内存]
+- 指标：[p95、RPS等]
 
-Code/logs:
-[paste]
+代码/日志：
+[粘贴]
 
-Give me:
-- hypotheses by impact
-- how to measure (profiling)
-- fixes and tradeoffs`,
+请给我：
+- 按影响大小排列的原因假设
+- 如何测量（性能分析）
+- 修复方案及其利弊权衡`,
         }),
     },
   ];
 
   const faq = [
     {
-      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?", zh: "How do I use these templates?" }),
+      q: pick(l, { es: "¿Cómo uso estas plantillas?", en: "How do I use these templates?", pt: "Como uso estes templates?", zh: "这些模板怎么用？" }),
       a:
         pick(l, {
           es: "Elegí un ejemplo y tocá “Abrir en Promptea”. Se precarga el prompt, el objetivo (Code) y un modelo sugerido.",
           en: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Code), and a suggested model.",
           pt: "Escolha um exemplo e clique em “Abrir no Promptea”. O prompt, o propósito (Código) e um modelo sugerido já vêm preenchidos.",
-          zh: "Pick an example and click “Open in Promptea”. It pre-fills the prompt, purpose (Code), and a suggested model.",
+          zh: "选一个示例，点击“在Promptea中打开”。系统会预先填入提示词、用途（代码）和一个推荐模型。",
         }),
     },
     {
@@ -483,14 +483,14 @@ Give me:
         es: "¿Qué debería pegar (mínimo)?",
         en: "What should I paste (minimum)?",
         pt: "O que devo colar (no mínimo)?",
-        zh: "What should I paste (minimum)?",
+        zh: "至少需要粘贴什么？",
       }),
       a:
         pick(l, {
           es: "Un snippet mínimo, logs relevantes y el comportamiento esperado vs real. Eso sube el score y mejora el output.",
           en: "A minimal snippet, relevant logs, and expected vs actual behavior. That improves score and output quality.",
           pt: "Um trecho mínimo de código, os logs relevantes e o comportamento esperado vs. o real. Isso melhora a pontuação e a qualidade da resposta.",
-          zh: "A minimal snippet, relevant logs, and expected vs actual behavior. That improves score and output quality.",
+          zh: "一段最小代码片段、相关日志，以及预期行为与实际行为的对比。这样能提高评分和输出质量。",
         }),
     },
     {
@@ -498,24 +498,24 @@ Give me:
         es: "¿Cómo evito respuestas genéricas?",
         en: "How do I avoid generic answers?",
         pt: "Como evito respostas genéricas?",
-        zh: "How do I avoid generic answers?",
+        zh: "如何避免泛泛而谈的回答？",
       }),
       a:
         pick(l, {
           es: "Pedí formato de salida (pasos, diff, checklist) y agregá restricciones (stack, versiones, límites).",
           en: "Request an output format (steps, diff, checklist) and add constraints (stack, versions, limits).",
           pt: "Peça um formato de saída (passos, diff, checklist) e adicione restrições (stack, versões, limites).",
-          zh: "Request an output format (steps, diff, checklist) and add constraints (stack, versions, limits).",
+          zh: "指定输出格式（步骤、diff、检查清单），并加上约束（技术栈、版本、限制）。",
         }),
     },
     {
-      q: pick(l, { es: "¿Puedo cambiar el modelo?", en: "Can I change the model?", pt: "Posso trocar o modelo?", zh: "Can I change the model?" }),
+      q: pick(l, { es: "¿Puedo cambiar el modelo?", en: "Can I change the model?", pt: "Posso trocar o modelo?", zh: "可以换模型吗？" }),
       a:
         pick(l, {
           es: "Sí. Si querés estructura fuerte, probá Claude/GPT. Si querés bullets rápidos, Grok puede servir.",
           en: "Yes. For strong structure, try Claude/GPT. For quick bullets, Grok can work well.",
           pt: "Sim. Para uma estrutura sólida, experimente Claude/GPT. Para tópicos rápidos, o Grok pode funcionar bem.",
-          zh: "Yes. For strong structure, try Claude/GPT. For quick bullets, Grok can work well.",
+          zh: "可以。需要严谨的结构时，试试Claude/GPT；想要快速列出要点，Grok也很合适。",
         }),
     },
   ];
@@ -540,10 +540,10 @@ Give me:
 
         <div className="pt-2 flex flex-wrap items-center justify-center gap-3 text-xs opacity-70">
           <Link href={`/${l}/prompts`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes", zh: "← View all packs" })}
+            {pick(l, { es: "← Ver todos los packs", en: "← View all packs", pt: "← Ver todos os pacotes", zh: "← 查看全部合集" })}
           </Link>
           <Link href={`/${l}/analyzer`} className="btn btn-primary h-8 px-3 text-xs">
-            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →", zh: "Open Analyzer →" })}
+            {pick(l, { es: "Abrir analizador →", en: "Open Analyzer →", pt: "Abrir o analisador →", zh: "打开分析器 →" })}
           </Link>
         </div>
       </div>
@@ -563,11 +563,11 @@ Give me:
                     es: "Se abre en el analizador con el prompt precargado.",
                     en: "Opens the analyzer with the prompt prefilled.",
                     pt: "Abre o analisador com o prompt já preenchido.",
-                    zh: "Opens the analyzer with the prompt prefilled.",
+                    zh: "将在分析器中打开，并预先填入该提示词。",
                   })}
                 </div>
                 <Link href={href} className="btn btn-primary h-9 px-4">
-                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "Open in Promptea" })}
+                  {pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "在Promptea中打开" })}
                 </Link>
               </div>
             </div>
@@ -576,7 +576,7 @@ Give me:
       </div>
 
       <section className="mt-10 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "常见问题" })}</div>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

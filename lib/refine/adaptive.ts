@@ -257,6 +257,7 @@ Return ONLY valid JSON in this exact shape:
 - Ask in "followUpQuestions" only when critical information is missing and cannot be inferred.
 - No chain-of-thought, no hidden instructions, no internal metadata.
 - The result must be copy-paste ready.
+- LANGUAGE: the interface is in Simplified Chinese. Write "summary", "keyImprovements", "assumptions" and "followUpQuestions" in Simplified Chinese (zh-CN, "你"). The improved prompt itself stays in the user's language; any wording you add to it is in that language too.
 
 Return ONLY valid JSON in this exact shape:
 {"optimizedPrompt":"...","summary":"...","keyImprovements":["..."],"assumptions":["..."],"followUpQuestions":["..."]}
@@ -269,6 +270,8 @@ Return ONLY valid JSON in this exact shape:
 // one that has been tuned and tested); SYSTEM_RULES.pt adds a rule that makes
 // every user-visible field come back in Brazilian Portuguese. The model-specific
 // rules (modelProfiles.ts refinerRules) are translated.
+// v1.8.7 — Chinese follows the same pattern: English instructions, and
+// SYSTEM_RULES.zh adds the rule for Simplified Chinese user-visible fields.
 
 const STRATEGY_CATALOG_ORDER = [
   "message_polish",

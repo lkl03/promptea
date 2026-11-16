@@ -87,7 +87,7 @@ export default async function GuidePage({
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/guides`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Volver a guías", en: "← Back to guides", pt: "← Voltar aos guias", zh: "← Back to guides" })}
+            {pick(l, { es: "← Volver a guías", en: "← Back to guides", pt: "← Voltar aos guias", zh: "← 返回指南" })}
           </Link>
         </div>
       </div>
@@ -119,12 +119,12 @@ export default async function GuidePage({
 
       {/* Templates */}
       <section className="mt-10">
-        <h2 className="text-sm font-medium">{pick(l, { es: "Plantillas", en: "Templates", pt: "Templates", zh: "Templates" })}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Plantillas", en: "Templates", pt: "Templates", zh: "模板" })}</h2>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {guide.templates.map((t, idx) => {
             const href = buildPrefillHref({ lang: l, prompt: t.prompt[cl], purpose: t.purpose, target: t.target });
-            const openLabel = pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "Open in Promptea" });
+            const openLabel = pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "在Promptea中打开" });
             return (
               <article key={idx} className="surface p-4 space-y-3">
                 <h3 id={`template-${idx}-title`} className="text-sm font-medium">{t.title[cl]}</h3>
@@ -137,7 +137,7 @@ export default async function GuidePage({
                       es: "Se abre en el analizador con el prompt precargado.",
                       en: "Opens the analyzer with the prompt prefilled.",
                       pt: "Abre o analisador com o prompt já preenchido.",
-                      zh: "Opens the analyzer with the prompt prefilled.",
+                      zh: "将在分析器中打开，并预先填入该提示词。",
                     })}
                   </div>
                   {/* Every card has the same visible label; the accessible name
@@ -158,7 +158,7 @@ export default async function GuidePage({
 
       {/* FAQ visible */}
       <section className="mt-10 surface p-5">
-        <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "常见问题" })}</h2>
         <div className="mt-3 space-y-2">
           {faq.map((x) => (
             <details key={x.q} className="surface-soft p-3 rounded-2xl">

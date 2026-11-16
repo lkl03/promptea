@@ -32,17 +32,17 @@ export const guides: Guide[] = [
       en: "Prompt checklist (copy-paste) to get better outputs",
       es: "Checklist de prompt (copy-paste) para mejores respuestas",
       pt: "Checklist de prompt (para copiar e colar) e obter respostas melhores",
-      zh: "Prompt checklist (copy-paste) to get better outputs",
+      zh: "提示词检查清单（复制即用）：让输出更好",
     },
     description: {
       en: "A practical checklist you can paste into any prompt to reduce ambiguity and improve structure.",
       es: "Un checklist práctico para pegar en cualquier prompt y reducir ambigüedad (más estructura, menos humo).",
       pt: "Um checklist prático para colar em qualquer prompt, reduzir a ambiguidade e melhorar a estrutura.",
-      zh: "A practical checklist you can paste into any prompt to reduce ambiguity and improve structure.",
+      zh: "一份实用的检查清单，可以粘贴到任何提示词里，用来减少歧义、改善结构。",
     },
     sections: [
       {
-        heading: { en: "What to include", es: "Qué incluir", pt: "O que incluir", zh: "What to include" },
+        heading: { en: "What to include", es: "Qué incluir", pt: "O que incluir", zh: "应该包含什么" },
         bullets: {
           en: [
             "Goal: what success looks like (1 sentence).",
@@ -66,16 +66,16 @@ export const guides: Guide[] = [
             "Padrão de qualidade: o que evitar + critérios de aceitação.",
           ],
           zh: [
-            "Goal: what success looks like (1 sentence).",
-            "Context: what the model must know (data, constraints, definitions).",
-            "Output format: bullets / JSON / table / steps.",
-            "Edge cases + what to do when info is missing.",
-            "Quality bar: what to avoid + acceptance criteria.",
+            "目标：什么样算成功（1句话）。",
+            "上下文：模型必须知道的信息（数据、约束、定义）。",
+            "输出格式：要点列表 / JSON / 表格 / 步骤。",
+            "边界情况，以及缺少信息时该怎么做。",
+            "质量标准：要避免什么，以及验收标准。",
           ],
         },
       },
       {
-        heading: { en: "Common mistakes", es: "Errores típicos", pt: "Erros comuns", zh: "Common mistakes" },
+        heading: { en: "Common mistakes", es: "Errores típicos", pt: "Erros comuns", zh: "常见错误" },
         bullets: {
           en: [
             "Asking for 'the best' without criteria (the model guesses).",
@@ -93,14 +93,14 @@ export const guides: Guide[] = [
             "Misturar objetivos (ex.: 'seja conciso' + 'seja exaustivo').",
           ],
           zh: [
-            "Asking for 'the best' without criteria (the model guesses).",
-            "No examples of the output format (inconsistent structure).",
-            "Mixing goals (e.g., 'be concise' + 'be exhaustive').",
+            "要求“最好的”却不给标准（模型只能去猜）。",
+            "没有给出输出格式的示例（结构前后不一致）。",
+            "目标相互混杂（例如“要简洁”又要“详尽无遗”）。",
           ],
         },
       },
       {
-        heading: { en: "Before → after: the same request, rewritten", es: "Antes → después: el mismo pedido, reescrito", pt: "Antes → depois: o mesmo pedido, reescrito", zh: "Before → after: the same request, rewritten" },
+        heading: { en: "Before → after: the same request, rewritten", es: "Antes → después: el mismo pedido, reescrito", pt: "Antes → depois: o mesmo pedido, reescrito", zh: "改写前→改写后：同一个请求，重新写一遍" },
         bullets: {
           en: [
             "Before: \"Write something about our new feature.\"",
@@ -118,14 +118,14 @@ export const guides: Guide[] = [
             "O que mudou: o objetivo, o público, o tamanho, o tom e a saída agora estão declarados, então o modelo não precisa adivinhar nada importante.",
           ],
           zh: [
-            "Before: \"Write something about our new feature.\"",
-            "After: \"Write a 120-word announcement of [feature] for existing customers. Goal: get them to try it this week. Include one concrete benefit and a link placeholder. Tone: plain, no hype. Output: a subject line and the body.\"",
-            "What changed: the goal, the audience, the length, the tone and the output are now stated, so the model has nothing important left to guess.",
+            "改写前：“写点关于我们新功能的东西。”",
+            "改写后：“为现有客户写一篇120字的[功能]发布公告。目标：让他们本周就去试用。包含一个具体的好处和一个链接占位符。语气：朴实，不夸张。输出：一行主题和正文。”",
+            "改了什么：目标、受众、篇幅、语气和输出都已写明，模型不再需要去猜任何重要的东西。",
           ],
         },
       },
       {
-        heading: { en: "How to use it in three steps", es: "Cómo usarlo en tres pasos", pt: "Como usar em três passos", zh: "How to use it in three steps" },
+        heading: { en: "How to use it in three steps", es: "Cómo usarlo en tres pasos", pt: "Como usar em três passos", zh: "三步用好这份清单" },
         bullets: {
           en: [
             "Write the goal first, in one sentence. If you cannot, the prompt is not ready to send.",
@@ -146,17 +146,17 @@ export const guides: Guide[] = [
             "O Promptea pode pontuar o prompt de 0 a 100 em seis critérios e listar o que corrigir, para você não precisar achar a linha fraca por tentativa e erro.",
           ],
           zh: [
-            "Write the goal first, in one sentence. If you cannot, the prompt is not ready to send.",
-            "Fill in only the context lines that would change the answer, and delete the rest of the skeleton.",
-            "Run it and compare the answer with your quality bar. Fix the line that caused each miss (vague answer: goal or context; wrong shape: output format; too generic: constraints) and run again.",
-            "Promptea can score the prompt from 0 to 100 on six criteria and list what to fix, so you do not have to find the weak line by trial and error.",
+            "先用一句话写出目标。如果写不出来，说明这个提示词还不能发送。",
+            "只填写会改变答案的上下文行，删掉框架里的其余部分。",
+            "运行后，把答案和你的质量标准对比。针对每一处不达标，修改导致它的那一行（答案含糊：目标或上下文；结构不对：输出格式；太泛泛：约束条件），然后再运行一次。",
+            "Promptea可以按六项标准给提示词评分（0到100分），并列出需要修改的地方，这样你就不必靠反复试错去找薄弱的那一行。",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Universal prompt skeleton", es: "Esqueleto universal de prompt", pt: "Esqueleto universal de prompt", zh: "Universal prompt skeleton" },
+        title: { en: "Universal prompt skeleton", es: "Esqueleto universal de prompt", pt: "Esqueleto universal de prompt", zh: "通用提示词框架" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -214,62 +214,62 @@ Padrão de qualidade:
 - Deve incluir: [itens]
 - Deve evitar: [itens]
 Se faltar informação, faça até 3 perguntas antes de responder.`,
-          zh: `Task: [what you want]
+          zh: `任务：[你想要什么]
 
-Goal (success looks like):
-- [1 sentence]
+目标（什么样算成功）：
+- [1句话]
 
-Context:
-- Audience: [who]
-- Constraints: [time/budget/stack/forbidden things]
-- Inputs: [paste data or describe]
-- Definitions: [terms]
+上下文：
+- 受众：[谁]
+- 约束：[时间/预算/技术栈/禁止事项]
+- 输入：[粘贴数据或进行描述]
+- 定义：[术语]
 
-Output format:
-- [exact format: bullets / JSON schema / table columns]
+输出格式：
+- [确切的格式：要点列表 / JSON schema / 表格列]
 
-Quality bar:
-- Must include: [items]
-- Must avoid: [items]
-If missing info, ask up to 3 questions before answering.`,
+质量标准：
+- 必须包含：[条目]
+- 必须避免：[条目]
+如果缺少信息，先提出最多3个问题，再作答。`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Do I need long prompts?", es: "¿Necesito prompts largos?", pt: "Preciso de prompts longos?", zh: "Do I need long prompts?" },
+        q: { en: "Do I need long prompts?", es: "¿Necesito prompts largos?", pt: "Preciso de prompts longos?", zh: "提示词需要写得很长吗？" },
         a: {
           en: "No. The goal is clarity, not length. Add only the context that changes the answer.",
           es: "No. La idea es claridad, no longitud. Sumá solo el contexto que cambia la respuesta.",
           pt: "Não. O objetivo é clareza, não tamanho. Adicione só o contexto que muda a resposta.",
-          zh: "No. The goal is clarity, not length. Add only the context that changes the answer.",
+          zh: "不需要。目标是清晰，而不是篇幅。只添加会改变答案的上下文。",
         },
       },
       {
-        q: { en: "How do I get consistent formatting?", es: "¿Cómo logro formato consistente?", pt: "Como consigo uma formatação consistente?", zh: "How do I get consistent formatting?" },
+        q: { en: "How do I get consistent formatting?", es: "¿Cómo logro formato consistente?", pt: "Como consigo uma formatação consistente?", zh: "怎样让格式保持一致？" },
         a: {
           en: "Specify the exact format and include a tiny example if needed.",
           es: "Definí el formato exacto y, si hace falta, poné un mini ejemplo.",
           pt: "Especifique o formato exato e inclua um exemplo bem pequeno, se for preciso.",
-          zh: "Specify the exact format and include a tiny example if needed.",
+          zh: "写明确切的格式，必要时附上一个简短的示例。",
         },
       },
       {
-        q: { en: "Which line should I fix when the answer is off?", es: "¿Qué línea corrijo cuando la respuesta no sirve?", pt: "Que linha devo corrigir quando a resposta sai errada?", zh: "Which line should I fix when the answer is off?" },
+        q: { en: "Which line should I fix when the answer is off?", es: "¿Qué línea corrijo cuando la respuesta no sirve?", pt: "Que linha devo corrigir quando a resposta sai errada?", zh: "答案不对时，应该修改哪一行？" },
         a: {
           en: "Match the symptom to the line: vague or off-topic means the goal or context is weak; the wrong shape means the output format is missing; generic or too long means the constraints are loose; invented details mean you should add 'use only the data I provide'.",
           es: "Relacioná el síntoma con la línea: vaga o fuera de tema significa objetivo o contexto débiles; forma equivocada, que falta el formato de salida; genérica o demasiado larga, restricciones flojas; detalles inventados, que conviene agregar 'usá solo los datos que te doy'.",
           pt: "Relacione o sintoma com a linha: resposta vaga ou fora do assunto significa objetivo ou contexto fracos; forma errada significa que falta o formato de saída; genérica ou longa demais significa restrições frouxas; detalhes inventados pedem um 'use apenas os dados que eu fornecer'.",
-          zh: "Match the symptom to the line: vague or off-topic means the goal or context is weak; the wrong shape means the output format is missing; generic or too long means the constraints are loose; invented details mean you should add 'use only the data I provide'.",
+          zh: "把症状和对应的行对上：含糊或跑题，说明目标或上下文太弱；结构不对，说明缺少输出格式；泛泛而谈或太长，说明约束太松；出现编造的细节，就应该加上“只使用我提供的数据”。",
         },
       },
       {
-        q: { en: "Is the same checklist right for every model?", es: "¿El mismo checklist sirve para todos los modelos?", pt: "O mesmo checklist serve para todos os modelos?", zh: "Is the same checklist right for every model?" },
+        q: { en: "Is the same checklist right for every model?", es: "¿El mismo checklist sirve para todos los modelos?", pt: "O mesmo checklist serve para todos os modelos?", zh: "同一份清单适用于所有模型吗？" },
         a: {
           en: "The structure is model-independent: goal, context, format, edge cases, quality bar. What changes between models is how strict to be about format and how to handle examples or search; see the per-model pages.",
           es: "La estructura es independiente del modelo: objetivo, contexto, formato, casos límite, criterio de calidad. Lo que cambia entre modelos es cuán estricto ser con el formato y cómo tratar ejemplos o búsqueda; mirá las páginas por modelo.",
           pt: "A estrutura não depende do modelo: objetivo, contexto, formato, casos de borda, padrão de qualidade. O que muda de um modelo para outro é o rigor com o formato e a forma de lidar com exemplos ou busca; veja as páginas por modelo.",
-          zh: "The structure is model-independent: goal, context, format, edge cases, quality bar. What changes between models is how strict to be about format and how to handle examples or search; see the per-model pages.",
+          zh: "这个结构与模型无关：目标、上下文、格式、边界情况、质量标准。不同模型之间的差别在于对格式要求多严格，以及如何处理示例或搜索；请参阅各个模型的页面。",
         },
       },
     ],
@@ -277,16 +277,16 @@ If missing info, ask up to 3 questions before answering.`,
   {
     slug: "json-output",
     updated: "2026-11-09",
-    title: { en: "How to force valid JSON output (no markdown)", es: "Cómo forzar salida JSON válida (sin markdown)", pt: "Como forçar uma saída em JSON válido (sem markdown)", zh: "How to force valid JSON output (no markdown)" },
+    title: { en: "How to force valid JSON output (no markdown)", es: "Cómo forzar salida JSON válida (sin markdown)", pt: "Como forçar uma saída em JSON válido (sem markdown)", zh: "如何强制输出有效的JSON（不带markdown）" },
     description: {
       en: "Templates to extract and transform data into strict JSON, with validation rules.",
       es: "Plantillas para extraer/transformar datos a JSON estricto, con reglas de validación.",
       pt: "Templates para extrair e transformar dados em JSON estrito, com regras de validação.",
-      zh: "Templates to extract and transform data into strict JSON, with validation rules.",
+      zh: "把数据提取并转换成严格JSON的模板，附带校验规则。",
     },
     sections: [
       {
-        heading: { en: "Rules that work", es: "Reglas que funcionan", pt: "Regras que funcionam", zh: "Rules that work" },
+        heading: { en: "Rules that work", es: "Reglas que funcionan", pt: "Regras que funcionam", zh: "有效的规则" },
         bullets: {
           en: [
             "Tell it: 'Output ONLY JSON' and forbid extra text.",
@@ -307,15 +307,15 @@ If missing info, ask up to 3 questions before answering.`,
             "Peça uma segunda passada: validar + corrigir o JSON.",
           ],
           zh: [
-            "Tell it: 'Output ONLY JSON' and forbid extra text.",
-            "Define a schema (keys, types, allowed values).",
-            "State what to do on missing fields (null vs omit).",
-            "Ask for a second pass: validate + fix JSON.",
+            "告诉它：“只输出JSON”，并禁止任何多余的文字。",
+            "定义一个schema（键、类型、允许的取值）。",
+            "说明缺少字段时怎么办（用null还是省略）。",
+            "要求再检查一遍：校验并修正JSON。",
           ],
         },
       },
       {
-        heading: { en: "Before → after: from 'give me JSON' to a contract", es: "Antes → después: de 'dame JSON' a un contrato", pt: "Antes → depois: de 'me dê um JSON' a um contrato", zh: "Before → after: from 'give me JSON' to a contract" },
+        heading: { en: "Before → after: from 'give me JSON' to a contract", es: "Antes → después: de 'dame JSON' a un contrato", pt: "Antes → depois: de 'me dê um JSON' a um contrato", zh: "改写前→改写后：从“给我JSON”到一份契约" },
         bullets: {
           en: [
             "Before: \"Give me the contact data from this email as JSON.\" Typical result: a sentence of introduction, a markdown code fence, and keys that change from run to run.",
@@ -333,14 +333,14 @@ If missing info, ask up to 3 questions before answering.`,
             "O que mudou: a saída é um esquema definido, com uma regra para valores ausentes e a proibição de texto extra, então o mesmo prompt entrega sempre o mesmo formato.",
           ],
           zh: [
-            "Before: \"Give me the contact data from this email as JSON.\" Typical result: a sentence of introduction, a markdown code fence, and keys that change from run to run.",
-            "After: \"Extract the contact data. Return ONLY valid JSON, no markdown. Schema: {name: string, email: string|null, phone: string|null}. Use null for anything missing; do not guess.\"",
-            "What changed: the output is a defined schema with a rule for missing values and a ban on extra text, so the same prompt gives the same shape every time.",
+            "改写前：“把这封邮件里的联系人信息以JSON格式给我。”典型结果：一句开场白、一个markdown代码块，而且每次运行的键都不一样。",
+            "改写后：“提取联系人信息。只返回有效的JSON，不要markdown。Schema：{name: string, email: string|null, phone: string|null}。缺少的信息一律用null；不要猜测。”",
+            "改了什么：输出变成了一个确定的schema，规定了缺失值的处理方式，并禁止多余的文字，所以同一个提示词每次都会给出相同的结构。",
           ],
         },
       },
       {
-        heading: { en: "Validate in code, not by hope", es: "Validá en el código, no por fe", pt: "Valide no código, não na esperança", zh: "Validate in code, not by hope" },
+        heading: { en: "Validate in code, not by hope", es: "Validá en el código, no por fe", pt: "Valide no código, não na esperança", zh: "用代码校验，别靠运气" },
         bullets: {
           en: [
             "Parse the response with a real JSON parser and check it against the schema (required keys, types, allowed values) before using it.",
@@ -361,17 +361,17 @@ If missing info, ask up to 3 questions before answering.`,
             "JSON válido não é necessariamente conteúdo correto. Confira por amostragem os valores com o texto-fonte, principalmente números e datas.",
           ],
           zh: [
-            "Parse the response with a real JSON parser and check it against the schema (required keys, types, allowed values) before using it.",
-            "On failure, retry once with the error attached: 'Your previous output failed validation: [error]. Return corrected JSON only.'",
-            "Where the model or API offers a native structured-output mode, use it: the format is then enforced at generation time instead of requested in prose. Promptea's model pages show which current models list it.",
-            "Valid JSON is not necessarily correct content. Spot-check values against the source text, especially numbers and dates.",
+            "使用之前，先用真正的JSON解析器解析响应，并对照schema检查（必填键、类型、允许的取值）。",
+            "校验失败时，附上错误信息重试一次：“你之前的输出没有通过校验：[错误]。只返回修正后的JSON。”",
+            "如果模型或API提供原生的结构化输出模式，就使用它：这样格式会在生成时被强制执行，而不是靠文字去请求。Promptea的模型页面会标明当前哪些模型提供这一模式。",
+            "有效的JSON不等于内容正确。要对照原文抽查取值，尤其是数字和日期。",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Extract structured JSON", es: "Extraer JSON estructurado", pt: "Extrair JSON estruturado", zh: "Extract structured JSON" },
+        title: { en: "Extract structured JSON", es: "Extraer JSON estructurado", pt: "Extrair JSON estruturado", zh: "提取结构化JSON" },
         purpose: "data",
         target: "gpt",
         prompt: {
@@ -444,10 +444,10 @@ Texto:
 """[cole aqui]"""
 
 Antes de finalizar, valide se a saída é um JSON válido e segue o esquema.`,
-          zh: `Extract data from the text below.
-Return ONLY valid JSON (no markdown, no comments).
+          zh: `从下面的文本中提取数据。
+只返回有效的JSON（不要markdown，不要注释）。
 
-Schema:
+Schema：
 {
   "people": [
     {
@@ -459,18 +459,18 @@ Schema:
   "dates": ["YYYY-MM-DD"]
 }
 
-Rules:
-- If missing, use null (do not invent).
-- If a date is ambiguous, omit it.
+规则：
+- 如果缺少信息，使用null（不要编造）。
+- 如果日期有歧义，就省略它。
 
-Text:
-"""[paste here]"""
+文本：
+"""[粘贴到这里]"""
 
-Before finalizing, validate that the output is valid JSON and matches the schema.`,
+最终输出之前，校验输出是有效的JSON，并且符合schema。`,
         },
       },
       {
-        title: { en: "Transform JSON to a new schema", es: "Transformar JSON a un nuevo esquema", pt: "Transformar JSON para um novo esquema", zh: "Transform JSON to a new schema" },
+        title: { en: "Transform JSON to a new schema", es: "Transformar JSON a un nuevo esquema", pt: "Transformar JSON para um novo esquema", zh: "把JSON转换成新的schema" },
         purpose: "data",
         target: "gemini",
         prompt: {
@@ -531,63 +531,63 @@ Regras:
 - Garanta que as tags fiquem em minúsculas.
 
 Valide o JSON antes de retornar.`,
-          zh: `You will receive JSON input. Convert it to the output schema.
-Return ONLY valid JSON.
+          zh: `你会收到JSON输入。把它转换成下面的输出schema。
+只返回有效的JSON。
 
-Input JSON:
-"""[paste JSON]"""
+输入JSON：
+"""[粘贴JSON]"""
 
-Output schema:
+输出schema：
 {
   "items": [
     { "id": "string", "title": "string", "tags": ["string"] }
   ]
 }
 
-Rules:
-- Preserve meaning; do not invent new items.
-- If an input field doesn't map, ignore it.
-- Ensure tags are lowercase.
+规则：
+- 保留原意；不要编造新的条目。
+- 如果某个输入字段无法对应，就忽略它。
+- 确保tags全部为小写。
 
-Validate JSON before output.`,
+输出之前先校验JSON。`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why does the model still add text?", es: "¿Por qué igual agrega texto?", pt: "Por que o modelo ainda coloca texto?", zh: "Why does the model still add text?" },
+        q: { en: "Why does the model still add text?", es: "¿Por qué igual agrega texto?", pt: "Por que o modelo ainda coloca texto?", zh: "为什么模型还是会加上多余的文字？" },
         a: {
           en: "Because you didn't make it costly. Repeat the constraint, provide a schema, and ask for validation.",
           es: "Porque no lo hiciste costoso. Repetí la restricción, poné esquema y pedí validación.",
           pt: "Porque você não deixou isso custoso. Repita a restrição, forneça um esquema e peça validação.",
-          zh: "Because you didn't make it costly. Repeat the constraint, provide a schema, and ask for validation.",
+          zh: "因为这条约束对它来说分量还不够。重复这条约束，提供schema，并要求它校验。",
         },
       },
       {
-        q: { en: "Should I use JSON Schema?", es: "¿Conviene usar JSON Schema?", pt: "Devo usar JSON Schema?", zh: "Should I use JSON Schema?" },
+        q: { en: "Should I use JSON Schema?", es: "¿Conviene usar JSON Schema?", pt: "Devo usar JSON Schema?", zh: "我应该用JSON Schema吗？" },
         a: {
           en: "Yes for strict integrations. Even a simplified schema (keys + types) helps a lot.",
           es: "Sí si vas a integrar. Aunque sea un esquema simplificado (claves + tipos) mejora mucho.",
           pt: "Sim, em integrações estritas. Até um esquema simplificado (chaves + tipos) ajuda bastante.",
-          zh: "Yes for strict integrations. Even a simplified schema (keys + types) helps a lot.",
+          zh: "如果是严格的系统集成，应该用。即使是简化的schema（键+类型）也很有帮助。",
         },
       },
       {
-        q: { en: "What should the model return when a value is missing?", es: "¿Qué debe devolver el modelo cuando falta un valor?", pt: "O que o modelo deve retornar quando falta um valor?", zh: "What should the model return when a value is missing?" },
+        q: { en: "What should the model return when a value is missing?", es: "¿Qué debe devolver el modelo cuando falta un valor?", pt: "O que o modelo deve retornar quando falta um valor?", zh: "值缺失时，模型应该返回什么？" },
         a: {
           en: "Pick one rule and state it: null for a missing value or omit the key. Mixing the two forces your code to handle both. Also tell it not to guess.",
           es: "Elegí una regla y decila: null para un valor faltante u omitir la clave. Mezclar ambas obliga a tu código a manejar las dos. Aclarale también que no adivine.",
           pt: "Escolha uma regra e declare: null para o valor ausente ou omitir a chave. Misturar as duas obriga o seu código a tratar ambas. Diga também para não adivinhar.",
-          zh: "Pick one rule and state it: null for a missing value or omit the key. Mixing the two forces your code to handle both. Also tell it not to guess.",
+          zh: "选定一条规则并写明：缺失的值用null，或者省略这个键。两种混用，会迫使你的代码同时处理两种情况。还要告诉它不要猜测。",
         },
       },
       {
-        q: { en: "Can I ask for JSON and an explanation in the same answer?", es: "¿Puedo pedir JSON y una explicación en la misma respuesta?", pt: "Posso pedir JSON e uma explicação na mesma resposta?", zh: "Can I ask for JSON and an explanation in the same answer?" },
+        q: { en: "Can I ask for JSON and an explanation in the same answer?", es: "¿Puedo pedir JSON y una explicación en la misma respuesta?", pt: "Posso pedir JSON e uma explicação na mesma resposta?", zh: "可以在同一个回答里同时要JSON和解释吗？" },
         a: {
           en: "Keep them apart: put the explanation in a dedicated key such as \"notes\", or make a second request. Text outside the JSON breaks parsing.",
           es: "Mantenelos separados: poné la explicación en una clave dedicada como \"notes\" o hacé una segunda solicitud. El texto fuera del JSON rompe el parseo.",
           pt: "Mantenha os dois separados: coloque a explicação em uma chave própria, como \"notes\", ou faça um segundo pedido. Texto fora do JSON quebra o parse.",
-          zh: "Keep them apart: put the explanation in a dedicated key such as \"notes\", or make a second request. Text outside the JSON breaks parsing.",
+          zh: "把两者分开：把解释放进一个专门的键，例如\"notes\"，或者另发一次请求。JSON之外的文字会导致解析失败。",
         },
       },
     ],
@@ -1782,17 +1782,17 @@ Content to review:
       en: "ChatGPT prompts for work: email, reports, and meeting templates",
       es: "Prompts de ChatGPT para el trabajo: email, reportes y reuniones",
       pt: "Prompts do ChatGPT para o trabalho: e-mails, relatórios e reuniões",
-      zh: "ChatGPT prompts for work: email, reports, and meeting templates",
+      zh: "ChatGPT职场提示词：邮件、报告与会议模板",
     },
     description: {
       en: "Reusable ChatGPT prompt templates for common workplace tasks — built to avoid the vague instructions that produce generic, padded output.",
       es: "Plantillas reutilizables para tareas laborales cotidianas con ChatGPT — diseñadas para evitar instrucciones vagas que producen output genérico.",
       pt: "Templates de prompt reutilizáveis para o ChatGPT em tarefas comuns do trabalho — feitos para evitar as instruções vagas que geram respostas genéricas e enroladas.",
-      zh: "Reusable ChatGPT prompt templates for common workplace tasks — built to avoid the vague instructions that produce generic, padded output.",
+      zh: "可复用的ChatGPT职场常见任务提示词模板——专门避开那些让输出空泛、注水的模糊指令。",
     },
     sections: [
       {
-        heading: { en: "Why work prompts fail", es: "Por qué fallan los prompts de trabajo", pt: "Por que os prompts de trabalho falham", zh: "Why work prompts fail" },
+        heading: { en: "Why work prompts fail", es: "Por qué fallan los prompts de trabajo", pt: "Por que os prompts de trabalho falham", zh: "职场提示词为什么会失效" },
         bullets: {
           en: [
             "Missing context: the model doesn't know your company, audience, or relationship with the recipient.",
@@ -1813,15 +1813,15 @@ Content to review:
             "Nenhum limite de tamanho: sem ele, o modelo prefere o completo ao útil.",
           ],
           zh: [
-            "Missing context: the model doesn't know your company, audience, or relationship with the recipient.",
-            "No format constraint: 'write an email' defaults to 300 words when you need 5 sentences.",
-            "No tone guidance: formal vs. casual vs. assertive produces very different output.",
-            "No length cap: without one, the model defaults to comprehensive over useful.",
+            "缺少上下文：模型不了解你的公司、受众，也不知道你和收件人是什么关系。",
+            "没有格式约束：你只需要5句话，“写一封邮件”却默认给你300字。",
+            "没有语气指引：正式、随意还是强硬，输出会截然不同。",
+            "没有长度上限：没有上限时，模型默认追求面面俱到，而不是真正有用。",
           ],
         },
       },
       {
-        heading: { en: "Parameters that make work prompts consistent", es: "Parámetros que hacen los prompts de trabajo consistentes", pt: "Parâmetros que deixam os prompts de trabalho consistentes", zh: "Parameters that make work prompts consistent" },
+        heading: { en: "Parameters that make work prompts consistent", es: "Parámetros que hacen los prompts de trabajo consistentes", pt: "Parâmetros que deixam os prompts de trabalho consistentes", zh: "让职场提示词稳定一致的参数" },
         bullets: {
           en: [
             "Recipient: who is reading and what do they care about most?",
@@ -1845,18 +1845,18 @@ Content to review:
             "O que evitar: frases de enchimento, voz passiva, aberturas genéricas.",
           ],
           zh: [
-            "Recipient: who is reading and what do they care about most?",
-            "Goal: one clear action you want from the reader.",
-            "Tone: match the company culture and the relationship level.",
-            "Hard length limit: '3 paragraphs max', '5 bullets', '<= 150 words'.",
-            "What to avoid: filler phrases, passive voice, generic openers.",
+            "收件人：谁在读？他们最在意什么？",
+            "目标：你希望读者采取的一个明确行动。",
+            "语气：与公司文化和双方关系的亲疏相匹配。",
+            "硬性长度限制：“最多3段”“5个要点”“<= 150字”。",
+            "要避免的：套话、被动语态、千篇一律的开场白。",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Professional email draft", es: "Borrador de email profesional", pt: "Rascunho de e-mail profissional", zh: "Professional email draft" },
+        title: { en: "Professional email draft", es: "Borrador de email profesional", pt: "Rascunho de e-mail profissional", zh: "职业邮件草稿" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -1896,22 +1896,22 @@ Tom: [formal / casual / assertivo]
 Tamanho: <= 150 palavras, 3 parágrafos.
 Evite: frases de enchimento, voz passiva, aberturas genéricas como "Espero que esteja bem."
 Assunto: sugira um.`,
-          zh: `Write a professional email.
+          zh: `写一封职业邮件。
 
-Recipient: [name / role / relationship, e.g. client I've worked with for 2 years]
-Goal: [one thing you want them to do]
-Key points (max 3):
-- [point 1]
-- [point 2]
-- [point 3]
-Tone: [formal / casual / assertive]
-Length: <= 150 words, 3 paragraphs.
-Avoid: filler phrases, passive voice, generic opener like "I hope this finds you well."
-Subject line: suggest one.`,
+收件人：[姓名 / 职位 / 关系，例如合作了2年的客户]
+目标：[你希望对方做的一件事]
+要点（最多3个）：
+- [要点1]
+- [要点2]
+- [要点3]
+语气：[正式 / 随意 / 强硬]
+篇幅：<= 150字，3段。
+避免：套话、被动语态，以及“希望你一切都好”这类千篇一律的开场白。
+邮件主题：给出一个建议。`,
         },
       },
       {
-        title: { en: "Executive summary of a report", es: "Resumen ejecutivo de un reporte", pt: "Resumo executivo de um relatório", zh: "Executive summary of a report" },
+        title: { en: "Executive summary of a report", es: "Resumen ejecutivo de un reporte", pt: "Resumo executivo de um relatório", zh: "报告的高管摘要" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -1957,40 +1957,40 @@ Restrições:
 
 Relatório:
 """[cole aqui]"""`,
-          zh: `Summarize this report for an executive audience.
+          zh: `为高管读者总结这份报告。
 
-Output format:
-1. TL;DR: 1 sentence (single most important takeaway).
-2. Key findings: 3 bullets max — numbers and decisions only, no context padding.
-3. Recommended action: 1 concrete next step.
+输出格式：
+1. 核心结论（TL;DR）：1句话（最重要的一条收获）。
+2. 主要发现：最多3个要点——只写数字和决策，不要用背景信息凑篇幅。
+3. 建议行动：1个具体的下一步。
 
-Constraints:
-- <= 120 words total.
-- No passive voice, no filler phrases ("it is important that", "in conclusion").
-- If data is missing from the report, say so — do not fill in gaps.
+约束条件：
+- 总共<= 120字。
+- 不用被动语态，不用套话（“值得注意的是”“综上所述”）。
+- 如果报告中缺少数据，直接说明——不要自行填补。
 
-Report:
-"""[paste]"""`,
+报告：
+"""[粘贴]"""`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Can I use these templates with Claude or Gemini instead of ChatGPT?", es: "¿Puedo usar estas plantillas con Claude o Gemini en vez de ChatGPT?", pt: "Posso usar estes templates com o Claude ou o Gemini em vez do ChatGPT?", zh: "Can I use these templates with Claude or Gemini instead of ChatGPT?" },
+        q: { en: "Can I use these templates with Claude or Gemini instead of ChatGPT?", es: "¿Puedo usar estas plantillas con Claude o Gemini en vez de ChatGPT?", pt: "Posso usar estes templates com o Claude ou o Gemini em vez do ChatGPT?", zh: "这些模板可以用在Claude或Gemini上，而不是ChatGPT吗？" },
         a: {
           en: "Yes. The structure works with any instruction-following model. ChatGPT handles professional tone well, but Claude and Gemini produce equally strong results for writing tasks.",
           es: "Sí. La estructura funciona con cualquier modelo que siga instrucciones. ChatGPT maneja bien el tono profesional, pero Claude y Gemini dan resultados igual de sólidos para tareas de escritura.",
           pt: "Sim. A estrutura funciona com qualquer modelo que siga instruções. O ChatGPT lida bem com o tom profissional, mas o Claude e o Gemini entregam resultados igualmente bons em tarefas de escrita.",
-          zh: "Yes. The structure works with any instruction-following model. ChatGPT handles professional tone well, but Claude and Gemini produce equally strong results for writing tasks.",
+          zh: "可以。这个结构适用于任何能遵循指令的模型。ChatGPT很擅长职业化的语气，而Claude和Gemini在写作任务上同样能给出很好的结果。",
         },
       },
       {
-        q: { en: "What if the output is still too long?", es: "¿Qué hago si el output sigue siendo muy largo?", pt: "E se a resposta continuar longa demais?", zh: "What if the output is still too long?" },
+        q: { en: "What if the output is still too long?", es: "¿Qué hago si el output sigue siendo muy largo?", pt: "E se a resposta continuar longa demais?", zh: "如果输出还是太长怎么办？" },
         a: {
           en: "Make the length constraint a hard rule and add a consequence: 'If your output exceeds 150 words, cut it before returning.' Repeating the constraint at the end of the prompt reinforces it.",
           es: "Hacé la restricción de longitud una regla dura y agregá una consecuencia: 'Si tu output supera 150 palabras, recortalo antes de devolverlo.' Repetir la restricción al final del prompt la refuerza.",
           pt: "Transforme a restrição de tamanho em regra rígida e acrescente uma consequência: 'Se a sua resposta passar de 150 palavras, corte antes de enviar.' Repetir a restrição no fim do prompt a reforça.",
-          zh: "Make the length constraint a hard rule and add a consequence: 'If your output exceeds 150 words, cut it before returning.' Repeating the constraint at the end of the prompt reinforces it.",
+          zh: "把长度约束设为硬性规则，并加上后果：“如果你的输出超过150字，返回之前先删减。”在提示词末尾重复这条约束，能进一步强化它。",
         },
       },
     ],
@@ -2001,17 +2001,17 @@ Report:
       en: "Prompts for Claude: XML tags, extended context, and structured reasoning",
       es: "Prompts para Claude: XML tags, contexto extendido y razonamiento estructurado",
       pt: "Prompts para o Claude: tags XML, contexto longo e raciocínio",
-      zh: "Prompts for Claude: XML tags, extended context, and structured reasoning",
+      zh: "Claude提示词指南：XML标签、长上下文与结构化推理",
     },
     description: {
       en: "How to write prompts that take advantage of Claude's XML tag support, large context window, and careful, citation-aware reasoning.",
       es: "Cómo escribir prompts que aprovechen el soporte de XML tags de Claude, su ventana de contexto extensa y su razonamiento cuidadoso.",
       pt: "Como escrever prompts que aproveitam o suporte do Claude a tags XML, a grande janela de contexto e o raciocínio cuidadoso e atento às fontes.",
-      zh: "How to write prompts that take advantage of Claude's XML tag support, large context window, and careful, citation-aware reasoning.",
+      zh: "如何编写提示词，发挥Claude对XML标签的支持、大上下文窗口，以及审慎、注重引用出处的推理能力。",
     },
     sections: [
       {
-        heading: { en: "What makes Claude different", es: "Qué hace diferente a Claude", pt: "O que torna o Claude diferente", zh: "What makes Claude different" },
+        heading: { en: "What makes Claude different", es: "Qué hace diferente a Claude", pt: "O que torna o Claude diferente", zh: "Claude有何不同" },
         bullets: {
           en: [
             "Claude responds well to XML tags for structure: <instructions>, <context>, <output>, <rules>.",
@@ -2032,15 +2032,15 @@ Report:
             "Segue bem instruções com nuances: listas numeradas de regras, prioridade entre regras, exceções.",
           ],
           zh: [
-            "Claude responds well to XML tags for structure: <instructions>, <context>, <output>, <rules>.",
-            "Large context window: you can paste long documents and ask questions at the end without truncation.",
-            "Tends to be careful about uncertainty — it flags when something is unclear rather than guessing.",
-            "Follows nuanced instructions well: numbered lists of rules, precedence between rules, exceptions.",
+            "Claude对用XML标签组织结构的提示词反应很好：<instructions>、<context>、<output>、<rules>。",
+            "上下文窗口大：你可以粘贴长文档，把问题放在最后，内容不会被截断。",
+            "对不确定性往往很谨慎——遇到不清楚的地方，它会标出来，而不是去猜。",
+            "能很好地遵循细致的指令：编号的规则列表、规则之间的优先级、例外情况。",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with Claude", es: "Patrones que funcionan bien con Claude", pt: "Padrões que funcionam bem com o Claude", zh: "Patterns that work well with Claude" },
+        heading: { en: "Patterns that work well with Claude", es: "Patrones que funcionan bien con Claude", pt: "Padrões que funcionam bem com o Claude", zh: "对Claude有效的写法" },
         bullets: {
           en: [
             "Use XML tags to separate context from instructions — this reduces confusion on long prompts.",
@@ -2064,18 +2064,18 @@ Report:
             "Peça citações ou trechos do documento colado para basear as respostas na fonte.",
           ],
           zh: [
-            "Use XML tags to separate context from instructions — this reduces confusion on long prompts.",
-            "Put the task at the end, after all context — Claude processes what it has before answering.",
-            "Number your rules (1, 2, 3...) and state which takes priority if they conflict.",
-            "Ask Claude to think step by step before giving a final answer on complex tasks.",
-            "Request citations or quotes from the pasted document to ground answers in the source.",
+            "用XML标签把上下文和指令分开——这能减少长提示词中的混淆。",
+            "把任务放在最后，放在所有上下文之后——Claude会先处理已有的内容，再作答。",
+            "给规则编号（1、2、3……），并说明规则冲突时以哪条为准。",
+            "处理复杂任务时，让Claude先一步一步思考，再给出最终答案。",
+            "要求引用所粘贴文档中的出处或原文，让答案有据可依。",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Document Q&A with citations", es: "Preguntas sobre documento con citas", pt: "Perguntas e respostas sobre um documento, com citações", zh: "Document Q&A with citations" },
+        title: { en: "Document Q&A with citations", es: "Preguntas sobre documento con citas", pt: "Perguntas e respostas sobre um documento, com citações", zh: "带引用的文档问答" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -2125,24 +2125,24 @@ Responda a perguntas sobre o documento abaixo. Siga estas regras:
 [sua pergunta]
 </question>`,
           zh: `<instructions>
-Answer questions about the document below. Follow these rules:
-1. Base every answer strictly on the document — do not add outside knowledge.
-2. Quote the relevant passage (max 2 sentences) before each answer.
-3. If the answer is not in the document, say "Not found in document."
-4. If the question is ambiguous, ask one clarifying question before answering.
+回答关于下面文档的问题。遵守以下规则：
+1. 每个回答都严格以文档为依据——不要加入外部知识。
+2. 每个回答之前，先引用相关段落（最多2句）。
+3. 如果文档中没有答案，就说“文档中未找到。”
+4. 如果问题有歧义，先提一个澄清问题，再回答。
 </instructions>
 
 <document>
-[paste document here]
+[在这里粘贴文档]
 </document>
 
 <question>
-[your question]
+[你的问题]
 </question>`,
         },
       },
       {
-        title: { en: "Structured analysis with competing viewpoints", es: "Análisis estructurado con perspectivas opuestas", pt: "Análise estruturada com pontos de vista opostos", zh: "Structured analysis with competing viewpoints" },
+        title: { en: "Structured analysis with competing viewpoints", es: "Análisis estructurado con perspectivas opuestas", pt: "Análise estruturada com pontos de vista opostos", zh: "包含对立观点的结构化分析" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -2219,27 +2219,27 @@ Formato de saída: use as tags XML abaixo.
 </key_fact>
 </output_format>`,
           zh: `<instructions>
-Analyze the topic below from two opposing perspectives.
-Rules:
-1. Steel-man both sides — represent each as its best advocate would.
-2. Do not express a personal preference.
-3. End with: the single most important fact a decision-maker needs.
-Output format: use the XML tags below.
+从两个对立的角度分析下面的主题。
+规则：
+1. 对双方都采用“钢人论证”——按照各自最有力的支持者会采用的方式来呈现每一方。
+2. 不要表达个人偏好。
+3. 最后写出：决策者最需要知道的一个事实。
+输出格式：使用下面的XML标签。
 </instructions>
 
 <topic>
-[describe the decision, question, or situation]
+[描述要做的决定、问题或情境]
 </topic>
 
 <output_format>
 <perspective_a>
-[strongest case for position A]
+[支持立场A的最有力论证]
 </perspective_a>
 <perspective_b>
-[strongest case for position B]
+[支持立场B的最有力论证]
 </perspective_b>
 <key_fact>
-[the one thing that matters most]
+[最重要的那一件事]
 </key_fact>
 </output_format>`,
         },
@@ -2247,21 +2247,21 @@ Output format: use the XML tags below.
     ],
     faq: [
       {
-        q: { en: "Do I need to use XML tags with Claude?", es: "¿Necesito usar XML tags con Claude?", pt: "Preciso usar tags XML com o Claude?", zh: "Do I need to use XML tags with Claude?" },
+        q: { en: "Do I need to use XML tags with Claude?", es: "¿Necesito usar XML tags con Claude?", pt: "Preciso usar tags XML com o Claude?", zh: "用Claude时必须使用XML标签吗？" },
         a: {
           en: "No, but they help on longer prompts. When context and instructions are mixed in plain text, Claude may blend them. XML tags create clear boundaries the model respects reliably.",
           es: "No, pero ayudan en prompts largos. Cuando el contexto y las instrucciones se mezclan en texto plano, Claude puede mezclarlos. Los XML tags crean límites claros que el modelo respeta de forma consistente.",
           pt: "Não, mas elas ajudam em prompts mais longos. Quando contexto e instruções estão misturados em texto corrido, o Claude pode confundi-los. As tags XML criam limites claros que o modelo respeita de forma confiável.",
-          zh: "No, but they help on longer prompts. When context and instructions are mixed in plain text, Claude may blend them. XML tags create clear boundaries the model respects reliably.",
+          zh: "不是必须的，但在较长的提示词中很有帮助。如果上下文和指令都混在纯文本里，Claude可能会把它们混为一谈。XML标签能划出清晰的边界，模型会可靠地遵守。",
         },
       },
       {
-        q: { en: "How long a document can I paste into a Claude prompt?", es: "¿Qué tan largo puede ser el documento que pego en un prompt de Claude?", pt: "Qual o tamanho do documento que posso colar em um prompt do Claude?", zh: "How long a document can I paste into a Claude prompt?" },
+        q: { en: "How long a document can I paste into a Claude prompt?", es: "¿Qué tan largo puede ser el documento que pego en un prompt de Claude?", pt: "Qual o tamanho do documento que posso colar em um prompt do Claude?", zh: "一个Claude提示词里可以粘贴多长的文档？" },
         a: {
           en: "Claude's context window supports hundreds of pages. For practical accuracy on Q&A, shorter focused documents work better than dumping an entire book. If you have a large document, extract the relevant sections first.",
           es: "La ventana de contexto de Claude soporta cientos de páginas. Para precisión práctica en Q&A, documentos cortos y enfocados funcionan mejor que un libro completo. Si el documento es largo, extraé primero las secciones relevantes.",
           pt: "A janela de contexto do Claude comporta centenas de páginas. Para ter precisão nas perguntas e respostas, documentos mais curtos e focados funcionam melhor do que despejar um livro inteiro. Se o documento for grande, extraia antes as seções relevantes.",
-          zh: "Claude's context window supports hundreds of pages. For practical accuracy on Q&A, shorter focused documents work better than dumping an entire book. If you have a large document, extract the relevant sections first.",
+          zh: "Claude的上下文窗口能容纳数百页内容。从问答的实际准确性来看，篇幅较短、主题聚焦的文档，比直接塞进一整本书效果更好。如果文档很大，先把相关章节提取出来。",
         },
       },
     ],
@@ -2989,17 +2989,17 @@ Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
       en: "Prompts for DeepSeek: code, data extraction, and analytical reasoning",
       es: "Prompts para DeepSeek: código, extracción de datos y razonamiento analítico",
       pt: "Prompts para o DeepSeek: código, extração de dados e raciocínio",
-      zh: "Prompts for DeepSeek: code, data extraction, and analytical reasoning",
+      zh: "DeepSeek提示词指南：代码、数据提取与分析推理",
     },
     description: {
       en: "How to write prompts that get precise, well-structured output from DeepSeek — including code tasks, strict JSON extraction, and multi-step analytical reasoning.",
       es: "Cómo escribir prompts que producen salidas precisas y estructuradas con DeepSeek — incluyendo tareas de código, extracción de JSON estricto y razonamiento analítico multi-paso.",
       pt: "Como escrever prompts que tiram do DeepSeek respostas precisas e bem estruturadas — incluindo tarefas de código, extração em JSON estrito e raciocínio analítico em várias etapas.",
-      zh: "How to write prompts that get precise, well-structured output from DeepSeek — including code tasks, strict JSON extraction, and multi-step analytical reasoning.",
+      zh: "如何编写提示词，让DeepSeek给出精确、结构清晰的输出——涵盖代码任务、严格的JSON提取和多步骤分析推理。",
     },
     sections: [
       {
-        heading: { en: "What makes DeepSeek different", es: "Qué hace diferente a DeepSeek", pt: "O que torna o DeepSeek diferente", zh: "What makes DeepSeek different" },
+        heading: { en: "What makes DeepSeek different", es: "Qué hace diferente a DeepSeek", pt: "O que torna o DeepSeek diferente", zh: "DeepSeek有何不同" },
         bullets: {
           en: [
             "DeepSeek excels at analytical and reasoning-heavy tasks — it handles multi-step logic with high precision.",
@@ -3023,16 +3023,16 @@ Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
             "Responde melhor a uma formulação direta da tarefa do que a prompts em estilo narrativo.",
           ],
           zh: [
-            "DeepSeek excels at analytical and reasoning-heavy tasks — it handles multi-step logic with high precision.",
-            "Strong code generation and debugging: it reads constraints carefully and tends to produce tighter, less padded code than general-purpose models.",
-            "Reliable JSON extraction: state the schema explicitly and it follows it closely, with fewer hallucinated fields.",
-            "Works well with numbered rules and explicit step-by-step instructions.",
-            "Responds better to direct task framing than to narrative-style prompts.",
+            "DeepSeek擅长分析类和重推理的任务——能高精度地处理多步骤逻辑。",
+            "代码生成和调试能力强：它会仔细阅读约束条件，生成的代码往往比通用模型更精炼、冗余更少。",
+            "JSON提取可靠：明确写出schema，它就会严格遵循，凭空编造的字段也更少。",
+            "配合编号规则和明确的分步指令，效果很好。",
+            "直接陈述任务，比叙事风格的提示词效果更好。",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with DeepSeek", es: "Patrones que funcionan bien con DeepSeek", pt: "Padrões que funcionam bem com o DeepSeek", zh: "Patterns that work well with DeepSeek" },
+        heading: { en: "Patterns that work well with DeepSeek", es: "Patrones que funcionan bien con DeepSeek", pt: "Padrões que funcionam bem com o DeepSeek", zh: "对DeepSeek有效的写法" },
         bullets: {
           en: [
             "Number your steps: 'Step 1: analyze. Step 2: extract. Step 3: format as JSON.'",
@@ -3056,18 +3056,18 @@ Constraints: <= 250 words. No hedging on the recommendation — be direct.`,
             "Em raciocínios complexos: peça que ele declare as suposições antes de tirar conclusões.",
           ],
           zh: [
-            "Number your steps: 'Step 1: analyze. Step 2: extract. Step 3: format as JSON.'",
-            "For code: include the language, version, and constraints before the task.",
-            "For data: define the schema inline and add 'Return ONLY the JSON — no explanation, no markdown.'",
-            "Ask it to verify its own output: 'Before returning, check that all required fields are present and match the schema.'",
-            "On complex reasoning: ask it to state its assumptions before drawing conclusions.",
+            "给步骤编号：“第1步：分析。第2步：提取。第3步：格式化为JSON。”",
+            "代码任务：在任务描述之前，写明语言、版本和约束条件。",
+            "数据任务：在提示词里直接定义schema，并加上“只返回JSON——不要解释，不要markdown。”",
+            "让它检查自己的输出：“返回之前，检查所有必填字段是否齐全，并且符合schema。”",
+            "复杂推理：让它在得出结论之前，先说明自己的假设。",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Code task with strict constraints", es: "Tarea de código con restricciones estrictas", pt: "Tarefa de código com restrições rígidas", zh: "Code task with strict constraints" },
+        title: { en: "Code task with strict constraints", es: "Tarea de código con restricciones estrictas", pt: "Tarefa de código com restrições rígidas", zh: "带严格约束的代码任务" },
         purpose: "code",
         target: "deepseek",
         prompt: {
@@ -3110,23 +3110,23 @@ Retorne:
 1. A implementação (só o código, sem blocos de markdown, a menos que eu peça).
 2. Uma lista breve dos casos de borda cobertos.
 3. Qualquer suposição que você fez e que possa afetar o resultado.`,
-          zh: `Language: [e.g. TypeScript / Python 3.12]
-Task: [what to implement or fix]
+          zh: `语言：[例如TypeScript / Python 3.12]
+任务：[要实现或修复的内容]
 
-Constraints:
-- Do not use external libraries unless listed here: [list or 'none'].
-- Keep the solution under [N] lines.
-- Maintain the existing public API — only change internals.
-- Handle edge cases: [list, e.g. empty input, null, out-of-range].
+约束条件：
+- 不要使用外部库，除非在此列出：[列表或“无”]。
+- 解决方案控制在[N]行以内。
+- 保持现有的公共API不变——只修改内部实现。
+- 处理边界情况：[列表，例如空输入、null、超出范围]。
 
-Return:
-1. The implementation (code only, no markdown fences unless asked).
-2. A brief list of edge cases covered.
-3. Any assumption you made that could affect the output.`,
+返回：
+1. 实现代码（只要代码；除非另有要求，不要用markdown代码块）。
+2. 已覆盖的边界情况的简要列表。
+3. 你做出的、可能影响输出的任何假设。`,
         },
       },
       {
-        title: { en: "Analytical reasoning with explicit steps", es: "Razonamiento analítico con pasos explícitos", pt: "Raciocínio analítico com passos explícitos", zh: "Analytical reasoning with explicit steps" },
+        title: { en: "Analytical reasoning with explicit steps", es: "Razonamiento analítico con pasos explícitos", pt: "Raciocínio analítico com passos explícitos", zh: "步骤明确的分析推理" },
         purpose: "data",
         target: "deepseek",
         prompt: {
@@ -3184,44 +3184,44 @@ Confiança: [alta / média / baixa] — [motivo]
 Alertas: [lista ou 'Nenhum']
 
 Retorne APENAS esta estrutura. Sem introdução.`,
-          zh: `Analyze the following and return structured output.
+          zh: `分析以下内容，并返回结构化输出。
 
-Input:
-"""[paste your data or problem description]"""
+输入：
+"""[粘贴你的数据或问题描述]"""
 
-Step 1 — Parse: identify the key entities, numbers, and relationships.
-Step 2 — Reason: work through the logic step by step. State each inference.
-Step 3 — Conclude: state your conclusion and confidence level (high / medium / low).
-Step 4 — Flag: list anything that is ambiguous or requires additional input.
+第1步——解析：找出关键实体、数字和它们之间的关系。
+第2步——推理：一步一步推导逻辑，写出每一个推断。
+第3步——结论：给出你的结论和置信度（高 / 中 / 低）。
+第4步——标记：列出所有含糊不清或需要补充信息的地方。
 
-Format:
-Entities: [bullet list]
-Reasoning: [numbered steps]
-Conclusion: [1-2 sentences]
-Confidence: [high / medium / low] — [reason]
-Flags: [list or 'None']
+格式：
+实体：[要点列表]
+推理：[编号步骤]
+结论：[1-2句话]
+置信度：[高 / 中 / 低]——[理由]
+标记项：[列表或“无”]
 
-Return ONLY this structure. No preamble.`,
+只返回这个结构，不要开场白。`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Is DeepSeek better than GPT or Claude for coding tasks?", es: "¿DeepSeek es mejor que GPT o Claude para tareas de código?", pt: "O DeepSeek é melhor que o GPT ou o Claude para tarefas de código?", zh: "Is DeepSeek better than GPT or Claude for coding tasks?" },
+        q: { en: "Is DeepSeek better than GPT or Claude for coding tasks?", es: "¿DeepSeek es mejor que GPT o Claude para tareas de código?", pt: "O DeepSeek é melhor que o GPT ou o Claude para tarefas de código?", zh: "做代码任务时，DeepSeek比GPT或Claude更好吗？" },
         a: {
           en: "It depends on the task. DeepSeek is particularly strong on analytical reasoning and code tasks with explicit constraints. For nuanced writing or long document Q&A, Claude and GPT tend to produce more polished results. Test on your specific use case.",
           es: "Depende de la tarea. DeepSeek es especialmente fuerte en razonamiento analítico y tareas de código con restricciones explícitas. Para escritura matizada o Q&A sobre documentos largos, Claude y GPT tienden a producir resultados más pulidos. Probalo en tu caso de uso específico.",
           pt: "Depende da tarefa. O DeepSeek é especialmente forte em raciocínio analítico e em tarefas de código com restrições explícitas. Para textos com nuances ou perguntas sobre documentos longos, o Claude e o GPT costumam entregar resultados mais refinados. Teste no seu caso de uso específico.",
-          zh: "It depends on the task. DeepSeek is particularly strong on analytical reasoning and code tasks with explicit constraints. For nuanced writing or long document Q&A, Claude and GPT tend to produce more polished results. Test on your specific use case.",
+          zh: "取决于任务。DeepSeek在分析推理和带明确约束的代码任务上尤其出色。对于需要细腻表达的写作或长文档问答，Claude和GPT的结果往往更精致。请在你自己的具体场景中测试。",
         },
       },
       {
-        q: { en: "Do I need to change my prompts significantly to use DeepSeek?", es: "¿Necesito cambiar mucho mis prompts para usar DeepSeek?", pt: "Preciso mudar muito meus prompts para usar o DeepSeek?", zh: "Do I need to change my prompts significantly to use DeepSeek?" },
+        q: { en: "Do I need to change my prompts significantly to use DeepSeek?", es: "¿Necesito cambiar mucho mis prompts para usar DeepSeek?", pt: "Preciso mudar muito meus prompts para usar o DeepSeek?", zh: "用DeepSeek需要大幅修改我的提示词吗？" },
         a: {
           en: "Not fundamentally. The core principles — clear task, explicit constraints, defined output format — work across all models. With DeepSeek, you get better results by being more explicit about steps and schema, and by avoiding narrative-style framing.",
           es: "No fundamentalmente. Los principios básicos — tarea clara, restricciones explícitas, formato de salida definido — funcionan en todos los modelos. Con DeepSeek, obtenés mejores resultados siendo más explícito sobre pasos y esquema, y evitando el estilo narrativo.",
           pt: "Não na essência. Os princípios centrais — tarefa clara, restrições explícitas, formato de saída definido — funcionam em todos os modelos. Com o DeepSeek, você tem resultados melhores sendo mais explícito sobre os passos e o esquema, e evitando a formulação em estilo narrativo.",
-          zh: "Not fundamentally. The core principles — clear task, explicit constraints, defined output format — work across all models. With DeepSeek, you get better results by being more explicit about steps and schema, and by avoiding narrative-style framing.",
+          zh: "不需要做根本性的改变。核心原则——任务清晰、约束明确、输出格式确定——适用于所有模型。用DeepSeek时，把步骤和schema写得更明确，并避免叙事式的写法，效果会更好。",
         },
       },
     ],
@@ -4071,17 +4071,17 @@ What you do not do:
       en: "AI translation prompts that preserve meaning, tone, and register",
       es: "Prompts de traducción para IA que preservan significado, tono y registro",
       pt: "Prompts de tradução com IA que preservam sentido, tom e registro",
-      zh: "AI translation prompts that preserve meaning, tone, and register",
+      zh: "保留原意、语气和语域的AI翻译提示词",
     },
     description: {
       en: "Templates for translating content with AI — with tone matching, register controls, domain glossaries, and constraints to prevent common translation failures.",
       es: "Plantillas para traducir contenido con IA — con coincidencia de tono, controles de registro, glosarios de dominio y restricciones para evitar fallos comunes de traducción.",
       pt: "Templates para traduzir conteúdo com IA — com ajuste de tom, controle de registro, glossários da área e restrições para evitar as falhas de tradução mais comuns.",
-      zh: "Templates for translating content with AI — with tone matching, register controls, domain glossaries, and constraints to prevent common translation failures.",
+      zh: "用AI翻译内容的模板——包含语气匹配、语域控制、领域术语表，以及防止常见翻译错误的约束条件。",
     },
     sections: [
       {
-        heading: { en: "Why AI translation fails without constraints", es: "Por qué la traducción con IA falla sin restricciones", pt: "Por que a tradução com IA falha sem restrições", zh: "Why AI translation fails without constraints" },
+        heading: { en: "Why AI translation fails without constraints", es: "Por qué la traducción con IA falla sin restricciones", pt: "Por que a tradução com IA falha sem restrições", zh: "为什么没有约束的AI翻译会出错" },
         bullets: {
           en: [
             "No register guidance: a formal legal document and a casual marketing email require different registers — without guidance, the model picks one arbitrarily.",
@@ -4105,16 +4105,16 @@ What you do not do:
             "Variação de tamanho: sem uma restrição de tamanho, as traduções podem ficar 20-30% mais longas ou mais curtas que o original — isso importa em textos de interface, legendas e material impresso.",
           ],
           zh: [
-            "No register guidance: a formal legal document and a casual marketing email require different registers — without guidance, the model picks one arbitrarily.",
-            "Missing domain glossary: industry terms (legal, medical, technical) often have established translations the model may not default to. Provide the glossary explicitly.",
-            "No handling rules for untranslatable terms: brand names, product names, acronyms, and proper nouns often should not be translated — state what to preserve.",
-            "No format preservation constraint: line breaks, bullet points, and HTML tags in the source often get mangled without an explicit 'preserve formatting' instruction.",
-            "Length drift: translations can be 20-30% longer or shorter than the source without a length constraint — this matters for UI strings, subtitles, and print.",
+            "没有语域指引：正式的法律文件和随意的营销邮件需要不同的语域——没有指引，模型就会随意选一种。",
+            "缺少领域术语表：行业术语（法律、医学、技术）通常有约定俗成的译法，而模型默认未必会用。请明确提供术语表。",
+            "没有不可译术语的处理规则：品牌名、产品名、缩写和专有名词往往不应翻译——要写明哪些需要保留。",
+            "没有保留格式的约束：如果没有明确的“保留格式”指令，原文中的换行、项目符号和HTML标签经常会被弄乱。",
+            "篇幅漂移：没有长度约束时，译文可能比原文长或短20-30%——这对界面文字、字幕和印刷品都很重要。",
           ],
         },
       },
       {
-        heading: { en: "Controls that improve translation quality", es: "Controles que mejoran la calidad de la traducción", pt: "Controles que melhoram a qualidade da tradução", zh: "Controls that improve translation quality" },
+        heading: { en: "Controls that improve translation quality", es: "Controles que mejoran la calidad de la traducción", pt: "Controles que melhoram a qualidade da tradução", zh: "提升翻译质量的控制手段" },
         bullets: {
           en: [
             "Name the target language and region variant: 'Spanish (Mexico)' vs 'Spanish (Spain)' produce different vocabulary and formality conventions.",
@@ -4138,18 +4138,18 @@ What you do not do:
             "Peça uma nota de confiança: 'Sinalize qualquer frase cujo sentido seja ambíguo ou que não tenha um equivalente direto.'",
           ],
           zh: [
-            "Name the target language and region variant: 'Spanish (Mexico)' vs 'Spanish (Spain)' produce different vocabulary and formality conventions.",
-            "Specify register: formal / informal / technical / conversational — one word adds significant consistency.",
-            "Give a domain glossary for 3-10 key terms — it prevents the most common errors without overloading the prompt.",
-            "State what not to translate: brand names, code snippets, proper nouns, and UI labels often must stay in the source language.",
-            "Ask for a confidence note: 'Flag any phrase where the meaning is ambiguous or there is no direct equivalent.'",
+            "写明目标语言及其地区变体：“西班牙语（墨西哥）”和“西班牙语（西班牙）”在用词和正式程度的惯例上都不一样。",
+            "指定语域：正式 / 非正式 / 技术 / 口语——只加一个词，就能显著提升一致性。",
+            "为3-10个关键术语提供领域术语表——既能避免最常见的错误，又不会让提示词负担过重。",
+            "写明哪些内容不翻译：品牌名、代码片段、专有名词和界面标签，往往必须保留原文语言。",
+            "要求附上置信说明：“标出所有含义有歧义或没有直接对应说法的短语。”",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Document translation with register and glossary", es: "Traducción de documento con registro y glosario", pt: "Tradução de documento com registro e glossário", zh: "Document translation with register and glossary" },
+        title: { en: "Document translation with register and glossary", es: "Traducción de documento con registro y glosario", pt: "Tradução de documento com registro e glossário", zh: "带语域和术语表的文档翻译" },
         purpose: "translation",
         target: "claude",
         prompt: {
@@ -4222,33 +4222,33 @@ Tratamento de ambiguidades:
 
 Documento:
 """[cole o documento original aqui]"""`,
-          zh: `Translate the document below from [source language] to [target language, e.g. Spanish (Spain)].
+          zh: `把下面的文档从[源语言]翻译成[目标语言，例如西班牙语（西班牙）]。
 
-Register: [formal / informal / technical — pick one]
-Audience: [who will read this, e.g. "legal professionals" / "general public"]
+语域：[正式 / 非正式 / 技术——选一个]
+受众：[谁会读这份文档，例如“法律专业人士” / “普通大众”]
 
-Glossary (use these translations exactly):
-- [source term 1] → [target term 1]
-- [source term 2] → [target term 2]
+术语表（严格使用以下译法）：
+- [源术语1] → [目标术语1]
+- [源术语2] → [目标术语2]
 
-Do not translate:
-- Brand names and product names (keep as-is).
-- Proper nouns and place names (unless there is a standard established translation).
-- Acronyms: [list, e.g. "API, URL, SLA"].
+不要翻译：
+- 品牌名和产品名（保持原样）。
+- 专有名词和地名（除非有约定俗成的标准译名）。
+- 缩写：[列表，例如“API、URL、SLA”]。
 
-Formatting rules:
-- Preserve all line breaks, bullet points, and heading structure.
-- Do not add or remove paragraphs.
+格式规则：
+- 保留所有换行、项目符号和标题结构。
+- 不要增加或删除段落。
 
-Ambiguity handling:
-- If a phrase has no direct equivalent, translate the meaning and add a footnote: [Translator note: ...].
+歧义处理：
+- 如果某个短语没有直接对应的说法，就翻译它的意思，并加一条注释：[译者注：...]。
 
-Document:
-"""[paste source document here]"""`,
+文档：
+"""[在这里粘贴源文档]"""`,
         },
       },
       {
-        title: { en: "UI strings batch translation (short texts)", es: "Traducción en lote de strings de UI (textos cortos)", pt: "Tradução em lote de textos de interface (textos curtos)", zh: "UI strings batch translation (short texts)" },
+        title: { en: "UI strings batch translation (short texts)", es: "Traducción en lote de strings de UI (textos cortos)", pt: "Tradução em lote de textos de interface (textos curtos)", zh: "界面文字批量翻译（短文本）" },
         purpose: "translation",
         target: "gpt",
         prompt: {
@@ -4312,21 +4312,21 @@ Textos para traduzir:
   { "key": "error_required", "original": "This field is required" },
   { "key": "label_email", "original": "Email address" }
 ]`,
-          zh: `Translate the following UI strings from English to [target language].
+          zh: `把下面的界面文字从英语翻译成[目标语言]。
 
-Rules:
-1. Each string must be translated individually — do not merge or reorder.
-2. Keep translations short: UI labels must fit the same space as the original.
-3. Do not translate: variables in {curly_braces}, HTML tags, and brand names.
-4. Preserve capitalization style: if the source is Title Case, the translation should match it.
-5. Register: [formal / informal].
+规则：
+1. 每条文字都必须单独翻译——不要合并，也不要调整顺序。
+2. 译文要简短：界面标签必须能放进和原文相同的空间。
+3. 不要翻译：{curly_braces}这类花括号中的变量、HTML标签和品牌名。
+4. 保留大小写风格：如果原文使用Title Case，译文也要与之一致。
+5. 语域：[正式 / 非正式]。
 
-Return format (JSON array, same order as input):
+返回格式（JSON数组，顺序与输入相同）：
 [
-  { "key": "source_key", "original": "source string", "translation": "translated string" }
+  { "key": "source_key", "original": "原文字符串", "translation": "译文字符串" }
 ]
 
-Strings to translate:
+待翻译的文字：
 [
   { "key": "btn_save", "original": "Save changes" },
   { "key": "error_required", "original": "This field is required" },
@@ -4337,21 +4337,21 @@ Strings to translate:
     ],
     faq: [
       {
-        q: { en: "Is AI translation good enough for professional use?", es: "¿La traducción con IA es suficientemente buena para uso profesional?", pt: "A tradução com IA é boa o bastante para uso profissional?", zh: "Is AI translation good enough for professional use?" },
+        q: { en: "Is AI translation good enough for professional use?", es: "¿La traducción con IA es suficientemente buena para uso profesional?", pt: "A tradução com IA é boa o bastante para uso profissional?", zh: "AI翻译的质量够专业使用吗？" },
         a: {
           en: "It depends on the domain and risk level. For internal documents, UI strings, and low-stakes content, well-constrained AI translation is fast and accurate. For legal contracts, medical content, or published materials, use AI as a first draft and have a professional translator review it. The templates above reduce errors significantly but don't eliminate the need for human review on high-stakes text.",
           es: "Depende del dominio y el nivel de riesgo. Para documentos internos, strings de UI y contenido de bajo riesgo, la traducción con IA bien restringida es rápida y precisa. Para contratos legales, contenido médico o materiales publicados, usá la IA como primer borrador y hacé que un traductor profesional lo revise. Las plantillas anteriores reducen errores significativamente pero no eliminan la necesidad de revisión humana en textos de alto riesgo.",
           pt: "Depende da área e do nível de risco. Para documentos internos, textos de interface e conteúdo de baixo risco, a tradução com IA bem restringida é rápida e precisa. Para contratos, conteúdo médico ou material publicado, use a IA como primeiro rascunho e peça a revisão de um tradutor profissional. Os templates acima reduzem bastante os erros, mas não eliminam a necessidade de revisão humana em textos de alto risco.",
-          zh: "It depends on the domain and risk level. For internal documents, UI strings, and low-stakes content, well-constrained AI translation is fast and accurate. For legal contracts, medical content, or published materials, use AI as a first draft and have a professional translator review it. The templates above reduce errors significantly but don't eliminate the need for human review on high-stakes text.",
+          zh: "取决于领域和风险高低。对于内部文档、界面文字和低风险内容，约束得当的AI翻译既快又准确。对于法律合同、医疗内容或公开发布的材料，把AI译文当作初稿，再请专业译者审校。上面的模板能显著减少错误，但对于高风险文本，仍然需要人工审校。",
         },
       },
       {
-        q: { en: "Which model is best for translation tasks?", es: "¿Qué modelo es mejor para tareas de traducción?", pt: "Qual modelo é o melhor para tarefas de tradução?", zh: "Which model is best for translation tasks?" },
+        q: { en: "Which model is best for translation tasks?", es: "¿Qué modelo es mejor para tareas de traducción?", pt: "Qual modelo é o melhor para tarefas de tradução?", zh: "哪个模型最适合翻译任务？" },
         a: {
           en: "There is no single winner: the current GPT, Claude and Gemini models (for example GPT-6 Astra, Claude Opus 5.5 or Sonnet 5.5, Gemini 3.8 Flash) all handle common language pairs well, and results vary by language pair, domain and how strict your glossary is. Claude tends to respect register and glossary rules when they are spelled out; models with a native structured-output mode make batch translation of UI strings easier to parse. Pick two candidates, translate the same sample (including your hardest terms and a regional variant if you need one), and have a fluent reviewer compare them before committing.",
           es: "No hay un ganador único: los modelos actuales de GPT, Claude y Gemini (por ejemplo GPT-6 Astra, Claude Opus 5.5 o Sonnet 5.5, Gemini 3.8 Flash) manejan bien los pares de idiomas comunes, y el resultado cambia según el par de idiomas, el dominio y qué tan estricto es tu glosario. Claude tiende a respetar reglas de registro y glosario cuando están explícitas; los modelos con modo nativo de salida estructurada facilitan procesar traducciones en lote de strings de UI. Elegí dos candidatos, traducí la misma muestra (con tus términos más difíciles y una variante regional si la necesitás) y que una persona con dominio del idioma compare antes de decidir.",
           pt: "Não existe um único vencedor: os modelos atuais de GPT, Claude e Gemini (por exemplo, GPT-6 Astra, Claude Opus 5.5 ou Sonnet 5.5, Gemini 3.8 Flash) lidam bem com os pares de idiomas mais comuns, e os resultados variam conforme o par de idiomas, a área e o rigor do seu glossário. O Claude tende a respeitar as regras de registro e de glossário quando elas estão explícitas; modelos com um modo nativo de saída estruturada facilitam a leitura de traduções em lote de textos de interface. Escolha dois candidatos, traduza a mesma amostra (incluindo seus termos mais difíceis e uma variante regional, se você precisar) e peça a um revisor fluente que compare os dois antes de decidir.",
-          zh: "There is no single winner: the current GPT, Claude and Gemini models (for example GPT-6 Astra, Claude Opus 5.5 or Sonnet 5.5, Gemini 3.8 Flash) all handle common language pairs well, and results vary by language pair, domain and how strict your glossary is. Claude tends to respect register and glossary rules when they are spelled out; models with a native structured-output mode make batch translation of UI strings easier to parse. Pick two candidates, translate the same sample (including your hardest terms and a regional variant if you need one), and have a fluent reviewer compare them before committing.",
+          zh: "没有唯一的赢家：当前的GPT、Claude和Gemini模型（例如GPT-6 Astra、Claude Opus 5.5或Sonnet 5.5、Gemini 3.8 Flash）都能很好地处理常见的语言对，效果因语言对、领域和术语表的严格程度而异。只要把规则写清楚，Claude往往会遵守语域和术语表规则；具备原生结构化输出模式的模型，让界面文字批量翻译的结果更容易解析。选出两个候选模型，翻译同一份样本（包括你最难的术语，如果需要，还包括一个地区变体），并请一位熟练掌握该语言的审校者比较后再做决定。",
         },
       },
     ],
@@ -6318,17 +6318,17 @@ End with:
       en: "Prompts for Kimi: long context, document analysis, and deep research",
       es: "Prompts para Kimi: contexto largo, análisis de documentos e investigación profunda",
       pt: "Prompts para o Kimi: contexto longo, documentos e pesquisa a fundo",
-      zh: "Prompts for Kimi: long context, document analysis, and deep research",
+      zh: "Kimi提示词指南：长上下文、文档分析与深度研究",
     },
     description: {
       en: "How to write prompts that get the most out of Kimi's large context window and strong document-understanding capabilities.",
       es: "Cómo escribir prompts que aprovechan la ventana de contexto extensa de Kimi y sus capacidades de comprensión de documentos.",
       pt: "Como escrever prompts que aproveitam ao máximo a grande janela de contexto do Kimi e sua forte capacidade de compreender documentos.",
-      zh: "How to write prompts that get the most out of Kimi's large context window and strong document-understanding capabilities.",
+      zh: "如何编写提示词，充分发挥Kimi的大上下文窗口和出色的文档理解能力。",
     },
     sections: [
       {
-        heading: { en: "What makes Kimi different", es: "Qué hace diferente a Kimi", pt: "O que torna o Kimi diferente", zh: "What makes Kimi different" },
+        heading: { en: "What makes Kimi different", es: "Qué hace diferente a Kimi", pt: "O que torna o Kimi diferente", zh: "Kimi有何不同" },
         bullets: {
           en: [
             "Kimi supports very long context windows — you can paste entire documents, lengthy codebases, or multiple sources without hitting length limits quickly.",
@@ -6352,16 +6352,16 @@ End with:
             "Ele tende a ser minucioso; defina um limite de tamanho explícito se você quiser uma saída concisa.",
           ],
           zh: [
-            "Kimi supports very long context windows — you can paste entire documents, lengthy codebases, or multiple sources without hitting length limits quickly.",
-            "It handles long-range dependencies well: questions that require connecting information from different sections of the same document.",
-            "Strong at structured document understanding: contracts, research papers, technical specs, and multi-section reports.",
-            "For deep research tasks, Kimi can hold a large volume of reference material in context while answering focused questions about it.",
-            "It tends to be thorough; set an explicit length limit if you want concise output.",
+            "Kimi支持非常长的上下文窗口——你可以粘贴整份文档、很长的代码库或多个来源，不会很快碰到长度限制。",
+            "它能很好地处理长距离依赖：也就是需要把同一份文档中不同部分的信息联系起来才能回答的问题。",
+            "擅长理解结构化文档：合同、研究论文、技术规范，以及包含多个章节的报告。",
+            "做深度研究任务时，Kimi可以把大量参考资料保留在上下文中，同时回答关于这些资料的具体问题。",
+            "它的回答往往很详尽；如果你想要简洁的输出，请设定明确的长度限制。",
           ],
         },
       },
       {
-        heading: { en: "Patterns that work well with Kimi", es: "Patrones que funcionan bien con Kimi", pt: "Padrões que funcionam bem com o Kimi", zh: "Patterns that work well with Kimi" },
+        heading: { en: "Patterns that work well with Kimi", es: "Patrones que funcionan bien con Kimi", pt: "Padrões que funcionam bem com o Kimi", zh: "对Kimi有效的写法" },
         bullets: {
           en: [
             "Paste the full document first, then ask your question at the end — Kimi reads everything before answering.",
@@ -6388,19 +6388,19 @@ End with:
             "Quando a precisão for crítica, peça ao Kimi para sinalizar tudo de que não tiver certeza em vez de preencher as lacunas com inferências.",
           ],
           zh: [
-            "Paste the full document first, then ask your question at the end — Kimi reads everything before answering.",
-            "Use section markers to help Kimi navigate large documents: label sections with '=== Section: [name] ===' for clear anchoring.",
-            "For multi-document tasks, separate sources clearly with headers and tell Kimi which source to prioritize if they conflict.",
-            "Ask Kimi to cite the specific passage it's drawing from — this surfaces exactly where in the document the answer lives.",
-            "For research tasks, give Kimi a list of sources and a specific question; ask it to synthesize across all sources rather than answering from just one.",
-            "When accuracy is critical, ask Kimi to flag anything it's uncertain about instead of filling gaps with inference.",
+            "先粘贴完整文档，把问题放在最后——Kimi会读完全部内容再回答。",
+            "用章节标记帮Kimi在长文档中定位：用“=== 章节：[名称] ===”给各部分加上标签，形成清晰的锚点。",
+            "多文档任务：用标题把各个来源清楚地分开，并告诉Kimi来源之间有冲突时以哪个为准。",
+            "让Kimi引用它所依据的具体段落——这样能准确看出答案出自文档的哪个位置。",
+            "研究任务：给Kimi一份来源列表和一个具体的问题；要求它综合所有来源作答，而不是只依据其中一个。",
+            "准确性至关重要时，让Kimi标出所有不确定的内容，而不是靠推断填补空白。",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Long-document Q&A with source anchoring", es: "Q&A sobre documento largo con anclaje de fuente", pt: "Perguntas e respostas sobre um documento longo, ancoradas na fonte", zh: "Long-document Q&A with source anchoring" },
+        title: { en: "Long-document Q&A with source anchoring", es: "Q&A sobre documento largo con anclaje de fuente", pt: "Perguntas e respostas sobre um documento longo, ancoradas na fonte", zh: "带原文定位的长文档问答" },
         purpose: "text",
         target: "kimi",
         prompt: {
@@ -6449,25 +6449,25 @@ Regras:
 
 Pergunta:
 [sua pergunta]`,
-          zh: `Answer questions about the document below using ONLY the content in the document.
+          zh: `只根据下面文档中的内容回答问题。
 
-Rules:
-1. For each answer, quote the relevant passage (max 2 sentences) before your response.
-2. If the answer is not in the document, say: "Not found in document."
-3. If information appears in multiple sections, note each location.
-4. Do not add outside knowledge.
-5. If a question is ambiguous, ask one clarifying question before answering.
+规则：
+1. 每个回答之前，先引用相关段落（最多2句）。
+2. 如果文档中没有答案，就说：“文档中未找到。”
+3. 如果信息出现在多个部分，逐一注明位置。
+4. 不要加入文档以外的知识。
+5. 如果问题有歧义，先提一个澄清问题，再回答。
 
-=== Document Start ===
-[paste the full document here]
-=== Document End ===
+=== 文档开始 ===
+[在这里粘贴完整文档]
+=== 文档结束 ===
 
-Question:
-[your question]`,
+问题：
+[你的问题]`,
         },
       },
       {
-        title: { en: "Multi-source research synthesis", es: "Síntesis de investigación con múltiples fuentes", pt: "Síntese de pesquisa com várias fontes", zh: "Multi-source research synthesis" },
+        title: { en: "Multi-source research synthesis", es: "Síntesis de investigación con múltiples fuentes", pt: "Síntese de pesquisa com várias fontes", zh: "多来源研究综合" },
         purpose: "text",
         target: "kimi",
         prompt: {
@@ -6531,46 +6531,46 @@ Instruções:
 3. Quando as fontes divergirem, declare a divergência de forma explícita e não escolha um lado sem evidências.
 4. Termine com: lacunas — o que as fontes NÃO cobrem e seria necessário para uma resposta completa.
 5. Mantenha a resposta total abaixo de 400 palavras.`,
-          zh: `You will receive multiple sources. Synthesize them to answer the research question below.
+          zh: `你会收到多个来源。综合这些来源，回答下面的研究问题。
 
-Research question: [your question]
+研究问题：[你的问题]
 
-Sources:
---- Source 1: [title or description] ---
-[paste source 1]
+来源：
+--- 来源1：[标题或描述] ---
+[粘贴来源1]
 
---- Source 2: [title or description] ---
-[paste source 2]
+--- 来源2：[标题或描述] ---
+[粘贴来源2]
 
---- Source 3: [title or description] (optional) ---
-[paste source 3 or remove this section]
+--- 来源3：[标题或描述]（可选）---
+[粘贴来源3，或删除这一部分]
 
-Instructions:
-1. Answer based only on the provided sources — do not add outside knowledge.
-2. When sources agree, state the consensus and cite which sources agree.
-3. When sources conflict, state the disagreement explicitly and do not pick a side without evidence.
-4. End with: gaps — what the sources do NOT cover that would be needed for a complete answer.
-5. Keep the total response under 400 words.`,
+要求：
+1. 只根据提供的来源作答——不要加入外部知识。
+2. 来源观点一致时，说明共识，并注明是哪些来源意见一致。
+3. 来源相互矛盾时，明确指出分歧；没有证据时，不要偏向任何一方。
+4. 最后写出：缺口——要给出完整答案还需要、但这些来源没有涵盖的内容。
+5. 整个回答控制在400字以内。`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "How large a document can I paste into Kimi?", es: "¿Qué tan largo puede ser el documento que pego en Kimi?", pt: "Qual o tamanho do documento que posso colar no Kimi?", zh: "How large a document can I paste into Kimi?" },
+        q: { en: "How large a document can I paste into Kimi?", es: "¿Qué tan largo puede ser el documento que pego en Kimi?", pt: "Qual o tamanho do documento que posso colar no Kimi?", zh: "可以往Kimi里粘贴多大的文档？" },
         a: {
           en: "Kimi's context window is large enough to handle book-length documents. For practical accuracy, focused questions on specific sections work better than open-ended 'tell me everything' prompts. If accuracy is critical, split very long documents into logical segments and query each segment separately before synthesizing.",
           es: "La ventana de contexto de Kimi es lo suficientemente grande para manejar documentos del tamaño de un libro. Para precisión práctica, las preguntas enfocadas en secciones específicas funcionan mejor que los prompts abiertos del tipo 'contame todo'. Si la precisión es crítica, dividí documentos muy largos en segmentos lógicos y consultá cada segmento por separado antes de sintetizar.",
           pt: "A janela de contexto do Kimi é grande o bastante para documentos do tamanho de um livro. Para ter precisão na prática, perguntas focadas em seções específicas funcionam melhor que prompts abertos do tipo 'me conte tudo'. Se a precisão for crítica, divida documentos muito longos em segmentos lógicos e consulte cada um separadamente antes de fazer a síntese.",
-          zh: "Kimi's context window is large enough to handle book-length documents. For practical accuracy, focused questions on specific sections work better than open-ended 'tell me everything' prompts. If accuracy is critical, split very long documents into logical segments and query each segment separately before synthesizing.",
+          zh: "Kimi的上下文窗口大到足以处理整本书篇幅的文档。从实际准确性来看，针对特定章节的聚焦问题，比开放式的“把所有内容都告诉我”效果更好。如果准确性至关重要，就把很长的文档按逻辑拆成几段，分别提问，然后再综合。",
         },
       },
       {
-        q: { en: "Does Kimi work well for technical research papers?", es: "¿Kimi funciona bien para artículos de investigación técnicos?", pt: "O Kimi funciona bem com artigos científicos técnicos?", zh: "Does Kimi work well for technical research papers?" },
+        q: { en: "Does Kimi work well for technical research papers?", es: "¿Kimi funciona bien para artículos de investigación técnicos?", pt: "O Kimi funciona bem com artigos científicos técnicos?", zh: "Kimi适合处理技术类研究论文吗？" },
         a: {
           en: "Yes — Kimi handles technical language well and can track terminology across long academic documents. For research papers, specify exactly what you want: a summary of the methodology, the key findings, limitations, or a comparison with other cited works. 'Summarize this paper' is too vague; 'summarize the methodology section in 3 bullets and list the stated limitations' gives consistent results.",
           es: "Sí — Kimi maneja bien el lenguaje técnico y puede rastrear terminología a lo largo de documentos académicos largos. Para artículos de investigación, especificá exactamente lo que querés: un resumen de la metodología, los hallazgos clave, las limitaciones o una comparación con otras obras citadas. 'Resumí este paper' es demasiado vago; 'resumí la sección de metodología en 3 bullets y listá las limitaciones declaradas' da resultados consistentes.",
           pt: "Sim — o Kimi lida bem com linguagem técnica e consegue acompanhar a terminologia ao longo de documentos acadêmicos longos. Para artigos científicos, especifique exatamente o que você quer: um resumo da metodologia, os principais achados, as limitações ou uma comparação com outros trabalhos citados. 'Resuma este artigo' é vago demais; 'resuma a seção de metodologia em 3 tópicos e liste as limitações declaradas' gera resultados consistentes.",
-          zh: "Yes — Kimi handles technical language well and can track terminology across long academic documents. For research papers, specify exactly what you want: a summary of the methodology, the key findings, limitations, or a comparison with other cited works. 'Summarize this paper' is too vague; 'summarize the methodology section in 3 bullets and list the stated limitations' gives consistent results.",
+          zh: "适合——Kimi能很好地处理技术语言，并能在很长的学术文档中跟踪术语的用法。处理研究论文时，要明确说出你想要什么：方法概述、主要发现、局限性，或者与其他被引文献的比较。“总结这篇论文”太模糊；“用3个要点总结方法部分，并列出作者说明的局限性”才能得到稳定的结果。",
         },
       },
     ],
@@ -6872,17 +6872,17 @@ Constraints:
       en: "AI prompts for learning: tutoring, concept checks, and study guides",
       es: "Prompts de IA para aprender: tutoría, checks de concepto y guías de estudio",
       pt: "Prompts de IA para estudar: aulas, checagem de conceitos e guias",
-      zh: "AI prompts for learning: tutoring, concept checks, and study guides",
+      zh: "用AI学习的提示词：辅导、概念检验与学习指南",
     },
     description: {
       en: "Prompt templates that turn AI into a patient tutor — for explaining concepts, testing understanding, building study plans, and connecting new material to what you already know.",
       es: "Plantillas de prompts que convierten la IA en un tutor paciente — para explicar conceptos, testear comprensión, construir planes de estudio y conectar material nuevo con lo que ya sabés.",
       pt: "Templates de prompt que transformam a IA em um tutor paciente — para explicar conceitos, testar a compreensão, montar planos de estudo e conectar o conteúdo novo ao que você já sabe.",
-      zh: "Prompt templates that turn AI into a patient tutor — for explaining concepts, testing understanding, building study plans, and connecting new material to what you already know.",
+      zh: "把AI变成耐心导师的提示词模板——用于讲解概念、检验理解、制定学习计划，并把新知识和你已经掌握的内容联系起来。",
     },
     sections: [
       {
-        heading: { en: "Why AI tutoring prompts fail", es: "Por qué fallan los prompts de tutoría con IA", pt: "Por que os prompts de tutoria com IA falham", zh: "Why AI tutoring prompts fail" },
+        heading: { en: "Why AI tutoring prompts fail", es: "Por qué fallan los prompts de tutoría con IA", pt: "Por que os prompts de tutoria com IA falham", zh: "AI辅导类提示词为什么会失效" },
         bullets: {
           en: [
             "No level specified: the model can't calibrate whether 'explain recursion' means explain it to a beginner or a senior developer.",
@@ -6906,16 +6906,16 @@ Constraints:
             "Amplo demais: 'me ajude a aprender machine learning' gera uma lista de leituras; um tema focado com uma pergunta específica gera compreensão.",
           ],
           zh: [
-            "No level specified: the model can't calibrate whether 'explain recursion' means explain it to a beginner or a senior developer.",
-            "No prior knowledge stated: without knowing what you already understand, the model either over-explains basics or skips foundational steps.",
-            "No check step: explanations with no comprehension check leave gaps — you don't know what you missed.",
-            "Single pass only: one explanation is rarely enough for hard concepts; prompts that invite follow-up are more effective.",
-            "Too broad: 'help me learn machine learning' produces a reading list; a focused topic with a specific question produces understanding.",
+            "没有说明水平：模型无法判断“解释递归”是要讲给初学者，还是讲给资深开发者。",
+            "没有说明已有知识：不知道你已经懂什么，模型要么把基础讲得过细，要么跳过关键的基础步骤。",
+            "没有检验环节：讲解之后不检验理解，就会留下漏洞——你不知道自己漏掉了什么。",
+            "只讲一遍：难的概念很少一遍就懂；鼓励追问的提示词效果更好。",
+            "范围太大：“帮我学机器学习”只会得到一份阅读清单；聚焦的主题加上具体的问题，才能带来真正的理解。",
           ],
         },
       },
       {
-        heading: { en: "What makes AI tutoring effective", es: "Qué hace efectiva la tutoría con IA", pt: "O que torna a tutoria com IA eficaz", zh: "What makes AI tutoring effective" },
+        heading: { en: "What makes AI tutoring effective", es: "Qué hace efectiva la tutoría con IA", pt: "O que torna a tutoria com IA eficaz", zh: "怎样让AI辅导真正有效" },
         bullets: {
           en: [
             "State your level and what you already know — this is the single most useful signal for calibration.",
@@ -6942,19 +6942,19 @@ Constraints:
             "Em temas complexos, peça um mapa conceitual: 'Desenhe as relações entre estas ideias antes de explicar cada uma.'",
           ],
           zh: [
-            "State your level and what you already know — this is the single most useful signal for calibration.",
-            "Ask for examples first, then the principle: concrete cases are easier to reason from than abstract definitions.",
-            "Request a comprehension check at the end: 'Give me 2 questions to test whether I understood this correctly.'",
-            "Use the Feynman test prompt: ask the model to explain what you just learned as if you need to teach it to someone else — gaps become obvious.",
-            "If something doesn't click, describe what is confusing specifically — 'I don't understand X because Y' gets better help than 'explain again'.",
-            "For complex topics, ask for a concept map: 'Draw the relationships between these ideas before explaining each one.'",
+            "说明你的水平和已经掌握的内容——这是让模型把握讲解深度最有用的信号。",
+            "先要示例，再讲原理：从具体案例出发推理，比从抽象定义出发更容易。",
+            "要求在最后检验理解：“给我出2道题，检验我是否理解对了。”",
+            "使用费曼测试提示词：让模型以“你需要把它教给别人”为前提，讲解你刚学到的内容——知识漏洞会一目了然。",
+            "如果某处还是没弄懂，具体说明哪里让你困惑——“我不理解X，因为Y”比“再解释一遍”能得到更好的帮助。",
+            "复杂主题可以先要一张概念图：“在逐一讲解之前，先画出这些概念之间的关系。”",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Calibrated concept explanation", es: "Explicación calibrada de un concepto", pt: "Explicação de conceito calibrada", zh: "Calibrated concept explanation" },
+        title: { en: "Calibrated concept explanation", es: "Explicación calibrada de un concepto", pt: "Explicação de conceito calibrada", zh: "按你的水平讲解概念" },
         purpose: "study",
         target: "claude",
         prompt: {
@@ -6994,22 +6994,22 @@ Instruções:
 3. Mostre um exemplo simples resolvido.
 4. Destaque os 1-2 erros mais comuns que os iniciantes cometem.
 5. Termine com: 2 perguntas curtas que testem se eu realmente entendi, e não só decorei.`,
-          zh: `Explain [concept] to me.
+          zh: `给我讲解[概念]。
 
-My level: [complete beginner / familiar with basics / intermediate — pick one]
-What I already know: [describe in 1-2 sentences, or 'nothing yet']
-Goal: [why you're learning this — e.g. 'to use it in my Python scripts' / 'for a job interview']
+我的水平：[完全零基础 / 了解基础 / 中级——选一个]
+我已经知道的：[用1-2句话描述，或写“暂时还不了解”]
+目标：[你学这个的原因——例如“要在我的Python脚本里用” / “为了求职面试”]
 
-Instructions:
-1. Start with a concrete real-world example before the formal definition.
-2. Explain using analogies to [something I'm already familiar with, e.g. spreadsheets / cooking / building construction].
-3. Show a simple worked example.
-4. Highlight the 1-2 most common mistakes beginners make.
-5. End with: 2 short questions that test whether I actually understood, not just memorized.`,
+要求：
+1. 先举一个现实中的具体例子，再给出正式定义。
+2. 用类比来讲解，类比对象是[我已经熟悉的事物，例如电子表格 / 做饭 / 建筑施工]。
+3. 展示一个简单的完整示例。
+4. 指出初学者最常犯的1-2个错误。
+5. 最后：出2道简短的题，检验我是否真正理解，而不只是记住了。`,
         },
       },
       {
-        title: { en: "Study plan for a specific topic", es: "Plan de estudio para un tema específico", pt: "Plano de estudo para um tema específico", zh: "Study plan for a specific topic" },
+        title: { en: "Study plan for a specific topic", es: "Plan de estudio para un tema específico", pt: "Plano de estudo para um tema específico", zh: "针对具体主题的学习计划" },
         purpose: "study",
         target: "gpt",
         prompt: {
@@ -7067,44 +7067,44 @@ Restrições:
 - Mantenha o plano viável no tempo que eu indiquei.
 - Não encha com temas opcionais do tipo 'seria bom saber'.
 - Se o meu tempo for curto demais para o objetivo, diga isso de forma direta e sugira um escopo menor.`,
-          zh: `Build a focused study plan for me.
+          zh: `为我制定一份聚焦的学习计划。
 
-Topic: [what you want to learn]
-My current level: [beginner / some familiarity / intermediate]
-Time available: [hours per week] for [number of weeks]
-Goal: [what you want to be able to DO at the end — specific task, not 'understand it better']
+主题：[你想学的内容]
+我目前的水平：[零基础 / 有些了解 / 中级]
+可用时间：每周[小时数]小时，共[周数]周
+目标：[学完后你希望能“做到”什么——具体的任务，而不是“理解得更好”]
 
-Output format:
-1. Learning path: ordered list of sub-topics (most foundational first).
-2. For each sub-topic: one practice exercise I can do to confirm I understand it.
-3. The 3 resources to prioritize (type only: 'video tutorial', 'hands-on project', 'official docs' — do not recommend specific paid resources).
-4. Weekly milestone: what I should be able to do after each week.
-5. Warning: one common mistake people make when learning this that delays progress.
+输出格式：
+1. 学习路径：按顺序排列的子主题（最基础的放在最前面）。
+2. 每个子主题：一个可以确认我已经掌握的练习。
+3. 优先使用的3种资源（只写类型：“视频教程”“动手项目”“官方文档”——不要推荐具体的付费资源）。
+4. 每周里程碑：每周结束时我应该能做到什么。
+5. 提醒：学习这个主题时，一个会拖慢进度的常见错误。
 
-Constraints:
-- Keep the plan achievable in the time I specified.
-- Do not pad with optional 'nice to have' topics.
-- If my time is too short for the goal, say so directly and suggest a reduced scope.`,
+约束条件：
+- 计划要能在我给出的时间内完成。
+- 不要塞进可有可无的“锦上添花”主题。
+- 如果我的时间不够实现目标，直接说明，并建议缩小范围。`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Is AI a good replacement for a human tutor?", es: "¿La IA reemplaza bien a un tutor humano?", pt: "A IA substitui bem um professor particular?", zh: "Is AI a good replacement for a human tutor?" },
+        q: { en: "Is AI a good replacement for a human tutor?", es: "¿La IA reemplaza bien a un tutor humano?", pt: "A IA substitui bem um professor particular?", zh: "AI能很好地替代真人老师吗？" },
         a: {
           en: "For structured content that doesn't require hands-on feedback — concepts, worked examples, practice problems — AI tutors are genuinely useful and available at any hour. For skills that need real-time observation (public speaking, physical technique, lab work) or mentorship on career and judgment calls, a human tutor is much better. The highest-value AI tutoring use case is the thing you'd be embarrassed to ask a human 20 times: explaining the same concept differently until it clicks.",
           es: "Para contenido estructurado que no requiere retroalimentación práctica — conceptos, ejemplos resueltos, problemas de práctica — los tutores de IA son genuinamente útiles y están disponibles a cualquier hora. Para habilidades que necesitan observación en tiempo real (oratoria, técnica física, trabajo de laboratorio) o mentoría en carrera y decisiones de criterio, un tutor humano es mucho mejor. El caso de uso de mayor valor en la tutoría con IA es lo que te daría vergüenza preguntarle a un humano 20 veces: explicar el mismo concepto de distintas maneras hasta que haga click.",
           pt: "Para conteúdo estruturado que não exige feedback prático — conceitos, exemplos resolvidos, exercícios — os tutores de IA são realmente úteis e estão disponíveis a qualquer hora. Para habilidades que exigem observação em tempo real (falar em público, técnica física, trabalho de laboratório) ou mentoria sobre carreira e decisões de julgamento, um tutor humano é muito melhor. O uso de maior valor da tutoria com IA é aquilo que você teria vergonha de perguntar 20 vezes a uma pessoa: explicar o mesmo conceito de jeitos diferentes até fazer sentido.",
-          zh: "For structured content that doesn't require hands-on feedback — concepts, worked examples, practice problems — AI tutors are genuinely useful and available at any hour. For skills that need real-time observation (public speaking, physical technique, lab work) or mentorship on career and judgment calls, a human tutor is much better. The highest-value AI tutoring use case is the thing you'd be embarrassed to ask a human 20 times: explaining the same concept differently until it clicks.",
+          zh: "对于不需要现场动手反馈的结构化内容——概念、完整示例、练习题——AI导师确实很有用，而且随时可用。对于需要实时观察的技能（公开演讲、身体技巧、实验操作），或者职业发展与判断方面的指导，真人老师要好得多。AI辅导最有价值的用法，是那些你不好意思向真人问20遍的事：换着方式解释同一个概念，直到你真正弄懂。",
         },
       },
       {
-        q: { en: "How do I know if AI explanations are accurate?", es: "¿Cómo sé si las explicaciones de la IA son correctas?", pt: "Como sei se as explicações da IA estão corretas?", zh: "How do I know if AI explanations are accurate?" },
+        q: { en: "How do I know if AI explanations are accurate?", es: "¿Cómo sé si las explicaciones de la IA son correctas?", pt: "Como sei se as explicações da IA estão corretas?", zh: "怎么判断AI的讲解是否准确？" },
         a: {
           en: "AI explanations can be wrong, especially on niche topics, cutting-edge research, or precise technical details. Cross-check key claims against official documentation or authoritative sources. Ask the model to flag its uncertainty: 'Mark anything you're not confident about.' For foundational topics in well-established fields (standard algorithms, core language features, classical physics), accuracy is generally high. For anything recent or specialized, verify before relying on it.",
           es: "Las explicaciones de la IA pueden estar equivocadas, especialmente en temas de nicho, investigación de vanguardia o detalles técnicos precisos. Verificá afirmaciones clave contra documentación oficial o fuentes autorizadas. Pedile al modelo que marque su incertidumbre: 'Marcá todo sobre lo que no estés seguro.' Para temas fundamentales en campos bien establecidos (algoritmos estándar, características centrales de lenguajes, física clásica), la precisión generalmente es alta. Para cualquier cosa reciente o especializada, verificá antes de confiar en ello.",
           pt: "As explicações da IA podem estar erradas, principalmente em temas de nicho, pesquisas de ponta ou detalhes técnicos precisos. Confira as afirmações principais na documentação oficial ou em fontes confiáveis. Peça ao modelo para sinalizar a incerteza: 'Marque tudo de que você não tiver certeza.' Em temas fundamentais de áreas bem estabelecidas (algoritmos clássicos, recursos centrais de uma linguagem, física clássica), a precisão costuma ser alta. Para qualquer coisa recente ou especializada, verifique antes de confiar.",
-          zh: "AI explanations can be wrong, especially on niche topics, cutting-edge research, or precise technical details. Cross-check key claims against official documentation or authoritative sources. Ask the model to flag its uncertainty: 'Mark anything you're not confident about.' For foundational topics in well-established fields (standard algorithms, core language features, classical physics), accuracy is generally high. For anything recent or specialized, verify before relying on it.",
+          zh: "AI的讲解可能出错，尤其是在小众主题、前沿研究或精确的技术细节上。关键说法要对照官方文档或权威来源核实。让模型标出不确定的地方：“把你没有把握的内容标出来。”对于成熟领域的基础主题（标准算法、核心语言特性、经典物理），准确率通常较高。对于任何新近或专业的内容，在依赖它之前先核实。",
         },
       },
     ],
@@ -7413,17 +7413,17 @@ Where sources disagree, show both positions. Where no reliable source exists, wr
       en: "How to debug a prompt that gives bad output",
       es: "Cómo depurar un prompt que da resultados malos",
       pt: "Como depurar um prompt que gera respostas ruins",
-      zh: "How to debug a prompt that gives bad output",
+      zh: "如何调试输出不理想的提示词",
     },
     description: {
       en: "A systematic method for diagnosing why a prompt fails and fixing it without trial and error.",
       es: "Un método sistemático para diagnosticar por qué falla un prompt y corregirlo sin prueba y error.",
       pt: "Um método sistemático para diagnosticar por que um prompt falha e corrigi-lo sem tentativa e erro.",
-      zh: "A systematic method for diagnosing why a prompt fails and fixing it without trial and error.",
+      zh: "一套系统的方法：找出提示词失效的原因，不靠反复试错就把它修好。",
     },
     sections: [
       {
-        heading: { en: "The most common failure modes", es: "Los modos de falla más comunes", pt: "Os modos de falha mais comuns", zh: "The most common failure modes" },
+        heading: { en: "The most common failure modes", es: "Los modos de falla más comunes", pt: "Os modos de falha mais comuns", zh: "最常见的失效模式" },
         bullets: {
           en: [
             "Missing goal: you described the task but not what success looks like — the model guesses the acceptance criteria.",
@@ -7450,17 +7450,17 @@ Where sources disagree, show both positions. Where no reliable source exists, wr
             "Nenhuma âncora para a informação ausente: quando o modelo não sabe algo, ele preenche a lacuna. Dizer a ele para sinalizar as lacunas evita alucinações.",
           ],
           zh: [
-            "Missing goal: you described the task but not what success looks like — the model guesses the acceptance criteria.",
-            "Ambiguous scope: 'brief' means 50 words to you and 500 to the model. Specify numbers.",
-            "Missing context: the model lacks the constraints, definitions, or background that make the task unambiguous in your head.",
-            "Wrong format: you want a table, the model gives prose. You want JSON, the model adds markdown fences.",
-            "Conflicting instructions: 'be concise' plus 'cover everything' in the same prompt produce averaged-out garbage.",
-            "No anchor for missing info: when the model doesn't know something, it fills the gap. Telling it to flag gaps prevents hallucinations.",
+            "缺少目标：你描述了任务，却没说明什么样才算成功——模型只能去猜验收标准。",
+            "范围含糊：“简短”对你来说是50字，对模型来说可能是500字。请写明数字。",
+            "缺少上下文：在你脑中让任务毫无歧义的约束、定义或背景，模型并不知道。",
+            "格式不对：你想要表格，模型给了大段文字；你想要JSON，模型却加上了markdown代码块。",
+            "指令冲突：同一个提示词里既要“简洁”又要“面面俱到”，结果只会是两头折中的平庸内容。",
+            "缺少信息时没有兜底：模型不知道某件事时，会自己把空白补上。告诉它把缺口标出来，可以防止幻觉。",
           ],
         },
       },
       {
-        heading: { en: "The debugging process", es: "El proceso de depuración", pt: "O processo de depuração", zh: "The debugging process" },
+        heading: { en: "The debugging process", es: "El proceso de depuración", pt: "O processo de depuração", zh: "调试流程" },
         bullets: {
           en: [
             "Step 1 — isolate the symptom: write down exactly what went wrong. 'Too long', 'wrong format', 'hallucinated facts', 'missed the point', 'inconsistent across runs'.",
@@ -7484,18 +7484,18 @@ Where sources disagree, show both positions. Where no reliable source exists, wr
             "Passo 5 — fixe o que funciona com um exemplo de formato: quando a saída estiver certa, acrescente um exemplo de uma linha do formato exato que você quer. Isso evita desvios quando você reutilizar o prompt.",
           ],
           zh: [
-            "Step 1 — isolate the symptom: write down exactly what went wrong. 'Too long', 'wrong format', 'hallucinated facts', 'missed the point', 'inconsistent across runs'.",
-            "Step 2 — find the missing instruction: for each symptom, ask 'what would I need to say to a capable human to prevent this?' That missing instruction is what goes into the prompt.",
-            "Step 3 — add one fix at a time: change a single variable per run so you know what actually fixed it. Multiple changes at once make it impossible to know which one worked.",
-            "Step 4 — test with edge cases: run the fixed prompt on a harder version of the task, a short input, a long input, and an input with missing data. Real prompts need to handle all of these.",
-            "Step 5 — lock what works with a format example: once the output is right, add a one-line example of the exact format you want. It prevents drift when you reuse the prompt.",
+            "第1步——锁定症状：准确写下哪里出了问题。“太长”“格式不对”“编造事实”“没抓住重点”“多次运行结果不一致”。",
+            "第2步——找出缺失的指令：针对每个症状，问自己“要避免这种情况，我需要对一个能干的人说什么？”缺的那条指令，就是要加进提示词的内容。",
+            "第3步——一次只加一个修复：每次运行只改一个变量，这样你才知道到底是什么起了作用。同时改好几处，就无法判断是哪一处生效。",
+            "第4步——用边界情况测试：分别用更难的任务版本、很短的输入、很长的输入和缺少数据的输入，运行修复后的提示词。真实场景中的提示词需要应对所有这些情况。",
+            "第5步——用格式示例固定有效的写法：输出正确之后，加一行你想要的确切格式示例。这样复用提示词时，输出就不会跑偏。",
           ],
         },
       },
     ],
     templates: [
       {
-        title: { en: "Prompt self-diagnostic", es: "Auto-diagnóstico de prompt", pt: "Autodiagnóstico de prompt", zh: "Prompt self-diagnostic" },
+        title: { en: "Prompt self-diagnostic", es: "Auto-diagnóstico de prompt", pt: "Autodiagnóstico de prompt", zh: "提示词自我诊断" },
         purpose: "text",
         target: "gpt",
         prompt: {
@@ -7538,23 +7538,23 @@ Prompt para revisar:
 """
 [cole o prompt que está dando resultados ruins]
 """`,
-          zh: `You are a prompt quality reviewer. Analyze the following prompt and identify the top 3 reasons it might produce bad output.
+          zh: `你是一名提示词质量审查员。分析下面的提示词，找出它可能产生糟糕输出的3个主要原因。
 
-For each issue:
-1. Name the failure mode (e.g., "missing format constraint", "ambiguous scope", "no anchor for missing info").
-2. Quote the exact part of the prompt that causes it.
-3. Write a 1-sentence fix.
+针对每个问题：
+1. 说出失效模式的名称（例如“缺少格式约束”“范围含糊”“缺少信息时没有兜底”）。
+2. 引用提示词中导致这个问题的原文。
+3. 用一句话写出修复方法。
 
-Then rewrite the full prompt with all three fixes applied.
+然后，应用全部三项修复，重写整个提示词。
 
-Prompt to review:
+待审查的提示词：
 """
-[paste the prompt that is giving bad results]
+[粘贴输出效果不好的提示词]
 """`,
         },
       },
       {
-        title: { en: "Output comparison: what changed?", es: "Comparación de outputs: ¿qué cambió?", pt: "Comparação de saídas: o que mudou?", zh: "Output comparison: what changed?" },
+        title: { en: "Output comparison: what changed?", es: "Comparación de outputs: ¿qué cambió?", pt: "Comparação de saídas: o que mudou?", zh: "输出对比：改了什么？" },
         purpose: "text",
         target: "claude",
         prompt: {
@@ -7606,42 +7606,42 @@ Concentre-se em:
 - Qual regra de formato de saída faltou no prompt que gerou A?
 - Qual restrição ou exemplo tornaria A impossível e B previsível?
 - Escreva o acréscimo mínimo ao prompt original (1–3 linhas) que fecha essa lacuna.`,
-          zh: `Compare these two prompt outputs and explain what instruction change would produce output B instead of output A.
+          zh: `对比下面两个提示词输出，并说明怎样修改指令，才能得到输出B而不是输出A。
 
-Output A (bad):
+输出A（差）：
 """
-[paste the bad output]
-"""
-
-Output B (good):
-"""
-[paste an example of the output you actually want]
+[粘贴差的输出]
 """
 
-Focus on:
-- What output format rule was missing in the prompt that generated A?
-- What constraint or example would make A impossible and B predictable?
-- Write the minimum addition to the original prompt (1–3 lines) that closes the gap.`,
+输出B（好）：
+"""
+[粘贴一个你真正想要的输出示例]
+"""
+
+重点关注：
+- 生成A的提示词缺少了哪条输出格式规则？
+- 加上什么约束或示例，能让A不可能出现、让B稳定可预期？
+- 写出对原提示词最小的补充（1–3行），以弥补这个差距。`,
         },
       },
     ],
     faq: [
       {
-        q: { en: "Why does my prompt work sometimes but not others?", es: "¿Por qué mi prompt a veces funciona y a veces no?", pt: "Por que meu prompt funciona às vezes e às vezes não?", zh: "Why does my prompt work sometimes but not others?" },
+        q: { en: "Why does my prompt work sometimes but not others?", es: "¿Por qué mi prompt a veces funciona y a veces no?", pt: "Por que meu prompt funciona às vezes e às vezes não?", zh: "为什么我的提示词有时有效，有时无效？" },
         a: {
           en: "Inconsistent outputs usually mean the prompt has ambiguity the model resolves differently each time — no single correct interpretation, so it picks one at random. The fix is to reduce ambiguity: specify the format with an example, constrain the scope with numbers, and remove conflicting instructions. When strict consistency matters, also lower the model's temperature setting if you control it, or lock the output to a JSON schema where one is available.",
           es: "Los outputs inconsistentes generalmente significan que el prompt tiene ambigüedad que el modelo resuelve de manera diferente cada vez — sin una interpretación correcta única, elige una al azar. El fix es reducir la ambigüedad: especificá el formato con un ejemplo, restringí el alcance con números y eliminá instrucciones contradictorias. Cuando la consistencia estricta importa, también bajá la configuración de temperatura del modelo si la controlás, o bloqueá el output a un JSON schema cuando haya uno disponible.",
           pt: "Saídas inconsistentes costumam significar que o prompt tem uma ambiguidade que o modelo resolve de um jeito diferente a cada vez — não há uma única interpretação correta, então ele escolhe uma ao acaso. A correção é reduzir a ambiguidade: especifique o formato com um exemplo, restrinja o escopo com números e remova instruções conflitantes. Quando a consistência rigorosa importar, também reduza a temperatura do modelo, se você tiver controle sobre ela, ou fixe a saída em um JSON Schema quando houver essa opção.",
-          zh: "Inconsistent outputs usually mean the prompt has ambiguity the model resolves differently each time — no single correct interpretation, so it picks one at random. The fix is to reduce ambiguity: specify the format with an example, constrain the scope with numbers, and remove conflicting instructions. When strict consistency matters, also lower the model's temperature setting if you control it, or lock the output to a JSON schema where one is available.",
+          zh: "输出不一致，通常意味着提示词存在歧义，模型每次的理解都不一样——没有唯一正确的解读，它就随机选一种。解决办法是减少歧义：用示例规定格式，用数字限定范围，删掉相互冲突的指令。如果非常需要稳定一致，而你又能控制模型的temperature（温度）设置，就把它调低；在支持的情况下，也可以用JSON schema锁定输出。",
         },
       },
       {
-        q: { en: "How many iterations does it usually take to fix a prompt?", es: "¿Cuántas iteraciones suele llevar arreglar un prompt?", pt: "Quantas iterações costuma levar para corrigir um prompt?", zh: "How many iterations does it usually take to fix a prompt?" },
+        q: { en: "How many iterations does it usually take to fix a prompt?", es: "¿Cuántas iteraciones suele llevar arreglar un prompt?", pt: "Quantas iterações costuma levar para corrigir um prompt?", zh: "修好一个提示词通常需要迭代几次？" },
         a: {
           en: "Most prompt problems are fixed in 2–3 iterations when you change one thing at a time. Common mistakes that drag it out: changing multiple things at once (so you can't tell what worked), testing only on the original input (missing edge cases), and fixing symptoms instead of root causes. A prompt that handles 5 diverse test inputs reliably is genuinely fixed. One that passes only the original test case will break in production.",
           es: "La mayoría de los problemas de prompts se arreglan en 2–3 iteraciones cuando cambiás una cosa a la vez. Los errores comunes que lo prolongan: cambiar múltiples cosas a la vez (así no podés saber qué funcionó), testear solo en el input original (sin casos límite), y arreglar síntomas en lugar de causas raíz. Un prompt que maneja de manera confiable 5 inputs diversos está genuinamente arreglado. Uno que pasa solo el caso de test original se va a romper en producción.",
           pt: "A maioria dos problemas de prompt se resolve em 2–3 iterações quando você muda uma coisa de cada vez. Erros comuns que prolongam o processo: mudar várias coisas ao mesmo tempo (aí você não sabe o que funcionou), testar só com a entrada original (deixando de fora os casos de borda) e corrigir sintomas em vez das causas. Um prompt que dá conta de 5 entradas de teste variadas de forma confiável está realmente corrigido. Um que só passa no caso de teste original vai quebrar em produção.",
-          zh: "Most prompt problems are fixed in 2–3 iterations when you change one thing at a time. Common mistakes that drag it out: changing multiple things at once (so you can't tell what worked), testing only on the original input (missing edge cases), and fixing symptoms instead of root causes. A prompt that handles 5 diverse test inputs reliably is genuinely fixed. One that passes only the original test case will break in production.",
+          zh: "如果每次只改一处，大多数提示词问题在2–3次迭代内就能解决。会拖长过程的常见错误有：一次改多处（无法判断是哪一处起了作用）、只用原始输入测试（漏掉边界情况），以及只治症状、不找根本原因。能稳定处理5个不同测试输入的提示词，才算真正修好；只能通过原始测试用例的提示词，到了生产环境就会出问题。",
         },
       },
     ],

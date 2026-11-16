@@ -70,21 +70,21 @@ export default async function ModelPage({
 
         <div className="pt-2 text-xs opacity-70">
           <Link href={`/${l}/models`} className="hover:underline underline-offset-2">
-            {pick(l, { es: "← Volver a modelos", en: "← Back to models", pt: "← Voltar aos modelos", zh: "← Back to models" })}
+            {pick(l, { es: "← Volver a modelos", en: "← Back to models", pt: "← Voltar aos modelos", zh: "← 返回模型" })}
           </Link>
         </div>
       </div>
 
       {/* ✅ SEO editorial block */}
       <section className="mt-8 surface p-5">
-        <h2 className="text-sm font-medium">{pick(l, { es: "Qué cambia en este modelo", en: "What changes with this model", pt: "O que muda com este modelo", zh: "What changes with this model" })}</h2>
+        <h2 className="text-sm font-medium">{pick(l, { es: "Qué cambia en este modelo", en: "What changes with this model", pt: "O que muda com este modelo", zh: "这个模型有什么不同" })}</h2>
         <div className="mt-2 space-y-2 text-sm opacity-85">
           <p>
             {pick(l, {
               es: "Aunque la estructura del prompt sea similar, cada modelo tiene sesgos: algunos siguen mejor instrucciones estrictas, otros son más creativos, otros necesitan ejemplos. Estos templates están pensados para reducir ambigüedad y mejorar consistencia.",
               en: "Even if prompt structure is similar, each model has biases: some follow strict instructions better, some are more creative, and some need examples. These templates are designed to reduce ambiguity and improve consistency.",
               pt: "Mesmo que a estrutura do prompt seja parecida, cada modelo tem seus vieses: alguns seguem melhor instruções estritas, outros são mais criativos e outros precisam de exemplos. Estes templates foram pensados para reduzir a ambiguidade e melhorar a consistência.",
-              zh: "Even if prompt structure is similar, each model has biases: some follow strict instructions better, some are more creative, and some need examples. These templates are designed to reduce ambiguity and improve consistency.",
+              zh: "即使提示词结构相似，每个模型也有各自的倾向：有的更能遵循严格的指令，有的更有创意，有的则需要示例。这些模板旨在减少歧义、提高一致性。",
             })}
           </p>
           <p>
@@ -92,7 +92,7 @@ export default async function ModelPage({
               es: "Recomendación: definí formato de salida (idealmente con checklist), agregá restricciones y, si necesitás precisión, usá few-shot o pedí JSON estricto.",
               en: "Recommendation: define output format (ideally with a checklist), add constraints, and if you need precision, use few-shot or require strict JSON.",
               pt: "Recomendação: defina o formato de saída (de preferência com um checklist), adicione restrições e, se precisar de precisão, use few-shot ou exija JSON estrito.",
-              zh: "Recommendation: define output format (ideally with a checklist), add constraints, and if you need precision, use few-shot or require strict JSON.",
+              zh: "建议：明确输出格式（最好附一份检查清单），加上约束条件；如果需要精确，就使用少样本示例或要求严格的JSON。",
             })}
           </p>
 
@@ -100,10 +100,10 @@ export default async function ModelPage({
             {/* v1.8.6: the family's own prompt guide, when there is one. */}
             {getGuide(`${model.slug}-prompt-guide`) ? (
               <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/${model.slug}-prompt-guide`}>
-                {pick(l, { es: "Guía de prompts", en: "Prompt guide", pt: "Guia de prompts", zh: "Prompt guide" })}
+                {pick(l, { es: "Guía de prompts", en: "Prompt guide", pt: "Guia de prompts", zh: "提示词指南" })}
               </Link>
             ) : null}
-            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>{pick(l, { es: "JSON estricto", en: "Strict JSON", pt: "JSON estrito", zh: "Strict JSON" })}</Link>
+            <Link className="btn btn-ghost h-9 px-4" href={`/${l}/guides/json-output`}>{pick(l, { es: "JSON estricto", en: "Strict JSON", pt: "JSON estrito", zh: "严格JSON" })}</Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/few-shot`}>Few-shot</Link>
             <Link className="btn btn-ghost h-9 px-4" href={`/${l}/glossary/hallucinations`}>Hallucinations</Link>
           </div>
@@ -116,7 +116,7 @@ export default async function ModelPage({
 
       {/* Tips */}
       <section className="mt-8 surface p-5">
-        <div className="text-sm font-medium">{pick(l, { es: "Tips rápidos", en: "Quick tips", pt: "Dicas rápidas", zh: "Quick tips" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Tips rápidos", en: "Quick tips", pt: "Dicas rápidas", zh: "快速技巧" })}</div>
         <ul className="mt-3 list-disc pl-5 text-sm opacity-90 space-y-1">
           {model.bullets[l].map((b, i) => (
             <li key={i}>{b}</li>
@@ -126,7 +126,7 @@ export default async function ModelPage({
 
       {/* Templates */}
       <section className="mt-10">
-        <div className="text-sm font-medium">{pick(l, { es: "Templates", en: "Templates", pt: "Templates", zh: "Templates" })}</div>
+        <div className="text-sm font-medium">{pick(l, { es: "Templates", en: "Templates", pt: "Templates", zh: "模板" })}</div>
 
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {model.templates.map((t, idx) => {
@@ -135,7 +135,7 @@ export default async function ModelPage({
             const href = buildPrefillHref({ lang: l, prompt: t.prompt[l], purpose: t.purpose, target: model.slug });
             // v1.7.3: every card has the same visible "Open in Promptea" text, so the
             // accessible name adds the template title (visible text first, for voice control).
-            const openLabel = pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "Open in Promptea" });
+            const openLabel = pick(l, { es: "Abrir en Promptea", en: "Open in Promptea", pt: "Abrir no Promptea", zh: "在Promptea中打开" });
 
             return (
               <article key={idx} className="surface p-4 space-y-3">
@@ -149,7 +149,7 @@ export default async function ModelPage({
                       es: "Se abre en el analizador con el prompt precargado.",
                       en: "Opens the analyzer with the prompt prefilled.",
                       pt: "Abre o analisador com o prompt já preenchido.",
-                      zh: "Opens the analyzer with the prompt prefilled.",
+                      zh: "将在分析器中打开，并预先填入该提示词。",
                     })}
                   </div>
                   <Link href={href} className="btn btn-primary h-9 px-4" aria-label={`${openLabel}: ${t.title[l]}`}>
@@ -165,7 +165,7 @@ export default async function ModelPage({
       {/* FAQ visible */}
       {faq.length > 0 && (
         <section className="mt-10 surface p-5">
-          <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "FAQ" })}</div>
+          <div className="text-sm font-medium">{pick(l, { es: "Preguntas frecuentes", en: "FAQ", pt: "Perguntas frequentes", zh: "常见问题" })}</div>
           <div className="mt-3 space-y-2">
             {faq.map((x) => (
               <details key={x.q} className="surface-soft p-3 rounded-2xl">
