@@ -47,12 +47,27 @@ export default function BenchmarkTableView({
   copy,
   highlightId,
   onHighlight,
+  onOpen,
+  openLabel,
+  compareIds = [],
+  onToggleCompare,
+  compareLabel,
+  compareCol,
+  maxCompare = 4,
 }: {
   table: BenchmarkTable;
   lang: Lang;
   copy: TableCopy;
   highlightId?: string | null;
   onHighlight?: (id: string | null) => void;
+  /** v1.8.7 — the model name opens its analysis; a "Compare" checkbox per row. */
+  onOpen?: (id: string) => void;
+  openLabel?: string;
+  compareIds?: string[];
+  onToggleCompare?: (id: string) => void;
+  compareLabel?: string;
+  compareCol?: string;
+  maxCompare?: number;
 }) {
   const [query, setQuery] = useState("");
   const [provider, setProvider] = useState("");
@@ -131,6 +146,11 @@ export default function BenchmarkTableView({
               <th scope="col" className="px-3 py-3 font-medium">{copy.colProvider}</th>
               <th scope="col" className="px-3 py-3 text-right font-medium">{copy.colScore}</th>
               <th scope="col" className="px-3 py-3 font-medium">{copy.colSource}</th>
+              {onToggleCompare ? (
+                <th scope="col" className="px-3 py-3 text-center font-medium">
+                  {compareCol}
+                </th>
+              ) : null}
               <th scope="col" className="px-3 py-3 text-right font-medium" title={copy.priceHint}>
                 {copy.colPrice}
               </th>
@@ -139,7 +159,7 @@ export default function BenchmarkTableView({
           <tbody>
             {shown.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-3 py-8 text-center text-ink-muted">
+                <td colSpan={onToggleCompare ? 7 : 6} className="px-3 py-8 text-center text-ink-muted">
                   {copy.noMatch}
                 </td>
               </tr>
@@ -157,9 +177,21 @@ export default function BenchmarkTableView({
                     <td className="px-3 py-3 tabular-nums text-ink-muted">{r.rank}</td>
                     <td className="px-3 py-3">
                       <span aria-hidden="true" className="mr-2 inline-block h-2 w-2 rounded-full align-middle" style={{ background: providerColor(r.provider) }} />
-                      <a href={`https://openrouter.ai/${r.modelId}`} target="_blank" rel="noopener noreferrer" className="font-medium text-ink hover:text-accent">
-                        {r.name}
-                      </a>
+                      {onOpen ? (
+                        <button
+                          type="button"
+                          onClick={() => onOpen(r.modelId)}
+                          className="bm-model-link text-left font-medium text-ink"
+                          aria-label={openLabel ? openLabel.replace("{name}", r.name) : undefined}
+                          aria-haspopup="dialog"
+                        >
+                          {r.name}
+                        </button>
+                      ) : (
+                        <a href={`https://openrouter.ai/${r.modelId}`} target="_blank" rel="noopener noreferrer" className="font-medium text-ink hover:text-accent">
+                          {r.name}
+                        </a>
+                      )}
                       {promptea ? (
                         <span className="ml-2 whitespace-nowrap text-xs">
                           <Link href={`/${lang}/models/${promptea.modelPage}`} className="text-accent hover:underline">
@@ -181,6 +213,18 @@ export default function BenchmarkTableView({
                       {table.def.label[lang]}
                       <span className="block">{SOURCE_INFO[table.def.source].name}</span>
                     </td>
+                    {onToggleCompare ? (
+                      <td className="px-3 py-3 text-center">
+                        <input
+                          type="checkbox"
+                          className="bm-compare-check h-4 w-4"
+                          checked={compareIds.includes(r.modelId)}
+                          disabled={!compareIds.includes(r.modelId) && compareIds.length >= maxCompare}
+                          onChange={() => onToggleCompare(r.modelId)}
+                          aria-label={compareLabel ? compareLabel.replace("{name}", r.name) : undefined}
+                        />
+                      </td>
+                    ) : null}
                     <td className="whitespace-nowrap px-3 py-3 text-right text-xs tabular-nums text-ink-muted">
                       {r.price ? `${formatPrice(r.price.inputPerM, lang)} / ${formatPrice(r.price.outputPerM, lang)}` : "—"}
                     </td>

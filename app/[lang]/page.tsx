@@ -17,9 +17,10 @@
 //   4. two columns from `lg` up:
 //        main   "Latest in AI Daily" (the newest stories) and, under it, the
 //               compact Benchmarks teaser (the top of one real ranking);
-//        side   (sticky) the X feed card and the newsletter sign-up. On phones
-//               the side stacks after the main content, with the newsletter
-//               right after "Latest in AI Daily".
+//        side   (sticky) the newsletter sign-up and, under it, the X feed card
+//               (v1.8.7: newsletter first; the feed is Promptea's own, rendered
+//               on the server). On phones the side stacks after the main
+//               content, with the newsletter right after "Latest in AI Daily".
 //   5. the footer.
 //
 // What left the page, and where it went:
@@ -53,7 +54,7 @@ import { selectMarqueeItems, type MarqueeItem } from "@/lib/blog/marquee";
 import { HOME_LATEST_COUNT, hasTechStory, selectHomeLatest } from "@/lib/blog/latest";
 import { getBenchmarks } from "@/lib/benchmarks/server";
 import { buildTeaser, type Teaser } from "@/lib/benchmarks/teaser";
-import { getXLinks, getXWidgetId } from "@/lib/social";
+import { getXLinks } from "@/lib/social";
 import { homeAboutDoc } from "@/lib/seo/content/sitePages";
 import { homeGraph } from "@/lib/seo/pageGraphs";
 import { markdownPathOf } from "@/lib/seo/registry";
@@ -150,7 +151,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const doc = homeAboutDoc(l);
   const [{ marquee, latest, hasTech }, teaser] = await Promise.all([loadNews(l), loadTeaser()]);
   const x = getXLinks();
-  const xWidgetId = getXWidgetId();
 
   const actions = [
     { href: `/${l}/analyzer`, ...t.actions.analyze },
@@ -247,9 +247,10 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </div>
 
         <aside aria-label={t.sideAria} className="home-side grid min-w-0 grid-cols-1 gap-6">
-          {/* X feed: the Elfsight widget (lib/social.ts → getXWidgetId) */}
-          {xWidgetId ? <XFeed widgetId={xWidgetId} handle={x.handle} profileUrl={x.url} dict={t.xFeed} /> : null}
+          {/* v1.8.7: newsletter first, the X feed under it (Promptea's own feed: lib/social). On phones and
+              tablets the newsletter already sits right after the stories, so the column starts with X. */}
           <div className="hidden lg:block">{newsletter("home-newsletter-title")}</div>
+          <XFeed lang={l} handle={x.handle} profileUrl={x.url} dict={t.xFeed} />
         </aside>
       </div>
     </main>

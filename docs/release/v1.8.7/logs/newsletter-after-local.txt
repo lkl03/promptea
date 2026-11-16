@@ -1,0 +1,18 @@
+clean      1440 /es                200 → CARD(compact)
+clean      1440 /en/analyzer       200 → CARD(full)
+clean      1440 /en/guides         200 → CARD(full)
+clean      1440 /es/models         200 → CARD(full)
+clean      1440 /en/benchmarks     200 → CARD(full) COVERS: BUTTON Top 5 | BUTTON Top 10 | BUTTON Top 15 | BUTTON Top 25
+clean      1440 /pt/how-it-works   200 → CARD(full)
+clean      1440 /es/blog           200 → nothing [inline form on screen]
+clean      1440 /en/blog/tech      200 → nothing [inline form on screen]
+clean      1440 /en/blog/weekly    200 → nothing [inline form on screen]
+clean       375 /es                200 → nothing → after scrolling: CARD(compact)
+clean       375 /en/analyzer       200 → nothing → after scrolling: nothing
+clean       375 /en/guides         200 → CARD(compact)
+clean       375 /es/models         200 → CARD(compact)
+clean       375 /en/benchmarks     200 → nothing → after scrolling: CARD(compact)
+clean       375 /pt/how-it-works   200 → CARD(compact)
+clean       375 /es/blog           200 → nothing → after scrolling: CARD(compact)
+clean       375 /en/blog/tech      200 → nothing → after scrolling: CARD(compact)
+clean       375 /en/blog/weekly    200 → CARD(compact)

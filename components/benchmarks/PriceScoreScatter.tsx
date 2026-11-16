@@ -50,6 +50,8 @@ export default function PriceScoreScatter({
   copy,
   activeId,
   onActive,
+  onOpen,
+  openLabel,
 }: {
   points: PricePoint[];
   excluded: number;
@@ -58,10 +60,16 @@ export default function PriceScoreScatter({
   copy: ScatterCopy;
   activeId: string | null;
   onActive: (id: string | null) => void;
+  /** v1.8.7 — opens the model's analysis (Enter on the focused chart, or the button under it). */
+  onOpen?: (id: string) => void;
+  /** "Analysis of {name}" */
+  openLabel?: string;
 }) {
   const uid = useId();
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [focused, setFocused] = useState(false);
+  // The last point clicked or reached with the keyboard: the "open its analysis" button stays for it.
+  const [picked, setPicked] = useState<string | null>(null);
   const locale = INTL_LOCALE[lang];
 
   const model = useMemo(() => {
@@ -106,9 +114,14 @@ export default function PriceScoreScatter({
     else if (e.key === "Escape") {
       onActive(null);
       return;
+    } else if ((e.key === "Enter" || e.key === " ") && active && onOpen) {
+      e.preventDefault();
+      onOpen(active.modelId);
+      return;
     } else return;
     e.preventDefault();
     onActive(byPrice[next].modelId);
+    setPicked(byPrice[next].modelId);
   }
 
   const statusText = active
@@ -187,7 +200,10 @@ export default function PriceScoreScatter({
                   fill="transparent"
                   onMouseEnter={() => onActive(p.modelId)}
                   onMouseLeave={() => onActive(null)}
-                  onClick={() => onActive(isActive ? null : p.modelId)}
+                  onClick={() => {
+                    onActive(isActive ? null : p.modelId);
+                    setPicked(p.modelId);
+                  }}
                 />
                 <circle
                   cx={cx}
@@ -253,6 +269,19 @@ export default function PriceScoreScatter({
       <p id={`${uid}-status`} className="sr-only" aria-live="polite">
         {statusText}
       </p>
+
+      {onOpen && (picked ?? activeId) ? (
+        (() => {
+          const p = points.find((x) => x.modelId === (picked ?? activeId));
+          return p ? (
+            <p className="mt-3">
+              <button type="button" className="btn btn-ghost h-9 px-3.5 text-sm" onClick={() => onOpen(p.modelId)} aria-haspopup="dialog">
+                {openLabel ? openLabel.replace("{name}", p.name) : p.name} →
+              </button>
+            </p>
+          ) : null;
+        })()
+      ) : null}
 
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-ink-muted">
         <span className="inline-flex items-center gap-1.5">

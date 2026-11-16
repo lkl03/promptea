@@ -8,10 +8,8 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { storyLabel } from "@/components/home/LatestDaily";
 import { HANDOFF_PROMPT_MAX, HOME_PROMPT_MAX, stashPromptForAnalyzer } from "@/components/home/HomePromptBox";
-import { ELFSIGHT_PLATFORM_SRC } from "@/components/home/XFeed";
 import { NAV_LINKS } from "@/components/TopBar";
 import { HANDOFF_KEY } from "@/lib/matcher/handoff";
-import { DEFAULT_X_WIDGET_ID, resolveXWidgetId } from "@/lib/social";
 import { homeAboutDoc, howItWorksDoc } from "@/lib/seo/content/sitePages";
 import { CORE_PAGES, allStaticSeoUrls } from "@/lib/seo/registry";
 import { LOCALES } from "@/lib/seo/site";
@@ -69,7 +67,7 @@ describe("home page structure", () => {
   });
 
   test("reading order: heading, actions + how it works, prompt box, stories, benchmarks; X and newsletter aside", () => {
-    const order = ["<NewsMarquee", "<h1", "t.actionsAria", "/how-it-works", "<HomePromptBox", "<LatestDaily", "<BenchmarksTeaser", "<aside", "<XFeed"];
+    const order = ["<NewsMarquee", "<h1", "t.actionsAria", "/how-it-works", "<HomePromptBox", "<LatestDaily", "<BenchmarksTeaser", "<aside", 'newsletter("home-newsletter-title")', "<XFeed"];
     const at = order.map((m) => home.indexOf(m));
     expect(at.every((i) => i > 0), JSON.stringify(at)).toBe(true);
     expect([...at].sort((a, b) => a - b)).toEqual(at);
@@ -160,54 +158,7 @@ describe("Latest in AI Daily", () => {
   });
 });
 
-describe("X feed card (Elfsight widget)", () => {
-  const src = read("components", "home", "XFeed.tsx");
-
-  test("renders Promptea's widget by default; a valid env id overrides it; 'off' disables the card", () => {
-    expect(DEFAULT_X_WIDGET_ID).toBe("941b1ba8-5c1c-4d91-a254-c242d3c77a61");
-    expect(resolveXWidgetId(undefined)).toBe(DEFAULT_X_WIDGET_ID);
-    expect(resolveXWidgetId("  ")).toBe(DEFAULT_X_WIDGET_ID);
-    expect(resolveXWidgetId("0F0E0D0C-1111-2222-3333-444455556666")).toBe("0f0e0d0c-1111-2222-3333-444455556666");
-    expect(resolveXWidgetId("off")).toBeNull();
-    expect(resolveXWidgetId("none")).toBeNull();
-  });
-
-  test("a malformed id never reaches the page (it becomes a class name)", () => {
-    for (const bad of ["abc", '941b1ba8"><script>alert(1)</script>', "941b1ba8-5c1c-4d91-a254-c242d3c77a61 extra", "../../x"]) {
-      expect(resolveXWidgetId(bad)).toBe(DEFAULT_X_WIDGET_ID);
-    }
-  });
-
-  test("the widget element is the one Elfsight expects; loading is deferred once, by the card", () => {
-    expect(src).toMatch(/className=\{`elfsight-app-\$\{widgetId\}`\}/);
-    // Elfsight's own lazy attribute stacked a second observer on ours and sometimes never fired.
-    expect(src).not.toMatch(/data-elfsight-app-lazy=/);
-    expect(ELFSIGHT_PLATFORM_SRC).toBe("https://elfsightcdn.com/platform.js");
-  });
-
-  test("nothing is requested until the card is near the viewport, and X's own widget is gone", () => {
-    expect(src).toMatch(/new IntersectionObserver\(/);
-    expect(src).not.toMatch(/platform\.twitter\.com/);
-    // The script is only ever added by loadPlatform(), which only start() calls, which only the observer calls.
-    expect(src.match(/loadPlatform\(\)/g)).toHaveLength(2);
-    expect(read("app", "[lang]", "layout.tsx")).not.toMatch(/elfsight/i);
-  });
-
-  test("fixed-height box (no layout shift) and a profile-link fallback when nothing renders", () => {
-    expect(src).toMatch(/style=\{\{ height: FEED_HEIGHT \}\}/);
-    expect(src).toMatch(/LOAD_TIMEOUT_MS/);
-    expect(src).toMatch(/state === "failed"/);
-  });
-
-  test("both dictionaries carry the card's strings, and the privacy page names Elfsight", () => {
-    for (const lang of LOCALES) {
-      const x = dict(lang).hub.xFeed;
-      for (const k of ["title", "subtitle", "loading", "privacyNote", "fallback", "open", "follow"]) expect(x[k], `${lang}.${k}`).toBeTruthy();
-      expect(x.privacyNote).toMatch(/Elfsight/);
-    }
-    expect(read("app", "[lang]", "privacy", "page.tsx")).toMatch(/Elfsight/);
-  });
-});
+// v1.8.7: the X feed card (Promptea's own feed) is tested in lib/__tests__/xfeed.test.ts.
 
 describe("news marquee on the home page", () => {
   const file = read("app", "[lang]", "page.tsx");

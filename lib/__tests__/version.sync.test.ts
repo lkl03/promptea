@@ -53,7 +53,10 @@ describe("version synchronization", () => {
   // newer than APP_VERSION. RELEASE STEP: the PR that bumps the version turns
   // that heading into a dated one and deletes this tolerance (UNRELEASED_OK).
   // v1.8.3 was released by the second PR: the heading is dated and the tolerance is off again.
-  const UNRELEASED_OK = false;
+  // v1.8.7 is built the same way: part A (X feed, newsletter card, benchmarks per model, QA)
+  // writes its notes under "## v1.8.7 (unreleased)"; part B (Chinese) bumps the version,
+  // dates the heading and turns this back to false.
+  const UNRELEASED_OK = true;
   const releasedHeadings = (changelog: string) =>
     [...changelog.matchAll(/^## v(\d+\.\d+\.\d+)(?! \(unreleased\))/gm)].map((m) => m[1]);
 

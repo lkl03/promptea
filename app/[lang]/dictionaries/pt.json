@@ -384,12 +384,13 @@
     },
     "xFeed": {
       "title": "Siga a gente no X",
-      "subtitle": "Promptea e notícias de IA, ao vivo.",
-      "loading": "Carregando o feed…",
-      "privacyNote": "Exibido com um widget da Elfsight; as publicações vêm do X. Ambos são terceiros e podem receber dados do seu navegador.",
-      "fallback": "Não foi possível mostrar o feed aqui. Seu navegador ou uma extensão pode estar bloqueando. O perfil abre normalmente.",
+      "subtitle": "O que publicamos de mais recente sobre prompts e IA.",
+      "follow": "Siga a gente no X",
       "open": "Abrir @{handle} no X",
-      "follow": "Siga a gente no X"
+      "viewPost": "Ver no X",
+      "listLabel": "Publicações recentes de @{handle}",
+      "empty": "Ainda não conseguimos mostrar nossas publicações aqui. Estão todas no nosso perfil do X.",
+      "note": "Publicações de @{handle}, exibidas pelo Promptea sem scripts do X: seu navegador não se conecta ao X até você abrir um link."
     },
     "newsletter": {
       "title": "A semana em IA, no seu e-mail",
@@ -443,14 +444,12 @@
   },
   "newsletterDock": {
     "title": "Promptea Weekly",
-    "body": "As melhores notícias de IA da semana, toda segunda-feira no seu e-mail.",
-    "open": "Assinar a newsletter",
-    "close": "Fechar"
+    "body": "As melhores notícias de IA da semana, toda segunda-feira no seu e-mail."
   },
   "newsletterNudge": {
     "pill": "Assine a newsletter",
-    "panelTitle": "A semana em IA, no seu e-mail",
-    "panelBody": "Toda segunda-feira, as notícias de IA que importaram. Sem spam.",
+    "panelTitle": "Junte-se à nossa newsletter",
+    "panelBody": "Toda segunda-feira, as notícias de IA que importaram. Grátis e sem spam.",
     "close": "Fechar",
     "modalTitle": "Antes de sair: quer o melhor da semana no seu e-mail?",
     "modalBody": "Um resumo toda segunda-feira com as notícias de IA que importaram, verificadas e com as fontes. É grátis e você pode cancelar quando quiser.",

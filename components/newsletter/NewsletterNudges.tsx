@@ -7,31 +7,36 @@
 // (card + pill) and the AI Daily modal, and coordinates the AI Daily dock,
 // which reads the same store:
 //
-//   CARD   (v1.8.1; every public page except AI Daily) on the FIRST visit —
-//          nothing remembered in localStorage — the card appears ALREADY OPEN
-//          5 s after entering the site: title, short text and the form,
-//          bottom-right with safe-area insets. It is not a modal: no backdrop,
-//          it never takes focus, Esc and its close button collapse it to the
-//          pill. On phones it is one compact row ("Subscribe" expands it) and
-//          on the phone tool pages it does not open at all. It opens by itself
-//          once per browser.
+//   CARD   (every public page, AI Daily included since v1.8.7) 5 s after
+//          entering, the "Join our newsletter" card appears ALREADY OPEN: title,
+//          one line of value, the form and a close button, bottom-right with
+//          safe-area insets. It is not a modal: no backdrop, it never takes
+//          focus, Esc and its close button collapse it to the pill and pause it
+//          for 7 days. Any visitor who has not said "no" gets it (v1.8.1 showed
+//          it once per browser, which is why the owner never saw it again).
+//          Where it would cover a text box, a primary button or the footer's
+//          links it uses the compact one-row version, or waits until the
+//          visitor scrolls them away (lib/newsletter/prompts.ts → chooseVariant).
+//          On the tool pages it collapses to the pill as soon as the visitor
+//          starts typing, so it never sits on the analysis results.
 //   PILL   the collapsed state: a small fixed pill that (re)opens the card.
-//          Every later visit shows only the pill; closing the pill hides it
-//          for DISMISS_DAYS; subscribing removes everything for good. On
-//          phones, on the tool pages (analyzer / best-ai) it is just an icon so
-//          it never covers the text box or the results.
+//          Closing the pill hides it for DISMISS_DAYS; subscribing removes
+//          everything for good. On phones, on the tool pages (analyzer /
+//          best-ai) it is just an icon. It also never covers those controls.
 //   MODAL  (AI Daily only) a stronger prompt, once per session and once a week:
 //          exit intent (mouse leaves through the top) on desktop; on touch
 //          devices, having scrolled 60% or read for ~25 s, and only when the
-//          page has been still for a moment. Accessible modal: focus trap, Esc,
-//          backdrop, focus returned to where it was.
+//          page has been still for a moment. Never over an open card, never
+//          within 7 days of the card being closed. Accessible modal: focus trap,
+//          Esc, backdrop, focus returned to where it was.
 //
-// The rules (timing, frequency, persistence, "never stack") are pure and tested
-// in lib/newsletter/prompts.ts; state lives in lib/newsletter/promptStore.ts.
-// Steps aside — never overlaps — while: the footer is on screen, a text field is
-// focused or the soft keyboard is likely open, another modal dialog is open, the
-// modal itself is showing, or (v1.8.1) an in-page subscription form
-// ([data-newsletter-inline]) is on screen: one way to subscribe at a time.
+// The rules (timing, frequency, persistence, "never stack", "never cover") are
+// pure and tested in lib/newsletter/prompts.ts; state lives in
+// lib/newsletter/promptStore.ts. Steps aside — never overlaps — while: a control
+// it must not cover is under it, a text field is focused or the soft keyboard is
+// likely open, another modal dialog is open, the modal itself is showing, or an
+// in-page subscription form ([data-newsletter-inline]: the home side card, the
+// AI Daily dock) is on screen: one way to subscribe at a time.
 // Fixed and out of flow, so it can never shift layout. Reduced motion: no movement, fade only.
 // Telemetry: impression / open / dismissed / subscribed, with the surface only.
 
@@ -49,19 +54,21 @@ import {
   PILL_DELAY_MS,
   CARD_COMPACT_MAX_WIDTH,
   cardEligible,
-  cardVariant,
+  chooseVariant,
+  cornerClear,
   dwellAllows,
   FLOATING_SIZES,
-  floatingBox,
   floatingVisible,
-  rectsOverlap,
   isExitIntent,
   isToolRoute,
   modalEligible,
+  obstacleSelector,
   pillEligible,
   readingEngaged,
   routeKind,
   scrollRatio,
+  type Box,
+  type CardVariant,
 } from "@/lib/newsletter/prompts";
 import { type Lang } from "@/lib/domain";
 
@@ -132,48 +139,62 @@ function useTypingElsewhere(): boolean {
 }
 
 /**
- * True while the floating surface would sit on top of a footer control.
- *
- * v1.8.0 hid the pill whenever any part of the footer was on screen, which on a
- * short page (footer visible from the start) meant it never appeared at all.
- * v1.8.1 measures instead: the box the surface occupies (bottom-right, `box`
- * wide and tall) against the footer's own links and buttons. On a wide screen
- * the footer's centred links are clear of the corner, so the card can show; on
- * a phone they are under it, so it steps aside. Re-attached on every navigation.
+ * v1.8.7 — what the floating surface must not cover, measured live: the boxes of
+ * the text fields, primary buttons and footer controls that are on screen
+ * (every control on the tool pages). v1.8.1 measured only the footer links;
+ * v1.8.0 hid the pill whenever the footer was visible at all. Re-measured on
+ * scroll, resize and once a second (results appear without either), and on
+ * every navigation. Returns the "corner is clear" answers the controller needs.
  */
-function useFooterInTheWay(pathname: string, boxWidth: number, boxHeight: number): boolean {
-  const [blocked, setBlocked] = useState(false);
+type Clearance = { variant: CardVariant | null; card: boolean; compact: boolean; pill: boolean };
+const ALL_CLEAR: Clearance = { variant: "full", card: true, compact: true, pill: true };
+
+function useClearance(pathname: string, strict: boolean): Clearance {
+  const [clear, setClear] = useState<Clearance>(ALL_CLEAR);
   useEffect(() => {
-    const footer = document.querySelector("footer");
-    if (!footer) return;
     let raf = 0;
-    let onScreen = false;
+    let last = "";
     const measure = () => {
       raf = 0;
-      if (!onScreen) return setBlocked(false);
-      const box = floatingBox(window.innerWidth, window.innerHeight, boxWidth, boxHeight);
-      const hit = [...footer.querySelectorAll("a, button, input, select")].some((el) => rectsOverlap(el.getBoundingClientRect(), box));
-      setBlocked(hit);
+      if (document.visibilityState === "hidden") return;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const obstacles: Box[] = [];
+      for (const el of document.querySelectorAll(obstacleSelector(strict))) {
+        if (el.closest("[data-nudge-root]")) continue;
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0 || r.bottom <= 0 || r.top >= vh) continue;
+        obstacles.push({ left: r.left, top: r.top, right: r.right, bottom: r.bottom });
+      }
+      const next: Clearance = {
+        variant: chooseVariant(vw, vh, obstacles),
+        card: cornerClear(vw, vh, FLOATING_SIZES.card, obstacles),
+        compact: cornerClear(vw, vh, FLOATING_SIZES.compact, obstacles),
+        pill: cornerClear(vw, vh, FLOATING_SIZES.pill, obstacles),
+      };
+      const key = JSON.stringify(next);
+      if (key !== last) {
+        last = key;
+        setClear(next);
+      }
     };
     const schedule = () => {
       if (!raf) raf = requestAnimationFrame(measure);
     };
-    const io = new IntersectionObserver(([entry]) => {
-      onScreen = entry.isIntersecting;
-      schedule();
-    });
-    io.observe(footer);
+    // The page content of a client navigation lands a tick after the pathname changes.
+    const first = window.setTimeout(schedule, 0);
+    const tick = window.setInterval(schedule, 1000);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
     return () => {
-      io.disconnect();
+      window.clearTimeout(first);
+      window.clearInterval(tick);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       if (raf) cancelAnimationFrame(raf);
-      setBlocked(false);
     };
-  }, [pathname, boxWidth, boxHeight]);
-  return blocked;
+  }, [pathname, strict]);
+  return clear;
 }
 
 /** v1.8.1 — true while an in-page subscription form is (even partly) on screen. Re-attached on every navigation. */
@@ -232,25 +253,26 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: Lang;
     return () => window.clearTimeout(t);
   }, []);
 
-  // ── Floating surface: first-visit card + pill ─────────────────────────
+  // ── Floating surface: card + pill ─────────────────────────────────────
   const formOpen = snap.pillFormOpen;
   const small = useSmallViewport();
   const inlineFormVisible = useInlineFormVisible(pathname);
-  // Who opened the card: "auto" = the first-visit card; "user" = the visitor (pill click / expanded it).
+  // Tool pages and phones: no control may be covered; elsewhere text boxes, primary buttons and the footer.
+  const clear = useClearance(pathname, tool || small);
+  // Who opened the card: "auto" = by itself at 5 s; "user" = the visitor (pill click / expanded it).
   const [openedBy, setOpenedBy] = useState<"auto" | "user" | null>(null);
+  // The variant the card opened with by itself (full, or the one-row compact one).
+  const [autoVariant, setAutoVariant] = useState<CardVariant>("full");
+  // The card opens by itself at most once per page load (a collapse on a tool page is not an invitation to reopen).
+  const autoDone = useRef(false);
   const userOpened = formOpen && openedBy === "user";
-  // On the phone tool pages a self-opened card would sit on the text box: only the icon pill there.
-  const cardSuppressed = formOpen && openedBy === "auto" && small && tool;
-  const showCard = formOpen && !cardSuppressed;
-  const compact = showCard && small && openedBy === "auto";
-  // The space the surface needs: the card when it is open or about to open by itself, the pill otherwise.
-  // Known from the first render (no clock involved), so the footer measurement is ready before the 5 s mark.
-  const cardLikely = showCard || (cardEligible(snap) && !(small && tool));
-  const box = cardLikely ? (small && openedBy !== "user" ? FLOATING_SIZES.compact : FLOATING_SIZES.card) : FLOATING_SIZES.pill;
-  const footerVisible = useFooterInTheWay(pathname, box.width, box.height);
+  const showCard = formOpen;
+  const compact = showCard && openedBy === "auto" && (small || autoVariant === "compact");
+  // Is the corner the visible surface occupies clear right now?
+  const cornerFree = showCard ? (compact ? clear.compact : clear.card) : clear.pill;
 
-  const wanted = kind === "public" && readyAt !== null && (pillEligible(snap, readyAt) || celebrate || formOpen);
-  const pillVisible = floatingVisible({ wanted, modalOpen: snap.modalOpen, inlineFormVisible, footerVisible, typing, userOpened });
+  const wanted = kind !== "none" && readyAt !== null && (pillEligible(snap, readyAt) || celebrate || formOpen);
+  const pillVisible = floatingVisible({ wanted, modalOpen: snap.modalOpen, inlineFormVisible, inTheWay: !cornerFree, typing, userOpened });
   const pillBtnRef = useRef<HTMLButtonElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const impressed = useRef<Record<string, boolean>>({});
@@ -260,21 +282,39 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: Lang;
     [lang]
   );
 
-  // First visit: open the card by itself, once per browser, the first moment nothing is in its way.
+  // 5 s after entering: open the card by itself, for anyone who has not said "no" in the last 7 days,
+  // the first moment nothing is in its way (a control under it, typing, an in-page form, a dialog).
   useEffect(() => {
-    if (kind !== "public" || readyAt === null || formOpen || snap.modalOpen) return;
-    if (inlineFormVisible || footerVisible || typing) return;
-    if (!cardEligible(snap)) return;
-    if (cardVariant(pathname, window.innerWidth) === "none") return;
+    if (kind === "none" || readyAt === null || formOpen || snap.modalOpen || autoDone.current) return;
+    if (inlineFormVisible || typing) return;
+    if (!cardEligible(snap, readyAt)) return;
+    const variant: CardVariant | null = small ? (clear.compact ? "compact" : null) : clear.variant;
+    if (!variant) return;
     if (document.querySelector('[role="dialog"][aria-modal="true"]')) return; // never on top of a real dialog
     const t = window.setTimeout(() => {
+      autoDone.current = true;
       nudgeActions.markCardShown();
       nudgeActions.setPillFormOpen(true);
+      setAutoVariant(variant);
       setOpenedBy("auto");
       track("newsletter_prompt_impression", "card");
     }, 0);
     return () => window.clearTimeout(t);
-  }, [kind, readyAt, formOpen, snap, inlineFormVisible, footerVisible, typing, pathname, track]);
+  }, [kind, readyAt, formOpen, snap, inlineFormVisible, typing, small, clear, track]);
+
+  // Tool pages: the visitor started working (typing in the text box). The card will not open by itself
+  // any more on this page load, and one that already did collapses to the pill so it never sits on the
+  // results. Not a dismissal: nothing is stored.
+  useEffect(() => {
+    if (!tool || !typing) return;
+    autoDone.current = true;
+    if (!formOpen || openedBy !== "auto") return;
+    const t = window.setTimeout(() => {
+      nudgeActions.setPillFormOpen(false);
+      setOpenedBy(null);
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, [tool, typing, formOpen, openedBy]);
 
   useEffect(() => {
     if (pillVisible && !showCard && !impressed.current.pill) {
@@ -289,12 +329,19 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: Lang;
     track("newsletter_prompt_open", "pill");
   }
 
-  /** Collapse the card back to the pill. Focus returns to the pill only if it was inside the card. */
+  /**
+   * Collapse the card back to the pill. A dismissal (its X or Esc) also pauses the card for
+   * DISMISS_DAYS. Focus returns to the pill only if it was inside the card.
+   */
   const closeCard = useCallback(
     (dismissed: boolean) => {
       const hadFocus = Boolean(cardRef.current?.contains(document.activeElement));
-      if (dismissed && !getSnapshot().subscribed) track("newsletter_prompt_dismissed", "card");
-      nudgeActions.setPillFormOpen(false);
+      if (dismissed && !getSnapshot().subscribed) {
+        track("newsletter_prompt_dismissed", "card");
+        nudgeActions.dismissCard();
+      } else {
+        nudgeActions.setPillFormOpen(false);
+      }
       setOpenedBy(null);
       setCelebrate(false);
       if (hadFocus) requestAnimationFrame(() => pillBtnRef.current?.focus());
@@ -347,6 +394,7 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: Lang;
     const canOpen = () => {
       const s = getSnapshot();
       if (s.modalOpen || !modalEligible(s, Date.now(), wasModalShownThisSession())) return false;
+      if (s.pillFormOpen) return false; // v1.8.7: never over an open card
       if (!dwellAllows(performance.now() - start, MODAL_MIN_DWELL_MS)) return false;
       const active = document.activeElement as HTMLElement | null;
       if (active?.matches(TEXT_FIELD)) return false; // never interrupt typing
@@ -420,7 +468,7 @@ export default function NewsletterNudges({ lang, dict, formDict }: { lang: Lang;
 
   return (
     <>
-      {kind === "public" ? (
+      {kind === "public" || kind === "daily" ? (
         <div
           data-nudge-root
           className={["newsletter-pill-wrap fixed z-40", pillVisible ? "is-visible" : "is-hidden"].join(" ")}

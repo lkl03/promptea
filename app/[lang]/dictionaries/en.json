@@ -384,12 +384,13 @@
     },
     "xFeed": {
       "title": "Follow us on X",
-      "subtitle": "Promptea and AI news, live.",
-      "loading": "Loading the feed…",
-      "privacyNote": "Shown with an Elfsight widget; the posts come from X. Both are third parties and may receive data from your browser.",
-      "fallback": "The feed could not be shown here. Your browser or an extension may be blocking it. The profile opens fine.",
+      "subtitle": "The latest we posted about prompts and AI.",
+      "follow": "Follow us on X",
       "open": "Open @{handle} on X",
-      "follow": "Follow us on X"
+      "viewPost": "View on X",
+      "listLabel": "Recent posts by @{handle}",
+      "empty": "We can't show our posts here yet. They are all on our X profile.",
+      "note": "Posts by @{handle}, shown by Promptea without X's scripts: your browser does not connect to X until you open a link."
     },
     "newsletter": {
       "title": "The week in AI, in your inbox",
@@ -443,14 +444,12 @@
   },
   "newsletterDock": {
     "title": "Promptea Weekly",
-    "body": "The best AI stories of the week, every Monday in your inbox.",
-    "open": "Subscribe to the newsletter",
-    "close": "Close"
+    "body": "The best AI stories of the week, every Monday in your inbox."
   },
   "newsletterNudge": {
     "pill": "Join the newsletter",
-    "panelTitle": "The week in AI, in your inbox",
-    "panelBody": "Every Monday, the AI stories that mattered. No spam.",
+    "panelTitle": "Join our newsletter",
+    "panelBody": "Every Monday, the AI stories that mattered. Free, no spam.",
     "close": "Close",
     "modalTitle": "Before you go: want the best of the week in your inbox?",
     "modalBody": "A summary every Monday with the AI stories that mattered, verified and with their sources. It is free and you can unsubscribe any time.",

@@ -11,7 +11,6 @@ import {
   MODAL_SCROLL_RATIO,
   PILL_DELAY_MS,
   STORAGE_KEY,
-  dockBarEligible,
   dwellAllows,
   isExitIntent,
   isToolRoute,
@@ -53,14 +52,12 @@ describe("timing contract", () => {
 describe("eligibility", () => {
   test("fresh visitor: everything eligible", () => {
     expect(pillEligible(EMPTY_STATE, NOW)).toBe(true);
-    expect(dockBarEligible(EMPTY_STATE, NOW)).toBe(true);
     expect(modalEligible(EMPTY_STATE, NOW, false)).toBe(true);
   });
 
   test("subscribed: no surface is ever eligible again", () => {
     const s: NudgeState = { ...EMPTY_STATE, subscribed: true };
     expect(pillEligible(s, NOW)).toBe(false);
-    expect(dockBarEligible(s, NOW)).toBe(false);
     expect(modalEligible(s, NOW, false)).toBe(false);
     expect(pillEligible(s, NOW + 365 * DAY)).toBe(false);
   });
@@ -70,14 +67,12 @@ describe("eligibility", () => {
     expect(pillEligible(s, NOW + 1_000)).toBe(false);
     expect(pillEligible(s, NOW + (DISMISS_DAYS - 0.01) * DAY)).toBe(false);
     expect(pillEligible(s, NOW + DISMISS_DAYS * DAY)).toBe(true);
-    // The dock is independent of the pill.
-    expect(dockBarEligible(s, NOW + 1_000)).toBe(true);
   });
 
-  test("closing the dock bar hides it for N days", () => {
-    const s: NudgeState = { ...EMPTY_STATE, dockDismissedAt: NOW };
-    expect(dockBarEligible(s, NOW + DAY)).toBe(false);
-    expect(dockBarEligible(s, NOW + DISMISS_DAYS * DAY)).toBe(true);
+  test("v1.8.7: closing the card pauses the modal too (one pause after a no)", () => {
+    const s: NudgeState = { ...EMPTY_STATE, cardDismissedAt: NOW };
+    expect(modalEligible(s, NOW + DAY, false)).toBe(false);
+    expect(modalEligible(s, NOW + DISMISS_DAYS * DAY, false)).toBe(true);
   });
 
   test("the modal: once per session AND once per cooldown", () => {
@@ -91,7 +86,7 @@ describe("eligibility", () => {
 describe("persistence never throws", () => {
   test("round trip", () => {
     const st = memStorage();
-    const s: NudgeState = { subscribed: false, pillDismissedAt: NOW, dockDismissedAt: 0, modalShownAt: NOW - DAY, cardShownAt: NOW - 2 * DAY };
+    const s: NudgeState = { subscribed: false, pillDismissedAt: NOW, dockDismissedAt: 0, modalShownAt: NOW - DAY, cardShownAt: NOW - 2 * DAY, cardDismissedAt: NOW - DAY };
     expect(writeState(st, s)).toBe(true);
     expect(readState(st)).toEqual(s);
   });
@@ -119,13 +114,13 @@ describe("persistence never throws", () => {
 });
 
 describe("routes", () => {
-  test("AI Daily pages carry dock + modal, other public pages the pill, newsletter pages nothing", () => {
+  test("AI Daily pages carry card + dock + modal, other public pages the card, newsletter pages nothing", () => {
     for (const p of ["/es/blog", "/en/blog/some-story", "/es/blog/weekly", "/es/blog/weekly/2026-11-03", "/es/blog/"]) expect(routeKind(p)).toBe("daily");
     for (const p of ["/es", "/en", "/es/analyzer", "/es/best-ai", "/es/benchmarks", "/es/guides/x", "/es/models", "/es/glossary", "/es/prompts", "/es/privacy"]) expect(routeKind(p)).toBe("public");
     for (const p of ["/es/weekly", "/es/weekly/unsubscribe", "/es/unsubscribe", "/api/newsletter/subscribe"]) expect(routeKind(p)).toBe("none");
   });
 
-  test("tool routes are the ones where the pill stays small on phones", () => {
+  test("tool routes: the pill stays small on phones and the card collapses once the visitor types", () => {
     expect(isToolRoute("/es/analyzer")).toBe(true);
     expect(isToolRoute("/en/best-ai/")).toBe(true);
     expect(isToolRoute("/es")).toBe(false);

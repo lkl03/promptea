@@ -2,8 +2,8 @@
 
 // components/newsletter/SubscribeForm.tsx
 //
-// v1.7.0 — the one newsletter subscription form, shared by the desktop dock
-// card and the mobile sheet (components/newsletter/NewsletterDock.tsx). It
+// v1.7.0 — the one newsletter subscription form, shared by every surface (the
+// floating card, the home side card, the AI Daily dock, the modal). It
 // replaces the v1.5 NewsletterBar and SubscribeCTA, which carried two copies
 // of the same logic. Behaviour is unchanged:
 //   - client-side email check, then POST /api/newsletter/subscribe;
@@ -122,7 +122,9 @@ export default function SubscribeForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3" noValidate data-newsletter-inline={surface === "inline" ? "" : undefined}>
+    // In-page forms (the home side card, v1.8.7 also the AI Daily dock) announce themselves: while one is
+    // on screen the floating card stays away (components/newsletter/NewsletterNudges.tsx).
+    <form onSubmit={handleSubmit} className="space-y-3" noValidate data-newsletter-inline={surface === "inline" || surface === "dock" ? "" : undefined}>
       <div>
         <label htmlFor={`${id}-email`} className="sr-only">
           Email

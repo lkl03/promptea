@@ -384,12 +384,13 @@
     },
     "xFeed": {
       "title": "Seguinos en X",
-      "subtitle": "Novedades de Promptea y de la IA, en vivo.",
-      "loading": "Cargando el feed…",
-      "privacyNote": "Se muestra con un widget de Elfsight; las publicaciones son de X. Los dos son terceros y pueden recibir datos de tu navegador.",
-      "fallback": "No se pudo mostrar el feed acá. Puede que tu navegador o una extensión lo estén bloqueando. El perfil se abre sin problemas.",
+      "subtitle": "Lo último que publicamos sobre prompts e IA.",
+      "follow": "Seguinos en X",
       "open": "Abrir @{handle} en X",
-      "follow": "Seguinos en X"
+      "viewPost": "Ver en X",
+      "listLabel": "Publicaciones recientes de @{handle}",
+      "empty": "Todavía no podemos mostrar nuestras publicaciones acá. Están todas en nuestro perfil de X.",
+      "note": "Publicaciones de @{handle}, mostradas por Promptea sin scripts de X: tu navegador no se conecta con X hasta que abrís un enlace."
     },
     "newsletter": {
       "title": "La semana en IA, en tu correo",
@@ -443,14 +444,12 @@
   },
   "newsletterDock": {
     "title": "Promptea Semanal",
-    "body": "Las mejores historias de IA de la semana, cada lunes en tu email.",
-    "open": "Suscribirme al newsletter",
-    "close": "Cerrar"
+    "body": "Las mejores historias de IA de la semana, cada lunes en tu email."
   },
   "newsletterNudge": {
     "pill": "Sumate al newsletter",
-    "panelTitle": "La semana en IA, en tu correo",
-    "panelBody": "Cada lunes, las historias de IA que importaron. Sin spam.",
+    "panelTitle": "Unite a nuestro newsletter",
+    "panelBody": "Cada lunes, las historias de IA que importaron. Gratis y sin spam.",
     "close": "Cerrar",
     "modalTitle": "Antes de irte: ¿te mandamos lo mejor de la semana?",
     "modalBody": "Un resumen cada lunes con las historias de IA que importaron, verificadas y con sus fuentes. Es gratis y te das de baja cuando quieras.",

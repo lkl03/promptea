@@ -4,6 +4,45 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.7 (unreleased)
+
+**Promptea's own X feed, a newsletter card that every visitor actually sees, and an analysis of each model on Benchmarks.** Evidence and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md).
+
+### X feed: Promptea's own, no third-party widget
+- **The card no longer loads Elfsight.** The Elfsight widget loaded ~165 KB of third-party script, and its free plan (200 views a month) was at 141/200. The card is now rendered by our server from **Buffer**, the tool Promptea's posts are published with. Buffer keeps every sent post with its text, its date and its link on X. The card shows up to 10 posts as text, with a relative, localized date and a "View on X" link on each. Its box has a fixed height (no layout shift). It works without JavaScript and the browser makes no request to X or any third party. Decision record (Buffer vs. X's oEmbed vs. the X API, costs and terms): [`docs/release/v1.8.7/x-feed-decision.md`](./docs/release/v1.8.7/x-feed-decision.md).
+- **Sources** (`lib/social/`): `BUFFER_API_KEY` (new, secret, server-only) → `X_FEED_POST_URLS` (a hand-kept list read through X's public oEmbed JSON, no key) → none. The result is cached for 2 h for the whole site, about 360 Buffer calls a month, within the free plan. With no source, or when it fails, the card shows one sentence and the "Follow us on X" button, never an error. `X_FEED_DEV_FIXTURE=1` shows fictitious posts in development.
+- **Sanitizing**: only x.com/twitter.com status links, rebuilt canonically. Text is plain (no control or bidi characters, 600 characters at most). Links are made only for `https` URLs, `#hashtags` and `@mentions`, with `rel="noopener noreferrer nofollow"`.
+- **Every trace of Elfsight removed**: the component, `NEXT_PUBLIC_ELFSIGHT_X_WIDGET_ID`, the "X feed (Elfsight)" styles, the dictionaries' privacy note, the `/privacy` section (now describes what happens: in all languages), the headers comment and `scripts/release/xfeed-check.mjs` (rewritten for the new card).
+
+### Side column and the newsletter card
+- **Newsletter first, X below**, on the home page (desktop and phones) and in AI Daily.
+- **The floating "Join our newsletter" card now opens for any visitor who has not said no**, 5 s after entering. Reproduced in production with a clean and a returning Chrome profile: since v1.8.1 it opened once per browser, ever, so after its first appearance every visit got only the pill, and AI Daily never showed it. New rules (`lib/newsletter/prompts.ts`, documented in the README):
+  - closing the card keeps the pill and pauses the card for 7 days, a pause shared with the AI Daily exit modal;
+  - subscribed means never again;
+  - it appears on every public page, AI Daily included;
+  - it never covers a text box, a primary button or the footer links. It uses the compact row when only that fits, or waits until the visitor scrolls. On the analyzer and best-ai it collapses to the pill as soon as the visitor types;
+  - it is never stacked with the exit modal or with an in-page form.
+- The AI Daily dock loses its mobile bar: on phones the same card replaces it. Its desktop card counts as an in-page form.
+- New check: `scripts/release/newsletter-check.mjs`, covering pages × widths × stored states, read-only outside localhost.
+
+### Benchmarks: analysis and comparison per model
+- **Any model opens its analysis**: its name in the bars, the table, the frontier view and the matrix, or a point of the scatter. The analysis is an accessible dialog (focus trap, Esc, focus returned; a bottom sheet on phones) with:
+  - provider and price;
+  - whether it is "frontier" and in which benchmarks;
+  - a chart of its rank in every benchmark it appears in (SVG, `role="img"` with a description and an equivalent table), with each score in its own metric;
+  - where it stands out, and what those benchmarks measure and their limits;
+  - links to Promptea's guide for the family and to "Find the best AI".
+  - `#m=<model>` opens it on load.
+- **Compare up to four models**: "Compare" checkboxes in the table, the frontier cards and the matrix. The comparison shows grouped bars on each benchmark's own scale for the benchmarks they share, a table, prices and cost per point. It says plainly when they share none. `#c=<a>,<b>` keeps it.
+- **"Frontier models" leads with a quick comparison** of the top 6 of the Intelligence Index, with direct access to each analysis and "Compare the top 4".
+- `lib/benchmarks/model.ts` is pure and tested, and was checked against the production snapshot: 1,301 rows, 23 benchmarks and 224 models equal to the tables and to `/api/benchmarks`. No route per model, deliberately: [`docs/release/v1.8.7/benchmarks-model-routes.md`](./docs/release/v1.8.7/benchmarks-model-routes.md).
+
+### QA (v1.8.6 in production)
+- 0 runtime errors in 7 days on Next 16.4.6, and `seo:check` against production passes 1,193/1,193. Vercel Analytics events are emitted once, with `{ lang, target }` only. Full matrix and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md).
+- Still waiting on the owner: `INDEXNOW_KEY` (`/indexnow-key.txt` returns 404), `firebase-admin` 14 for the transitive `npm audit` warnings, N-1 contrast in Metro and Glass light.
+
+---
+
 ## v1.8.6 — 2026-11-14
 
 **SEO for the US and Asia.** A traffic analysis (2026-11-14) found that "prompt analyzer" ranks 11–14 in the US (5.3 globally) with no clicks, and that Chinese readers come for the DeepSeek and Kimi guides while Qwen, GLM, MiniMax and Doubao were missing. What changed and what to measure in Search Console after four weeks: [`docs/release/v1.8.6/seo-report.md`](./docs/release/v1.8.6/seo-report.md).
