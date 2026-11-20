@@ -200,11 +200,12 @@ Los PRs no se pisan entre sí. Los únicos archivos compartidos son el `README.m
 | | #50 | 91 archivos, **2.030** tests (+28), verde |
 | | #51 | 2.002 tests y 5 omitidos (emulador), verde |
 | | #52 | 2.002, verde |
-| | #53 | `i18n.parity`, `i18n.zh` y `newsletter.card`: 55, verde |
-| | #54 | `analytics.utm`: 7, verde |
+| | #53 | 89 archivos, 2.002, verde |
+| | #54 | 90 archivos, **2.009** (+7), verde |
 | | #56 | `version.sync` e `i18n.parity`: 26, verde |
 | Typecheck y lint | #50, #51, #52, #54 y #55 | 0 errores |
-| Build de producción | `main` (QA de zh) y #51 | OK |
+| Build de producción | `main` (QA de zh) y #51, en local | OK |
+| Build de Vercel (preview) | los 7 PRs, incluido #51 con Node 24 | **pass** en todos |
 | Prueba de Firestore (emulador) | 13.6.0 y 14.5.1 | 5/5 y 5/5 |
 | `npm audit --omit=dev` | `main` contra #51 | 18 contra **0** |
 | `seo:check` | producción y build local de `main` | 1.359/1.359 y 1.379/1.379 |
@@ -215,7 +216,7 @@ Logs en [`logs/`](./logs/).
 **No verificado:**
 - el cron y el mail de alerta en producción (necesitan las variables y un deploy);
 - firebase-admin 14 contra el Firestore real (no tengo credenciales locales);
-- el preview de Vercel de cada PR (está protegido);
+- el preview de Vercel de cada PR por dentro: el build pasa, pero las páginas están protegidas y no las recorrí;
 - un envío real del newsletter con la exclusión.
 
 ## 9. Qué se escribió afuera del repo
