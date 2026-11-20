@@ -1,22 +1,40 @@
 # Revisión nativa del chino simplificado (zh-CN): paquete para quien revise
 
+## 给审校者的说明（请先读这一段）
+
+您好！Promptea（https://www.promptea.me）是一个免费的提示词分析工具：用户粘贴自己写给AI的提示词，网站给出0–100分的评分、发现的问题和一个优化后的版本，并推荐适合的AI模型。网站的简体中文版（`/zh`）于2026年11月16日上线，**所有中文文字都是AI翻译的，还没有母语者读过**。我们请您做的是：
+
+1. 按照下面第1节的顺序打开页面，像普通用户一样阅读和使用（大约2–3小时就能覆盖最重要的部分）。
+2. 标出读起来不自然、像翻译腔、术语不一致或者不准确的地方。第2节末尾的表格列出了我们自己拿不准的译法，请特别看一下。
+3. 把修改意见填进一张表格（格式见第3节）：页面链接、原文（请直接复制）、修改后的文字、原因（可选）、重要程度。
+
+不需要修改的：产品名和模型名（Promptea、ChatGPT、DeepSeek、AI Daily等）、代码和参数名（`JSON`、`reasoning_effort`），以及特意保留为英文的内容（AI Daily新闻和尚未翻译的51篇指南，页面上有提示）。
+
+不需要懂编程。有任何问题，请直接联系Luca。谢谢！
+
+---
+
+Lo de arriba es la portada para quien revise, en chino. Lo que sigue es para vos y para quien aplique las correcciones.
+
 Todo el texto de `/zh` lo escribió IA en la v1.8.7 y solo tuvo controles mecánicos: scripts que buscan textos sin traducir, puntuación de medio ancho pegada a caracteres chinos y palabras sueltas en inglés, español o portugués. Nadie nativo lo leyó todavía. Este documento es para pasárselo a una persona nativa de la China continental: qué leer, en qué orden, con qué criterio y cómo devolver las correcciones. No hace falta saber programar.
 
-Estado al 2026-11-16 (v1.8.7):
-- interfaz completa (diccionario `zh.json` con las mismas claves que es/en/pt);
+Estado al 2026-11-20 (v1.8.7 en producción desde el 16/11):
+- interfaz completa: `zh.json`, 538 claves y unos 5.250 caracteres chinos, con las mismas claves que es/en/pt;
 - 13 de 64 guías;
 - los 20 términos del glosario;
 - las 11 páginas de modelos;
 - las 8 landings;
 - los 6 packs de prompts;
 - las páginas estáticas: cómo funciona, sobre, metodología, fuentes y privacidad;
-- todos los mensajes del analizador y de "la mejor IA".
+- todos los mensajes del analizador y de "la mejor IA" (motor 2.5.0, con 24 casos de calibración en chino).
 
 AI Daily, el resumen semanal y 51 guías **no** están traducidos: bajo `/zh` se muestran en inglés con un aviso, a propósito (ver §5).
 
+**Quién lee `/zh` hoy (Vercel Analytics, 30 días al 20/11):** 152 visitantes de China continental, con o sin `/zh`. Singapur aparece arriba en el total (575), pero es tráfico automatizado desde centros de datos que lee páginas en inglés: solo 3 de esas visitas fueron a `/zh`. No sirve como señal de lectores chinos (detalle en `docs/release/v1.8.8/release-report.md`).
+
 ## 1. Qué abrir primero (por impacto)
 
-Revisar en el sitio publicado, en un navegador normal (si `/zh` todavía no está en producción, en la vista previa del PR).
+Revisar en el sitio publicado (`/zh` está en producción desde el 16/11), en un navegador normal.
 
 1. **Inicio**: https://www.promptea.me/zh
 2. **Analizador** (分析器), con un prompt de prueba: https://www.promptea.me/zh/analyzer. Pegar un pedido corto en chino, elegir una IA y un propósito y apretar "分析". Revisar los resultados: 评分, 发现的问题, 建议 y 优化后的提示词. Son los textos que más se leen. Probar también un pedido largo y uno de imagen; en el de imagen, el prompt final sale **en inglés** a propósito, con aviso (§5).
@@ -81,7 +99,6 @@ Son decisiones que tomó la IA y que un nativo debería confirmar o cambiar. Las
 | --- | --- | --- | --- |
 | Changelog | 更新日志 | 版本历史 | `/zh/changelog`, pie de página |
 | Before / After (score) | 优化前 / 优化后 | 之前 / 之后 | resultados del analizador, guías |
-| words (contador) | 词 | 字 (el motor cuenta caracteres Han ÷ 1,7, o sea "palabras" aproximadas) | tarjeta del score |
 | email ≤ 120 words | 120字 | 120词 | packs de prompts |
 | Newsletter | 邮件通讯（Promptea Weekly） | 邮件通讯（Promptea每周通讯） | formulario |
 | Cold email | 开发信 | 陌生开发邮件 | pack de marketing |
@@ -99,6 +116,8 @@ Son decisiones que tomó la IA y que un nativo debería confirmar o cambiar. Las
 | pre-mortem | 事前验尸（pre-mortem） | 预先复盘 | guías |
 | Score (columna de benchmarks) | 得分 | 评分 (pero 评分 ya es el puntaje de Promptea) | `/zh/benchmarks` |
 | System (tema) | 跟随系统 | 系统 | selector de tema |
+| AI Daily (nombre de la sección) | AI Daily (sin traducir) | AI日报 | menú, inicio, `/zh/blog` |
+| Contador de palabras del analizador | {n}个词 | {n}个字 (un lector chino cuenta caracteres) | tarjeta del score, editor |
 
 ## 3. Cómo devolver las correcciones
 
@@ -155,3 +174,21 @@ Controles automáticos que ya pasaron:
 - 24 casos de calibración en chino que puntúan igual que sus gemelos en portugués (±6).
 
 Quedó sin hacer: leer las traducciones en contexto. Eso es lo que pide este documento.
+
+## 7. QA de la v1.8.8 (2026-11-20, automático)
+
+Sobre un build de producción local de `main` (v1.8.7) y sobre producción:
+
+| Control | Resultado |
+| --- | --- |
+| `i18n-qa` (Chrome real), `/zh` × 23 páginas × 1440 y 375 px | 66 cargas, **0 fallas**. Las notas "sin chino" son nombres de modelos y el resumen semanal en inglés (a propósito) |
+| Barrido propio de las 72 URLs `/zh` del sitemap | `<html lang="zh-CN">`, canonical y título con chino en todas; **407 enlaces internos, 0 rotos**. Las guías sin traducir tienen el canonical en inglés y no se anuncian en el hreflang de `/zh` |
+| `seo:check` (sitemap, hreflang, canonical, JSON-LD, `llms.txt`, gemelos `.md`) | Local **1.379/1.379**; producción **1.359/1.359**, 0 avisos |
+| `zh.json` | De 538 claves, 12 son iguales al inglés y todas son nombres de marca. Sin puntuación de medio ancho, sin espacio antes de puntuación de ancho completo y sin restos de español o portugués |
+| Motor (`engine-qa`) | **104/104**: el prompt chino da el mismo puntaje desde las 4 interfaces |
+
+**Arreglado en la v1.8.8:** el placeholder del email de la newsletter decía `your@email.com` en inglés; ahora usa `name@example.com`, neutro.
+
+**Para mirar, aunque no es de traducción:** algunos nombres de modelos en Benchmarks vienen así de la fuente de datos, por ejemplo "Claude Opus 5.5 (Max, Default Fallback)". Se ven igual en los cuatro idiomas.
+
+Pendiente, igual que antes: leer las traducciones en contexto.
