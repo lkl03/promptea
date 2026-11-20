@@ -149,6 +149,7 @@ const SRC = {
   xai: "https://docs.x.ai/developers/models",
   deepseek: "https://api-docs.deepseek.com/quick_start/pricing",
   moonshot: "https://platform.kimi.ai/docs/models",
+  moonshotK31: "https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart",
   perplexity: "https://docs.perplexity.ai/docs/agent-api/presets",
   perplexitySonar: "https://docs.perplexity.ai/docs/sonar/models",
   doubao: "https://docs.volcengine.com/docs/82379/1330310",
@@ -161,6 +162,16 @@ const SRC = {
  * output: null; no JSON mode claimed for MiniMax or GLM-5.3 Flash).
  */
 const VERIFIED_CN = "2026-11-14";
+
+/**
+ * 2026-11-20 pass (v1.8.8): Kimi K3.1 Pro against Moonshot's own pages
+ * (platform.kimi.ai models list, pricing and the K3.1 Pro quickstart). Kimi K3
+ * becomes legacy (Moonshot now calls it the previous-generation flagship; the
+ * API still serves it), like GPT-6 Sol. GPT-Image-2.6 Sunburst / Flare were
+ * verified on developers.openai.com but NOT added: they are image models and the
+ * registry has no image target (see docs/release/v1.8.8/models-verification.md).
+ */
+const VERIFIED_K31 = "2026-11-20";
 
 export const MODEL_REGISTRY: ModelEntry[] = [
   // ── OpenAI ────────────────────────────────────────────────────────────────
@@ -2155,24 +2166,84 @@ export const MODEL_REGISTRY: ModelEntry[] = [
 
   // ── Moonshot ──────────────────────────────────────────────────────────────
   {
-    id: "kimi-k3",
-    label: "Kimi K3",
+    id: "kimi-k3.1-pro",
+    label: "Kimi K3.1 Pro",
     provider: "moonshot",
     target: "kimi",
     family: "Kimi",
     status: "stable",
     strengths: ["reasoning", "long_context", "multimodal", "coding"],
     notes: {
-      es: "El Kimi más capaz y el que Moonshot recomienda para uso general (contexto 1M; texto, imagen y video). Siempre razona; ideal para ingeniería de software, trabajo de conocimiento y razonamiento profundo.",
-      en: "The most capable Kimi and Moonshot's recommendation for general use (1M context; text, image, and video). Always reasons; built for software engineering, knowledge work, and deep reasoning.",
-      pt: "O Kimi mais capaz e a recomendação da Moonshot para uso geral (contexto de 1M; texto, imagem e vídeo). Sempre raciocina; feito para engenharia de software, trabalho de conhecimento e raciocínio profundo.",
-      zh: "能力最强的Kimi，也是Moonshot推荐的通用模型（1M上下文；支持文本、图像和视频）。总是会进行推理；专为软件工程、知识工作和深度推理打造。",
+      es: "Primer modelo de la serie K3.1 y el Kimi más capaz (octubre de 2026): clase 3T, comprensión visual nativa y contexto de 1M, con mejoras en programación, creación 3D e investigación financiera. Siempre razona.",
+      en: "First model of the K3.1 series and the most capable Kimi (October 2026): 3T-class, native visual understanding, and a 1M context, with gains in coding, 3D creation, and financial research. Always reasons.",
+      pt: "Primeiro modelo da série K3.1 e o Kimi mais capaz (outubro de 2026): classe 3T, compreensão visual nativa e contexto de 1M, com ganhos em programação, criação 3D e pesquisa financeira. Sempre raciocina.",
+      zh: "K3.1系列的首个模型，也是能力最强的Kimi（2026年10月）：3T级，原生视觉理解，1M上下文，在编程、3D创作和金融研究方面有提升。总是会进行推理。",
     },
-    apiModelId: "kimi-k3",
-    verifiedAt: VERIFIED,
-    sourceUrl: SRC.moonshot,
+    apiModelId: "kimi-k3.1-pro",
+    verifiedAt: VERIFIED_K31,
+    sourceUrl: SRC.moonshotK31,
     selectable: true,
     defaultForTarget: true,
+    // Window, output default, modalities, tools, JSON and search status from the
+    // K3.1 Pro quickstart. Fit scores carried over from Kimi K3 (Moonshot does not
+    // publish them; they are Promptea's own).
+    capabilities: {
+      inputModalities: ["text", "image", "video"],
+      outputModalities: ["text"],
+      contextWindowTokens: 1048576,
+      maxOutputTokens: 131072,
+      latencyClass: "slow",
+      structuredOutput: true,
+      toolUse: true,
+      nativeSearch: false,
+      reasoningTier: 3,
+      codingAgentFit: 3,
+      taskFit: {
+        chat: 2,
+        coding: 3,
+        codingAgent: 3,
+        research: 2,
+        longContext: 3,
+        multimodal: 2,
+        dataExtraction: 2,
+        creativeWriting: 2,
+        marketing: 2,
+        translation: 2,
+        summarization: 3,
+        tutoring: 2,
+        imagePrompts: 1,
+        complexReasoning: 3,
+        fastLightweight: 0,
+      },
+      promptGuidance: {
+        es: "Siempre razona: reasoning_effort low, high o max (default max); bajalo a low si importa la latencia. temperature, top_p, n y las penalties son fijos: no los mandes. Imágenes en base64 o ms:// (no acepta URLs públicas), JSON con json_schema y strict: true, y en multi-turno o con herramientas devolvé el mensaje completo del asistente.",
+        en: "Always reasons: reasoning_effort low, high, or max (default max); drop to low when latency matters. temperature, top_p, n, and the penalties are fixed, so don't send them. Images as base64 or ms:// ids (no public URLs), JSON with json_schema and strict: true, and in multi-turn or tool loops send back the full assistant message.",
+        pt: "Sempre raciocina: reasoning_effort low, high ou max (padrão max); use low quando a latência importar. temperature, top_p, n e as penalties são fixos: não os envie. Imagens em base64 ou ms:// (não aceita URLs públicas), JSON com json_schema e strict: true e, em várias rodadas ou com ferramentas, devolva a mensagem completa do assistente.",
+        zh: "总是会进行推理：reasoning_effort可设为low、high或max（默认max）；在意延迟时用low。temperature、top_p、n和各项penalty都是固定的，不要传。图像用base64或ms://（不支持公开URL），JSON用json_schema并设strict: true；多轮对话或调用工具时，回传完整的assistant消息。",
+      },
+    },
+    interactionProfiles: ["chat", "codingAgent", "multimodalAssistant"],
+    promptProfile: "kimi-general",
+  },
+  {
+    id: "kimi-k3",
+    label: "Kimi K3",
+    provider: "moonshot",
+    target: "kimi",
+    family: "Kimi",
+    status: "legacy",
+    strengths: ["reasoning", "long_context", "multimodal", "coding"],
+    notes: {
+      es: "El flagship anterior de Kimi (la API lo sigue sirviendo; Moonshot lo llama de generación anterior). Usá Kimi K3.1 Pro.",
+      en: "Kimi's previous-generation flagship (still served by the API). Use Kimi K3.1 Pro.",
+      pt: "O flagship anterior do Kimi (a API ainda o serve; a Moonshot o chama de geração anterior). Use o Kimi K3.1 Pro.",
+      zh: "Kimi的上一代旗舰（API仍可调用）。请使用Kimi K3.1 Pro。",
+    },
+    apiModelId: "kimi-k3",
+    verifiedAt: VERIFIED_K31,
+    sourceUrl: SRC.moonshot,
+    replacementId: "kimi-k3.1-pro",
+    selectable: false,
     capabilities: {
       inputModalities: ["text", "image", "video"],
       outputModalities: ["text"],
@@ -2332,14 +2403,14 @@ export const MODEL_REGISTRY: ModelEntry[] = [
     status: "legacy",
     strengths: ["long_context", "writing"],
     notes: {
-      es: "Alias genérico legacy de Promptea (no es un id de la API de Kimi). Usá Kimi K3.",
-      en: "Promptea's legacy generic alias (not a Kimi API id). Use Kimi K3.",
-      pt: "Alias genérico legado do Promptea (não é um id da API do Kimi). Use o Kimi K3.",
-      zh: "Promptea的旧版通用别名（不是Kimi API的id）。请使用Kimi K3。",
+      es: "Alias genérico legacy de Promptea (no es un id de la API de Kimi). Usá Kimi K3.1 Pro.",
+      en: "Promptea's legacy generic alias (not a Kimi API id). Use Kimi K3.1 Pro.",
+      pt: "Alias genérico legado do Promptea (não é um id da API do Kimi). Use o Kimi K3.1 Pro.",
+      zh: "Promptea的旧版通用别名（不是Kimi API的id）。请使用Kimi K3.1 Pro。",
     },
-    verifiedAt: VERIFIED,
+    verifiedAt: VERIFIED_K31,
     sourceUrl: SRC.moonshot,
-    replacementId: "kimi-k3",
+    replacementId: "kimi-k3.1-pro",
     selectable: false,
   },
 
