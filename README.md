@@ -155,6 +155,20 @@ A weekly email digest of AI Daily. Since v1.7.0 every published edition lives in
 4. Backfill / audit: `npm run weekly:backfill` reports every edition a live run actually delivered and whether it is public; `npm run weekly:backfill -- --write` repairs a delivered edition whose status is not public. It never regenerates content and never sends.
 5. Kill switch: set `NEWSLETTER_DELIVERY_ENABLED=false` (and redeploy) — live runs return `DELIVERY_DISABLED` before sending anything. To stop the schedule itself, disable the routine at https://claude.ai/code/routines. Removing `NEWSLETTER_SEND_SECRET` makes the endpoint refuse every call (503).
 
+## Routine health and alert (v1.8.8)
+
+Five routines publish Promptea's content, and between 26/10 and 9/11 the newsletter went three Mondays without mailing while nobody noticed. `lib/ops/routineHealth.ts` turns each routine's last output into a verdict:
+
+| Key | Last output read from | Schedule (UTC) | Empty runs allowed |
+| --- | --- | --- | --- |
+| `daily` | newest `daily` story | Mon–Fri 23:00 | 2 |
+| `morning` | newest `daily-morning` story | Mon–Fri 12:00 (optional slot) | 4 |
+| `tech` | newest `tech-daily` story | every day 15:00 | 3 |
+| `weekly` | newest `weekly-recap` / `week-ahead` | Sat and Sun 23:00 | 1 |
+| `newsletter` | newest edition with `sentAt` (fully mailed) | Mon 12:00 | 0 |
+
+A routine is **overdue** when more scheduled runs than allowed have passed (each with 3 h of grace) since its last output. `GET /api/internal/routines/health` (Bearer `ROUTINE_HEALTH_SECRET` or `CRON_SECRET`) returns the report and writes nothing. Vercel Cron calls `GET /api/internal/routines/alert` daily at 16:00 UTC (13:00 ART); if something is overdue it mails `ROUTINE_ALERT_TO` once per day (`ops_alerts/routine-health_<date>` makes a double fire harmless). `?dryRun=1` shows what would happen without sending. No new Firestore index is needed: both reads reuse existing queries.
+
 ## X feed (v1.8.7)
 
 The X card (home side column, under the newsletter; AI Daily side column) is Promptea's own: the server fetches the account's posts, caches them for 2 hours (`FEED_REVALIDATE_SECONDS`, one upstream call per window for the whole site) and renders them as plain markup. The browser loads nothing from X or any third party — no script, image or frame — so the card is crawlable, works without JavaScript, has a fixed height (no layout shift) and follows the three themes. It replaced the Elfsight widget of v1.8.1–v1.8.6. Decision record (sources compared, costs, terms): [`docs/release/v1.8.7/x-feed-decision.md`](./docs/release/v1.8.7/x-feed-decision.md).
@@ -229,6 +243,11 @@ npm run build      # production build (works offline — fonts are local)
 | `NEWSLETTER_TEST_RECIPIENTS` | for test/live sends | Comma-separated addresses (max 5) that receive `test` sends and the canary copy of every live send. Live delivery refuses to start without at least one. |
 | `RESEND_API_KEY` | for newsletter delivery | Resend API key. Needed for `test` and `live` runs. |
 | `NEWSLETTER_FROM_ADDRESS` | optional | Sender address for the newsletter (default `Promptea Weekly <weekly@promptea.me>`). |
+| `NEWSLETTER_EXCLUDED_RECIPIENTS` | optional | v1.8.8. Addresses or `@domain`s that never receive Promptea Weekly (comma-separated). Reserved TLDs (`.test`, `.example`, `.invalid`, `.localhost`) and Promptea's QA mailboxes (`test-qa-*@promptea.me`) are always excluded; the run reports them as `counts.excluded` and the subscribe form refuses them. |
+| `CRON_SECRET` | for the routine alert | v1.8.8. **Secret.** Vercel Cron sends it as `Authorization: Bearer …` to `/api/internal/routines/alert` (daily, 16:00 UTC, `vercel.json`). Without it the alert route returns 503 and nothing is mailed. ≥16 random characters. |
+| `ROUTINE_ALERT_TO` | for the routine alert | v1.8.8. Up to 3 comma-separated addresses that receive the "a routine is late" email (once a day while something is overdue). Unset = the check runs but mails nobody. |
+| `ROUTINE_ALERT_FROM` | optional | v1.8.8. Sender of that email (default `Promptea Ops <ops@promptea.me>`, on the Resend-verified domain). |
+| `ROUTINE_HEALTH_SECRET` | optional | v1.8.8. **Secret.** A second bearer token for the read-only `GET /api/internal/routines/health` (so a human can look without the cron secret). `CRON_SECRET` also works there. |
 | `OPENROUTER_API_KEY` | for live benchmarks | Server-only key for `GET https://openrouter.ai/api/v1/benchmarks` (any valid OpenRouter key; 30 req/min, 500 req/day). Without it `/benchmarks` serves the last valid snapshot (Firestore `benchmark_snapshots/latest`) or an honest empty state. |
 
 AI Daily reuses the existing `FIREBASE_SERVICE_ACCOUNT_BASE64` and `FIREBASE_PROJECT_ID`, and `NEXT_PUBLIC_SITE_URL` for canonical, `hreflang`, sitemap, and feed URLs. `BLOG_PUBLISH_SECRET` is the only required variable for AI Daily publishing. Newsletter subscriptions are stored in Firestore using the same Firebase configuration.

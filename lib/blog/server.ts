@@ -25,7 +25,7 @@ import {
   PUBLIC_BLOG_STATUSES,
   isPubliclyVisible,
 } from "@/lib/domain";
-import type { ContentLang } from "@/lib/domain";
+import type { BlogEdition, ContentLang } from "@/lib/domain";
 import { editionDocId, editorialDate } from "@/lib/blog/dates";
 import { readingMinutes } from "@/lib/blog/render";
 import type {
@@ -262,6 +262,33 @@ export async function listAllPublishedArticles(lang: ContentLang, max = 500): Pr
     if (!post) continue;
     const article = toPublicArticle(post, lang);
     if (article) out.push(article);
+  }
+  return out;
+}
+
+/**
+ * v1.8.8 — the newest publishedAt per edition, for the routine health check
+ * (lib/ops/routineHealth.ts). Reuses the (status, publishedAt desc) query that
+ * the sitemap already needs, so it requires no new index; editions that do
+ * not appear in the newest `scan` posts come back as null.
+ */
+export async function latestPublishedAtByEdition(scan = 150): Promise<Partial<Record<BlogEdition, string>>> {
+  const db = getAdminFirestore();
+  const snap = await db
+    .collection(COLLECTION)
+    .where("status", "in", publicStatuses)
+    .orderBy("publishedAt", "desc")
+    .limit(scan)
+    .get();
+
+  const out: Partial<Record<BlogEdition, string>> = {};
+  for (const doc of snap.docs) {
+    const raw = doc.data();
+    // Documents written before v1.4.1 have no edition; they are all daily.
+    const edition = ((raw.edition as BlogEdition | undefined) ?? "daily") as BlogEdition;
+    const at = tsToIso(raw.publishedAt);
+    if (!at || out[edition]) continue;
+    out[edition] = at;
   }
   return out;
 }

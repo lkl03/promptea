@@ -355,6 +355,22 @@ describe("runWeeklyNewsletter", () => {
     expect(mailer!.sent).toHaveLength(0);
   });
 
+  test("v1.8.8: test addresses are counted as excluded and never mailed (the 3 bounces of 2026-11-16)", async () => {
+    const store = new MemoryStore([
+      ...SUBSCRIBERS,
+      { id: "sub_t1", email: "probe@test.test", lang: "en", unsubscribeToken: "e".repeat(64), status: "active" },
+      { id: "sub_t2", email: "test-qa-v150@promptea.me", lang: "en", unsubscribeToken: "f".repeat(64), status: "active" },
+      { id: "sub_t3", email: "old@foo.com", lang: "es", unsubscribeToken: "9".repeat(64), status: "active" },
+    ]);
+    const { deps: d, mailer, logs } = deps({ store, env: { ...LIVE_ENV, NEWSLETTER_EXCLUDED_RECIPIENTS: "old@foo.com" } });
+    const r = await runWeeklyNewsletter("live", d);
+    expect(r.outcome).toBe("SENT");
+    expect(r.counts).toMatchObject({ subscribers: 3, excluded: 3, sent: 3 });
+    expect(mailer!.sent.map((m) => m.to)).toEqual(["owner@example.com", "ana@example.com", "bob@example.com", "cam@example.com"]);
+    expect(logs.find((l) => l.event === "newsletter_excluded_test_addresses")?.meta).toEqual({ count: 3 });
+    expect(JSON.stringify(logs)).not.toContain("test.test");
+  });
+
   test("incomplete configuration stops the run before any send (no partial sends)", async () => {
     for (const env of [
       { ...LIVE_ENV, RESEND_API_KEY: "" },

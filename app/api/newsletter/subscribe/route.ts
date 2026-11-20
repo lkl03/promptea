@@ -9,6 +9,7 @@ import { createHash } from "crypto";
 import { SubscribeRequestSchema } from "@/lib/newsletter/types";
 import { addSubscriber } from "@/lib/newsletter/server";
 import { APP_VERSION } from "@/lib/version";
+import { isExcludedRecipient, parseExcludedRecipients } from "@/lib/newsletter/recipients";
 
 export const runtime = "nodejs";
 
@@ -101,6 +102,12 @@ export async function POST(req: NextRequest) {
   // 5. Consent must be explicitly true
   if (!parsed.data.consent) {
     return jsonResponse({ ok: false, error: "consent_required" }, 400);
+  }
+
+  // 5b. v1.8.8: addresses that can never receive mail (reserved TLDs such as
+  // `.test`, Promptea's own QA mailboxes) are refused like any invalid address.
+  if (isExcludedRecipient(parsed.data.email, parseExcludedRecipients(process.env.NEWSLETTER_EXCLUDED_RECIPIENTS))) {
+    return jsonResponse({ ok: false, error: "validation" }, 400);
   }
 
   // 6. Add subscriber via server module

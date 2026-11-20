@@ -19,6 +19,7 @@
 // partial send.
 
 import { DEFAULT_SITE_URL } from "./render";
+import { parseExcludedRecipients } from "./recipients";
 
 export const DEFAULT_FROM_ADDRESS = "Promptea Weekly <weekly@promptea.me>";
 export const MAX_TEST_RECIPIENTS = 5;
@@ -38,6 +39,8 @@ export type DeliveryConfig = {
   testRecipients: string[];
   /** Entries in NEWSLETTER_TEST_RECIPIENTS that were not valid addresses. */
   invalidTestRecipients: number;
+  /** v1.8.8: NEWSLETTER_EXCLUDED_RECIPIENTS — addresses or `@domain`s never mailed (on top of lib/newsletter/recipients.ts). */
+  excludedRecipients: string[];
 };
 
 export function readDeliveryConfig(env: Record<string, string | undefined> = process.env): DeliveryConfig {
@@ -57,6 +60,7 @@ export function readDeliveryConfig(env: Record<string, string | undefined> = pro
     siteUrl: ((env.NEXT_PUBLIC_SITE_URL ?? "").trim() || DEFAULT_SITE_URL).replace(/\/+$/, ""),
     testRecipients: valid,
     invalidTestRecipients: rawRecipients.length - rawRecipients.filter((r) => EMAIL_RE.test(r)).length,
+    excludedRecipients: parseExcludedRecipients(env.NEWSLETTER_EXCLUDED_RECIPIENTS),
   };
 }
 
