@@ -9,7 +9,22 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 
 Available in English, Spanish, Brazilian Portuguese and Simplified Chinese (`/en`, `/es`, `/pt` since v1.8.2, `/zh` since v1.8.7). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.7 (2026-11-16)
+## Latest update — v1.8.8 (2026-11-20)
+
+**Routine health and a daily alert, the newsletter's test addresses out, Kimi K3.1 Pro, a QA pass of `/zh`, tweets measured by UTM, and firebase-admin 14 ready in a draft PR.** Built as separate PRs by topic; this one (the release) goes last.
+- **Routine health** (lkl03/promptea#50): `GET /api/internal/routines/health` reports the last output of daily, morning, tech, weekly and the newsletter; a Vercel Cron mails the owner once a day if one is overdue. See "Routine health and alert".
+- **Newsletter**: test addresses (`.test`, QA mailboxes) are skipped and refused (lkl03/promptea#50).
+- **Models** (lkl03/promptea#52): Kimi K3.1 Pro is the default Kimi; GPT-Image-2.6 was verified but is not a prompt target yet.
+- **`/zh`** (lkl03/promptea#53): QA of v1.8.7 with 0 failures, one safe fix, and the native review packages for pt and zh, now with a brief in each reviewer's language.
+- **Tweets** (lkl03/promptea#54): every link in the weekly tweets carries UTM, so reach is read in Vercel Analytics.
+- **Operations** (lkl03/promptea#55): the AI Daily Tech status, what happened to the newsletter on 26/10, 2/11 and 9/11, and how to rotate the two publishing secrets.
+- **firebase-admin 14** (lkl03/promptea#51, draft): `npm audit --omit=dev` from 18 warnings to 0, with a Firestore emulator test.
+
+Report, Analytics and the Singapore traffic: [`docs/release/v1.8.8/release-report.md`](./docs/release/v1.8.8/release-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.7 (2026-11-16) — Simplified Chinese, Promptea's own X feed, the newsletter card, per-model Benchmarks._
+
+## v1.8.7 (2026-11-16)
 
 **Simplified Chinese (`/zh`) as a fourth language, Promptea's own X feed, a newsletter card every visitor sees, and an analysis of each model on Benchmarks.**
 - **`/zh`** for readers in mainland China (`zh`, `zh-CN`, `zh-SG`, `zh-Hans`); Traditional Chinese browsers go to `/en`.
@@ -21,8 +36,6 @@ Available in English, Spanish, Brazilian Portuguese and Simplified Chinese (`/en
 - Benchmarks open a per-model analysis and compare up to four models.
 
 Evidence and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
-
-_Previous update: v1.8.6 (2026-11-14) — SEO for the US and Asia: Qwen, GLM, MiniMax and Doubao, analyzer copy, IndexNow, clean measurement._
 
 ## v1.8.5 (2026-11-13)
 

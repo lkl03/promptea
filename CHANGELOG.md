@@ -4,6 +4,43 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.8 — 2026-11-20
+
+**Routine health and a daily alert, the newsletter's test addresses out, Kimi K3.1 Pro, a QA pass of `/zh`, tweets measured by UTM, and firebase-admin 14 in a draft PR.** Built as separate PRs by topic (#50 to #55); this release PR bumps the version and carries the report: [`docs/release/v1.8.8/release-report.md`](./docs/release/v1.8.8/release-report.md).
+
+### Routine health and alert (#50)
+- `lib/ops/routineHealth.ts` turns each routine's last output into a verdict: daily (Mon–Fri, 2 empty runs allowed), morning (Mon–Fri, 4), tech (daily, 3), weekly (Sat and Sun, 1) and the newsletter (Mondays, 0). Each slot gets 3 h of grace.
+- `GET /api/internal/routines/health` (Bearer `ROUTINE_HEALTH_SECRET` or `CRON_SECRET`) is read-only.
+- `GET /api/internal/routines/alert` runs from Vercel Cron at 16:00 UTC and mails `ROUTINE_ALERT_TO` once per day while something is overdue (`?dryRun=1` never sends).
+- Why: the newsletter went three Mondays without mailing (26/10, 2/11, 9/11) and nobody noticed. AI Daily Tech's three empty days (14–16/11) were valid, but they looked the same as a failure.
+
+### Newsletter (#50)
+- Reserved TLDs (`.test`, `.example`, `.invalid`, `.localhost`) and Promptea's QA mailboxes (`test-qa-*@promptea.me`) are never mailed (`counts.excluded`) and the subscribe form refuses them. `NEWSLETTER_EXCLUDED_RECIPIENTS` adds more.
+- `scripts/newsletter/exclude-test-subscribers.mjs` marks them unsubscribed (dry run by default; never deletes).
+
+### Models (#52)
+- **Kimi K3.1 Pro** (`kimi-k3.1-pro`), verified on Moonshot's own pages, is the default Kimi. Kimi K3 is now legacy, like GPT-6 Sol.
+- **GPT-Image-2.6 Sunburst and Flare** exist (OpenAI, 2026-11-04) but are not added: they are image models and the registry has no image target. Details: [`docs/release/v1.8.8/models-verification.md`](./docs/release/v1.8.8/models-verification.md).
+
+### Chinese (#53)
+- QA of v1.8.7 `/zh`: `i18n-qa` 66 loads with 0 failures; all 72 `/zh` URLs checked with 407 internal links and 0 broken; `seo:check` 1,379/1,379 local and 1,359/1,359 in production; `engine-qa` 104/104.
+- The newsletter email placeholder under `/zh` was English (`your@email.com`); it is now `name@example.com`.
+- `docs/i18n/zh-review.md` and `pt-review.md` now open with a brief in the reviewer's language.
+
+### Tweets measured in Analytics (#54)
+- `lib/analytics/utm.ts`: `utm_source=x`, `utm_medium=social`, `utm_campaign=tweets-<Monday>`, `utm_content=<tweet type>`.
+- The weekly tweets task gets a new prompt ([`docs/social/weekly-tweets-routine.md`](./docs/social/weekly-tweets-routine.md)): 2–3 tweets a week link to dated content (an AI Daily story or a model's analysis on Benchmarks), and every link carries UTM.
+
+### Operations (#55)
+- [`docs/editorial/tech-daily-routine-status.md`](./docs/editorial/tech-daily-routine-status.md): AI Daily Tech has been enabled since 14/11 and published 4 stories by 19/11. Several sources are still blocked by the environment's network.
+- [`docs/ops/routine-incidents-2026-11.md`](./docs/ops/routine-incidents-2026-11.md): the newsletter's live step on 26/10, 2/11 and 9/11 was blocked by the routine's own permission classifier.
+- [`docs/ops/secrets-rotation.md`](./docs/ops/secrets-rotation.md) and `scripts/ops/verify-secrets.mjs`: how to rotate `BLOG_PUBLISH_SECRET` and `NEWSLETTER_SEND_SECRET`, and how to verify them without publishing.
+
+### Dependencies (#51, draft — owner's decision)
+- `firebase-admin` 13.6 → 14.5.1, plus `@fastify/busboy` and `source-map-js` updated within range. `npm audit --omit=dev` goes from 18 warnings (3 critical) to 0. `npm run test:firestore` runs the site's Firestore code against the emulator: 5/5 on both versions.
+
+---
+
 ## v1.8.7 — 2026-11-16
 
 **Simplified Chinese (`/zh`) as a fourth language, Promptea's own X feed, a newsletter card that every visitor actually sees, and an analysis of each model on Benchmarks.** Built in two PRs: part A (X feed, newsletter, Benchmarks, QA) and part B (Chinese), which bumps the version. Evidence and the owner's open items: [`docs/release/v1.8.7/qa-report.md`](./docs/release/v1.8.7/qa-report.md).
