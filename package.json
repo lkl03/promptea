@@ -12,6 +12,7 @@
     "seo:indexnow": "node scripts/seo/indexnow.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:firestore": "firebase emulators:exec --only firestore --project demo-promptea \"vitest run lib/__tests__/firestore.emulator.spec.ts\"",
     "showcase:record": "node scripts/showcase/record.mjs",
     "showcase:encode": "node scripts/showcase/encode.mjs",
     "weekly:backfill": "node --env-file=.env.local scripts/weekly-backfill.mjs"
@@ -20,7 +21,7 @@
     "@anthropic-ai/sdk": "^1.6.0",
     "@formatjs/intl-localematcher": "^0.7.5",
     "@vercel/analytics": "^1.6.1",
-    "firebase-admin": "^13.6.0",
+    "firebase-admin": "^14.5.1",
     "negotiator": "^1.0.0",
     "next": "16.4.6",
     "next-themes": "^0.4.6",
