@@ -562,6 +562,15 @@
     "about": "About Promptea"
   },
   "changelog": {
+    "v188": {
+      "released": "Released: 2026-11-20",
+      "items": [
+        "Kimi K3.1 Pro arrives in the analyzer and becomes the default Kimi; Kimi K3 moves to previous version.",
+        "We reviewed all of /zh: links, metadata and text. The newsletter form no longer shows an English email example there.",
+        "Behind the scenes: a daily check warns us if any automated publication (AI Daily, AI Daily Tech, the weekly digest or the newsletter) falls behind.",
+        "The newsletter no longer goes to test addresses that bounced."
+      ]
+    },
     "v187": {
       "released": "Released: 2026-11-16",
       "items": [
