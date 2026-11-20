@@ -40,6 +40,7 @@ import { renderNewsletterHtml, renderNewsletterText, unsubscribeHeaders, unsubsc
 import { NewsletterEditionSchema, type NewsletterEdition } from "./types";
 import type { Mailer } from "./email";
 import { weeklyEditionPath } from "./paths";
+import { isExcludedRecipient } from "./recipients";
 
 export const NEWSLETTER_RUN_OUTCOMES = [
   "DRY_RUN_OK", // edition built/validated; nothing sent
@@ -93,6 +94,8 @@ export type NewsletterRunCounts = {
   remaining: number;
   canarySent: number;
   testSent: number;
+  /** v1.8.8: active subscribers skipped because they are test addresses (lib/newsletter/recipients.ts). */
+  excluded: number;
 };
 
 export type NewsletterRunResult = {
@@ -135,7 +138,7 @@ const DEFAULT_BUDGET_MS = 45_000;
 const DEFAULT_THROTTLE_MS = 550;
 
 function emptyCounts(): NewsletterRunCounts {
-  return { subscribers: 0, byLang: { en: 0, es: 0 }, sent: 0, alreadySent: 0, failed: 0, inFlight: 0, unknown: 0, rejected: 0, remaining: 0, canarySent: 0, testSent: 0 };
+  return { subscribers: 0, byLang: { en: 0, es: 0 }, sent: 0, alreadySent: 0, failed: 0, inFlight: 0, unknown: 0, rejected: 0, remaining: 0, canarySent: 0, testSent: 0, excluded: 0 };
 }
 
 /** Ledger key for a test/canary address — a hash, never the address itself. */
@@ -276,6 +279,12 @@ export async function runWeeklyNewsletter(
   } catch {
     return finish("STORAGE_ERROR", "Could not read the subscriber list.");
   }
+  // v1.8.8: test addresses (reserved TLDs, QA mailboxes, NEWSLETTER_EXCLUDED_RECIPIENTS)
+  // are never mailed. They are counted, not listed: no address leaves this function.
+  const before = subscribers.length;
+  subscribers = subscribers.filter((s) => !isExcludedRecipient(s.email, cfg.excludedRecipients ?? []));
+  counts.excluded = before - subscribers.length;
+  if (counts.excluded > 0) log("newsletter_excluded_test_addresses", { count: counts.excluded });
   counts.subscribers = subscribers.length;
   counts.byLang = {
     en: subscribers.filter((s) => s.lang !== "es").length,

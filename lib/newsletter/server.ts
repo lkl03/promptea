@@ -278,6 +278,31 @@ function stripMeta(data: Record<string, unknown>): NewsletterEdition {
   return stripEditionMeta(data) as unknown as NewsletterEdition;
 }
 
+/**
+ * v1.8.8 — the newest edition that was published on the site and the newest
+ * that was fully mailed, for the routine health check. Ascending document-id
+ * order on purpose: descending needs an index this project does not have (the
+ * v1.7.0 production failure, see listPublicEditions). One document per week,
+ * so reading them all stays small.
+ */
+export async function latestEditionActivity(max = 520): Promise<{
+  lastPublished: { editionId: string; at: string } | null;
+  lastSent: { editionId: string; at: string } | null;
+}> {
+  const db = getAdminFirestore();
+  const snap = await db.collection(EDITIONS_COLLECTION).orderBy(FieldPath.documentId()).limit(max).get();
+  let lastPublished: { editionId: string; at: string } | null = null;
+  let lastSent: { editionId: string; at: string } | null = null;
+  for (const doc of snap.docs) {
+    const d = doc.data();
+    const published = typeof d.publishedAt === "string" ? d.publishedAt : null;
+    const sent = typeof d.sentAt === "string" ? d.sentAt : null;
+    if (published && (!lastPublished || published > lastPublished.at)) lastPublished = { editionId: doc.id, at: published };
+    if (sent && (!lastSent || sent > lastSent.at)) lastSent = { editionId: doc.id, at: sent };
+  }
+  return { lastPublished, lastSent };
+}
+
 export function firestoreNewsletterStore(): NewsletterStore {
   const db = getAdminFirestore();
   const editions = db.collection(EDITIONS_COLLECTION);
