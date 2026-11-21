@@ -1,6 +1,10 @@
 # Propuesta: chino en la sección de noticias
 
-Estado: **propuesta, sin implementar**, como pediste. Fecha: 2026-11-20.
+Estado: **decidido e implementado.** El 21/11 elegiste que las noticias salgan en chino igual que en español e inglés, o sea la opción D, sin tope por tema. Está en lkl03/promptea#57: el servidor acepta `locales.zh` en cada nota y las tres rutinas de AI Daily lo escriben (`docs/editorial/routines/`). Lo de abajo es el análisis del 20/11, que queda como contexto.
+
+Cómo quedó la opción D en la práctica: el chino es **opcional para el servidor**, para que una falla en el chino nunca haga perder la nota (la rutina la publica igual en es/en). Las notas viejas no se tradujeron hacia atrás. El resumen semanal y el newsletter siguen en es/en.
+
+Fecha del análisis: 2026-11-20.
 
 ## Qué es "la sección de noticias" en el código
 

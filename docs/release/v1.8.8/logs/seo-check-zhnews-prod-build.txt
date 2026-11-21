@@ -1,0 +1,30 @@
+seo:check against LOCAL
+
+== robots.txt
+  ✓ robots.txt: 67 passed
+
+== sitemap.xml
+  ✓ sitemap.xml: 16 passed
+
+== llms.txt / llms-full.txt
+  ✓ llms.txt / llms-full.txt: 101 passed
+
+== markdown twins
+  ✓ markdown twins: 444 passed
+
+== pages (every sitemap URL)
+  ✓ pages (every sitemap URL): 734 passed
+
+== language entry (proxy)
+  ✓ language entry (proxy): 10 passed
+
+== /pt views of content without a Portuguese version
+  ✓ /pt views of content without a Portuguese version: 6 passed
+
+== /zh views of content without a Chinese version
+  ✓ /zh views of content without a Chinese version: 6 passed
+
+============================================================
+seo:check — 1384 passed, 0 failed, 0 warning(s)  [1384 checks]
+
+RESULT: PASS

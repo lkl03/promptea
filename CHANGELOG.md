@@ -6,7 +6,12 @@ All notable changes to Promptea are documented here.
 
 ## v1.8.8 — 2026-11-20
 
-**Routine health and a daily alert, the newsletter's test addresses out, Kimi K3.1 Pro, a QA pass of `/zh`, tweets measured by UTM, and firebase-admin 14 in a draft PR.** Built as separate PRs by topic (#50 to #55); this release PR bumps the version and carries the report: [`docs/release/v1.8.8/release-report.md`](./docs/release/v1.8.8/release-report.md).
+**AI Daily in Simplified Chinese, routine health and a daily alert, the newsletter's test addresses out, Kimi K3.1 Pro, a QA pass of `/zh`, tweets measured by UTM, and firebase-admin 14.** Built as separate PRs by topic (#50 to #55 and #57); this release PR bumps the version and carries the report: [`docs/release/v1.8.8/release-report.md`](./docs/release/v1.8.8/release-report.md).
+
+### AI Daily in Chinese (#57)
+- Every story can carry Simplified Chinese as an optional third locale (`locales.zh`, same fields as en and es; the server checks it is the same story and actually Chinese). The three AI Daily routines write it from 2026-11-21 (prompts in `docs/editorial/routines/`); if the Chinese part does not validate, the routine drops it and publishes en/es, so zh never costs a story.
+- Under `/zh`, a story with Chinese text is a page of its own: self canonical, `zh_CN`, hreflang es/en/zh, sitemap, `.md` twin. Stories without it (everything before) keep showing in English with a notice. `/zh/blog` and `/zh/blog/tech` become their own index once they have a Chinese story; the home and the marquee mark the language story by story.
+- The weekly digest and the newsletter stay es/en; `/pt` keeps reading the English edition.
 
 ### Routine health and alert (#50)
 - `lib/ops/routineHealth.ts` turns each routine's last output into a verdict: daily (Mon–Fri, 2 empty runs allowed), morning (Mon–Fri, 4), tech (daily, 3), weekly (Sat and Sun, 1) and the newsletter (Mondays, 0). Each slot gets 3 h of grace.
@@ -36,7 +41,7 @@ All notable changes to Promptea are documented here.
 - [`docs/ops/routine-incidents-2026-11.md`](./docs/ops/routine-incidents-2026-11.md): the newsletter's live step on 26/10, 2/11 and 9/11 was blocked by the routine's own permission classifier.
 - [`docs/ops/secrets-rotation.md`](./docs/ops/secrets-rotation.md) and `scripts/ops/verify-secrets.mjs`: how to rotate `BLOG_PUBLISH_SECRET` and `NEWSLETTER_SEND_SECRET`, and how to verify them without publishing.
 
-### Dependencies (#51, draft — owner's decision)
+### Dependencies (#51)
 - `firebase-admin` 13.6 → 14.5.1, plus `@fastify/busboy` and `source-map-js` updated within range. `npm audit --omit=dev` goes from 18 warnings (3 critical) to 0. `npm run test:firestore` runs the site's Firestore code against the emulator: 5/5 on both versions.
 
 ---
