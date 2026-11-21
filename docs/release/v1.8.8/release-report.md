@@ -1,23 +1,25 @@
 # Promptea v1.8.8: reporte de release
 
-Fecha: 2026-11-20. Base: `main` @ `e5a9cfe` (v1.8.7, en producción desde el 16/11). Una rama y un PR por tema. **No mergeé nada ni toqué producción:** no cambié variables, rutinas, secretos, ramas, Firewall ni datos.
+Fecha: 2026-11-20, actualizado el 2026-11-21 después del merge. Base: `main` @ `e5a9cfe` (v1.8.7, en producción desde el 16/11). Una rama y un PR por tema.
 
-## 0. Resumen
+**21/11:** con tu OK mergeé los 8 PRs (#50 a #57) en `main`, borré las 31 ramas viejas que pediste y apliqué el prompt nuevo a la tarea de tweets. Además, implementé las noticias en chino (#57), como pediste. **No toqué** secretos, variables de Vercel, rutinas de claude.ai, Firewall ni datos de Firestore. Lo que falta de tu lado está en §10.
 
-| Punto | Qué se hizo | Qué queda | Qué necesito de vos |
+## 0. Resumen (estado al 21/11)
+
+| Punto | Qué se hizo | Estado | Qué necesito de vos |
 | --- | --- | --- | --- |
-| 1a. Ramas mergeadas | 31 ramas del pedido verificadas como mergeadas (Apéndice A) | Borrarlas | **Tu OK** para borrarlas |
-| 1b. Doc de la rutina Tech | Actualizado: activa desde el 14/11, corridas y faltantes de red (#55) | — | Revisar la red del entorno `Default` |
-| 1c. Salud de rutinas y alerta | Endpoint de solo lectura, cron diario y mail; direcciones de prueba fuera (#50) | Deploy y variables | `CRON_SECRET` y `ROUTINE_ALERT_TO` en Vercel |
-| 1d. firebase-admin 14 | PR en draft con prueba de Firestore: audit de 18 avisos a 0 (#51) | Tu decisión | Decidir antes del 23/11 |
-| 1e. Investigación | Tech: 3 días vacíos válidos y hoy 4 notas. Newsletter: el envío lo bloqueó el clasificador de permisos de la rutina (#55) | — | Revisar el modo de permisos de la rutina del newsletter |
-| 1f. Secretos | Instructivo y script de verificación sin efectos (#55) | La rotación | Rotarlos |
-| 1g. Revisión nativa pt y zh | Paquetes al día, con portada en el idioma de quien revisa (#53) | La revisión | Conseguir revisores |
-| 2. Chino | QA completo: 0 fallas, 0 enlaces rotos, `seo:check` OK; 1 arreglo seguro (#53) | Revisión nativa | — |
-| 3. Chino en noticias | Propuesta (opción B recomendada); no implementada | Implementar si aprobás | **Elegir alcance** |
-| 4. Analytics | 7 y 30 días y antes/después de v1.8.6; tweets con UTM (#54) | Aplicar el prompt nuevo de tweets | **Tu OK** para la tarea de tweets |
-| 5. Singapur | Confirmado: tráfico automatizado de centros de datos, sobre todo Tencent Cloud; empezó el 11/11 | Opcional: regla de Firewall | Decidir la regla |
-| 6. Modelos e ideas | Kimi K3.1 Pro agregado (#52); GPT-Image-2.6 verificado y no agregado; 3 ideas (§6) | — | Priorizar ideas |
+| 1a. Ramas mergeadas | 31 ramas verificadas (Apéndice A) | **Borradas** el 21/11 | Nada. Quedan las 14 de afuera del patrón, que no toqué |
+| 1b. Doc de la rutina Tech | Activa desde el 14/11, corridas y faltantes de red (#55) | En `main` | Revisar la red del entorno `Default` |
+| 1c. Salud de rutinas y alerta | Endpoint, cron diario y mail; direcciones de prueba fuera (#50) | En `main` | `CRON_SECRET` y `ROUTINE_ALERT_TO` en Vercel (§10) |
+| 1d. firebase-admin 14 | De 18 avisos de audit a 0; prueba de Firestore 5/5 (#51) | En `main` | Nada |
+| 1e. Investigación | Tech: 3 días vacíos válidos. Newsletter: el envío lo bloqueó el clasificador de permisos (#55) | En `main` | Revisar el modo de permisos de la rutina del newsletter |
+| 1f. Secretos | Instructivo, script de verificación y prompts nuevos con el secreto en una sola línea (#55, #57) | Listo para rotar | **Rotarlos** (§10) |
+| 1g. Revisión nativa pt y zh | Paquetes al día, con portada en el idioma de quien revisa (#53) | En `main` | Conseguir revisores |
+| 2. Chino | QA: 0 fallas, 0 enlaces rotos, `seo:check` OK; 1 arreglo (#53) | En `main` | — |
+| 3. Chino en noticias | **Implementado** (#57): cada nota nueva también en chino | En `main`; empieza a publicarse cuando pegues los prompts nuevos | Pegar los prompts al rotar (§10) |
+| 4. Analytics | 7 y 30 días, antes/después de v1.8.6; tweets con UTM (#54) | En `main`; **tarea de tweets actualizada** | — |
+| 5. Singapur | Tráfico automatizado de centros de datos (Tencent Cloud) desde el 11/11 | Informe | Opcional: regla de Firewall |
+| 6. Modelos e ideas | Kimi K3.1 Pro (#52); GPT-Image-2.6 verificado, no agregado; 3 ideas | En `main` | Priorizar ideas |
 
 ## 1. Pendientes arrastrados
 
@@ -32,7 +34,7 @@ Las 31 del pedido (`claude/*`, `v1.8.x-qa` y `chore/weekly-update-*`, incluida `
 
 Fuera del patrón pedido, pero también mergeadas: `v1.8.3-tech` (#40), 9 `feat/*`, `fix/v1.1.2-ux-a11y-polish`, `v1.1`, `v1.1.1` y `vercel/vercel-web-analytics-to-nextjs-4qt9pn`. Las listo por si querés limpiarlas también.
 
-**No borré ninguna:** pediste ver la lista antes. La lista con SHA para restaurarlas está en el Apéndice A. Con tu OK, el comando es `git push origin --delete <rama> …`; para restaurar una, `git push origin <sha>:refs/heads/<rama>`.
+**Borradas el 21/11, con tu OK:** las 31, después de volver a verificar que cada una seguía en el commit mergeado. Las ramas `claude/v188-*` se borraron al mergear sus PRs. Para restaurar cualquiera: `git push origin <sha>:refs/heads/<rama>` (los SHA están en el Apéndice A).
 
 ### 1b. `tech-daily-routine-status.md` (#55)
 
@@ -45,7 +47,7 @@ Ahora dice que la rutina está activa desde el 14/11, con las corridas del 13 al
 - Ventanas y criterio en el README ("Routine health and alert"). Los dos incidentes reales (Tech 14–16/11 y newsletter 26/10) están como tests.
 - **Las 3 direcciones de prueba** (dos `*.test` y el buzón de QA `test-qa-v150@promptea.me`) se excluyen del envío (`counts.excluded`) y el formulario las rechaza. El script `scripts/newsletter/exclude-test-subscribers.mjs` las marca como dadas de baja en Firestore. No lo corrí contra producción: no tengo credenciales locales y además es un cambio de datos. El envío ya las saltea aunque no lo corras.
 
-### 1d. firebase-admin 14 (#51, draft)
+### 1d. firebase-admin 14 (#51, mergeado el 21/11)
 
 - `npm audit --omit=dev`: de **18 avisos (3 críticos, 5 altos) a 0**. Además de firebase-admin 14.5.1, actualicé `@fastify/busboy` y `source-map-js` dentro de su rango, sin `npm audit fix`.
 - **Prueba de Firestore** contra el emulador (`npm run test:firestore`): 5/5 con 13.6.0 y 5/5 con 14.5.1. Cubre todas las operaciones que usa el sitio.
@@ -88,13 +90,28 @@ El 16/11, con el mismo prompt, no hubo chequeo y salió bien. **Por qué cambió
 
 **Arreglado:** el placeholder del email de la newsletter (`your@email.com` → `name@example.com`). **Visto, sin arreglar porque no es de traducción:** nombres de Benchmarks como "Claude Opus 5.5 (Max, Default Fallback)" vienen así de la fuente y se ven igual en todos los idiomas.
 
-## 3. Chino en la sección de noticias
+## 3. Chino en la sección de noticias (#57)
 
-Propuesta en [`zh-news-proposal.md`](./zh-news-proposal.md).
-- **Sección:** AI Daily (`/blog`), AI Daily Tech (`/blog/tech`) y el semanal (`/blog/weekly`) son la misma sección en el código (`blog_posts`, `CONTENT_LANG_FOR.zh = "en"`).
-- **Recomendación: opción B.** Títulos, bajadas y resúmenes en chino, escritos por las mismas rutinas como un bloque corto. El cuerpo sigue en inglés, las notas siguen con canonical al inglés y solo el índice `/zh/blog` pasa a ser chino. Esfuerzo mediano; las 3 rutinas suman un paso corto.
-- **Las notas completas en chino** (opción C, solo las de empresas chinas de IA) quedan para cuando `/zh/blog` pase de unos 50 visitantes por semana; hoy tuvo 5 en 4 días.
-- **No implementé nada:** espero que elijas.
+Elegiste que las noticias salgan en chino igual que en español e inglés. Así quedó:
+
+- **El contrato:**
+  - cada nota puede traer `locales.zh`, con los mismos campos que en y es;
+  - el servidor verifica que sea la misma nota (igual cantidad de *takeaways* y de *why it matters*) y que esté en chino;
+  - es **opcional para el servidor** a propósito: las rutinas lo escriben siempre, pero si el chino no valida, sacan esa parte y publican igual en es/en, así que el chino nunca hace perder la nota.
+- **Bajo `/zh`:**
+  - una nota con chino tiene su propia página: canonical propio, `zh_CN`, `inLanguage` `zh-CN`, hreflang es/en/zh, sitemap, gemelo `.md` e imagen OG (con título en inglés, porque `next/og` no tiene fuente CJK);
+  - las notas anteriores al 21/11 se siguen viendo en inglés con un aviso, que ahora dice que esas en particular no tienen versión china;
+  - `/zh/blog` y `/zh/blog/tech` pasan a ser índices propios en cuanto tienen una nota en chino, y la home y la marquesina marcan el idioma nota por nota.
+- **Lo que no cambia:** el resumen semanal y el newsletter siguen en es/en, y `/pt` sigue leyendo en inglés.
+- **Las rutinas:**
+  - los prompts nuevos de AI Daily (noche y mañana) y AI Daily Tech están en [`docs/editorial/routines/`](../../editorial/routines/), con un bloque de chino que usa el glosario `docs/i18n/zh-glossary.md`;
+  - **empiezan a escribir en chino cuando pegues esos prompts** en las rutinas, cosa que se hace junto con la rotación de secretos (§10). Hasta entonces publican en es/en, como hoy.
+- **Verificación:**
+  - en el servidor de desarrollo, con una nota de prueba en chino, revisé a mano la página, el canonical, el hreflang, el sitemap, el `.md` y la imagen OG;
+  - `seo:check` sobre el build de producción: **1.384/1.384**;
+  - `seo:check` con la nota china de prueba: **1.093/1.093**.
+
+La propuesta y las opciones que se evaluaron el 20/11 están en [`zh-news-proposal.md`](./zh-news-proposal.md).
 
 ## 4. Analytics
 
@@ -117,7 +134,7 @@ Detalle y tablas en [`analytics-singapore.md`](./analytics-singapore.md).
 **Tweets:** el alcance se mide ahora con UTM (#54).
 - `utm_campaign=tweets-<lunes>` y `utm_content` por tipo: `tip`, `model-choice`, `ai-daily`, `benchmarks`, `feature` o `rough-idea`.
 - El prompt nuevo de la tarea dominical está en `docs/social/weekly-tweets-routine.md`: 2 o 3 tweets por semana con contenido fechado y todos los enlaces con UTM.
-- **No lo apliqué a la tarea**, porque cambia lo que se publica en X desde el 22/11.
+- **Aplicado a la tarea `promptea-weekly-tweets` el 21/11**, con tu OK. Corre el domingo 22/11 a las 10:00: la primera campaña medible es `tweets-2026-11-23`.
 
 ## 5. Singapur
 
@@ -176,21 +193,20 @@ Detalle en [`analytics-singapore.md`](./analytics-singapore.md) §3.
 
 Hay una cuarta idea, que viene de la verificación de modelos y no de Analytics: **un destino de imagen** (GPT-Image-2.6, Nano Banana, Midjourney) para que los prompts de imagen tengan modelos y perfiles propios. **Esfuerzo:** mediano.
 
-## 7. PRs abiertos y orden de merge
+## 7. PRs (todos mergeados el 21/11, en este orden)
 
-| PR | Rama | Tema | Estado |
-| --- | --- | --- | --- |
-| lkl03/promptea#50 | `claude/v188-routine-health` | Salud de rutinas, alerta y direcciones de prueba | Listo para revisar |
-| lkl03/promptea#51 | `claude/v188-firebase-admin-14` | firebase-admin 14 con prueba de Firestore | **Draft**, decisión tuya |
-| lkl03/promptea#52 | `claude/v188-models` | Kimi K3.1 Pro y verificación de GPT-Image-2.6 | Listo |
-| lkl03/promptea#53 | `claude/v188-i18n` | QA de chino, arreglo seguro, paquetes pt y zh | Listo |
-| lkl03/promptea#54 | `claude/v188-tweet-utm` | UTM para los tweets y prompt nuevo de la tarea | Listo |
-| lkl03/promptea#55 | `claude/v188-ops-docs` | Rutina Tech, incidentes y rotación de secretos | Listo |
-| lkl03/promptea#56 | `claude/v188-release` | Versión 1.8.8, changelog y este reporte | Mergear **último** |
+| PR | Tema | Commit en `main` |
+| --- | --- | --- |
+| lkl03/promptea#50 | Salud de rutinas, alerta y direcciones de prueba | `9e49669` |
+| lkl03/promptea#51 | firebase-admin 14 con prueba de Firestore | `313a698` |
+| lkl03/promptea#52 | Kimi K3.1 Pro y verificación de GPT-Image-2.6 | `9cd5351` |
+| lkl03/promptea#53 | QA de chino, arreglo seguro, paquetes pt y zh | `fcc15cc` |
+| lkl03/promptea#54 | UTM para los tweets y prompt nuevo de la tarea | `93e0f6f` |
+| lkl03/promptea#55 | Rutina Tech, incidentes y rotación de secretos | `6d992b7` |
+| lkl03/promptea#57 | AI Daily en chino | `e23f616` |
+| lkl03/promptea#56 | Versión 1.8.8, changelog y este reporte | ver GitHub |
 
-Los PRs no se pisan entre sí. Los únicos archivos compartidos son el `README.md` (#50 y la release) y `package.json` / `package-lock.json` (#51 y la release: la línea de versión). Si mergeás #51, rebaseá la release antes.
-
-**Después de mergear #50:** cargar `CRON_SECRET` y `ROUTINE_ALERT_TO` y hacer un redeploy. El cron solo corre en producción.
+El único choque fue un import en `lib/blog/server.ts` entre #50 y #57, resuelto al rebasear #57. La release se rebaseó al final sobre todo lo anterior.
 
 ## 8. Tests y QA
 
@@ -202,13 +218,14 @@ Los PRs no se pisan entre sí. Los únicos archivos compartidos son el `README.m
 | | #52 | 2.002, verde |
 | | #53 | 89 archivos, 2.002, verde |
 | | #54 | 90 archivos, **2.009** (+7), verde |
-| | #56 | `version.sync` e `i18n.parity`: 26, verde |
-| Typecheck y lint | #50, #51, #52, #54 y #55 | 0 errores |
+| | #57 | 94 archivos, **2.056** (+5 omitidos del emulador), verde |
+| | `main` final (v1.8.8) | 94 archivos, **2.056** (+5 omitidos), verde; Firestore (emulador) 5/5 con 14.5.1 |
+| Typecheck y lint | #50, #51, #52, #54, #55 y #57 | 0 errores |
 | Build de producción | `main` (QA de zh) y #51, en local | OK |
 | Build de Vercel (preview) | los 7 PRs, incluido #51 con Node 24 | **pass** en todos |
 | Prueba de Firestore (emulador) | 13.6.0 y 14.5.1 | 5/5 y 5/5 |
 | `npm audit --omit=dev` | `main` contra #51 | 18 contra **0** |
-| `seo:check` | producción y build local de `main` | 1.359/1.359 y 1.379/1.379 |
+| `seo:check` | producción (v1.8.7), build local de `main`, build de #57 y #57 con nota china de prueba | 1.359/1.359, 1.379/1.379, 1.384/1.384 y **1.093/1.093** |
 | `i18n-qa` zh, barrido `/zh` y `engine-qa` | build local de `main` | 0 fallas, 0 enlaces rotos y 104/104 |
 
 Logs en [`logs/`](./logs/).
@@ -221,27 +238,52 @@ Logs en [`logs/`](./logs/).
 
 ## 9. Qué se escribió afuera del repo
 
-- **GitHub:** las ramas `claude/v188-*` y los PRs #50 a #56. No se borró ninguna rama.
-- **Producción:** solo lectura (GET con curl, `seo:check`). Dos POST a los endpoints internos con firmas al azar (rechazados con 401) para probar `verify-secrets.mjs`; no escribieron nada.
-- **Lectura sin cambios:**
-  - rutinas de claude.ai/code: lista, corridas y logs;
-  - Resend: emails y broadcasts;
-  - Vercel: proyecto, Analytics y Firewall, por la API y por el dashboard en tu Chrome;
-  - tareas programadas locales: lista y el prompt de los tweets.
-- **Local:** `npm ci` en `D:\Claude\promptea`, porque el `node_modules` era de v1.7.0, y dos worktrees: `D:\Claude\promptea-v188` y `D:\Claude\promptea-fa14`.
+- **GitHub:**
+  - PRs #50 a #57, mergeados con squash en `main` el 21/11;
+  - 32 ramas borradas: las 31 viejas más `claude/v188-routine-health`, que ya estaba mergeada; las otras `claude/v188-*` se borraron al mergear.
+- **Vercel:** cada merge a `main` dispara un deploy de producción, el de la v1.8.8 incluido. No cambié variables ni configuración.
+- **Tarea programada local** `promptea-weekly-tweets`: prompt y descripción actualizados con tu OK. El prompt anterior queda al final de `docs/social/weekly-tweets-routine.md`.
+- **Producción:** solo lectura, más dos POST con firmas al azar (rechazados con 401) para probar `verify-secrets.mjs`.
+- **Lectura sin cambios:** rutinas de claude.ai/code (lista, corridas y logs), Resend, Vercel (proyecto, Analytics y Firewall).
+- **No tocado:** los secretos, las 4 rutinas de claude.ai, el Firewall y Firestore.
+- **Local:**
+  - `npm ci` en `D:\Claude\promptea`;
+  - dos worktrees, `D:\Claude\promptea-v188` y `D:\Claude\promptea-fa14`, que se pueden borrar.
 
 ## 10. Qué necesito de vos, en orden
 
-1. **Rotar los secretos** (`docs/ops/secrets-rotation.md`). Los valores actuales están en los historiales de las rutinas.
-2. **Revisar y mergear #50**, y después cargar `CRON_SECRET` y `ROUTINE_ALERT_TO` y hacer el redeploy.
-3. **Decidir #51** (firebase-admin 14) antes del 23/11.
-4. **OK para aplicar el prompt nuevo de tweets** a la tarea `promptea-weekly-tweets`, antes del domingo 22/11 a las 10:00.
-5. **OK para borrar las 31 ramas** del Apéndice A (y decir si también van las 14 de afuera del patrón).
-6. **Elegir el alcance del chino en noticias** (recomiendo B).
-7. **Red del entorno `Default`:** cargar los hosts de la lista de Tech y los 5 nuevos.
-8. **Revisar si la rutina del newsletter tiene un modo de permisos** configurable.
-9. **Conseguir revisores nativos** para pt y zh (los paquetes están listos).
-10. **Opcional:** correr `exclude-test-subscribers.mjs` con `--apply` y decidir la regla de Firewall para Singapur.
+1. **Rotar los secretos y pegar los prompts nuevos** (pasos abajo, unos 20 minutos). Con esto las noticias empiezan a salir en chino y los valores viejos dejan de servir.
+2. **En Vercel**, en la misma pasada: `CRON_SECRET` (nuevo) y `ROUTINE_ALERT_TO` (tu mail) para la alerta diaria.
+3. **Red del entorno `Default`:** cargar los hosts de la lista de Tech y los 5 nuevos (`docs/editorial/tech-daily-routine-status.md`).
+4. **Revisar si la rutina del newsletter tiene un modo de permisos** configurable.
+5. **Conseguir revisores nativos** para pt y zh. Para zh, conviene que lean también una o dos notas de AI Daily por semana.
+6. **Opcional:**
+   - correr `exclude-test-subscribers.mjs` con `--apply`;
+   - decidir la regla de Firewall para Singapur;
+   - borrar las 14 ramas de afuera del patrón.
+
+### Rotación de secretos y prompts nuevos, paso a paso
+
+Hacelo en una franja sin corridas: de 16:00 a 22:00 UTC (13:00 a 19:00 ART), cualquier día que no sea lunes.
+
+1. **Generá tres valores nuevos**, uno para cada uno de `BLOG_PUBLISH_SECRET`, `NEWSLETTER_SEND_SECRET` y `CRON_SECRET`, corriendo tres veces:
+   `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+   Guardalos en tu gestor de contraseñas.
+2. **Vercel** → promptea → Settings → Environment Variables (Production, tipo Sensitive):
+   - editá `BLOG_PUBLISH_SECRET` y `NEWSLETTER_SEND_SECRET` con los valores nuevos;
+   - agregá `CRON_SECRET` y `ROUTINE_ALERT_TO` (tu mail).
+3. **Deployments** → el último de Production → ⋯ → **Redeploy**. Esperá a que diga *Ready*.
+4. **Verificá** desde la carpeta del repo:
+   - armá un archivo `.env.rotation` con las líneas `BLOG_PUBLISH_SECRET=…` y `NEWSLETTER_SEND_SECRET=…`;
+   - corré `node --env-file=.env.rotation scripts/ops/verify-secrets.mjs`. Tiene que decir `OK` en los dos.
+5. **Rutinas** (claude.ai/code/routines). En cada una de las 4:
+   - **Editar instrucciones**, seleccionar todo y pegar el archivo correspondiente de `docs/editorial/routines/` (en GitHub, botón Raw);
+   - reemplazar `PASTE_BLOG_PUBLISH_SECRET_HERE` (o `PASTE_NEWSLETTER_SEND_SECRET_HERE` en el newsletter) por el valor nuevo;
+   - **Guardar**.
+6. **Comprobá la salud de rutinas:**
+   `curl -H "Authorization: Bearer <CRON_SECRET>" https://www.promptea.me/api/internal/routines/health`
+   Tiene que devolver las 5 rutinas.
+7. **Limpieza:** borrá `.env.rotation` y actualizá el `.env.local` de tus copias del repo.
 
 ## Apéndice A: ramas remotas mergeadas
 
