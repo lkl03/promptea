@@ -122,7 +122,7 @@ describe("registry — 2026-09-24 provider sweep", () => {
     expect(getModelById("grok-4.5")?.replacementId).toBe("grok-4.7");
     expect(defaultModelIdForTarget("deepseek")).toBe("deepseek-flash");
     expect(getModelById("deepseek-v4-flash")?.replacementId).toBe("deepseek-flash");
-    expect(defaultModelIdForTarget("kimi")).toBe("kimi-k3");
+    expect(defaultModelIdForTarget("kimi")).toBe("kimi-k3.1-pro");
     expect(defaultModelIdForTarget("perplexity")).toBe("perplexity-agent-low");
   });
 
