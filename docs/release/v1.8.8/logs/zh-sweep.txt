@@ -1,0 +1,155 @@
+sitemap urls: 727 zh urls: 72 zh hreflang entries: 852
+internal links checked: 407 broken: 0
+issues: 152
+  /zh/changelog EN sentence «New guide: AI prompts for competitor analysis, with profiles built only from public source»
+  /zh/changelog EN sentence «New guide: AI prompts for SOPs, to turn how your team works into clear steps, find the gap»
+  /zh/changelog EN sentence «With a screen reader, each “Open in Promptea” button on the model pages now says which tem»
+  /zh/changelog EN sentence «New guide: how to test one prompt across ChatGPT, Claude, Gemini, Grok and DeepSeek, with »
+  /zh/changelog EN sentence «New guide: AI prompts for status reports, to turn notes and tickets into a weekly update o»
+  /zh/changelog EN sentence «The translation and structured-output guides now recommend current models instead of “GPT-»
+  /zh/changelog EN sentence «With a screen reader, each “Open in Promptea” button in the guides now says which template»
+  /zh/changelog EN sentence «New guide: how long should a prompt be? How to tell whether yours is too short or too long»
+  /zh/changelog EN sentence «New guide: AI prompts for presentations, to build a slide-by-slide outline, turn a documen»
+  /zh/changelog EN sentence «New homepage: AI news from the last 72 hours, the logo with our mascot and four shortcuts »
+  /zh/changelog EN sentence «The analyzer now lives at /analyzer, with everything it did before. Old links with a prefi»
+  /zh/changelog EN sentence «New Benchmarks page: who leads each benchmark, which models are at the frontier and what e»
+  /zh/changelog EN sentence «The Weekly digest now lives inside AI Daily, with an archive of every edition and a sharea»
+  /zh/changelog EN sentence «AI Daily is easier to read, and the newsletter signup is always at hand: in the side colum»
+  /zh/changelog EN sentence «New Glass theme, with translucent surfaces and the mascot’s green; it replaces “Old versio»
+  /zh/changelog EN sentence «Updated models: GPT-6.1 Sol, Claude Sonnet 5.5 and Claude Haiku 5.5, and prompts for Claud»
+  /zh/changelog EN sentence «New guide: AI prompts for meetings, to build the agenda, pull decisions and owned action i»
+  /zh/changelog EN sentence «New guide: AI prompts for Excel and Google Sheets formulas, covering what to tell the mode»
+  /zh/changelog EN sentence «Reasoning models guide updated for GPT-6, Claude Opus 5.5, Gemini, Grok 4.7, and DeepSeek,»
+  /zh/changelog EN sentence «Perplexity guide updated: Sonar support ended on 2026-09-27, so the guide now explains how»
+  /zh/changelog EN sentence «New guide: AI prompts for email, to draft from bullet points, summarize long threads, and »
+  /zh/changelog EN sentence «New guide: how to build a prompt library for your team, covering what each template needs,»
+  /zh/changelog EN sentence «Model catalog re-verified against each provider’s official documentation: Claude Opus 5.5 »
+  /zh/changelog EN sentence «Optimized prompts now follow each model’s official prompting guidance, not just a tip with»
+  /zh/changelog EN sentence «Finished image prompts: ask for something as simple as “a blonde woman looking at a landsc»
+  /zh/changelog EN sentence «Promptea Weekly can now be sent: weekly generation from AI Daily, safe delivery that never»
+  /zh/changelog EN sentence «New guide: AI prompts for research — where AI adds genuine value in research (synthesize t»
+  /zh/changelog EN sentence «New guide: Conversational prompting — why AI responses degrade in long conversations (cont»
+  /zh/changelog EN sentence «New guide: AI prompts for UX and product design — where AI genuinely helps in design (micr»
+  /zh/changelog EN sentence «The models index page now emits page-specific Open Graph and Twitter Card metadata — shari»
+  /zh/changelog EN sentence «New guide: How to prompt reasoning models — what makes chain-of-thought models (o3, Claude»
+  /zh/changelog EN sentence «New guide: AI prompts for teachers and educators — where AI genuinely saves teacher prepar»
+  /zh/changelog EN sentence «New guide: How to rewrite a prompt for better results — a five-step rewriting process (dia»
+  /zh/changelog EN sentence «Glossary term detail pages now emit page-specific Open Graph and Twitter Card metadata — s»
+  /zh/changelog EN sentence «The newsletter subscription CTA moves to a compact one-line bar below the AI Daily filter »
+  /zh/changelog EN sentence «AI Daily can now publish two stories per day — a morning edition and the existing evening »
+  /zh/changelog EN sentence «Promptea Weekly: new weekly newsletter preview page at /[lang]/weekly with a curated diges»
+  /zh/changelog EN sentence «Newsletter subscription: email capture form with validation, explicit consent, rate limiti»
+  /zh/changelog EN sentence «Email delivery infrastructure built with Resend but disabled by default. Sending will be e»
+  /zh/changelog EN sentence «New guide: AI prompts for software developers — where AI genuinely saves developer time (c»
+  /zh/changelog EN sentence «New guide: Negative prompting — why negative constraints matter, the most useful negative »
+  /zh/changelog EN sentence «New guide: AI prompts for content creators — where AI fits in a content workflow (ideation»
+  /zh/changelog EN sentence «Accessibility improvement to the quality score ring: the QualityRing container now has rol»
+  /zh/changelog EN sentence «New guide: AI prompts for legal teams — where AI genuinely helps (clause drafting, documen»
+  /zh/changelog EN sentence «New guide: AI prompts for finance teams — where AI saves real time (earnings call summarie»
+  /zh/changelog EN sentence «New guide: Context engineering — what it is and how it differs from prompt engineering, pr»
+  /zh/changelog EN sentence «Accessibility improvement in the feedback bar: the optional reason text input now has an a»
+  /zh/changelog EN sentence «New guide: AI prompts for customer support — where AI fits in support workflows (ticket re»
+  /zh/changelog EN sentence «New guide: Structured output prompting — the five most common reasons structured output pr»
+  /zh/changelog EN sentence «New guide: AI prompts for HR and recruiting — where AI saves real time (job descriptions, »
+  /zh/changelog EN sentence «Fix: the  How to write better prompts for Claude  guide (added in v1.4.4) shared a slug wi»
+  /zh/changelog EN sentence «New guide: Prompt templates for summarization — why most summarization prompts fail, what »
+  /zh/changelog EN sentence «New guide: How to write better prompts for Claude — where Claude stands out (long context,»
+  /zh/changelog EN sentence «New guide: AI prompts for sales teams — where AI fits in a sales workflow (outreach, disco»
+  /zh/changelog EN sentence «Accessibility improvement in the result panel: the Improved/Original toggle buttons now ha»
+  /zh/changelog EN sentence «New guide: Prompts for Perplexity — when to choose it over a static model, how to constrai»
+  /zh/changelog EN sentence «New guide: How to debug a prompt that gives bad output — the six most common failure modes»
+  /zh/changelog EN sentence «New guide: AI prompts for product managers — where AI saves the most time (specs, synthesi»
+  /zh/changelog EN sentence «The result panel now has a copy button on both tabs — the original-prompt view now has its»
+  /zh/changelog EN sentence «AI Daily now opens with one big, obvious search box, the same one you use on the homepage:»
+  /zh/changelog EN sentence «The filters by company, edition, category, and date are all still there and work exactly a»
+  /zh/changelog EN sentence «For now the index simply shows the most recent stories first. The “featured” story comes b»
+  /zh/changelog EN sentence «You can now search the AI Daily archive: type and it looks across the headlines, decks, an»
+  /zh/changelog EN sentence «Filters by company, edition type, category, and date range, plus newest-first or oldest-fi»
+  /zh/changelog EN sentence «Two new editions alongside the daily story: a Saturday “week in review” and a Sunday “what»
+  /zh/changelog EN sentence «When a story covers an earlier event, it says so plainly: you see the event date, the publ»
+  /zh/changelog EN sentence «AI Daily moved up in the menu, right after Find the Best AI, and the homepage now introduc»
+  /zh/changelog EN sentence «New AI Daily section (/blog): one story a day about what happened in AI, in Spanish and En»
+  /zh/changelog EN sentence «Every article shows where it came from: linked sources marked primary or secondary, a “why»
+  /zh/changelog EN sentence «Same-day rule: a story only goes out if the event happened that same day (Buenos Aires tim»
+  /zh/changelog EN sentence «Visible corrections: if an article is corrected after publication, the correction is recor»
+  /zh/changelog EN sentence «Secure automated publishing: the routine that assembles the daily story publishes through »
+  /zh/changelog EN sentence «Version history back in sync: this page had fallen one release behind, so the missing v1.3»
+  /zh/changelog EN sentence «New guide: Prompts for Kimi — how to use its large context window for long-document Q A, m»
+  /zh/changelog EN sentence «New guide: AI prompts for data analysis — templates for SQL generation, trend identificati»
+  /zh/changelog EN sentence «New guide: AI prompts for learning — how to use AI as a tutor calibrated to your level, th»
+  /zh/changelog EN sentence «Sitemap fix: four public routes (/best-ai, /prompts/code, /prompts/image, and /prompts/mar»
+  /zh/changelog EN sentence «Version history caught up: this page now documents v1.2.1, v1.2.2, v1.2.3, and v1.3.0, whi»
+  /zh/changelog EN sentence «The “New? See how it works →” button now also appears on Find the Best AI, with its own st»
+  /zh/changelog EN sentence «Copy touch-ups in the analyzer help modal: the steps now mention voice dictation and the s»
+  /zh/changelog EN sentence «Promptea now has two route-addressable modes: Improve Prompt (the analyzer you know, evolv»
+  /zh/changelog EN sentence «Find the Best AI runs a 100% deterministic matcher: it detects concrete signals in your pr»
+  /zh/changelog EN sentence «One click on “Improve my prompt for this AI” transfers your full prompt to the optimizer w»
+  /zh/changelog EN sentence «The optimized prompt no longer starts with the PROMPTEA header: version, model, and purpos»
+  /zh/changelog EN sentence «Voice dictation in both modes: record (up to 2 minutes), we transcribe it with Whisper via»
+  /zh/changelog EN sentence «New themes: Aqua (light, liquid-glass style with Apple accents) and Metro (dark, faithful »
+  /zh/changelog EN sentence «General feedback is now sent from a modal and stored safely (without your prompt, email, o»
+  /zh/changelog EN sentence «Updated privacy page (voice and feedback), typed operational-only telemetry, and the test »
+  /zh/changelog EN sentence «New guide: Zero-shot prompting — when instruction-only prompts work and when to switch to »
+  /zh/changelog EN sentence «New guide: Prompts for GPT — labeled format templates, constraint block patterns, instruct»
+  /zh/changelog EN sentence «New guide: AI brainstorming prompts — techniques to escape generic ideas: banning the obvi»
+  /zh/changelog EN sentence «New guide: Prompt chaining — how to break complex tasks into sequential AI steps, the thre»
+  /zh/changelog EN sentence «New guide: AI writing prompts — the five elements a writing prompt needs beyond the topic »
+  /zh/changelog EN sentence «New guide: Multimodal prompts — how to write prompts when the input includes images, scree»
+  /zh/changelog EN sentence «Guide detail pages now emit page-specific Open Graph and Twitter Card metadata for better »
+  /zh/changelog EN sentence «New guide: System prompts — how to write persistent instructions for ChatGPT, Claude, and »
+  /zh/changelog EN sentence «New guide: AI translation prompts — templates that preserve meaning, tone, and register, w»
+  /zh/changelog EN sentence «New guide: Image generation prompts — subject, style, composition, lighting, palette, and »
+  /zh/changelog EN sentence «Full redesign: new typography, four themes (Day, Dusk, Night, and Paper) built on semantic»
+  /zh/changelog EN sentence «New adaptive refinement engine: routes each prompt to a strategy (short message, coding, s»
+  /zh/changelog EN sentence «Simple prompts no longer receive the full section scaffold: the rewrite adapts to the requ»
+  /zh/changelog EN sentence «Improved/Original comparison on the result, with a summary of what changed, assumptions, a»
+  /zh/changelog EN sentence «Model catalog verified against official docs (2026-07-12): GPT-5.6, Claude Fable 5 / Opus »
+  /zh/changelog EN sentence «New guide: Prompts for DeepSeek — code with strict constraints, JSON extraction, and step-»
+  /zh/changelog EN sentence «New guide: Few-shot prompting — how to show examples instead of just explaining, with text»
+  /zh/changelog EN sentence «New guide: Prompt quality scoring — five-dimension self-evaluation framework with review a»
+  /zh/changelog EN sentence «Improvement: the Changelog page now has its own SEO metadata (title, description, canonica»
+  /zh/changelog EN sentence «New guide: Prompts for Gemini — format control with visible templates, grounded Q A, and h»
+  /zh/changelog EN sentence «New guide: Prompts for Grok — how to get direct responses, using real-time context, and qu»
+  /zh/changelog EN sentence «New guide: AI prompt templates for business — project status reports, decision memos with »
+  /zh/changelog EN sentence «New guide: Role prompting — how to assign expert personas for better outputs, with advisor»
+  /zh/changelog EN sentence «New guide: ChatGPT prompts for work — professional email and executive summary templates w»
+  /zh/changelog EN sentence «New guide: Prompts for Claude — XML tags, extended context, and structured reasoning, with»
+  /zh/changelog EN sentence «Fix: the  Start here  heading on the Guides index page is now properly localized in Spanis»
+  /zh/changelog EN sentence «Model registry updated with the latest OpenRouter models: GPT-5.5 and GPT-5.5 Pro, Claude »
+  /zh/changelog EN sentence «New Perplexity provider (Sonar Pro and Sonar Reasoning Pro): full target support with engi»
+  /zh/changelog EN sentence «Adaptive layer: the analyzer refines the optimized prompt with LLM.»
+  /zh/changelog EN sentence «Fix: the  Probar este prompt  /  Try this prompt  button can no longer reset analyzer stat»
+  /zh/changelog EN sentence «Live word and approximate token counter while writing the prompt.»
+  /zh/changelog EN sentence «Example helper: button to prefill a sample prompt with a compatible type and model.»
+  /zh/changelog EN sentence «Form state (prompt, type, model, format) is persisted in sessionStorage and restored on la»
+  /zh/changelog EN sentence «Focus trap in modals: Tab/Shift+Tab stay inside the dialog and focus returns to the trigge»
+  /zh/changelog EN sentence «Improved optimized prompt: explanatory note about header lines, increased max height, and »
+  /zh/changelog EN sentence «How this works trigger redesigned as a more visible badge/pill for new users.»
+  /zh/changelog EN sentence «Internal SEO indexing note removed from the public Guides page.»
+  /zh/changelog EN sentence «More adaptive prompt analysis: output now changes depending on the selected model (GPT, Cl»
+  /zh/changelog EN sentence «Centralized model registry with submodels (GPT-4.1 / GPT-4o / GPT-4o mini / o3, Sonnet / O»
+  /zh/changelog EN sentence «More personalized scoring per use case: visible criteria for coding, debugging, refactor, »
+  /zh/changelog EN sentence «More actionable feedback: new “what works already”, “quick wins”, “helpful follow-up quest»
+  /zh/changelog EN sentence «Optimized prompt format toggle: Checklist (human-readable) or pure JSON (strict and parsea»
+  /zh/changelog EN sentence «Improved attachment UX: clearer copy about supported formats, per-file size limits, and to»
+  /zh/changelog EN sentence «Optional Groq integration for extra hints — disabled by default. Set GROQ_API_KEY in Verce»
+  /zh/changelog EN sentence «New “Prompt of the Day” with deterministic per-date rotation: sticky aside on desktop, col»
+  /zh/changelog EN sentence «Accessible “How this works” modal (ESC to close, initial focus, ARIA) explaining the flow »
+  /zh/changelog EN sentence «New SEO landings: /landing/prompt-analyzer, /ai-prompt-optimizer, /prompt-scoring, /json-p»
+  /zh/changelog EN sentence «Refined sitemap, keywords, and metadata; canonical and per-language alternates updated.»
+  /zh/changelog EN sentence «Additional tests: model registry, parseable JSON output, daily prompt rotation, and engine»
+  /zh/changelog EN sentence «Refined engine with more task-aware behavior: scoring, findings, and recommendations now b»
+  /zh/changelog EN sentence «New type filters: Translation and Summarization, with optimized prompts, output formats, a»
+  /zh/changelog EN sentence «Improved builder: optimized prompt version is now controlled via ENV, and output structure»
+  /zh/changelog EN sentence «Initial support for text/context attachments in compatible prompts: .txt, .md, .json, .csv»
+  /zh/changelog EN sentence «Security improvements for attachments: strict validation of file types and sizes, content »
+  /zh/changelog EN sentence «More specific findings and recommendations for summarization and translation: instead of g»
+  /zh/changelog EN sentence «Expanded telemetry: beyond base analysis, the system now stores uploaded attachment format»
+  /zh/changelog EN sentence «Expanded test coverage for builder, engine, route, and attachment flows, including telemet»
+  /zh/changelog EN sentence «New SEO packs: Text and Data/JSON (copy-paste templates + deep links that prefill Promptea»
+  /zh/changelog EN sentence «New indexable sections: Guides, Models and Glossary (with per-slug pages and FAQ JSON-LD).»
+  /zh/changelog EN sentence «Prompts index updated to include the new packs (Text and Data).»
+  /zh/changelog EN sentence «UX improvements for navigation and faster iteration (quick access to templates).»
+  /zh/sources EN sentence «Amazon Web Services, AMD, Angular, Anthropic, Apple, Arm, arXiv, Astro, Bun, ClickHouse, C»
+  /zh/sources EN sentence «404 Media, Ars Technica, BleepingComputer, El País, Genbeta, Hipertextual, IEEE, Infobae, »
+  LOCAL/zh/glossary/json-schema title without Chinese: JSON schema · Promptea

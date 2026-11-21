@@ -562,6 +562,16 @@
     "about": "Sobre o Promptea"
   },
   "changelog": {
+    "v188": {
+      "released": "Publicado: 2026-11-20",
+      "items": [
+        "O AI Daily também em chinês: desde 21/11, cada notícia nova é publicada em /zh com página própria. As anteriores continuam em inglês, com um aviso.",
+        "O Kimi K3.1 Pro chega ao analisador e passa a ser o Kimi padrão; o Kimi K3 fica como versão anterior.",
+        "Revisamos todo o /zh: links, metadados e textos. O formulário da newsletter não mostra mais um exemplo de e-mail em inglês.",
+        "Nos bastidores: uma verificação diária avisa se alguma das publicações automáticas (AI Daily, AI Daily Tech, o resumo semanal ou a newsletter) atrasar.",
+        "A newsletter deixa de ser enviada a endereços de teste que voltavam."
+      ]
+    },
     "v187": {
       "released": "Publicado: 2026-11-16",
       "items": [
