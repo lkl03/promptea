@@ -321,7 +321,7 @@
     "bar": {
       "barText": "每周一，把本周最好的AI新闻送到你的邮箱。",
       "barCta": "订阅",
-      "emailPlaceholder": "your@email.com",
+      "emailPlaceholder": "name@example.com",
       "languageLabel": "语言",
       "languageHint": "邮件通讯以英文和西班牙文撰写。",
       "consentLabel": "我希望接收Promptea Weekly邮件通讯。",

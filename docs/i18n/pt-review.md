@@ -1,8 +1,35 @@
 # Revisión nativa del portugués (pt-BR): paquete para quien revise
 
-Todo el texto de `/pt` lo escribió IA (v1.8.2 en adelante) y solo tuvo controles mecánicos y de muestreo. Este documento es para pasárselo a una persona nativa de Brasil: qué leer, en qué orden, con qué criterio y cómo devolver las correcciones. No hace falta saber programar.
+## Para quem vai revisar (leia isto primeiro)
 
-Estado al 2026-11-13 (v1.8.5): interfaz completa (521 textos, unas 3.100 palabras), 60 guías, 20 términos del glosario, 7 páginas de modelos, 8 landings, 6 packs de prompts, las páginas estáticas y los mensajes del analizador. AI Daily y el resumen semanal **no** se traducen: bajo `/pt` se muestran en inglés con un aviso, a propósito.
+Olá! O Promptea (https://www.promptea.me) é uma ferramenta gratuita que analisa prompts: a pessoa cola o que vai pedir a uma IA e recebe uma pontuação de 0 a 100, os problemas encontrados, uma versão melhorada e a recomendação do modelo de IA mais adequado. A versão em português do Brasil (`/pt`) está no ar desde 11/11/2026, e **todo o texto foi escrito por IA e ainda não foi lido por uma pessoa nativa**. O que pedimos:
+
+1. Abra as páginas na ordem da seção 1 e use o site como um usuário comum (2 a 3 horas cobrem o mais importante).
+2. Marque o que soa traduzido, estranho, inconsistente ou errado (concordância, regência, crase, acentos). A tabela no fim da seção 6 lista as dúvidas que já temos: dê uma olhada especial nelas.
+3. Devolva as correções numa planilha com as colunas da seção 3: link da página, texto atual (copiado exatamente), texto corrigido, motivo (opcional) e importância.
+
+Não precisa corrigir: nomes de produtos e modelos (Promptea, ChatGPT, Claude, AI Daily…), nomes técnicos (`JSON`, `reasoning_effort`) nem o conteúdo que fica em inglês de propósito (as notícias do AI Daily e 4 guias ainda não traduzidos, com aviso na página).
+
+Não é preciso saber programar. Qualquer dúvida, fale direto com o Luca. Obrigado!
+
+---
+
+Lo de arriba es la portada para quien revise, en portugués. Lo que sigue es para vos y para quien aplique las correcciones.
+
+Todo el texto de `/pt` lo escribió IA (v1.8.2 en adelante) y solo tuvo controles mecánicos y de muestreo, más una pasada asistida (§6). Este documento es para pasárselo a una persona nativa de Brasil: qué leer, en qué orden, con qué criterio y cómo devolver las correcciones. No hace falta saber programar.
+
+Estado al 2026-11-20 (v1.8.7 en producción; `/pt` está publicado desde el 11/11):
+- interfaz completa: `pt.json`, 538 claves y unas 3.400 palabras;
+- 60 de 64 guías;
+- 20 términos del glosario;
+- las páginas de modelos;
+- 8 landings;
+- 6 packs de prompts;
+- las páginas estáticas y los mensajes del analizador.
+
+AI Daily y el resumen semanal **no** se traducen: bajo `/pt` se muestran en inglés con un aviso, a propósito.
+
+**Quién lee `/pt` hoy (Vercel Analytics):** en los 7 días al 19/11 hubo 23 visitantes de Brasil y 10 de Portugal. Es poco volumen, así que importa más la calidad de las páginas de entrada (inicio, analizador, guías) que el resto.
 
 ## 1. Qué abrir primero (por impacto)
 
