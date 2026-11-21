@@ -279,7 +279,11 @@ async function checkSitemap() {
   record("no /pt/blog URL is listed (AI Daily has no Portuguese edition)", !urls.some((u) => pathOf(u.loc).startsWith("/pt/blog")));
   const zhCount = urls.filter((u) => pathOf(u.loc) === "/zh" || pathOf(u.loc).startsWith("/zh/")).length;
   record("the sitemap lists Chinese pages", zhCount > 20, `${zhCount} /zh URL(s)`);
-  record("no /zh/blog URL is listed (AI Daily has no Chinese edition)", !urls.some((u) => pathOf(u.loc).startsWith("/zh/blog")));
+  // v1.8.8: AI Daily stories the routines wrote in Chinese are pages of their own
+  // (listed, with es/en/zh alternates); the weekly digest has no Chinese edition.
+  record("no /zh/blog/weekly URL is listed (the digest has no Chinese edition)", !urls.some((u) => pathOf(u.loc).startsWith("/zh/blog/weekly")));
+  const zhStories = urls.filter((u) => pathOf(u.loc).startsWith("/zh/blog/"));
+  record("every listed /zh/blog page names its es and en originals", zhStories.every((u) => u.alts.es && u.alts.en), `${zhStories.length} /zh/blog URL(s)`);
   record("alternates are reciprocal (each counterpart lists this URL back)", nonRecip.length === 0, nonRecip.slice(0, 5).map((u) => u.loc).join("\n"));
 
   // Every URL answers 200 directly.
@@ -540,8 +544,10 @@ async function checkEntry() {
 async function checkPortugueseViews(origin, urls, ui = "pt") {
   const title = `/${ui} views of content without a ${ui === "zh" ? "Chinese" : "Portuguese"} version`;
   group(title);
-  const views = [[`/${ui}/blog`, "/en/blog"], [`/${ui}/blog/tech`, "/en/blog/tech"], [`/${ui}/blog/weekly`, "/en/blog/weekly"]];
   const listed = new Set(urls.map((u) => pathOf(u.loc)));
+  // v1.8.8: under /zh an AI Daily index is a page of its own (listed) once one of
+  // its stories has Chinese text; only the ones still in English are views.
+  const views = [[`/${ui}/blog`, "/en/blog"], [`/${ui}/blog/tech`, "/en/blog/tech"], [`/${ui}/blog/weekly`, "/en/blog/weekly"]].filter(([p]) => !listed.has(p));
   const enGuide = urls.map((u) => pathOf(u.loc)).find((p) => p.startsWith("/en/guides/") && !listed.has(p.replace("/en/", `/${ui}/`)));
   if (enGuide) views.push([enGuide.replace("/en/", `/${ui}/`), enGuide]);
   else console.log(`    (every guide is translated to ${ui}: no guide view to check)`);

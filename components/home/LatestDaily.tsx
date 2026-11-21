@@ -19,7 +19,7 @@ import Link from "next/link";
 import type { PublicArticle } from "@/lib/blog/types";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import { cardDisplayDate } from "@/components/blog/ArticleCardItem";
-import { LANG_TAG, PUNCT, contentIsFallback, contentLangFor, type Lang } from "@/lib/domain";
+import { LANG_TAG, PUNCT, contentIsFallback, type Lang } from "@/lib/domain";
 
 type Dict = {
   title: string;
@@ -33,7 +33,7 @@ type Dict = {
   tech: string;
 };
 
-export type LatestArticle = Pick<PublicArticle, "slug" | "title" | "deck" | "category" | "edition" | "readingMinutes" | "eventDate" | "publishedAt">;
+export type LatestArticle = Pick<PublicArticle, "slug" | "lang" | "title" | "deck" | "category" | "edition" | "readingMinutes" | "eventDate" | "publishedAt">;
 
 /**
  * The label of a story in a list. Daily stories are labelled by topic; the two
@@ -84,8 +84,9 @@ export default function LatestDaily({
   const [lead, ...rest] = articles;
   // v1.8.3: under /pt the stories are the English edition. The block now says so
   // (the blog pages already did) and marks the English text with its language.
-  const fallbackContent = contentIsFallback(lang);
-  const contentLangTag = fallbackContent ? LANG_TAG[contentLangFor(lang)] : undefined;
+  // v1.8.8: story by story — under /zh a story may be Chinese or (older ones) English.
+  const fallbackContent = contentIsFallback(lang) && articles.some((a) => a.lang !== lang);
+  const tagOf = (a: LatestArticle) => (a.lang !== lang ? LANG_TAG[a.lang] : undefined);
   // The top story shows label, date and reading time; the narrower secondary
   // stories keep label + date so the line never wraps mid-way.
   const meta = (a: LatestArticle, full: boolean) => {
@@ -139,8 +140,8 @@ export default function LatestDaily({
           {PUNCT[lang].colon}
         </span>
         {meta(lead, true)}
-        <h3 lang={contentLangTag} className="blog-row-title mt-3 font-title text-xl font-semibold leading-snug text-ink sm:text-2xl">{lead.title}</h3>
-        {lead.deck ? <p lang={contentLangTag} className="mt-2 line-clamp-3 max-w-3xl text-sm leading-relaxed text-ink-muted">{lead.deck}</p> : null}
+        <h3 lang={tagOf(lead)} className="blog-row-title mt-3 font-title text-xl font-semibold leading-snug text-ink sm:text-2xl">{lead.title}</h3>
+        {lead.deck ? <p lang={tagOf(lead)} className="mt-2 line-clamp-3 max-w-3xl text-sm leading-relaxed text-ink-muted">{lead.deck}</p> : null}
       </Link>
 
       {rest.length > 0 ? (
@@ -149,8 +150,8 @@ export default function LatestDaily({
             <li key={a.slug} className="min-w-0">
               <Link href={`/${lang}/blog/${a.slug}`} className="blog-row group block h-full rounded-xl px-3 py-3">
                 {meta(a, false)}
-                <h3 lang={contentLangTag} className="blog-row-title mt-1.5 font-title text-base font-semibold leading-snug text-ink">{a.title}</h3>
-                {a.deck ? <p lang={contentLangTag} className="mt-1 line-clamp-2 text-sm leading-relaxed text-ink-muted">{a.deck}</p> : null}
+                <h3 lang={tagOf(a)} className="blog-row-title mt-1.5 font-title text-base font-semibold leading-snug text-ink">{a.title}</h3>
+                {a.deck ? <p lang={tagOf(a)} className="mt-1 line-clamp-2 text-sm leading-relaxed text-ink-muted">{a.deck}</p> : null}
               </Link>
             </li>
           ))}

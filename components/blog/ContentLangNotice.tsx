@@ -13,16 +13,23 @@ export default function ContentLangNotice({
   lang,
   text,
   hrefs,
+  show,
   className = "",
 }: {
   lang: Lang;
+  /**
+   * v1.8.8 — whether the shown content is in another language. Defaults to "the
+   * interface has no edition of its own" (pt); under /zh it is decided story by
+   * story, since stories now also come in Chinese.
+   */
+  show?: boolean;
   /** The translated notice (dict.blog.langNotice). */
   text: string;
   /** Where the same content lives in each language it was written in. */
   hrefs: Record<ContentLang, string>;
   className?: string;
 }) {
-  if (!contentIsFallback(lang)) return null;
+  if (!(show ?? contentIsFallback(lang))) return null;
 
   return (
     <aside role="note" data-content-lang-notice className={["surface-soft border-l-4 p-4 text-sm", className].join(" ")}>

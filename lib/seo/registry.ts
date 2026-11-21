@@ -425,6 +425,27 @@ export function withoutEmptySectionIndexes(urls: SeoUrl[], lang: Locale, article
   return hasTech ? urls : urls.filter((u) => u.path !== `/${lang}/blog/tech`);
 }
 
+/**
+ * v1.8.8 — /zh/blog and /zh/blog/tech become pages of their own once one of
+ * their stories has Chinese text (`zhArticles`: the stories whose projection is
+ * zh). They are listed with es/en/zh alternates. The weekly archive stays out:
+ * the digest is written in es and en only.
+ */
+export function zhBlogIndexUrls(zhArticles: readonly { edition?: unknown }[]): SeoUrl[] {
+  const has = (section: "ai" | "tech") => zhArticles.some((a) => sectionOfEdition(a.edition) === section);
+  return CORE_PAGES.filter((p) => (p.id === "blog" && has("ai")) || (p.id === "blog-tech" && has("tech"))).map((p) => ({
+    lang: "zh" as const,
+    locales: ["es", "en", "zh"] as const,
+    path: `/zh/${p.slug}`,
+    section: p.section,
+    title: p.title.zh,
+    description: p.description.zh,
+    updated: p.updated,
+    changeFrequency: p.changeFrequency,
+    priority: p.priority,
+  }));
+}
+
 /** Every hand-written, always-present URL for one locale. */
 export function staticSeoUrls(lang: Locale): SeoUrl[] {
   const urls: SeoUrl[] = coreUrls(lang);

@@ -20,7 +20,7 @@ import { articleUpdated } from "./dynamicUrls";
 import { articleMarkdown, benchmarksMarkdown, docMarkdown, glossaryMarkdown, guideMarkdown, landingMarkdown, modelMarkdown } from "./markdown";
 import { modelPageUpdated } from "./registry";
 import { absUrl, type Locale } from "./site";
-import { isContentLang } from "@/lib/domain";
+import { isArticleLang } from "@/lib/domain";
 
 export type ResolvedMarkdown = {
   body: string;
@@ -91,11 +91,13 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
     return p ? { htmlPath, body: landingMarkdown(p, lang, url, CONTENT_UPDATED.landings) } : null;
   }
   if (kind === "blog") {
-    // Articles exist in the content languages only: no twin under /md/pt/blog.
-    if (!isContentLang(lang)) return null;
+    // Articles exist in es and en, and (v1.8.8) in zh when the routines wrote
+    // the story in Chinese: no twin under /md/pt/blog, nor for a /zh view of an
+    // English-only story.
+    if (!isArticleLang(lang)) return null;
     try {
       const a = await getArticleBySlug(lang, slug);
-      return a ? { htmlPath, body: articleMarkdown(a, url, articleUpdated(a)) } : null;
+      return a && a.lang === lang ? { htmlPath, body: articleMarkdown(a, url, articleUpdated(a)) } : null;
     } catch (err) {
       // No database configured (a build or a deployment without credentials):
       // there is no AI Daily at all, so "not found" is the truth.

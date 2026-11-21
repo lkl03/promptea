@@ -25,7 +25,7 @@ import {
   PUBLIC_BLOG_STATUSES,
   isPubliclyVisible,
 } from "@/lib/domain";
-import type { BlogEdition, ContentLang } from "@/lib/domain";
+import type { ArticleLang, BlogEdition } from "@/lib/domain";
 import { editionDocId, editorialDate } from "@/lib/blog/dates";
 import { readingMinutes } from "@/lib/blog/render";
 import type {
@@ -87,7 +87,7 @@ function normalizePost(id: string, raw: Record<string, unknown>): BlogPost | nul
 }
 
 /** Project a stored post into the public, locale-specific shape a page renders. */
-export function toPublicArticle(post: BlogPost, lang: ContentLang): PublicArticle | null {
+export function toPublicArticle(post: BlogPost, lang: ArticleLang): PublicArticle | null {
   if (!isPubliclyVisible(post.status)) return null;
   const content = post.locales[lang];
   if (!content) return null;
@@ -124,7 +124,8 @@ export function toPublicArticle(post: BlogPost, lang: ContentLang): PublicArticl
     singleSourceJustification: post.singleSourceJustification,
     correction: post.correction
       ? {
-          note: lang === "en" ? post.correction.noteEn : post.correction.noteEs,
+          // Corrections carry es/en notes; the Chinese page shows the English one.
+          note: lang === "es" ? post.correction.noteEs : post.correction.noteEn,
           correctedAt: post.correction.correctedAt,
         }
       : null,
@@ -132,8 +133,18 @@ export function toPublicArticle(post: BlogPost, lang: ContentLang): PublicArticl
     alternateSlugs: {
       en: post.locales.en.slug,
       es: post.locales.es.slug,
+      ...(post.locales.zh ? { zh: post.locales.zh.slug } : {}),
     },
   };
+}
+
+/**
+ * v1.8.8 — the projection a reader of `lang` gets: the story's own text in that
+ * language, or, for zh, the English text when the story has no Chinese version
+ * (everything published before the routines started writing zh).
+ */
+export function toPublicArticleFor(post: BlogPost, lang: ArticleLang): PublicArticle | null {
+  return toPublicArticle(post, lang) ?? (lang === "zh" ? toPublicArticle(post, "en") : null);
 }
 
 function toCard(article: PublicArticle): ArticleCard {
@@ -153,13 +164,19 @@ function toCard(article: PublicArticle): ArticleCard {
     models: article.models,
     readingMinutes: article.readingMinutes,
     image: article.image,
+    hasZh: Boolean(article.alternateSlugs.zh),
   };
 }
 
 /** Every slug this post occupies, so collisions are one query instead of three. */
 function slugIndexFor(payload: Pick<PublishPayload, "canonicalSlug" | "locales">): string[] {
   return Array.from(
-    new Set([payload.canonicalSlug, payload.locales.en.slug, payload.locales.es.slug])
+    new Set([
+      payload.canonicalSlug,
+      payload.locales.en.slug,
+      payload.locales.es.slug,
+      ...(payload.locales.zh ? [payload.locales.zh.slug] : []),
+    ])
   );
 }
 
@@ -175,7 +192,7 @@ const publicStatuses = [...PUBLIC_BLOG_STATUSES];
  * page — keyset pagination, so it stays correct as new articles are added.
  */
 export async function listPublishedArticles(opts: {
-  lang: ContentLang;
+  lang: ArticleLang;
   limit: number;
   cursorPublishedAt?: string | null;
 }): Promise<{ cards: ArticleCard[]; nextCursor: string | null }> {
@@ -202,7 +219,7 @@ export async function listPublishedArticles(opts: {
   for (const doc of snap.docs.slice(0, opts.limit)) {
     const post = normalizePost(doc.id, doc.data());
     if (!post) continue;
-    const article = toPublicArticle(post, opts.lang);
+    const article = toPublicArticleFor(post, opts.lang);
     if (article) cards.push(toCard(article));
   }
 
@@ -221,7 +238,7 @@ export async function listPublishedArticles(opts: {
  * lookup, then filters in memory — the result set is at most one document.
  * Returns null for drafts and archived posts so they 404 publicly.
  */
-export async function getArticleBySlug(lang: ContentLang, slug: string): Promise<PublicArticle | null> {
+export async function getArticleBySlug(lang: ArticleLang, slug: string): Promise<PublicArticle | null> {
   if (blogDevFixtureEnabled()) return blogDevFixture(lang).find((a) => a.slug === slug) ?? null;
   const db = getAdminFirestore();
 
@@ -236,8 +253,12 @@ export async function getArticleBySlug(lang: ContentLang, slug: string): Promise
     if (!post) continue;
     // The slug must be THIS locale's slug — not the other locale's, and not
     // only the canonical one, so each locale has exactly one valid URL.
-    if (post.locales[lang]?.slug !== slug) continue;
-    const article = toPublicArticle(post, lang);
+    // v1.8.8: under /zh a story without Chinese text is read by its English
+    // slug, in English (the page says so and canonicalizes to /en).
+    let article = post.locales[lang]?.slug === slug ? toPublicArticle(post, lang) : null;
+    // /zh/blog/<english-slug>: the Chinese text when the story has one (the page
+    // canonicalizes to its zh slug), else the English text.
+    if (!article && lang === "zh" && post.locales.en.slug === slug) article = toPublicArticleFor(post, "zh");
     if (article) return article;
   }
 
@@ -245,7 +266,7 @@ export async function getArticleBySlug(lang: ContentLang, slug: string): Promise
 }
 
 /** Every published article, for the sitemap and the RSS feed. */
-export async function listAllPublishedArticles(lang: ContentLang, max = 500): Promise<PublicArticle[]> {
+export async function listAllPublishedArticles(lang: ArticleLang, max = 500): Promise<PublicArticle[]> {
   if (blogDevFixtureEnabled()) return blogDevFixture(lang).slice(0, max);
   const db = getAdminFirestore();
 
@@ -260,7 +281,7 @@ export async function listAllPublishedArticles(lang: ContentLang, max = 500): Pr
   for (const doc of snap.docs) {
     const post = normalizePost(doc.id, doc.data());
     if (!post) continue;
-    const article = toPublicArticle(post, lang);
+    const article = toPublicArticleFor(post, lang);
     if (article) out.push(article);
   }
   return out;

@@ -380,3 +380,80 @@ describe("lib/blog/server — public projection", () => {
     expect(toPublicArticle({ ...post, status: "archived" }, "en")).toBeNull();
   });
 });
+
+// ---------------------------------------------------------------------------
+// v1.8.8 — stories with Chinese text (locales.zh)
+// ---------------------------------------------------------------------------
+
+function zhContent(slug: string) {
+  return {
+    slug,
+    title: "一个足够长的中文标题，用于通过校验",
+    deck: "一段足够长的中文导语，用来满足最小长度的规则要求。",
+    summary: "一段足够长的中文摘要，用来满足这个结构对摘要最小长度的要求，所以这里多写了一些内容。",
+    body: [{ type: "paragraph" as const, text: "正文内容。" }],
+    whyItMatters: ["它改变了一些事情。"],
+    keyTakeaways: ["一个要点。"],
+    seoTitle: "关于新模型的一个中文SEO标题",
+    metaDescription: "一段中文的元描述，长度需要超过五十个字符，所以这里多写一些内容来满足这个最小长度的规则要求，并保持自然。",
+  };
+}
+
+describe("lib/blog/server — Chinese text (v1.8.8)", () => {
+  beforeEach(() => {
+    store = new Map();
+    writes = [];
+    available = true;
+  });
+
+  test("a story with zh resolves under /zh by its zh slug, in Chinese", async () => {
+    store.set("ai-daily_x", storedPost({ slugIndex: ["a-story", "una-historia"], locales: { en: content("a-story"), es: content("una-historia"), zh: zhContent("a-story") } }));
+    const zh = await getArticleBySlug("zh", "a-story");
+    expect(zh?.lang).toBe("zh");
+    expect(zh?.title).toContain("中文标题");
+    expect(zh?.alternateSlugs).toEqual({ en: "a-story", es: "una-historia", zh: "a-story" });
+  });
+
+  test("a story without zh still opens under /zh by its English slug, in English", async () => {
+    store.set("ai-daily_x", storedPost());
+    const view = await getArticleBySlug("zh", "a-story");
+    expect(view?.lang).toBe("en");
+    expect(view?.alternateSlugs.zh).toBeUndefined();
+    // …and never by the Spanish slug.
+    expect(await getArticleBySlug("zh", "una-historia")).toBeNull();
+  });
+
+  test("under /zh, the English slug of a story whose zh slug differs opens the Chinese text", async () => {
+    store.set("ai-daily_x", storedPost({ slugIndex: ["a-story", "una-historia", "zhong-wen-gu-shi"], locales: { en: content("a-story"), es: content("una-historia"), zh: zhContent("zhong-wen-gu-shi") } }));
+    expect((await getArticleBySlug("zh", "a-story"))?.slug).toBe("zhong-wen-gu-shi");
+    expect((await getArticleBySlug("zh", "zhong-wen-gu-shi"))?.lang).toBe("zh");
+    // The Chinese slug is not an English or Spanish URL.
+    expect(await getArticleBySlug("en", "zhong-wen-gu-shi")).toBeNull();
+  });
+
+  test("the /zh listing mixes Chinese stories and (older) English ones, story by story", async () => {
+    store.set("ai-daily_a", storedPost({ canonicalSlug: "new", locales: { en: content("new"), es: content("nuevo"), zh: zhContent("new") } }));
+    store.set("ai-daily_b", storedPost({ canonicalSlug: "old", locales: { en: content("old"), es: content("viejo") } }));
+    const { cards } = await listPublishedArticles({ lang: "zh", limit: 10 });
+    const bySlug = Object.fromEntries(cards.map((c) => [c.slug, c]));
+    expect(bySlug.new?.lang).toBe("zh");
+    expect(bySlug.new?.hasZh).toBe(true);
+    expect(bySlug.old?.lang).toBe("en");
+    expect(bySlug.old?.hasZh).toBe(false);
+  });
+
+  test("publishing with zh stores it and indexes its slug for collisions", async () => {
+    const out = await publishPost(payload({ locales: { en: content("a-story"), es: content("una-historia"), zh: zhContent("zhong-wen") } }) as never, {});
+    expect(out.outcome).toBe("published");
+    const doc = writes.at(-1)?.data as { slugIndex: string[]; locales: { zh?: { slug: string } } };
+    expect(doc.slugIndex).toContain("zhong-wen");
+    expect(doc.locales.zh?.slug).toBe("zhong-wen");
+  });
+
+  test("a payload without zh is stored exactly as before", async () => {
+    await publishPost(payload() as never, {});
+    const doc = writes.at(-1)?.data as { slugIndex: string[]; locales: Record<string, unknown> };
+    expect(doc.slugIndex).toEqual(["a-story", "una-historia"]);
+    expect(Object.keys(doc.locales).sort()).toEqual(["en", "es"]);
+  });
+});

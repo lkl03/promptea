@@ -112,6 +112,29 @@ export function contentIsFallback(lang: Lang): boolean {
   return CONTENT_LANG_FOR[lang] !== lang;
 }
 
+/**
+ * v1.8.8 — languages an AI Daily story can be WRITTEN in. Every story has es and
+ * en (the routine contract); since v1.8.8 the routines also write Simplified
+ * Chinese, as an optional third locale (`locales.zh`). Stories published before
+ * that have no zh text and keep showing in English under /zh. The weekly
+ * summary and the newsletter stay es/en (CONTENT_LANGS).
+ */
+export const ARTICLE_LANGS = ["es", "en", "zh"] as const;
+export type ArticleLang = (typeof ARTICLE_LANGS)[number];
+
+export function isArticleLang(v: unknown): v is ArticleLang {
+  return ARTICLE_LANGS.includes(v as ArticleLang);
+}
+
+/**
+ * The language AI Daily is read in under an interface language: zh prefers the
+ * story's own Chinese text (falling back to English story by story, see
+ * lib/blog/server.ts); pt reads the English edition, es and en their own.
+ */
+export function blogLangFor(lang: Lang): ArticleLang {
+  return lang === "zh" ? "zh" : contentLangFor(lang);
+}
+
 // ---------------------------------------------------------------------------
 // Target AI families (providers as the user picks them in the UI)
 // ---------------------------------------------------------------------------

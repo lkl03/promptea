@@ -208,9 +208,10 @@ function aiDailySections(i: LlmsInput): string[] {
         "AI Daily and the weekly digest are published in English and Spanish.",
         "IA al Día y el resumen semanal se publican en inglés y español.",
         "O AI Daily e o resumo semanal são publicados em inglês e espanhol; ainda não há edição em português.",
-        "AI Daily和每周摘要以英文和西班牙文发布；目前还没有中文版。",
+        "AI Daily以英文和西班牙文发布；自2026年11月起，新报道也有中文版。每周摘要只有英文和西班牙文。",
       ),
       "",
+      ...(i.lang === "zh" ? [`- [AI Daily（中文）](${absUrl("/zh/blog")})`] : []),
       ...CONTENT_LANGS.map((l) => `- [AI Daily — ${OTHER_INDEX_NAME[l]}](${absUrl(`/${l}/blog`)}): ${absUrl(`/${l}/llms.txt`)}`),
       "",
     ];

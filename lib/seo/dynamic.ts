@@ -15,7 +15,7 @@ import type { BenchmarksSnapshot } from "@/lib/benchmarks/normalize";
 import { getAdminFirestore } from "@/lib/firebase/admin";
 import { listPublicEditions } from "@/lib/newsletter/server";
 import type { NewsletterEdition } from "@/lib/newsletter/types";
-import { type ContentLang } from "@/lib/domain";
+import { type ArticleLang } from "@/lib/domain";
 
 /**
  * Short-lived per-instance memo. sitemap.xml, llms.txt, llms-full.txt (three
@@ -50,7 +50,7 @@ async function memoised<T>(key: string, fallback: T, load: () => Promise<T>): Pr
 }
 
 /** Most recent published articles of one content language (newest first). */
-export function loadArticles(lang: ContentLang, max = 500): Promise<PublicArticle[]> {
+export function loadArticles(lang: ArticleLang, max = 500): Promise<PublicArticle[]> {
   return memoised(`articles:${lang}:${max}`, [] as PublicArticle[], () => listAllPublishedArticles(lang, max));
 }
 
