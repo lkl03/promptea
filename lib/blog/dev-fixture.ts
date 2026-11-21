@@ -7,7 +7,7 @@
 // "development" AND BLOG_DEV_FIXTURE=1 (see lib/blog/server.ts). Production
 // never reads it, so no invented story can ever be published.
 
-import type { BlogCategory, BlogEdition, ContentLang } from "@/lib/domain";
+import type { ArticleLang, BlogCategory, BlogEdition, ContentLang } from "@/lib/domain";
 import { editorialDate } from "@/lib/blog/dates";
 import type { PublicArticle } from "@/lib/blog/types";
 
@@ -20,8 +20,9 @@ type Seed = {
   daysAgo: number;
   edition: BlogEdition;
   category: BlogCategory;
-  title: Record<ContentLang, string>;
-  deck: Record<ContentLang, string>;
+  /** es and en always; zh on some seeds (v1.8.8), so /zh shows both cases locally. */
+  title: Record<ContentLang, string> & { zh?: string };
+  deck: Record<ContentLang, string> & { zh?: string };
 };
 
 const SEEDS: Seed[] = [
@@ -33,10 +34,12 @@ const SEEDS: Seed[] = [
     title: {
       en: "Demo Labs sets its listing at $70 to $78 a share, with $26 billion more from its chip and cloud suppliers",
       es: "Demo Labs fija su salida a bolsa entre US$ 70 y US$ 78 por acción, con US$ 26.000 millones más de sus proveedores",
+      zh: "Demo Labs将上市价格定为每股70至78美元，另有芯片和云服务供应商追加260亿美元",
     },
     deck: {
       en: "A fictitious filing fills in the blanks of a fictitious listing: 825 million shares, a seven-company private placement, and a voting structure that keeps control with the founders.",
       es: "Una presentación ficticia completa los datos de una salida a bolsa ficticia: 825 millones de acciones, una colocación privada de siete empresas y una estructura de votos que deja el control en los fundadores.",
+      zh: "一份虚构的文件补全了一次虚构上市的细节：8.25亿股、七家公司参与的私募配售，以及让创始人保留控制权的投票结构。",
     },
   },
   {
@@ -168,23 +171,28 @@ const SEEDS: Seed[] = [
   },
 ];
 
-export function blogDevFixture(lang: ContentLang, now: Date = new Date()): PublicArticle[] {
+export function blogDevFixture(requested: ArticleLang, now: Date = new Date()): PublicArticle[] {
   // Newest first, like every real read path (Firestore orders by publishedAt desc);
   // same-day stories keep their order in SEEDS.
   return [...SEEDS].sort((a, b) => a.daysAgo - b.daysAgo).map((s) => {
+    // v1.8.8: a seed without Chinese text reads in English under /zh, like a real story.
+    const zh = requested === "zh" && Boolean(s.title.zh && s.deck.zh);
+    const lang: ContentLang = requested === "es" ? "es" : "en";
+    const title = zh ? s.title.zh! : s.title[lang];
+    const deck = zh ? s.deck.zh! : s.deck[lang];
     const when = new Date(now.getTime() - s.daysAgo * 86_400_000);
     const eventDate = editorialDate(when);
     const weekly = s.edition === "weekly-recap" || s.edition === "week-ahead";
     return {
       canonicalSlug: s.slug,
       slug: s.slug,
-      lang,
+      lang: zh ? "zh" : lang,
       status: "published",
-      title: s.title[lang],
-      deck: s.deck[lang],
-      summary: s.deck[lang],
+      title,
+      deck,
+      summary: deck,
       body: [
-        { type: "paragraph", text: s.deck[lang] },
+        { type: "paragraph", text: deck },
         { type: "heading", level: 2, text: lang === "es" ? "Contenido de ejemplo" : "Sample content" },
         {
           type: "paragraph",
@@ -197,8 +205,8 @@ export function blogDevFixture(lang: ContentLang, now: Date = new Date()): Publi
       ],
       whyItMatters: [lang === "es" ? "Sirve para revisar el diseño en local." : "It lets the layout be reviewed locally."],
       keyTakeaways: [lang === "es" ? "Contenido ficticio." : "Fictitious content."],
-      seoTitle: s.title[lang].slice(0, 60),
-      metaDescription: s.deck[lang].slice(0, 155),
+      seoTitle: title.slice(0, 60),
+      metaDescription: deck.slice(0, 155),
       edition: s.edition,
       eventDate,
       coveredFrom: weekly ? editorialDate(new Date(when.getTime() - 6 * 86_400_000)) : null,
@@ -221,7 +229,7 @@ export function blogDevFixture(lang: ContentLang, now: Date = new Date()): Publi
       singleSourceJustification: null,
       correction: null,
       readingMinutes: 3,
-      alternateSlugs: { en: s.slug, es: s.slug },
+      alternateSlugs: { en: s.slug, es: s.slug, ...(s.title.zh && s.deck.zh ? { zh: s.slug } : {}) },
     };
   });
 }

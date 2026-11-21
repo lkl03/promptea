@@ -21,7 +21,7 @@ import type { MetadataRoute } from "next";
 import { loadArticles, loadBenchmarksAsOf, loadEditions } from "@/lib/seo/dynamic";
 import { articleUrl, editionUrl, latestUpdated } from "@/lib/seo/dynamicUrls";
 import { newest, toDate } from "@/lib/seo/dates";
-import { staticSeoUrls, withoutEmptySectionIndexes, type SeoUrl } from "@/lib/seo/registry";
+import { staticSeoUrls, withoutEmptySectionIndexes, zhBlogIndexUrls, type SeoUrl } from "@/lib/seo/registry";
 import { CONTENT_LANGS, isContentLang, sectionOfEdition } from "@/lib/domain";
 import { HREFLANG, LOCALES, X_DEFAULT_LOCALE, absUrl, swapLocale, type Locale } from "@/lib/seo/site";
 
@@ -57,7 +57,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const fallbackDate = new Date(0);
 
   const [articlesByLang, editions, benchmarksAsOf] = await Promise.all([
-    Promise.all(LOCALES.map(async (l) => [l, isContentLang(l) ? await loadArticles(l) : []] as const)),
+    // v1.8.8: zh lists the stories that have their own Chinese text (the others
+    // are views of the English original and stay out, as under /pt).
+    Promise.all(
+      LOCALES.map(async (l) => [l, isContentLang(l) ? await loadArticles(l) : l === "zh" ? (await loadArticles("zh")).filter((a) => a.lang === "zh") : []] as const)
+    ),
     loadEditions(),
     loadBenchmarksAsOf(),
   ]);
@@ -74,7 +78,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const newestTech = latestUpdated(articles.filter((a) => sectionOfEdition(a.edition) === "tech").map(articleUrl));
 
     // v1.8.4: an index with no stories yet (the Tech one) stays out until its first story.
-    const urls = withoutEmptySectionIndexes(staticSeoUrls(lang), lang, articles).map((u): SeoUrl => {
+    // v1.8.8: the es/en indexes name the zh one once it exists (reciprocal hreflang).
+    const withZh = (section: "ai" | "tech") => articles.some((a) => a.alternateSlugs.zh && sectionOfEdition(a.edition) === section);
+    const zhLocales = { locales: [...CONTENT_LANGS, "zh"] as const };
+    const base = lang === "zh" ? [...staticSeoUrls(lang), ...zhBlogIndexUrls(articles)] : withoutEmptySectionIndexes(staticSeoUrls(lang), lang, articles);
+    const urls = base.map((u): SeoUrl => {
+      if (isContentLang(lang) && u.path === `/${lang}/blog` && withZh("ai")) u = { ...u, ...zhLocales };
+      if (isContentLang(lang) && u.path === `/${lang}/blog/tech` && withZh("tech")) u = { ...u, ...zhLocales };
       // Pages whose content is driven by data take the data's date.
       if (u.path === `/${lang}`) return { ...u, updated: newest(u.updated, newestArticle) ?? u.updated };
       if (u.path === `/${lang}/blog`) return { ...u, updated: newest(u.updated, newestAi) ?? u.updated };

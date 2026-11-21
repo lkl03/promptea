@@ -24,6 +24,7 @@ import {
   isStoryEdition,
 } from "@/lib/domain";
 import type {
+  ArticleLang,
   BlogCategory,
   BlogEdition,
   BlogImportance,
@@ -171,6 +172,8 @@ export type BlogImage = z.infer<typeof ImageSchema>;
 export const DigestItemSchema = z.object({
   titleEn: trimmed(5, 200),
   titleEs: trimmed(5, 200),
+  /** v1.8.8 — optional: present when the story was also written in Chinese. */
+  titleZh: trimmed(2, 200).nullish(),
   eventDate: EditorialDateSchema,
 });
 
@@ -219,6 +222,13 @@ export const PublishPayloadSchema = z
     locales: z.object({
       en: LocaleContentSchema,
       es: LocaleContentSchema,
+      /**
+       * v1.8.8 — Simplified Chinese, optional. The same story written a third
+       * time from the same verified facts (docs/i18n/zh-glossary.md). When
+       * present, the story has its own /zh page (canonical, hreflang, sitemap);
+       * when absent, /zh shows the English text with a notice, as before.
+       */
+      zh: LocaleContentSchema.optional(),
     }),
 
     sources: z.array(SourceSchema).min(1).max(MAX_SOURCES),
@@ -311,6 +321,7 @@ export const PublishPayloadSchema = z
       [["canonicalSlug"], v.canonicalSlug],
       [["locales", "en", "slug"], v.locales.en.slug],
       [["locales", "es", "slug"], v.locales.es.slug],
+      ...(v.locales.zh ? ([[["locales", "zh", "slug"], v.locales.zh.slug]] as const) : []),
     ] as const) {
       if (reserved.includes(slug)) {
         ctx.addIssue({ code: "custom", path: [...path], message: `"${slug}" is a page of the blog and cannot be an article slug` });
@@ -333,6 +344,18 @@ export const PublishPayloadSchema = z
         path: ["locales"],
         message: "en and es must have the same number of 'why it matters' points",
       });
+    }
+    // v1.8.8 — the Chinese text, when present, is the same story too.
+    if (v.locales.zh) {
+      if (v.locales.zh.keyTakeaways.length !== v.locales.en.keyTakeaways.length) {
+        ctx.addIssue({ code: "custom", path: ["locales", "zh", "keyTakeaways"], message: "zh must have the same number of key takeaways as en and es (one story, three languages)" });
+      }
+      if (v.locales.zh.whyItMatters.length !== v.locales.en.whyItMatters.length) {
+        ctx.addIssue({ code: "custom", path: ["locales", "zh", "whyItMatters"], message: "zh must have the same number of whyItMatters items as en and es (one story, three languages)" });
+      }
+      if (!/[\u4e00-\u9fff]/.test(v.locales.zh.title) || !/[\u4e00-\u9fff]/.test(v.locales.zh.summary)) {
+        ctx.addIssue({ code: "custom", path: ["locales", "zh"], message: "locales.zh must be written in Chinese (title and summary contain no Chinese characters)" });
+      }
     }
 
     // --- locale slugs must not collide with each other ----------------------
@@ -416,7 +439,8 @@ export type BlogPost = {
   models: string[];
   author: string;
   editorialMethod: string;
-  locales: Record<ContentLang, LocaleContent>;
+  /** es and en always; zh since v1.8.8, for stories the routines also wrote in Chinese. */
+  locales: Record<ContentLang, LocaleContent> & { zh?: LocaleContent };
   sources: Source[];
   image: BlogImage | null;
   digestItems: DigestItem[];
@@ -433,7 +457,8 @@ export type BlogPost = {
 export type PublicArticle = {
   canonicalSlug: string;
   slug: string;
-  lang: ContentLang;
+  /** The language this projection is written in (zh only when the story has Chinese text). */
+  lang: ArticleLang;
   status: "published" | "corrected";
   title: string;
   deck: string;
@@ -463,8 +488,8 @@ export type PublicArticle = {
   singleSourceJustification: string | null;
   correction: { note: string; correctedAt: string | null } | null;
   readingMinutes: number;
-  /** The counterpart slug in the other locale, for correct hreflang alternates. */
-  alternateSlugs: Record<ContentLang, string>;
+  /** The counterpart slug in each locale the story exists in, for correct hreflang alternates. */
+  alternateSlugs: Record<ContentLang, string> & { zh?: string };
 };
 
 /** Feed card projection — no body, so listing pages stay small. */
@@ -485,4 +510,7 @@ export type ArticleCard = Pick<
   | "models"
   | "readingMinutes"
   | "image"
->;
+> & {
+  /** v1.8.8 — the story also has Chinese text (its /zh page is its own). */
+  hasZh?: boolean;
+};

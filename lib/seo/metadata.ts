@@ -62,7 +62,7 @@ export type PageMetadataInput = {
    * the languages the content exists in, `og:locale` of the content, and no
    * markdown twin of its own.
    */
-  contentLang?: ContentLang;
+  contentLang?: ContentLang | "zh";
   /**
    * v1.8.7 — the locales this page has its own text in, when it is not all of them
    * nor just the content languages: a guide translated to Portuguese but not to

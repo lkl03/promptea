@@ -288,7 +288,7 @@
       "blurb": "每天一条经过核实的AI新闻，附带来源。",
       "cta": "阅读今日一期"
     },
-    "langNotice": "AI Daily只以英文和西班牙文发布。你正在阅读英文版。",
+    "langNotice": "暂无中文版的报道以英文原文显示。",
     "tech": {
       "indexTitle": "AI Daily Tech",
       "tagline": "每天一条科技新闻，写给用AI做开发的人。",
@@ -298,7 +298,7 @@
       "empty": "AI Daily Tech每天发布一条经过核实的科技新闻。这里暂时还没有内容，你可以先看看AI新闻。",
       "emptyCta": "阅读AI新闻",
       "backToTech": "← 返回科技",
-      "langNotice": "AI Daily Tech只以英文和西班牙文发布。你正在阅读英文版。",
+      "langNotice": "暂无中文版的科技报道以英文原文显示。",
       "feedTitle": "AI Daily Tech"
     },
     "pagination": {
@@ -373,7 +373,7 @@
       "all": "查看全部报道",
       "weekly": "每周摘要",
       "lead": "头条",
-      "langNote": "新闻以英文显示。",
+      "langNote": "暂无中文版的报道以英文显示。",
       "tech": "科技"
     },
     "teaser": {

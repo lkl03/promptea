@@ -29,13 +29,13 @@ import { getModelPage } from "@/lib/seo/content/models";
 import { absUrl, getSiteUrl } from "@/lib/seo/site";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { markdownPathOf } from "@/lib/seo/registry";
-import { LANG_TAG, PUNCT, contentLangFor, sectionOfEdition, toLang, type ContentLang } from "@/lib/domain";
+import { CONTENT_LANGS, LANG_TAG, PUNCT, blogLangFor, sectionOfEdition, toLang, type ArticleLang } from "@/lib/domain";
 import ContentLangNotice from "@/components/blog/ContentLangNotice";
 
 export const revalidate = 300;
 
 /** Firestore is never allowed to break the route: a failure reads as "no article". */
-async function loadArticle(lang: ContentLang, slug: string): Promise<PublicArticle | null> {
+async function loadArticle(lang: ArticleLang, slug: string): Promise<PublicArticle | null> {
   try {
     return await getArticleBySlug(lang, slug);
   } catch {
@@ -90,18 +90,23 @@ export async function generateMetadata({
   const { lang, slug } = await params;
   const l = toLang(lang);
 
-  // The article's language: es/en have their own; /pt shows the English one.
-  const cl = contentLangFor(l);
-  const article = await loadArticle(cl, slug);
+  // The article's language: es/en have their own; /pt shows the English one;
+  // v1.8.8: /zh shows the story's Chinese text, or the English one if it has none.
+  const article = await loadArticle(blogLangFor(l), slug);
   if (!article) return {};
+  const cl = article.lang;
+  const zhSlug = article.alternateSlugs.zh;
 
   return pageMetadata({
     lang: l,
     contentLang: cl,
+    // A story with Chinese text exists in three languages: hreflang lists zh too.
+    ...(zhSlug ? { locales: [...CONTENT_LANGS, "zh"] as const } : {}),
     path: `/${l}/blog/${article.slug}`,
     alternatePaths: {
       es: `/es/blog/${article.alternateSlugs.es}`,
       en: `/en/blog/${article.alternateSlugs.en}`,
+      ...(zhSlug ? { zh: `/zh/blog/${zhSlug}` } : {}),
     },
     title: article.seoTitle,
     description: article.metaDescription,
@@ -125,9 +130,9 @@ export default async function BlogArticlePage({
   if (!hasLocale(lang)) notFound();
   const l = toLang(lang);
 
-  const cl = contentLangFor(l);
-  const article = await loadArticle(cl, slug);
+  const article = await loadArticle(blogLangFor(l), slug);
   if (!article) notFound();
+  const cl = article.lang;
 
   const dict = await getDictionary(l);
   const t = dict.blog;
@@ -208,6 +213,7 @@ export default async function BlogArticlePage({
 
           <ContentLangNotice
             lang={l}
+            show={cl !== l}
             text={t.langNotice}
             hrefs={{ es: blogArticlePath("es", article.alternateSlugs.es), en: blogArticlePath("en", article.alternateSlugs.en) }}
             className="mt-4"

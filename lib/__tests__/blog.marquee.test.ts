@@ -10,6 +10,7 @@ type A = Parameters<typeof selectMarqueeItems>[0][number];
 function a(slug: string, hoursAgo: number, o: Partial<A> = {}): A {
   return {
     slug,
+    lang: "en",
     title: `Title ${slug}`,
     publishedAt: new Date(NOW.getTime() - hoursAgo * 3_600_000).toISOString(),
     eventDate: "2026-10-08",

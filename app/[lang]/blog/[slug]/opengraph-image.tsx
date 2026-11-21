@@ -19,7 +19,7 @@
 // free of filesystem access at build time.
 
 import { ImageResponse } from "next/og";
-import { isLang, contentLangFor, imageLang } from "@/lib/domain";
+import { isLang, blogLangFor, contentLangFor, imageLang } from "@/lib/domain";
 import type { Lang } from "@/lib/domain";
 import { formatEditorialDate } from "@/lib/blog/dates";
 import { getArticleBySlug } from "@/lib/blog/server";
@@ -86,7 +86,11 @@ export default async function OpenGraphImage({
 
   if (isLang(lang)) {
     try {
-      const article = await getArticleBySlug(contentLangFor(l), slug);
+      // v1.8.8: under /zh the story may have its own (Chinese) slug; the cover
+      // always uses a Latin-script title (next/og has no CJK font, see imageLang).
+      const found = await getArticleBySlug(blogLangFor(l), slug);
+      const article =
+        found && found.lang === "zh" ? await getArticleBySlug(contentLangFor(l), found.alternateSlugs.en) : found;
       if (article) {
         title = clampTitle(article.title);
         dateLabel = formatEditorialDate(article.eventDate, imageLang(l));

@@ -50,7 +50,7 @@ import {
 import type { BlogFilterState } from "@/lib/blog/filters";
 import { listAllPublishedArticles } from "@/lib/blog/server";
 import type { ArticleCard, PublicArticle } from "@/lib/blog/types";
-import { contentIsFallback, contentLangFor, type BlogSection, type ContentLang, type Lang } from "@/lib/domain";
+import { CONTENT_LANGS, blogLangFor, contentIsFallback, contentLangFor, type ArticleLang, type BlogSection, type Lang } from "@/lib/domain";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { getSiteUrl } from "@/lib/seo/site";
 import { getXLinks } from "@/lib/social";
@@ -103,7 +103,15 @@ export function sectionCopy(dict: Dict, section: BlogSection) {
  * Never let a Firestore problem break the page — an empty feed is a valid
  * state, and `next build` runs without a service account by design.
  */
-async function loadCards(lang: ContentLang, section: BlogSection): Promise<ArticleCard[]> {
+/**
+ * v1.8.8 — the es/en/pt index of a section announces a /zh alternate once one of
+ * its stories has Chinese text (`hasZh` on the card), so hreflang stays reciprocal.
+ */
+function hasZhIndex(cards: ArticleCard[]): boolean {
+  return cards.some((c) => c.hasZh);
+}
+
+async function loadCards(lang: ArticleLang, section: BlogSection): Promise<ArticleCard[]> {
   try {
     const articles = await listAllPublishedArticles(lang, FILTER_WINDOW);
     return cardsOfSection(articles, section).map(toCard);
@@ -135,6 +143,7 @@ function toCard(article: PublicArticle): ArticleCard {
     models: article.models,
     readingMinutes: article.readingMinutes,
     image: article.image,
+    hasZh: Boolean(article.alternateSlugs.zh),
   };
 }
 
@@ -170,7 +179,10 @@ export async function blogIndexMetadata(lang: Lang, sp: BlogSearchParams, sectio
   const dict = await getDictionary(lang);
   const copy = sectionCopy(dict, section);
 
-  const cl = contentLangFor(lang);
+  // v1.8.8: /zh is its own index once a story of the section has Chinese text.
+  const cards = await loadCards(blogLangFor(lang), section);
+  const zhIndex = lang === "zh" && cards.some((c) => c.lang === "zh");
+  const cl = zhIndex ? "zh" : contentLangFor(lang);
   const base = blogSectionIndexPath(cl, section);
   const canonical = narrowed || page === 1 ? base : `${base}?page=${page}`;
   const title = `${copy.title} — ${copy.tagline}`;
@@ -178,9 +190,16 @@ export async function blogIndexMetadata(lang: Lang, sp: BlogSearchParams, sectio
   // v1.8.4: the Tech index before its first story is an empty listing. It is
   // noindex until then (and out of sitemap.xml and llms.txt, see
   // withoutEmptySectionIndexes), and indexable again with the first story.
-  const empty = section === "tech" && (await loadCards(cl, section)).length === 0;
+  const empty = section === "tech" && cards.length === 0;
 
-  const meta = pageMetadata({ lang, contentLang: cl, path: blogSectionIndexPath(lang, section), title, description: copy.description });
+  const meta = pageMetadata({
+    lang,
+    contentLang: cl,
+    ...(zhIndex || hasZhIndex(cards) ? { locales: [...CONTENT_LANGS, "zh"] as const } : {}),
+    path: blogSectionIndexPath(lang, section),
+    title,
+    description: copy.description,
+  });
   return {
     ...meta,
     // Filter permutations are search results, not content: keeping them out of
@@ -191,7 +210,7 @@ export async function blogIndexMetadata(lang: Lang, sp: BlogSearchParams, sectio
       ...meta.alternates,
       canonical,
       // <link rel="alternate" type="application/rss+xml">: each index advertises its own feed.
-      types: { "application/rss+xml": blogSectionFeedPath(cl, section) },
+      types: { "application/rss+xml": blogSectionFeedPath(cl === "zh" ? "en" : cl, section) },
     },
     openGraph: { ...meta.openGraph, url: canonical },
   };
@@ -207,7 +226,7 @@ export default async function BlogIndexView({ lang: l, sp, section }: { lang: La
   const copy = sectionCopy(dict, section);
   const basePath = blogSectionIndexPath(l, section);
 
-  const all = await loadCards(contentLangFor(l), section);
+  const all = await loadCards(blogLangFor(l), section);
   const filtered = applyFilters(all, filters);
   const { items, page, pages, total, hasPrev, hasNext } = paginate(filtered, requestedPage, BLOG_PAGE_SIZE);
 
@@ -289,6 +308,7 @@ export default async function BlogIndexView({ lang: l, sp, section }: { lang: La
             <p className="mt-2 max-w-xl text-base text-ink-muted sm:text-lg">{copy.tagline}</p>
             <ContentLangNotice
               lang={l}
+              show={contentIsFallback(l) && (l !== "zh" || all.some((c) => c.lang !== "zh"))}
               text={copy.langNotice}
               hrefs={{ es: blogSectionIndexPath("es", section), en: blogSectionIndexPath("en", section) }}
               className="mt-4"

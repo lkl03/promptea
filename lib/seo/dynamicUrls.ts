@@ -22,8 +22,11 @@ export function articleUpdated(a: Pick<PublicArticle, "updatedAt" | "publishedAt
 }
 
 export function articleUrl(a: PublicArticle): SeoUrl {
+  // v1.8.8: a story the routines also wrote in Chinese exists in three languages.
+  const zh = a.alternateSlugs.zh;
   return {
     lang: a.lang,
+    ...(zh ? { locales: ["es", "en", "zh"] as const } : {}),
     path: articlePath(a.lang, a.slug),
     section: "ai-daily",
     title: a.title,
@@ -34,6 +37,7 @@ export function articleUrl(a: PublicArticle): SeoUrl {
     alternates: {
       es: articlePath("es", a.alternateSlugs.es),
       en: articlePath("en", a.alternateSlugs.en),
+      ...(zh ? { zh: articlePath("zh", zh) } : {}),
     },
     markdown: true,
   };

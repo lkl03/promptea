@@ -59,7 +59,7 @@ import { homeAboutDoc } from "@/lib/seo/content/sitePages";
 import { homeGraph } from "@/lib/seo/pageGraphs";
 import { markdownPathOf } from "@/lib/seo/registry";
 import { pageMetadata } from "@/lib/seo/metadata";
-import { type Lang, toLang, INTL_LOCALE, PUNCT, contentLangFor } from "@/lib/domain";
+import { type Lang, toLang, INTL_LOCALE, PUNCT, blogLangFor } from "@/lib/domain";
 
 export const revalidate = 300;
 
@@ -80,10 +80,12 @@ const NEWS_WINDOW = 30;
  */
 async function loadNews(lang: Lang): Promise<{ marquee: MarqueeItem[]; latest: LatestArticle[]; hasTech: boolean }> {
   try {
-    // AI Daily is written in es/en; /pt shows the English headlines (and says so).
-    const articles = await listAllPublishedArticles(contentLangFor(lang), NEWS_WINDOW);
+    // AI Daily is written in es/en; /pt shows the English headlines (and says so);
+    // v1.8.8: /zh shows each story in Chinese when it has a Chinese version.
+    const articles = await listAllPublishedArticles(blogLangFor(lang), NEWS_WINDOW);
     const latest = selectHomeLatest(articles, LATEST_COUNT).map((a) => ({
       slug: a.slug,
+      lang: a.lang,
       title: a.title,
       deck: a.deck,
       category: a.category,

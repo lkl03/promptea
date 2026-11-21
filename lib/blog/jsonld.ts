@@ -21,7 +21,7 @@
 // <script type="application/ld+json"> tag — the one sanctioned use of
 // dangerouslySetInnerHTML in this codebase. Article prose never goes near it.
 
-import { pick, type BlogSection, type Lang } from "@/lib/domain";
+import { LANG_TAG, pick, type BlogSection, type Lang } from "@/lib/domain";
 import { getSiteUrl } from "@/lib/seo/site";
 import { breadcrumbNode, entityIds, graph, pageId, ref, webPageNode } from "@/lib/seo/jsonld";
 import { newest } from "@/lib/seo/dates";
@@ -154,7 +154,7 @@ export function newsArticleNode(
     image: [opts.imageUrl],
     datePublished,
     dateModified,
-    inLanguage: article.lang,
+    inLanguage: LANG_TAG[article.lang],
     articleSection: article.category,
     // Truthful: there is no paywall and no registration wall on AI Daily.
     isAccessibleForFree: true,

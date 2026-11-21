@@ -22,13 +22,15 @@ export const MARQUEE_MAX_ITEMS = 12;
 
 export type MarqueeItem = {
   slug: string;
+  /** v1.8.8 — the headline's language (under /zh: zh, or en for a story without Chinese text). */
+  lang: PublicArticle["lang"];
   title: string;
   publishedAt: string;
   category: PublicArticle["category"];
 };
 
 export function selectMarqueeItems(
-  articles: Array<Pick<PublicArticle, "slug" | "title" | "publishedAt" | "eventDate" | "category" | "status">>,
+  articles: Array<Pick<PublicArticle, "slug" | "lang" | "title" | "publishedAt" | "eventDate" | "category" | "status">>,
   now: Date = new Date(),
   opts: { windowHours?: number; max?: number } = {}
 ): MarqueeItem[] {
@@ -48,7 +50,7 @@ export function selectMarqueeItems(
     if (a.eventDate && a.eventDate > today) continue;
     if (seen.has(a.slug)) continue;
     seen.add(a.slug);
-    out.push({ slug: a.slug, title: a.title, publishedAt: a.publishedAt, category: a.category, t });
+    out.push({ slug: a.slug, lang: a.lang, title: a.title, publishedAt: a.publishedAt, category: a.category, t });
   }
 
   return out

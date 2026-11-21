@@ -19,7 +19,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { MarqueeItem } from "@/lib/blog/marquee";
-import { LANG_TAG, contentIsFallback, contentLangFor, type Lang } from "@/lib/domain";
+import { LANG_TAG, contentIsFallback, type Lang } from "@/lib/domain";
 
 type Dict = { label: string; pause: string; play: string };
 
@@ -40,7 +40,8 @@ function useReducedMotion() {
 function Headlines({ items, lang, hidden }: { items: MarqueeItem[]; lang: Lang; hidden?: boolean }) {
   // v1.8.3: under an interface language without its own edition (pt) the headlines
   // are English; say so to assistive tech and translation tools (WCAG 3.1.2).
-  const contentLangTag = contentIsFallback(lang) ? LANG_TAG[contentLangFor(lang)] : undefined;
+  // v1.8.8: headline by headline — under /zh a story may be Chinese or English.
+  const tagOf = (item: MarqueeItem) => (contentIsFallback(lang) && item.lang !== lang ? LANG_TAG[item.lang] : undefined);
   return (
     <ul className="flex shrink-0 items-center gap-8 pr-8" aria-hidden={hidden || undefined} inert={hidden || undefined}>
       {items.map((item) => (
@@ -48,7 +49,7 @@ function Headlines({ items, lang, hidden }: { items: MarqueeItem[]; lang: Lang; 
           <Link
             href={`/${lang}/blog/${item.slug}`}
             tabIndex={hidden ? -1 : undefined}
-            lang={contentLangTag}
+            lang={tagOf(item)}
             className="whitespace-nowrap text-sm text-ink-muted transition-colors hover:text-ink focus-visible:text-ink"
           >
             {item.title}
