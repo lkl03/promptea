@@ -293,8 +293,9 @@ export default async function BlogIndexView({ lang: l, sp, section }: { lang: La
     // (~68ch) and the newsletter dock sticks in the side column; below `lg`
     // it is one column and the dock becomes a slim bottom bar.
     <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 sm:pt-8">
-      {/* A /pt view is canonicalised to the English index, which carries the structured data. */}
-      {contentIsFallback(l) ? null : <JsonLd data={indexLd} />}
+      {/* A /pt view is canonicalised to the English index, which carries the structured data.
+          v1.8.9: /zh is its own canonical once a story has Chinese text (v1.8.8), so it carries it too. */}
+      {contentIsFallback(l) && !(l === "zh" && all.some((c) => c.lang === "zh")) ? null : <JsonLd data={indexLd} />}
 
       <DailyTabs lang={l} active={section === "tech" ? "tech" : "news"} dict={dict.dailyTabs} />
 
@@ -308,7 +309,8 @@ export default async function BlogIndexView({ lang: l, sp, section }: { lang: La
             <p className="mt-2 max-w-xl text-base text-ink-muted sm:text-lg">{copy.tagline}</p>
             <ContentLangNotice
               lang={l}
-              show={contentIsFallback(l) && (l !== "zh" || all.some((c) => c.lang !== "zh"))}
+              // v1.8.9: an EMPTY /zh index is still a view of /en (its canonical says so), so it shows the notice too.
+              show={contentIsFallback(l) && (l !== "zh" || all.length === 0 || all.some((c) => c.lang !== "zh"))}
               text={copy.langNotice}
               hrefs={{ es: blogSectionIndexPath("es", section), en: blogSectionIndexPath("en", section) }}
               className="mt-4"

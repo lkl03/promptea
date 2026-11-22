@@ -157,6 +157,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   const actions = [
     { href: `/${l}/analyzer`, ...t.actions.analyze },
     { href: `/${l}/best-ai`, ...t.actions.bestAi },
+    { href: `/${l}/flow`, ...t.actions.flow },
   ];
 
   const newsletter = (id: string) => (
@@ -200,7 +201,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* 2. The two things you can do, as quiet links + how it works */}
       <nav aria-label={t.actionsAria} className="mx-auto mt-6 max-w-3xl">
-        <ul className="home-actions m-0 grid list-none grid-cols-1 gap-x-8 gap-y-3 p-0 sm:grid-cols-2">
+        <ul className="home-actions m-0 grid list-none grid-cols-1 gap-x-8 gap-y-3 p-0 sm:grid-cols-3">
           {actions.map((a) => (
             <li key={a.href} className="min-w-0 text-center sm:text-left">
               <Link href={a.href} className="home-action group inline-flex items-baseline gap-1.5 rounded-md font-medium text-ink">

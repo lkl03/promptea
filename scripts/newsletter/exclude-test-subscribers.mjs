@@ -17,6 +17,7 @@ import { FieldValue, getFirestore } from "firebase-admin/firestore";
 
 const APPLY = process.argv.includes("--apply");
 const RESERVED_TLDS = ["test", "example", "invalid", "localhost"];
+const RESERVED_DOMAINS = ["example.com", "example.net", "example.org"];
 const QA_MAILBOX_RE = /^test-qa(?:[-+.][a-z0-9.+-]*)?@promptea\.me$/;
 const configured = (process.env.NEWSLETTER_EXCLUDED_RECIPIENTS ?? "")
   .split(/[,;\s]+/)
@@ -27,8 +28,10 @@ function reason(email) {
   const a = String(email ?? "").trim().toLowerCase();
   const at = a.lastIndexOf("@");
   if (at < 1) return null;
-  const tld = a.slice(at + 1).split(".").pop();
+  const domain = a.slice(at + 1);
+  const tld = domain.split(".").pop();
   if (RESERVED_TLDS.includes(tld)) return "reserved_tld";
+  if (RESERVED_DOMAINS.some((d) => domain === d || domain.endsWith(`.${d}`))) return "reserved_domain";
   if (QA_MAILBOX_RE.test(a)) return "qa_mailbox";
   if (configured.some((e) => (e.startsWith("@") ? a.endsWith(e) : a === e))) return "configured";
   return null;
@@ -42,7 +45,7 @@ if (!b64) {
   process.exit(2);
 }
 const sa = JSON.parse(Buffer.from(b64, "base64").toString("utf8"));
-if (typeof sa.private_key === "string") sa.private_key = sa.private_key.replace(/\n/g, "\n");
+if (typeof sa.private_key === "string") sa.private_key = sa.private_key.replace(/\\n/g, "\n"); // literal "\n" → newline, as lib/firebase/admin.ts
 const db = getFirestore(initializeApp({ credential: cert(sa), projectId: process.env.FIREBASE_PROJECT_ID ?? sa.project_id }));
 
 const snap = await db.collection("newsletter_subscribers").where("status", "==", "active").get();

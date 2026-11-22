@@ -11,6 +11,7 @@ import { modelNoteForTarget } from "@/lib/models";
 import type { RefinementResult } from "@/lib/refine/schema";
 import { APP_VERSION } from "@/lib/version";
 import { clientKey, createRateLimiter } from "@/lib/rateLimit";
+import { isBotUserAgent } from "@/lib/telemetry/bots";
 
 export const runtime = "nodejs";
 
@@ -31,7 +32,11 @@ function inferLang(req: NextRequest, bodyLang: unknown): Lang {
 }
 
 export async function POST(req: NextRequest) {
-  const gate = rateLimiter.check(clientKey(req.headers));
+  const callerKey = clientKey(req.headers);
+  // v1.8.9: crawlers and automation still get the full deterministic analysis,
+  // but never a paid LLM call (refiner or judge).
+  const llmAllowed = !isBotUserAgent(req.headers.get("user-agent"));
+  const gate = rateLimiter.check(callerKey);
   if (!gate.allowed) {
     return NextResponse.json(
       { error: "rate_limited", retryAfter: gate.retryAfterSec },
@@ -105,6 +110,8 @@ export async function POST(req: NextRequest) {
     heuristicScore: result.score,
     confidence: Number(result.meta.confidence ?? 100),
     signal: req.signal,
+    userKey: callerKey,
+    llmAllowed,
   }).catch(() => null);
 
   let refinement: RefinementResult | null = null;
@@ -125,6 +132,8 @@ export async function POST(req: NextRequest) {
       },
       signal: req.signal,
       alreadyOptimized: result.meta.alreadyOptimized === true,
+      userKey: callerKey,
+      llmAllowed,
     }).catch(() => null);
   }
   const judge = await judgePromise;

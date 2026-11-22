@@ -12,6 +12,7 @@ const state = vi.hoisted(() => ({
   claimed: new Set<string>(),
   sends: [] as Array<{ to: string[]; subject: string; key?: string }>,
   failRead: false,
+  failSend: false,
 }));
 
 vi.mock("@/lib/ops/server", () => ({
@@ -24,12 +25,16 @@ vi.mock("@/lib/ops/server", () => ({
     state.claimed.add(day);
     return true;
   },
+  releaseAlertDay: async (day: string) => {
+    state.claimed.delete(day);
+  },
 }));
 
 vi.mock("resend", () => ({
   Resend: class {
     emails = {
       send: async (msg: { to: string[]; subject: string }, opts?: { idempotencyKey?: string }) => {
+        if (state.failSend) return { data: null, error: { name: "application_error" } };
         state.sends.push({ to: msg.to, subject: msg.subject, key: opts?.idempotencyKey });
         return { data: { id: "em_1" }, error: null };
       },
@@ -64,6 +69,7 @@ beforeEach(() => {
   state.claimed.clear();
   state.sends = [];
   state.failRead = false;
+  state.failSend = false;
   vi.stubEnv("CRON_SECRET", CRON);
   vi.stubEnv("ROUTINE_HEALTH_SECRET", HEALTH);
   vi.stubEnv("ROUTINE_ALERT_TO", "owner@example.com");
@@ -125,6 +131,24 @@ describe("alert", () => {
     expect(body).toMatchObject({ emailed: false, reason: "dry_run", overdue: ["newsletter"] });
     expect(state.sends).toHaveLength(0);
     expect(state.claimed.size).toBe(0);
+  });
+  test("v1.8.9: dryRun=true is a dry run too (it used to send)", async () => {
+    state.activity = { ...onTime(), newsletter: { lastAt: d("2026-01-01T00:00:00Z") } };
+    const body = await (await alert(req("/api/internal/routines/alert?dryRun=true", CRON))).json();
+    expect(body).toMatchObject({ emailed: false, reason: "dry_run" });
+    expect(state.sends).toHaveLength(0);
+    expect(state.claimed.size).toBe(0);
+  });
+  test("v1.8.9: a failed send gives the day back, so a retry still alerts today", async () => {
+    state.activity = { ...onTime(), newsletter: { lastAt: d("2026-01-01T00:00:00Z") } };
+    state.failSend = true;
+    const failed = await alert(req("/api/internal/routines/alert", CRON));
+    expect(failed.status).toBe(502);
+    expect(state.claimed.size).toBe(0);
+    state.failSend = false;
+    const retry = await (await alert(req("/api/internal/routines/alert", CRON))).json();
+    expect(retry).toMatchObject({ emailed: true });
+    expect(state.sends).toHaveLength(1);
   });
   test("no recipient configured → reported, nothing sent", async () => {
     vi.stubEnv("ROUTINE_ALERT_TO", "");

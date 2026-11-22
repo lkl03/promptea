@@ -15,9 +15,13 @@
 //   marked for prompt caching (`cache_control: ephemeral`) and JSON-schema
 //   structured output.
 // - `fetchImpl` is injectable everywhere so tests never need real keys.
+// - v1.8.9: the Anthropic provider goes through lib/ai/claude.ts, so the
+//   refiner and the judge share the monthly/daily spend cap and the ledger with
+//   every other Claude call. A refused reservation is `budget_exhausted` and
+//   fails over to the next provider (or the deterministic engine).
 
-import Anthropic from "@anthropic-ai/sdk";
 import type { FallbackReason } from "@/lib/domain";
+import { callClaudeJson, type AiFailure } from "@/lib/ai/claude";
 
 export type ProviderId = "groq" | "anthropic";
 export const PROVIDER_IDS: readonly ProviderId[] = ["groq", "anthropic"];
@@ -49,6 +53,8 @@ export type LlmRequest = {
   fetchImpl?: typeof fetch;
   /** Per-call timeout (already bounded by the chain's remaining budget). */
   timeoutMs: number;
+  /** v1.8.9: hashed client key for the per-visitor daily AI quota (null = no visitor). */
+  userKey?: string | null;
 };
 
 export type LlmOutcome =
@@ -151,57 +157,48 @@ export const anthropicProvider: LlmProvider = {
   enabled: () => keyOk(process.env.ANTHROPIC_API_KEY),
   async complete(req) {
     const model = this.model();
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-    if (!keyOk(apiKey)) return { ok: false, reason: "missing_api_key", provider: "anthropic", model };
+    if (!keyOk(process.env.ANTHROPIC_API_KEY)) return { ok: false, reason: "missing_api_key", provider: "anthropic", model };
 
-    // No SDK retries: failover to the next provider is the retry strategy,
-    // and the analyzer has a hard latency budget.
-    const client = new Anthropic({
-      apiKey,
-      maxRetries: 0,
-      timeout: req.timeoutMs,
-      ...(req.fetchImpl ? { fetch: req.fetchImpl } : {}),
+    // Static block first, marked for caching (prefix match); the per-request
+    // rules come after the breakpoint. Haiku 5.5: no sampling params
+    // (non-default values are rejected); low effort keeps a rewrite/judgement
+    // fast; JSON-schema output. No SDK retries: failover to the next provider
+    // is the retry strategy, and the analyzer has a hard latency budget.
+    const outcome = await callClaudeJson({
+      feature: "refine",
+      model,
+      systemCacheable: req.system.cacheable,
+      systemDynamic: req.system.dynamic,
+      messages: req.messages,
+      jsonSchema: req.jsonSchema,
+      maxTokens: req.maxTokens ?? 4096,
+      effort: "low",
+      timeoutMs: req.timeoutMs,
+      userKey: req.userKey ?? null,
+      signal: req.signal,
+      fetchImpl: req.fetchImpl,
     });
-
-    try {
-      const response = await client.messages.create(
-        {
-          model,
-          max_tokens: req.maxTokens ?? 4096,
-          // Static block first, marked for caching (prefix match); the
-          // per-request rules come after the breakpoint.
-          system: [
-            { type: "text", text: req.system.cacheable, cache_control: { type: "ephemeral" } },
-            { type: "text", text: req.system.dynamic },
-          ],
-          messages: req.messages,
-          // Haiku 5.5: no sampling params (non-default values are rejected);
-          // low effort keeps a rewrite/judgement fast; JSON-schema output.
-          output_config: { effort: "low", format: { type: "json_schema", schema: req.jsonSchema } },
-        },
-        { signal: req.signal }
-      );
-
-      if (response.stop_reason === "refusal") return { ok: false, reason: "unsafe_response", provider: "anthropic", model };
-      const text = response.content
-        .map((block) => (block.type === "text" ? block.text : ""))
-        .join("")
-        .trim();
-      if (!text) return { ok: false, reason: "empty_response", provider: "anthropic", model };
-      if (response.stop_reason === "max_tokens") return { ok: false, reason: "invalid_json", provider: "anthropic", model };
-      return { ok: true, text, provider: "anthropic", model };
-    } catch (err) {
-      if (req.signal?.aborted) return { ok: false, reason: "superseded", provider: "anthropic", model };
-      if (err instanceof Anthropic.AuthenticationError || err instanceof Anthropic.PermissionDeniedError) {
-        return { ok: false, reason: "invalid_api_key", provider: "anthropic", model };
-      }
-      if (err instanceof Anthropic.RateLimitError) return { ok: false, reason: "rate_limited", provider: "anthropic", model };
-      if (err instanceof Anthropic.APIConnectionTimeoutError) return { ok: false, reason: "timeout", provider: "anthropic", model };
-      // 5xx including 529 overloaded, connection errors, anything else.
-      return { ok: false, reason: "provider_error", provider: "anthropic", model };
-    }
+    if (outcome.ok) return { ok: true, text: outcome.text, provider: "anthropic", model };
+    return { ok: false, reason: refineReason(outcome.reason), provider: "anthropic", model };
   },
 };
+
+/** The guarded call's failure → the refiner's fallback vocabulary. */
+export function refineReason(reason: AiFailure): FallbackReason {
+  switch (reason) {
+    case "budget_month":
+    case "budget_day":
+    case "user_quota":
+    case "store_unavailable":
+      return "budget_exhausted";
+    case "refusal":
+      return "unsafe_response";
+    case "max_tokens":
+      return "invalid_json";
+    default:
+      return reason;
+  }
+}
 
 const REGISTRY: Record<ProviderId, LlmProvider> = { groq: groqProvider, anthropic: anthropicProvider };
 
@@ -229,6 +226,7 @@ const FAILOVER_REASONS = new Set<FallbackReason>([
   "invalid_api_key",
   "missing_api_key",
   "empty_response",
+  "budget_exhausted",
 ]);
 
 export type ChainOutcome = LlmOutcome & {

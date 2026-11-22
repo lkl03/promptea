@@ -21,12 +21,14 @@ export default function ModeSwitcher({
   const items: Array<{ mode: AppMode; href: string; label: string; hint: string }> = [
     { mode: "improve", href: `/${lang}/analyzer`, label: dict.improveLabel, hint: dict.improveHint },
     { mode: "best-ai", href: `/${lang}/best-ai`, label: dict.bestAiLabel, hint: dict.bestAiHint },
+    // v1.8.9: Prompt flow.
+    { mode: "flow", href: `/${lang}/flow`, label: dict.flowLabel, hint: dict.flowHint },
   ];
 
   const activeItem = items.find((item) => item.mode === active) ?? items[0];
 
   return (
-    <div className="mx-auto w-full max-w-xl">
+    <div className="mx-auto w-full max-w-2xl">
       <nav aria-label={dict.switcherAria} className="mode-switch w-full">
         {items.map((item) => (
           <Link

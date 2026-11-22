@@ -113,7 +113,9 @@
     "bestAiLabel": "Elegir la mejor IA",
     "improveHint": "Analizá, corregí y mejorá un prompt.",
     "bestAiHint": "Descubrí qué IA se adapta mejor a tu prompt.",
-    "switcherAria": "Elegí qué querés hacer"
+    "switcherAria": "Elegí qué querés hacer",
+    "flowLabel": "Dividir en pasos",
+    "flowHint": "Partí una tarea grande en una cadena de prompts."
   },
   "matcher": {
     "title": "Elegir la mejor IA",
@@ -405,6 +407,10 @@
       "bestAi": {
         "title": "Encontrar la mejor IA",
         "body": "Contanos tu tarea y te decimos qué modelo conviene, y por qué."
+      },
+      "flow": {
+        "title": "Dividir una tarea en pasos",
+        "body": "Escribí la tarea y te devolvemos una cadena de prompts, con la mejor IA para cada paso."
       }
     },
     "howItWorks": "Cómo funciona",
@@ -545,7 +551,8 @@
     "glossary": "Glosario",
     "library": "Biblioteca",
     "footerTech": "Tech",
-    "footerSources": "Fuentes"
+    "footerSources": "Fuentes",
+    "flow": "Flujo"
   },
   "howItWorksPage": {
     "breadcrumb": "Ruta de navegación",
@@ -562,10 +569,19 @@
     "about": "Acerca de Promptea"
   },
   "changelog": {
+    "v189": {
+      "released": "Publicado: 2026-11-22",
+      "items": [
+        "Nuevo: Flujo de prompts. Escribís una tarea grande y la dividimos en pasos encadenados, con ramas en paralelo, un prompt listo para cada paso y la mejor IA para cada uno.",
+        "Las funciones con IA pueden usar Claude, con un tope de gasto mensual: si se agota o la IA no está disponible, todo sigue funcionando con el motor propio de Promptea.",
+        "Las notas de AI Daily en chino muestran el tiempo de lectura real y el resumen semanal muestra sus títulos en chino.",
+        "Arreglos: la alerta diaria ya no se pierde si falla el envío, y la newsletter rechaza direcciones de ejemplo como name@example.com."
+      ]
+    },
     "v188": {
       "released": "Publicado: 2026-11-20",
       "items": [
-        "AI Daily también en chino: desde el 21/11 cada nota nueva se publica en /zh con su propia página. Las anteriores siguen en inglés con un aviso.",
+        "AI Daily ya puede publicarse en chino: cada nota nueva que traiga versión china tiene su propia página en /zh. Las anteriores siguen en inglés con un aviso.",
         "Kimi K3.1 Pro llega al analizador y pasa a ser el Kimi por defecto; Kimi K3 queda como versión anterior.",
         "Revisamos todo /zh: enlaces, metadatos y textos. El formulario de la newsletter ya no muestra un ejemplo de email en inglés.",
         "Detrás de escena: un control diario avisa si alguna de las publicaciones automáticas (AI Daily, AI Daily Tech, el resumen semanal o la newsletter) se atrasa.",
@@ -672,5 +688,60 @@
     "toDaily": "Leer IA al Día",
     "toTech": "Leer IA al Día Tech",
     "toMethodology": "Cómo se puntúan los prompts"
+  },
+  "flow": {
+    "title": "Flujo de prompts",
+    "subtitle": "Escribí una tarea grande y la dividimos en pasos: una cadena de prompts listos para pegar, con ramas en paralelo y la IA que mejor le queda a cada uno.",
+    "editorLabel": "Tu tarea principal",
+    "placeholder": "Ej.: Lanzar una newsletter semanal para mi estudio de diseño: definir el público, armar el primer número y una página de suscripción.",
+    "submitCta": "Dividir en pasos",
+    "planning": "Dividiendo la tarea en pasos…",
+    "examplesLabel": "Probá con:",
+    "examples": [
+      "Agregar inicio de sesión con Google a mi app de Next.js y cubrirlo con tests",
+      "Escribir una propuesta comercial para un cliente que quiere rediseñar su tienda online",
+      "Comparar tres CRM para una pyme de 10 personas y recomendar uno con argumentos"
+    ],
+    "tooShort": "Contá un poco más de la tarea (al menos una frase).",
+    "genericError": "No pudimos armar el flujo. Probá de nuevo en unos segundos.",
+    "rateLimited": "Pediste varios flujos seguidos. Esperá un minuto y probá de nuevo.",
+    "rootLabel": "Tarea principal",
+    "sourceAi": "Planificado con {model}",
+    "sourceBasic": "Plan básico · sin IA",
+    "stepsCount": "{n} pasos",
+    "parallelCount": "{n} en paralelo",
+    "stepLabel": "Paso {n}",
+    "parallelTag": "En paralelo",
+    "usesLabel": "Usa: {steps}",
+    "and": "y",
+    "bestAi": "Mejor IA",
+    "showPrompt": "Ver el prompt",
+    "outputLabel": "Entrega",
+    "copyPrompt": "Copiar prompt",
+    "copied": "Copiado",
+    "improveStep": "Mejorar en el analizador",
+    "markDone": "Hecho",
+    "doneAria": "Marcar el paso {n} como hecho",
+    "progress": "{done} de {total} pasos hechos",
+    "copyAll": "Copiar el flujo",
+    "editTask": "Editar la tarea",
+    "newTask": "Nueva tarea",
+    "treeAria": "Pasos del flujo, de arriba hacia abajo",
+    "notices": {
+      "no_ai": "La IA no está disponible ahora: este es el plan básico del motor de Promptea. Sirve igual: cada paso trae su prompt listo.",
+      "budget": "Se agotó el cupo de IA de este período, así que este es el plan básico del motor de Promptea. La IA vuelve sola cuando se renueva el cupo.",
+      "quota": "Ya usaste los flujos con IA de hoy. Este es el plan básico del motor de Promptea; mañana vuelven los flujos con IA.",
+      "busy": "La IA está muy pedida en este momento. Te dejamos el plan básico; probá de nuevo en un rato.",
+      "error": "La IA no devolvió un plan usable, así que te dejamos el plan básico del motor de Promptea."
+    },
+    "howTitle": "Cómo se usa",
+    "how": [
+      "Arriba está la tarea principal; abajo, los pasos en el orden en que conviene hacerlos. Los pasos de una misma fila no dependen entre sí: podés hacerlos a la vez, en chats distintos.",
+      "Cada paso trae un prompt listo para pegar. Donde dice [Resultado del paso N], pegá lo que te devolvió ese paso.",
+      "La IA sugerida para cada paso la elige el mismo motor de «Elegir la mejor IA», con su motivo. Podés llevar cualquier paso al analizador para mejorarlo.",
+      "El plan lo arma Claude (Anthropic). Si la IA no está disponible, el motor de Promptea arma un plan básico igual de usable. Promptea no guarda tu tarea."
+    ],
+    "guideLink": "Guía: cómo encadenar prompts",
+    "copyAllTitle": "Flujo de prompts (Promptea)"
   }
 }

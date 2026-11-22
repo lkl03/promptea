@@ -151,6 +151,7 @@ export function homeAboutDoc(lang: Locale): PageDoc {
             items: [
               { href: `/${lang}/analyzer`, label: t("Prompt analyzer", "Analizador de prompts", "Analisador de prompts", "提示词分析器") },
               { href: `/${lang}/best-ai`, label: t("Find the best AI", "Encontrar la mejor IA", "Encontrar a melhor IA", "找到最合适的AI") },
+              { href: `/${lang}/flow`, label: t("Prompt flow", "Flujo de prompts", "Fluxo de prompts", "提示词流程") },
               { href: `/${lang}/blog`, label: t("AI Daily", "IA al Día", "AI Daily", "AI Daily") },
               { href: `/${lang}/benchmarks`, label: t("Benchmarks", "Benchmarks", "Benchmarks", "基准测试") },
               { href: `/${lang}/how-it-works`, label: t("How Promptea works", "Cómo funciona Promptea", "Como o Promptea funciona", "Promptea的工作原理") },
@@ -420,6 +421,7 @@ export function aboutDoc(lang: Locale): PageDoc {
             items: [
               { href: `/${lang}/analyzer`, label: t("Prompt analyzer", "Analizador de prompts", "Analisador de prompts", "提示词分析器") },
               { href: `/${lang}/best-ai`, label: t("Find the best AI", "Elegir la mejor IA", "Encontrar a melhor IA", "找到最合适的AI") },
+              { href: `/${lang}/flow`, label: t("Prompt flow", "Flujo de prompts", "Fluxo de prompts", "提示词流程") },
               { href: `/${lang}/blog`, label: "AI Daily" },
               { href: `/${lang}/benchmarks`, label: t("Benchmarks", "Benchmarks", "Benchmarks", "基准测试") },
             ],
@@ -630,6 +632,31 @@ export function methodologyDoc(lang: Locale): PageDoc {
               t("Tools such as Claude Code or Codex are treated as environments, not models.", "Herramientas como Claude Code o Codex se tratan como entornos, no como modelos.", "Ferramentas como Claude Code ou Codex são tratadas como ambientes, não como modelos.", "Claude Code或Codex这类工具被视为环境，而不是模型。"),
             ],
           },
+        ],
+      },
+      {
+        // v1.8.9
+        id: "flow",
+        heading: t("How the Prompt flow is built", "Cómo se arma el Flujo de prompts", "Como o Fluxo de prompts é montado", "提示词流程是如何生成的"),
+        blocks: [
+          {
+            type: "p",
+            text: t(
+              "The Prompt flow splits a main task into 2 to 6 steps. Claude (Anthropic’s Claude Haiku 5.5 by default) writes the steps and their prompts, and says which earlier steps each one needs; steps that need nothing from each other sit on the same row and can be done in parallel. The AI suggested for each step is then chosen by the same deterministic matcher as “Find the best AI”, so routing involves no LLM.",
+              "El Flujo de prompts divide una tarea principal en 2 a 6 pasos. Claude (Claude Haiku 5.5 de Anthropic, por defecto) escribe los pasos y sus prompts, y dice qué pasos anteriores necesita cada uno; los pasos que no necesitan nada entre sí quedan en la misma fila y se pueden hacer en paralelo. Después, la IA sugerida para cada paso la elige el mismo matcher determinístico de “Elegir la mejor IA”, así que el ruteo no usa ningún LLM.",
+              "O Fluxo de prompts divide uma tarefa principal em 2 a 6 etapas. O Claude (por padrão, o Claude Haiku 5.5, da Anthropic) escreve as etapas e seus prompts e indica de quais etapas anteriores cada uma precisa; as etapas que não precisam umas das outras ficam na mesma linha e podem ser feitas em paralelo. Depois, a IA sugerida para cada etapa é escolhida pelo mesmo comparador determinístico do “Encontrar a melhor IA”, então o roteamento não usa nenhum LLM.",
+              "提示词流程会把一项主任务拆成2到6个步骤。由Claude（默认是Anthropic的Claude Haiku 5.5）编写各个步骤及其提示词，并说明每一步需要哪些前面的步骤；彼此互不依赖的步骤放在同一行，可以并行完成。随后，每一步推荐的AI由与“找到最合适的AI”相同的确定性匹配器挑选，因此分配过程不使用任何LLM。",
+            ),
+          },
+          {
+            type: "ul",
+            items: [
+              t("The task is treated as data: sentences that try to override the instructions are removed before it is sent, and the planner is told to keep every name, number and constraint as written and to invent nothing.", "La tarea se trata como dato: las frases que intentan anular las instrucciones se eliminan antes de enviarla, y al planificador se le pide conservar cada nombre, número y restricción tal como están y no inventar nada.", "A tarefa é tratada como dado: frases que tentam sobrepor as instruções são removidas antes do envio, e o planejador é instruído a manter cada nome, número e restrição como estão e a não inventar nada.", "任务被当作数据处理：试图覆盖指令的句子会在发送前被移除；规划器被要求原样保留每个名称、数字和限制条件，不得编造任何内容。"),
+              t("Claude use has a hard monthly spending cap, a daily cap and a per-visitor daily limit. Crawlers and automated clients never trigger it. When AI is not available, Promptea’s own engine builds a basic plan from templates for the detected kind of task, so the tool always answers.", "El uso de Claude tiene un tope de gasto mensual estricto, un tope diario y un límite diario por visitante. Los crawlers y los clientes automatizados nunca lo activan. Cuando la IA no está disponible, el motor propio de Promptea arma un plan básico con plantillas para el tipo de tarea detectado, así que la herramienta siempre responde.", "O uso do Claude tem um teto de gasto mensal rígido, um teto diário e um limite diário por visitante. Crawlers e clientes automatizados nunca o acionam. Quando a IA não está disponível, o motor do próprio Promptea monta um plano básico com templates para o tipo de tarefa detectado, então a ferramenta sempre responde.", "Claude的使用设有严格的每月支出上限、每日上限和每位访客的每日次数限制。爬虫和自动化客户端永远不会触发它。AI不可用时，Promptea自己的引擎会按检测到的任务类型用模板生成基础方案，因此工具总能给出结果。"),
+              t("Promptea does not store the task or the plan: they live in your browser tab. Only counters are kept (spend, requests, tokens, and a daily count per anonymous connection hash).", "Promptea no guarda la tarea ni el plan: quedan en la pestaña de tu navegador. Solo se guardan contadores (gasto, pedidos, tokens y un conteo diario por hash anónimo de conexión).", "O Promptea não guarda a tarefa nem o plano: eles ficam na aba do seu navegador. Só são guardados contadores (gasto, pedidos, tokens e uma contagem diária por hash anônimo de conexão).", "Promptea不会存储任务或方案：它们只保存在你的浏览器标签页中。只记录计数（支出、请求数、token数，以及按匿名连接哈希统计的每日次数）。"),
+            ],
+          },
+          { type: "links", items: [{ href: `/${lang}/flow`, label: t("Prompt flow", "Flujo de prompts", "Fluxo de prompts", "提示词流程") }] },
         ],
       },
       {

@@ -289,7 +289,8 @@ export function blogIndexJsonLd(input: BlogIndexJsonLdInput): JsonLd {
     url,
     name: input.title,
     description: input.description,
-    inLanguage: input.lang,
+    // v1.8.9: a BCP 47 tag like every other node (was the bare "zh" on /zh/blog).
+    inLanguage: LANG_TAG[input.lang],
     mainEntityOfPage: ref(pageId(url, "webpage")),
     publisher: ref(ids.organization),
     ...(items.length > 0

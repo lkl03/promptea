@@ -132,6 +132,22 @@ export const CORE_PAGES: readonly CorePage[] = [
     priority: 0.8,
   },
   {
+    // v1.8.9: the third tool.
+    id: "flow",
+    slug: "flow",
+    section: "tools",
+    title: { en: "Prompt flow: split a task into chained prompts", es: "Flujo de prompts: dividir una tarea en prompts encadenados", pt: "Fluxo de prompts: dividir uma tarefa em prompts encadeados", zh: "提示词流程：把任务拆成串联的提示词" },
+    description: {
+      en: "Describe a big task and get a tree of ready-to-paste prompts: steps in order, parallel branches, and the best AI for each step.",
+      es: "Describí una tarea grande y recibí un árbol de prompts listos para pegar: pasos en orden, ramas en paralelo y la mejor IA para cada paso.",
+      pt: "Descreva uma tarefa grande e receba uma árvore de prompts prontos para colar: etapas em ordem, ramos em paralelo e a melhor IA para cada etapa.",
+      zh: "描述一项大任务，即可获得一棵可直接粘贴的提示词树：按顺序排列的步骤、可并行的分支，以及每一步最合适的AI。",
+    },
+    updated: CONTENT_UPDATED.flow,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  },
+  {
     id: "benchmarks",
     slug: "benchmarks",
     section: "tools",

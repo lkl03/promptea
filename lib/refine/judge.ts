@@ -127,6 +127,10 @@ export type JudgeArgs = {
   confidence: number;
   fetchImpl?: typeof fetch;
   signal?: AbortSignal;
+  /** v1.8.9: hashed client key (per-visitor daily Claude quota). */
+  userKey?: string | null;
+  /** v1.8.9: false for crawlers/automation — no LLM call. */
+  llmAllowed?: boolean;
 };
 
 /**
@@ -135,7 +139,7 @@ export type JudgeArgs = {
  */
 export async function judgePrompt(args: JudgeArgs): Promise<JudgeResult | null> {
   if (!shouldJudge(args.confidence)) return null;
-  if (args.signal?.aborted) return null;
+  if (args.signal?.aborted || args.llmAllowed === false) return null;
 
   const chain = resolveProviderChain();
   const neutral = neutralizeInjection(args.prompt).clean;
@@ -156,6 +160,7 @@ export async function judgePrompt(args: JudgeArgs): Promise<JudgeResult | null> 
         maxTokens: 400,
         signal: args.signal,
         fetchImpl: args.fetchImpl,
+        userKey: args.userKey ?? null,
       },
       { deadline: Date.now() + JUDGE_TOTAL_TIMEOUT_MS }
     );

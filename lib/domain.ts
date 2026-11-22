@@ -275,6 +275,7 @@ export const FALLBACK_REASONS = [
   "quality_gate_failed",
   "superseded",
   "already_optimized", // input is already a strong/Promptea-shaped prompt — minimal edits, no LLM call
+  "budget_exhausted", // v1.8.9: the Claude spend guard refused the call (month/day cap or store down)
 ] as const;
 export type FallbackReason = (typeof FALLBACK_REASONS)[number];
 
@@ -282,8 +283,8 @@ export type FallbackReason = (typeof FALLBACK_REASONS)[number];
 // Application modes (v1.3.0 two-mode product)
 // ---------------------------------------------------------------------------
 
-/** The two route-addressable product experiences. */
-export const APP_MODES = ["improve", "best-ai"] as const;
+/** The route-addressable product experiences (v1.8.9: + "flow", the prompt flow). */
+export const APP_MODES = ["improve", "best-ai", "flow"] as const;
 export type AppMode = (typeof APP_MODES)[number];
 
 export function isAppMode(v: unknown): v is AppMode {

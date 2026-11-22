@@ -71,7 +71,8 @@ for (const path of ["/en", "/es/guides", "/zh"]) {
     const panel = document.getElementById(b.getAttribute("aria-controls"));
     return { expanded: b.getAttribute("aria-expanded"), visible: panel && !panel.hidden && panel.getBoundingClientRect().height > 0, links: panel ? panel.querySelectorAll("a").length : 0 };
   }, btn);
-  ok("header", `${path}: Enter opens the menu`, opened.expanded === "true" && opened.visible && opened.links === 9, JSON.stringify(opened));
+  // v1.8.9: 10 links (+ Flow).
+  ok("header", `${path}: Enter opens the menu`, opened.expanded === "true" && opened.visible && opened.links === 10, JSON.stringify(opened));
   await page.keyboard.press("Tab");
   const inPanel = await page.evaluate((sel) => document.getElementById(document.querySelector(sel).getAttribute("aria-controls")).contains(document.activeElement), btn);
   ok("header", `${path}: Tab moves into the menu links`, inPanel || (await page.evaluate(() => document.activeElement?.tagName === "A")));
@@ -105,7 +106,7 @@ for (const [lang, theme, scheme] of [["en", "aqua", "light"], ["es", "glass", "d
     if (f) seen.push(f);
   }
   const hrefs = seen.map((s) => s.href).filter(Boolean);
-  const must = [`/${lang}/analyzer`, `/${lang}/best-ai`, `/${lang}/how-it-works`, `/${lang}/blog`];
+  const must = [`/${lang}/analyzer`, `/${lang}/best-ai`, `/${lang}/flow`, `/${lang}/how-it-works`, `/${lang}/blog`];
   ok("home", `/${lang} ${theme}: header links, the two actions and "how it works" are reachable with Tab`, must.every((m) => hrefs.includes(m)), hrefs.slice(0, 16).join(" "));
   ok("home", `/${lang} ${theme}: the prompt textarea is reachable with Tab`, seen.some((s) => s.tag === "TEXTAREA"));
   const noRing = seen.filter((s) => s.visible && !s.ring);

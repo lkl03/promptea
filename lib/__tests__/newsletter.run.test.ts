@@ -84,10 +84,10 @@ const WEEK_ARTICLES = [
 const esOf = (list: PublicArticle[]) => list.map((a) => ({ ...a, lang: "es" as const, slug: `${a.slug}-es`, title: `Titular ${a.slug} suficientemente largo` }));
 
 const SUBSCRIBERS: Array<SubscriberRecord & { status: "active" | "unsubscribed" }> = [
-  { id: "sub_a", email: "ana@example.com", lang: "es", unsubscribeToken: "a".repeat(64), status: "active" },
-  { id: "sub_b", email: "bob@example.com", lang: "en", unsubscribeToken: "b".repeat(64), status: "active" },
-  { id: "sub_c", email: "cam@example.com", lang: "en", unsubscribeToken: "c".repeat(64), status: "active" },
-  { id: "sub_x", email: "gone@example.com", lang: "en", unsubscribeToken: "d".repeat(64), status: "unsubscribed" },
+  { id: "sub_a", email: "ana@mail.acme.dev", lang: "es", unsubscribeToken: "a".repeat(64), status: "active" },
+  { id: "sub_b", email: "bob@mail.acme.dev", lang: "en", unsubscribeToken: "b".repeat(64), status: "active" },
+  { id: "sub_c", email: "cam@mail.acme.dev", lang: "en", unsubscribeToken: "c".repeat(64), status: "active" },
+  { id: "sub_x", email: "gone@mail.acme.dev", lang: "en", unsubscribeToken: "d".repeat(64), status: "unsubscribed" },
 ];
 
 class MemoryStore implements NewsletterStore {
@@ -154,7 +154,7 @@ const LIVE_ENV = {
   NEWSLETTER_DELIVERY_ENABLED: "true",
   RESEND_API_KEY: "re_test_key_123456",
   NEWSLETTER_FROM_ADDRESS: "Promptea Weekly <weekly@promptea.me>",
-  NEWSLETTER_TEST_RECIPIENTS: "owner@example.com",
+  NEWSLETTER_TEST_RECIPIENTS: "owner@mail.acme.dev",
   NEXT_PUBLIC_SITE_URL: "https://www.promptea.me",
 };
 
@@ -311,8 +311,8 @@ describe("delivery configuration gates", () => {
   });
 
   test("invalid test recipients and senders are reported", () => {
-    const cfg = readDeliveryConfig({ ...LIVE_ENV, NEWSLETTER_TEST_RECIPIENTS: "ok@example.com, not-an-email", NEWSLETTER_FROM_ADDRESS: "weekly at promptea" });
-    expect(cfg.testRecipients).toEqual(["ok@example.com"]);
+    const cfg = readDeliveryConfig({ ...LIVE_ENV, NEWSLETTER_TEST_RECIPIENTS: "ok@mail.acme.dev, not-an-email", NEWSLETTER_FROM_ADDRESS: "weekly at promptea" });
+    expect(cfg.testRecipients).toEqual(["ok@mail.acme.dev"]);
     expect(configBlockers(cfg, "test").join(" ")).toMatch(/invalid entry.*|NEWSLETTER_FROM_ADDRESS/);
   });
 });
@@ -336,11 +336,11 @@ describe("runWeeklyNewsletter", () => {
   });
 
   test("test mode: only the test recipients get a [TEST] copy — delivery switch not required", async () => {
-    const env = { ...LIVE_ENV, NEWSLETTER_DELIVERY_ENABLED: "false", NEWSLETTER_TEST_RECIPIENTS: "owner@example.com,second@example.com" };
+    const env = { ...LIVE_ENV, NEWSLETTER_DELIVERY_ENABLED: "false", NEWSLETTER_TEST_RECIPIENTS: "owner@mail.acme.dev,second@mail.acme.dev" };
     const { deps: d, mailer, store } = deps({ env });
     const r = await runWeeklyNewsletter("test", d);
     expect(r.outcome).toBe("TEST_SENT");
-    expect(mailer!.sent.map((m) => m.to)).toEqual(["owner@example.com", "second@example.com"]);
+    expect(mailer!.sent.map((m) => m.to)).toEqual(["owner@mail.acme.dev", "second@mail.acme.dev"]);
     expect(mailer!.sent.every((m) => m.subject.startsWith("[TEST] "))).toBe(true);
     expect(mailer!.sent.map((m) => m.subject)).toEqual([expect.stringMatching(/Semanal/), expect.stringMatching(/Weekly/)]);
     expect(store.editions.size).toBe(0);
@@ -366,7 +366,7 @@ describe("runWeeklyNewsletter", () => {
     const r = await runWeeklyNewsletter("live", d);
     expect(r.outcome).toBe("SENT");
     expect(r.counts).toMatchObject({ subscribers: 3, excluded: 3, sent: 3 });
-    expect(mailer!.sent.map((m) => m.to)).toEqual(["owner@example.com", "ana@example.com", "bob@example.com", "cam@example.com"]);
+    expect(mailer!.sent.map((m) => m.to)).toEqual(["owner@mail.acme.dev", "ana@mail.acme.dev", "bob@mail.acme.dev", "cam@mail.acme.dev"]);
     expect(logs.find((l) => l.event === "newsletter_excluded_test_addresses")?.meta).toEqual({ count: 3 });
     expect(JSON.stringify(logs)).not.toContain("test.test");
   });
@@ -390,7 +390,7 @@ describe("runWeeklyNewsletter", () => {
     const r = await runWeeklyNewsletter("live", d);
     expect(r.outcome).toBe("SENT");
     expect(r.counts).toMatchObject({ sent: 3, canarySent: 1, failed: 0, remaining: 0 });
-    expect(mailer!.sent.map((m) => m.to)).toEqual(["owner@example.com", "ana@example.com", "bob@example.com", "cam@example.com"]);
+    expect(mailer!.sent.map((m) => m.to)).toEqual(["owner@mail.acme.dev", "ana@mail.acme.dev", "bob@mail.acme.dev", "cam@mail.acme.dev"]);
     const ana = mailer!.sent[1];
     expect(ana.subject).toMatch(/^Promptea Semanal/);
     expect(ana.html).toContain(`token=${"a".repeat(64)}`);
@@ -398,7 +398,7 @@ describe("runWeeklyNewsletter", () => {
     expect(ana.idempotencyKey).toBe("promptea-weekly/promptea-weekly_2026-09-28/sub_a");
     expect(mailer!.sent[2].subject).toMatch(/^Promptea Weekly/);
     // Unsubscribed people are never contacted.
-    expect(mailer!.sent.map((m) => m.to)).not.toContain("gone@example.com");
+    expect(mailer!.sent.map((m) => m.to)).not.toContain("gone@mail.acme.dev");
     // The edition is published and then marked sent.
     expect(store.editions.get("promptea-weekly_2026-09-28")?.status).toBe("sent");
   });
@@ -423,14 +423,14 @@ describe("runWeeklyNewsletter", () => {
     expect(second.outcome).toBe("SENT");
     const recipients = mailer.sent.map((m) => m.to);
     expect(new Set(recipients).size).toBe(recipients.length); // nobody twice
-    expect(recipients.filter((x) => x !== "owner@example.com").sort()).toEqual(["ana@example.com", "bob@example.com", "cam@example.com"]);
+    expect(recipients.filter((x) => x !== "owner@mail.acme.dev").sort()).toEqual(["ana@mail.acme.dev", "bob@mail.acme.dev", "cam@mail.acme.dev"]);
   });
 
   test("a transient failure is retried on the next run; a permanent refusal is not", async () => {
     const store = new MemoryStore();
     const mailer = new FakeMailer();
-    mailer.failFor.add("bob@example.com");
-    mailer.rejectFor.add("cam@example.com");
+    mailer.failFor.add("bob@mail.acme.dev");
+    mailer.rejectFor.add("cam@mail.acme.dev");
     let t = MONDAY.getTime();
     const first = await runWeeklyNewsletter("live", deps({ store, mailer, clock: () => new Date((t += 1_000)) }).deps);
     expect(first.outcome).toBe("PARTIAL");
@@ -441,13 +441,13 @@ describe("runWeeklyNewsletter", () => {
     const second = await runWeeklyNewsletter("live", deps({ store, mailer, clock: () => new Date((t += 1_000)) }).deps);
     expect(second.outcome).toBe("SENT");
     expect(second.counts).toMatchObject({ sent: 1, alreadySent: 1, rejected: 1 });
-    expect(mailer.sent.filter((m) => m.to === "bob@example.com")).toHaveLength(1);
-    expect(mailer.sent.filter((m) => m.to === "cam@example.com")).toHaveLength(0);
+    expect(mailer.sent.filter((m) => m.to === "bob@mail.acme.dev")).toHaveLength(1);
+    expect(mailer.sent.filter((m) => m.to === "cam@mail.acme.dev")).toHaveLength(0);
   });
 
   test("a failed canary stops the run before any subscriber is contacted", async () => {
     const mailer = new FakeMailer();
-    mailer.failFor.add("owner@example.com");
+    mailer.failFor.add("owner@mail.acme.dev");
     const { deps: d } = deps({ mailer });
     const r = await runWeeklyNewsletter("live", d);
     expect(r.outcome).toBe("CANARY_FAILED");
@@ -485,8 +485,8 @@ describe("runWeeklyNewsletter", () => {
     const result = await runWeeklyNewsletter("live", d);
     const serialized = JSON.stringify({ result, logs, runs: store.runs, ledger: [...store.ledger.keys()] });
     for (const s of SUBSCRIBERS) expect(serialized).not.toContain(s.email);
-    expect(serialized).not.toContain("owner@example.com");
-    expect([...store.ledger.keys()]).toContain(`promptea-weekly_2026-09-28__${testRecipientKey("owner@example.com")}`);
+    expect(serialized).not.toContain("owner@mail.acme.dev");
+    expect([...store.ledger.keys()]).toContain(`promptea-weekly_2026-09-28__${testRecipientKey("owner@mail.acme.dev")}`);
   });
 });
 

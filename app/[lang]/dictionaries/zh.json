@@ -113,7 +113,9 @@
     "bestAiLabel": "找到最合适的AI",
     "improveHint": "分析、修正并改进提示词。",
     "bestAiHint": "找到最适合你提示词的AI。",
-    "switcherAria": "选择你想做的事"
+    "switcherAria": "选择你想做的事",
+    "flowLabel": "拆分任务",
+    "flowHint": "把一项大任务拆成一串提示词。"
   },
   "matcher": {
     "title": "找到最合适的AI",
@@ -405,6 +407,10 @@
       "bestAi": {
         "title": "找到最合适的AI",
         "body": "描述你的任务，我们告诉你哪个模型最合适，以及为什么。"
+      },
+      "flow": {
+        "title": "把任务拆成步骤",
+        "body": "描述任务，即可得到一串提示词，并为每一步推荐最合适的AI。"
       }
     },
     "howItWorks": "工作原理",
@@ -545,7 +551,8 @@
     "glossary": "术语表",
     "library": "提示词库",
     "footerTech": "科技",
-    "footerSources": "来源"
+    "footerSources": "来源",
+    "flow": "流程"
   },
   "howItWorksPage": {
     "breadcrumb": "面包屑导航",
@@ -562,10 +569,19 @@
     "about": "关于Promptea"
   },
   "changelog": {
+    "v189": {
+      "released": "发布日期：2026-11-22",
+      "items": [
+        "新功能：提示词流程。写下一项大任务，我们会把它拆成串联的步骤，包含可并行的分支，每一步都有现成的提示词和推荐的AI。",
+        "AI功能可以由Claude驱动，并设有每月支出上限：额度用完或AI不可用时，一切照常由Promptea自己的引擎运行。",
+        "中文版AI Daily报道会显示真实的阅读时间，每周摘要也会显示中文标题。",
+        "修复：发送失败时每日提醒不再丢失；邮件通讯会拒绝name@example.com这类示例地址。"
+      ]
+    },
     "v188": {
       "released": "发布日期：2026-11-20",
       "items": [
-        "AI Daily推出中文版：从11月21日起，每篇新报道都会在/zh发布独立的中文页面；之前的报道仍以英文显示，并附有说明。",
+        "AI Daily现已支持中文发布：每篇附带中文版本的新报道都会在/zh拥有独立页面；之前的报道仍以英文显示，并附有说明。",
         "分析器新增Kimi K3.1 Pro，并将其设为默认的Kimi模型；Kimi K3改为上一代版本。",
         "我们全面检查了/zh：链接、元数据和文字。邮件通讯表单不再显示英文的邮箱示例。",
         "后台改进：每天自动检查一次，如果任何自动发布的内容（AI Daily、AI Daily Tech、每周摘要或邮件通讯）延迟，会立即提醒我们。",
@@ -672,5 +688,60 @@
     "toDaily": "阅读AI Daily",
     "toTech": "阅读AI Daily Tech",
     "toMethodology": "提示词如何评分"
+  },
+  "flow": {
+    "title": "提示词流程",
+    "subtitle": "写下一项大任务，我们把它拆成若干步骤：一串可直接粘贴的提示词，包含可并行的分支，并为每一步推荐最合适的AI。",
+    "editorLabel": "你的主任务",
+    "placeholder": "例如：为我的设计工作室推出每周邮件通讯：确定受众、写好第一期，并做一个订阅页面。",
+    "submitCta": "拆分成步骤",
+    "planning": "正在把任务拆分成步骤…",
+    "examplesLabel": "试试：",
+    "examples": [
+      "为我的Next.js应用添加Google登录，并编写测试",
+      "为一位想重新设计网店的客户写一份商业提案",
+      "为一家10人的小公司比较三款CRM，并给出有理由的推荐"
+    ],
+    "tooShort": "请再多描述一点任务（至少一句话）。",
+    "genericError": "未能生成流程，请过几秒再试。",
+    "rateLimited": "你连续请求了多个流程，请等一分钟再试。",
+    "rootLabel": "主任务",
+    "sourceAi": "由{model}规划",
+    "sourceBasic": "基础方案 · 未使用AI",
+    "stepsCount": "{n}个步骤",
+    "parallelCount": "{n}个可并行",
+    "stepLabel": "第{n}步",
+    "parallelTag": "可并行",
+    "usesLabel": "使用：{steps}",
+    "and": "和",
+    "bestAi": "推荐AI",
+    "showPrompt": "查看提示词",
+    "outputLabel": "产出",
+    "copyPrompt": "复制提示词",
+    "copied": "已复制",
+    "improveStep": "在分析器中优化",
+    "markDone": "已完成",
+    "doneAria": "将第{n}步标记为已完成",
+    "progress": "已完成{done}/{total}步",
+    "copyAll": "复制整个流程",
+    "editTask": "编辑任务",
+    "newTask": "新任务",
+    "treeAria": "流程步骤，从上到下",
+    "notices": {
+      "no_ai": "目前无法使用AI，这是Promptea引擎生成的基础方案。同样好用：每一步都附有现成的提示词。",
+      "budget": "本期的AI额度已用完，这是Promptea引擎生成的基础方案。额度更新后AI会自动恢复。",
+      "quota": "你今天的AI流程次数已用完。这是Promptea引擎生成的基础方案；明天即可再次使用AI流程。",
+      "busy": "AI目前请求量很大。先给你基础方案，请稍后再试。",
+      "error": "AI没有返回可用的方案，所以这里给你Promptea引擎生成的基础方案。"
+    },
+    "howTitle": "使用方法",
+    "how": [
+      "最上面是主任务，下面是建议的执行顺序。同一行的步骤彼此独立：可以在不同的对话里同时进行。",
+      "每一步都附有可直接粘贴的提示词。看到[第N步的结果]的地方，粘贴那一步得到的内容。",
+      "每一步推荐的AI由“找到最合适的AI”的同一个引擎挑选，并附上理由。任何一步都可以带到分析器里继续优化。",
+      "方案由Claude（Anthropic）撰写。AI不可用时，Promptea引擎会生成同样好用的基础方案。Promptea不会存储你的任务。"
+    ],
+    "guideLink": "指南：如何串联提示词",
+    "copyAllTitle": "提示词流程（Promptea）"
   }
 }

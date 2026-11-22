@@ -104,11 +104,23 @@ export function blocksToPlainText(blocks: Block[]): string {
   return lines.join("\n");
 }
 
-/** Word count of a rendered body. */
+const HAN_RE = /[㐀-䶿一-鿿豈-﫿]/g;
+
+/**
+ * Word count of a rendered body. v1.8.9: Chinese has no spaces, so Han
+ * characters are counted apart and converted at 1.7 characters per word (the
+ * engine's convention, docs/engine-contract.md §E) — 200 wpm ≈ 340 characters a
+ * minute, a normal reading speed for Chinese. Before, a whole Chinese story
+ * counted as a handful of "words" and always read "1 minute".
+ */
 export function wordCount(blocks: Block[]): number {
   const text = blocksToPlainText(blocks).trim();
   if (!text) return 0;
-  return text.split(/\s+/).length;
+  const han = text.match(HAN_RE)?.length ?? 0;
+  if (han === 0) return text.split(/\s+/).length; // es/en/pt: unchanged since v1.4
+  const rest = text.replace(HAN_RE, " ").trim();
+  const latin = rest ? rest.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length : 0;
+  return latin + Math.ceil(han / 1.7);
 }
 
 /**

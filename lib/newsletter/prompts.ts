@@ -270,7 +270,7 @@ export function routeKind(pathname: string): RouteKind {
 
 /** Tool pages where a fixed element must stay small on phones (text boxes, results). */
 export function isToolRoute(pathname: string): boolean {
-  return LOCALE_ROUTE("(analyzer|best-ai)").test(pathname.replace(/\/+$/, ""));
+  return LOCALE_ROUTE("(analyzer|best-ai|flow)").test(pathname.replace(/\/+$/, ""));
 }
 
 // ---------------------------------------------------------------------------

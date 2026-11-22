@@ -317,6 +317,23 @@ describe("API /api/internal/blog/publish", () => {
     expect(data.outcome).toBe("published");
     expect(data.urls.en).toBe("/en/blog/openai-reasoning-model-launch");
     expect(data.urls.es).toBe("/es/blog/openai-modelo-razonamiento-lanzamiento");
+    expect((data.urls as Record<string, string>).zh).toBeUndefined();
+  });
+
+  test("v1.8.9: a story with Chinese text also returns its /zh URL (the routine checks it)", async () => {
+    const base = makePayload();
+    const zh = {
+      ...localeContent("openai-tuili-moxing-fabu", "en"),
+      title: "OpenAI为开发者推出新的推理模型，当天即可通过API使用",
+      deck: "OpenAI发布了这款推理模型的模型卡：上下文限制和按token计价都已在官方文档中确认，今天起在公开API中提供。",
+      summary: "OpenAI宣布推出一款推理模型，并从今天起可通过公开API使用。官方文档确认了上下文限制和按token计价。这篇报道说明了哪些已经确认、哪些还不清楚。",
+      seoTitle: "OpenAI推出新的推理模型（当天开放API）",
+      metaDescription: "OpenAI发布了新推理模型的模型卡：上下文限制和按token计价已在官方文档中确认，今天起可通过公开API使用。",
+    };
+    const res = await POST(signedRequest({ ...base, locales: { ...base.locales, zh } }));
+    expect(res.status).toBe(201);
+    const data = (await res.json()) as { urls: Record<string, string> };
+    expect(data.urls.zh).toBe("/zh/blog/openai-tuili-moxing-fabu");
   });
 
   test("a retry after a successful publish → 200 already_published, no duplicate", async () => {

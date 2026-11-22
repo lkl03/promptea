@@ -114,7 +114,7 @@ export default function AppFeedbackButton({
     setStatus("submitting");
 
     const pathname = window.location.pathname;
-    const mode: AppMode = pathname.includes("/best-ai") ? "best-ai" : "improve";
+    const mode: AppMode = pathname.includes("/best-ai") ? "best-ai" : /\/flow(\/|$)/.test(pathname) ? "flow" : "improve";
 
     let sessionId: string | undefined;
     try {

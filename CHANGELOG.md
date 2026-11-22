@@ -4,12 +4,43 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.8.9 — 2026-11-22
+
+**Prompt flow — a main task split into a tree of prompts — Claude behind a hard spend cap, and the fixes from a review of v1.8.8.** Report and the owner's steps: [`docs/release/v1.8.9/release-report.md`](./docs/release/v1.8.9/release-report.md).
+
+### Prompt flow (`/[lang]/flow`)
+- Write a big task; get back 2–6 steps, each with a ready-to-paste prompt, what it hands over, and the best AI for it. The main task sits on top; steps that don't need each other share a row (parallel branches, drawn with connectors); a step that needs earlier results comes below them and says which (`[Output of step N]` placeholders in the prompts).
+- The interaction pattern comes from agent orchestrators such as Orca (a coordinator task that fans out to workers); the design, names and assets are Promptea's own. Options and decision: [`docs/release/v1.8.9/flow-design.md`](./docs/release/v1.8.9/flow-design.md).
+- **Planner**: Claude Haiku 5.5 through `lib/ai/claude.ts` (JSON-schema output, cached system prompt, `max_tokens` 3,500, effort `low`). **Routing**: each step goes through the deterministic "Find the best AI" matcher, so it costs nothing and gives a reason. **Fallback**: without AI (no key, cap reached, quota used, provider down, unusable answer, a crawler) the engine builds a basic plan from four templates (code, writing, research, general), each with a parallel branch, and the page says why.
+- Per step: copy the prompt, take it to the analyzer (handoff with its routed target and model), mark it done (progress bar). "Copy the flow" exports Markdown. The flow survives a round trip to the analyzer (sessionStorage); nothing is stored on the server.
+- Third mode in the switcher, a "Flow" link in the navigation, a third action on the home page, all in es/en/pt/zh. `CORE_PAGES` entry (sitemap, hreflang, `llms.txt`), `WebPage` + `FAQPage` JSON-LD from visible text, a methodology section, links from How it works and About, `seo:check` key path.
+- Vercel Analytics: `Flow Created {lang, source}`; copying a step is `Template Copied {source: "flow"}`.
+
+### Claude and the spend cap (`lib/ai/`)
+- `pricing.ts`: Claude Haiku 5.5 $0.10/$0.50, Claude Sonnet 5.5 $2/$10, Claude Opus 5.5 $4/$20 per MTok, cache writes 1.25×, cache reads 0.1× (Haiku) / 0.05× (Sonnet, Opus); unknown ids priced as the dearest. Costs in integer micro-dollars.
+- `budget.ts` + `budgetStore.ts`: a Firestore ledger. Each call reserves its **worst case** (every input byte as a cache-write token + the full `max_tokens`) in one transaction against the monthly stop (`AI_MONTHLY_BUDGET_USD` × `AI_BUDGET_SAFETY_RATIO` = $90 of $100 by default), the daily cap ($6) and the visitor's daily quota (12 flows, 40 rewrites; hashed IP), then settles to the real `usage`. Error answers are refunded, timeouts keep the reservation; the ledger only over-counts. Fails closed without Firestore. `AI_FEATURES_ENABLED=0` is a kill switch.
+- The analyzer's Anthropic refiner/judge now goes through the same guard (`budget_exhausted` fails over to the next provider), and `/api/analyze` never calls an LLM for crawlers.
+- `POST /api/flow`: same-origin only, 6/min per client, no AI for crawlers or requests without `Origin`. `GET /api/internal/ai/usage` (Bearer) shows the month's spend, caps and tokens.
+- `.env.example` (new, committed) lists every variable. `/privacy` now says what the AI features send to Anthropic/Groq and which counters are kept.
+
+### Fixed (from a review of v1.8.8)
+- Chinese AI Daily stories always read "1 minute": `wordCount` split on spaces. Han characters now count at 1.7 per word (the engine's rule).
+- The weekly digest under `/zh` showed English titles although the routine writes `titleZh`.
+- Publishing a story with Chinese text did not return its `/zh` URL (which the routine prompt checks) and did not ping IndexNow for it.
+- `/zh/blog` dropped its structured data even once it is its own canonical; the Blog node's `inLanguage` was the bare `zh`.
+- A failed Resend send used up the day's alert claim, so the overdue routine was only reported the next day; `?dryRun=true` sent a real mail.
+- `name@example.com` (the `/zh` form placeholder) and the other RFC 2606 example domains were accepted and mailed; the cleanup script's private-key fix replaced a newline with a newline.
+- The v1.8.8 changelog said Chinese stories publish "from November 21"; none had by the 22nd (it starts when the new routine prompts are pasted).
+- The multimodal guide still named Kimi K3 as the current Kimi.
+
+---
+
 ## v1.8.8 — 2026-11-20
 
 **AI Daily in Simplified Chinese, routine health and a daily alert, the newsletter's test addresses out, Kimi K3.1 Pro, a QA pass of `/zh`, tweets measured by UTM, and firebase-admin 14.** Built as separate PRs by topic (#50 to #55 and #57); this release PR bumps the version and carries the report: [`docs/release/v1.8.8/release-report.md`](./docs/release/v1.8.8/release-report.md).
 
 ### AI Daily in Chinese (#57)
-- Every story can carry Simplified Chinese as an optional third locale (`locales.zh`, same fields as en and es; the server checks it is the same story and actually Chinese). The three AI Daily routines write it from 2026-11-21 (prompts in `docs/editorial/routines/`); if the Chinese part does not validate, the routine drops it and publishes en/es, so zh never costs a story.
+- Every story can carry Simplified Chinese as an optional third locale (`locales.zh`, same fields as en and es; the server checks it is the same story and actually Chinese). The three AI Daily routines write it once their new prompts (in `docs/editorial/routines/`) are pasted in (corrected in v1.8.9: no Chinese story had been published by 2026-11-22); if the Chinese part does not validate, the routine drops it and publishes en/es, so zh never costs a story.
 - Under `/zh`, a story with Chinese text is a page of its own: self canonical, `zh_CN`, hreflang es/en/zh, sitemap, `.md` twin. Stories without it (everything before) keep showing in English with a notice. `/zh/blog` and `/zh/blog/tech` become their own index once they have a Chinese story; the home and the marquee mark the language story by story.
 - The weekly digest and the newsletter stay es/en; `/pt` keeps reading the English edition.
 

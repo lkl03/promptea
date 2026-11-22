@@ -7,6 +7,7 @@ import { refinePromptAdaptive, isAdaptiveEnabled, buildSystemPromptParts, cachea
 import { configuredProviderOrder, resolveProviderChain, ANTHROPIC_DEFAULT_MODEL } from "@/lib/llm/providers";
 import type { RoutingDecision } from "@/lib/refine/router";
 import { extractProtectedLiterals } from "@/lib/refine/literals";
+import { createMemoryBudgetStore, setBudgetStore } from "@/lib/ai/budget";
 
 const routing: RoutingDecision = { strategy: "message_polish", complexity: "simple", signals: [] };
 
@@ -95,12 +96,15 @@ let saved: Record<string, string | undefined> = {};
 beforeEach(() => {
   saved = Object.fromEntries(ENV_KEYS.map((k) => [k, process.env[k]]));
   for (const k of ENV_KEYS) delete process.env[k];
+  // v1.8.9: every Claude call goes through the spend ledger; an in-memory one here.
+  setBudgetStore(createMemoryBudgetStore());
 });
 afterEach(() => {
   for (const k of ENV_KEYS) {
     if (saved[k] === undefined) delete process.env[k];
     else process.env[k] = saved[k];
   }
+  setBudgetStore(undefined);
 });
 
 describe("configuration", () => {

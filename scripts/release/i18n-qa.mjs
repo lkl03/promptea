@@ -45,6 +45,7 @@ const PAGES = [
   ["home", ""],
   ["analyzer", "/analyzer"],
   ["best-ai", "/best-ai"],
+  ["flow", "/flow"],
   ["benchmarks", "/benchmarks"],
   ["blog", "/blog"],
   ["weekly", "/blog/weekly"],

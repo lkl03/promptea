@@ -48,7 +48,52 @@ export type ModeDict = {
   bestAiLabel: string;
   improveHint: string;
   bestAiHint: string;
+  /** v1.8.9: third mode, Prompt flow. */
+  flowLabel: string;
+  flowHint: string;
   switcherAria: string;
+};
+
+/** v1.8.9 — Prompt flow (/[lang]/flow). */
+export type FlowDict = {
+  title: string;
+  subtitle: string;
+  editorLabel: string;
+  placeholder: string;
+  submitCta: string;
+  planning: string;
+  examplesLabel: string;
+  examples: string[];
+  tooShort: string;
+  genericError: string;
+  rateLimited: string;
+  rootLabel: string;
+  sourceAi: string;
+  sourceBasic: string;
+  stepsCount: string;
+  parallelCount: string;
+  stepLabel: string;
+  parallelTag: string;
+  usesLabel: string;
+  and: string;
+  bestAi: string;
+  showPrompt: string;
+  outputLabel: string;
+  copyPrompt: string;
+  copied: string;
+  improveStep: string;
+  markDone: string;
+  doneAria: string;
+  progress: string;
+  copyAll: string;
+  editTask: string;
+  newTask: string;
+  treeAria: string;
+  notices: Record<"no_ai" | "budget" | "quota" | "busy" | "error", string>;
+  howTitle: string;
+  how: string[];
+  guideLink: string;
+  copyAllTitle: string;
 };
 
 /** Find the Best AI experience. */

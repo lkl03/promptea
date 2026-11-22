@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { NextRequest } from "next/server";
 import { blendJudgeScore, judgePrompt, shouldJudge, JUDGE_MAX_DELTA } from "@/lib/refine/judge";
 import { analyzePrompt } from "@/lib/analyzePrompt";
+import { createMemoryBudgetStore, setBudgetStore } from "@/lib/ai/budget";
 
 vi.mock("@/lib/telemetry/server", () => ({ upsertAnalysisEvent: vi.fn().mockResolvedValue({ ok: true }) }));
 
@@ -13,6 +14,7 @@ let saved: Record<string, string | undefined> = {};
 beforeEach(() => {
   saved = Object.fromEntries(ENV_KEYS.map((k) => [k, process.env[k]]));
   for (const k of ENV_KEYS) delete process.env[k];
+  setBudgetStore(createMemoryBudgetStore());
 });
 afterEach(() => {
   for (const k of ENV_KEYS) {
@@ -20,6 +22,7 @@ afterEach(() => {
     else process.env[k] = saved[k];
   }
   vi.unstubAllGlobals();
+  setBudgetStore(undefined);
 });
 
 function groqJson(content: unknown): typeof fetch {
@@ -130,11 +133,30 @@ describe("/api/analyze with the judge", () => {
     const { POST } = await import("@/app/api/analyze/route");
     const req = new NextRequest("http://localhost/api/analyze", {
       method: "POST",
-      headers: { "content-type": "application/json", "x-ui-lang": "es" },
+      // v1.8.9: a browser User-Agent — crawlers and clients without one never get an LLM call.
+      headers: { "content-type": "application/json", "x-ui-lang": "es", "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0 Safari/537.36" },
       body: JSON.stringify({ prompt, target: "gpt", lang: "es", purpose: "text", sessionId: "session_test_1234567890" }),
     });
     return (await POST(req)).json();
   }
+
+  test("v1.8.9: a crawler gets the analysis but no judge (no LLM call)", async () => {
+    process.env.GROQ_API_KEY = "gsk-test-1234567890";
+    process.env.PROMPT_JUDGE_ENABLED = "1";
+    process.env.PROMPT_JUDGE_CONFIDENCE_MAX = "100";
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
+    const { POST } = await import("@/app/api/analyze/route");
+    const req = new NextRequest("http://localhost/api/analyze", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-ui-lang": "es", "user-agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" },
+      body: JSON.stringify({ prompt: "hacé algo con esto", target: "gpt", lang: "es", purpose: "text", sessionId: "session_test_1234567890" }),
+    });
+    const body = await (await POST(req)).json();
+    expect(typeof body.score).toBe("number");
+    expect(body.meta?.judge).toBeUndefined();
+    expect(fetchSpy).not.toHaveBeenCalled();
+  });
 
   test("adds meta.judge for a low-confidence prompt and leaves score untouched", async () => {
     enable();
