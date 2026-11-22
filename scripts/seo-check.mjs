@@ -389,7 +389,7 @@ async function checkLlms(origin) {
 // ---------------------------------------------------------------------------
 
 // v1.8.3: + /sources (every locale) and /blog/tech (the Tech section of AI Daily).
-const KEY_PATHS = ["", "/how-it-works", "/about", "/methodology", "/sources", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/tech", "/blog/weekly", "/analyzer", "/best-ai"];
+const KEY_PATHS = ["", "/how-it-works", "/about", "/methodology", "/sources", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/tech", "/blog/weekly", "/analyzer", "/best-ai", "/flow"];
 
 function pickKeyPages(urls, origin) {
   const picks = new Set();

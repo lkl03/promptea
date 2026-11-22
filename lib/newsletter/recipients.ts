@@ -20,12 +20,19 @@
 export const RESERVED_TLDS = ["test", "example", "invalid", "localhost"] as const;
 
 /**
+ * v1.8.9 — RFC 2606 §3 second-level domains (and their subdomains), which
+ * publish a null MX: mail to them always bounces. Since v1.8.8 the /zh form's
+ * placeholder is `name@example.com`, so a careless submit could subscribe one.
+ */
+export const RESERVED_DOMAINS = ["example.com", "example.net", "example.org"] as const;
+
+/**
  * QA mailboxes created by Promptea's own release scripts (`test-qa-v150@…`).
  * promptea.me sends mail but has no inboxes, so these always bounce.
  */
 const QA_MAILBOX_RE = /^test-qa(?:[-+.][a-z0-9.+-]*)?@promptea\.me$/;
 
-export type ExclusionReason = "reserved_tld" | "qa_mailbox" | "configured";
+export type ExclusionReason = "reserved_tld" | "reserved_domain" | "qa_mailbox" | "configured";
 
 /** Extra addresses or `@domain` entries from NEWSLETTER_EXCLUDED_RECIPIENTS (comma or space separated). */
 export function parseExcludedRecipients(raw: string | undefined): string[] {
@@ -43,6 +50,7 @@ export function exclusionReason(email: string, configured: readonly string[] = [
   const domain = address.slice(at + 1);
   const tld = domain.split(".").pop() ?? "";
   if ((RESERVED_TLDS as readonly string[]).includes(tld)) return "reserved_tld";
+  if (RESERVED_DOMAINS.some((d) => domain === d || domain.endsWith(`.${d}`))) return "reserved_domain";
   if (QA_MAILBOX_RE.test(address)) return "qa_mailbox";
   for (const entry of configured) {
     if (entry.startsWith("@") ? address.endsWith(entry) : address === entry) return "configured";

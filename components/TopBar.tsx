@@ -37,6 +37,8 @@ export type NavDict = {
   language: string; // aria-label of the language switcher
   analyzer: string;
   bestAi: string;
+  /** v1.8.9: Prompt flow. */
+  flow: string;
   daily: string;
   benchmarks: string;
   prompts: string;
@@ -52,6 +54,7 @@ type NavKey = Exclude<keyof NavDict, "main" | "home" | "menu" | "closeMenu" | "l
 export const NAV_LINKS: ReadonlyArray<{ key: NavKey; path: string; group: "tools" | "resources" }> = [
   { key: "analyzer", path: "/analyzer", group: "tools" },
   { key: "bestAi", path: "/best-ai", group: "tools" },
+  { key: "flow", path: "/flow", group: "tools" },
   { key: "daily", path: "/blog", group: "tools" },
   { key: "benchmarks", path: "/benchmarks", group: "tools" },
   { key: "prompts", path: "/prompts", group: "resources" },
@@ -114,18 +117,18 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
 
   return (
     <header ref={rootRef} className="relative z-30 mx-auto w-full max-w-6xl px-4 pb-2 pt-4 3xl:max-w-7xl">
-      <div className="site-header-bar grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 lg:grid-cols-[1fr_auto_1fr]">
+      <div className="site-header-bar grid grid-cols-[1fr_auto] items-center gap-x-3 gap-y-2 xl:grid-cols-[1fr_auto_1fr]">
         {/* Left: brand (not repeated on the home page, where the logo is the <h1>) */}
         <div className="flex min-w-0 items-center">
           {isHome ? (
-            <span className="hidden lg:block" aria-hidden="true" />
+            <span className="hidden xl:block" aria-hidden="true" />
           ) : (
             <Link href={`/${lang}`} className="rounded-sm transition-opacity hover:opacity-80" aria-label={dict.home}>
               {/* v1.8.2: a third language in the switcher — the logo is a little smaller below `sm` so both fit down to 320 px. */}
               <BrandLogo height={20} smHeight={26} />
             </Link>
           )}
-          {/* Below lg the menu button takes the left slot on the home page, so the row never looks empty. */}
+          {/* Below xl the menu button takes the left slot on the home page, so the row never looks empty. */}
           {isHome ? (
             <button
               ref={btnRef}
@@ -134,7 +137,7 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
               aria-expanded={open}
               aria-controls={panelId}
               onClick={() => setOpen((v) => !v)}
-              className="btn btn-ghost h-9 gap-2 px-3 lg:hidden"
+              className="btn btn-ghost h-9 gap-2 px-3 xl:hidden"
             >
               <MenuIcon open={open} />
               <span>{open ? dict.closeMenu : dict.menu}</span>
@@ -142,17 +145,18 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
           ) : null}
         </div>
 
-        {/* Centre: inline navigation (lg+) */}
-        <nav aria-label={dict.main} className="hidden lg:block">
-          <ul className="flex items-center gap-x-0.5 text-[13px] xl:gap-x-1 xl:text-sm">
+        {/* Centre: inline navigation (xl+). v1.8.9: from lg (1024) it overlapped the logo already in
+            v1.8.8 (31 px) and a tenth link made it worse; below xl the menu button carries it. */}
+        <nav aria-label={dict.main} className="hidden xl:block">
+          <ul className="flex items-center gap-x-0.5 text-[13px] 3xl:gap-x-1 3xl:text-sm">
             {links.map((item, i) => (
               <li key={item.key} className="flex items-center">
-                {i > 0 && item.group !== links[i - 1].group ? <span aria-hidden="true" className="mx-1.5 h-4 w-px bg-line-strong xl:mx-2" /> : null}
+                {i > 0 && item.group !== links[i - 1].group ? <span aria-hidden="true" className="mx-1.5 h-4 w-px bg-line-strong 3xl:mx-2" /> : null}
                 <Link
                   href={item.href}
                   aria-current={item.active ? "page" : undefined}
                   className={[
-                    "whitespace-nowrap rounded-lg px-2 py-1 transition-colors xl:px-2.5",
+                    "whitespace-nowrap rounded-lg px-2 py-1 transition-colors 3xl:px-2.5",
                     item.active ? "bg-surface-soft text-ink" : "text-ink-muted hover:bg-surface-soft hover:text-ink",
                   ].join(" ")}
                 >
@@ -175,7 +179,7 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
               aria-label={open ? dict.closeMenu : dict.menu}
               title={open ? dict.closeMenu : dict.menu}
               onClick={() => setOpen((v) => !v)}
-              className="btn-icon h-9 w-9 lg:hidden"
+              className="btn-icon h-9 w-9 xl:hidden"
             >
               <MenuIcon open={open} />
             </button>
@@ -184,8 +188,8 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
           <ThemeToggle lang={lang} />
         </div>
 
-        {/* Collapsible navigation (below lg). In flow, so it pushes content instead of covering it. */}
-        <nav id={panelId} aria-label={dict.main} hidden={!open} className="col-span-full lg:hidden">
+        {/* Collapsible navigation (below xl). In flow, so it pushes content instead of covering it. */}
+        <nav id={panelId} aria-label={dict.main} hidden={!open} className="col-span-full xl:hidden">
           <ul className="grid grid-cols-2 gap-1 border-t border-line pt-2 text-sm sm:grid-cols-3">
             {links.map((item) => (
               <li key={item.key}>

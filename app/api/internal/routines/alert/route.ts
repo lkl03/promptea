@@ -3,7 +3,7 @@
 // v1.8.8 — daily routine alert (Vercel Cron, see vercel.json).
 //
 //   GET /api/internal/routines/alert            (Authorization: Bearer <CRON_SECRET>)
-//   GET /api/internal/routines/alert?dryRun=1   (same check, never sends)
+//   GET /api/internal/routines/alert?dryRun=1   (same check, never sends; `true` works too since v1.8.9)
 //
 // Evaluates the same report as /api/internal/routines/health. When at least
 // one routine is overdue it mails ROUTINE_ALERT_TO once per editorial day
@@ -17,7 +17,7 @@ import { APP_VERSION } from "@/lib/version";
 import { editorialDate } from "@/lib/blog/dates";
 import { hasBearer, usableSecrets } from "@/lib/ops/auth";
 import { alertRecipients, evaluateRoutineHealth, renderAlertEmail } from "@/lib/ops/routineHealth";
-import { claimAlertDay, readRoutineActivity } from "@/lib/ops/server";
+import { claimAlertDay, readRoutineActivity, releaseAlertDay } from "@/lib/ops/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -38,7 +38,9 @@ export async function GET(req: NextRequest) {
   if (secrets.length === 0) return json({ ok: false, error: "alert_disabled" }, 503);
   if (!hasBearer(req.headers.get("authorization"), secrets)) return json({ ok: false, error: "unauthorized" }, 401);
 
-  const dryRun = req.nextUrl.searchParams.get("dryRun") === "1";
+  // v1.8.9: `?dryRun=true` used to SEND (only "1" counted) and use up the day.
+  const dryRunParam = (req.nextUrl.searchParams.get("dryRun") ?? "").trim().toLowerCase();
+  const dryRun = dryRunParam === "1" || dryRunParam === "true" || dryRunParam === "yes";
   let report;
   try {
     report = evaluateRoutineHealth(await readRoutineActivity(), new Date());
@@ -77,8 +79,12 @@ export async function GET(req: NextRequest) {
       },
       { idempotencyKey: `routine-health/${day}` }
     );
-    if (error) return json({ ...base, emailed: false, reason: "send_failed", error: error.name ?? "send_error" }, 502);
+    if (error) {
+      await releaseAlertDay(day);
+      return json({ ...base, emailed: false, reason: "send_failed", error: error.name ?? "send_error" }, 502);
+    }
   } catch {
+    await releaseAlertDay(day);
     return json({ ...base, emailed: false, reason: "send_failed", error: "network_error" }, 502);
   }
   return json({ ...base, emailed: true, recipients: to.length }, 200);

@@ -135,7 +135,7 @@ for (const [path, want] of [["/en/library", true], ["/es/library", true], ["/en"
 }
 
 // ── degradation: no JS, storage blocked ───────────────────────────────────
-const KEY = ["/en", "/es", "/en/how-it-works", "/en/analyzer", "/en/best-ai", "/en/benchmarks", "/en/blog", "/en/library", "/en/guides/json-output"];
+const KEY = ["/en", "/es", "/en/how-it-works", "/en/analyzer", "/en/best-ai", "/en/flow", "/en/benchmarks", "/en/blog", "/en/library", "/en/guides/json-output"];
 // 200, or 304 when the same browser already holds the page from an earlier check.
 const served = (res) => res.status() === 200 || res.status() === 304;
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true, args: ["--no-sandbox"] });

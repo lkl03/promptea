@@ -46,6 +46,10 @@ export type AdaptiveArgs = {
   signal?: AbortSignal;
   /** v1.3.0: engine already judged the input optimized — skip the LLM call. */
   alreadyOptimized?: boolean;
+  /** v1.8.9: hashed client key, for the per-visitor daily Claude quota. */
+  userKey?: string | null;
+  /** v1.8.9: false for crawlers/automation — never spend an LLM call on them. */
+  llmAllowed?: boolean;
 };
 
 /** True when at least one refiner provider (Groq, Anthropic) has a key. */
@@ -387,6 +391,7 @@ async function callRefiner(
       temperature: 0.15,
       signal: args.signal,
       fetchImpl: args.fetchImpl,
+      userKey: args.userKey ?? null,
     },
     { deadline, startAt: repair?.provider }
   );
@@ -433,7 +438,7 @@ export async function refinePromptAdaptive(args: AdaptiveArgs): Promise<Refineme
   });
 
   if (args.alreadyOptimized) return fallback("already_optimized");
-  if (!isAdaptiveEnabled()) return fallback("disabled");
+  if (!isAdaptiveEnabled() || args.llmAllowed === false) return fallback("disabled");
   if (args.signal?.aborted) return fallback("superseded");
 
   const literals = extractProtectedLiterals(args.originalPrompt);

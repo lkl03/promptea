@@ -9,7 +9,8 @@
 //   Prompt Analyzed  { lang, target }  — an analysis came back
 //   Prompt Copied    { lang, target }  — the optimized prompt was copied
 //   Target Changed   { lang, target }  — the visitor picked a destination AI
-//   Template Copied  { lang, source }  — a template (guide) or saved prompt (library) was copied
+//   Template Copied  { lang, source }  — a template (guide), saved prompt (library) or flow step (flow, v1.8.9) was copied
+//   Flow Created     { lang, source }  — v1.8.9: a prompt flow came back, written by AI ("ai") or the engine ("basic")
 //
 // Dashboard: Project → Analytics → Events panel → pick the event name to split
 // it by property.
@@ -18,13 +19,14 @@ import { track } from "@vercel/analytics";
 import type { Lang, TargetAI } from "@/lib/domain";
 import { isAutomatedBrowser } from "@/lib/telemetry/humanGate";
 
-export type TemplateSource = "guide" | "library";
+export type TemplateSource = "guide" | "library" | "flow";
 
 export type ProductEvent =
   | { name: "Prompt Analyzed"; lang: Lang; target: TargetAI }
   | { name: "Prompt Copied"; lang: Lang; target: TargetAI }
   | { name: "Target Changed"; lang: Lang; target: TargetAI }
-  | { name: "Template Copied"; lang: Lang; source: TemplateSource };
+  | { name: "Template Copied"; lang: Lang; source: TemplateSource }
+  | { name: "Flow Created"; lang: Lang; source: "ai" | "basic" };
 
 export type ProductEventName = ProductEvent["name"];
 

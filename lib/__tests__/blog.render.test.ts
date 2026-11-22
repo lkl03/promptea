@@ -337,6 +337,15 @@ describe("wordCount", () => {
     expect(wordCount([])).toBe(0);
     expect(wordCount([{ type: "paragraph", text: "   " }])).toBe(0);
   });
+
+  test("v1.8.9: Chinese is counted by characters (1.7 per word), not by spaces", () => {
+    // 984 Han characters in one paragraph used to count as 1 word → "1 minute".
+    const zh = "模型".repeat(492);
+    expect(wordCount([{ type: "paragraph", text: zh }])).toBe(Math.ceil(984 / 1.7));
+    expect(readingMinutes([{ type: "paragraph", text: zh }])).toBe(3);
+    // Mixed text: Latin words still count as words, punctuation alone does not.
+    expect(wordCount([{ type: "paragraph", text: "OpenAI发布了GPT-6，" }])).toBe(2 + Math.ceil(3 / 1.7));
+  });
 });
 
 describe("readingMinutes", () => {

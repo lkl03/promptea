@@ -113,7 +113,9 @@
     "bestAiLabel": "Find the Best AI",
     "improveHint": "Analyze, fix and improve a prompt.",
     "bestAiHint": "Find the AI that best fits your prompt.",
-    "switcherAria": "Choose what you want to do"
+    "switcherAria": "Choose what you want to do",
+    "flowLabel": "Split into steps",
+    "flowHint": "Break a big task into a chain of prompts."
   },
   "matcher": {
     "title": "Find the Best AI",
@@ -405,6 +407,10 @@
       "bestAi": {
         "title": "Find the best AI",
         "body": "Describe your task and we tell you which model fits, and why."
+      },
+      "flow": {
+        "title": "Split a task into steps",
+        "body": "Describe the task and get back a chain of prompts, with the best AI for each step."
       }
     },
     "howItWorks": "How this works",
@@ -545,7 +551,8 @@
     "glossary": "Glossary",
     "library": "Library",
     "footerTech": "Tech",
-    "footerSources": "Sources"
+    "footerSources": "Sources",
+    "flow": "Flow"
   },
   "howItWorksPage": {
     "breadcrumb": "Breadcrumb",
@@ -562,10 +569,19 @@
     "about": "About Promptea"
   },
   "changelog": {
+    "v189": {
+      "released": "Released: 2026-11-22",
+      "items": [
+        "New: Prompt flow. Write a big task and we split it into chained steps, with parallel branches, a ready prompt for each step and the best AI for each one.",
+        "AI features can run on Claude, with a monthly spending cap: when it runs out or AI isn't available, everything keeps working on Promptea's own engine.",
+        "Chinese AI Daily stories show their real reading time, and the weekly digest shows its Chinese titles.",
+        "Fixes: the daily alert is no longer lost when sending fails, and the newsletter refuses example addresses such as name@example.com."
+      ]
+    },
     "v188": {
       "released": "Released: 2026-11-20",
       "items": [
-        "AI Daily in Chinese too: from November 21, every new story is published under /zh with its own page. Earlier stories stay in English with a notice.",
+        "AI Daily can now be published in Chinese: each new story that comes with a Chinese version gets its own page under /zh. Earlier stories stay in English with a notice.",
         "Kimi K3.1 Pro arrives in the analyzer and becomes the default Kimi; Kimi K3 moves to previous version.",
         "We reviewed all of /zh: links, metadata and text. The newsletter form no longer shows an English email example there.",
         "Behind the scenes: a daily check warns us if any automated publication (AI Daily, AI Daily Tech, the weekly digest or the newsletter) falls behind.",
@@ -672,5 +688,60 @@
     "toDaily": "Read AI Daily",
     "toTech": "Read AI Daily Tech",
     "toMethodology": "How prompts are scored"
+  },
+  "flow": {
+    "title": "Prompt flow",
+    "subtitle": "Write a big task and we split it into steps: a chain of ready-to-paste prompts, with parallel branches and the AI that fits each one best.",
+    "editorLabel": "Your main task",
+    "placeholder": "E.g.: Launch a weekly newsletter for my design studio: define the audience, write the first issue and build a sign-up page.",
+    "submitCta": "Split into steps",
+    "planning": "Splitting the task into steps…",
+    "examplesLabel": "Try:",
+    "examples": [
+      "Add Google sign-in to my Next.js app and cover it with tests",
+      "Write a sales proposal for a client who wants to redesign their online store",
+      "Compare three CRMs for a 10-person company and recommend one with reasons"
+    ],
+    "tooShort": "Tell us a bit more about the task (at least one sentence).",
+    "genericError": "We couldn't build the flow. Try again in a few seconds.",
+    "rateLimited": "You asked for several flows in a row. Wait a minute and try again.",
+    "rootLabel": "Main task",
+    "sourceAi": "Planned with {model}",
+    "sourceBasic": "Basic plan · no AI",
+    "stepsCount": "{n} steps",
+    "parallelCount": "{n} in parallel",
+    "stepLabel": "Step {n}",
+    "parallelTag": "In parallel",
+    "usesLabel": "Uses: {steps}",
+    "and": "and",
+    "bestAi": "Best AI",
+    "showPrompt": "Show the prompt",
+    "outputLabel": "Hands over",
+    "copyPrompt": "Copy prompt",
+    "copied": "Copied",
+    "improveStep": "Improve in the analyzer",
+    "markDone": "Done",
+    "doneAria": "Mark step {n} as done",
+    "progress": "{done} of {total} steps done",
+    "copyAll": "Copy the flow",
+    "editTask": "Edit the task",
+    "newTask": "New task",
+    "treeAria": "Steps of the flow, top to bottom",
+    "notices": {
+      "no_ai": "AI isn't available right now, so this is the basic plan from Promptea's engine. It works the same way: every step has its prompt ready.",
+      "budget": "The AI allowance for this period is used up, so this is the basic plan from Promptea's engine. AI comes back on its own when the allowance renews.",
+      "quota": "You've used today's AI flows. This is the basic plan from Promptea's engine; AI flows are back tomorrow.",
+      "busy": "The AI is in high demand right now. Here is the basic plan; try again in a while.",
+      "error": "The AI didn't return a usable plan, so here is the basic plan from Promptea's engine."
+    },
+    "howTitle": "How to use it",
+    "how": [
+      "The main task is at the top; below it, the steps in the order they are best done. Steps on the same row don't depend on each other: you can run them at the same time, in separate chats.",
+      "Every step comes with a ready-to-paste prompt. Where it says [Output of step N], paste what that step gave you.",
+      "The AI suggested for each step is picked by the same engine as \"Find the best AI\", with its reason. You can take any step to the analyzer to improve it.",
+      "Claude (Anthropic) writes the plan. When AI isn't available, Promptea's engine builds a basic plan that works just as well. Promptea doesn't store your task."
+    ],
+    "guideLink": "Guide: how to chain prompts",
+    "copyAllTitle": "Prompt flow (Promptea)"
   }
 }

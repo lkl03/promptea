@@ -206,12 +206,17 @@ export async function POST(req: NextRequest) {
   // v1.8.6: tell IndexNow (Bing & co.) about the new story once the response is
   // sent. Only for a new publish, only when INDEXNOW_KEY is set; a failed ping is
   // ignored (lib/seo/indexnow.ts).
+  // v1.8.9: a story with Chinese text has its own /zh page (since v1.8.8); it is
+  // pinged and returned too.
+  const zhSlug = payload.locales.zh?.slug;
   if (result.outcome === "published" && indexNowKey()) {
     const tech = sectionOfEdition(payload.edition) === "tech";
-    const paths = (["en", "es"] as const).flatMap((l) => [
-      `/${l}/blog/${payload.locales[l].slug}`,
-      tech ? `/${l}/blog/tech` : `/${l}/blog`,
-    ]);
+    const slugs: Array<[string, string]> = [
+      ["en", payload.locales.en.slug],
+      ["es", payload.locales.es.slug],
+      ...(zhSlug ? ([["zh", zhSlug]] as Array<[string, string]>) : []),
+    ];
+    const paths = slugs.flatMap(([l, slug]) => [`/${l}/blog/${slug}`, tech ? `/${l}/blog/tech` : `/${l}/blog`]);
     const ping = () => submitIndexNow(paths).then(() => undefined);
     try {
       after(ping);
@@ -229,6 +234,7 @@ export async function POST(req: NextRequest) {
       urls: {
         en: `/en/blog/${payload.locales.en.slug}`,
         es: `/es/blog/${payload.locales.es.slug}`,
+        ...(zhSlug ? { zh: `/zh/blog/${zhSlug}` } : {}),
       },
     },
     { status: result.outcome === "already_published" ? 200 : 201 }

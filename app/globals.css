@@ -1596,3 +1596,165 @@ html {
 :lang(zh) [lang^="en"] {
   line-break: auto;
 }
+
+/* ── v1.8.9 Prompt flow tree (/[lang]/flow) ─────────────────────────────────
+   The main task on top, one row per level below it. The connectors are
+   decorative pseudo-elements (the list structure and each card's "uses" chip
+   carry the same information): a trunk down into each row, and from md up a
+   horizontal bus with one drop per card when the row has parallel steps.
+   Only design tokens, so every theme (and dark mode) draws them in its own
+   line colour. */
+.flow-levels {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.flow-level {
+  position: relative;
+  padding-top: 30px;
+}
+.flow-level::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 16px;
+  transform: translateX(-1px);
+  background: var(--line-strong);
+  border-radius: 1px;
+}
+.flow-row {
+  --flow-gap: 14px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--flow-gap);
+}
+.flow-node-wrap {
+  position: relative;
+  min-width: 0;
+}
+.flow-node {
+  transition: border-color 200ms ease, background-color 200ms ease;
+}
+.flow-node[data-done="true"] {
+  border-color: var(--success);
+}
+.flow-node-num {
+  display: inline-flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+.flow-node[data-done="true"] .flow-node-num {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.flow-prompt > summary {
+  list-style: none;
+}
+.flow-prompt > summary::-webkit-details-marker,
+.flow-prompt > summary::marker {
+  display: none;
+  content: "";
+}
+.flow-prompt > summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-inline-end: 0.35em;
+  transition: transform 160ms var(--ease-out-strong);
+}
+.flow-prompt[open] > summary::before {
+  transform: rotate(90deg);
+}
+.flow-progress {
+  transition: width 320ms var(--ease-out-strong);
+}
+/* A single step is as wide as the main task card, not the whole page. */
+.flow-row:not([data-parallel="true"]) {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+@media (min-width: 768px) {
+  .flow-row {
+    --flow-gap: 18px;
+    grid-template-columns: repeat(var(--flow-cols, 1), minmax(0, 1fr));
+  }
+  /* Parallel branches that join below: a drop under each card into a bottom bus. */
+  .flow-row[data-parallel="true"][data-joins="true"]::after {
+    content: "";
+    position: absolute;
+    bottom: -14px;
+    height: 2px;
+    background: var(--line-strong);
+    border-radius: 1px;
+    left: calc((100% - (var(--flow-cols) - 1) * var(--flow-gap)) / (2 * var(--flow-cols)));
+    right: calc((100% - (var(--flow-cols) - 1) * var(--flow-gap)) / (2 * var(--flow-cols)));
+  }
+  .flow-row[data-parallel="true"][data-joins="true"] > .flow-node-wrap::after {
+    content: "";
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    width: 2px;
+    height: 14px;
+    transform: translateX(-1px);
+    background: var(--line-strong);
+  }
+  /* Horizontal bus from the first column's centre to the last one's. */
+  .flow-row[data-parallel="true"]::before {
+    content: "";
+    position: absolute;
+    top: -14px;
+    height: 2px;
+    background: var(--line-strong);
+    border-radius: 1px;
+    left: calc((100% - (var(--flow-cols) - 1) * var(--flow-gap)) / (2 * var(--flow-cols)));
+    right: calc((100% - (var(--flow-cols) - 1) * var(--flow-gap)) / (2 * var(--flow-cols)));
+  }
+  .flow-row[data-parallel="true"] > .flow-node-wrap::before {
+    content: "";
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    width: 2px;
+    height: 14px;
+    transform: translateX(-1px);
+    background: var(--line-strong);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .flow-tree .flow-node-wrap {
+    animation: flow-node-in 420ms var(--ease-out-strong) both;
+    animation-delay: calc(var(--flow-i, 0) * 70ms);
+  }
+}
+@keyframes flow-node-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* v1.8.9: three modes in the switcher — tighter segments on phones so the labels fit. */
+@media (max-width: 639px) {
+  .mode-switch-item {
+    padding-inline: 0.5rem;
+    font-size: 13px;
+    line-height: 1.25;
+  }
+}

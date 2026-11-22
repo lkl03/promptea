@@ -99,6 +99,27 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
           })}</li>
         </ul>
 
+        {/* v1.8.9: the analyzer's optional rewrite (Groq / Claude) was never described here; the Prompt flow uses Claude. */}
+        <h2 className="text-lg font-medium mt-6">{pick(lang, { es: "Funciones con IA (Claude y Groq)", en: "AI features (Claude and Groq)", pt: "Recursos com IA (Claude e Groq)", zh: "AI功能（Claude和Groq）" })}</h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            {pick(lang, {
+              es: "Cuando la IA está activa, el texto de tu prompt (en el analizador) o de tu tarea (en el Flujo de prompts) se envía a Anthropic (Claude) o a Groq solo para generar la respuesta. Promptea no guarda ese texto: el resultado vuelve a tu navegador.",
+              en: "When AI is on, the text of your prompt (in the analyzer) or your task (in the Prompt flow) is sent to Anthropic (Claude) or Groq only to generate the answer. Promptea does not store that text: the result goes back to your browser.",
+              pt: "Quando a IA está ativa, o texto do seu prompt (no analisador) ou da sua tarefa (no Fluxo de prompts) é enviado à Anthropic (Claude) ou ao Groq apenas para gerar a resposta. O Promptea não guarda esse texto: o resultado volta para o seu navegador.",
+              zh: "启用AI时，你的提示词（在分析器中）或任务（在提示词流程中）的文本会发送给Anthropic（Claude）或Groq，仅用于生成回答。Promptea不会存储这些文本：结果会返回到你的浏览器。",
+            })}
+          </li>
+          <li>
+            {pick(lang, {
+              es: "Para respetar el tope de uso guardamos contadores: gasto, cantidad de pedidos y tokens por mes y por día, y un conteo diario asociado a un hash anónimo de tu conexión (nunca la dirección IP), con vencimiento a los 2 días.",
+              en: "To keep within the usage cap we store counters: spend, number of requests and tokens per month and per day, and a daily count tied to an anonymous hash of your connection (never the IP address), set to expire after 2 days.",
+              pt: "Para respeitar o limite de uso guardamos contadores: gasto, número de pedidos e tokens por mês e por dia, e uma contagem diária associada a um hash anônimo da sua conexão (nunca o endereço IP), com vencimento em 2 dias.",
+              zh: "为了遵守使用上限，我们会存储计数：每月和每天的支出、请求数和token数，以及与你连接的匿名哈希（绝不是IP地址）关联的每日次数，设定2天后过期。",
+            })}
+          </li>
+        </ul>
+
         <h2 className="text-lg font-medium mt-6">{pick(lang, { es: "Dictado por voz", en: "Voice dictation", pt: "Ditado por voz", zh: "语音输入" })}</h2>
         <ul className="list-disc pl-5 space-y-2">
           <li>

@@ -62,7 +62,7 @@ function subscribeRequest(
 }
 
 const VALID_BODY = {
-  email: "reader@example.com",
+  email: "reader@mail.acme.dev",
   lang: "en",
   consent: true,
 };

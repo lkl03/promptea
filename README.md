@@ -4,26 +4,22 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 
 - **Improve Prompt** (`/[lang]/analyzer`, the homepage until v1.7.0 — old `/[lang]?prompt=…` links are redirected with their parameters) — analyze your prompt, detect issues, score it, and generate a genuinely personalized improved version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
 - **Find the Best AI** (`/[lang]/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI, model, or working environment (e.g. Claude Code vs. plain chat) fits it best, with ranked alternatives and concrete adaptation advice.
+- **Prompt flow** (`/[lang]/flow`, v1.8.9) — write a big task and get it split into a tree of ready-to-paste prompts: the main task on top, steps below in the order to run them, parallel branches on the same row, and the best AI for each step (routed by the deterministic matcher). Claude plans it within a hard spend cap; without AI the engine builds a basic plan.
 - **How Promptea works** (`/[lang]/how-it-works`, v1.8.1) — what it is, how a prompt is scored, supported AIs and prompt types, the FAQ and the product tour video. The long explanation that used to sit at the bottom of the home page, with its `HowTo` + `FAQPage` JSON-LD, a markdown twin and a place in `llms.txt`.
 - **Benchmarks** (`/[lang]/benchmarks`) — leaders per benchmark, frontier models, an explorable ranking table and what each benchmark measures, from OpenRouter's benchmarks API (server-side, cached, honest fallbacks).
 
 Available in English, Spanish, Brazilian Portuguese and Simplified Chinese (`/en`, `/es`, `/pt` since v1.8.2, `/zh` since v1.8.7). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.8 (2026-11-20)
+## Latest update — v1.8.9 (2026-11-22)
 
-**AI Daily in Simplified Chinese, routine health and a daily alert, the newsletter's test addresses out, Kimi K3.1 Pro, a QA pass of `/zh`, tweets measured by UTM, and firebase-admin 14.** Built as separate PRs by topic; this one (the release) went last.
-- **AI Daily in Chinese** (lkl03/promptea#57): stories carry an optional `locales.zh`; the AI Daily routines write it (prompts in `docs/editorial/routines/`). A Chinese story has its own `/zh/blog/<slug>` page (canonical, hreflang, sitemap); older stories stay English under `/zh`.
-- **Routine health** (lkl03/promptea#50): `GET /api/internal/routines/health` reports the last output of daily, morning, tech, weekly and the newsletter; a Vercel Cron mails the owner once a day if one is overdue. See "Routine health and alert".
-- **Newsletter**: test addresses (`.test`, QA mailboxes) are skipped and refused (lkl03/promptea#50).
-- **Models** (lkl03/promptea#52): Kimi K3.1 Pro is the default Kimi; GPT-Image-2.6 was verified but is not a prompt target yet.
-- **`/zh`** (lkl03/promptea#53): QA of v1.8.7 with 0 failures, one safe fix, and the native review packages for pt and zh, now with a brief in each reviewer's language.
-- **Tweets** (lkl03/promptea#54): every link in the weekly tweets carries UTM, so reach is read in Vercel Analytics.
-- **Operations** (lkl03/promptea#55): the AI Daily Tech status, what happened to the newsletter on 26/10, 2/11 and 9/11, and how to rotate the two publishing secrets.
-- **firebase-admin 14** (lkl03/promptea#51): `npm audit --omit=dev` from 18 warnings to 0, with a Firestore emulator test (`npm run test:firestore`).
+**Prompt flow, Claude behind a hard spend cap, and the fixes from a review of v1.8.8.**
+- **Prompt flow** (`/[lang]/flow`): a main task on top, split into a tree of sub-prompts (steps in order, parallel branches on one row), each routed to its best AI by the deterministic matcher. Claude Haiku 5.5 writes the plan; without AI the engine builds a basic plan from four templates. Third mode in the switcher, in the navigation and on the home page, in all four languages, with FAQPage JSON-LD and a place in the sitemap and `llms.txt`.
+- **Claude and the spend cap** (`lib/ai/`): every Claude call (the flow planner and the analyzer's refiner/judge) reserves its worst-case cost in a Firestore ledger first and is not made past the monthly stop ($90 of $100 by default), the daily cap or the visitor's daily quota. Crawlers never trigger it. See "Claude and the spend cap".
+- **v1.8.8 fixes**: Chinese reading time, the weekly digest's Chinese titles, the `/zh` URL and IndexNow ping on publish, `/zh/blog` structured data, the alert that a failed send used up, `?dryRun=true`, RFC 2606 example domains in the newsletter, the cleanup script's key handling, and the changelog's Chinese-news date.
 
-Report, Analytics and the Singapore traffic: [`docs/release/v1.8.8/release-report.md`](./docs/release/v1.8.8/release-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+Report and owner's steps: [`docs/release/v1.8.9/release-report.md`](./docs/release/v1.8.9/release-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
 
-_Previous update: v1.8.7 (2026-11-16) — Simplified Chinese, Promptea's own X feed, the newsletter card, per-model Benchmarks._
+_Previous update: v1.8.8 (2026-11-20) — AI Daily in Simplified Chinese, routine health and a daily alert, Kimi K3.1 Pro, tweets measured by UTM, firebase-admin 14._
 
 ## v1.8.7 (2026-11-16)
 
@@ -169,6 +165,16 @@ A weekly email digest of AI Daily. Since v1.7.0 every published edition lives in
 4. Backfill / audit: `npm run weekly:backfill` reports every edition a live run actually delivered and whether it is public; `npm run weekly:backfill -- --write` repairs a delivered edition whose status is not public. It never regenerates content and never sends.
 5. Kill switch: set `NEWSLETTER_DELIVERY_ENABLED=false` (and redeploy) — live runs return `DELIVERY_DISABLED` before sending anything. To stop the schedule itself, disable the routine at https://claude.ai/code/routines. Removing `NEWSLETTER_SEND_SECRET` makes the endpoint refuse every call (503).
 
+## Claude and the spend cap (v1.8.9)
+
+`lib/ai/claude.ts` is the only code that calls the Claude API. Every call:
+1. needs `ANTHROPIC_API_KEY` (server-only) and `AI_FEATURES_ENABLED` not off;
+2. **reserves its worst case** in the ledger: every input byte priced as a cache-write token plus the full `max_tokens` of output (`lib/ai/pricing.ts`). One Firestore transaction checks the monthly stop (`AI_MONTHLY_BUDGET_USD` × `AI_BUDGET_SAFETY_RATIO`, $90 by default), the daily cap ($6) and the visitor's daily quota (12 flows / 40 rewrites, hashed IP); if any would be crossed, the call is not made and the feature falls back to the engine;
+3. runs with no SDK retries, a timeout, a bounded `max_tokens`, JSON-schema output and the static system prompt marked for prompt caching;
+4. **settles** with the real cost from `response.usage` (a refund of the difference). An HTTP error answer is refunded in full; a timeout keeps the reservation (Anthropic may have billed it). The ledger can only over-count.
+
+Ledger: `ai_budget/{YYYY-MM}` (+ `days/{YYYY-MM-DD}`) and `ai_quota/{day}_{feature}_{clientHash}` (with `expiresAt` for a TTL policy). Read it with `GET /api/internal/ai/usage` (Bearer `ROUTINE_HEALTH_SECRET` or `CRON_SECRET`). Crawlers, automation and requests without an `Origin` header never reach Claude. Second barrier: a spend limit on the key's workspace in the Anthropic Console. Details and costs: [`docs/ops/ai-budget.md`](./docs/ops/ai-budget.md).
+
 ## Routine health and alert (v1.8.8)
 
 Five routines publish Promptea's content, and between 26/10 and 9/11 the newsletter went three Mondays without mailing while nobody noticed. `lib/ops/routineHealth.ts` turns each routine's last output into a verdict:
@@ -234,8 +240,14 @@ npm run build      # production build (works offline — fonts are local)
 | `GROQ_API_KEY` | optional | Enables the adaptive refiner AND voice transcription. Never exposed to the client. |
 | `GROQ_MODEL` | optional | Overrides the refiner model (default `llama-3.3-70b-versatile`). |
 | `GROQ_TRANSCRIPTION_MODEL` | optional | Overrides the speech-to-text model (default `whisper-large-v3-turbo`). |
-| `ANTHROPIC_API_KEY` | optional | Enables Claude as a refiner provider (failover target by default). Server-only; only an explicit key enables it. |
+| `ANTHROPIC_API_KEY` | optional | **Secret, server-only.** Enables Claude: the Prompt flow planner (v1.8.9) and the refiner/judge provider (failover target by default). Only an explicit key enables it. Every call goes through the spend cap (see "Claude and the spend cap"). Without it the Prompt flow shows its basic plan. |
 | `ANTHROPIC_REFINER_MODEL` | optional | Claude model for refining/judging (default `claude-haiku-5-5`). |
+| `AI_MONTHLY_BUDGET_USD` | optional | v1.8.9. Monthly Claude budget in USD (default `100`). Calls stop at budget × `AI_BUDGET_SAFETY_RATIO`. |
+| `AI_BUDGET_SAFETY_RATIO` | optional | v1.8.9. Share of the budget where calls stop (default `0.9` → $90). |
+| `AI_DAILY_BUDGET_USD` | optional | v1.8.9. Per UTC day (default: the monthly stop ÷ 15, $6). |
+| `AI_USER_DAILY_LIMIT` / `AI_REFINE_USER_DAILY_LIMIT` | optional | v1.8.9. Claude requests per visitor (hashed IP) per UTC day: prompt flows (default `12`) and analyzer rewrites (default `40`). |
+| `AI_FEATURES_ENABLED` | optional | v1.8.9. `0`/`off` turns every Claude call off without removing the key. |
+| `AI_FLOW_MODEL` / `AI_FLOW_MAX_TOKENS` / `AI_FLOW_EFFORT` / `AI_FLOW_TIMEOUT_MS` | optional | v1.8.9. Prompt flow planner: model (default `claude-haiku-5-5`), output cap (`3500`, clamped 1000–8000), effort (`low`), timeout (`25000` ms). |
 | `REFINER_PROVIDERS` | optional | Comma-separated provider order, e.g. `anthropic,groq` (default `groq,anthropic`). Providers without a key are skipped; with no key at all the analyzer stays 100% deterministic (`fallbackReason: "disabled"`). |
 | `REFINER_TIMEOUT_MS` | optional | Per-call timeout for a refiner provider (default `10000`). |
 | `REFINER_TOTAL_TIMEOUT_MS` | optional | Total budget for the refiner chain incl. failover and repair (default `15000`). |

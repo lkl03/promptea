@@ -58,3 +58,17 @@ export async function claimAlertDay(day: string, overdue: readonly string[]): Pr
     throw err;
   }
 }
+
+/**
+ * v1.8.9 — give the day back when the mail could not be sent, so a retry (the
+ * next cron run or a manual call) can still alert today. Before, a Resend
+ * failure used up the day and the overdue routine was reported only tomorrow.
+ * Resend's idempotency key (`routine-health/<day>`) still prevents a double send.
+ */
+export async function releaseAlertDay(day: string): Promise<void> {
+  try {
+    await getAdminFirestore().collection(ALERTS_COLLECTION).doc(`routine-health_${day}`).delete();
+  } catch {
+    // Best effort: the worst case is the old behavior (alert tomorrow).
+  }
+}

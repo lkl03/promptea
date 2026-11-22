@@ -26,7 +26,7 @@ const QUICK = "quick" in args;
 // v1.8.1: --out=dir picks where screenshots go (default: the current release folder).
 const OUT = args.out ? join(process.cwd(), args.out) : join(process.cwd(), "docs", "release", "v1.8.1", "audit");
 
-const PAGES = (args.pages ? args.pages.split(",") : ["/es", "/en", "/es/how-it-works", "/en/how-it-works", "/es/analyzer", "/es/best-ai", "/es/blog", "/es/blog/weekly", "/es/benchmarks", "/es/guides", "/es/guides/json-output", "/es/models", "/es/glossary", "/es/prompts", "/es/prompts/code", "/es/landing/prompt-analyzer", "/es/library", "/es/share", "/es/about", "/es/methodology", "/es/changelog", "/es/privacy", "/es/esta-pagina-no-existe"]).map((p) => p.trim());
+const PAGES = (args.pages ? args.pages.split(",") : ["/es", "/en", "/es/how-it-works", "/en/how-it-works", "/es/analyzer", "/es/best-ai", "/es/flow", "/es/blog", "/es/blog/weekly", "/es/benchmarks", "/es/guides", "/es/guides/json-output", "/es/models", "/es/glossary", "/es/prompts", "/es/prompts/code", "/es/landing/prompt-analyzer", "/es/library", "/es/share", "/es/about", "/es/methodology", "/es/changelog", "/es/privacy", "/es/esta-pagina-no-existe"]).map((p) => p.trim());
 const THEMES = QUICK ? ["aqua", "metro", "glass"] : ["aqua", "metro", "glass"];
 const SCHEMES = QUICK ? ["light"] : ["light", "dark"];
 // v1.8.1: the widths of the release brief — 1920, 1440, 1024, 768 and 375.

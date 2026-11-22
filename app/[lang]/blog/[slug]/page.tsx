@@ -334,7 +334,8 @@ export default async function BlogArticlePage({
                 <ul className="mt-3 space-y-2 text-sm opacity-90">
                   {article.digestItems.map((item, i) => (
                     <li key={i} className="flex flex-wrap items-baseline gap-2">
-                      <span>{cl === "es" ? item.titleEs : item.titleEn}</span>
+                      {/* v1.8.9: the Chinese title the routine writes (titleZh) was stored but never shown. */}
+                      <span>{cl === "es" ? item.titleEs : cl === "zh" ? (item.titleZh ?? item.titleEn) : item.titleEn}</span>
                       <time dateTime={item.eventDate} className="text-xs opacity-70">
                         {formatEditorialDate(item.eventDate, l)}
                       </time>

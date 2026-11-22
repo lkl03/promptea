@@ -1,0 +1,35 @@
+
+> prompt-evaluator@1.8.9 test:firestore
+> firebase emulators:exec --only firestore --project demo-promptea "vitest run lib/__tests__/firestore.emulator.spec.ts"
+
+[36m[1mi  emulators:[22m[39m Starting emulators: firestore
+[36m[1mi  emulators:[22m[39m Detected demo project ID "demo-promptea", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+[33m[1m!  firestore:[22m[39m Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+[33m[1m!  firestore:[22m[39m The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+[36m[1mi  firestore:[22m[39m Firestore Emulator logging to [1mfirestore-debug.log[22m
+[32m[1m+  firestore:[22m[39m Firestore Emulator UI websocket is running on 9150.
+[36m[1mi [22m[39m Running script: [1mvitest run lib/__tests__/firestore.emulator.spec.ts[22m
+
+[1m[46m RUN [49m[22m [36mv4.0.17 [39m[90m<repo>[39m
+
+[90mstdout[2m | lib/__tests__/firestore.emulator.spec.ts[2m > [22m[2mFirestore through firebase-admin (emulator)[2m > [22m[2mthe SDK in use
+[22m[39m[firestore-emulator] firebase-admin 14.5.1
+
+[90mstderr[2m | lib/__tests__/firestore.emulator.spec.ts[2m > [22m[2mFirestore through firebase-admin (emulator)[2m > [22m[2msubscribers: add, dedupe by hash, count(), paginated active list, unsubscribe by token
+[22m[39mThe `credentials` option is deprecated. Please use the `auth` object constructor instead. For more details, see https://cloud.google.com/docs/authentication/external/externally-sourced-credentials.
+
+ [32m✓[39m lib/__tests__/firestore.emulator.spec.ts [2m([22m[2m7 tests[22m[2m)[22m[33m 5772[2mms[22m[39m
+     [33m[2m✓[22m[39m subscribers: add, dedupe by hash, count(), paginated active list, unsubscribe by token [33m 452[2mms[22m[39m
+     [33m[2m✓[22m[39m AI ledger: concurrent reservations never cross the cap (transactions) [33m 3277[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 16:16:21
+[2m   Duration [22m 6.23s[2m (transform 283ms, setup 0ms, import 104ms, tests 5.77s, environment 0ms)[22m
+
+[32m[1m+ [22m[39m Script exited successfully (code 0)
+[36m[1mi  emulators:[22m[39m Shutting down emulators.
+[36m[1mi  firestore:[22m[39m Stopping Firestore Emulator
+[33m[1m! [22m[39m Firestore Emulator has exited upon receiving signal: SIGINT
+[36m[1mi  hub:[22m[39m Stopping emulator hub
+[36m[1mi  logging:[22m[39m Stopping Logging Emulator

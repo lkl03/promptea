@@ -109,4 +109,52 @@ describe.skipIf(!EMULATOR)("Firestore through firebase-admin (emulator)", () => 
     await ref.create({ day: "2026-11-20" });
     await expect(ref.create({ day: "2026-11-20" })).rejects.toMatchObject({ code: 6 });
   });
+
+  // v1.8.9 — the Claude spend ledger (lib/ai/budgetStore.ts) on real Firestore transactions.
+  test("AI ledger: reserve the worst case, settle to the real cost, refuse past the cap", async () => {
+    const { createFirestoreBudgetStore } = await import("@/lib/ai/budgetStore");
+    const { budgetLimits } = await import("@/lib/ai/budget");
+    const store = createFirestoreBudgetStore();
+    const now = new Date("2026-11-22T12:00:00Z");
+    const limits = budgetLimits({ AI_MONTHLY_BUDGET_USD: "0.01", AI_BUDGET_SAFETY_RATIO: "1", AI_DAILY_BUDGET_USD: "0.01" }); // 10,000 µ$
+    const r1 = await store.reserve({ feature: "flow", model: "claude-haiku-5-5", worstMicros: 4000, userKey: "abc", now }, limits);
+    expect(r1.ok).toBe(true);
+    if (r1.ok) await store.settle(r1.ticket, 1500, { inputTokens: 100, outputTokens: 2000, cacheReadTokens: 900, cacheWriteTokens: 0 });
+    let s = await store.snapshot(now);
+    expect(s.monthSpentMicros).toBe(1500);
+    expect(s.daySpentMicros).toBe(1500);
+    expect(s.byFeature.flow).toEqual({ spentMicros: 1500, requests: 1 });
+    expect(s.tokens).toEqual({ inputTokens: 100, outputTokens: 2000, cacheReadTokens: 900, cacheWriteTokens: 0 });
+    // 1,500 spent: 8,500 left → two 4,000 reservations fit, the third does not.
+    const results = [];
+    for (let i = 0; i < 3; i++) results.push(await store.reserve({ feature: "refine", model: "claude-haiku-5-5", worstMicros: 4000, userKey: null, now }, limits));
+    expect(results.map((r) => r.ok)).toEqual([true, true, false]);
+    expect(results[2]).toEqual({ ok: false, reason: "budget_month" });
+    // A timeout keeps the reservation as the charge.
+    if (results[0]!.ok) await store.settle(results[0]!.ticket, null);
+    s = await store.snapshot(now);
+    expect(s.monthSpentMicros).toBe(1500 + 4000 + 4000);
+    const quota = await admin.getAdminFirestore().collection("ai_quota").doc("2026-11-22_flow_abc").get();
+    expect(quota.get("count")).toBe(1);
+    expect(quota.get("expiresAt")?.toDate().toISOString()).toBe("2026-11-24T00:00:00.000Z");
+  });
+
+  test("AI ledger: concurrent reservations never cross the cap (transactions)", async () => {
+    const { createFirestoreBudgetStore } = await import("@/lib/ai/budgetStore");
+    const { budgetLimits } = await import("@/lib/ai/budget");
+    const store = createFirestoreBudgetStore();
+    const now = new Date("2026-12-03T12:00:00Z"); // a fresh month
+    const limits = budgetLimits({ AI_MONTHLY_BUDGET_USD: "0.01", AI_BUDGET_SAFETY_RATIO: "1", AI_DAILY_BUDGET_USD: "0.01" });
+    const results = await Promise.all(
+      Array.from({ length: 6 }, () => store.reserve({ feature: "flow", model: "claude-haiku-5-5", worstMicros: 3000, userKey: null, now }, limits))
+    );
+    // The invariant: whatever the contention, at most 3 × 3,000 ≤ 10,000 go through and the
+    // ledger holds exactly what was granted. A transaction that gives up under contention
+    // fails CLOSED (store_unavailable → no Claude call), never open.
+    const granted = results.filter((r) => r.ok).length;
+    expect(granted).toBeGreaterThanOrEqual(1);
+    expect(granted).toBeLessThanOrEqual(3);
+    for (const r of results) if (!r.ok) expect(["budget_month", "budget_day", "store_unavailable"]).toContain(r.reason);
+    expect((await store.snapshot(now)).monthSpentMicros).toBe(granted * 3000);
+  }, 60_000);
 });

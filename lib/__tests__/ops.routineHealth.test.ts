@@ -130,16 +130,22 @@ describe("newsletter test addresses (the three that bounced on 2026-11-16)", () 
     expect(exclusionReason("Test-QA-v150@Promptea.me")).toBe("qa_mailbox");
     expect(exclusionReason("someone@localhost")).toBe("reserved_tld");
   });
+  test("v1.8.9: the RFC 2606 example domains are excluded (the /zh placeholder is name@example.com)", () => {
+    expect(exclusionReason("name@example.com")).toBe("reserved_domain");
+    expect(exclusionReason("Reader@Example.NET")).toBe("reserved_domain");
+    expect(exclusionReason("x@mail.example.org")).toBe("reserved_domain");
+    expect(exclusionReason("x@myexample.com")).toBeNull();
+  });
   test("real-looking addresses are not", () => {
-    for (const e of ["reader@example.com", "ana@gmail.com", "weekly@promptea.me", "contest@test.com", "qa@company.test.io"]) {
+    for (const e of ["ana@gmail.com", "weekly@promptea.me", "contest@test.com", "qa@company.test.io", "team@example-agency.com"]) {
       expect(isExcludedRecipient(e)).toBe(false);
     }
   });
   test("NEWSLETTER_EXCLUDED_RECIPIENTS adds addresses and @domains", () => {
-    const cfg = parseExcludedRecipients("old@foo.com, @staging.example.org ; nope");
-    expect(cfg).toEqual(["old@foo.com", "@staging.example.org"]);
+    const cfg = parseExcludedRecipients("old@foo.com, @staging.acme.dev ; nope");
+    expect(cfg).toEqual(["old@foo.com", "@staging.acme.dev"]);
     expect(exclusionReason("old@foo.com", cfg)).toBe("configured");
-    expect(exclusionReason("x@staging.example.org", cfg)).toBe("configured");
+    expect(exclusionReason("x@staging.acme.dev", cfg)).toBe("configured");
     expect(exclusionReason("x@foo.com", cfg)).toBeNull();
   });
   test("the cleanup script applies the same rule", () => {
