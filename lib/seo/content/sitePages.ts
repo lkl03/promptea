@@ -132,7 +132,7 @@ export function homeAboutDoc(lang: Locale): PageDoc {
                   "One verified AI story every morning, with its sources, plus a weekly digest.",
                   "Una noticia de IA verificada cada mañana, con sus fuentes, y un resumen semanal.",
                   "Uma notícia de IA verificada todas as manhãs, com as fontes, e um resumo semanal (em inglês e espanhol).",
-                  "每天早上一条经过核实的AI新闻，附带来源，另有每周摘要（仅提供英文和西班牙文版本）。",
+                  "每天早上一条经过核实的AI新闻，附带来源（自2026年11月起，新报道也有中文版），另有每周摘要（仅提供英文和西班牙文版本）。",
                 ),
               },
               {
@@ -295,7 +295,7 @@ export function howItWorksDoc(lang: Locale): PageDoc {
           "Promptea is a free web tool that analyzes a prompt, scores it from 0 to 100 on six criteria, lists what to fix and writes an optimized version for the AI model you choose. It also recommends which AI fits a task, publishes a verified AI news story every morning (AI Daily) and shows model benchmarks with their source and date.",
           "Promptea es una herramienta web gratuita que analiza un prompt, lo puntúa de 0 a 100 en seis criterios, lista qué corregir y escribe una versión optimizada para el modelo de IA que elijas. También recomienda qué IA conviene para una tarea, publica cada mañana una noticia de IA verificada (IA al Día) y muestra benchmarks de modelos con su fuente y fecha.",
           "O Promptea é uma ferramenta web gratuita que analisa um prompt, dá uma pontuação de 0 a 100 em seis critérios, lista o que corrigir e escreve uma versão otimizada para o modelo de IA que você escolher. Também recomenda qual IA combina com uma tarefa, publica uma notícia de IA verificada todas as manhãs (AI Daily, em inglês e espanhol) e mostra benchmarks de modelos com fonte e data.",
-          "Promptea是一款免费的网页工具：它会分析提示词，按六项标准给出0到100分的评分，列出需要修改的地方，并为你选择的AI模型写出优化版本。它还会推荐适合某项任务的AI，每天早上发布一条经过核实的AI新闻（AI Daily，仅提供英文和西班牙文版本），并展示注明来源和日期的模型基准测试。",
+          "Promptea是一款免费的网页工具：它会分析提示词，按六项标准给出0到100分的评分，列出需要修改的地方，并为你选择的AI模型写出优化版本。它还会推荐适合某项任务的AI，每天早上发布一条经过核实的AI新闻（AI Daily，以英文和西班牙文发布，自2026年11月起新报道也有中文版），并展示注明来源和日期的模型基准测试。",
         ),
       },
       {
@@ -411,7 +411,7 @@ export function aboutDoc(lang: Locale): PageDoc {
             items: [
               t("Prompt analyzer: a 0–100 score on six criteria, findings, recommendations and an optimized prompt per AI model.", "Analizador de prompts: puntaje de 0 a 100 en seis criterios, hallazgos, recomendaciones y un prompt optimizado por modelo de IA.", "Analisador de prompts: uma pontuação de 0 a 100 em seis critérios, achados, recomendações e um prompt otimizado por modelo de IA.", "提示词分析器：按六项标准给出0到100分的评分、发现的问题、建议，以及针对每个AI模型优化后的提示词。"),
               t("Best AI: describe a task and get a ranked recommendation of which AI and model fits, with the reasons.", "Mejor IA: describí una tarea y recibí una recomendación ordenada de qué IA y modelo conviene, con las razones.", "Melhor IA: descreva uma tarefa e receba uma recomendação ordenada de qual IA e qual modelo combinam, com os motivos.", "最佳AI：描述一项任务，获得一份排好序的推荐，告诉你哪个AI和模型最合适，并说明理由。"),
-              t("AI Daily and the weekly digest: one verified AI story every morning, a weekly recap and a look ahead.", "IA al Día y resumen semanal: una noticia de IA verificada cada mañana, un repaso semanal y un vistazo a la semana que viene.", "AI Daily e o resumo semanal: uma notícia de IA verificada todas as manhãs, um resumo da semana e um olhar para a semana seguinte (em inglês e espanhol).", "AI Daily和每周摘要：每天早上一条经过核实的AI新闻，外加每周回顾和下周展望（仅提供英文和西班牙文版本）。"),
+              t("AI Daily and the weekly digest: one verified AI story every morning, a weekly recap and a look ahead.", "IA al Día y resumen semanal: una noticia de IA verificada cada mañana, un repaso semanal y un vistazo a la semana que viene.", "AI Daily e o resumo semanal: uma notícia de IA verificada todas as manhãs, um resumo da semana e um olhar para a semana seguinte (em inglês e espanhol).", "AI Daily和每周摘要：每天早上一条经过核实的AI新闻，外加每周回顾和下周展望（以英文和西班牙文发布；自2026年11月起，新报道也有中文版）。"),
               t("Benchmarks: rankings of AI models by category, with source, date and metric.", "Benchmarks: rankings de modelos de IA por categoría, con fuente, fecha y métrica.", "Benchmarks: rankings de modelos de IA por categoria, com fonte, data e métrica.", "基准测试：按类别排列的AI模型排名，注明来源、日期和指标。"),
               t("Guides, glossary and per-model templates for prompt engineering.", "Guías, glosario y plantillas por modelo para prompt engineering.", "Guias, glossário e templates por modelo para engenharia de prompt.", "提示词工程指南、术语表和按模型分类的模板。"),
             ],

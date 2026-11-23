@@ -7,13 +7,17 @@ import "server-only";
 
 import { loadArticles, loadBenchmarksSnapshot, loadEditions } from "./dynamic";
 import type { LlmsInput } from "./llms";
-import { isContentLang } from "@/lib/domain";
+import { isArticleLang, isContentLang } from "@/lib/domain";
 import type { Locale } from "./site";
 
 export async function loadLlmsInput(lang: Locale): Promise<LlmsInput> {
-  // AI Daily is written in es/en: a locale without an edition of its own lists none.
+  // AI Daily is written in es/en and, since v1.8.8, new stories also in zh
+  // (locales.zh). Only stories with text in this language are listed: under zh
+  // the loader also returns the English text of older stories, and those are
+  // linked from /en/llms.txt instead. pt has no edition of its own and lists none.
+  // The weekly digest stays es/en.
   const [articles, editions, benchmarks] = await Promise.all([
-    isContentLang(lang) ? loadArticles(lang, 200) : Promise.resolve([]),
+    isArticleLang(lang) ? loadArticles(lang, 200).then((list) => list.filter((a) => a.lang === lang)) : Promise.resolve([]),
     isContentLang(lang) ? loadEditions() : Promise.resolve([]),
     loadBenchmarksSnapshot(),
   ]);

@@ -122,7 +122,7 @@ export function summaryText(lang: Locale): string {
     "Promptea is a free prompt analyzer and optimizer: it scores a prompt from 0 to 100 on six criteria, lists what to fix and writes an optimized version for the AI model you choose. It also recommends which AI fits a task, publishes one verified AI story a day (AI Daily) and shows AI model benchmarks with source and date. Available in English, Spanish and Portuguese (AI Daily in English and Spanish). Designed and developed by eterlab.",
     "Promptea es un analizador y optimizador de prompts gratuito: puntúa un prompt de 0 a 100 en seis criterios, lista qué corregir y escribe una versión optimizada para el modelo de IA que elijas. También recomienda qué IA conviene para una tarea, publica una noticia de IA verificada por día (IA al Día) y muestra benchmarks de modelos con fuente y fecha. Disponible en español e inglés. Diseñada y desarrollada por eterlab.",
     "O Promptea é um analisador e otimizador de prompts gratuito: pontua um prompt de 0 a 100 em seis critérios, lista o que corrigir e escreve uma versão otimizada para o modelo de IA que você escolher. Também recomenda qual IA combina com uma tarefa, publica uma notícia de IA verificada por dia (AI Daily, em inglês e espanhol) e mostra benchmarks de modelos de IA com fonte e data. Disponível em inglês, espanhol e português. Design e desenvolvimento da eterlab.",
-    "Promptea是一款免费的提示词分析与优化工具：它按六项标准给提示词打0到100分，列出需要修改的地方，并针对你选择的AI模型写出优化后的版本。它还会推荐适合某项任务的AI，每天发布一条经过核实的AI新闻（AI Daily），并展示附有来源和日期的AI模型基准测试。提供英文、西班牙文、葡萄牙文和简体中文版本（AI Daily只有英文和西班牙文版）。由eterlab设计和开发。",
+    "Promptea是一款免费的提示词分析与优化工具：它按六项标准给提示词打0到100分，列出需要修改的地方，并针对你选择的AI模型写出优化后的版本。它还会推荐适合某项任务的AI，每天发布一条经过核实的AI新闻（AI Daily），并展示附有来源和日期的AI模型基准测试。提供英文、西班牙文、葡萄牙文和简体中文版本（AI Daily以英文和西班牙文发布，自2026年11月起新报道也有中文版）。由eterlab设计和开发。",
   );
 }
 
@@ -193,6 +193,28 @@ export function benchmarkSummary(snapshot: BenchmarksSnapshot | null, lang: Loca
   return [...head, ...benchmarkSections(sliced, lang, BENCH_ROWS)];
 }
 
+/** AI Daily stories, newest first across editions and capped, then grouped by edition. */
+function articleSections(articles: PublicArticle[], lang: Locale): string[] {
+  const out: string[] = [];
+  const urls = [...articles]
+    .sort((a, b) => (articleUpdated(b) > articleUpdated(a) ? 1 : -1))
+    .slice(0, LLMS_MAX_ARTICLES)
+    .map((a) => ({ a, url: articleUrl(a) }));
+
+  const byEdition = new Map<string, typeof urls>();
+  for (const x of urls) byEdition.set(x.a.edition, [...(byEdition.get(x.a.edition) ?? []), x]);
+  const editions = Array.from(byEdition.keys()).sort((x, y) => editionOrder(x) - editionOrder(y) || x.localeCompare(y));
+
+  for (const edition of editions) {
+    out.push(`## ${editionHeading(edition, lang)}`, "");
+    for (const { a, url } of byEdition.get(edition) ?? []) {
+      out.push(`- [${url.title.replace(/[[\]]/g, "")}](${absUrl(markdownPathOf(url.path))}): ${toDay(articleUpdated(a))} — ${url.description.replace(/\s+/g, " ").trim()}`);
+    }
+    out.push("");
+  }
+  return out;
+}
+
 function aiDailySections(i: LlmsInput): string[] {
   const t = tr(i.lang);
   const out: string[] = [];
@@ -214,30 +236,17 @@ function aiDailySections(i: LlmsInput): string[] {
       ...(i.lang === "zh" ? [`- [AI Daily（中文）](${absUrl("/zh/blog")})`] : []),
       ...CONTENT_LANGS.map((l) => `- [AI Daily — ${OTHER_INDEX_NAME[l]}](${absUrl(`/${l}/blog`)}): ${absUrl(`/${l}/llms.txt`)}`),
       "",
+      // v1.8.10: the stories the routines also wrote in Chinese (locales.zh) are
+      // listed under zh like any edition's. Only stories in this language, never
+      // the English text a /zh page falls back to.
+      ...articleSections(i.articles.filter((a) => a.lang === i.lang), i.lang),
     ];
   }
 
   // v1.8.4: an index with no stories yet (the Tech one) is not listed until its first story.
   const blog = withoutEmptySectionIndexes(staticSeoUrls(i.lang), i.lang, i.articles).filter((u) => u.section === "ai-daily");
   out.push(`## ${t("AI Daily and weekly digest", "IA al Día y resumen semanal", "AI Daily e resumo semanal", "AI Daily与每周摘要")}`, "", ...blog.map(link), "");
-
-  // Newest first across editions, capped; then grouped by edition.
-  const urls = [...i.articles]
-    .sort((a, b) => (articleUpdated(b) > articleUpdated(a) ? 1 : -1))
-    .slice(0, LLMS_MAX_ARTICLES)
-    .map((a) => ({ a, url: articleUrl(a) }));
-
-  const byEdition = new Map<string, typeof urls>();
-  for (const x of urls) byEdition.set(x.a.edition, [...(byEdition.get(x.a.edition) ?? []), x]);
-  const editions = Array.from(byEdition.keys()).sort((x, y) => editionOrder(x) - editionOrder(y) || x.localeCompare(y));
-
-  for (const edition of editions) {
-    out.push(`## ${editionHeading(edition, i.lang)}`, "");
-    for (const { a, url } of byEdition.get(edition) ?? []) {
-      out.push(`- [${url.title.replace(/[[\]]/g, "")}](${absUrl(markdownPathOf(url.path))}): ${toDay(articleUpdated(a))} — ${url.description.replace(/\s+/g, " ").trim()}`);
-    }
-    out.push("");
-  }
+  out.push(...articleSections(i.articles, i.lang));
 
   const eds = isContentLang(i.lang) ? i.editions.slice(0, LLMS_MAX_EDITIONS).map((e) => editionUrl(e, i.lang as ContentLang)) : [];
   if (eds.length > 0) {
