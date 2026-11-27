@@ -1,0 +1,23 @@
+> prompt-evaluator@1.9.0 seo:check
+seo:check against http://localhost:3190
+== robots.txt
+  ✓ robots.txt: 67 passed
+== sitemap.xml
+  ✓ sitemap.xml: 16 passed
+== llms.txt / llms-full.txt
+  ✓ llms.txt / llms-full.txt: 101 passed
+== markdown twins
+  ✓ markdown twins: 400 passed
+== agents
+  ✓ agents: 36 passed
+== pages (every sitemap URL)
+  ✓ pages (every sitemap URL): 452 passed
+== language entry (proxy)
+  ✓ language entry (proxy): 10 passed
+== /pt views of content without a Portuguese version
+  ✓ /pt views of content without a Portuguese version: 6 passed
+== /zh views of content without a Chinese version
+  ✓ /zh views of content without a Chinese version: 6 passed
+============================================================
+seo:check — 1094 passed, 0 failed, 0 warning(s)  [1094 checks]
+RESULT: PASS

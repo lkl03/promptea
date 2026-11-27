@@ -1,0 +1,26 @@
+
+== /zh
+
+== /pt
+
+== /es
+
+== /en
+
+== analyzer flow (pt)
+  ok  /pt/analyzer flow @1440
+  ok  /pt/analyzer flow @375
+
+== analyzer flow (zh)
+  ok  /zh/analyzer flow @1440
+  ok  /zh/analyzer flow @375
+
+6 note(s) to look at by hand (text with no Chinese under /zh):
+  /zh/how-it-works @1440 glass-dark: no Chinese in «GPT-6 Astra · GPT-6.1 Sol · GPT-6 Luna» (dd)
+  /zh/how-it-works @1440 glass-dark: no Chinese in «Claude Opus 5.5 · Claude Fable 5.2 · Claude Sonnet 5.5 · Claude Haiku » (dd)
+  /zh/how-it-works @1440 glass-dark: no Chinese in «Gemini 3.8 Flash · Gemini 4 Argon · Gemini 4 Carbon · Gemini 3.7 Flash» (dd)
+  /zh/how-it-works @1440 glass-dark: no Chinese in «Grok 4.7 · Grok 4.3 · Grok Build 0.1» (dd)
+  /zh/how-it-works @1440 glass-dark: no Chinese in «Kimi K3.1 Pro · Kimi K2.6 · Kimi K2.7 Code» (dd)
+  /zh/how-it-works @1440 glass-dark: no Chinese in «DeepSeek Flash (V4.1) · DeepSeek V4 Pro» (dd)
+
+280 page loads checked, 0 screenshot(s), 0 failure(s)
