@@ -157,4 +157,38 @@ describe.skipIf(!EMULATOR)("Firestore through firebase-admin (emulator)", () => 
     for (const r of results) if (!r.ok) expect(["budget_month", "budget_day", "store_unavailable"]).toContain(r.reason);
     expect((await store.snapshot(now)).monthSpentMicros).toBe(granted * 3000);
   }, 60_000);
+  test("v1.9.0 Agent-Ready: sessions (create-once, Timestamp expiry, transactional update) and the scan quota", async () => {
+    const { createFirestoreAuditStore, SCAN_QUOTA } = await import("@/lib/agentReady/store");
+    const { createSession } = await import("@/lib/agentReady/session");
+    const store = createFirestoreAuditStore();
+    expect(store.available()).toBe(true);
+
+    const audit = {
+      schema: 1, requestedUrl: "https://shop.example.com/", pageUrl: "https://shop.example.com/", origin: "https://shop.example.com", scannedAt: "2026-11-27T12:00:00.000Z",
+      stack: "next-app", score: 50, level: "readable", categories: [{ category: "bots", points: 5, max: 10, score: 50 }],
+      checks: [{ id: "bots.signals", category: "bots", status: "fail", weight: 3, points: 0, code: "no_signals", evidence: { lines: 0, named: ["GPTBot"], ok: false } }],
+      agentView: { title: "t", description: "d", lang: "en", words: 1, htmlBytes: 1, textBytes: 1, htmlTokens: 1, textTokens: 1, markdownTokens: null, headings: [{ level: 1, text: "h" }], jsonLdTypes: [], links: 0, text: "x", markdown: null },
+      humanView: { frameable: true, scripts: 0, images: 0, imagesWithAlt: 0, forms: 0, landmarks: [], textRatio: 0.1 },
+      requests: 11, durationMs: 5,
+    } as never;
+    const now = new Date("2026-11-27T12:00:00Z");
+    const session = createSession(audit, now);
+    await store.save(session);
+    await expect(store.save(session)).rejects.toMatchObject({ code: 6 }); // an id is never overwritten
+
+    const read = await store.get(session.id, now);
+    expect(read).toEqual(session);
+    const raw = await admin.getAdminFirestore().collection("agent_audits").doc(session.id).get();
+    expect(raw.get("expiresAt").toDate().toISOString()).toBe(session.expiresAt); // a Timestamp, for the TTL policy
+
+    const updated = await store.update(session.id, (s) => ({ ...s, plan: ["bots.signals"], id: "hijacked", expiresAt: "2999-01-01T00:00:00.000Z" }) as never, now);
+    expect(updated).toMatchObject({ id: session.id, expiresAt: session.expiresAt, plan: ["bots.signals"] });
+    expect(await store.get(session.id, new Date("2026-12-12T00:00:00Z"))).toBeNull(); // expired on read, policy or not
+    expect(await store.update(session.id, (s) => s, new Date("2026-12-12T00:00:00Z"))).toBeNull();
+    expect(await store.get("a".repeat(22), now)).toBeNull();
+
+    const results = await Promise.all(Array.from({ length: SCAN_QUOTA.perClientPerDay + 5 }, () => store.reserveScan("client-hash", now)));
+    expect(results.filter((r) => r.ok)).toHaveLength(SCAN_QUOTA.perClientPerDay); // concurrent reservations never cross the cap
+    expect(await store.reserveScan("other-client", now)).toEqual({ ok: true });
+  }, 60_000);
 });
