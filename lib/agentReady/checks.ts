@@ -10,31 +10,10 @@
 // catalog key on it) and evidence made of numbers, booleans and vetted strings.
 
 import { bodyFacts, headFacts, jsonLd, webMcpSignals, type BodyFacts, type HeadFacts, type JsonLdBlock } from "./html";
+import { CHECK_WEIGHTS } from "./weights";
 import { CHECK_IDS, type Category, type CheckId, type CheckResult, type CheckStatus, type Evidence, type Probe, type Snapshot } from "./types";
 
-export const CHECK_WEIGHTS: Record<CheckId, number> = {
-  "content.text": 12,
-  "content.semantics": 6,
-  "content.meta": 4,
-  "content.weight": 3,
-  "markdown.negotiation": 10,
-  "markdown.twin": 7,
-  "markdown.alternate": 3,
-  "structured.jsonld": 8,
-  "structured.types": 7,
-  "structured.social": 5,
-  "api.catalog": 4,
-  "api.openapi": 3,
-  "api.mcp": 5,
-  "api.webmcp": 2,
-  "api.skills": 1,
-  "bots.robots": 3,
-  "bots.ai-rules": 4,
-  "bots.signals": 3,
-  "discovery.sitemap": 4,
-  "discovery.links": 3,
-  "discovery.llms": 3,
-};
+export { CHECK_WEIGHTS };
 
 export const categoryOf = (id: CheckId): Category => id.split(".")[0] as Category;
 

@@ -41,7 +41,7 @@ export function prefersMarkdown(accept: string | null | undefined): boolean {
 }
 
 /** One-segment pages with a twin in every language. */
-export const NEGOTIATED_SINGLES: readonly string[] = ["how-it-works", "about", "methodology", "sources", "benchmarks", "analyzer", "best-ai", "flow"];
+export const NEGOTIATED_SINGLES: readonly string[] = ["how-it-works", "about", "methodology", "sources", "benchmarks", "analyzer", "best-ai", "flow", "agent-ready"];
 /** `/{lang}/<kind>/<slug>` kinds whose twin exists in every language whenever the page does. */
 export const NEGOTIATED_KINDS_ALL_LANGS: readonly string[] = ["glossary", "models", "landing"];
 /**

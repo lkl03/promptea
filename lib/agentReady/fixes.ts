@@ -13,7 +13,7 @@
 // The UI shows its own translated titles (dictionaries) for people.
 
 import type { DetectedStack } from "./html";
-import { CHECK_WEIGHTS } from "./checks";
+import { CHECK_WEIGHTS } from "./weights";
 import { CHECK_IDS, type CheckId } from "./types";
 
 export const FIX_STACKS = ["next-app", "generic"] as const;

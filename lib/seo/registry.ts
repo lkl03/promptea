@@ -151,6 +151,23 @@ export const CORE_PAGES: readonly CorePage[] = [
     markdown: true,
   },
   {
+    // v1.9.0: the Agent-Ready audit.
+    id: "agent-ready",
+    slug: "agent-ready",
+    section: "tools",
+    title: { en: "Agent-Ready: is your site ready for AI agents?", es: "Agent-Ready: ¿tu sitio está listo para los agentes de IA?", pt: "Agent-Ready: seu site está pronto para os agentes de IA?", zh: "Agent-Ready：你的网站为AI智能体做好准备了吗？" },
+    description: {
+      en: "Audit a website for AI-agent readiness: what an agent reads without JavaScript, markdown, structured data, API and MCP discovery, bot access. A score out of 100 and fixes your coding agent implements through Promptea's MCP server.",
+      es: "Auditá un sitio web para agentes de IA: qué lee un agente sin JavaScript, markdown, datos estructurados, descubrimiento de API y MCP, acceso de bots. Un puntaje sobre 100 y arreglos que tu agente de programación implementa por el servidor MCP de Promptea.",
+      pt: "Audite um site para agentes de IA: o que um agente lê sem JavaScript, markdown, dados estruturados, descoberta de API e MCP, acesso de bots. Uma nota de 0 a 100 e correções que o seu agente de programação implementa pelo servidor MCP do Promptea.",
+      zh: "审计网站对AI智能体的就绪程度：智能体在不运行JavaScript时能读到什么、markdown、结构化数据、API与MCP的可发现性、机器人访问权限。给出百分制评分，以及由你的编程智能体通过Promptea的MCP服务器实现的修复方案。",
+    },
+    updated: CONTENT_UPDATED.agentReady,
+    changeFrequency: "weekly",
+    priority: 0.8,
+    markdown: true,
+  },
+  {
     id: "benchmarks",
     slug: "benchmarks",
     section: "tools",

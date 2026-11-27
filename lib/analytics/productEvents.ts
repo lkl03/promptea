@@ -11,6 +11,8 @@
 //   Target Changed   { lang, target }  — the visitor picked a destination AI
 //   Template Copied  { lang, source }  — a template (guide), saved prompt (library) or flow step (flow, v1.8.9) was copied
 //   Flow Created     { lang, source }  — v1.8.9: a prompt flow came back, written by AI ("ai") or the engine ("basic")
+//   Site Audited     { lang, level }   — v1.9.0: an Agent-Ready audit came back (level: invisible, readable, friendly, ready)
+//   Agent Connected  { lang, client }  — v1.9.0: the "connect your agent" command or the fallback prompt was copied
 //
 // Dashboard: Project → Analytics → Events panel → pick the event name to split
 // it by property.
@@ -26,7 +28,9 @@ export type ProductEvent =
   | { name: "Prompt Copied"; lang: Lang; target: TargetAI }
   | { name: "Target Changed"; lang: Lang; target: TargetAI }
   | { name: "Template Copied"; lang: Lang; source: TemplateSource }
-  | { name: "Flow Created"; lang: Lang; source: "ai" | "basic" };
+  | { name: "Flow Created"; lang: Lang; source: "ai" | "basic" }
+  | { name: "Site Audited"; lang: Lang; level: "invisible" | "readable" | "friendly" | "ready" }
+  | { name: "Agent Connected"; lang: Lang; client: "claude" | "codex" | "cursor" | "prompt" };
 
 export type ProductEventName = ProductEvent["name"];
 
