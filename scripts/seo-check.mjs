@@ -385,6 +385,63 @@ async function checkLlms(origin) {
 }
 
 // ---------------------------------------------------------------------------
+// agents (v1.9.0): markdown negotiation, Link headers, Content Signals, API catalog
+// ---------------------------------------------------------------------------
+
+const variesOnAccept = (r) => (r.headers.get("vary") || "").split(",").some((v) => v.trim().toLowerCase() === "accept");
+
+async function checkAgents() {
+  group("agents");
+  const robots = await get("/robots.txt");
+  const signals = [...robots.body.matchAll(/^Content-Signal:\s*(.+)$/gim)].map((m) => m[1].trim());
+  const groups = (robots.body.match(/^User-Agent:/gim) || []).length;
+  record("robots.txt declares Content-Signal in every group", signals.length > 0 && signals.length === groups, `${signals.length} signal line(s) for ${groups} group(s)`);
+  record("Content-Signal names search, ai-input and ai-train", signals.every((s) => /\bsearch=(yes|no)\b/.test(s) && /\bai-input=(yes|no)\b/.test(s) && /\bai-train=(yes|no)\b/.test(s)), signals[0] || "(none)");
+
+  const NEGOTIATED = ["/en", "/es/about", "/pt/methodology", "/zh/benchmarks", "/en/analyzer", "/es/best-ai", "/zh/flow", "/en/guides/prompt-chaining", "/pt/models/claude"];
+  for (const p of NEGOTIATED) {
+    const md = await get(p, { headers: { "user-agent": "promptea-seo-check/1.0", accept: "text/markdown, text/html;q=0.8" } });
+    const problems = [];
+    if (md.status !== 200) problems.push(`status ${md.status}`);
+    if (mime(md) !== "text/markdown") problems.push(`content-type ${mime(md)}`);
+    if (!variesOnAccept(md)) problems.push(`Vary: ${md.headers.get("vary") || "(none)"}`);
+    if (md.status === 200 && !md.body.startsWith("# ")) problems.push("body is not markdown");
+    record(`Accept: text/markdown on ${p} returns the twin`, problems.length === 0, problems.join("; "));
+
+    const html = await get(p, { headers: { "user-agent": "promptea-seo-check/1.0", accept: "text/html,application/xhtml+xml,*/*;q=0.8" } });
+    const link = html.headers.get("link") || "";
+    const hp = [];
+    if (mime(html) !== "text/html") hp.push(`content-type ${mime(html)}`);
+    if (!link.includes(`<${p}.md>; rel="alternate"; type="text/markdown"`)) hp.push("Link has no markdown alternate");
+    if (!/rel="api-catalog"/.test(link) || !/rel="describedby"/.test(link)) hp.push("Link has no api-catalog/describedby");
+    record(`browser Accept on ${p} still returns HTML, with its Link headers`, hp.length === 0, hp.join("; "));
+  }
+  const optOut = await get("/en/about?format=html", { headers: { accept: "text/markdown" } });
+  record("?format=html opts out of negotiation", mime(optOut) === "text/html", mime(optOut));
+  for (const p of ["/en/changelog", "/pt/blog", "/zh/guides/prompt-chaining"]) {
+    const r = await get(p, { headers: { accept: "text/markdown" } });
+    record(`${p} (no twin in this language) answers HTML even when markdown is asked for`, r.status === 200 && mime(r) === "text/html", `status ${r.status}, ${mime(r)}`);
+  }
+
+  const cat = await get("/.well-known/api-catalog");
+  let linkset = null;
+  try { linkset = JSON.parse(cat.body).linkset; } catch {}
+  record("GET /.well-known/api-catalog is a linkset", cat.status === 200 && /application\/linkset\+json/.test(cat.headers.get("content-type") || "") && Array.isArray(linkset) && linkset.length > 0, `status ${cat.status}, ${cat.headers.get("content-type")}`);
+  const desc = linkset?.[0]?.["service-desc"]?.[0]?.href;
+  if (desc) {
+    const api = await get(new URL(desc).pathname);
+    let doc = null;
+    try { doc = JSON.parse(api.body); } catch {}
+    record("the catalog's service-desc is an OpenAPI 3.1 document", api.status === 200 && doc?.openapi?.startsWith("3.1") && !!doc.paths, `status ${api.status}`);
+    for (const path of Object.keys(doc?.paths ?? {})) {
+      const r = await get(path, { method: "HEAD" });
+      record(`documented endpoint ${path} answers 200`, r.status === 200, `status ${r.status}`);
+    }
+  }
+  summaryOfGroup("agents");
+}
+
+// ---------------------------------------------------------------------------
 // pages: head tags, headings, JSON-LD
 // ---------------------------------------------------------------------------
 
@@ -590,6 +647,7 @@ async function main() {
   await checkRobots();
   const { urls, origin } = await checkSitemap();
   await checkLlms(origin);
+  await checkAgents();
   if (urls.length > 0) await checkPages(urls, origin);
   await checkEntry();
   if (urls.length > 0) {

@@ -37,7 +37,7 @@ export async function generateMetadata({
       zh: "粘贴你的提示词，看看哪款AI最适合它：ChatGPT、Claude、Claude Code、Gemini、Grok、DeepSeek、Kimi、Qwen、GLM、MiniMax、Doubao或Perplexity，并附上理由、备选方案和具体建议。",
     });
 
-  return pageMetadata({ lang, path: `/${lang}/best-ai`, title, description });
+  return pageMetadata({ lang, path: `/${lang}/best-ai`, title, description, markdownPath: `/${lang}/best-ai.md` });
 }
 
 export default async function BestAiPage({ params }: { params: Promise<{ lang: string }> }) {

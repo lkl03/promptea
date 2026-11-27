@@ -99,3 +99,17 @@ export function isCrawlerAllowed(c: AiCrawler): boolean {
 
 /** Paths nobody (human crawler or AI) should fetch. */
 export const DISALLOWED_PATHS = ["/_next/"] as const;
+
+/**
+ * v1.9.0 — Content Signals (contentsignals.org), declared in robots.txt next to
+ * the crawler rules. They say what the content may be used for once fetched,
+ * and follow the three switches above so the two can never disagree:
+ *   search    — building a search index and showing links or short excerpts;
+ *   ai-input  — feeding a page to a model to answer one user's question;
+ *   ai-train  — training or fine-tuning models.
+ */
+export const CONTENT_SIGNALS = {
+  search: SEARCH_BOTS_ALLOWED,
+  "ai-input": USER_BOTS_ALLOWED,
+  "ai-train": TRAINING_BOTS_ALLOWED,
+} as const;

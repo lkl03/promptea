@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import robots from "@/app/robots";
+import { robotsRules as robots, robotsTxt } from "@/lib/seo/robotsTxt";
 import { AI_CRAWLERS, DISALLOWED_PATHS, isCrawlerAllowed, type AiCrawler } from "@/lib/seo/crawlers";
 
 type Rule = { userAgent?: string | string[]; allow?: string | string[]; disallow?: string | string[] };
-const rulesOf = (r: ReturnType<typeof robots>): Rule[] => (Array.isArray(r.rules) ? (r.rules as Rule[]) : [r.rules as Rule]);
+const rulesOf = (r: ReturnType<typeof robots>): Rule[] => r as Rule[];
 
 afterEach(() => {
   vi.doUnmock("@/lib/seo/crawlers");
@@ -65,9 +65,9 @@ describe("AI crawler policy", () => {
   });
 
   it("points at the sitemap and host", () => {
-    const r = robots();
-    expect(r.sitemap).toMatch(/\/sitemap\.xml$/);
-    expect(r.host).toMatch(/^https?:\/\//);
+    const txt = robotsTxt("https://www.promptea.me");
+    expect(txt).toMatch(/^Sitemap: https:\/\/www\.promptea\.me\/sitemap\.xml$/m);
+    expect(txt).toMatch(/^Host: https:\/\/www\.promptea\.me$/m);
   });
 
   it("allows everything by default (the current policy of the owner)", () => {
@@ -86,7 +86,7 @@ describe("AI crawler policy", () => {
       const real = await vi.importActual<typeof import("@/lib/seo/crawlers")>("@/lib/seo/crawlers");
       return { ...real, isCrawlerAllowed: (c: AiCrawler) => c.kind !== "training" && c.allow };
     });
-    const { default: robotsRefused } = await import("@/app/robots");
+    const { robotsRules: robotsRefused } = await import("@/lib/seo/robotsTxt");
     const rules = rulesOf(robotsRefused());
     expect(rules.find((r) => r.userAgent === "GPTBot")).toMatchObject({ disallow: "/" });
     expect(rules.find((r) => r.userAgent === "ClaudeBot")).toMatchObject({ disallow: "/" });
