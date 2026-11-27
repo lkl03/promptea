@@ -15,7 +15,7 @@
 //      host, so nobody can aim this at one site in a loop;
 //   5. per day, persisted: 25 scans per client and a global cap
 //      (lib/agentReady/store.ts);
-//   6. the scan itself: 11 requests at most, each one resolved, vetted and
+//   6. the scan itself: 12 requests at most, each one resolved, vetted and
 //      connected by safeFetch, with byte and time limits.
 // The engine is deterministic: no LLM is involved and nothing here costs money.
 

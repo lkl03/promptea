@@ -155,7 +155,7 @@ export function headFacts(html: string): HeadFacts {
     if ((p.startsWith("og:") || p.startsWith("twitter:")) && m.attrs.content && !(p in og)) og[p] = m.attrs.content.trim();
   }
   const rels = (l: HtmlTag) => (l.attrs.rel ?? "").toLowerCase().split(/\s+/).filter(Boolean);
-  const AGENT_RELS = ["api-catalog", "ai-catalog", "service-desc", "service-doc", "mcp", "describedby", "llms-txt"];
+  const AGENT_RELS = ["api-catalog", "ai-catalog", "ard", "service-desc", "service-doc", "mcp", "describedby", "llms-txt"];
   return {
     title: textOf(blocks(head, "title")[0]?.inner ?? ""),
     description: meta("description"),

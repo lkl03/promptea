@@ -80,7 +80,7 @@ export type Probe = {
   finalUrl: string;
 };
 
-export const PROBE_KEYS = ["page", "pageMarkdown", "pageTwin", "robots", "llms", "sitemap", "apiCatalog", "aiCatalog", "mcpCard", "skills", "openapi"] as const;
+export const PROBE_KEYS = ["page", "pageMarkdown", "pageTwin", "robots", "llms", "sitemap", "apiCatalog", "aiCatalog", "ardCatalog", "mcpCard", "skills", "openapi"] as const;
 export type ProbeKey = (typeof PROBE_KEYS)[number];
 
 export type Snapshot = {

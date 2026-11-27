@@ -174,7 +174,7 @@ describe("collect", () => {
     const { fetcher, calls } = site(GOOD_ROUTES);
     const snap = await collect("https://good.example.com/", { fetcher });
     expect(snap.origin).toBe("https://good.example.com");
-    expect(calls.length).toBe(11);
+    expect(calls.length).toBe(12);
     expect(new Set(calls.map((c) => new URL(c.url).origin))).toEqual(new Set(["https://good.example.com"]));
     expect(snap.probes.pageMarkdown.contentType).toBe("text/markdown");
   });
@@ -240,14 +240,14 @@ describe("runAudit", () => {
     expect(audit.score).toBe(100);
     expect(audit.level).toBe("ready");
     expect(audit.scannedAt).toBe("2026-11-27T12:00:00.000Z");
-    expect(audit.requests).toBe(11);
+    expect(audit.requests).toBe(12);
     expect(audit.agentView.markdownTokens).toBeGreaterThan(0);
     expect(audit.agentView.jsonLdTypes).toEqual(["Organization", "WebSite", "SoftwareApplication"]);
     // Refusing a training crawler (GPTBot) costs nothing.
     expect(audit.checks.find((c) => c.id === "bots.ai-rules")?.evidence.blockedTraining).toEqual(["GPTBot"]);
-    // Events: start, 11 probes, 21 checks, done — in that order.
-    expect(events.map((e) => e.type).join(",")).toMatch(/^start,(probe,){11}(check,){21}done$/);
-    expect(events.filter((e) => e.type === "probe")).toHaveLength(11);
+    // Events: start, 12 probes, 21 checks, done — in that order.
+    expect(events.map((e) => e.type).join(",")).toMatch(/^start,(probe,){12}(check,){21}done$/);
+    expect(events.filter((e) => e.type === "probe")).toHaveLength(12);
     expect(events.filter((e) => e.type === "check")).toHaveLength(21);
     expect(events.at(-1)?.type).toBe("done");
   });

@@ -256,14 +256,15 @@ function apiOpenApi({ snapshot }: Context): Verdict {
 function apiMcp({ snapshot, head }: Context): Verdict {
   const card = parseJson(snapshot.probes.mcpCard);
   if (isRecord(card) && (typeof card.name === "string" || isRecord(card.serverInfo))) return { status: "pass", code: "server_card", evidence: {} };
-  const catalog = parseJson(snapshot.probes.aiCatalog);
+  // The AI catalog: /.well-known/ard.json (current) or /.well-known/ai-catalog.json (predecessor).
+  const catalog = [parseJson(snapshot.probes.ardCatalog), parseJson(snapshot.probes.aiCatalog)].find((c) => isRecord(c) && Array.isArray(c.entries));
   if (isRecord(catalog) && Array.isArray(catalog.entries)) {
     const mcp = catalog.entries.filter((e) => isRecord(e) && typeof e.type === "string" && /mcp/i.test(e.type)).length;
     if (mcp > 0) return { status: "pass", code: "ai_catalog_mcp", evidence: { entries: catalog.entries.length, mcp } };
     return { status: "warn", code: "ai_catalog_without_mcp", evidence: { entries: catalog.entries.length } };
   }
   const rels = [...linkHeaderRels(snapshot.probes.page), ...head.agentLinks.map((l) => l.rel)];
-  if (rels.includes("mcp") || rels.includes("ai-catalog")) return { status: "warn", code: "mcp_link_only", evidence: {} };
+  if (rels.includes("mcp") || rels.includes("ai-catalog") || rels.includes("ard")) return { status: "warn", code: "mcp_link_only", evidence: {} };
   return { status: "fail", code: "no_mcp", evidence: {} };
 }
 
@@ -321,7 +322,7 @@ function discoverySitemap({ snapshot, robots }: Context): Verdict {
   return { status: "fail", code: "no_sitemap", evidence: { status: p.status } };
 }
 
-const DISCOVERY_RELS = ["api-catalog", "ai-catalog", "service-desc", "service-doc", "describedby", "sitemap", "mcp", "llms-txt"];
+const DISCOVERY_RELS = ["api-catalog", "ai-catalog", "ard", "service-desc", "service-doc", "describedby", "sitemap", "mcp", "llms-txt"];
 
 function discoveryLinks({ snapshot, head }: Context): Verdict {
   const headerRels = linkHeaderRels(snapshot.probes.page).filter((r) => DISCOVERY_RELS.includes(r));
