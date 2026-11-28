@@ -191,3 +191,6 @@ export type UiDict = {
   /** v1.8.0: share button strings (the share page has its own, richer, copy). */
   share: { button: string; copied: string; shareText: string; shareTextSingle: string };
 };
+
+/** v1.9.0 — Agent-Ready (/[lang]/agent-ready). The JSON is the source of the shape. */
+export type AgentReadyDict = (typeof import("@/app/[lang]/dictionaries/en.json"))["agentReady"];

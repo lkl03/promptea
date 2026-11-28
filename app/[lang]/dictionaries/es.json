@@ -411,6 +411,10 @@
       "flow": {
         "title": "Dividir una tarea en pasos",
         "body": "Escribí la tarea y te devolvemos una cadena de prompts, con la mejor IA para cada paso."
+      },
+      "agentReady": {
+        "title": "Revisá si los agentes pueden leer tu sitio",
+        "body": "Puntualo, mirá qué lee un agente y pasale los arreglos a tu agente de programación."
       }
     },
     "howItWorks": "Cómo funciona",
@@ -552,7 +556,8 @@
     "library": "Biblioteca",
     "footerTech": "Tech",
     "footerSources": "Fuentes",
-    "flow": "Flujo"
+    "flow": "Flujo",
+    "agentReady": "Agent-Ready"
   },
   "howItWorksPage": {
     "breadcrumb": "Ruta de navegación",
@@ -743,5 +748,314 @@
     ],
     "guideLink": "Guía: cómo encadenar prompts",
     "copyAllTitle": "Flujo de prompts (Promptea)"
+  },
+  "agentReady": {
+    "title": "¿Tu sitio está listo para los agentes de IA?",
+    "subtitle": "Soltá un sitio. Mirá qué lee de verdad un agente, recibí un puntaje sobre 100 y un plan de arreglos que tu agente de programación puede implementar solo.",
+    "canvas": {
+      "aria": "Sitio a auditar",
+      "dropTitle": "Soltá un sitio acá",
+      "dropHint": "Un enlace, una ficha de URL o un archivo sitemap.xml / .html",
+      "dropActive": "Soltá para escanear",
+      "inputLabel": "O escribí la dirección",
+      "placeholder": "tusitio.com",
+      "scanCta": "Escanear",
+      "examplesLabel": "O arrastrá uno de estos",
+      "chipAria": "Escanear {site}. Arrastralo al lienzo o apretá Enter.",
+      "note": "Gratis. Sin cuenta. El escaneo hace 12 pedidos al sitio y no usa IA."
+    },
+    "errors": {
+      "invalid_url": "Eso no parece una dirección web.",
+      "blocked": "Esa dirección no se puede escanear: solo sitios públicos en los puertos estándar.",
+      "dns_failed": "Ese dominio no existe o no responde.",
+      "timeout": "El sitio tardó demasiado en responder.",
+      "network": "No se pudo llegar al sitio.",
+      "rate_limited": "Demasiados escaneos seguidos. Esperá un minuto y probá de nuevo.",
+      "target_busy": "Ese sitio se acaba de escanear varias veces. Probá en un minuto.",
+      "quota": "Llegaste al límite de escaneos de hoy. Se renueva mañana.",
+      "scan_failed": "El escaneo falló. Probá de nuevo.",
+      "file_no_url": "No se encontró ninguna dirección web en ese archivo.",
+      "file_type": "Soltá un sitemap (.xml), una página (.html) o un archivo de texto con un enlace.",
+      "session_gone": "Esa auditoría ya no existe: se guardan 14 días. Escaneá el sitio de nuevo."
+    },
+    "pipeline": {
+      "title": "Escaneando {site}",
+      "fetching": "Pidiendo lo que pediría un agente",
+      "checking": "Corriendo los 21 chequeos",
+      "probesAria": "Pedidos hechos al sitio",
+      "checksAria": "Chequeos por categoría",
+      "probes": {
+        "page": "La página",
+        "pageMarkdown": "Página como markdown",
+        "pageTwin": "Gemelo .md",
+        "robots": "robots.txt",
+        "llms": "llms.txt",
+        "sitemap": "Sitemap",
+        "apiCatalog": "Catálogo de API",
+        "aiCatalog": "Catálogo de IA",
+        "ardCatalog": "Catálogo ARD",
+        "mcpCard": "Card de MCP",
+        "skills": "Índice de skills",
+        "openapi": "OpenAPI"
+      },
+      "found": "está",
+      "missing": "falta",
+      "summary": "{n} pedidos en {ms} ms"
+    },
+    "score": {
+      "label": "Puntaje Agent-Ready",
+      "aria": "Puntaje: {score} sobre 100. Nivel: {level}.",
+      "outOf": "sobre 100",
+      "levels": {
+        "invisible": "Invisible para agentes",
+        "readable": "Legible",
+        "friendly": "Amigable con agentes",
+        "ready": "Listo para agentes"
+      },
+      "levelHints": {
+        "invisible": "Un agente saca poco que pueda usar de este sitio.",
+        "readable": "Los agentes lo pueden leer, con un costo alto y con huecos.",
+        "friendly": "Los agentes lo leen bien. Falta una forma de usarlo.",
+        "ready": "Los agentes lo leen barato y encuentran lo que ofrece."
+      },
+      "stack": "Stack detectado",
+      "stacks": {
+        "next-app": "Next.js (App Router)",
+        "next-pages": "Next.js (Pages Router)",
+        "astro": "Astro",
+        "wordpress": "WordPress",
+        "generic": "Sin identificar"
+      },
+      "scanned": "Escaneado el {date}",
+      "rescan": "Escanear de nuevo",
+      "newScan": "Otro sitio",
+      "share": "Copiar enlace",
+      "linkCopied": "Enlace copiado",
+      "shareHint": "Cualquiera con el enlace puede ver esta auditoría durante 14 días."
+    },
+    "categories": {
+      "content": "Contenido",
+      "markdown": "Markdown",
+      "structured": "Datos estructurados",
+      "api": "API y MCP",
+      "bots": "Acceso de bots",
+      "discovery": "Descubrimiento"
+    },
+    "status": {
+      "pass": "Pasa",
+      "warn": "Parcial",
+      "fail": "Falta"
+    },
+    "checks": {
+      "content.text": {
+        "title": "Texto sin JavaScript",
+        "body": "La mayoría de los agentes lee el HTML y no ejecuta scripts. El texto tiene que estar cuando llega la página."
+      },
+      "content.semantics": {
+        "title": "Estructura semántica",
+        "body": "Un h1, encabezados en orden, un <main> y el idioma declarado: así un agente encuentra la parte que responde."
+      },
+      "content.meta": {
+        "title": "Título, descripción y canónica",
+        "body": "Lo que un agente muestra cuando lista la página y la URL que tiene que citar."
+      },
+      "content.weight": {
+        "title": "Peso del HTML",
+        "body": "Cada byte de HTML le cuesta tokens al agente. Una página pesada deja el contenido fuera de su contexto."
+      },
+      "markdown.negotiation": {
+        "title": "Markdown a pedido",
+        "body": "Responder Accept: text/markdown con markdown le da al agente la misma página por una fracción de los tokens."
+      },
+      "markdown.twin": {
+        "title": "Gemelo markdown (.md)",
+        "body": "Una URL .md estable por página: un documento limpio para pedir y algo que vale la pena enlazar desde llms.txt."
+      },
+      "markdown.alternate": {
+        "title": "Markdown anunciado",
+        "body": "Un link en el head o una cabecera Link le avisa al agente que la versión markdown existe."
+      },
+      "structured.jsonld": {
+        "title": "JSON-LD válido",
+        "body": "Los datos estructurados declaran hechos (quién, qué, precio, fecha) para que el agente no tenga que deducirlos del texto."
+      },
+      "structured.types": {
+        "title": "Los tipos de schema.org correctos",
+        "body": "El tipo que corresponde a la página (Article, Product, FAQPage…) es lo que le permite a un agente responder una pregunta puntual."
+      },
+      "structured.social": {
+        "title": "Open Graph",
+        "body": "Los metadatos de respaldo que muchos agentes leen cuando no hay JSON-LD: título, descripción e imagen."
+      },
+      "api.catalog": {
+        "title": "Catálogo de API",
+        "body": "/.well-known/api-catalog es donde un agente se entera de que el sitio tiene una API, sin adivinar URLs."
+      },
+      "api.openapi": {
+        "title": "Descripción OpenAPI",
+        "body": "Rutas, parámetros y formas de respuesta, para que un agente llame bien a la API al primer intento."
+      },
+      "api.mcp": {
+        "title": "Servidor MCP descubrible",
+        "body": "MCP es la forma en que los agentes usan un producto en vez de solo leer sobre él. Un catálogo les deja encontrar el servidor desde el dominio."
+      },
+      "api.webmcp": {
+        "title": "WebMCP en la página",
+        "body": "Permite que un agente de navegador llame a las acciones de la página como herramientas. Es una propuesta temprana de Chrome; acá se lee de forma estática."
+      },
+      "api.skills": {
+        "title": "Índice de skills",
+        "body": "Instrucciones empaquetadas que les dicen a los agentes de programación cómo trabajar con el producto."
+      },
+      "bots.robots": {
+        "title": "robots.txt",
+        "body": "El primer archivo que lee todo crawler o agente bien portado: ahí van las reglas, las señales y el sitemap."
+      },
+      "bots.ai-rules": {
+        "title": "Reglas para agentes de IA",
+        "body": "Bloquear los bots que actúan por una persona deja el sitio ilegible para los asistentes. Rechazar los de entrenamiento es tu decisión y acá no resta."
+      },
+      "bots.signals": {
+        "title": "Content Signals",
+        "body": "Decí para qué se puede usar el contenido: búsqueda, responderle a un usuario, entrenamiento."
+      },
+      "discovery.sitemap": {
+        "title": "Sitemap",
+        "body": "La lista completa de lo que el sitio quiere que se lea, en vez de URLs adivinadas desde los enlaces."
+      },
+      "discovery.links": {
+        "title": "Cabeceras Link",
+        "body": "Le dicen al agente dónde están los recursos legibles por máquina antes de leer un byte de HTML."
+      },
+      "discovery.llms": {
+        "title": "llms.txt",
+        "body": "Un índice corto en markdown de las páginas que vale la pena leer. Es barato; la evidencia de que los agentes lo piden solos todavía es poca, por eso pesa poco."
+      }
+    },
+    "views": {
+      "title": "La misma página, dos lectores",
+      "human": "Lo que ve una persona",
+      "agent": "Lo que lee un agente",
+      "livePreview": "Vista en vivo de {site}",
+      "blockedPreview": "Este sitio no permite que lo incrusten, así que acá va su estructura.",
+      "wire": {
+        "scripts": "scripts",
+        "images": "imágenes",
+        "withAlt": "con texto alternativo",
+        "forms": "formularios",
+        "textShare": "del HTML es texto"
+      },
+      "tabHtml": "Texto del HTML",
+      "tabMarkdown": "Su markdown",
+      "tabsAria": "Qué lee el agente",
+      "noText": "Sin ejecutar JavaScript no llega texto. Esto es todo lo que recibe un agente.",
+      "tokensTitle": "Lo que cuesta leerla",
+      "tokens": {
+        "html": "HTML crudo",
+        "text": "Solo el texto",
+        "markdown": "Markdown"
+      },
+      "tokensUnit": "~{n} tokens",
+      "noMarkdown": "no se sirve",
+      "outline": "Estructura",
+      "noOutline": "No se encontraron encabezados.",
+      "types": "Datos estructurados",
+      "noTypes": "ninguno",
+      "words": "{n} palabras",
+      "untrusted": "Texto tomado de la página auditada, mostrado tal cual.",
+      "resize": "Cambiar el tamaño de las dos vistas"
+    },
+    "board": {
+      "title": "Hallazgos y plan de arreglos",
+      "hint": "Arrastrá un hallazgo al plan y ordenalo como querés que se arregle. Tu agente sigue este orden.",
+      "keyboardHint": "Con el teclado: enfocá el agarre de una tarjeta, apretá Espacio para levantarla, las flechas para moverla y Espacio para soltarla. O usá los botones de cada tarjeta.",
+      "findings": "Hallazgos",
+      "findingsEmpty": "Todo lo abierto está en el plan.",
+      "plan": "Plan de arreglos",
+      "planEmpty": "Soltá hallazgos acá. Vacío significa: primero lo que más puntos da.",
+      "passed": "Ya pasan ({n})",
+      "allPassed": "No hay nada que arreglar: pasan todos los chequeos.",
+      "add": "Sumar al plan",
+      "addAll": "Sumar todos",
+      "remove": "Sacar del plan",
+      "up": "Subir",
+      "down": "Bajar",
+      "handle": "Arrastrar {title}",
+      "points": "+{n} pts",
+      "effortLabel": "Esfuerzo",
+      "effort": {
+        "S": "chico",
+        "M": "mediano",
+        "L": "grande"
+      },
+      "done": "Hecho",
+      "markDone": "Marcar como hecho",
+      "reopen": "Reabrir",
+      "position": "{n} de {total}",
+      "announce": {
+        "picked": "Levantaste {title}.",
+        "movedPlan": "{title} está en la posición {n} de {total} del plan.",
+        "overPlan": "{title} está sobre el plan de arreglos.",
+        "overFindings": "{title} está sobre los hallazgos.",
+        "added": "{title} sumado al plan en la posición {n}.",
+        "removed": "{title} sacado del plan.",
+        "dropped": "Soltaste {title}.",
+        "cancelled": "Movimiento cancelado."
+      }
+    },
+    "connect": {
+      "title": "Que lo arregle tu agente",
+      "lead": "Esta auditoría quedó guardada. Conectá tu agente de programación en un paso: lee los hallazgos, sigue tu plan e implementa cada arreglo en tu repo, con una prueba de aceptación por arreglo.",
+      "tabsAria": "Tu agente de programación",
+      "claudeHint": "Corré esto en la carpeta de tu proyecto y después pedile a Claude Code: «Implementá la auditoría de Promptea».",
+      "codexHint": "Agregá esto a ~/.codex/config.toml y después pedile a Codex que implemente la auditoría de Promptea.",
+      "cursorHint": "Agregá esto a .cursor/mcp.json en tu proyecto, o instalalo con el botón.",
+      "cursorInstall": "Agregar a Cursor",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "steps": [
+        "Tu agente lee la auditoría y tu plan.",
+        "Implementa cada arreglo y corre su prueba de aceptación.",
+        "Cuando desplegás, vuelve a escanear y el puntaje de acá se actualiza."
+      ],
+      "progress": "{done} de {total} arreglos hechos",
+      "live": "Se actualiza mientras tu agente trabaja",
+      "secret": "La dirección incluye el id privado de esta auditoría. Compartila solo con tu propio agente.",
+      "noSession": "Esta auditoría no se pudo guardar, así que no hay a qué conectarse. Igual podés copiar los arreglos como prompt.",
+      "fallbackTitle": "¿Sin MCP? Copialo como prompt",
+      "fallbackBody": "Los mismos arreglos, en el orden de tu plan, como un solo prompt en markdown para pegar en cualquier IA.",
+      "copyPrompt": "Copiar el prompt de arreglos",
+      "services": "¿Preferís que lo haga alguien? eterlab, el estudio detrás de Promptea, lo implementa por vos.",
+      "servicesCta": "Hablar con eterlab"
+    },
+    "howTitle": "Cómo funciona",
+    "how": [
+      "Promptea pide la página como lo hace un agente: sin JavaScript, más los archivos que los agentes buscan (robots.txt, sitemap, llms.txt, catálogos de API y de MCP).",
+      "Corren 21 chequeos sobre lo que volvió. Son reglas determinísticas: el mismo sitio saca el mismo puntaje y ninguna IA lo decide.",
+      "Ves la página al lado de lo que un agente lee de ella y ordenás los hallazgos en un plan de arreglos.",
+      "La auditoría queda guardada 14 días. Tu agente de programación se conecta por el servidor MCP de Promptea e implementa el plan en tu repo."
+    ],
+    "weightsTitle": "Qué mide el puntaje",
+    "weightsBody": "Los 100 puntos se inclinan hacia lo que los agentes usan hoy de forma comprobable: texto que existe sin JavaScript, markdown, datos estructurados y APIs o MCP. llms.txt vale 3 puntos, porque todavía hay poca evidencia de que los agentes lo lean solos.",
+    "weightsUnit": "{n} puntos",
+    "faqTitle": "Preguntas frecuentes",
+    "faq": [
+      {
+        "q": "¿Qué significa «agent-ready»?",
+        "a": "Que un agente de IA enviado a tu sitio puede leerlo barato, entender lo que dice y encontrar qué puede hacer ahí: una API, un servidor MCP, un formulario. Los agentes ya son visitantes por derecho propio, y la mayoría no ejecuta JavaScript ni mira el diseño."
+      },
+      {
+        "q": "¿La auditoría usa IA?",
+        "a": "No. Los chequeos son reglas determinísticas que corren en el servidor de Promptea sobre lo que devuelve tu sitio. El mismo sitio saca siempre el mismo puntaje."
+      },
+      {
+        "q": "¿Qué hace mi agente de programación con la auditoría?",
+        "a": "Se conecta al servidor MCP de Promptea con la dirección que aparece después del escaneo. Desde ahí lee los hallazgos, recibe cada arreglo con los archivos y el código para tu stack, lo implementa en tu repositorio, lo comprueba y lo marca como hecho. Cuando desplegás, puede volver a escanear."
+      },
+      {
+        "q": "¿Qué guarda Promptea?",
+        "a": "La auditoría de la página pública que escaneaste, tu plan de arreglos y qué arreglos están hechos, durante 14 días. Sin cuenta, sin mail, sin dirección IP. Cualquiera con el enlace de la auditoría puede verla, así que compartilo solo con personas o agentes de confianza."
+      }
+    ]
   }
 }

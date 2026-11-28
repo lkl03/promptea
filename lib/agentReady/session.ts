@@ -14,9 +14,7 @@
 //   - free of personal data: no IP, no user agent, no account. The audited URL
 //     is a public page the person chose to scan.
 //
-// Pure helpers here; the storage is in store.ts.
-
-import { randomBytes } from "node:crypto";
+// Pure helpers here (no Node-only imports: the page uses the ordering too); the storage is in store.ts.
 
 import { CHECK_IDS, type Audit, type CheckId } from "./types";
 
@@ -41,8 +39,10 @@ export type AuditSession = {
   lastRecheckAt: string | null;
 };
 
+/** 128 random bits as base64url (22 characters). Web Crypto, so this module also loads in the browser. */
 export function newSessionId(): string {
-  return randomBytes(16).toString("base64url");
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
 export function isSessionId(x: unknown): x is string {

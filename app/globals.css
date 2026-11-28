@@ -1758,3 +1758,544 @@ html {
     line-height: 1.25;
   }
 }
+
+/* ── v1.9.0 Agent-Ready (/[lang]/agent-ready) ────────────────────────────────
+   The drop canvas, the live scan pipeline, the score dial, the two-reader view
+   and the findings board. Design tokens only, so Aqua, Metro and Glass each
+   draw it in their own material. Every animation lives inside
+   `prefers-reduced-motion: no-preference`; without it the same states appear
+   at once. Heights that depend on data are reserved (min-height) so nothing
+   shifts when a scan starts or ends. */
+.ar-stage {
+  min-height: 26rem;
+}
+.ar-canvas {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1.5px dashed var(--line-strong);
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--accent-soft), transparent 62%),
+    var(--surface-soft);
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    transform 260ms var(--ease-out-strong);
+}
+.ar-canvas[data-over="true"] {
+  border-color: var(--accent);
+  border-style: solid;
+  transform: scale(1.01);
+}
+/* The radar: concentric rings behind the drop target. Decorative. */
+.ar-radar {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.ar-radar > span {
+  position: absolute;
+  width: var(--d);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  opacity: 0.7;
+}
+.ar-drop-icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1.1rem;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  transition: transform 260ms var(--ease-out-strong);
+}
+.ar-canvas[data-over="true"] .ar-drop-icon {
+  transform: translateY(4px) scale(1.08);
+}
+.ar-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 2.25rem;
+  padding-inline: 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: grab;
+  user-select: none;
+  transition:
+    transform 160ms var(--ease-out-strong),
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+.ar-chip:active {
+  cursor: grabbing;
+  transform: scale(0.97);
+}
+.ar-chip[data-dragging="true"] {
+  opacity: 0.45;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ar-chip:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgb(var(--shadow-color) / 0.12);
+  }
+}
+.ar-chip-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* Pipeline: one node per request, then one lane per category. */
+.ar-probes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+@media (min-width: 640px) {
+  .ar-probes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .ar-probes {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+.ar-probe {
+  position: relative;
+  min-width: 0;
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  transition:
+    border-color 220ms ease,
+    background-color 220ms ease;
+}
+.ar-probe[data-state="pending"] {
+  opacity: 0.55;
+}
+.ar-probe[data-state="found"] {
+  border-color: var(--success);
+  background: var(--success-soft);
+}
+.ar-probe[data-state="missing"] {
+  border-color: var(--line-strong);
+}
+.ar-probe-led {
+  width: 0.5rem;
+  height: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+.ar-probe[data-state="found"] .ar-probe-led {
+  background: var(--success);
+}
+.ar-probe[data-state="missing"] .ar-probe-led {
+  background: var(--warning);
+}
+.ar-lane-track {
+  display: flex;
+  gap: 4px;
+  height: 0.6rem;
+}
+.ar-lane-cell {
+  flex: var(--w, 1) 1 0;
+  min-width: 4px;
+  border-radius: 3px;
+  background: var(--line);
+  transition: background-color 240ms ease;
+}
+.ar-lane-cell[data-status="pass"] {
+  background: var(--success);
+}
+.ar-lane-cell[data-status="warn"] {
+  background: var(--warning);
+}
+.ar-lane-cell[data-status="fail"] {
+  background: var(--danger);
+}
+
+/* Score dial. */
+.ar-dial {
+  position: relative;
+  width: 9.5rem;
+  height: 9.5rem;
+  flex-shrink: 0;
+}
+.ar-dial svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.ar-dial-track {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 9;
+}
+.ar-dial-value {
+  fill: none;
+  stroke: var(--dial, var(--accent));
+  stroke-width: 9;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1100ms var(--ease-out-strong);
+}
+.ar-dial[data-level="invisible"] {
+  --dial: var(--danger);
+}
+.ar-dial[data-level="readable"] {
+  --dial: var(--warning);
+}
+.ar-dial[data-level="friendly"] {
+  --dial: var(--info);
+}
+.ar-dial[data-level="ready"] {
+  --dial: var(--success);
+}
+.ar-bar {
+  height: 0.4rem;
+  border-radius: 9999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.ar-bar > span {
+  display: block;
+  height: 100%;
+  width: var(--v, 0%);
+  border-radius: inherit;
+  background: var(--bar, var(--accent));
+  transition: width 900ms var(--ease-out-strong);
+}
+
+/* Two readers, side by side from md up, with a draggable divider. */
+.ar-split {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+.ar-split-handle {
+  display: none;
+}
+@media (min-width: 768px) {
+  .ar-split {
+    gap: 0;
+    grid-template-columns: minmax(0, calc(var(--split, 50) * 1%)) 1.25rem minmax(0, 1fr);
+  }
+  .ar-split-handle {
+    display: grid;
+    place-items: center;
+    cursor: col-resize;
+    touch-action: none;
+    border-radius: 9999px;
+  }
+  .ar-split-handle::before {
+    content: "";
+    width: 4px;
+    height: 3rem;
+    border-radius: 9999px;
+    background: var(--line-strong);
+    transition:
+      background-color 160ms ease,
+      height 200ms var(--ease-out-strong);
+  }
+  .ar-split-handle:hover::before,
+  .ar-split-handle:focus-visible::before,
+  .ar-split-handle[data-dragging="true"]::before {
+    background: var(--accent);
+    height: 4.5rem;
+  }
+}
+.ar-pane {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ar-pane-body {
+  height: 22rem;
+  overflow: auto;
+  border-radius: 0.85rem;
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+}
+.ar-agent-text {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.ar-frame {
+  width: 200%;
+  height: 200%;
+  border: 0;
+  transform: scale(0.5);
+  transform-origin: 0 0;
+  background: #fff;
+}
+/* The schematic page: blocks for the landmarks the HTML declares. */
+.ar-wire {
+  display: grid;
+  gap: 6px;
+  padding: 0.85rem;
+  min-height: 100%;
+  grid-template-rows: auto auto 1fr auto;
+}
+.ar-wire-block {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px dashed var(--line-strong);
+  background: var(--surface-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.ar-wire-block[data-missing="true"] {
+  opacity: 0.4;
+}
+.ar-wire-main {
+  align-items: flex-start;
+  flex-direction: column;
+}
+.ar-wire-line {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line-strong);
+  opacity: 0.6;
+}
+
+/* Board: findings on the left, the plan on the right. */
+.ar-board {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 900px) {
+  .ar-board {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+.ar-lane {
+  min-width: 0;
+  border-radius: 1.1rem;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  padding: 0.75rem;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+.ar-lane[data-over="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.ar-lane-list {
+  display: grid;
+  gap: 0.5rem;
+  min-height: 5.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-content: start;
+}
+.ar-card {
+  position: relative;
+  min-width: 0;
+  border-radius: 0.9rem;
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  padding: 0.65rem 0.7rem;
+  touch-action: manipulation;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+}
+.ar-card[data-status="fail"] {
+  border-inline-start: 3px solid var(--danger);
+}
+.ar-card[data-status="warn"] {
+  border-inline-start: 3px solid var(--warning);
+}
+.ar-card[data-done="true"] {
+  border-inline-start-color: var(--success);
+}
+.ar-card[data-dragging="true"] {
+  opacity: 0.35;
+}
+.ar-card[data-overlay="true"] {
+  cursor: grabbing;
+  border-color: var(--accent);
+  box-shadow: 0 18px 40px rgb(var(--shadow-color) / 0.28);
+  transform: rotate(-1.2deg) scale(1.02);
+}
+.ar-handle {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  color: var(--ink-faint);
+  cursor: grab;
+  touch-action: none;
+}
+.ar-handle:active {
+  cursor: grabbing;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ar-handle:hover {
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+  .ar-card:hover {
+    border-color: var(--line-strong);
+  }
+}
+.ar-plan-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 11px;
+  font-weight: 600;
+}
+.ar-card[data-done="true"] .ar-plan-num {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.ar-code {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  overflow-x: auto;
+  white-space: pre;
+  border-radius: 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--surface-raised);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.ar-tab {
+  height: 2.1rem;
+  padding-inline: 0.8rem;
+  border-radius: 0.6rem;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.ar-tab[aria-selected="true"] {
+  background: var(--surface-raised);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.12);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ar-radar > span {
+    animation: ar-ring 4.8s ease-out infinite;
+    animation-delay: calc(var(--i, 0) * -1.2s);
+  }
+  .ar-canvas[data-over="true"] .ar-radar > span {
+    animation-duration: 1.6s;
+    border-color: var(--accent);
+  }
+  .ar-probe[data-state="pending"] .ar-probe-led {
+    animation: ar-blink 900ms ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 70ms);
+  }
+  .ar-probe[data-state="found"],
+  .ar-probe[data-state="missing"] {
+    animation: ar-pop 360ms var(--ease-out-strong);
+  }
+  .ar-lane-cell[data-status] {
+    animation: ar-pop 320ms var(--ease-out-strong);
+  }
+  .ar-reveal {
+    animation: ar-rise 520ms var(--ease-out-strong) both;
+    animation-delay: calc(var(--i, 0) * 80ms);
+  }
+  .ar-card {
+    animation: ar-rise 380ms var(--ease-out-strong) both;
+  }
+  .ar-card[data-overlay="true"],
+  .ar-card[data-settled="true"] {
+    animation: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ar-dial-value,
+  .ar-bar > span,
+  .ar-canvas,
+  .ar-drop-icon,
+  .ar-chip {
+    transition: none;
+  }
+  .ar-card[data-overlay="true"] {
+    transform: none;
+  }
+}
+@keyframes ar-ring {
+  from {
+    transform: scale(0.55);
+    opacity: 0.85;
+  }
+  to {
+    transform: scale(1.25);
+    opacity: 0;
+  }
+}
+@keyframes ar-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes ar-pop {
+  from {
+    transform: scale(0.94);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes ar-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

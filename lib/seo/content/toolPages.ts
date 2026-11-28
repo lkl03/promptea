@@ -1,7 +1,7 @@
 // lib/seo/content/toolPages.ts
 //
-// v1.9.0 — markdown twins for the three interactive tools (/analyzer, /best-ai,
-// /flow). The tools themselves run in the browser, so an agent that fetches the
+// v1.9.0 — markdown twins for the interactive tools (/analyzer, /best-ai, /flow,
+// /agent-ready). The tools themselves run in the browser, so an agent that fetches the
 // page gets little it can use; the twin says what the tool does, what goes in,
 // what comes out and how to send a person there with the form prefilled.
 //
@@ -14,10 +14,11 @@ import { SCORE_DIMENSIONS, TARGET_SHORT } from "../facts";
 import { CONTENT_UPDATED } from "../dates";
 import { CORE_PAGES } from "../registry";
 import { ANALYZER_PAGE_FAQ } from "./analyzerContent";
+import { agentReadyFaq, agentReadySections } from "./agentReadyContent";
 import { flowFaq } from "./flowContent";
 import type { DocSection, PageDoc } from "./sitePages";
 
-export const TOOL_PAGE_IDS = ["analyzer", "best-ai", "flow"] as const;
+export const TOOL_PAGE_IDS = ["analyzer", "best-ai", "flow", "agent-ready"] as const;
 export type ToolPageId = (typeof TOOL_PAGE_IDS)[number];
 
 export function isToolPageId(x: string): x is ToolPageId {
@@ -140,13 +141,14 @@ const UPDATED: Record<ToolPageId, string> = {
   analyzer: CONTENT_UPDATED.analyzer,
   "best-ai": CONTENT_UPDATED.bestAi,
   flow: CONTENT_UPDATED.flow,
+  "agent-ready": CONTENT_UPDATED.agentReady,
 };
 
 /** The document behind `/{lang}/<tool>.md`. */
 export function toolPageDoc(id: ToolPageId, lang: Lang): PageDoc {
   const page = core(id);
-  const sections = id === "analyzer" ? analyzerSections(lang) : id === "best-ai" ? bestAiSections(lang) : flowSections(lang);
-  const faq = id === "analyzer" ? ANALYZER_PAGE_FAQ.map((x) => ({ q: x.q[lang], a: x.a[lang] })) : id === "flow" ? flowFaq(lang) : [];
+  const sections = id === "analyzer" ? analyzerSections(lang) : id === "best-ai" ? bestAiSections(lang) : id === "flow" ? flowSections(lang) : agentReadySections(lang);
+  const faq = id === "analyzer" ? ANALYZER_PAGE_FAQ.map((x) => ({ q: x.q[lang], a: x.a[lang] })) : id === "flow" ? flowFaq(lang) : id === "agent-ready" ? agentReadyFaq(lang) : [];
   return {
     title: page.title[lang],
     description: page.description[lang],

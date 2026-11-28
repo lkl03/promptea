@@ -411,6 +411,10 @@
       "flow": {
         "title": "把任务拆成步骤",
         "body": "描述任务，即可得到一串提示词，并为每一步推荐最合适的AI。"
+      },
+      "agentReady": {
+        "title": "检查智能体能否读取你的网站",
+        "body": "为它评分，看看智能体读到什么，再把修复交给你的编程智能体。"
       }
     },
     "howItWorks": "工作原理",
@@ -552,7 +556,8 @@
     "library": "提示词库",
     "footerTech": "科技",
     "footerSources": "来源",
-    "flow": "流程"
+    "flow": "流程",
+    "agentReady": "Agent-Ready"
   },
   "howItWorksPage": {
     "breadcrumb": "面包屑导航",
@@ -743,5 +748,314 @@
     ],
     "guideLink": "指南：如何串联提示词",
     "copyAllTitle": "提示词流程（Promptea）"
+  },
+  "agentReady": {
+    "title": "你的网站为AI智能体做好准备了吗？",
+    "subtitle": "把网站拖进来。看看智能体实际读到什么，获得百分制评分，以及一份你的编程智能体可以自行实现的修复计划。",
+    "canvas": {
+      "aria": "要审计的网站",
+      "dropTitle": "把网站拖到这里",
+      "dropHint": "链接、URL卡片，或sitemap.xml / .html文件",
+      "dropActive": "松开即可扫描",
+      "inputLabel": "或输入网址",
+      "placeholder": "example.com",
+      "scanCta": "扫描",
+      "examplesLabel": "或拖动其中一个",
+      "chipAria": "扫描 {site}。拖到画布上或按回车键。",
+      "note": "免费，无需注册。扫描只向网站发出12个请求，不使用AI。"
+    },
+    "errors": {
+      "invalid_url": "这看起来不像一个网址。",
+      "blocked": "无法扫描该地址：仅支持使用标准端口的公开网站。",
+      "dns_failed": "该域名不存在或没有响应。",
+      "timeout": "网站响应时间过长。",
+      "network": "无法访问该网站。",
+      "rate_limited": "连续扫描次数过多。请稍等一分钟再试。",
+      "target_busy": "该网站刚被多次扫描。请一分钟后再试。",
+      "quota": "你已达到今天的扫描上限，明天会重置。",
+      "scan_failed": "扫描失败，请重试。",
+      "file_no_url": "在该文件中没有找到网址。",
+      "file_type": "请拖入站点地图（.xml）、页面（.html）或包含链接的文本文件。",
+      "session_gone": "该审计已不存在：审计只保留14天。请重新扫描网站。"
+    },
+    "pipeline": {
+      "title": "正在扫描 {site}",
+      "fetching": "正在获取智能体会获取的内容",
+      "checking": "正在运行21项检查",
+      "probesAria": "向网站发出的请求",
+      "checksAria": "按类别列出的检查",
+      "probes": {
+        "page": "页面",
+        "pageMarkdown": "页面的markdown",
+        "pageTwin": ".md副本",
+        "robots": "robots.txt",
+        "llms": "llms.txt",
+        "sitemap": "站点地图",
+        "apiCatalog": "API目录",
+        "aiCatalog": "AI目录",
+        "ardCatalog": "ARD目录",
+        "mcpCard": "MCP卡片",
+        "skills": "技能索引",
+        "openapi": "OpenAPI"
+      },
+      "found": "存在",
+      "missing": "缺失",
+      "summary": "{n}个请求，用时{ms}毫秒"
+    },
+    "score": {
+      "label": "Agent-Ready评分",
+      "aria": "评分：{score}（满分100）。等级：{level}。",
+      "outOf": "满分100",
+      "levels": {
+        "invisible": "智能体看不见",
+        "readable": "可读",
+        "friendly": "对智能体友好",
+        "ready": "已为智能体就绪"
+      },
+      "levelHints": {
+        "invisible": "智能体从这个网站几乎得不到可用内容。",
+        "readable": "智能体能读，但代价高且有缺漏。",
+        "friendly": "智能体读起来不错，还缺少可供使用的接口。",
+        "ready": "智能体能低成本地读取，并找到它提供的功能。"
+      },
+      "stack": "检测到的技术栈",
+      "stacks": {
+        "next-app": "Next.js（App Router）",
+        "next-pages": "Next.js（Pages Router）",
+        "astro": "Astro",
+        "wordpress": "WordPress",
+        "generic": "未识别"
+      },
+      "scanned": "扫描于{date}",
+      "rescan": "重新扫描",
+      "newScan": "换一个网站",
+      "share": "复制链接",
+      "linkCopied": "链接已复制",
+      "shareHint": "任何拿到链接的人都可以在14天内查看此审计。"
+    },
+    "categories": {
+      "content": "内容",
+      "markdown": "Markdown",
+      "structured": "结构化数据",
+      "api": "API与MCP",
+      "bots": "机器人访问",
+      "discovery": "可发现性"
+    },
+    "status": {
+      "pass": "通过",
+      "warn": "部分",
+      "fail": "缺失"
+    },
+    "checks": {
+      "content.text": {
+        "title": "无需JavaScript的文本",
+        "body": "大多数智能体只读HTML，不运行脚本。页面到达时文字就必须在里面。"
+      },
+      "content.semantics": {
+        "title": "语义结构",
+        "body": "一个h1、有序的标题、main区域和语言声明：智能体靠这些找到回答问题的部分。"
+      },
+      "content.meta": {
+        "title": "标题、描述与规范链接",
+        "body": "智能体列出页面时显示的内容，以及它应引用的URL。"
+      },
+      "content.weight": {
+        "title": "HTML体积",
+        "body": "HTML的每个字节都要消耗智能体的token。页面太重，内容就被挤出上下文。"
+      },
+      "markdown.negotiation": {
+        "title": "按请求返回Markdown",
+        "body": "对Accept: text/markdown返回markdown，智能体只用一小部分token就能读到同一页面。"
+      },
+      "markdown.twin": {
+        "title": "Markdown副本（.md）",
+        "body": "每个页面一个稳定的.md地址：一份干净的文档，也值得在llms.txt里链接。"
+      },
+      "markdown.alternate": {
+        "title": "声明Markdown版本",
+        "body": "在head里的link或Link响应头告诉智能体存在markdown版本。"
+      },
+      "structured.jsonld": {
+        "title": "有效的JSON-LD",
+        "body": "结构化数据直接陈述事实（谁、什么、价格、日期），智能体不必从正文里推断。"
+      },
+      "structured.types": {
+        "title": "合适的schema.org类型",
+        "body": "与页面相符的类型（Article、Product、FAQPage等）让智能体能据此回答具体问题。"
+      },
+      "structured.social": {
+        "title": "Open Graph",
+        "body": "没有JSON-LD时，许多智能体读取的后备元数据：标题、描述和图片。"
+      },
+      "api.catalog": {
+        "title": "API目录",
+        "body": "智能体通过/.well-known/api-catalog得知网站有API，无需猜测地址。"
+      },
+      "api.openapi": {
+        "title": "OpenAPI描述",
+        "body": "路径、参数和响应结构，让智能体第一次就能正确调用API。"
+      },
+      "api.mcp": {
+        "title": "可发现的MCP服务器",
+        "body": "智能体通过MCP使用产品，而不只是阅读介绍。有了目录，它们能从域名找到服务器。"
+      },
+      "api.webmcp": {
+        "title": "页面上的WebMCP",
+        "body": "让浏览器智能体把页面操作当作工具调用。这是Chrome的早期提案，此处为静态检测。"
+      },
+      "api.skills": {
+        "title": "智能体技能索引",
+        "body": "打包好的说明，告诉编程智能体如何使用该产品。"
+      },
+      "bots.robots": {
+        "title": "robots.txt",
+        "body": "每个守规矩的爬虫和智能体首先读取的文件：规则、信号和站点地图都在其中。"
+      },
+      "bots.ai-rules": {
+        "title": "针对AI智能体的规则",
+        "body": "屏蔽代表用户访问的机器人，会让助手读不到网站。是否拒绝训练爬虫由你决定，在此不扣分。"
+      },
+      "bots.signals": {
+        "title": "Content Signals",
+        "body": "说明抓取的内容可以用于什么：搜索、回答用户、训练。"
+      },
+      "discovery.sitemap": {
+        "title": "站点地图",
+        "body": "网站希望被读取内容的完整清单，而不是靠链接去猜URL。"
+      },
+      "discovery.links": {
+        "title": "Link响应头",
+        "body": "在智能体解析HTML之前，就告诉它机器可读资源在哪里。"
+      },
+      "discovery.llms": {
+        "title": "llms.txt",
+        "body": "一份简短的markdown索引，列出值得阅读的页面。成本很低；但智能体会主动读取它的证据仍然不多，所以权重较小。"
+      }
+    },
+    "views": {
+      "title": "同一页面，两种读者",
+      "human": "人看到的",
+      "agent": "智能体读到的",
+      "livePreview": "{site} 的实时预览",
+      "blockedPreview": "该网站不允许被嵌入，这里改为展示它的结构。",
+      "wire": {
+        "scripts": "个脚本",
+        "images": "张图片",
+        "withAlt": "带替代文本",
+        "forms": "个表单",
+        "textShare": "的HTML是文字"
+      },
+      "tabHtml": "HTML中的文字",
+      "tabMarkdown": "它的markdown",
+      "tabsAria": "智能体读取的内容",
+      "noText": "不运行JavaScript就没有任何文字。智能体得到的只有这些。",
+      "tokensTitle": "阅读成本",
+      "tokens": {
+        "html": "原始HTML",
+        "text": "仅文字",
+        "markdown": "Markdown"
+      },
+      "tokensUnit": "约{n}个token",
+      "noMarkdown": "未提供",
+      "outline": "大纲",
+      "noOutline": "未找到标题。",
+      "types": "结构化数据",
+      "noTypes": "无",
+      "words": "{n}个词",
+      "untrusted": "文字取自被审计的页面，原样显示。",
+      "resize": "调整两个视图的大小"
+    },
+    "board": {
+      "title": "发现的问题与修复计划",
+      "hint": "把问题拖进计划，并按你希望的修复顺序排列。你的智能体会按这个顺序执行。",
+      "keyboardHint": "使用键盘：聚焦卡片的拖动柄，按空格键拿起，用方向键移动，再按空格键放下。也可以使用每张卡片上的按钮。",
+      "findings": "发现的问题",
+      "findingsEmpty": "所有未解决的问题都已在计划中。",
+      "plan": "修复计划",
+      "planEmpty": "把问题拖到这里。留空表示：先修得分最多的。",
+      "passed": "已通过（{n}）",
+      "allPassed": "无需修复：所有检查都已通过。",
+      "add": "加入计划",
+      "addAll": "全部加入",
+      "remove": "移出计划",
+      "up": "上移",
+      "down": "下移",
+      "handle": "拖动 {title}",
+      "points": "+{n}分",
+      "effortLabel": "工作量",
+      "effort": {
+        "S": "小",
+        "M": "中",
+        "L": "大"
+      },
+      "done": "已完成",
+      "markDone": "标记为已完成",
+      "reopen": "重新打开",
+      "position": "第{n}项，共{total}项",
+      "announce": {
+        "picked": "已拿起 {title}。",
+        "movedPlan": "{title} 位于计划的第{n}项，共{total}项。",
+        "overPlan": "{title} 位于修复计划上方。",
+        "overFindings": "{title} 位于问题列表上方。",
+        "added": "{title} 已加入计划第{n}项。",
+        "removed": "{title} 已移出计划。",
+        "dropped": "已放下 {title}。",
+        "cancelled": "已取消移动。"
+      }
+    },
+    "connect": {
+      "title": "让你的智能体来修复",
+      "lead": "这次审计已保存。一步即可连接你的编程智能体：它会读取问题、按你的计划在你的代码库中实现每项修复，并为每项修复运行验收检查。",
+      "tabsAria": "你的编程智能体",
+      "claudeHint": "在项目文件夹中运行这条命令，然后对Claude Code说：“实现Promptea的审计”。",
+      "codexHint": "把这段加入 ~/.codex/config.toml，然后让Codex实现Promptea的审计。",
+      "cursorHint": "把这段加入项目的 .cursor/mcp.json，或用按钮安装。",
+      "cursorInstall": "添加到Cursor",
+      "copy": "复制",
+      "copied": "已复制",
+      "steps": [
+        "你的智能体读取审计和你的计划。",
+        "它实现每项修复并运行验收检查。",
+        "部署后它会重新扫描，这里的评分随之更新。"
+      ],
+      "progress": "已完成{done}项修复，共{total}项",
+      "live": "随智能体的进展实时更新",
+      "secret": "该地址包含此审计的私有ID，请只提供给你自己的智能体。",
+      "noSession": "这次审计未能保存，因此无法连接。你仍然可以把修复内容复制为提示词。",
+      "fallbackTitle": "没有MCP？复制为提示词",
+      "fallbackBody": "同样的修复内容，按你的计划排序，合成一条markdown提示词，可粘贴到任何AI中。",
+      "copyPrompt": "复制修复提示词",
+      "services": "想找人代做？Promptea背后的工作室eterlab可以为你实现。",
+      "servicesCta": "联系eterlab"
+    },
+    "howTitle": "工作原理",
+    "how": [
+      "Promptea像智能体一样获取页面：不运行JavaScript，并获取智能体会查找的文件（robots.txt、站点地图、llms.txt、API与MCP目录）。",
+      "对返回的内容运行21项检查。它们是确定性规则：同一网站得到相同评分，不由AI决定。",
+      "你可以把页面与智能体读到的内容并排对比，并把问题整理成修复计划。",
+      "审计保留14天。你的编程智能体通过Promptea的MCP服务器连接，并在你的代码库中实现计划。"
+    ],
+    "weightsTitle": "评分衡量什么",
+    "weightsBody": "这100分偏重于如今智能体确实在使用的东西：无需JavaScript即可获得的文本、markdown、结构化数据，以及API或MCP。llms.txt只占3分，因为智能体会主动读取它的证据仍然不多。",
+    "weightsUnit": "{n}分",
+    "faqTitle": "常见问题",
+    "faq": [
+      {
+        "q": "“agent-ready”是什么意思？",
+        "a": "意思是被派到你网站的AI智能体能够低成本地读取它、理解它陈述的内容，并找到在那里能做什么：API、MCP服务器或表单。智能体正在成为独立的访客，而它们大多不运行JavaScript，也不看版面。"
+      },
+      {
+        "q": "审计会使用AI吗？",
+        "a": "不会。检查是确定性规则，在Promptea的服务器上针对你网站返回的内容运行。同一网站每次得到的评分都相同。"
+      },
+      {
+        "q": "我的编程智能体会用审计做什么？",
+        "a": "它使用扫描后显示的地址连接Promptea的MCP服务器，读取问题，获取针对你技术栈的每项修复（含文件和代码），在你的代码库中实现、验证并标记完成。部署之后，它还可以重新扫描。"
+      },
+      {
+        "q": "Promptea会保存什么？",
+        "a": "你扫描的公开页面的审计、你的修复计划以及哪些修复已完成，保存14天。不需要账号、邮箱，也不记录IP地址。任何拿到审计链接的人都能查看，所以请只分享给你信任的人或智能体。"
+      }
+    ]
   }
 }
