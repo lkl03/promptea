@@ -115,6 +115,7 @@ export const CORE_PAGES: readonly CorePage[] = [
     updated: CONTENT_UPDATED.analyzer,
     changeFrequency: "weekly",
     priority: 0.9,
+    markdown: true,
   },
   {
     id: "best-ai",
@@ -130,6 +131,7 @@ export const CORE_PAGES: readonly CorePage[] = [
     updated: CONTENT_UPDATED.bestAi,
     changeFrequency: "weekly",
     priority: 0.8,
+    markdown: true,
   },
   {
     // v1.8.9: the third tool.
@@ -146,6 +148,7 @@ export const CORE_PAGES: readonly CorePage[] = [
     updated: CONTENT_UPDATED.flow,
     changeFrequency: "weekly",
     priority: 0.8,
+    markdown: true,
   },
   {
     id: "benchmarks",

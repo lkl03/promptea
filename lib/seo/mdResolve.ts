@@ -14,6 +14,7 @@ import { landings } from "@/lib/seo/content/landings";
 import { modelPages } from "@/lib/seo/content/models";
 import { aboutDoc, homeAboutDoc, howItWorksDoc, methodologyDoc } from "./content/sitePages";
 import { sourcesDoc } from "./content/sourcesPage";
+import { TOOL_PAGE_IDS, isToolPageId, toolPageDoc } from "./content/toolPages";
 import { CONTENT_UPDATED } from "./dates";
 import { loadBenchmarksSnapshot } from "./dynamic";
 import { articleUpdated } from "./dynamicUrls";
@@ -45,6 +46,8 @@ export function staticMarkdownPaths(): string[][] {
     ["methodology"],
     ["sources"],
     ["benchmarks"],
+    // v1.9.0: the three tools.
+    ...TOOL_PAGE_IDS.map((id) => [id]),
     ...guides.map((g) => ["guides", g.slug]),
     ...glossary.map((g) => ["glossary", g.slug]),
     ...modelPages.map((m) => ["models", m.slug]),
@@ -65,6 +68,7 @@ export async function resolveMarkdown(lang: Locale, segments: string[]): Promise
     if (kind === "about") return { htmlPath, body: docMarkdown(aboutDoc(lang), lang, url) };
     if (kind === "methodology") return { htmlPath, body: docMarkdown(methodologyDoc(lang), lang, url) };
     if (kind === "sources") return { htmlPath, body: docMarkdown(sourcesDoc(lang), lang, url) };
+    if (isToolPageId(kind)) return { htmlPath, body: docMarkdown(toolPageDoc(kind, lang), lang, url) };
     if (kind === "benchmarks") {
       // Always exists (llms.txt and the sitemap link to it); without data it says so.
       return { htmlPath, body: benchmarksMarkdown(await loadBenchmarksSnapshot(), lang, url, CONTENT_UPDATED.benchmarks) };

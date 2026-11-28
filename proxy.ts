@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { match } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
+import { negotiatedTwinPath, prefersMarkdown } from "./lib/seo/negotiate";
 import { DEFAULT_LOCALE, LOCALES } from "./lib/seo/site";
 
 // lib/domain.ts LANGS: es, en, pt, zh. The matcher resolves regional tags to their
@@ -27,6 +28,13 @@ const locales = LOCALES;
 const defaultLocale = DEFAULT_LOCALE;
 
 type Locale = (typeof locales)[number];
+
+/** v1.9.0 — site-wide discovery links sent with every HTML page. */
+export const AGENT_LINKS: readonly string[] = [
+  '</llms.txt>; rel="describedby"; type="text/plain"',
+  '</.well-known/api-catalog>; rel="api-catalog"',
+  '</sitemap.xml>; rel="sitemap"',
+];
 
 // Evita redirigir archivos estáticos tipo /logo.png, /images/a.webp, etc.
 const PUBLIC_FILE = /\.(.*)$/;
@@ -97,7 +105,27 @@ export function proxy(request: NextRequest) {
   );
 
   if (pathnameHasLocale) {
-    return NextResponse.next();
+    // v1.9.0 — "Markdown for Agents": a client that prefers text/markdown gets
+    // the page's markdown twin at the same URL. `?format=html` opts out. The
+    // markdown answer says `Vary: Accept`. The HTML one cannot: Next writes its
+    // own Vary on a page and drops ours (also when set from next.config). No
+    // cache mixes them up: pages are `max-age=0, must-revalidate`, and this
+    // proxy runs before the platform's cache, so it picks the representation.
+    const twin = searchParams.get("format") === "html" ? null : negotiatedTwinPath(pathname);
+    if (twin && prefersMarkdown(request.headers.get("accept"))) {
+      const res = NextResponse.rewrite(new URL(twin, request.url));
+      res.headers.append("Vary", "Accept");
+      return res;
+    }
+    const res = NextResponse.next();
+    // Link headers (RFC 8288): where a program finds the site index, the API
+    // catalog and, when the page has one, its markdown twin.
+    const links = [...AGENT_LINKS];
+    if (twin) {
+      links.push(`<${pathname}.md>; rel="alternate"; type="text/markdown"`);
+    }
+    res.headers.set("Link", links.join(", "));
+    return res;
   }
 
   // ✅ Si no hay locale, redirigir a /{locale}{pathname} — en un solo salto al

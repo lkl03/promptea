@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const l = toLang(lang);
   const dict = await getDictionary(l);
   const t = dict.analyzerPage;
-  return pageMetadata({ lang: l, path: `/${l}/analyzer`, title: t.metaTitle, description: t.metaDescription });
+  return pageMetadata({ lang: l, path: `/${l}/analyzer`, title: t.metaTitle, description: t.metaDescription, markdownPath: `/${l}/analyzer.md` });
 }
 
 export default async function AnalyzerPage({
