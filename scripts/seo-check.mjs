@@ -398,7 +398,7 @@ async function checkAgents() {
   record("robots.txt declares Content-Signal in every group", signals.length > 0 && signals.length === groups, `${signals.length} signal line(s) for ${groups} group(s)`);
   record("Content-Signal names search, ai-input and ai-train", signals.every((s) => /\bsearch=(yes|no)\b/.test(s) && /\bai-input=(yes|no)\b/.test(s) && /\bai-train=(yes|no)\b/.test(s)), signals[0] || "(none)");
 
-  const NEGOTIATED = ["/en", "/es/about", "/pt/methodology", "/zh/benchmarks", "/en/analyzer", "/es/best-ai", "/zh/flow", "/en/guides/prompt-chaining", "/pt/models/claude"];
+  const NEGOTIATED = ["/en", "/es/about", "/pt/methodology", "/zh/benchmarks", "/en/analyzer", "/es/best-ai", "/zh/flow", "/pt/agent-ready", "/en/guides/prompt-chaining", "/pt/models/claude"];
   for (const p of NEGOTIATED) {
     const md = await get(p, { headers: { "user-agent": "promptea-seo-check/1.0", accept: "text/markdown, text/html;q=0.8" } });
     const problems = [];
@@ -474,7 +474,7 @@ async function checkAgents() {
 // ---------------------------------------------------------------------------
 
 // v1.8.3: + /sources (every locale) and /blog/tech (the Tech section of AI Daily).
-const KEY_PATHS = ["", "/how-it-works", "/about", "/methodology", "/sources", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/tech", "/blog/weekly", "/analyzer", "/best-ai", "/flow"];
+const KEY_PATHS = ["", "/how-it-works", "/about", "/methodology", "/sources", "/benchmarks", "/guides", "/models", "/glossary", "/blog", "/blog/tech", "/blog/weekly", "/analyzer", "/best-ai", "/flow", "/agent-ready"];
 
 function pickKeyPages(urls, origin) {
   const picks = new Set();

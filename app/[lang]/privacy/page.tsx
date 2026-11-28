@@ -99,6 +99,35 @@ export default async function PrivacyPage({ params }: { params: Promise<{ lang: 
           })}</li>
         </ul>
 
+        {/* v1.9.0: Agent-Ready stores an audit; say what, for how long and who can read it. */}
+        <h2 className="text-lg font-medium mt-6">{pick(lang, { es: "Auditorías Agent-Ready", en: "Agent-Ready audits", pt: "Auditorias Agent-Ready", zh: "Agent-Ready审计" })}</h2>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>
+            {pick(lang, {
+              es: "Cuando escaneás un sitio, nuestro servidor pide hasta 12 archivos públicos de ese sitio (la página, robots.txt, el sitemap y otros) y guarda el resultado durante 14 días: la dirección auditada, los hallazgos, un extracto del texto de la página, tu plan de arreglos y qué arreglos están hechos. No guardamos tu dirección IP, tu navegador ni ningún dato de cuenta. No interviene ninguna IA.",
+              en: "When you scan a site, our server fetches up to 12 public files from it (the page, robots.txt, the sitemap and others) and keeps the result for 14 days: the audited address, the findings, an excerpt of the page's text, your fix plan and which fixes are done. We do not store your IP address, your browser or any account data. No AI is involved.",
+              pt: "Quando você escaneia um site, o nosso servidor busca até 12 arquivos públicos dele (a página, o robots.txt, o sitemap e outros) e guarda o resultado por 14 dias: o endereço auditado, os achados, um trecho do texto da página, o seu plano de correções e quais correções estão feitas. Não guardamos o seu endereço IP, o seu navegador nem dados de conta. Nenhuma IA participa.",
+              zh: "当你扫描网站时，我们的服务器会从该网站获取最多12个公开文件（页面、robots.txt、站点地图等），并将结果保存14天：被审计的地址、发现的问题、页面文字的摘录、你的修复计划以及哪些修复已完成。我们不保存你的IP地址、浏览器信息或任何账号数据。整个过程不使用AI。",
+            })}
+          </li>
+          <li>
+            {pick(lang, {
+              es: "Cada auditoría tiene una dirección privada imposible de adivinar. Quien la tenga puede verla, reordenar el plan y marcar arreglos; por eso solo conviene compartirla con tu propio agente de programación, que la lee por el servidor MCP de Promptea. Para limitar el abuso guardamos un conteo diario de escaneos asociado a un hash anónimo de tu conexión (nunca la dirección IP), que se borra a los pocos días.",
+              en: "Each audit has a private address that cannot be guessed. Whoever has it can view it, reorder the plan and mark fixes, so share it only with your own coding agent, which reads it through Promptea's MCP server. To limit abuse we keep a daily count of scans tied to an anonymous hash of your connection (never the IP address), deleted after a few days.",
+              pt: "Cada auditoria tem um endereço privado impossível de adivinhar. Quem o tiver pode vê-la, reordenar o plano e marcar correções; por isso compartilhe só com o seu próprio agente de programação, que a lê pelo servidor MCP do Promptea. Para limitar abusos guardamos uma contagem diária de escaneamentos associada a um hash anônimo da sua conexão (nunca o endereço IP), apagada em poucos dias.",
+              zh: "每次审计都有一个无法猜到的私有地址。持有该地址的人可以查看审计、调整计划顺序并标记修复，因此请只提供给你自己的编程智能体，它会通过Promptea的MCP服务器读取。为防止滥用，我们会保存与你连接的匿名哈希（绝不是IP地址）关联的每日扫描次数，几天后删除。",
+            })}
+          </li>
+          <li>
+            {pick(lang, {
+              es: "Si abrís la vista en vivo de un sitio auditado, tu navegador lo carga directamente, igual que si lo visitaras.",
+              en: "If you open the live preview of an audited site, your browser loads it directly, just as if you visited it.",
+              pt: "Se você abrir a prévia ao vivo de um site auditado, o seu navegador o carrega diretamente, como se você o visitasse.",
+              zh: "如果你打开被审计网站的实时预览，你的浏览器会直接加载该网站，就像你亲自访问一样。",
+            })}
+          </li>
+        </ul>
+
         {/* v1.8.9: the analyzer's optional rewrite (Groq / Claude) was never described here; the Prompt flow uses Claude. */}
         <h2 className="text-lg font-medium mt-6">{pick(lang, { es: "Funciones con IA (Claude y Groq)", en: "AI features (Claude and Groq)", pt: "Recursos com IA (Claude e Groq)", zh: "AI功能（Claude和Groq）" })}</h2>
         <ul className="list-disc pl-5 space-y-2">

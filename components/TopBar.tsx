@@ -39,6 +39,8 @@ export type NavDict = {
   bestAi: string;
   /** v1.8.9: Prompt flow. */
   flow: string;
+  /** v1.9.0: Agent-Ready. */
+  agentReady: string;
   daily: string;
   benchmarks: string;
   prompts: string;
@@ -55,6 +57,7 @@ export const NAV_LINKS: ReadonlyArray<{ key: NavKey; path: string; group: "tools
   { key: "analyzer", path: "/analyzer", group: "tools" },
   { key: "bestAi", path: "/best-ai", group: "tools" },
   { key: "flow", path: "/flow", group: "tools" },
+  { key: "agentReady", path: "/agent-ready", group: "tools" },
   { key: "daily", path: "/blog", group: "tools" },
   { key: "benchmarks", path: "/benchmarks", group: "tools" },
   { key: "prompts", path: "/prompts", group: "resources" },
@@ -146,17 +149,19 @@ export default function TopBar({ lang, dict }: { lang: Lang; dict: NavDict }) {
         </div>
 
         {/* Centre: inline navigation (xl+). v1.8.9: from lg (1024) it overlapped the logo already in
-            v1.8.8 (31 px) and a tenth link made it worse; below xl the menu button carries it. */}
+            v1.8.8 (31 px) and a tenth link made it worse; below xl the menu button carries it.
+            v1.9.0: an eleventh link (Agent-Ready) overlapped the logo again at 1280 (55 px in pt), so
+            between xl and 3xl the links are a little tighter (12.5 px, less padding). */}
         <nav aria-label={dict.main} className="hidden xl:block">
-          <ul className="flex items-center gap-x-0.5 text-[13px] 3xl:gap-x-1 3xl:text-sm">
+          <ul className="flex items-center text-[12.5px] 3xl:gap-x-1 3xl:text-sm">
             {links.map((item, i) => (
               <li key={item.key} className="flex items-center">
-                {i > 0 && item.group !== links[i - 1].group ? <span aria-hidden="true" className="mx-1.5 h-4 w-px bg-line-strong 3xl:mx-2" /> : null}
+                {i > 0 && item.group !== links[i - 1].group ? <span aria-hidden="true" className="mx-1 h-4 w-px bg-line-strong 3xl:mx-2" /> : null}
                 <Link
                   href={item.href}
                   aria-current={item.active ? "page" : undefined}
                   className={[
-                    "whitespace-nowrap rounded-lg px-2 py-1 transition-colors 3xl:px-2.5",
+                    "whitespace-nowrap rounded-lg px-1.5 py-1 transition-colors 3xl:px-2.5",
                     item.active ? "bg-surface-soft text-ink" : "text-ink-muted hover:bg-surface-soft hover:text-ink",
                   ].join(" ")}
                 >

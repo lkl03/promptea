@@ -411,6 +411,10 @@
       "flow": {
         "title": "Split a task into steps",
         "body": "Describe the task and get back a chain of prompts, with the best AI for each step."
+      },
+      "agentReady": {
+        "title": "Check if agents can read your site",
+        "body": "Score it, see what an agent reads and hand the fixes to your coding agent."
       }
     },
     "howItWorks": "How this works",
@@ -552,7 +556,8 @@
     "library": "Library",
     "footerTech": "Tech",
     "footerSources": "Sources",
-    "flow": "Flow"
+    "flow": "Flow",
+    "agentReady": "Agent-Ready"
   },
   "howItWorksPage": {
     "breadcrumb": "Breadcrumb",
@@ -743,5 +748,314 @@
     ],
     "guideLink": "Guide: how to chain prompts",
     "copyAllTitle": "Prompt flow (Promptea)"
+  },
+  "agentReady": {
+    "title": "Is your site ready for AI agents?",
+    "subtitle": "Drop a site in. See what an agent actually reads, get a score out of 100 and a fix plan your coding agent can implement on its own.",
+    "canvas": {
+      "aria": "Site to audit",
+      "dropTitle": "Drop a site here",
+      "dropHint": "A link, a URL chip, or a sitemap.xml / .html file",
+      "dropActive": "Release to scan",
+      "inputLabel": "Or type the address",
+      "placeholder": "yoursite.com",
+      "scanCta": "Scan",
+      "examplesLabel": "Or drag one of these",
+      "chipAria": "Scan {site}. Drag it onto the canvas or press Enter.",
+      "note": "Free. No account. The scan makes 12 requests to the site and runs no AI."
+    },
+    "errors": {
+      "invalid_url": "That does not look like a web address.",
+      "blocked": "That address cannot be scanned: only public sites on the standard web ports.",
+      "dns_failed": "That domain does not exist, or it is not answering.",
+      "timeout": "The site took too long to answer.",
+      "network": "The site could not be reached.",
+      "rate_limited": "Too many scans in a row. Wait a minute and try again.",
+      "target_busy": "That site was just scanned several times. Try again in a minute.",
+      "quota": "You reached today's scan limit. It resets tomorrow.",
+      "scan_failed": "The scan failed. Try again.",
+      "file_no_url": "No web address was found in that file.",
+      "file_type": "Drop a sitemap (.xml), a page (.html) or a text file with a link.",
+      "session_gone": "That audit no longer exists: audits are kept for 14 days. Scan the site again."
+    },
+    "pipeline": {
+      "title": "Scanning {site}",
+      "fetching": "Fetching what an agent would fetch",
+      "checking": "Running the 21 checks",
+      "probesAria": "Requests made to the site",
+      "checksAria": "Checks by category",
+      "probes": {
+        "page": "The page",
+        "pageMarkdown": "Page as markdown",
+        "pageTwin": ".md twin",
+        "robots": "robots.txt",
+        "llms": "llms.txt",
+        "sitemap": "Sitemap",
+        "apiCatalog": "API catalog",
+        "aiCatalog": "AI catalog",
+        "ardCatalog": "ARD catalog",
+        "mcpCard": "MCP card",
+        "skills": "Skills index",
+        "openapi": "OpenAPI"
+      },
+      "found": "found",
+      "missing": "missing",
+      "summary": "{n} requests in {ms} ms"
+    },
+    "score": {
+      "label": "Agent-Ready score",
+      "aria": "Score: {score} out of 100. Level: {level}.",
+      "outOf": "out of 100",
+      "levels": {
+        "invisible": "Invisible to agents",
+        "readable": "Readable",
+        "friendly": "Agent-friendly",
+        "ready": "Agent-ready"
+      },
+      "levelHints": {
+        "invisible": "An agent gets little it can use from this site.",
+        "readable": "Agents can read it, at a high cost and with gaps.",
+        "friendly": "Agents read it well. What is missing is a way to use it.",
+        "ready": "Agents can read it cheaply and find what it offers."
+      },
+      "stack": "Detected stack",
+      "stacks": {
+        "next-app": "Next.js (App Router)",
+        "next-pages": "Next.js (Pages Router)",
+        "astro": "Astro",
+        "wordpress": "WordPress",
+        "generic": "Not identified"
+      },
+      "scanned": "Scanned {date}",
+      "rescan": "Scan again",
+      "newScan": "Another site",
+      "share": "Copy link",
+      "linkCopied": "Link copied",
+      "shareHint": "Anyone with the link can see this audit for 14 days."
+    },
+    "categories": {
+      "content": "Content",
+      "markdown": "Markdown",
+      "structured": "Structured data",
+      "api": "API & MCP",
+      "bots": "Bot access",
+      "discovery": "Discovery"
+    },
+    "status": {
+      "pass": "Passes",
+      "warn": "Partial",
+      "fail": "Missing"
+    },
+    "checks": {
+      "content.text": {
+        "title": "Text without JavaScript",
+        "body": "Most agents read the HTML and never run scripts. The page's text has to be there when it arrives."
+      },
+      "content.semantics": {
+        "title": "Semantic outline",
+        "body": "One h1, ordered headings, a main landmark and a language: how an agent finds the part that answers the question."
+      },
+      "content.meta": {
+        "title": "Title, description, canonical",
+        "body": "What an agent shows when it lists the page, and the URL it should cite."
+      },
+      "content.weight": {
+        "title": "HTML weight",
+        "body": "Every byte of HTML costs the agent tokens. Heavy pages push the content out of its context."
+      },
+      "markdown.negotiation": {
+        "title": "Markdown on request",
+        "body": "Answering Accept: text/markdown with markdown gives agents the same page for a fraction of the tokens."
+      },
+      "markdown.twin": {
+        "title": "Markdown twin (.md)",
+        "body": "A stable .md URL per page: a clean document to fetch and something worth linking from llms.txt."
+      },
+      "markdown.alternate": {
+        "title": "Markdown announced",
+        "body": "A link in the head or a Link header tells the agent the markdown version exists."
+      },
+      "structured.jsonld": {
+        "title": "Valid JSON-LD",
+        "body": "Structured data states facts (who, what, price, date) so the agent does not have to infer them from prose."
+      },
+      "structured.types": {
+        "title": "The right schema.org types",
+        "body": "The type that matches the page (Article, Product, FAQPage…) is what lets an agent answer a specific question from it."
+      },
+      "structured.social": {
+        "title": "Open Graph",
+        "body": "The fallback metadata many agents read when there is no JSON-LD: title, description and image."
+      },
+      "api.catalog": {
+        "title": "API catalog",
+        "body": "/.well-known/api-catalog is where an agent learns the site has an API, without guessing URLs."
+      },
+      "api.openapi": {
+        "title": "OpenAPI description",
+        "body": "Paths, parameters and response shapes, so an agent calls the API right the first time."
+      },
+      "api.mcp": {
+        "title": "MCP server, discoverable",
+        "body": "MCP is how agents use a product instead of only reading about it. A catalog lets them find the server from the domain."
+      },
+      "api.webmcp": {
+        "title": "WebMCP on the page",
+        "body": "Lets a browser agent call the page's actions as tools. An early Chrome proposal; read statically here."
+      },
+      "api.skills": {
+        "title": "Agent skills index",
+        "body": "Packaged instructions that tell coding agents how to work with the product."
+      },
+      "bots.robots": {
+        "title": "robots.txt",
+        "body": "The first file every well-behaved crawler and agent reads: rules, signals and the sitemap live there."
+      },
+      "bots.ai-rules": {
+        "title": "Rules for AI agents",
+        "body": "Blocking the bots that act for a person makes the site unreadable to assistants. Refusing training crawlers is your call and costs nothing here."
+      },
+      "bots.signals": {
+        "title": "Content Signals",
+        "body": "Say what fetched content may be used for: search, answering a user, training."
+      },
+      "discovery.sitemap": {
+        "title": "Sitemap",
+        "body": "The complete list of what the site wants read, instead of URLs guessed from links."
+      },
+      "discovery.links": {
+        "title": "Link headers",
+        "body": "Tell an agent where the machine-readable resources are before it parses a byte of HTML."
+      },
+      "discovery.llms": {
+        "title": "llms.txt",
+        "body": "A short markdown index of the pages worth reading. Cheap to add; evidence that agents fetch it on their own is still thin, so it weighs little."
+      }
+    },
+    "views": {
+      "title": "Same page, two readers",
+      "human": "What a person sees",
+      "agent": "What an agent reads",
+      "livePreview": "Live preview of {site}",
+      "blockedPreview": "This site does not allow being embedded, so here is its structure instead.",
+      "wire": {
+        "scripts": "scripts",
+        "images": "images",
+        "withAlt": "with alt text",
+        "forms": "forms",
+        "textShare": "of the HTML is text"
+      },
+      "tabHtml": "Text in the HTML",
+      "tabMarkdown": "Its markdown",
+      "tabsAria": "What the agent reads",
+      "noText": "No text arrives without running JavaScript. This is all an agent gets.",
+      "tokensTitle": "What reading it costs",
+      "tokens": {
+        "html": "Raw HTML",
+        "text": "Just the text",
+        "markdown": "Markdown"
+      },
+      "tokensUnit": "~{n} tokens",
+      "noMarkdown": "not served",
+      "outline": "Outline",
+      "noOutline": "No headings found.",
+      "types": "Structured data",
+      "noTypes": "none",
+      "words": "{n} words",
+      "untrusted": "Text taken from the audited page, shown as is.",
+      "resize": "Resize the two views"
+    },
+    "board": {
+      "title": "Findings and fix plan",
+      "hint": "Drag a finding into the plan and order it the way you want it fixed. Your agent follows this order.",
+      "keyboardHint": "With the keyboard: focus a card's handle, press Space to pick it up, use the arrow keys to move it and Space to drop it. Or use the buttons on each card.",
+      "findings": "Findings",
+      "findingsEmpty": "Everything open is in the plan.",
+      "plan": "Fix plan",
+      "planEmpty": "Drop findings here. Empty means: most points first.",
+      "passed": "Already passing ({n})",
+      "allPassed": "Nothing to fix: every check passes.",
+      "add": "Add to plan",
+      "addAll": "Add all",
+      "remove": "Remove from plan",
+      "up": "Move up",
+      "down": "Move down",
+      "handle": "Drag {title}",
+      "points": "+{n} pts",
+      "effortLabel": "Effort",
+      "effort": {
+        "S": "small",
+        "M": "medium",
+        "L": "large"
+      },
+      "done": "Done",
+      "markDone": "Mark as done",
+      "reopen": "Reopen",
+      "position": "{n} of {total}",
+      "announce": {
+        "picked": "Picked up {title}.",
+        "movedPlan": "{title} is at position {n} of {total} in the plan.",
+        "overPlan": "{title} is over the fix plan.",
+        "overFindings": "{title} is over the findings.",
+        "added": "{title} added to the plan at position {n}.",
+        "removed": "{title} removed from the plan.",
+        "dropped": "{title} dropped.",
+        "cancelled": "Move cancelled."
+      }
+    },
+    "connect": {
+      "title": "Let your agent fix it",
+      "lead": "This audit is saved. Connect your coding agent to it in one step: it reads the findings, follows your plan and implements each fix in your repo, with an acceptance check per fix.",
+      "tabsAria": "Your coding agent",
+      "claudeHint": "Run this in your project's folder, then ask Claude Code: “Implement the Promptea audit”.",
+      "codexHint": "Add this to ~/.codex/config.toml, then ask Codex to implement the Promptea audit.",
+      "cursorHint": "Add this to .cursor/mcp.json in your project, or install it with the button.",
+      "cursorInstall": "Add to Cursor",
+      "copy": "Copy",
+      "copied": "Copied",
+      "steps": [
+        "Your agent reads the audit and your plan.",
+        "It implements each fix and runs its acceptance check.",
+        "After you deploy, it re-scans and the score here updates."
+      ],
+      "progress": "{done} of {total} fixes done",
+      "live": "Updates as your agent works",
+      "secret": "The address includes this audit's private id. Share it only with your own agent.",
+      "noSession": "This audit could not be saved, so there is nothing to connect to. You can still copy the fixes as a prompt.",
+      "fallbackTitle": "No MCP? Copy it as a prompt",
+      "fallbackBody": "The same fixes, in your plan's order, as one markdown prompt to paste into any AI.",
+      "copyPrompt": "Copy the fix prompt",
+      "services": "Rather have someone do it? eterlab, the studio behind Promptea, implements it for you.",
+      "servicesCta": "Talk to eterlab"
+    },
+    "howTitle": "How it works",
+    "how": [
+      "Promptea fetches the page the way an agent does: no JavaScript, plus the files agents look for (robots.txt, sitemap, llms.txt, API and MCP catalogs).",
+      "21 checks run on what came back. They are deterministic rules: the same site gets the same score, and no AI decides it.",
+      "You see the page next to what an agent reads from it, and you arrange the findings into a fix plan.",
+      "The audit is saved for 14 days. Your coding agent connects to it through Promptea's MCP server and implements the plan in your repo."
+    ],
+    "weightsTitle": "What the score measures",
+    "weightsBody": "The 100 points lean toward what agents demonstrably use today: text that exists without JavaScript, markdown, structured data, and APIs or MCP. llms.txt is worth 3 points, because evidence that agents read it on their own is still thin.",
+    "weightsUnit": "{n} points",
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "q": "What does “agent-ready” mean?",
+        "a": "That an AI agent sent to your site can read it cheaply, understand what it states, and find what it can do there: an API, an MCP server, a form. Agents are becoming visitors in their own right, and most of them do not run JavaScript or look at layout."
+      },
+      {
+        "q": "Does the audit use AI?",
+        "a": "No. The checks are deterministic rules that run on Promptea's server over what your site returns. The same site gets the same score every time."
+      },
+      {
+        "q": "What does my coding agent do with the audit?",
+        "a": "It connects to Promptea's MCP server with the address shown after the scan. From there it reads the findings, gets each fix with the files and code for your stack, implements it in your repository, checks it, and marks it done. After you deploy, it can scan again."
+      },
+      {
+        "q": "What does Promptea keep?",
+        "a": "The audit of the public page you scanned, your fix plan and which fixes are done, for 14 days. No account, no email, no IP address. Anyone with the audit's link can see it, so share the link only with people or agents you trust."
+      }
+    ]
   }
 }
