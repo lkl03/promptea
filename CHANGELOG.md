@@ -4,6 +4,43 @@ All notable changes to Promptea are documented here.
 
 ---
 
+## v1.9.0 — 2026-11-27
+
+**Agent-Ready — an audit of how ready a site is for AI agents, saved as a session that the owner's coding agent reads through Promptea's MCP server — and Promptea itself made easier for agents to read.** Built as stacked PRs by topic (#60 to #64); this release PR bumps the version and carries the report: [`docs/release/v1.9.0/release-report.md`](./docs/release/v1.9.0/release-report.md).
+
+### Agent-Ready (`/[lang]/agent-ready`, #64)
+- A canvas that takes a site by drag and drop (a link, an example chip, or a sitemap/HTML file read in the browser), the scan drawn live as a pipeline, a score dial, a side-by-side "what a person sees / what an agent reads" view with token costs, and a findings board where findings are dragged into an ordered fix plan.
+- Drag and drop is `@dnd-kit` (pointer, touch, keyboard, screen-reader announcements); every move also has a button. Semantic tokens only (Aqua, Metro, Glass), animations only under `prefers-reduced-motion: no-preference`, reserved heights (CLS 0).
+- "Let your agent fix it": one command for Claude Code, Codex or Cursor with the session's MCP address; progress updates live. The copyable prompt stays as the fallback.
+- In es/en/pt/zh. Registry entry (sitemap, hreflang, `llms.txt`), markdown twin, `WebPage` + `FAQPage` JSON-LD, a fourth action on the home page, a link in the navigation (tighter between 1280 and 1920 px so it does not overlap the logo), a section in `/privacy`.
+- Vercel Analytics: `Site Audited {lang, level}`, `Agent Connected {lang, client}`.
+
+### The engine (`lib/agentReady/`, #61)
+- 21 deterministic checks in six categories that add up to 100: content 25, markdown 20, structured data 20, API & MCP 15, bot access 10, discovery 10. `llms.txt` is worth 3. Refusing training crawlers costs nothing; blocking the fetchers that act for a person fails the check. No LLM.
+- `net/safeFetch.ts`, the scanner's only network door: http/https on default ports, no credentials, the host resolved once and every address required to be public (loopback, private, link-local, CGNAT, documentation, multicast, IPv4 hidden in IPv6), the socket opened to the vetted address, redirects followed by hand and re-vetted, byte and time caps.
+- A fix per check for Next.js App Router and a generic stack, with files, code and an acceptance command. The catalog is static; only the vetted origin is interpolated.
+
+### Sessions and the scan API (#62)
+- `POST /api/agent-ready/scan` (same-origin browsers only; 5/min per client and 6/min per audited host per instance; 25/day per client in Firestore) streams the scan as NDJSON and saves it.
+- A session: a 128-bit id, 14 days (checked on read; `expiresAt` is a Timestamp for a TTL policy), no IP, no user agent. `GET`/`PATCH /api/agent-ready/session/[id]` read it, reorder the plan and mark progress.
+
+### Promptea's MCP server (#63)
+- `/api/mcp/[session]`: stateless Streamable HTTP with `mcp-handler` 2.4 and MCP SDK v2. Tools: `get_audit`, `list_fixes`, `get_fix`, `mark_fix_done`, `recheck`. No tool takes a URL or a session id; `recheck` re-scans only its session's page, at most 30 times.
+- What leaves through MCP is derived facts and Promptea's own recipes, never the audited page's text.
+- Discovery: a Server Card (SEP-2127) at `/api/mcp/server-card`, and the AI catalog (ARD) at `/.well-known/ard.json` and `/.well-known/ai-catalog.json`.
+
+### Promptea for agents (#60)
+- `Accept: text/markdown` on a page returns its markdown twin at the same URL (`Vary: Accept`; `?format=html` opts out). Pages send `Link` headers to `llms.txt`, the API catalog, the AI catalog, the sitemap and their twin.
+- New twins: `/analyzer.md`, `/best-ai.md`, `/flow.md`.
+- `robots.txt` declares `Content-Signal` (search, ai-input, ai-train), derived from the crawler policy; it is now a text route.
+- `/.well-known/api-catalog` (RFC 9727) and `/api/openapi.json` for the public benchmarks endpoint.
+- `seo:check`: a new `agents` group (36 checks).
+
+### Dependencies
+- `mcp-handler` ^2.4, `@modelcontextprotocol/server` ^2, `@dnd-kit/core` ^6.3, `@dnd-kit/sortable` ^10, `@dnd-kit/utilities`.
+
+---
+
 ## v1.8.9 — 2026-11-22
 
 **Prompt flow — a main task split into a tree of prompts — Claude behind a hard spend cap, and the fixes from a review of v1.8.8.** Report and the owner's steps: [`docs/release/v1.8.9/release-report.md`](./docs/release/v1.8.9/release-report.md).

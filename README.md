@@ -5,21 +5,25 @@ A prompt utility with an AI news desk. The homepage (`/[lang]`) says what Prompt
 - **Improve Prompt** (`/[lang]/analyzer`, the homepage until v1.7.0 — old `/[lang]?prompt=…` links are redirected with their parameters) — analyze your prompt, detect issues, score it, and generate a genuinely personalized improved version tailored to each AI (GPT, Claude, Gemini, Grok, Kimi, DeepSeek, Perplexity) and your goal (text, study, code, data/JSON, image, marketing, translation, summarization).
 - **Find the Best AI** (`/[lang]/best-ai`) — paste a prompt and get a deterministic, explainable recommendation of which AI, model, or working environment (e.g. Claude Code vs. plain chat) fits it best, with ranked alternatives and concrete adaptation advice.
 - **Prompt flow** (`/[lang]/flow`, v1.8.9) — write a big task and get it split into a tree of ready-to-paste prompts: the main task on top, steps below in the order to run them, parallel branches on the same row, and the best AI for each step (routed by the deterministic matcher). Claude plans it within a hard spend cap; without AI the engine builds a basic plan.
+- **Agent-Ready** (`/[lang]/agent-ready`, v1.9.0) — drop a site in and see how ready it is for AI agents: what an agent reads without JavaScript, markdown, structured data, API and MCP discovery, bot access. A score out of 100 from 21 deterministic checks, and a fix plan the owner's coding agent implements through Promptea's MCP server.
 - **How Promptea works** (`/[lang]/how-it-works`, v1.8.1) — what it is, how a prompt is scored, supported AIs and prompt types, the FAQ and the product tour video. The long explanation that used to sit at the bottom of the home page, with its `HowTo` + `FAQPage` JSON-LD, a markdown twin and a place in `llms.txt`.
 - **Benchmarks** (`/[lang]/benchmarks`) — leaders per benchmark, frontier models, an explorable ranking table and what each benchmark measures, from OpenRouter's benchmarks API (server-side, cached, honest fallbacks).
 
 Available in English, Spanish, Brazilian Portuguese and Simplified Chinese (`/en`, `/es`, `/pt` since v1.8.2, `/zh` since v1.8.7). AI Daily and the newsletter are written in English and Spanish. Voice dictation in both modes.
 
-## Latest update — v1.8.9 (2026-11-22)
+## Latest update — v1.9.0 (2026-11-27)
 
-**Prompt flow, Claude behind a hard spend cap, and the fixes from a review of v1.8.8.**
-- **Prompt flow** (`/[lang]/flow`): a main task on top, split into a tree of sub-prompts (steps in order, parallel branches on one row), each routed to its best AI by the deterministic matcher. Claude Haiku 5.5 writes the plan; without AI the engine builds a basic plan from four templates. Third mode in the switcher, in the navigation and on the home page, in all four languages, with FAQPage JSON-LD and a place in the sitemap and `llms.txt`.
-- **Claude and the spend cap** (`lib/ai/`): every Claude call (the flow planner and the analyzer's refiner/judge) reserves its worst-case cost in a Firestore ledger first and is not made past the monthly stop ($90 of $100 by default), the daily cap or the visitor's daily quota. Crawlers never trigger it. See "Claude and the spend cap".
-- **v1.8.8 fixes**: Chinese reading time, the weekly digest's Chinese titles, the `/zh` URL and IndexNow ping on publish, `/zh/blog` structured data, the alert that a failed send used up, `?dryRun=true`, RFC 2606 example domains in the newsletter, the cleanup script's key handling, and the changelog's Chinese-news date.
+**Agent-Ready, Promptea's MCP server, and Promptea itself easier for agents to read.** Built as stacked PRs by topic; the release went last.
 
-Report and owner's steps: [`docs/release/v1.8.9/release-report.md`](./docs/release/v1.8.9/release-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+- **Agent-Ready** (`/[lang]/agent-ready`, lkl03/promptea#64): a drag-and-drop canvas, the scan drawn live, a score out of 100, the page next to what an agent reads from it, and a findings board whose order becomes the fix plan. In all four languages and the three themes.
+- **The engine** (lkl03/promptea#61): 21 deterministic checks weighted toward what agents demonstrably use (text without JavaScript, markdown, structured data, APIs and MCP; `llms.txt` is worth 3 of 100), behind an SSRF-safe fetcher.
+- **Sessions** (lkl03/promptea#62): each audit is saved for 14 days under an unguessable id, with no personal data.
+- **MCP server** (lkl03/promptea#63): `/api/mcp/<session id>`. The owner's coding agent reads the audit, gets each fix with code and an acceptance check, marks progress and re-scans. See "Agent-Ready and the MCP server".
+- **Promptea for agents** (lkl03/promptea#60): markdown by `Accept` negotiation, `Link` headers, Content Signals in `robots.txt`, an API catalog, and markdown twins for the three prompt tools.
 
-_Previous update: v1.8.8 (2026-11-20) — AI Daily in Simplified Chinese, routine health and a daily alert, Kimi K3.1 Pro, tweets measured by UTM, firebase-admin 14._
+Report and owner's steps: [`docs/release/v1.9.0/release-report.md`](./docs/release/v1.9.0/release-report.md). Details in [CHANGELOG.md](./CHANGELOG.md).
+
+_Previous update: v1.8.9 (2026-11-22) — Prompt flow, Claude behind a hard spend cap, and the fixes from a review of v1.8.8._
 
 ## v1.8.7 (2026-11-16)
 
@@ -165,6 +169,20 @@ A weekly email digest of AI Daily. Since v1.7.0 every published edition lives in
 4. Backfill / audit: `npm run weekly:backfill` reports every edition a live run actually delivered and whether it is public; `npm run weekly:backfill -- --write` repairs a delivered edition whose status is not public. It never regenerates content and never sends.
 5. Kill switch: set `NEWSLETTER_DELIVERY_ENABLED=false` (and redeploy) — live runs return `DELIVERY_DISABLED` before sending anything. To stop the schedule itself, disable the routine at https://claude.ai/code/routines. Removing `NEWSLETTER_SEND_SECRET` makes the endpoint refuse every call (503).
 
+## Agent-Ready and the MCP server (v1.9.0)
+
+`lib/agentReady/` audits a site for AI-agent readiness without any LLM.
+
+1. **Fetch** (`net/safeFetch.ts`, `collect.ts`): 12 GETs at most, all through one SSRF-safe door — http/https on default ports, no credentials, the host resolved once, every address required to be public, the socket opened to the vetted address, redirects re-vetted, byte and time caps.
+2. **Check** (`checks.ts`, `weights.ts`): 21 pure checks in six categories that add up to 100.
+3. **Fix** (`fixes.ts`): one static recipe per check, for Next.js App Router and a generic stack, with an acceptance command. Only the vetted origin is interpolated.
+4. **Save** (`session.ts`, `store.ts`): `agent_audits/{id}` in Firestore — a 128-bit id, 14 days, no IP or user agent. `agent_audit_quota/*` holds the daily scan counts (hashed IP). Both carry `expiresAt` for a TTL policy; expiry is also checked on read.
+5. **Serve to agents** (`mcp.ts`, `app/api/mcp/[session]/route.ts`): a stateless Streamable HTTP MCP server per session with `get_audit`, `list_fixes`, `get_fix`, `mark_fix_done` and `recheck`. The session id in the URL is the credential; no tool takes a URL. Nothing from the audited page's text leaves through MCP.
+
+Connect a coding agent: `claude mcp add --transport http promptea-audit https://www.promptea.me/api/mcp/<session id>`. Discovery: `/api/mcp/server-card` and `/.well-known/ard.json`.
+
+Without Firestore a scan still runs but is not saved (no "connect your agent" step). Outside production without credentials, sessions live in memory.
+
 ## Claude and the spend cap (v1.8.9)
 
 `lib/ai/claude.ts` is the only code that calls the Claude API. Every call:
@@ -248,6 +266,7 @@ npm run build      # production build (works offline — fonts are local)
 | `AI_USER_DAILY_LIMIT` / `AI_REFINE_USER_DAILY_LIMIT` | optional | v1.8.9. Claude requests per visitor (hashed IP) per UTC day: prompt flows (default `12`) and analyzer rewrites (default `40`). |
 | `AI_FEATURES_ENABLED` | optional | v1.8.9. `0`/`off` turns every Claude call off without removing the key. |
 | `AI_FLOW_MODEL` / `AI_FLOW_MAX_TOKENS` / `AI_FLOW_EFFORT` / `AI_FLOW_TIMEOUT_MS` | optional | v1.8.9. Prompt flow planner: model (default `claude-haiku-5-5`), output cap (`3500`, clamped 1000–8000), effort (`low`), timeout (`25000` ms). |
+| `AGENT_AUDIT_STORE` | optional | v1.9.0. `memory` keeps Agent-Ready sessions in memory instead of Firestore. Local development only (refused in production); without Firestore credentials outside production it is already the default. |
 | `REFINER_PROVIDERS` | optional | Comma-separated provider order, e.g. `anthropic,groq` (default `groq,anthropic`). Providers without a key are skipped; with no key at all the analyzer stays 100% deterministic (`fallbackReason: "disabled"`). |
 | `REFINER_TIMEOUT_MS` | optional | Per-call timeout for a refiner provider (default `10000`). |
 | `REFINER_TOTAL_TIMEOUT_MS` | optional | Total budget for the refiner chain incl. failover and repair (default `15000`). |
