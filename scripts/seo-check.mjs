@@ -438,6 +438,34 @@ async function checkAgents() {
       record(`documented endpoint ${path} answers 200`, r.status === 200, `status ${r.status}`);
     }
   }
+
+  // MCP discovery (v1.9.0): the AI catalog at both paths, and the server card it points at.
+  const catalogs = [];
+  for (const p of ["/.well-known/ard.json", "/.well-known/ai-catalog.json"]) {
+    const r = await get(p);
+    let doc = null;
+    try { doc = JSON.parse(r.body); } catch {}
+    catalogs.push(r.body);
+    record(`GET ${p} is an AI catalog`, r.status === 200 && /application\/ai-catalog\+json/.test(r.headers.get("content-type") || "") && doc?.specVersion === "1.0" && Array.isArray(doc?.entries) && doc.entries.length > 0, `status ${r.status}, ${r.headers.get("content-type")}`);
+    const entry = doc?.entries?.find((e) => e.type === "application/mcp-server-card+json");
+    record(`${p} lists the MCP server card`, !!entry && /^urn:air:[^:]+:.+/.test(entry.identifier) && !!entry.displayName, entry ? entry.identifier : "(no entry)");
+    if (p.endsWith("ard.json") && entry?.url) {
+      const card = await get(new URL(entry.url).pathname);
+      let c = null;
+      try { c = JSON.parse(card.body); } catch {}
+      const problems = [];
+      if (card.status !== 200) problems.push(`status ${card.status}`);
+      if (!/application\/mcp-server-card\+json/.test(card.headers.get("content-type") || "")) problems.push(`content-type ${card.headers.get("content-type")}`);
+      if (card.headers.get("access-control-allow-origin") !== "*") problems.push("no CORS");
+      if (!/^[a-zA-Z0-9.-]+\/[a-zA-Z0-9._-]+$/.test(c?.name || "")) problems.push(`name ${c?.name}`);
+      if (!c?.version || !c?.description || c.description.length > 100) problems.push("version/description");
+      if (c?.remotes?.[0]?.type !== "streamable-http" || !c?.remotes?.[0]?.url) problems.push("remotes");
+      record("the server card follows the SEP-2127 schema", problems.length === 0, problems.join("; "));
+    }
+  }
+  record("ard.json and ai-catalog.json are the same document", catalogs[0] === catalogs[1] && catalogs[0] !== "");
+  const mcpBad = await get("/api/mcp/not-a-session", { method: "POST", headers: { "content-type": "application/json" }, body: "{}" });
+  record("the MCP endpoint 404s a malformed session id", mcpBad.status === 404, `status ${mcpBad.status}`);
   summaryOfGroup("agents");
 }
 

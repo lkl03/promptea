@@ -599,9 +599,9 @@ export function GET() {
         instructions: [
           "Install: `npm install mcp-handler@^2 @modelcontextprotocol/server@^2 zod@^4`.",
           "Start with read-only tools that wrap what the site already does (search content, get an item, list categories). Validate every input with zod.",
-          "Publish the discovery document at `/.well-known/ai-catalog.json` pointing at the server's card.",
+          "Publish a Server Card next to the endpoint (`<mcp-url>/server-card`) and an AI Catalog at `/.well-known/ard.json` (and at `/.well-known/ai-catalog.json`, its predecessor path) pointing at the card.",
           "Check the current `mcp-handler` README for the exact API before writing the route: it changed between major versions.",
-          "Take `specVersion` and the required fields of the catalog from the ARD spec (agenticresourcediscovery.org) before writing it: the format is still a draft.",
+          "Both formats are young: confirm them against github.com/modelcontextprotocol/experimental-ext-server-card and github.com/ards-project/ard-spec before shipping.",
         ],
         files: [
           {
@@ -625,7 +625,7 @@ const handler = createMcpHandler(
 export { handler as GET, handler as POST };`,
           },
           {
-            path: "app/.well-known/ai-catalog.json/route.ts",
+            path: "app/api/mcp/server-card/route.ts",
             action: "create",
             language: "ts",
             code: `export const dynamic = "force-static";
@@ -633,18 +633,48 @@ export { handler as GET, handler as POST };`,
 export function GET() {
   return Response.json(
     {
-      specVersion: "SPEC_VERSION_FROM_THE_ARD_SPEC",
-      host: { displayName: "SITE_NAME", url: "${O}" },
+      $schema: "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+      name: "REVERSE.DOMAIN/SERVER_NAME", // e.g. com.example/search — exactly one slash
+      version: "1.0.0",
+      description: "WHAT_THE_SERVER_DOES (100 characters at most)",
+      remotes: [{ type: "streamable-http", url: "{{ORIGIN}}/api/mcp" }],
+    },
+    {
+      headers: {
+        "Content-Type": "application/mcp-server-card+json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "Content-Type, If-None-Match",
+        "Access-Control-Expose-Headers": "ETag",
+        "Cache-Control": "public, max-age=3600",
+      },
+    },
+  );
+}`,
+          },
+          {
+            path: "app/.well-known/ard.json/route.ts",
+            action: "create",
+            language: "ts",
+            code: `// Serve the same document at app/.well-known/ai-catalog.json/route.ts (the predecessor path, still widely read).
+export const dynamic = "force-static";
+
+export function GET() {
+  return new Response(
+    JSON.stringify({
+      specVersion: "1.0",
+      host: { displayName: "SITE_NAME" },
       entries: [
         {
-          identifier: "urn:air:SITE_DOMAIN:mcp:main",
+          identifier: "urn:air:SITE_DOMAIN:mcp/SERVER_NAME",
           displayName: "SITE_NAME MCP server",
           type: "application/mcp-server-card+json",
-          url: "${O}/api/mcp/server-card",
+          url: "{{ORIGIN}}/api/mcp/server-card",
+          representativeQueries: ["A_QUESTION_THIS_SERVER_ANSWERS", "ANOTHER_ONE"], // 2 to 5
         },
       ],
-    },
-    { headers: { "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=3600" } },
+    }),
+    { headers: { "Content-Type": "application/ai-catalog+json", "Access-Control-Allow-Origin": "*", "Cache-Control": "public, max-age=3600" } },
   );
 }`,
           },
@@ -653,12 +683,13 @@ export function GET() {
       generic: {
         instructions: [
           "Build a remote MCP server (Streamable HTTP) with read-only tools for the site's main actions, using the official SDK for your language.",
-          "Publish `/.well-known/ai-catalog.json` with an entry of type `application/mcp-server-card+json` that points at the server card.",
+          "Publish an MCP Server Card at `<mcp-url>/server-card` (`application/mcp-server-card+json`: `$schema`, `name`, `version`, `description`, `remotes`).",
+          "Publish an AI Catalog at `/.well-known/ard.json` and `/.well-known/ai-catalog.json` (`specVersion: \"1.0\"`, `entries[]` with `identifier`, `displayName`, `type: \"application/mcp-server-card+json\"` and `url` pointing at the card).",
         ],
         files: [],
       },
     },
-    acceptance: { description: "The discovery document lists an MCP entry.", command: `curl -s ${O}/.well-known/ai-catalog.json` },
+    acceptance: { description: "The AI catalog lists an entry of type application/mcp-server-card+json.", command: `curl -s ${O}/.well-known/ard.json` },
   },
   {
     id: "api.webmcp",

@@ -1,7 +1,7 @@
 // lib/agentReady/collect.ts
 //
 // v1.9.0 — the network half of an audit: a fixed, small set of GETs against the
-// site (11 at most), all through safeFetch. The page goes first because every
+// site (12 at most), all through safeFetch. The page goes first because every
 // other URL hangs off the origin that actually answered; the rest run a few at
 // a time. A probe that fails is recorded as failed, never thrown: a site
 // without /llms.txt is a finding, not an error.
@@ -33,7 +33,9 @@ const SITE_PROBES: Plan[] = [
   { key: "llms", url: (p) => `${p.origin}/llms.txt`, accept: "text/plain, text/markdown, */*;q=0.1", maxBytes: SMALL },
   { key: "sitemap", url: (p) => `${p.origin}/sitemap.xml`, accept: "application/xml, text/xml, */*;q=0.1", maxBytes: SMALL },
   { key: "apiCatalog", url: (p) => `${p.origin}/.well-known/api-catalog`, accept: "application/linkset+json, application/json", maxBytes: SMALL },
-  { key: "aiCatalog", url: (p) => `${p.origin}/.well-known/ai-catalog.json`, accept: "application/json", maxBytes: SMALL },
+  { key: "aiCatalog", url: (p) => `${p.origin}/.well-known/ai-catalog.json`, accept: "application/ai-catalog+json, application/json", maxBytes: SMALL },
+  // ARD moved the catalog to /.well-known/ard.json; ai-catalog.json is the predecessor path.
+  { key: "ardCatalog", url: (p) => `${p.origin}/.well-known/ard.json`, accept: "application/ai-catalog+json, application/json", maxBytes: SMALL },
   { key: "mcpCard", url: (p) => `${p.origin}/.well-known/mcp/server-card.json`, accept: "application/json", maxBytes: SMALL },
   { key: "skills", url: (p) => `${p.origin}/.well-known/agent-skills/index.json`, accept: "application/json", maxBytes: SMALL },
   { key: "openapi", url: (p) => `${p.origin}/openapi.json`, accept: "application/json, application/openapi+json", maxBytes: SMALL },

@@ -33,6 +33,8 @@ type Locale = (typeof locales)[number];
 export const AGENT_LINKS: readonly string[] = [
   '</llms.txt>; rel="describedby"; type="text/plain"',
   '</.well-known/api-catalog>; rel="api-catalog"',
+  '</.well-known/ard.json>; rel="ard"',
+  '</.well-known/ai-catalog.json>; rel="ai-catalog"',
   '</sitemap.xml>; rel="sitemap"',
 ];
 
