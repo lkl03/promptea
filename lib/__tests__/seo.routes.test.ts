@@ -106,6 +106,7 @@ describe("markdown twin route", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("text/markdown; charset=utf-8");
     expect(res.headers.get("link")).toBe(`<${absUrl(`/en/guides/${g.slug}`)}>; rel="canonical"`);
+    expect(res.headers.get("vary")).toBe("Accept");
     const body = await res.text();
     expect(body.startsWith(`# ${g.title.en}`)).toBe(true);
     expect(body).toContain(absUrl(`/en/guides/${g.slug}`));
