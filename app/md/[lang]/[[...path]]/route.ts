@@ -25,5 +25,8 @@ export async function GET(_req: Request, ctx: { params: Promise<{ lang: string; 
   return textResponse(localizeMarkdownPunctuation(found.body, lang), MARKDOWN_CONTENT_TYPE, {
     // The HTML page is the canonical version; the twin is an alternate format of it.
     Link: `<${absUrl(found.htmlPath)}>; rel="canonical"`,
+    // v1.9.0: the same URL answers HTML or this twin depending on Accept (proxy.ts). Said here
+    // and not only in the proxy: on Vercel a Vary header the proxy adds to a rewrite is dropped.
+    Vary: "Accept",
   });
 }
