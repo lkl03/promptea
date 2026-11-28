@@ -574,6 +574,15 @@
     "about": "Sobre o Promptea"
   },
   "changelog": {
+    "v190": {
+      "released": "Publicado: 2026-11-27",
+      "items": [
+        "Novo: Agent-Ready. Solte um site e veja o que um agente de IA realmente lê, com uma nota de 0 a 100 e um plano de correções que você reordena arrastando.",
+        "O seu agente de programação (Claude Code, Codex, Cursor) se conecta à auditoria com um comando e implementa as correções no seu repositório, pelo servidor MCP do Promptea.",
+        "O Promptea ficou mais fácil de ler para os agentes: as páginas respondem em markdown quando pedem, e o site declara para que o conteúdo pode ser usado.",
+        "O analisador, Encontrar a melhor IA e o Fluxo de prompts agora têm versão em markdown."
+      ]
+    },
     "v189": {
       "released": "Publicado: 2026-11-22",
       "items": [

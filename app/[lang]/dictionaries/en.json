@@ -574,6 +574,15 @@
     "about": "About Promptea"
   },
   "changelog": {
+    "v190": {
+      "released": "Released: 2026-11-27",
+      "items": [
+        "New: Agent-Ready. Drop a site in and see what an AI agent actually reads, with a score out of 100 and a fix plan you can reorder by dragging.",
+        "Your coding agent (Claude Code, Codex, Cursor) connects to the audit with one command and implements the fixes in your repo, through Promptea's MCP server.",
+        "Promptea is easier for agents to read: pages answer in markdown when asked, and the site declares what its content may be used for.",
+        "The analyzer, Find the Best AI and the Prompt flow now have a markdown version."
+      ]
+    },
     "v189": {
       "released": "Released: 2026-11-22",
       "items": [

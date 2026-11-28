@@ -1,0 +1,9 @@
+stdout | lib/__tests__/firestore.emulator.spec.ts > Firestore through firebase-admin (emulator) > the SDK in use
+[firestore-emulator] firebase-admin 14.5.1
+stderr | lib/__tests__/firestore.emulator.spec.ts > Firestore through firebase-admin (emulator) > subscribers: add, dedupe by hash, count(), paginated active list, unsubscribe by token
+ ✓ lib/__tests__/firestore.emulator.spec.ts (8 tests) 25072ms
+     ✓ subscribers: add, dedupe by hash, count(), paginated active list, unsubscribe by token  565ms
+     ✓ AI ledger: concurrent reservations never cross the cap (transactions)  3441ms
+     ✓ v1.9.0 Agent-Ready: sessions (create-once, Timestamp expiry, transactional update) and the scan quota  18423ms
+ Test Files  1 passed (1)
+      Tests  8 passed (8)

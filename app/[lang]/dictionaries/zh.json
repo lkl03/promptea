@@ -574,6 +574,15 @@
     "about": "关于Promptea"
   },
   "changelog": {
+    "v190": {
+      "released": "发布日期：2026-11-27",
+      "items": [
+        "新功能：Agent-Ready。把网站拖进来，看看AI智能体实际读到什么，获得百分制评分，以及一份可以拖动排序的修复计划。",
+        "你的编程智能体（Claude Code、Codex、Cursor）只需一条命令即可连接审计，并通过Promptea的MCP服务器在你的代码库中实现修复。",
+        "Promptea更便于智能体阅读：页面在被请求时会以markdown作答，网站还声明了其内容可以用于什么。",
+        "分析器、找到最合适的AI和提示词流程现在都有了markdown版本。"
+      ]
+    },
     "v189": {
       "released": "发布日期：2026-11-22",
       "items": [
